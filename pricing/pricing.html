@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pricing - CEC English Camp</title>
+  <style>
+    body { background: #181b20; color: #fff; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0;}
+    .pricing-cards { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin: 4rem 0; }
+    .card {
+      background: #23272f;
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      width: 340px;
+      text-align: center;
+      box-shadow: 0 2px 20px #0004;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .card h3 { margin: 0.5em 0; color: #49e9ff; font-size: 1.3em;}
+    .card .price { font-size: 2rem; font-weight: bold; margin-bottom: 1em; color: #67fff5;}
+    .btn {
+      display: inline-block;
+      background: none;
+      color: #67fff5;
+      border: 2px solid #67fff5;
+      padding: 0.7em 1.6em;
+      border-radius: 12px;
+      font-size: 1.09em;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1em;
+      transition: background .18s, color .18s;
+    }
+    .btn:hover { background: #212c3a; color: #fff;}
+    .plan-desc { margin-bottom: 1em; min-height: 100px;}
+    /* Modal styles */
+    .modal {
+      display: none; position: fixed; z-index: 999;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.53);
+      justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background: #23272f;
+      border-radius: 18px;
+      padding: 2.1em 2em;
+      width: 95%;
+      max-width: 420px;
+      box-shadow: 0 8px 32px #0006;
+      position: relative;
+      text-align: center;
+    }
+    .modal-content h3 { color: #49e9ff;}
+    .modal-content ul { text-align:left; margin:1em auto 1em 2em; max-width:340px;}
+    .modal-content .btn-close {
+      background: none; color: #67fff5; border: 2px solid #67fff5;
+      padding: 0.6em 1.3em; border-radius: 10px; margin-top: 2em;
+      font-size: 1em; font-weight: 600; cursor: pointer;
+      transition: background .18s, color .18s;
+    }
+    .modal-content .btn-close:hover { background: #273b4d; color: #fff;}
+    @media (max-width: 1000px) {
+      .pricing-cards { flex-direction: column; align-items: center; }
+      .card { width: 97%; max-width: 380px;}
+    }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center; margin-top:2rem;">Tuition Plans in Detail</h2>
+  <p style="text-align:center; margin-bottom: 2rem;">
+    We understand that every child learns differently.<br>
+    That’s why CEC English Camp offers <b>three tiers of learning experiences</b>, each designed to support students at their own pace, with the right level of guidance and interaction.
+  </p>
+  <div class="pricing-cards">
+    <div class="card">
+      <h3>🔹 Self-Paced Digital Learning</h3>
+      <div class="price">From $29/month</div>
+      <div class="plan-desc">
+        <b>Perfect for students who are ready to learn independently, at their own pace.</b>
+        <ul>
+          <li>Full access to all episode-based lessons (A1–B2 levels)</li>
+          <li>MP3 audio + English subtitles</li>
+          <li>Grammar/vocab explanations</li>
+          <li>Practice quizzes, downloadable PDFs &amp; flashcards</li>
+        </ul>
+      </div>
+      <button class="btn" onclick="openModal(0)">Read More</button>
+    </div>
+    <div class="card">
+      <h3>🔸 Guided Learning + Teacher Feedback</h3>
+      <div class="price">From $79/month</div>
+      <div class="plan-desc">
+        <b>Step up your English with real teacher feedback!</b>
+        <ul>
+          <li>Everything in Tier 1</li>
+          <li>Speaking &amp; writing tasks reviewed by teachers</li>
+          <li>Group speaking class (Zoom/app)</li>
+          <li>Grammar correction reports</li>
+        </ul>
+      </div>
+      <button class="btn" onclick="openModal(1)">Read More</button>
+    </div>
+    <div class="card">
+      <h3>🟣 Premium Live Coaching &amp; Projects</h3>
+      <div class="price">From $149/month</div>
+      <div class="plan-desc">
+        <b>The full experience – for motivated learners who want live coaching &amp; project-based learning.</b>
+        <ul>
+          <li>Everything in Tiers 1 &amp; 2</li>
+          <li>Weekly small-group coaching with native/ESL teachers</li>
+          <li>Monthly project presentations or role-plays</li>
+          <li>Personalized curriculum &amp; reports</li>
+          <li>Completion certificate &amp; digital portfolio</li>
+        </ul>
+      </div>
+      <button class="btn" onclick="openModal(2)">Read More</button>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <script>
+    // 최신 3단계 플랜 상세 설명
+    const modalTexts = [
+      `<h3>🔹 Self-Paced Digital Learning</h3>
+      <p>
+        <b>From $29/month</b><br>
+        Perfect for students who want to learn independently, at their own pace.<br>
+        <ul>
+          <li>Full access to all episode-based lessons (A1–B2 levels)</li>
+          <li>MP3 audio with English subtitles</li>
+          <li>Grammar and vocabulary explanations</li>
+          <li>Practice quizzes with instant feedback</li>
+          <li>Downloadable PDFs and flashcards</li>
+        </ul>
+        <b>Ideal for:</b>
+        <ul>
+          <li>Students with good study habits</li>
+          <li>Families looking for budget-friendly quality learning</li>
+          <li>Learners who prefer digital platforms and flexible timing</li>
+        </ul>
+      </p>
+      <button class="btn-close" onclick="closeModal()">← Back to Plans</button>`,
+      `<h3>🔸 Guided Learning + Teacher Feedback</h3>
+      <p>
+        <b>From $79/month</b><br>
+        For students who want regular check-ins and teacher feedback.<br>
+        <ul>
+          <li>Everything in Tier 1</li>
+          <li>1–2 speaking tasks/week with AI or teacher feedback</li>
+          <li>Writing assignments reviewed by real teachers</li>
+          <li>Monthly group speaking classes (Zoom/app)</li>
+          <li>Grammar correction reports &amp; improvement tips</li>
+        </ul>
+        <b>Ideal for:</b>
+        <ul>
+          <li>Students wanting accountability and feedback</li>
+          <li>Intermediate learners ready to build confidence</li>
+          <li>Parents seeking expert guidance without high cost</li>
+        </ul>
+      </p>
+      <button class="btn-close" onclick="closeModal()">← Back to Plans</button>`,
+      `<h3>🟣 Premium Live Coaching & Projects</h3>
+      <p>
+        <b>From $149/month</b><br>
+        The full experience: live coaching, personal guidance, and project-based learning.<br>
+        <ul>
+          <li>Everything in Tiers 1 & 2</li>
+          <li>Weekly small-group coaching sessions</li>
+          <li>Monthly project presentations/role-plays</li>
+          <li>Individual learning progress reports</li>
+          <li>Personalized curriculum suggestions</li>
+          <li>Completion certificate & digital portfolio</li>
+        </ul>
+        <b>Ideal for:</b>
+        <ul>
+          <li>Students preparing for global programs or international schools</li>
+          <li>Highly motivated learners who want to speak fluently and clearly</li>
+          <li>Parents looking for complete, guided development and feedback</li>
+        </ul>
+      </p>
+      <button class="btn-close" onclick="closeModal()">← Back to Plans</button>`
+    ];
+
+    function openModal(idx) {
+      document.getElementById('modalContent').innerHTML = modalTexts[idx];
+      document.getElementById('modal').style.display = "flex";
+    }
+    function closeModal() {
+      document.getElementById('modal').style.display = "none";
+    }
+    // 바깥 클릭시 모달 닫기
+    window.onclick = function(e) {
+      const modal = document.getElementById('modal');
+      if (e.target === modal) closeModal();
+    }
+  </script>
+</body>
+</html>
