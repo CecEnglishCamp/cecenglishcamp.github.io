@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G74 Part 1: Advanced Linking Devices</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --blue-light: #e3f2fd;
+            --blue-medium: #bbdefb;
+            --green: #e8f5e9;
+            --orange: #fff3e0;
+            --purple: #f3e5f5;
+            --sky: #e0f7fa;
+            --gray-light: #f5f5f5;
+            --gray-dark: #bdbdbd;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+
+        .concept-card {
+            background-color: var(--blue-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: #3498db;
+        }
+
+        .concept-card h4 {
+            color: #1f3a5f;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .concept-icon {
+            font-size: 1.5rem;
+            color: #2980b9;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .concept-meaning strong, .concept-examples strong {
+            color: #e74c3c;
+        }
+
+        .grammar ul, .positive ul, .question ul, .dialogue p, .sentence_combining ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .grammar li, .positive li, .question li, .dialogue p, .sentence_combining li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .grammar li:hover, .positive li:hover, .question li:hover, .dialogue p:hover, .sentence_combining li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section.concept { background-color: var(--blue-light); }
+        .section.grammar { background-color: var(--blue-medium); }
+        .section.positive { background-color: var(--green); }
+        .section.question { background-color: var(--orange); }
+        .section.dialogue { background-color: var(--purple); }
+        .section.sentence_combining { background-color: var(--sky); }
+        
+        .section.concept h2 { border-color: #2980b9; color: #2980b9; }
+        .section.grammar h2 { border-color: #2c3e50; color: #2c3e50; }
+        .section.positive h2 { border-color: #27ae60; color: #27ae60; }
+        .section.question h2 { border-color: #e67e22; color: #e67e22; }
+        .section.dialogue h2 { border-color: #8e44ad; color: #8e44ad; }
+        .section.sentence_combining h2 { border-color: #3498db; color: #3498db; }
+        
+        .dialogue strong { color: #c0392b; }
+        .sentence_combining strong { color: #2980b9; }
+        .positive strong { color: #2980b9; }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G74. 고급 연결어 (Part 1)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol>
+                <li><a href="#concept">기본 개념 (Basic Concept)</a></li>
+                <li><a href="#grammar">문법 규칙 (Grammar Rules)</a></li>
+                <li><a href="#positive">긍정문 예시 (Positive Examples)</a></li>
+                <li><a href="#question">의문문 예시 (Question Examples)</a></li>
+                <li><a href="#dialogue">상황별 대화 (Situational Dialogues)</a></li>
+                <li><a href="#sentence_combining">문장 결합 연습 (Sentence Combining)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+        
+        <div class="section concept" id="concept">
+            <h2>1. 기본 개념 (Basic Concept)</h2>
+            <div class="concept-card">
+                <h4><span class="concept-icon">LINK</span>Advanced Linking Devices</h4>
+                <div class="concept-meaning">
+                    <strong>Linking Devices:</strong> 문장과 문장을 연결하여 논리적 흐름을 만드는 표현<br>
+                    글쓰기와 말하기에서 <strong>논리, 대조, 예시, 결과, 강조</strong>를 표현할 때 사용<br>
+                    문장 응집력 향상, 시험 응답 구조화, 발표/보고서에 필수
+                </div>
+                <div class="concept-examples">
+                    <p><strong>대조:</strong> She was tired. **However**, she kept working.</p>
+                    <p><strong>결과:</strong> He didn’t study. **Therefore**, he failed.</p>
+                    <p><strong>예시:</strong> I like fruits, **such as** apples and bananas.</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section grammar" id="grammar">
+            <h2>2. 문법 규칙 (Grammar Rules)</h2>
+            <ul>
+                <li><strong>순서/추가:</strong> first, then, next, **also, moreover, in addition**</li>
+                <li><strong>예시/설명:</strong> **for example, such as, that is, namely**</li>
+                <li><strong>대조/양보:</strong> but, **however, although, even though, whereas**</li>
+                <li><strong>결과/조건:</strong> so, **therefore, thus, as a result, if, unless**</li>
+                <li><strong>강조/요약:</strong> **indeed, in fact, above all, in short, to sum up**</li>
+                <li>문장 앞/중간/끝에 위치 가능 (예: **However**, she kept working. / She kept working, **however**.)</li>
+                <li>쉼표 사용 주의: 대부분 문장 앞에 올 경우 **쉼표(comma)**로 구분</li>
+                <li>문맥에 따라 적절한 연결어 선택 필요</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section positive" id="positive">
+            <h2>3. 긍정문 예시 (Positive Examples)</h2>
+            <h4>순서/추가</h4>
+            <ul>
+                <li>**First**, we need to plan.</li>
+                <li>**Then**, we can start working.</li>
+                <li>**Next**, we’ll review the results.</li>
+                <li>**Also**, remember to check grammar.</li>
+                <li>**Moreover**, the design must be clear.</li>
+                <li>**In addition**, we’ll add examples.</li>
+            </ul>
+
+            <h4>예시/설명</h4>
+            <ul>
+                <li>**For example**, apples are healthy.</li>
+                <li>**Such as** bananas and oranges.</li>
+                <li>**That is**, we need more time.</li>
+                <li>**Namely**, the writing section.</li>
+            </ul>
+
+            <h4>대조/양보</h4>
+            <ul>
+                <li>She was tired, **but** she kept going.</li>
+                <li>**However**, she didn’t give up.</li>
+                <li>**Although** it was late, he kept working.</li>
+                <li>**Even though** it was hard, they succeeded.</li>
+                <li>He likes tea, **whereas** she prefers coffee.</li>
+            </ul>
+
+            <h4>결과/조건</h4>
+            <ul>
+                <li>He didn’t study, **so** he failed.</li>
+                <li>She worked hard. **Therefore**, she passed.</li>
+                <li>It rained. **Thus**, the game was canceled.</li>
+                <li>**As a result**, we changed the plan.</li>
+                <li>**If** you study, you’ll improve.</li>
+                <li>**Unless** you try, you won’t succeed.</li>
+            </ul>
+
+            <h4>강조/요약</h4>
+            <ul>
+                <li>**Indeed**, the results were surprising.</li>
+                <li>**In fact**, no one expected it.</li>
+                <li>**Above all**, stay focused.</li>
+                <li>**In short**, we need more time.</li>
+                <li>**To sum up**, the project was a success.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section question" id="question">
+            <h2>4. 의문문 예시 (Question Examples)</h2>
+            <ul>
+                <li>Why do we use **“however”** instead of “but”?</li>
+                <li>Can you explain **“in addition”** vs **“also”**?</li>
+                <li>What’s the difference between **“although”** and **“even though”**?</li>
+                <li>Can you use **“for example”** in a sentence?</li>
+                <li>Why is **“therefore”** used for results?</li>
+                <li>Can you show a contrast using **“whereas”**?</li>
+                <li>How do we summarize with **“to sum up”**?</li>
+                <li>Can you use **“unless”** in a condition?</li>
+                <li>How does **“indeed”** add emphasis?</li>
+                <li>Can you write your own example of each type?</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section dialogue" id="dialogue">
+            <h2>5. 상황별 대화 흐름 (Situational Dialogues)</h2>
+            <p><strong>학교 상황</strong><br />A: I finished my homework.<br />B: Good. **In addition**, you should review grammar.<br />A: Okay.</p>
+            <p><strong>여행 상황</strong><br />A: It started raining.<br />B: **Therefore**, we canceled the hike.<br />A: That makes sense.</p>
+            <p><strong>직장 상황</strong><br />A: She submitted the report.<br />B: **However**, it was incomplete.<br />A: Let’s fix it.</p>
+            <p><strong>온라인 상황</strong><br />A: I like digital art.<br />B: **For example**, anime posters?<br />A: Exactly.</p>
+            <p><strong>가족 상황</strong><br />A: I want to go out.<br />B: **Unless** you finish your chores, you can’t.<br />A: I’ll do them now.</p>
+            <p><strong>병원 상황</strong><br />A: She’s recovering well.<br />B: **In fact**, she might go home tomorrow.<br />A: That’s great!</p>
+        </div>
+
+        <hr>
+
+        <div class="section sentence_combining" id="sentence_combining">
+            <h2>6. 문장 결합 연습 (Sentence Combining)</h2>
+            <ul>
+                <li>She was tired. She kept working. → She was tired. **However**, she kept working.</li>
+                <li>He didn’t study. He failed. → He didn’t study. **Therefore**, he failed.</li>
+                <li>It rained. The game was canceled. → It rained. **As a result**, the game was canceled.</li>
+                <li>He likes tea. She prefers coffee. → He likes tea, **whereas** she prefers coffee.</li>
+                <li>We need more time. We need more examples. → We need more time. **In addition**, we need more examples.</li>
+                <li>Apples are healthy. Bananas are healthy. → Apples are healthy. **Moreover**, bananas are healthy.</li>
+                <li>It was hard. They succeeded. → **Even though** it was hard, they succeeded.</li>
+                <li>We planned well. The project succeeded. → We planned well. **Thus**, the project succeeded.</li>
+                <li>We need to focus. We need to finish. → **Above all**, we need to finish.</li>
+                <li>We finished the work. The report was submitted. → **To sum up**, the report was submitted.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G74 Part 2: Advanced Linking Devices</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --yellow-light: #fffde7;
+            --pink-light: #fce4ec;
+            --orange-light: #ffecb3;
+            --green: #e8f5e9;
+            --gray: #e0e0e0;
+            --gray-dark: #bdbdbd;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+
+        .real_life_usage.section { background-color: var(--yellow-light); }
+        .common_patterns.section { background-color: var(--pink-light); }
+        .mistakes.section { background-color: var(--orange-light); }
+        .tips.section { background-color: var(--green); }
+        .practice.section { background-color: var(--gray); }
+        .checklist.section { background-color: var(--gray-dark); }
+        
+        .section.real_life_usage h2 { border-color: #f1c40f; color: #f1c40f; }
+        .section.common_patterns h2 { border-color: #e91e63; color: #e91e63; }
+        .section.mistakes h2 { border-color: #f39c12; color: #f39c12; }
+        .section.tips h2 { border-color: #2ecc71; color: #2ecc71; }
+        .section.practice h2 { border-color: #7f8c8d; color: #7f8c8d; }
+        .section.checklist h2 { border-color: #95a5a6; color: #95a5a6; }
+
+        .section ul, .section ol {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .section li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .mistakes li .correct { color: #2ecc71; font-weight: bold; }
+        .mistakes li .incorrect { color: #e74c3c; font-weight: bold; text-decoration: line-through; }
+
+        .practice h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .practice ol {
+            padding-left: 20px;
+        }
+
+        .practice li {
+            margin-bottom: 15px;
+            background-color: #fff;
+        }
+
+        .practice .question {
+            font-weight: bold;
+        }
+        
+        .practice .options {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .practice .option {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        
+        .practice .option:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.01);
+        }
+
+        .practice .option.correct {
+            background-color: #e8f5e9;
+            border-color: #27ae60;
+        }
+
+        .practice .option.incorrect {
+            background-color: #ffebee;
+            border-color: #c0392b;
+        }
+
+        .answer-box {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            display: none;
+        }
+
+        .answer-box.visible {
+            display: block;
+        }
+
+        .practice input[type="text"] {
+            width: 90%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        
+        .practice .answer-feedback {
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        
+        .practice .answer-feedback.correct-text { color: #2ecc71; }
+        .practice .answer-feedback.incorrect-text { color: #e74c3c; }
+
+        #progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        #progress-bar {
+            width: 0;
+            height: 20px;
+            background-color: #3498db;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            line-height: 20px;
+            transition: width 0.4s ease-in-out;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .checklist h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .checklist-question {
+            margin-bottom: 10px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G74. 고급 연결어 (Part 2)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol start="7">
+                <li><a href="#real_life_usage">실생활 사용 예시 (Real-Life Usage)</a></li>
+                <li><a href="#common_patterns">자주 쓰이는 패턴 (Common Patterns)</a></li>
+                <li><a href="#mistakes">흔한 실수 (Common Mistakes)</a></li>
+                <li><a href="#tips">레벨업 팁 (Level-Up Tips)</a></li>
+                <li><a href="#practice">연습문제 (Practice Exercises)</a></li>
+                <li><a href="#checklist">자가진단 체크리스트 (Self-Check)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section real_life_usage" id="real_life_usage">
+            <h2>7. 실생활 사용 예시 (Real-Life Usage)</h2>
+            <ul>
+                <li><strong>학교 상황:</strong> I studied hard. <strong>As a result</strong>, I passed the test.</li>
+                <li><strong>직장 상황:</strong> She missed the deadline. <strong>However</strong>, the team helped her.</li>
+                <li><strong>가족 상황:</strong> We were tired. <strong>Even though</strong> we were tired, we cooked dinner.</li>
+                <li><strong>온라인 상황:</strong> I like design tools, <strong>such as</strong> Canva and Figma.</li>
+                <li><strong>병원 상황:</strong> He followed instructions. <strong>Therefore</strong>, he recovered quickly.</li>
+                <li><strong>여행 상황:</strong> It was raining. <strong>Nevertheless</strong>, we went hiking.</li>
+                <li><strong>회의 상황:</strong> We discussed the issue. <strong>In short</strong>, we need a new plan.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section common_patterns" id="common_patterns">
+            <h2>8. 자주 쓰이는 패턴 (Common Patterns)</h2>
+            <ul>
+                <li><strong>순서:</strong> First, Then, Next</li>
+                <li><strong>추가:</strong> Also, Moreover, In addition</li>
+                <li><strong>예시:</strong> For example, Such as, That is</li>
+                <li><strong>대조:</strong> But, **However**, Although, Even though, Whereas</li>
+                <li><strong>결과:</strong> So, **Therefore**, Thus, As a result</li>
+                <li><strong>조건:</strong> If, Unless</li>
+                <li><strong>강조:</strong> Indeed, In fact, Above all</li>
+                <li><strong>요약:</strong> In short, To sum up</li>
+                <li><strong>문장 앞:</strong> However, she continued.</li>
+                <li><strong>문장 중간:</strong> She continued, however, without help.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section mistakes" id="mistakes">
+            <h2>9. 흔한 실수 (Common Mistakes)</h2>
+            <ul>
+                <li><span class="incorrect">❌ She was tired. But she kept working.</span> → <span class="correct">✅ She was tired. <strong>However</strong>, she kept working.</span></li>
+                <li><span class="incorrect">❌ He didn’t study. So he failed.</span> → <span class="correct">✅ He didn’t study. <strong>Therefore</strong>, he failed.</span></li>
+                <li><span class="incorrect">❌ Apples are healthy. Bananas are healthy.</span> → <span class="correct">✅ Apples are healthy. <strong>Moreover</strong>, bananas are healthy.</span></li>
+                <li><span class="incorrect">❌ He likes tea. She likes coffee.</span> → <span class="correct">✅ He likes tea, <strong>whereas</strong> she prefers coffee.</span></li>
+                <li><span class="incorrect">❌ We need more time. We need more examples.</span> → <span class="correct">✅ We need more time. <strong>In addition</strong>, we need more examples.</span></li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section tips" id="tips">
+            <h2>10. 레벨업 팁 (Level-Up Tips)</h2>
+            <ul>
+                <li>연결 표현은 <strong>논리 흐름</strong>을 명확히 해줌</li>
+                <li>대조 표현은 <strong>but → however / although / whereas</strong>로 다양화</li>
+                <li>결과 표현은 <strong>so → therefore / thus / as a result</strong>로 강화</li>
+                <li>예시 표현은 <strong>for example / such as / namely</strong>로 구체화</li>
+                <li>강조 표현은 <strong>indeed / in fact / above all</strong>로 감정과 논리 강조</li>
+                <li>요약 표현은 <strong>in short / to sum up</strong>으로 마무리 효과</li>
+                <li>문장 결합 연습을 통해 <strong>자연스러운 연결력 향상</strong></li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section practice" id="practice">
+            <h2>11. 연습문제 (Practice Exercises)</h2>
+
+            <h4>객관식</h4>
+            <ol>
+                <li id="q1">Which is correct?
+                    <div class="options" data-correct="B">
+                        <div class="option" data-value="A">A. She was tired. But she kept working.</div>
+                        <div class="option" data-value="B">B. She was tired. However, she kept working.</div>
+                    </div>
+                </li>
+                <li id="q2">Choose the correct connector:
+                    <div class="question">It rained. ___, the game was canceled.</div>
+                    <div class="options" data-correct="A">
+                        <div class="option" data-value="A">A. Therefore</div>
+                        <div class="option" data-value="B">B. For example</div>
+                    </div>
+                </li>
+                <li id="q3">Fill in: He likes tea, ___ she prefers coffee.
+                    <div class="options" data-correct="A">
+                        <div class="option" data-value="A">A. whereas</div>
+                        <div class="option" data-value="B">B. although</div>
+                    </div>
+                </li>
+            </ol>
+            
+            <button class="submit-btn" onclick="checkAnswers()">정답 확인하기</button>
+            <div id="answers" class="hidden">
+                <p><strong>1. B</strong>. 'But'은 두 개의 독립된 문장을 연결할 때 단독으로 문장 시작에 사용하기보다 'However'를 사용해 문장의 흐름을 명확히 합니다.</p>
+                <p><strong>2. A</strong>. 비가 온 것이 게임 취소의 **결과**이므로 'Therefore'가 적절합니다. ('For example'은 예시를 들 때 사용합니다.)</p>
+                <p><strong>3. A</strong>. 두 개의 대조되는 사실을 동시에 언급할 때 **'whereas'**를 사용합니다. ('Although'는 양보의 의미로 사용됩니다.)</p>
+            </div>
+            
+            <h4>문장 결합 (정답 예시 제공)</h4>
+            <ol start="4">
+                <li><label>She was tired. She kept working. → <input type="text" id="q4" placeholder="She was tired. However, she kept working."/></label></li>
+                <li><label>He didn’t study. He failed. → <input type="text" id="q5" placeholder="He didn’t study. Therefore, he failed."/></label></li>
+                <li><label>It rained. The game was canceled. → <input type="text" id="q6" placeholder="It rained. As a result, the game was canceled."/></label></li>
+                <li><label>He likes tea. She prefers coffee. → <input type="text" id="q7" placeholder="He likes tea, whereas she prefers coffee."/></label></li>
+                <li><label>We need more time. We need more examples. → <input type="text" id="q8" placeholder="We need more time. In addition, we need more examples."/></label></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section checklist" id="checklist">
+            <h2>12. 자가진단 체크리스트 (Self-Check)</h2>
+            
+            <h4>학습 완료 체크</h4>
+            <div id="progress-container">
+                <div id="progress-bar">0%</div>
+            </div>
+            <ul>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I understand what linking devices are.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can use contrast, result, and example connectors correctly.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can transform simple sentences into connected ones.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can correct common mistakes in linking usage.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can use linking devices to improve writing and speaking fluency.</li>
+            </ul>
+
+            <h4>자가진단 문항</h4>
+            <ol>
+                <li class="checklist-question">Can you explain why “however” is stronger than “but”?</li>
+                <li class="checklist-question">Can you write a sentence using “in addition”?</li>
+                <li class="checklist-question">Can you correct “So he failed” to a formal version?</li>
+                <li class="checklist-question">Can you describe a contrast using “whereas”?</li>
+                <li class="checklist-question">Can you translate “그녀는 피곤했지만 계속 일했다”?</li>
+                <li class="checklist-question">Can you use “for example” in a food-related sentence?</li>
+                <li class="checklist-question">Can you write a short story using linking devices?</li>
+                <li class="checklist-question">Can you explain how linking improves clarity?</li>
+                <li class="checklist-question">Can you use linking devices naturally in conversation?</li>
+                <li class="checklist-question">Can you describe a result using “as a result”?</li>
+                <li class="checklist-question">Can you teach someone how to use “to sum up”?</li>
+                <li class="checklist-question">Can you compare “although” and “even though”?</li>
+                <li class="checklist-question">Can you use linking devices to express emotion and logic?</li>
+                <li class="checklist-question">Can you identify which part of the sentence is the connector?</li>
+                <li class="checklist-question">Can you use linking devices with clarity and fluency?</li>
+            </ol>
+            
+            <h4>다음 단계 학습 가이드</h4>
+            <ul>
+                <li>Review linking device categories and their functions.</li>
+                <li>Practice combining ideas using appropriate connectors.</li>
+                <li>Use linking devices to improve writing structure and flow.</li>
+                <li>Compare with disconnected sentences to understand impact.</li>
+                <li>Record and review your own sentences to improve fluency and clarity.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.getElementById('progress-bar');
+            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+            
+            if (progressBar && checkboxes.length > 0) {
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateProgress);
+                });
+            }
+
+            function updateProgress() {
+                const totalCheckboxes = checkboxes.length;
+                const checkedCheckboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').length;
+                
+                if (totalCheckboxes > 0 && progressBar) {
+                    const progress = (checkedCheckboxes / totalCheckboxes) * 100;
+                    progressBar.style.width = progress + '%';
+                    progressBar.textContent = Math.round(progress) + '%';
+                }
+            }
+
+            const mcqOptions = document.querySelectorAll('.practice .option');
+            const showAnswersBtn = document.querySelector('.submit-btn');
+            const answersBox = document.getElementById('answers');
+
+            if (mcqOptions.length > 0) {
+                mcqOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const parentOptions = this.parentElement.querySelectorAll('.option');
+                        parentOptions.forEach(opt => {
+                            opt.classList.remove('correct', 'incorrect');
+                        });
+
+                        const parentDiv = this.closest('.options');
+                        const correctAnswer = parentDiv.getAttribute('data-correct');
+
+                        if (this.getAttribute('data-value') === correctAnswer) {
+                            this.classList.add('correct');
+                        } else {
+                            this.classList.add('incorrect');
+                        }
+                    });
+                });
+            }
+            
+            if (showAnswersBtn) {
+                showAnswersBtn.addEventListener('click', function() {
+                    answersBox.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
