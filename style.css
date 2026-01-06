@@ -1,48 +1,73 @@
 :root {
     --primary-blue: #1888e4;
     --ai-cyan: #00f2ff;
+    --max-width: 1200px;
 }
 
 body { margin: 0; background: #000; color: #fff; font-family: 'Pretendard', sans-serif; overflow-x: hidden; }
 
-/* Header: 버튼이 잘리지 않도록 패딩 및 정렬 최적화 */
+/* Header 보정: 로그인 버튼 공간 확보 */
 header {
-    position: fixed; top: 0; width: 100%; height: 80px;
+    position: fixed; top: 0; width: 100%; height: 90px;
     background: rgba(0,0,0,0.95); display: flex; 
     justify-content: space-between; align-items: center;
-    padding: 0 40px; z-index: 1000; border-bottom: 1px solid #222;
+    padding: 0 4%; z-index: 1000; border-bottom: 1px solid #222;
 }
 
-.nav-links { list-style: none; display: flex; gap: 15px; align-items: center; }
-.nav-links a { color: #aaa; text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: 0.3s; }
+.nav-links { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
+.nav-links a { color: #aaa; text-decoration: none; font-size: 0.9rem; font-weight: 600; }
 .nav-links a:hover { color: #fff; }
 
-/* LOGIN 버튼 강조 및 잘림 방지 */
+.header-right { flex-shrink: 0; }
 .login-btn { 
     background: var(--primary-blue); color: #fff !important; 
-    padding: 8px 18px; border-radius: 20px; font-weight: 800;
+    padding: 10px 25px; border-radius: 25px; font-weight: 800; text-decoration: none;
+    white-space: nowrap; /* 글자 줄바꿈 방지 */
 }
 
-/* Home Section: 요청에 따라 숫자 문구 삭제 */
-.home-section { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+/* 중앙 정렬 컨테이너 */
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    text-align: center;
+    width: 100%;
+}
+
+/* Home Section */
+.home-section { height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center; }
 .home-section h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px; }
-.welcome-msg { color: var(--ai-cyan); font-weight: 800; letter-spacing: 2px; text-shadow: 0 0 10px rgba(0,242,255,0.5); }
+.welcome-msg { color: var(--ai-cyan); font-weight: 800; letter-spacing: 2px; }
 
-/* Master Insight 섹션 (추가됨) */
-.master-section { padding: 100px 10%; background: #0a0a0a; border-top: 1px solid #222; }
-.insight-archive { background: #111; padding: 40px; border-radius: 20px; border: 1px solid var(--primary-blue); margin-top: 30px; }
-.read-more { color: var(--ai-cyan); text-decoration: none; font-weight: bold; border-bottom: 1px solid var(--ai-cyan); }
+/* Content Sections */
+.content-section { padding: 120px 0; border-bottom: 1px solid #111; scroll-margin-top: 90px; }
+.content-section h2 { font-size: 2.5rem; margin-bottom: 50px; text-align: center; width: 100%; }
 
-/* Common Section */
-.content-section { padding: 100px 10%; border-bottom: 1px solid #111; scroll-margin-top: 80px; }
-.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
-.card { background: #050505; padding: 30px; border-radius: 20px; border: 1px solid #222; }
+/* Programs Card Grid: 중앙 정렬 */
+.card-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 30px; 
+    justify-content: center;
+    margin-top: 40px;
+}
+.card { background: #0a0a0a; padding: 40px; border-radius: 25px; border: 1px solid #222; text-align: center; }
 
-/* Form */
-.contact-form input, .contact-form textarea { width: 100%; padding: 15px; margin-bottom: 10px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; }
-.contact-form button { width: 100%; padding: 15px; background: var(--primary-blue); border: none; color: #fff; font-weight: bold; border-radius: 8px; cursor: pointer; }
+/* Master Insight (내용 읽는 곳) */
+.master-section { padding: 120px 0; background: #050505; }
+.column-body { 
+    background: #111; padding: 60px; border-radius: 30px; 
+    border: 1px solid #222; max-width: 900px; margin: 0 auto; text-align: left; 
+}
+.read-more { color: var(--ai-cyan); font-weight: bold; text-decoration: none; display: inline-block; margin-top: 30px; }
+
+/* Contact Form 중앙 정렬 */
+.contact-box { max-width: 600px; margin: 0 auto; }
+.contact-form input, .contact-form textarea { width: 100%; padding: 15px; margin-bottom: 15px; background: #000; border: 1px solid #333; color: #fff; border-radius: 10px; }
+.contact-form button { width: 100%; padding: 15px; background: var(--primary-blue); border: none; color: #fff; font-weight: bold; border-radius: 10px; cursor: pointer; }
+
+footer { padding: 50px; text-align: center; border-top: 1px solid #111; color: #666; }
 
 /* Mobile */
-@media (max-width: 1024px) {
-    .nav-links { display: none; } /* 모바일에서는 메뉴 숨김 처리 (또는 햄버거 메뉴 필요) */
+@media (max-width: 1100px) {
+    .nav-links { display: none; }
 }
