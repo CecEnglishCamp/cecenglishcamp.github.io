@@ -3,246 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEC EnglishCamp | Classic & Creative</title>
+    <title>CEC EnglishCamp</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <style>
-        :root { 
-            --ai-cyan: #00f2ff; 
-            --bg-dark: #000; 
-            --card-bg: #0a0a0a;
-            --text-gray: #aaa;
-        }
-        
-        * { box-sizing: border-box; }
-        body { 
-            background-color: var(--bg-dark); 
-            color: #fff; 
-            margin: 0; 
-            font-family: 'Pretendard', sans-serif; 
-            overflow-x: hidden; 
-            scroll-behavior: smooth; 
-            line-height: 1.6;
-        }
+        :root { --ai-cyan: #00f2ff; --bg-dark: #000; --card-bg: #0f0f0f; }
+        * { box-sizing: border-box; outline: none; }
+        body { background-color: var(--bg-dark); color: #fff; margin: 0; font-family: 'Pretendard', sans-serif; scroll-behavior: smooth; }
 
-        /* Navigation */
         header {
-            position: fixed; top: 0; width: 100%; height: 90px;
+            position: fixed; top: 0; width: 100%; height: 80px;
             background: rgba(0,0,0,0.95); display: flex; 
             justify-content: space-between; align-items: center;
             padding: 0 5%; z-index: 1000; border-bottom: 1px solid #1a1a1a;
         }
-        .logo-text { font-size: 1.4rem; font-weight: 900; letter-spacing: 1px; color: #fff; text-decoration: none; }
-        .nav-links { display: flex; list-style: none; gap: 25px; }
-        .nav-links a { font-size: 0.9rem; font-weight: 700; color: var(--text-gray); text-decoration: none; transition: 0.3s; }
-        .nav-links a:hover { color: var(--ai-cyan); }
-        .login-btn { border: 1px solid var(--ai-cyan); color: var(--ai-cyan); padding: 8px 20px; border-radius: 30px; font-weight: 800; text-decoration: none; font-size: 0.85rem; transition: 0.3s; }
-        .login-btn:hover { background: var(--ai-cyan); color: #000; }
+        .logo-text { font-size: 1.2rem; font-weight: 900; letter-spacing: 1px; }
 
-        /* Common Section Styles */
-        section { padding: 140px 8% 100px; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid #111; }
-        .section-title { font-size: 3.5rem; font-weight: 900; text-align: center; margin-bottom: 20px; letter-spacing: -1px; }
-        .section-subtitle { text-align: center; color: var(--ai-cyan); margin-bottom: 60px; font-weight: 700; font-size: 1.2rem; }
+        section { padding: 120px 8% 80px; text-align: center; }
+        .section-title { font-size: 3rem; font-weight: 900; margin-bottom: 50px; }
 
-        /* 1. Hero Section */
-        .hero { background: radial-gradient(circle at center, #111 0%, #000 100%); text-align: center; }
-        .main-title { font-size: 5rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
-        .sub-title-en { font-size: 1.8rem; display: block; margin-top: 15px; color: var(--ai-cyan); font-weight: 700; }
-        .paradigm-shift { font-size: 1.4rem; color: #ddd; margin: 40px auto; max-width: 800px; word-break: keep-all; font-weight: 400; border-left: 2px solid var(--ai-cyan); padding-left: 20px; text-align: left; }
-        .hero-desc { font-size: 2rem; font-weight: 800; margin-bottom: 10px; }
-        .cec-define { margin-top: 60px; letter-spacing: 6px; color: rgba(255,255,255,0.2); font-size: 0.9rem; }
-
-        /* 2. Philosophy & Why CEC */
-        .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
-        .why-card { padding: 40px; background: var(--card-bg); border-radius: 25px; border: 1px solid #222; transition: 0.4s; }
-        .why-card:hover { border-color: var(--ai-cyan); transform: translateY(-10px); }
-        .why-card h3 { font-size: 1.6rem; color: #fff; margin-bottom: 20px; }
-        .why-card p { color: var(--text-gray); font-size: 1rem; }
-
-        /* 3. Detailed Curriculum */
-        .camp-container { display: flex; flex-direction: column; gap: 50px; max-width: 1100px; margin: 0 auto; }
-        .camp-card { background: var(--card-bg); border-radius: 30px; border: 1px solid #222; overflow: hidden; text-align: left; }
-        .camp-header { padding: 40px; background: #050505; border-bottom: 1px solid #222; }
-        .camp-tag { color: var(--ai-cyan); font-weight: 800; font-size: 0.9rem; margin-bottom: 10px; display: block; }
-        .camp-body { padding: 40px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; }
-        .flow-box h4, .ai-box h4 { color: #fff; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .day-list { list-style: none; padding: 0; color: var(--text-gray); font-size: 0.95rem; }
-        .day-list li { margin-bottom: 12px; padding-left: 20px; position: relative; }
-        .day-list li::before { content: "→"; position: absolute; left: 0; color: var(--ai-cyan); }
-        .ai-box { background: rgba(0, 242, 255, 0.02); padding: 30px; border-radius: 20px; border: 1px dashed #333; }
-
-        /* 4. Pricing & AI Policy */
-        .policy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 1100px; margin: 0 auto; text-align: left; }
-        .policy-card { background: #070707; padding: 45px; border-radius: 25px; border: 1px solid #222; }
-        .policy-card h3 { font-size: 1.8rem; margin-bottom: 30px; border-left: 5px solid var(--ai-cyan); padding-left: 15px; }
-        .blended-box { background: #000; padding: 25px; border-radius: 15px; border: 1px solid #333; margin-top: 20px; }
-        .blended-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 700; }
-        .blended-row em { color: var(--ai-cyan); font-style: normal; }
-
-        /* 5. Roadmap */
-        .roadmap-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; text-align: left; }
-        .roadmap-card { padding: 30px; background: #0a0a0a; border-radius: 20px; border-top: 4px solid #333; transition: 0.3s; }
-        .roadmap-card.active { border-top-color: var(--ai-cyan); background: rgba(0, 242, 255, 0.05); }
-
-        .cta-btn { display: inline-block; margin-top: 40px; padding: 20px 50px; background: var(--ai-cyan); color: #000; font-weight: 900; text-decoration: none; border-radius: 50px; transition: 0.3s; font-size: 1.1rem; }
-        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 242, 255, 0.4); }
-
-        @media (max-width: 900px) {
-            .main-title { font-size: 3rem; }
-            .camp-body, .policy-grid { grid-template-columns: 1fr; }
+        /* Program 카드 그리드 */
+        .program-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 30px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
         }
+
+        .program-card {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            border-radius: 20px;
+            padding: 40px 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .program-card:hover {
+            border-color: var(--ai-cyan);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.1);
+        }
+
+        .program-card h3 { font-size: 1.8rem; margin-bottom: 10px; color: #fff; }
+        .program-card .level-tag { 
+            display: inline-block; 
+            padding: 5px 15px; 
+            border-radius: 30px; 
+            background: rgba(0, 242, 255, 0.1); 
+            color: var(--ai-cyan); 
+            font-size: 0.9rem; 
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .program-card .short-desc { color: #888; font-size: 1rem; margin-bottom: 20px; }
+
+        /* 클릭 시 나타나는 상세 내용 (숨김 상태) */
+        .detail-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            text-align: left;
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+            margin-top: 0;
+        }
+
+        .program-card.active .detail-content {
+            max-height: 1000px; /* 넉넉하게 설정 */
+            margin-top: 20px;
+            padding: 20px;
+            border-top: 1px solid #333;
+        }
+
+        .detail-content h4 { color: var(--ai-cyan); margin-bottom: 10px; font-size: 1.1rem; }
+        .detail-content ul { list-style: none; padding: 0; color: #ccc; font-size: 0.9rem; }
+        .detail-content li { margin-bottom: 8px; padding-left: 15px; position: relative; }
+        .detail-content li::before { content: "•"; position: absolute; left: 0; color: var(--ai-cyan); }
+
+        /* 로그인 버튼 */
+        .campus-btn {
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            padding: 15px;
+            background: transparent;
+            border: 1px solid var(--ai-cyan);
+            color: var(--ai-cyan);
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 800;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .campus-btn:hover {
+            background: var(--ai-cyan);
+            color: #000;
+        }
+
+        /* 클릭 유도 아이콘 */
+        .click-hint { font-size: 0.8rem; color: #555; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#" class="logo-text">CEC ENGLISH CAMP</a>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#about">Philosophy</a></li>
-                <li><a href="#curriculum">Curriculum</a></li>
-                <li><a href="#policy">Policy</a></li>
-                <li><a href="#vision">Vision</a></li>
-            </ul>
-        </nav>
-        <a href="#" class="login-btn">AI CAMPUS LOGIN</a>
+        <div class="logo-text">CEC ENGLISH CAMP</div>
     </header>
 
-    <section id="home" class="hero">
-        <h1 class="main-title">
-            CEC EnglishCamp
-            <span class="sub-title-en">Classic & Creative English Camp</span>
-        </h1>
-        <div class="paradigm-shift">
-            전통적 영어 교육의 한계를 넘어,<br>
-            문학의 힘으로 영어를 가르치는 <strong>새로운 패러다임</strong>을 제시합니다.
-        </div>
-        <p class="hero-desc">"이야기가 당신의 영어 목소리가 되는 곳"</p>
-        <div class="cec-define">CLASSICS • EXPERIENCE • COMMUNICATION</div>
-        <a href="#curriculum" class="cta-btn">프로그램 자세히 보기</a>
-    </section>
-
-    <section id="about">
-        <h2 class="section-title">Why CEC?</h2>
-        <p class="section-subtitle">우리는 결과가 다른 영어를 약속합니다</p>
-        <div class="why-grid">
-            <div class="why-card">
-                <h3>학습의 혁신</h3>
-                <p>책 한 권으로 문법, 어휘, 작문, 말하기까지 통합 마스터. 맥락 없는 암기가 아닌 이야기 속 습득을 추구합니다.</p>
-            </div>
-            <div class="why-card">
-                <h3>AI 시대의 본질</h3>
-                <p>단순 번역을 넘어 문학을 통해 기계가 대체할 수 없는 진정한 언어 이해력과 비평적 사고를 함양합니다.</p>
-            </div>
-            <div class="why-card">
-                <h3>실전 소통 능력</h3>
-                <p>시험 영어를 넘어, 자신의 생각과 목소리를 세련되게 표현하는 살아있는 영어 소통 능력을 완성합니다.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="curriculum" style="background: #050505;">
+    <section id="programs">
         <h2 class="section-title">Program Details</h2>
-        <div class="camp-container">
-            <div class="camp-card">
-                <div class="camp-header">
-                    <span class="camp-tag">LEVEL A1-A2 | 초급 동화 중심</span>
-                    <h3>Camp A: Fairy Tale Storytellers</h3>
+        <p style="color: #666; margin-bottom: 50px;">카드를 클릭하여 상세 커리큘럼을 확인하세요</p>
+
+        <div class="program-grid">
+            
+            <div class="program-card" onclick="toggleCard(this)">
+                <span class="level-tag">기초반 (A1-A2)</span>
+                <h3>English Camp A</h3>
+                <p class="short-desc">동화로 시작하는 영어 입문</p>
+                
+                <div class="detail-content">
+                    <h4>2주 1작품 마스터</h4>
+                    <ul>
+                        <li>고전 동화 읽기 및 TTS 청취</li>
+                        <li>AI와 함께하는 그림 예측 대화</li>
+                        <li>역할극 녹음 및 발음 피드백</li>
+                    </ul>
+                    <a href="login.html" class="campus-btn">AI 캠퍼스 등록하기</a>
                 </div>
-                <div class="camp-body">
-                    <div class="flow-box">
-                        <h4>2주 1작품 마스터 플랜</h4>
-                        <ul class="day-list">
-                            <li><strong>Week 1 (Input):</strong> 그림 예측, TTS 리딩, AI Q&A 연습</li>
-                            <li><strong>Week 2 (Output):</strong> 역할극 스크립트 작성, AI 발음 피드백, 창의적 엔딩 쓰기</li>
-                        </ul>
-                    </div>
-                    <div class="ai-box">
-                        <h4>🤖 저비용 AI 활용</h4>
-                        <p style="font-size:0.85rem; color:#888;">Vocabulary Doctor, Picture Storyteller, STT 발음 교정 도구 조합</p>
-                    </div>
-                </div>
+                <div class="click-hint">더 보기 ▼</div>
             </div>
-            <div class="camp-card">
-                <div class="camp-header">
-                    <span class="camp-tag">LEVEL B1-B2 | 중급 소설 심화</span>
-                    <h3>Camp B: Novel Navigators</h3>
+
+            <div class="program-card" onclick="toggleCard(this)">
+                <span class="level-tag">중급반 (B1-B2)</span>
+                <h3>English Camp B</h3>
+                <p class="short-desc">고전 소설 심화 및 토론</p>
+                
+                <div class="detail-content">
+                    <h4>4주 1모듈 심화</h4>
+                    <ul>
+                        <li>소설 분석 및 인물 관계도 작성</li>
+                        <li>AI Debate Coach와 1:1 찬반 토론</li>
+                        <li>비평 에세이 작성 및 표현 개선</li>
+                    </ul>
+                    <a href="login.html" class="campus-btn">AI 캠퍼스 등록하기</a>
                 </div>
-                <div class="camp-body">
-                    <div class="flow-box">
-                        <h4>4주 1모듈 심화 플랜</h4>
-                        <ul class="day-list">
-                            <li><strong>Week 1-2:</strong> 인물 관계도 분석, AI Debate Coach와 찬반 토론</li>
-                            <li><strong>Week 3-4:</strong> 200단어 분석 에세이, AI Hook 제안을 통한 북토크 제작</li>
-                        </ul>
-                    </div>
-                    <div class="ai-box">
-                        <h4>🤖 중급 AI 활용</h4>
-                        <p style="font-size:0.85rem; color:#888;">Level-Locked Feedback, 자동 받아쓰기 생성, AI 강점/개선점 리포트</p>
-                    </div>
-                </div>
+                <div class="click-hint">더 보기 ▼</div>
             </div>
-            <div class="camp-card">
-                <div class="camp-header">
-                    <span class="camp-tag">ADULT | 실전 생활 회화</span>
-                    <h3>Camp C: Classic Conversationalists</h3>
+
+            <div class="program-card" onclick="toggleCard(this)">
+                <span class="level-tag">성인반 (기초/실전)</span>
+                <h3>English Camp C</h3>
+                <p class="short-desc">생활 회화 및 비즈니스</p>
+                
+                <div class="detail-content">
+                    <h4>실전 커뮤니케이션</h4>
+                    <ul>
+                        <li>문법의 맥락화 연습 (패턴 드릴)</li>
+                        <li>상황별 AI 역할극 시뮬레이션</li>
+                        <li>실전 이메일 및 메신저 영어</li>
+                    </ul>
+                    <a href="login.html" class="campus-btn">AI 캠퍼스 등록하기</a>
                 </div>
-                <div class="camp-body">
-                    <div class="flow-box">
-                        <h4>성인 맞춤형 실전 플랜</h4>
-                        <ul class="day-list">
-                            <li><strong>Basic:</strong> 필수 문장 구조 및 패턴 연습, AI 번역 훈련</li>
-                            <li><strong>Advanced:</strong> AI 비즈니스 역할극 시뮬레이션, 실전 이메일 작성</li>
-                        </ul>
-                    </div>
-                    <div class="ai-box">
-                        <h4>🤖 성인 맞춤 AI 활용</h4>
-                        <p style="font-size:0.85rem; color:#888;">Roleplay Simulator, Pattern Drills, Real-world Task 변환</p>
-                    </div>
-                </div>
+                <div class="click-hint">더 보기 ▼</div>
             </div>
+
         </div>
     </section>
 
-    <section id="policy">
-        <h2 class="section-title">Smart Policy</h2>
-        <div class="policy-grid">
-            <div class="policy-card">
-                <h3>Low-Cost AI 원칙</h3>
-                <p style="color:var(--text-gray); margin-bottom:20px;">범용 LLM(ChatGPT 등)을 영리하게 조합하여 교육 비용을 혁신적으로 낮췄습니다.</p>
-                <ul class="day-list">
-                    <li>Input Scaffold: 어휘 설명 및 문장 재구성</li>
-                    <li>Practice Partner: 실전 롤플레이 및 Q&A</li>
-                    <li>Feedback: 문법 및 단어 선택 정밀 교정</li>
-                </ul>
-            </div>
-            <div class="policy-card" style="border-color: var(--ai-cyan);">
-                <h3>Blended Structure</h3>
-                <div class="blended-box">
-                    <div class="blended-row"><span>핵심 수업</span><em>주 2-3회 (90분)</em></div>
-                    <p style="font-size:0.85rem; color:#666; margin-bottom:15px;">토론, 역할극 등 고도의 상호작용</p>
-                    <div class="blended-row"><span>AI 개인 연습</span><em>매일 (15-30분)</em></div>
-                    <p style="font-size:0.85rem; color:#666;">개별 피드백 및 자율 회화 훈련</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="vision">
-        <h2 class="section-title">CEC Roadmap</h2>
-        <div class="roadmap-grid">
-            <div class="roadmap-card active"><h4>STEP 01</h4><h3>CEC Camp</h3><p>레벨별 문학 프로그램</p></div>
-            <div class="roadmap-card"><h4>STEP 02</h4><h3>StoryHub</h3><p>온라인 통합 플랫폼</p></div>
-            <div class="roadmap-card"><h4>STEP 03</h4><h3>Literary Lab</h3><p>작문/번역 특화 연구</p></div>
-            <div class="roadmap-card"><h4>STEP 04</h4><h3>Publishing</h3><p>학생 작품집 정식 출판</p></div>
-        </div>
-        <div style="text-align: center; margin-top: 60px;">
-            <a href="mailto:contact@cec.com" class="cta-btn">지금 바로 상담 시작하기</a>
-        </div>
-    </section>
-
-    <footer style="text-align: center; padding: 40px; color: #444; font-size: 0.8rem; border-top: 1px solid #111;">
-        &copy; 2026 CEC EnglishCamp. Classics, Experience, Communication.
-    </footer>
+    <script>
+        function toggleCard(card) {
+            // 다른 카드가 열려있으면 닫기 (선택 사항)
+            document.querySelectorAll('.program-card').forEach(c => {
+                if (c !== card) c.classList.remove('active');
+            });
+            // 클릭한 카드 토글
+            card.classList.toggle('active');
+        }
+    </script>
 
 </body>
 </html>
