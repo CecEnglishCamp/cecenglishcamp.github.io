@@ -3,26 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEC EnglishCamp | Classic & Creative</title>
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <title>CEC EnglishCamp | Join the Future</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <style>
         :root { 
             --ai-cyan: #00f2ff; 
+            --camp-a: #ff4d4d; /* 기초반: 레드/오렌지 계열 */
+            --camp-b: #ffcc00; /* 중급반: 골드/옐로우 계열 */
+            --camp-c: #00ff88; /* 성인반: 에메랄드 계열 */
             --bg-dark: #000; 
             --card-bg: #0f0f0f;
-            --text-gray: #aaa;
         }
         
         * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; } /* 부드러운 스크롤 효과 */
-        body { 
-            background-color: var(--bg-dark); 
-            color: #fff; 
-            margin: 0; 
-            font-family: 'Pretendard', sans-serif; 
-            overflow-x: hidden; 
-            line-height: 1.6;
-        }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg-dark); color: #fff; margin: 0; font-family: 'Pretendard', sans-serif; line-height: 1.6; }
 
         /* Navigation */
         header {
@@ -31,154 +26,119 @@
             justify-content: space-between; align-items: center;
             padding: 0 5%; z-index: 1000; border-bottom: 1px solid #1a1a1a;
         }
-        .logo-text { font-size: 1.4rem; font-weight: 900; letter-spacing: 1px; color: #fff; text-decoration: none; }
-        
-        .nav-menu { display: flex; gap: 25px; list-style: none; margin: 0; padding: 0; }
-        .nav-menu a { 
-            color: var(--text-gray); 
-            text-decoration: none; 
-            font-size: 0.95rem; 
-            font-weight: 700; 
-            transition: 0.3s;
-            padding: 10px 15px;
-        }
+        .logo-text { font-size: 1.4rem; font-weight: 900; color: #fff; text-decoration: none; }
+        .nav-menu { display: flex; gap: 20px; list-style: none; }
+        .nav-menu a { color: #aaa; text-decoration: none; font-weight: 700; transition: 0.3s; }
         .nav-menu a:hover { color: var(--ai-cyan); }
 
-        .login-btn-top { 
-            border: 1px solid var(--ai-cyan); 
-            color: var(--ai-cyan); 
-            padding: 10px 25px; 
-            border-radius: 30px; 
-            font-weight: 800; 
-            text-decoration: none; 
-            font-size: 0.85rem; 
-            transition: 0.3s; 
-        }
-        .login-btn-top:hover { background: var(--ai-cyan); color: #000; }
-
-        /* Section Common */
+        /* Hero & Sections */
         section { padding: 140px 8% 100px; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
         .section-title { font-size: 3rem; font-weight: 900; text-align: center; margin-bottom: 50px; }
 
-        /* Hero (Home) */
-        .hero { background: radial-gradient(circle at center, #111 0%, #000 100%); text-align: center; }
-        .main-title { font-size: 4.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 20px; }
-        .sub-title-en { font-size: 1.6rem; display: block; margin-top: 15px; color: var(--ai-cyan); font-weight: 700; }
-
-        /* About (Philosophy) */
-        .principles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
-        .principle-card { padding: 40px; background: var(--card-bg); border-radius: 25px; border: 1px solid #222; }
-        .principle-card h3 { font-size: 1.6rem; color: var(--ai-cyan); margin-bottom: 20px; }
-
-        /* Programs */
-        .program-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
-        .program-card { background: var(--card-bg); border: 1px solid #222; border-radius: 25px; padding: 50px 35px; cursor: pointer; transition: 0.4s; text-align: center; }
-        .program-card:hover { border-color: var(--ai-cyan); transform: translateY(-10px); }
-        .level-tag { display: inline-block; padding: 6px 18px; border-radius: 30px; background: rgba(0, 242, 255, 0.1); color: var(--ai-cyan); font-size: 0.9rem; font-weight: 800; margin-bottom: 20px; }
+        /* Program Cards with Colors */
+        .program-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .program-card { background: var(--card-bg); border: 2px solid #222; border-radius: 25px; padding: 40px; cursor: pointer; transition: 0.4s; text-align: center; }
         
-        .detail-content { max-height: 0; overflow: hidden; transition: 0.5s; text-align: left; opacity: 0; }
-        .program-card.active .detail-content { max-height: 1000px; opacity: 1; margin-top: 30px; padding-top: 30px; border-top: 1px solid #222; }
-        
-        .campus-btn { display: block; width: 100%; padding: 16px; background: transparent; border: 1px solid var(--ai-cyan); color: var(--ai-cyan); text-decoration: none; border-radius: 12px; font-weight: 900; text-align: center; margin-top: 20px; }
-        .campus-btn:hover { background: var(--ai-cyan); color: #000; }
+        /* 캠프별 테두리 및 호버 효과 */
+        .card-a:hover { border-color: var(--camp-a); box-shadow: 0 0 20px rgba(255, 77, 77, 0.2); }
+        .card-b:hover { border-color: var(--camp-b); box-shadow: 0 0 20px rgba(255, 204, 0, 0.2); }
+        .card-c:hover { border-color: var(--camp-c); box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); }
 
-        /* Footer (Contact) */
-        footer { 
-            text-align: center; padding: 100px 8%; background: #050505; border-top: 1px solid #111; 
+        .level-tag { display: inline-block; padding: 6px 18px; border-radius: 30px; font-size: 0.9rem; font-weight: 800; margin-bottom: 20px; }
+        .tag-a { background: rgba(255, 77, 77, 0.1); color: var(--camp-a); }
+        .tag-b { background: rgba(255, 204, 0, 0.1); color: var(--camp-b); }
+        .tag-c { background: rgba(0, 255, 136, 0.1); color: var(--camp-c); }
+
+        /* Open WebUI Buttons */
+        .open-ui-btn { 
+            display: block; width: 100%; padding: 15px; border-radius: 12px; 
+            text-decoration: none; font-weight: 900; margin-top: 20px; transition: 0.3s;
         }
-        .contact-info { margin-top: 30px; color: var(--text-gray); }
-        .contact-info p { margin: 10px 0; font-size: 1.1rem; }
+        .btn-a { border: 1px solid var(--camp-a); color: var(--camp-a); }
+        .btn-a:hover { background: var(--camp-a); color: #000; }
+        .btn-b { border: 1px solid var(--camp-b); color: var(--camp-b); }
+        .btn-b:hover { background: var(--camp-b); color: #000; }
+        .btn-c { border: 1px solid var(--camp-c); color: var(--camp-c); }
+        .btn-c:hover { background: var(--camp-c); color: #000; }
+
+        /* Registration Form UI */
+        .form-container { 
+            background: #111; padding: 50px; border-radius: 30px; border: 1px solid #222;
+            max-width: 600px; margin: 0 auto;
+        }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 700; color: var(--ai-cyan); }
+        .form-group input, .form-group select { 
+            width: 100%; padding: 12px; background: #000; border: 1px solid #333; 
+            color: #fff; border-radius: 8px; font-family: inherit;
+        }
+        .submit-btn { 
+            width: 100%; padding: 16px; background: var(--ai-cyan); color: #000; 
+            border: none; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 1.1rem;
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#home" class="logo-text">CEC ENGLISH CAMP</a>
-        <nav>
-            <ul class="nav-menu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li> <li><a href="#programs">Programs</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-        <a href="login.html" class="login-btn-top">AI CAMPUS LOGIN</a>
+        <a href="#home" class="logo-text">CEC CAMP</a>
+        <nav><ul class="nav-menu">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#register">Register</a></li>
+            <li><a href="#programs">Programs</a></li>
+        </ul></nav>
+        <a href="#register" class="login-btn-top">JOIN NOW</a>
     </header>
 
-    <section id="home" class="hero">
-        <h1 class="main-title">
-            CEC EnglishCamp
-            <span class="sub-title-en">Classic & Creative English Camp</span>
-        </h1>
-        <p style="font-size: 1.5rem; color: #ddd; max-width: 700px; margin: 40px auto;">이야기가 당신의 영어 목소리가 되는 곳,<br>CEC 캠프에 오신 것을 환영합니다.</p>
+    <section id="home" style="text-align: center;">
+        <h1 style="font-size: 4rem; margin-bottom: 10px;">CEC EnglishCamp</h1>
+        <p style="font-size: 1.5rem; color: var(--ai-cyan);">Classic Literature x AI Innovation</p>
     </section>
 
-    <section id="about">
-        <h2 class="section-title">CEC Philosophy</h2>
-        <div class="principles-grid">
-            <div class="principle-card">
-                <h3>혁신적 통합 학습</h3>
-                <p>문학 작품 속 맥락을 통해 문법과 회화를 자연스럽게 체득하는 통합 솔루션을 제공합니다.</p>
-            </div>
-            <div class="principle-card">
-                <h3>저비용 고효율 AI</h3>
-                <p>최신 범용 AI 도구들을 최적의 방식으로 조합하여 교육비 부담을 낮추고 학습 효과는 극대화합니다.</p>
-            </div>
-            <div class="principle-card">
-                <h3>개인별 맞춤 케어</h3>
-                <p>AI가 실시간 피드백을 주고, 전문 튜터가 방향성을 잡아주는 완벽한 블렌디드 시스템입니다.</p>
-            </div>
+    <section id="register">
+        <h2 class="section-title">Student Registration</h2>
+        <div class="form-container">
+            <form action="#">
+                <div class="form-group"><label>이름</label><input type="text" placeholder="성함을 입력하세요" required></div>
+                <div class="form-group"><label>주소</label><input type="text" placeholder="현재 거주 주소를 입력하세요"></div>
+                <div class="form-group"><label>전화번호</label><input type="tel" placeholder="010-0000-0000"></div>
+                <div class="form-group">
+                    <label>학생 구분</label>
+                    <select>
+                        <option>초등학생</option>
+                        <option>중학생</option>
+                        <option>고등학생</option>
+                        <option>성인</option>
+                    </select>
+                </div>
+                <button type="button" class="submit-btn" onclick="alert('정보가 저장되었습니다. 캠프를 선택해주세요!')">정보 저장하기</button>
+            </form>
         </div>
     </section>
 
     <section id="programs" style="background: #050505;">
-        <h2 class="section-title">Program Details</h2>
+        <h2 class="section-title">Select Your Camp</h2>
         <div class="program-grid">
-            <div class="program-card" onclick="toggleCard(this)">
-                <span class="level-tag">기초반 (A1-A2)</span>
+            <div class="program-card card-a">
+                <span class="level-tag tag-a">기초반</span>
                 <h3>Camp A</h3>
-                <p>동화로 시작하는 입문 영어</p>
-                <div class="detail-content">
-                    <p>• 고전 동화 리딩 & TTS 훈련<br>• AI 역할극 시뮬레이션</p>
-                    <a href="login.html" class="campus-btn">CAMP A 입장하기</a>
-                </div>
+                <p>문학의 첫걸음, AI와 함께하는 동화 세계</p>
+                <a href="https://your-open-webui-url.com/camp-a" class="open-ui-btn btn-a">CAMP A OPEN WEBUI 입장</a>
             </div>
-            <div class="program-card" onclick="toggleCard(this)">
-                <span class="level-tag">중급반 (B1-B2)</span>
+            <div class="program-card card-b">
+                <span class="level-tag tag-b">중급반</span>
                 <h3>Camp B</h3>
-                <p>소설 분석 및 심화 토론</p>
-                <div class="detail-content">
-                    <p>• 소설 구조 분석 & 에세이<br>• AI Debate Coach와 토론</p>
-                    <a href="login.html" class="campus-btn">CAMP B 입장하기</a>
-                </div>
+                <p>깊이 있는 소설 분석과 AI 토론의 만남</p>
+                <a href="https://your-open-webui-url.com/camp-b" class="open-ui-btn btn-b">CAMP B OPEN WEBUI 입장</a>
             </div>
-            <div class="program-card" onclick="toggleCard(this)">
-                <span class="level-tag">성인반 (기초/실전)</span>
+            <div class="program-card card-c">
+                <span class="level-tag tag-c">성인반</span>
                 <h3>Camp C</h3>
-                <p>실전 회화 및 비즈니스</p>
-                <div class="detail-content">
-                    <p>• 상황별 실전 회화 드릴<br>• AI 비즈니스 커뮤니케이션</p>
-                    <a href="login.html" class="campus-btn">CAMP C 입장하기</a>
-                </div>
+                <p>실전 비즈니스와 AI 롤플레이 마스터</p>
+                <a href="https://your-open-webui-url.com/camp-c" class="open-ui-btn btn-c">CAMP C OPEN WEBUI 입장</a>
             </div>
         </div>
     </section>
 
-    <footer id="contact">
-        <h2 class="section-title" style="margin-bottom: 20px;">Contact Us</h2>
-        <div class="contact-info">
-            <p>📧 이메일: contact@cecenglish.com</p>
-            <p>📞 상담문의: 02-1234-5678</p>
-            <p>📍 위치: 서울특별시 강남구 AI 테크 센터 4F</p>
-        </div>
-        <p style="margin-top: 60px; color: #333; font-size: 0.8rem;">&copy; 2026 CEC ENGLISH CAMP. All Rights Reserved.</p>
-    </footer>
-
-    <script>
-        function toggleCard(card) {
-            const isActive = card.classList.contains('active');
-            document.querySelectorAll('.program-card').forEach(c => c.classList.remove('active'));
-            if (!isActive) card.classList.add('active');
-        }
-    </script>
 </body>
 </html>
