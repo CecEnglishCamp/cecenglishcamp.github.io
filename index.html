@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEC EnglishCamp | Join the Future</title>
+    <title>CEC EnglishCamp | Classic & Creative</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <style>
         :root { 
             --ai-cyan: #00f2ff; 
-            --camp-a: #ff4d4d; /* 기초반: 레드/오렌지 계열 */
-            --camp-b: #ffcc00; /* 중급반: 골드/옐로우 계열 */
-            --camp-c: #00ff88; /* 성인반: 에메랄드 계열 */
+            --camp-yellow: #f1c40f; /* 기초반: 병아리 노란색 */
+            --camp-green: #2ecc71;  /* 중급반: 초록색 */
+            --camp-adult: #00f2ff;  /* 성인반: 기존 시안 유지 */
             --bg-dark: #000; 
             --card-bg: #0f0f0f;
         }
@@ -19,7 +19,7 @@
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg-dark); color: #fff; margin: 0; font-family: 'Pretendard', sans-serif; line-height: 1.6; }
 
-        /* Navigation */
+        /* Navigation - JOIN NOW 버튼 시인성 개선 */
         header {
             position: fixed; top: 0; width: 100%; height: 90px;
             background: rgba(0,0,0,0.95); display: flex; 
@@ -27,80 +27,93 @@
             padding: 0 5%; z-index: 1000; border-bottom: 1px solid #1a1a1a;
         }
         .logo-text { font-size: 1.4rem; font-weight: 900; color: #fff; text-decoration: none; }
-        .nav-menu { display: flex; gap: 20px; list-style: none; }
-        .nav-menu a { color: #aaa; text-decoration: none; font-weight: 700; transition: 0.3s; }
+        
+        .nav-menu { display: flex; gap: 30px; list-style: none; margin: 0; padding: 0; align-items: center; }
+        .nav-menu a { color: #fff; text-decoration: none; font-size: 1rem; font-weight: 700; transition: 0.3s; }
         .nav-menu a:hover { color: var(--ai-cyan); }
 
-        /* Hero & Sections */
+        /* JOIN NOW를 상단 메뉴와 같은 톤으로 맞추거나, 강조된 버튼 형태로 변경 */
+        .join-now-btn { 
+            color: var(--ai-cyan) !important; 
+            border: 1.5px solid var(--ai-cyan); 
+            padding: 8px 20px; 
+            border-radius: 20px; 
+            font-size: 0.9rem !important;
+        }
+        .join-now-btn:hover { background: var(--ai-cyan); color: #000 !important; }
+
+        /* Sections */
         section { padding: 140px 8% 100px; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
-        .section-title { font-size: 3rem; font-weight: 900; text-align: center; margin-bottom: 50px; }
+        .section-title { font-size: 3.5rem; font-weight: 900; text-align: center; margin-bottom: 50px; }
 
-        /* Program Cards with Colors */
-        .program-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-        .program-card { background: var(--card-bg); border: 2px solid #222; border-radius: 25px; padding: 40px; cursor: pointer; transition: 0.4s; text-align: center; }
-        
-        /* 캠프별 테두리 및 호버 효과 */
-        .card-a:hover { border-color: var(--camp-a); box-shadow: 0 0 20px rgba(255, 77, 77, 0.2); }
-        .card-b:hover { border-color: var(--camp-b); box-shadow: 0 0 20px rgba(255, 204, 0, 0.2); }
-        .card-c:hover { border-color: var(--camp-c); box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); }
-
-        .level-tag { display: inline-block; padding: 6px 18px; border-radius: 30px; font-size: 0.9rem; font-weight: 800; margin-bottom: 20px; }
-        .tag-a { background: rgba(255, 77, 77, 0.1); color: var(--camp-a); }
-        .tag-b { background: rgba(255, 204, 0, 0.1); color: var(--camp-b); }
-        .tag-c { background: rgba(0, 255, 136, 0.1); color: var(--camp-c); }
-
-        /* Open WebUI Buttons */
-        .open-ui-btn { 
-            display: block; width: 100%; padding: 15px; border-radius: 12px; 
-            text-decoration: none; font-weight: 900; margin-top: 20px; transition: 0.3s;
-        }
-        .btn-a { border: 1px solid var(--camp-a); color: var(--camp-a); }
-        .btn-a:hover { background: var(--camp-a); color: #000; }
-        .btn-b { border: 1px solid var(--camp-b); color: var(--camp-b); }
-        .btn-b:hover { background: var(--camp-b); color: #000; }
-        .btn-c { border: 1px solid var(--camp-c); color: var(--camp-c); }
-        .btn-c:hover { background: var(--camp-c); color: #000; }
-
-        /* Registration Form UI */
+        /* Registration Form */
         .form-container { 
-            background: #111; padding: 50px; border-radius: 30px; border: 1px solid #222;
-            max-width: 600px; margin: 0 auto;
+            background: #111; padding: 40px; border-radius: 25px; border: 1px solid #222;
+            max-width: 500px; margin: 0 auto;
         }
-        .form-group { margin-bottom: 20px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 700; color: var(--ai-cyan); }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; color: var(--ai-cyan); font-weight: 700; }
         .form-group input, .form-group select { 
             width: 100%; padding: 12px; background: #000; border: 1px solid #333; 
             color: #fff; border-radius: 8px; font-family: inherit;
         }
-        .submit-btn { 
-            width: 100%; padding: 16px; background: var(--ai-cyan); color: #000; 
-            border: none; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 1.1rem;
+        .save-btn { 
+            width: 100%; padding: 15px; background: var(--ai-cyan); color: #000; 
+            border: none; border-radius: 10px; font-weight: 900; cursor: pointer; margin-top: 10px;
         }
+
+        /* Program Cards - 색상 변경 반영 */
+        .program-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .program-card { background: var(--card-bg); border: 1.5px solid #222; border-radius: 25px; padding: 40px; cursor: pointer; transition: 0.4s; text-align: center; }
+        
+        /* 캠프별 호버 컬러 및 태그 색상 */
+        .card-a:hover { border-color: var(--camp-yellow); box-shadow: 0 0 20px rgba(241, 196, 15, 0.15); }
+        .card-b:hover { border-color: var(--camp-green); box-shadow: 0 0 20px rgba(46, 204, 113, 0.15); }
+        .card-c:hover { border-color: var(--camp-adult); box-shadow: 0 0 20px rgba(0, 242, 255, 0.15); }
+
+        .level-tag { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 800; margin-bottom: 15px; }
+        .tag-a { background: rgba(241, 196, 15, 0.15); color: var(--camp-yellow); }
+        .tag-b { background: rgba(46, 204, 113, 0.15); color: var(--camp-green); }
+        .tag-c { background: rgba(0, 242, 255, 0.15); color: var(--camp-adult); }
+
+        /* Open WebUI Buttons */
+        .open-ui-btn { 
+            display: block; width: 100%; padding: 14px; border-radius: 10px; 
+            text-decoration: none; font-weight: 900; margin-top: 15px; transition: 0.3s; font-size: 0.9rem;
+        }
+        .btn-a { border: 1px solid var(--camp-yellow); color: var(--camp-yellow); }
+        .btn-a:hover { background: var(--camp-yellow); color: #000; }
+        .btn-b { border: 1px solid var(--camp-green); color: var(--camp-green); }
+        .btn-b:hover { background: var(--camp-green); color: #000; }
+        .btn-c { border: 1px solid var(--camp-adult); color: var(--camp-adult); }
+        .btn-c:hover { background: var(--camp-adult); color: #000; }
     </style>
 </head>
 <body>
 
     <header>
         <a href="#home" class="logo-text">CEC CAMP</a>
-        <nav><ul class="nav-menu">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#register">Register</a></li>
-            <li><a href="#programs">Programs</a></li>
-        </ul></nav>
-        <a href="#register" class="login-btn-top">JOIN NOW</a>
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#register">Register</a></li>
+                <li><a href="#programs">Programs</a></li>
+                <li><a href="#register" class="join-now-btn">JOIN NOW</a></li>
+            </ul>
+        </nav>
     </header>
 
     <section id="home" style="text-align: center;">
-        <h1 style="font-size: 4rem; margin-bottom: 10px;">CEC EnglishCamp</h1>
-        <p style="font-size: 1.5rem; color: var(--ai-cyan);">Classic Literature x AI Innovation</p>
+        <h1 style="font-size: 4.5rem; margin-bottom: 10px;">CEC EnglishCamp</h1>
+        <p style="font-size: 1.4rem; color: var(--ai-cyan); letter-spacing: 2px;">Classic Literature x AI Innovation</p>
     </section>
 
     <section id="register">
         <h2 class="section-title">Student Registration</h2>
         <div class="form-container">
-            <form action="#">
-                <div class="form-group"><label>이름</label><input type="text" placeholder="성함을 입력하세요" required></div>
-                <div class="form-group"><label>주소</label><input type="text" placeholder="현재 거주 주소를 입력하세요"></div>
+            <form>
+                <div class="form-group"><label>이름</label><input type="text" placeholder="성함을 입력하세요"></div>
+                <div class="form-group"><label>주소</label><input type="text" placeholder="거주 주소"></div>
                 <div class="form-group"><label>전화번호</label><input type="tel" placeholder="010-0000-0000"></div>
                 <div class="form-group">
                     <label>학생 구분</label>
@@ -111,7 +124,7 @@
                         <option>성인</option>
                     </select>
                 </div>
-                <button type="button" class="submit-btn" onclick="alert('정보가 저장되었습니다. 캠프를 선택해주세요!')">정보 저장하기</button>
+                <button type="button" class="save-btn" onclick="alert('정보가 저장되었습니다!')">정보 저장하기</button>
             </form>
         </div>
     </section>
@@ -120,19 +133,19 @@
         <h2 class="section-title">Select Your Camp</h2>
         <div class="program-grid">
             <div class="program-card card-a">
-                <span class="level-tag tag-a">기초반</span>
+                <span class="level-tag tag-a">기초반 (초등)</span>
                 <h3>Camp A</h3>
                 <p>문학의 첫걸음, AI와 함께하는 동화 세계</p>
                 <a href="https://your-open-webui-url.com/camp-a" class="open-ui-btn btn-a">CAMP A OPEN WEBUI 입장</a>
             </div>
             <div class="program-card card-b">
-                <span class="level-tag tag-b">중급반</span>
+                <span class="level-tag tag-b">중급반 (중/고등)</span>
                 <h3>Camp B</h3>
                 <p>깊이 있는 소설 분석과 AI 토론의 만남</p>
                 <a href="https://your-open-webui-url.com/camp-b" class="open-ui-btn btn-b">CAMP B OPEN WEBUI 입장</a>
             </div>
             <div class="program-card card-c">
-                <span class="level-tag tag-c">성인반</span>
+                <span class="level-tag tag-c">성인반 (실전)</span>
                 <h3>Camp C</h3>
                 <p>실전 비즈니스와 AI 롤플레이 마스터</p>
                 <a href="https://your-open-webui-url.com/camp-c" class="open-ui-btn btn-c">CAMP C OPEN WEBUI 입장</a>
