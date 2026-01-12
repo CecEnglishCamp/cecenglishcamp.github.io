@@ -7,7 +7,8 @@
   <link rel="stylesheet" href="style.css" />
   <style>
     html { scroll-behavior: smooth; }
-    /* 로그인 및 AI 메뉴 스타일 */
+    
+    /* 기존 레이아웃을 해치지 않는 AI 메뉴 스타일 */
     .nav-links .login-btn {
       background-color: #1888e4;
       color: white !important;
@@ -15,23 +16,27 @@
       border-radius: 25px;
       font-weight: bold;
       transition: background 0.3s;
-    }
-    .nav-links .login-btn:hover {
-      background-color: #1471bd;
+      margin-left: 10px;
     }
     
-    /* AI Study Tools 드롭다운 스타일 */
+    /* 드롭다운 메뉴 디자인 (기존 메뉴와 높이 정렬) */
     .dropdown { position: relative; display: inline-block; }
+    .ai-toggle { 
+      color: #ffcc00 !important; 
+      font-weight: bold !important; 
+      cursor: pointer;
+      padding: 0 10px;
+    }
     .dropdown-content {
       display: none;
       position: absolute;
       background-color: #ffffff;
-      min-width: 220px;
-      box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
-      z-index: 1000;
-      border-radius: 10px;
-      overflow: hidden;
+      min-width: 200px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 9999; /* 다른 요소보다 위에 보이도록 */
+      border-radius: 8px;
       top: 100%;
+      left: 0;
     }
     .dropdown-content a {
       color: #333 !important;
@@ -39,12 +44,11 @@
       text-decoration: none;
       display: block;
       font-size: 0.9rem;
-      border-bottom: 1px solid #f0f0f0;
-      text-align: left;
+      border-bottom: 1px solid #eee;
+      text-align: left !important; /* 글자 왼쪽 정렬 */
     }
-    .dropdown-content a:hover { background-color: #f8f9fa; color: #1888e4 !important; }
+    .dropdown-content a:hover { background-color: #f1f1f1; }
     .dropdown:hover .dropdown-content { display: block; }
-    .ai-toggle { color: #ffcc00 !important; font-weight: bold !important; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -57,16 +61,18 @@
       <button class="nav-toggle" aria-label="Toggle navigation" onclick="toggleNav()">☰</button>
       <ul class="nav-links">
         <li><a href="#home">Home</a></li>
-        <li class="dropdown">
-          <a class="ai-toggle">✨ AI Study Tools</a>
-          <div class="dropdown-content">
-            <a href="https://cecenglishcamp.github.io/B_Camp/GrammarBaseCamp/">📚 Digital Library (Data)</a>
-            <a href="https://notebooklm.google.com/" target="_blank">🎧 AI Podcast (NotebookLM)</a>
-            <a href="#" target="_blank">💬 AI Tutor (Open WebUI)</a>
-          </div>
-        </li>
         <li><a href="#about">About</a></li>
         <li><a href="#programs">Program</a></li>
+        
+        <li class="dropdown">
+          <a class="ai-toggle">AI Tools ▼</a>
+          <div class="dropdown-content">
+            <a href="https://cecenglishcamp.github.io/B_Camp/GrammarBaseCamp/">📚 Digital Library</a>
+            <a href="https://notebooklm.google.com/" target="_blank">🎧 NotebookLM</a>
+            <a href="#" target="_blank">💬 AI Tutor</a>
+          </div>
+        </li>
+
         <li><a href="#howitworks">How it works</a></li>
         <li><a href="#episodes">Episode</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -82,16 +88,14 @@
           <span class="main-title-line">Welcome to</span>
           <span class="main-title-line">CEC English Camp</span>
         </h1>
-        <p class="intro" style="margin-top: 40px;">
-          <strong>Experience the Future of Learning:</strong><br>
-          We integrate <strong>GitHub</strong> data, <strong>NotebookLM</strong> voice synthesis, <br>
-          and <strong>Open WebUI</strong> interactive AI tutoring for an immersive experience.
+        <p class="intro" style="margin-top: 60px;">
+          Empowering young learners through immersive English learning experiences in a fun and dynamic camp environment.
         </p>
       </div> 
       <div class="main-visual">
         <video src="assets/videos/robo.mp4" autoplay muted loop playsinline></video>
         <div class="highlight scrolling-text">
-          <strong>🔭 Explore ENGLISH through AI Innovation</strong> 🚀 ✨ 🪂 . . .  .   .   .    .     .
+          <strong>🔭 Explore ENGLISH through joy</strong> 🚀 ✨ 🪂 . . .  .   .   .    .     .
         </div> 
       </div>
     </section>
@@ -136,15 +140,6 @@
     function toggleNav() {
       document.querySelector('.nav-links').classList.toggle('open');
     }
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.nav-links a').forEach(function(link) {
-        link.addEventListener('click', function() {
-          if(!link.classList.contains('ai-toggle')) {
-            document.querySelector('.nav-links').classList.remove('open');
-          }
-        });
-      });
-    });
   </script>
 </body>
 </html>
