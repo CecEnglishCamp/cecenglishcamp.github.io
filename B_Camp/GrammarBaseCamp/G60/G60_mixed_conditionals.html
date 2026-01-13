@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mixed Conditionals - Complete Study Guide (Part 1)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .complete-note {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .complete-note h4 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .complete-note p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .toc {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .toc h3 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .toc-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .toc-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .toc-items {
+            list-style: none;
+        }
+
+        .toc-items li {
+            margin: 5px 0;
+        }
+
+        .toc-items a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .toc-items a:hover {
+            color: #667eea;
+        }
+
+        .concept-card {
+            background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+
+        .concept-card h4 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .concept-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .concept-meaning {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .concept-examples {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .concept-examples p {
+            margin: 8px 0;
+            font-size: 1.05rem;
+        }
+
+        .mixed-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .mixed-card {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .mixed-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .past-present-card {
+            border-left: 5px solid #f97316;
+        }
+
+        .present-past-card {
+            border-left: 5px solid #16a34a;
+        }
+
+        .mixed-title {
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .past-present-title {
+            color: #f97316;
+        }
+
+        .present-past-title {
+            color: #16a34a;
+        }
+
+        .mixed-function {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        .mixed-example {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-style: italic;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .grammar-box {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #84cc16;
+            margin: 20px 0;
+        }
+
+        .grammar-box h4 {
+            color: #84cc16;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .grammar-box ul {
+            list-style: none;
+        }
+
+        .grammar-box li {
+            padding: 8px 0;
+            font-size: 1.05rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .grammar-box li:last-child {
+            border-bottom: none;
+        }
+
+        .grammar-box strong {
+            color: #84cc16;
+        }
+
+        .structure-guide {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+        }
+
+        .structure-guide h4 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .structure-example {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 1.05rem;
+        }
+
+        .type1-example {
+            border-left: 3px solid #f97316;
+            color: #c2410c;
+        }
+
+        .type2-example {
+            border-left: 3px solid #16a34a;
+            color: #166534;
+        }
+
+        .examples-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .examples-box {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        .examples-box.past-present {
+            border-left: 5px solid #f97316;
+        }
+
+        .examples-box.present-past {
+            border-left: 5px solid #16a34a;
+        }
+
+        .examples-box h4 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+
+        .examples-box.past-present h4 {
+            color: #f97316;
+        }
+
+        .examples-box.present-past h4 {
+            color: #16a34a;
+        }
+
+        .examples-box ul {
+            list-style: none;
+        }
+
+        .examples-box li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        .examples-box li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .examples-box.past-present li:before {
+            color: #f97316;
+        }
+
+        .examples-box.present-past li:before {
+            color: #16a34a;
+        }
+
+        .question-examples {
+            background: #e7f3ff;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #0ea5e9;
+            margin: 20px 0;
+        }
+
+        .question-examples h4 {
+            color: #0369a1;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .question-examples ul {
+            list-style: none;
+        }
+
+        .question-examples li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        .question-examples li:before {
+            content: "?";
+            position: absolute;
+            left: 0;
+            color: #0ea5e9;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .dialogue-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .dialogue-box {
+            background: #f0f9ff;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #0284c7;
+        }
+
+        .dialogue-title {
+            font-weight: bold;
+            color: #0369a1;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .dialogue-line {
+            margin: 8px 0;
+            padding-left: 20px;
+            font-size: 1.05rem;
+        }
+
+        .speaker-a {
+            color: #d32f2f;
+            font-weight: 600;
+        }
+
+        .speaker-b {
+            color: #1976d2;
+            font-weight: 600;
+        }
+
+        .combining-container {
+            background: #fefce8;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #eab308;
+            margin: 25px 0;
+        }
+
+        .combining-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .combining-before {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .combining-after {
+            color: #2e7d32;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .next-part-note {
+            background: linear-gradient(135deg, #fce7f3 0%, #f9a8d4 100%);
+            color: #be185d;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .next-part-note h4 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .next-part-note p {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .dialogue-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .mixed-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 25px;
+            }
+
+            .toc-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mixed Conditionals</h1>
+            <p>복합 시제 조건문 완전 정복 가이드 - Part 1</p>
+        </div>
+
+        <div class="complete-note">
+            <h4>🎯 Part 1: 기초 학습 (섹션 1-6)</h4>
+            <p>Mixed Conditionals의 기본 개념부터 문장 결합까지 차근차근 학습하세요!</p>
+        </div>
+
+        <div class="toc">
+            <h3>📚 Part 1 목차</h3>
+            <div class="toc-grid">
+                <div class="toc-section">
+                    <div class="toc-title">🎯 기초 개념</div>
+                    <ul class="toc-items">
+                        <li><a href="#concept">1. 기본 개념</a></li>
+                        <li><a href="#grammar">2. 문법 규칙</a></li>
+                        <li><a href="#examples">3. 예시 문장</a></li>
+                    </ul>
+                </div>
+                <div class="toc-section">
+                    <div class="toc-title">🗣️ 실전 연습</div>
+                    <ul class="toc-items">
+                        <li><a href="#question">4. 의문문</a></li>
+                        <li><a href="#dialogue">5. 상황별 대화</a></li>
+                        <li><a href="#combining">6. 문장 결합</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="concept">
+            <h2>1. 기본 개념 (Basic Concept)</h2>
+            
+            <div class="concept-card">
+                <h4><span class="concept-icon">MIXED</span>MIXED CONDITIONALS</h4>
+                <div class="concept-meaning">조건절과 결과절의 <strong>시제가 서로 다른 조건문</strong><br>실제 상황과 다른 <strong>가정</strong>을 표현함<br>복합적인 시간 관계를 정확하게 표현할 수 있음</div>
+                <div class="concept-examples">
+                    <p><strong>과거→현재:</strong> If I had studied, I would know the answer.</p>
+                    <p><strong>현재→과거:</strong> If I were taller, I would have reached the shelf.</p>
+                </div>
+            </div>
+
+            <div class="mixed-grid">
+                <div class="mixed-card past-present-card">
+                    <div class="mixed-title past-present-title">과거 조건 → 현재 결과</div>
+                    <div class="mixed-function">과거의 행동/결정이 현재에 미치는 영향</div>
+                    <div class="mixed-example">If I had slept well, I would feel better now.</div>
+                </div>
+                
+                <div class="mixed-card present-past-card">
+                    <div class="mixed-title present-past-title">현재 조건 → 과거 결과</div>
+                    <div class="mixed-function">현재의 능력/상황이 과거에 미쳤을 영향</div>
+                    <div class="mixed-example">If I were taller, I would have reached it.</div>
+                </div>
+            </div>
+
+            <div class="structure-guide">
+                <h4>구조 비교 가이드</h4>
+                <div class="structure-example type1-example">Type 1: If + past perfect, would + base verb (과거→현재)</div>
+                <div class="structure-example type2-example">Type 2: If + past simple, would have + past participle (현재→과거)</div>
+            </div>
+        </div>
+
+        <div class="section" id="grammar">
+            <h2>2. 문법 규칙 (Grammar Rules)</h2>
+            
+            <div class="grammar-box">
+                <h4>과거 조건 → 현재 결과</h4>
+                <ul>
+                    <li><strong>구조:</strong> If + past perfect, would + base verb</li>
+                    <li>예시: If I <strong>had studied</strong>, I <strong>would know</strong> the answer.</li>
+                    <li>의미: 과거에 하지 않은 일이 현재에 미치는 영향</li>
+                    <li>감정: 후회, 아쉬움 등을 표현</li>
+                </ul>
+            </div>
+
+            <div class="grammar-box">
+                <h4>현재 조건 → 과거 결과</h4>
+                <ul>
+                    <li><strong>구조:</strong> If + past simple, would have + past participle</li>
+                    <li>예시: If I <strong>were taller</strong>, I <strong>would have reached</strong> the shelf.</li>
+                    <li>의미: 현재의 능력/상황 부족이 과거에 미쳤을 영향</li>
+                    <li>감정: 능력 한계, 상황적 제약 등을 표현</li>
+                </ul>
+            </div>
+
+            <div class="grammar-box">
+                <h4>주요 규칙</h4>
+                <ul>
+                    <li>혼합 조건문은 <strong>시제 일치가 중요</strong></li>
+                    <li>주절과 조건절의 <strong>시간 관계를 정확히 파악</strong>해야 함</li>
+                    <li>조동사: would, could, might 사용 가능</li>
+                    <li>부정형: wouldn't, couldn't, might not</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section" id="examples">
+            <h2>3. 예시 문장 (Example Sentences)</h2>
+            
+            <div class="examples-container">
+                <div class="examples-box past-present">
+                    <h4>과거 조건 → 현재 결과</h4>
+                    <ul>
+                        <li>If I <strong>had slept</strong> well, I <strong>would feel</strong> better now.</li>
+                        <li>If she <strong>had studied</strong>, she <strong>would know</strong> the answer.</li>
+                        <li>If they <strong>had arrived</strong> earlier, they <strong>would be</strong> here now.</li>
+                        <li>If we <strong>had taken</strong> the other road, we <strong>would be</strong> at the hotel.</li>
+                        <li>If he <strong>had eaten</strong> breakfast, he <strong>wouldn't be</strong> hungry now.</li>
+                        <li>If I <strong>had listened</strong> to you, I <strong>wouldn't be</strong> in trouble.</li>
+                        <li>If she <strong>had saved</strong> money, she <strong>could buy</strong> it now.</li>
+                        <li>If we <strong>had left</strong> earlier, we <strong>would be</strong> there by now.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="examples-container">
+                <div class="examples-box present-past">
+                    <h4>현재 조건 → 과거 결과</h4>
+                    <ul>
+                        <li>If I <strong>were taller</strong>, I <strong>would have reached</strong> the shelf.</li>
+                        <li>If she <strong>were here</strong>, she <strong>would have helped</strong> us.</li>
+                        <li>If we <strong>had more money</strong>, we <strong>would have bought</strong> it.</li>
+                        <li>If he <strong>were stronger</strong>, he <strong>would have lifted</strong> it.</li>
+                        <li>If they <strong>spoke English</strong>, they <strong>would have understood</strong> the joke.</li>
+                        <li>If I <strong>were more confident</strong>, I <strong>would have applied</strong> for the job.</li>
+                        <li>If she <strong>were available</strong>, she <strong>could have joined</strong> us.</li>
+                        <li>If we <strong>were organized</strong>, we <strong>wouldn't have missed</strong> the deadline.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="question">
+            <h2>4. 의문문 예시 (Question Examples)</h2>
+            
+            <div class="question-examples">
+                <h4>혼합 조건문 의문문</h4>
+                <ul>
+                    <li>What <strong>would you know</strong> if you <strong>had studied</strong>?</li>
+                    <li>Who <strong>would have helped</strong> if she <strong>were here</strong>?</li>
+                    <li>Where <strong>would we be</strong> if we <strong>had left</strong> earlier?</li>
+                    <li>What <strong>would you have done</strong> if you <strong>were taller</strong>?</li>
+                    <li>How <strong>would he feel</strong> if he <strong>had slept</strong> well?</li>
+                    <li>What <strong>would they have said</strong> if they <strong>were invited</strong>?</li>
+                    <li>What <strong>would happen</strong> if you <strong>had taken</strong> the job?</li>
+                    <li>Who <strong>would be here</strong> if they <strong>had arrived</strong> on time?</li>
+                    <li>What <strong>would you have bought</strong> if you <strong>had more money</strong>?</li>
+                    <li>What <strong>would she know</strong> if she <strong>had read</strong> the book?</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section" id="dialogue">
+            <h2>5. 상황별 대화 (Situational Dialogues)</h2>
+            
+            <div class="dialogue-container">
+                <div class="dialogue-box">
+                    <div class="dialogue-title">학교 상황</div>
+                    <div class="dialogue-line"><span class="speaker-a">A:</span> I don't know the answer.</div>
+                    <div class="dialogue-line"><span class="speaker-b">B:</span> If you <strong>had studied</strong>, you <strong>would know</strong> it.</div>
+                    <div class="dialogue-line"><span class="speaker-a">A:</span> True. I regret it.</div>
+                </div>
+                
+                <div class="dialogue-box">
+                    <div class="dialogue-title">여행 상황</div>
+                    <div class="dialogue-line"><span class="speaker-a">A:</span> We're still stuck in traffic.</div>
+                    <div class="dialogue-line"><span class="speaker-b">B:</span> If we <strong>had left</strong> earlier, we <strong>would be</strong> there now.</div>
+                    <div class="dialogue-line"><span class="speaker-a">A:</span> Next time, let's plan better.</div>
+                </div>
+
+                <div class="dialogue-box">
+                    <div class="dialogue-title">직장 상황</div>
+                    <div class="dialogue-line"><span class="speaker-a">A:</span> I missed the deadline.</div>
+                    <div class="dialogue-line"><span class="speaker-b">B:</span> If you <strong>were more organized</strong>, you <strong>would have finished</strong> on time.</div>
+                    <div class="dialogue-line"><span class="speaker-a">A:</span> I'll work on that.</div>
+                </div>
+
+                <div class="dialogue-box">
+                    <div class="dialogue-title">온라인 상황</div>
+                    <div class="dialogue-line"><span class="speaker-a">A:</span> I didn't understand the instructions.</div>
+                    <div class="dialogue-line"><span class="speaker-b">B:</span> If you <strong>had watched</strong> the video, you <strong>would understand</strong> now.</div>
+                    <div class="dialogue-line"><span class="speaker-a">A:</span> I'll go back and watch it.</div>
+                </div>
+
+                <div class="dialogue-box">
+                    <div class="dialogue-title">가족 상황</div>
+                    <div class="dialogue-line"><span class="speaker-a">A:</span> I'm hungry.</div>
+                    <div class="dialogue-line"><span class="speaker-b">B:</span> If you <strong>had eaten</strong> breakfast, you <strong>wouldn't be</strong> hungry now.</div>
+                    <div class="dialogue-line"><span class="speaker-a">A:</span> I'll eat earlier tomorrow.</div>
+                </div>
+
+                <div class="dialogue-box">
+                    <div class="dialogue-title">병원 상황</div>
+                    <div class="dialogue-line"><span class="speaker-a">A:</span> He didn't recover quickly.</div>
+                    <div class="dialogue-line"><span class="speaker-b">B:</span> If he <strong>were healthier</strong>, he <strong>would have recovered</strong> faster.</div>
+                    <div class="dialogue-line"><span class="speaker-a">A:</span> Let's help him get stronger.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="combining">
+            <h2>6. 문장 결합 (Combining Sentences)</h2>
+            
+            <div class="combining-container">
+                <h3>분리된 문장을 혼합 조건문으로 결합</h3>
+                
+                <div class="combining-item">
+                    <div class="combining-before">• I didn't study. + I don't know the answer.</div>
+                    <div class="combining-after">→ If I <strong>had studied</strong>, I <strong>would know</strong> the answer.</div>
+                </div>
+
+                <div class="combining-item">
+                    <div class="combining-before">• I didn't sleep. + I feel tired now.</div>
+                    <div class="combining-after">→ If I <strong>had slept</strong>, I <strong>would feel</strong> better.</div>
+                </div>
+
+                <div class="combining-item">
+                    <div class="combining-before">• I'm not taller. + I couldn't reach the shelf.</div>
+                    <div class="combining-after">→ If I <strong>were taller</strong>, I <strong>would have reached</strong> the shelf.</div>
+                </div>
+
+                <div class="combining-item">
+                    <div class="combining-before">• She isn't here. + She didn't help.</div>
+                    <div class="combining-after">→ If she <strong>were here</strong>, she <strong>would have helped</strong>.</div>
+                </div>
+
+                <div class="combining-item">
+                    <div class="combining-before">• We didn't leave early. + We're still stuck.</div>
+                    <div class="combining-after">→ If we <strong>had left</strong> early, we <strong>would be</strong> there now.</div>
+                </div>
+
+                <div class="combining-item">
+                    <div class="combining-before">• He isn't stronger. + He didn't lift it.</div>
+                    <div class="combining-after">→ If he <strong>were stronger</strong>, he <strong>would have lifted</strong> it.</div>
+                </div>
+
+                <div class="combining-item">
+                    <div class="combining-before">• I didn't eat. + I'm hungry now.</div>
+                    <div class="combining-after">→ If I <strong>had eaten</strong>, I <strong>wouldn't be</strong> hungry
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mixed Conditionals - Complete Study Guide (Part 2)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .complete-note {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .complete-note h4 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .complete-note p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .toc {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .toc h3 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .toc-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .toc-title {
+            font-weight: bold;
+            color: #f59e0b;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .toc-items {
+            list-style: none;
+        }
+
+        .toc-items li {
+            margin: 5px 0;
+        }
+
+        .toc-items a {
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .toc-items a:hover {
+            color: #f59e0b;
+        }
+
+        .real-life-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .real-life-card {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .real-life-card h4 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .real-life-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .real-life-examples {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .real-life-examples p {
+            margin: 8px 0;
+            font-size: 1rem;
+        }
+
+        .patterns-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .pattern-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #8b5cf6;
+            transition: transform 0.3s ease;
+        }
+
+        .pattern-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .pattern-title {
+            color: #8b5cf6;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .pattern-structure {
+            background: #e7e5e4;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin: 8px 0;
+            color: #57534e;
+        }
+
+        .pattern-examples {
+            color: #374151;
+            font-size: 0.95rem;
+        }
+
+        .mistakes-container {
+            background: #fee2e2;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #ef4444;
+            margin: 25px 0;
+        }
+
+        .mistakes-container h3 {
+            color: #dc2626;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .mistake-item {
+            background: white;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .mistake-wrong {
+            color: #dc2626;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .mistake-right {
+            color: #16a34a;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .mistake-explanation {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .exercise-container {
+            background: #f0f9ff;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #0ea5e9;
+            margin: 25px 0;
+        }
+
+        .exercise-container h3 {
+            color: #0369a1;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .exercise-item {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .exercise-question {
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #374151;
+        }
+
+        .exercise-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .exercise-option {
+            background: #f8fafc;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .exercise-option:hover {
+            background: #e2e8f0;
+            border-color: #0ea5e9;
+        }
+
+        .exercise-answer {
+            background: #dcfce7;
+            color: #16a34a;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .show-answer {
+            background: #0ea5e9;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .show-answer:hover {
+            background: #0284c7;
+        }
+
+        .self-test-container {
+            background: linear-gradient(135deg, #fef3c7 0%, #f59e0b 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .self-test-container h3 {
+            color: #92400e;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .test-section {
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .test-question {
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #374151;
+        }
+
+        .test-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #d1d5db;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .test-input:focus {
+            outline: none;
+            border-color: #f59e0b;
+        }
+
+        .check-answer {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .check-answer:hover {
+            background: #d97706;
+        }
+
+        .test-result {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            display: none;
+        }
+
+        .correct {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .incorrect {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            height: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            height: 100%;
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #374151;
+            margin: 15px 0;
+        }
+
+        .final-note {
+            background: linear-gradient(135deg, #dbeafe 0%, #3b82f6 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .final-note h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .final-note p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .real-life-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .patterns-container {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 25px;
+            }
+
+            .exercise-options {
+                grid-template-columns: 1fr;
+            }
+
+            .toc-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Mixed Conditionals</h1>
+            <p>복합 시제 조건문 완전 정복 가이드 - Part 2</p>
+        </div>
+
+        <div class="complete-note">
+            <h4>🚀 Part 2: 실전 활용 (섹션 7-12)</h4>
+            <p>실생활 사용법부터 자가진단까지 - Mixed Conditionals 마스터하기!</p>
+        </div>
+
+        <div class="toc">
+            <h3>📚 Part 2 목차</h3>
+            <div class="toc-grid">
+                <div class="toc-section">
+                    <div class="toc-title">🎯 실전 활용</div>
+                    <ul class="toc-items">
+                        <li><a href="#reallife">7. 실생활 사용법</a></li>
+                        <li><a href="#patterns">8. 표현 패턴</a></li>
+                        <li><a href="#mistakes">9. 흔한 실수</a></li>
+                    </ul>
+                </div>
+                <div class="toc-section">
+                    <div class="toc-title">📝 연습 & 평가</div>
+                    <ul class="toc-items">
+                        <li><a href="#exercises">10. 연습문제</a></li>
+                        <li><a href="#selftest">11. 자가진단</a></li>
+                        <li><a href="#conclusion">12. 마무리</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="reallife">
+            <h2>7. 실생활 사용법 (Real-life Usage)</h2>
+            
+            <div class="real-life-grid">
+                <div class="real-life-card">
+                    <h4><span class="real-life-icon">💼</span>비즈니스 상황</h4>
+                    <div class="real-life-examples">
+                        <p><strong>회의:</strong> If we had prepared better, we would be winning this contract now.</p>
+                        <p><strong>프레젠테이션:</strong> If I were more confident, I would have presented better yesterday.</p>
+                        <p><strong>협상:</strong> If they had agreed to our terms, we would be partners now.</p>
+                    </div>
+                </div>
+
+                <div class="real-life-card">
+                    <h4><span class="real-life-icon">🎓</span>학업 상황</h4>
+                    <div class="real-life-examples">
+                        <p><strong>시험:</strong> If I had studied harder, I would understand this topic now.</p>
+                        <p><strong>과제:</strong> If I were better at writing, I would have finished the essay earlier.</p>
+                        <p><strong>수업:</strong> If I had attended all classes, I wouldn't be confused now.</p>
+                    </div>
+                </div>
+
+                <div class="real-life-card">
+                    <h4><span class="real-life-icon">💑</span>인간관계</h4>
+                    <div class="real-life-examples">
+                        <p><strong>친구:</strong> If I had called her, she would trust me now.</p>
+                        <p><strong>가족:</strong> If I were more understanding, I would have supported him better.</p>
+                        <p><strong>연인:</strong> If we had talked about it, we would be together now.</p>
+                    </div>
+                </div>
+
+                <div class="real-life-card">
+                    <h4><span class="real-life-icon">🏠</span>일상생활</h4>
+                    <div class="real-life-examples">
+                        <p><strong>건강:</strong> If I had exercised regularly, I would feel better now.</p>
+                        <p><strong>요리:</strong> If I were a good cook, I would have made dinner last night.</p>
+                        <p><strong>여행:</strong> If we had booked earlier, we would be at the hotel now.</p>
+                    </div>
+                </div>
+
+                <div class="real-life-card">
+                    <h4><span class="real-life-icon">💻</span>온라인/기술</h4>
+                    <div class="real-life-examples">
+                        <p><strong>소셜미디어:</strong> If I had posted that photo, I would be famous now.</p>
+                        <p><strong>게임:</strong> If I were better at gaming, I would have won yesterday.</p>
+                        <p><strong>쇼핑:</strong> If I had bought it online, it would be here by now.</p>
+                    </div>
+                </div>
+
+                <div class="real-life-card">
+                    <h4><span class="real-life-icon">🎯</span>목표/계획</h4>
+                    <div class="real-life-examples">
+                        <p><strong>다이어트:</strong> If I had started the diet, I would be thinner now.</p>
+                        <p><strong>저축:</strong> If I were more careful with money, I would have saved more.</p>
+                        <p><strong>취미:</strong> If I had practiced piano, I would play well now.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="patterns">
+            <h2>8. 표현 패턴 (Expression Patterns)</h2>
+            
+            <div class="patterns-container">
+                <div class="pattern-card">
+                    <div class="pattern-title">후회 표현</div>
+                    <div class="pattern-structure">If I had + past participle, I would + base verb + now</div>
+                    <div class="pattern-examples">
+                        <p>• If I had listened to you, I would be safe now.</p>
+                        <p>• If I had taken the medicine, I would feel better now.</p>
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <div class="pattern-title">능력 부족 표현</div>
+                    <div class="pattern-structure">If I were + adjective, I would have + past participle</div>
+                    <div class="pattern-examples">
+                        <p>• If I were braver, I would have spoken up.</p>
+                        <p>• If I were stronger, I would have helped you.</p>
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <div class="pattern-title">상황 가정</div>
+                    <div class="pattern-structure">If + situation were different, would have + result</div>
+                    <div class="pattern-examples">
+                        <p>• If the weather were better, we would have gone out.</p>
+                        <p>• If the store were open, I would have bought it.</p>
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <div class="pattern-title">과거 결정의 현재 영향</div>
+                    <div class="pattern-structure">If I had + decision, I would + current state</div>
+                    <div class="pattern-examples">
+                        <p>• If I had moved to Seoul, I would live there now.</p>
+                        <p>• If I had learned French, I would speak it now.</p>
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <div class="pattern-title">현재 상태의 과거 영향</div>
+                    <div class="pattern-structure">If I were + state, I would have + past action</div>
+                    <div class="pattern-examples">
+                        <p>• If I were more organized, I would have finished on time.</p>
+                        <p>• If I were taller, I would have reached it easily.</p>
+                    </div>
+                </div>
+
+                <div class="pattern-card">
+                    <div class="pattern-title">조건과 결과의 시간차</div>
+                    <div class="pattern-structure">Time-shifted cause and effect</div>
+                    <div class="pattern-examples">
+                        <p>• If we had left early, we would be relaxing now.</p>
+                        <p>• If I were rich, I would have bought that house.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="mistakes">
+            <h2>9. 흔한 실수 (Common Mistakes)</h2>
+            
+            <div class="mistakes-container">
+                <h3>실수 교정 가이드</h3>
+                
+                <div class="mistake-item">
+                    <div class="mistake-wrong">❌ If I would have studied, I would know it now.</div>
+                    <div class="mistake-right">✅ If I had studied, I would know it now.</div>
+                    <div class="mistake-explanation">조건절에서는 would를 사용하지 않습니다.</div>
+                </div>
+
+                <div class="mistake-item">
+                    <div class="mistake-wrong">❌ If I was taller, I would have reached it.</div>
+                    <div class="mistake-right">✅ If I were taller, I would have reached it.</div>
+                    <div class="mistake-explanation">가정법에서는 were를 사용합니다.</div>
+                </div>
+
+                <div class="mistake-item">
+                    <div class="mistake-wrong">❌ If I had studied, I will know it now.</div>
+                    <div class="mistake-right">✅ If I had studied, I would know it now.</div>
+                    <div class="mistake-explanation">주절에서는 would를 사용해야 합니다.</div>
+                </div>
+
+                <div class="mistake-item">
+                    <div class="mistake-wrong">❌ If I am taller, I would have reached it.</div>
+                    <div class="mistake-right">✅ If I were taller, I would have reached it.</div>
+                    <div class="mistake-explanation">현재 가정 상황은 과거형을 사용합니다.</div>
+                </div>
+
+                <div class="mistake-item">
+                    <div class="mistake-wrong">❌ If I had ate breakfast, I wouldn't be hungry.</div>
+                    <div class="mistake-right">✅ If I had eaten breakfast, I wouldn't be hungry.</div>
+                    <div class="mistake-explanation">과거완료는 had + 과거분사입니다.</div>
+                </div>
+
+                <div class="mistake-item">
+                    <div class="mistake-wrong">❌ If she were here, she will have helped us.</div>
+                    <div class="mistake-right">✅ If she were here, she would have helped us.</div>
+                    <div class="mistake-explanation">가정법에서는 would have를 사용합니다.</div>
+                </div>
+
+                <div class="mistake-item">
+                    <div class="mistake-wrong">❌ If we left earlier, we would be there now.</div>
+                    <div class="mistake-right">✅ If we had left earlier, we would be there now.</div>
+                    <div class="mistake-explanation">과거 행동의 현재 결과는 과거완료를 사용합니다.</div>
+                </div>
+
+                <div class="mistake-item">
+                    <div class="mistake-wrong">❌ If I have more money, I would have bought it.</div>
+                    <div class="mistake-right">✅ If I had more money, I would have bought it.</div>
+                    <div class="mistake-explanation">현재 상황의 과거 결과는 과거형을 사용합니다.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="exercises">
+            <h2>10. 연습문제 (Practice Exercises)</h2>
+            
+            <div class="exercise-container">
+                <h3>Multiple Choice Questions</h3>
+                
+                <div class="exercise-item">
+                    <div class="exercise-question">1. If I _____ harder, I _____ the answer now.</div>
+                    <div class="exercise-options">
+                        <div class="exercise-option" onclick="selectOption(this, false)">had study / would knew</div>
+                        <div class="exercise-option" onclick="selectOption(this, true)">had studied / would know</div>
+                        <div class="exercise-option" onclick="selectOption(this, false)">studied / would know</div>
+                        <div class="exercise-option" onclick="selectOption(this, false)">would study / know</div>
+                    </div>
+                    <button class="show-answer" onclick="showAnswer(this)">정답 보기</button>
+                    <div class="exercise-answer">정답: spoke / would have understood (현재 능력이 과거 이해에 영향)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="selftest">
+            <h2>11. 자가진단 (Self-Assessment)</h2>
+            
+            <div class="self-test-container">
+                <h3>실력 점검하기</h3>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+                <div class="score-display" id="scoreDisplay">점수: 0 / 10</div>
+                
+                <div class="test-section">
+                    <div class="test-question">1. 다음 문장을 혼합 조건문으로 완성하세요: "I didn't save money. I can't buy the car now."</div>
+                    <input type="text" class="test-input" placeholder="If I _____ money, I _____ the car now." data-answer="had saved, could buy">
+                    <button class="check-answer" onclick="checkTestAnswer(this, 1)">확인</button>
+                    <div class="test-result" id="result1"></div>
+                </div>
+
+                <div class="test-section">
+                    <div class="test-question">2. 빈칸을 채우세요: "If she _____ here, she _____ us yesterday." (현재→과거)</div>
+                    <input type="text" class="test-input" placeholder="답을 입력하세요" data-answer="were, would have helped">
+                    <button class="check-answer" onclick="checkTestAnswer(this, 2)">확인</button>
+                    <div class="test-result" id="result2"></div>
+                </div>
+
+                <div class="test-section">
+                    <div class="test-question">3. 올바른 형태로 고치세요: "If I would have studied, I would know it."</div>
+                    <input type="text" class="test-input" placeholder="올바른 문장을 입력하세요" data-answer="If I had studied, I would know it.">
+                    <button class="check-answer" onclick="checkTestAnswer(this, 3)">확인</button>
+                    <div class="test-result" id="result3"></div>
+                </div>
+
+                <div class="test-section">
+                    <div class="test-question">4. 혼합 조건문으로 바꾸세요: "He isn't tall enough. He didn't make the team."</div>
+                    <input type="text" class="test-input" placeholder="If he _____ taller, he _____." data-answer="were, would have made the team">
+                    <button class="check-answer" onclick="checkTestAnswer(this, 4)">확인</button>
+                    <div class="test-result" id="result4"></div>
+                </div>
+
+                <div class="test-section">
+                    <div class="test-question">5. 빈칸을 채우세요: "If we _____ earlier, we _____ there by now."</div>
+                    <input type="text" class="test-input" placeholder="답을 입력하세요" data-answer="had left, would be">
+                    <button class="check-answer" onclick="checkTestAnswer(this, 5)">확인</button>
+                    <div class="test-result" id="result5"></div>
+                </div>
+
+                <div class="test-section">
+                    <div class="test-question">6. 다음 중 올바른 문장은? "If I _____ more organized, I _____ the deadline."</div>
+                    <input type="text" class="test-input" placeholder="were/was, would have met/would meet" data-answer="were, would have met">
+                    <button class="check-answer" onclick="checkTestAnswer(this, 6)">확인</button>
+                    <div class="test-result" id="result6"></div>
+                </div>
+
+                <div class="test-section">
+                    <div class="test-question">7. 혼합 조건문으로 완성하세요: "I didn't take the medicine. I still feel sick."</div>
+                    <input type="text" class="test-input" placeholder="If I _____, I _____ better now." data-answer="had taken the medicine, would feel">
+                    <button class="check-answer" onclick="checkTestAnswer(this, 7)">확인</button>
+                    <div class="test-result" id="result7"></div>
+                </div>
+
+                <div class="test-section">
+                    <div class="test-question">8. 빈칸을 채우세요: "If they _____ English, they _____ the instructions yesterday."</div>
+                    <input type="text" class="test-input" placeholder="현재 능력 → 과거 결과" data-answer="spoke, would have understood">
+                    <button class="check-answer" onclick="checkTestAnswer(this, 8)">확인</button>
+                    <div class="test-result" id="result8"></div>
+                </div>
+
+                <div class="test-section">
+                    <div class="test-question">9. 올바른 형태로 고치세요: "If I was richer, I would have bought it."</div>
+                    <input type="text" class="test-input" placeholder="올바른 문장을 입력하세요" data-answer="If I were richer, I would have bought it.">
+                    <button class="check-answer" onclick="checkTestAnswer(this, 9)">확인</button>
+                    <div class="test-result" id="result9"></div>
+                </div>
+
+                <div class="test-section">
+                    <div class="test-question">10. 마지막 문제: "She didn't practice piano. She can't play well now."를 혼합 조건문으로 바꾸세요.</div>
+                    <input type="text" class="test-input" placeholder="If she _____, she _____ now." data-answer="had practiced piano, could play well">
+                    <button class="check-answer" onclick="checkTestAnswer(this, 10)">확인</button>
+                    <div class="test-result" id="result10"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="conclusion">
+            <h2>12. 마무리 (Conclusion)</h2>
+            
+            <div class="final-note">
+                <h3>🎉 Mixed Conditionals Part 2 완주를 축하합니다!</h3>
+                <p>
+                    이제 여러분은 과거와 현재, 현재와 과거를 연결하는 복잡한 조건문을 자유자재로 사용할 수 있습니다. 
+                    실생활에서 다양한 상황에 적용해보며 자연스럽게 사용할 수 있도록 연습을 계속해보세요. 
+                    Remember: Practice makes perfect!
+                </p>
+            </div>
+
+            <div class="complete-note">
+                <h4>Part 2 학습 완료 체크리스트</h4>
+                <p style="text-align: left; margin-top: 15px;">
+                    ✅ 6가지 실생활 상황에서의 활용법 학습<br>
+                    ✅ 6가지 핵심 표현 패턴 익히기<br>
+                    ✅ 8가지 흔한 실수 교정하기<br>
+                    ✅ 5개 객관식 연습문제 완료<br>
+                    ✅ 10개 주관식 자가진단 완료<br>
+                    ✅ Mixed Conditionals 실전 활용 완성
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let totalScore = 0;
+        let questionsAnswered = 0;
+
+        function selectOption(element, isCorrect) {
+            // Reset all options
+            const options = element.parentNode.querySelectorAll('.exercise-option');
+            options.forEach(opt => {
+                opt.style.backgroundColor = '#f8fafc';
+                opt.style.borderColor = 'transparent';
+            });
+
+            // Highlight selected option
+            if (isCorrect) {
+                element.style.backgroundColor = '#dcfce7';
+                element.style.borderColor = '#16a34a';
+            } else {
+                element.style.backgroundColor = '#fee2e2';
+                element.style.borderColor = '#ef4444';
+            }
+        }
+
+        function showAnswer(button) {
+            const answer = button.nextElementSibling;
+            if (answer && answer.classList) {
+                if (answer.style.display === 'none' || answer.style.display === '') {
+                    answer.style.display = 'block';
+                    button.textContent = '정답 숨기기';
+                } else {
+                    answer.style.display = 'none';
+                    button.textContent = '정답 보기';
+                }
+            }
+        }
+
+        function checkTestAnswer(button, questionNum) {
+            const input = button.previousElementSibling;
+            const result = document.getElementById(`result${questionNum}`);
+            
+            if (!input || !result) {
+                console.error('Input or result element not found');
+                return;
+            }
+            
+            const userAnswer = input.value.trim().toLowerCase();
+            const correctAnswer = input.getAttribute('data-answer').toLowerCase();
+            
+            // More flexible answer checking
+            const isCorrect = correctAnswer.split(',').every(part => 
+                userAnswer.includes(part.trim())
+            ) || userAnswer === correctAnswer;
+
+            if (isCorrect) {
+                result.textContent = '정답입니다! 🎉';
+                result.className = 'test-result correct';
+                if (!input.dataset.scored) {
+                    totalScore += 10;
+                    questionsAnswered++;
+                    input.dataset.scored = 'true';
+                }
+            } else {
+                result.textContent = `틀렸습니다. 정답: ${input.getAttribute('data-answer')}`;
+                result.className = 'test-result incorrect';
+            }
+            
+            result.style.display = 'block';
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            
+            if (progressBar && scoreDisplay) {
+                const progressPercent = (questionsAnswered / 10) * 100;
+                progressBar.style.width = progressPercent + '%';
+                scoreDisplay.textContent = `점수: ${totalScore} / 100 (${questionsAnswered}/10 문제 완료)`;
+            }
+        }
+
+        // Wait for DOM to load before running functions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Initialize progress
+            updateProgress();
+        });
+    </script>
+</body>
+</html></button>
+                    <div class="exercise-answer">정답: had studied / would know (과거 행동이 현재에 미치는 영향)</div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="exercise-question">2. If she _____ taller, she _____ the basketball team.</div>
+                    <div class="exercise-options">
+                        <div class="exercise-option" onclick="selectOption(this, false)">was / would have join</div>
+                        <div class="exercise-option" onclick="selectOption(this, true)">were / would have joined</div>
+                        <div class="exercise-option" onclick="selectOption(this, false)">is / would joined</div>
+                        <div class="exercise-option" onclick="selectOption(this, false)">were / will have joined</div>
+                    </div>
+                    <button class="show-answer" onclick="showAnswer(this)">정답 보기</button>
+                    <div class="exercise-answer">정답: were / would have joined (현재 능력이 과거에 미쳤을 영향)</div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="exercise-question">3. If we _____ the train, we _____ late now.</div>
+                    <div class="exercise-options">
+                        <div class="exercise-option" onclick="selectOption(this, false)">didn't miss / wouldn't be</div>
+                        <div class="exercise-option" onclick="selectOption(this, true)">hadn't missed / wouldn't be</div>
+                        <div class="exercise-option" onclick="selectOption(this, false)">don't miss / won't be</div>
+                        <div class="exercise-option" onclick="selectOption(this, false)">wouldn't miss / weren't</div>
+                    </div>
+                    <button class="show-answer" onclick="showAnswer(this)">정답 보기</button>
+                    <div class="exercise-answer">정답: hadn't missed / wouldn't be (과거 사건이 현재 상태에 영향)</div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="exercise-question">4. If I _____ more confident, I _____ for the promotion.</div>
+                    <div class="exercise-options">
+                        <div class="exercise-option" onclick="selectOption(this, false)">was / would apply</div>
+                        <div class="exercise-option" onclick="selectOption(this, false)">am / would have applied</div>
+                        <div class="exercise-option" onclick="selectOption(this, true)">were / would have applied</div>
+                        <div class="exercise-option" onclick="selectOption(this, false)">had been / would apply</div>
+                    </div>
+                    <button class="show-answer" onclick="showAnswer(this)">정답 보기</button>
+                    <div class="exercise-answer">정답: were / would have applied (현재 성격이 과거 행동에 영향)</div>
+                </div>
+
+                <div class="exercise-item">
+                    <div class="exercise-question">5. If they _____ English, they _____ the movie last night.</div>
+                    <div class="exercise-options">
+                        <div class="exercise-option" onclick="selectOption(this, false)">speak / would understand</div>
+                        <div class="exercise-option" onclick="selectOption(this, true)">spoke / would have understood</div>
+                        <div class="exercise-option" onclick="selectOption(this, false)">had spoken / would understand</div>
+                        <div class="exercise-option" onclick="selectOption(this, false)">would speak / understood</div>
+                    </div>
+                    <button class="show-answer" onclick="showAnswer(this)">정답 보기

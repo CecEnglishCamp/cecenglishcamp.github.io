@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G07 Part 1: Modal Verbs (can, could, should)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --blue-light: #e3f2fd;
+            --blue-medium: #bbdefb;
+            --green: #e8f5e9;
+            --orange: #fff3e0;
+            --purple: #f3e5f5;
+            --sky: #e0f7fa;
+            --gray-light: #f5f5f5;
+            --gray-dark: #bdbdbd;
+            --modal-color: #27ae60; /* Green for Modals */
+            --blue-main: #3498db;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--blue-main);
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid var(--blue-main);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid var(--blue-main);
+            padding-left: 15px;
+        }
+
+        .concept-card {
+            background-color: var(--blue-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: var(--modal-color); /* Modal Color */
+        }
+
+        .concept-card h4 {
+            color: #1f3a5f;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .concept-icon {
+            font-size: 1.5rem;
+            color: var(--modal-color);
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .concept-meaning strong, .concept-examples strong {
+            color: var(--modal-color);
+        }
+
+        .grammar ul, .positive ul, .question ul, .dialogue p, .sentence_combining ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .grammar li, .positive li, .question li, .dialogue p, .sentence_combining li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .grammar li:hover, .positive li:hover, .question li:hover, .dialogue p:hover, .sentence_combining li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section.concept { background-color: var(--blue-light); }
+        .section.grammar { background-color: var(--blue-medium); }
+        .section.positive { background-color: var(--green); }
+        .section.question { background-color: var(--orange); }
+        .section.dialogue { background-color: var(--purple); }
+        .section.sentence_combining { background-color: var(--sky); }
+        
+        .section.concept h2 { border-color: var(--modal-color); color: var(--modal-color); }
+        .section.grammar h2 { border-color: #2c3e50; color: #2c3e50; }
+        .section.positive h2 { border-color: #27ae60; color: #27ae60; }
+        .section.question h2 { border-color: #e67e22; color: #e67e22; }
+        .section.dialogue h2 { border-color: #8e44ad; color: #8e44ad; }
+        .section.sentence_combining h2 { border-color: #3498db; color: #3498db; }
+        
+        .dialogue strong, .concept-meaning strong { color: var(--modal-color); }
+        .sentence_combining strong, .positive strong { color: #2980b9; }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G07. 조동사 (Modal Verbs) - can, could, should (Part 1)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol>
+                <li><a href="#concept">기본 개념 (Basic Concept)</a></li>
+                <li><a href="#grammar">문법 규칙 (Grammar Rules)</a></li>
+                <li><a href="#positive">긍정문 예시 (Positive Examples)</a></li>
+                <li><a href="#question">의문문 예시 (Question Examples)</a></li>
+                <li><a href="#dialogue">상황별 대화 (Situational Dialogues)</a></li>
+                <li><a href="#sentence_combining">문장 결합 연습 (Sentence Combining)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+        
+        <div class="section concept" id="concept">
+            <h2>1. 기본 개념 (Basic Concept)</h2>
+            <div class="concept-card">
+                <h4><span class="concept-icon">MODAL</span>Modal Verbs (조동사)</h4>
+                <div class="concept-meaning">
+                    <strong>조동사:</strong> 본동사 앞에 위치하여 **능력, 가능성, 허가, 충고, 의무** 등 화자의 태도를 덧붙이는 동사<br>
+                    <strong>형태:</strong> 주어 + **조동사** + **동사원형** (주어 인칭/수에 관계없이 형태 변화 없음)<br>
+                    <hr style="margin: 10px 0; border-color: #ccc;">
+                    **can:** ~할 수 있다 (능력, 가능)<br>
+                    **could:** ~할 수 있었다 (과거 능력), ~해줄 수 있나요? (공손한 요청)<br>
+                    **should:** ~해야 한다 (충고, 의무)
+                </div>
+                <div class="concept-examples">
+                    <p>I **can swim**. (능력)</p>
+                    <p>She **could speak** French. (과거 능력)</p>
+                    <p>You **should study** more. (충고)</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section grammar" id="grammar">
+            <h2>2. 문법 규칙 (Grammar Rules)</h2>
+            <ul>
+                <li>**기본 형태:** 주어 + **조동사 + 동사원형** (절대 s, es, ed, ing를 붙이지 않음)</li>
+                <li>**긍정문:** I **can go**. / He **should help**.</li>
+                <li>**부정문:** 주어 + **조동사 + not + 동사원형**</li>
+                <li>**의문문:** **조동사 + 주어 + 동사원형?**</li>
+                <li>**부정문 축약형:** **can’t** (cannot) / **couldn’t** (could not) / **shouldn’t** (should not)</li>
+                <li>**핵심 규칙:** 조동사 뒤에는 **반드시** 동사원형을 사용하며, **to를 사용하지 않음** (❌ can to swim)</li>
+                <li>**can vs. could:** could는 can의 과거형 또는 더 **공손한** 요청/가능성을 나타냄</li>
+                <li>**should 사용:** 주로 '의무'보다는 '해야 한다'는 **충고**의 의미로 쓰임</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section positive" id="positive">
+            <h2>3. 긍정문 예시 (Positive Examples)</h2>
+            <ul>
+                <li>I **can speak** English. (능력)</li>
+                <li>You **can go** now. (허가)</li>
+                <li>He **could help** us yesterday. (과거 능력)</li>
+                <li>She **could speak** French when she was young. (과거 능력)</li>
+                <li>We **should be** kind to others. (충고)</li>
+                <li>They **should study** for the test. (충고)</li>
+                <li>It **can rain** tomorrow. (가능성)</li>
+                <li>You **could try** again. (약한 제안/가능성)</li>
+                <li>She **should rest** now. (충고)</li>
+                <li>I **can meet** you later. (가능성/능력)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section question" id="question">
+            <h2>4. 의문문 예시 (Question Examples)</h2>
+            <ul>
+                <li>**Can** you **swim**? (능력)</li>
+                <li>**Can** I **use** your phone? (허가)</li>
+                <li>**Could** you **help** me? (공손한 요청)</li>
+                <li>**Could** she **speak** French? (과거 능력)</li>
+                <li>**Should** I **call** him? (충고 요청)</li>
+                <li>**Should** we **go** now? (충고 요청)</li>
+                <li>**Can** they **win** the game? (가능성)</li>
+                <li>**Could** we **meet** tomorrow? (공손한 제안)</li>
+                <li>**Should** he **eat** that? (충고 요청)</li>
+                <li>**Can** you **see** the sign? (능력)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section dialogue" id="dialogue">
+            <h2>5. 상황별 대화 흐름 (Situational Dialogues)</h2>
+
+            <p><strong>능력 확인</strong><br />
+            A: **Can** you **speak** French?<br />
+            B: Yes, I **can speak** a little.<br />
+            A: That's great!</p>
+
+            <p><strong>공손한 요청</strong><br />
+            A: **Could** you **pass** the salt?<br />
+            B: Sure, here you go.<br />
+            A: Thank you.</p>
+
+            <p><strong>충고</strong><br />
+            A: I'm very tired.<br />
+            B: You **should take** a break.<br />
+            A: Good idea.</p>
+
+            <p><strong>허가</strong><br />
+            A: **Can** I **go** home early?<br />
+            B: Yes, you **can leave** now.<br />
+            A: Thanks!</p>
+
+            <p><strong>과거 능력</strong><br />
+            A: **Could** he **run** fast when he was young?<br />
+            B: Yes, he **could run** very fast.<br />
+            A: Wow!</p>
+        </div>
+
+        <hr>
+
+        <div class="section sentence_combining" id="sentence_combining">
+            <h2>6. 문장 결합 연습 (Sentence Combining)</h2>
+            <ul>
+                <li>I swim. (Can) → I **can swim**.</li>
+                <li>She speak French. (Could) → She **could speak** French.</li>
+                <li>You study more. (Should) → You **should study** more.</li>
+                <li>He help us. (Can) → He **can help** us.</li>
+                <li>We go now. (Should) → We **should go** now.</li>
+                <li>I call him later. (Can) → I **can call** him later.</li>
+                <li>They visit us. (Could) → They **could visit** us.</li>
+                <li>It rain tomorrow. (Can) → It **can rain** tomorrow.</li>
+                <li>You be kind. (Should) → You **should be** kind.</li>
+                <li>She join the club. (Can) → She **can join** the club.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G07 Part 2: Modal Verbs (can, could, should)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --yellow-light: #fffde7;
+            --pink-light: #fce4ec;
+            --orange-light: #ffecb3;
+            --green: #e8f5e9;
+            --gray: #e0e0e0;
+            --gray-dark: #bdbdbd;
+            --red-strong: #c0392b;
+            --blue-main: #3498db;
+            --modal-color: #27ae60;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--blue-main);
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid var(--blue-main);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid var(--blue-main);
+            padding-left: 15px;
+        }
+
+        .real_life_usage.section { background-color: var(--yellow-light); }
+        .common_patterns.section { background-color: var(--pink-light); }
+        .mistakes.section { background-color: var(--orange-light); }
+        .tips.section { background-color: var(--green); }
+        .practice.section { background-color: var(--gray); }
+        .checklist.section { background-color: var(--gray-dark); }
+        
+        .section.real_life_usage h2 { border-color: #f1c40f; color: #f1c40f; }
+        .section.common_patterns h2 { border-color: #e91e63; color: #e91e63; }
+        .section.mistakes h2 { border-color: #f39c12; color: #f39c12; }
+        .section.tips h2 { border-color: #2ecc71; color: #2ecc71; }
+        .section.practice h2 { border-color: #7f8c8d; color: #7f8c8d; }
+        .section.checklist h2 { border-color: #95a5a6; color: #95a5a6; }
+
+        .section ul, .section ol {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .section li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .mistakes li .correct { color: #2ecc71; font-weight: bold; }
+        .mistakes li .incorrect { color: var(--red-strong); font-weight: bold; text-decoration: line-through; }
+        .section li strong { color: var(--modal-color); }
+
+        .practice h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .practice ol {
+            padding-left: 20px;
+        }
+
+        .practice li {
+            margin-bottom: 15px;
+            background-color: #fff;
+        }
+        
+        .practice .options {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .practice .option {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        
+        .practice .option:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.01);
+        }
+
+        .practice .option.correct {
+            background-color: #e8f5e9;
+            border-color: #27ae60;
+        }
+
+        .practice input[type="text"] {
+            width: 90%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        
+        #progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        #progress-bar {
+            width: 0;
+            height: 20px;
+            background-color: var(--modal-color);
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            line-height: 20px;
+            transition: width 0.4s ease-in-out;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .checklist h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--blue-main);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G07. 조동사 (Modal Verbs) - can, could, should (Part 2)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol start="7">
+                <li><a href="#real_life_usage">실생활 사용 예시 (Real-Life Usage)</a></li>
+                <li><a href="#common_patterns">자주 쓰이는 패턴 (Common Patterns)</a></li>
+                <li><a href="#mistakes">흔한 실수 (Common Mistakes)</a></li>
+                <li><a href="#tips">레벨업 팁 (Level-Up Tips)</a></li>
+                <li><a href="#practice">연습문제 (Practice Exercises)</a></li>
+                <li><a href="#checklist">자가진단 체크리스트 (Self-Check)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section real_life_usage" id="real_life_usage">
+            <h2>7. 실생활 사용 예시 (Real-Life Usage)</h2>
+            <ul>
+                <li>**능력:** I **can speak** three languages. (능력)</li>
+                <li>**허가/요청:** **Can** I **use** your pen for a moment? (허가 요청)</li>
+                <li>**공손한 요청:** **Could** you **send** me the file later? (공손한 요청)</li>
+                <li>**충고:** You **should drink** more water. (충고)</li>
+                <li>**과거 능력:** My grandfather **could run** a marathon. (과거 능력)</li>
+                <li>**약한 제안:** We **could order** pizza tonight. (가능성/제안)</li>
+                <li>**의무 (약함):** Students **should respect** their teachers. (일반적인 의무)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section common_patterns" id="common_patterns">
+            <h2>8. 자주 쓰이는 패턴 (Common Patterns)</h2>
+            <ul>
+                <li>**주어 + can/could/should + 동사원형:** He **can swim**, They **should go**</li>
+                <li>**Can + 주어 + 동사원형? (질문):** **Can** you **help** me?</li>
+                <li>**Could + 주어 + 동사원형? (공손):** **Could** I **ask** a question?</li>
+                <li>**Should + 주어 + 동사원형? (충고 요청):** **Should** we **wait** for them?</li>
+                <li>**부정문:** I **can't** see it. / You **shouldn't** eat too much.</li>
+                <li>**Can't** (can not): 능력 없음 또는 강한 금지</li>
+                <li>**Could be...:** (추측/가능성) That **could be** true.</li>
+                <li>**I think you should...:** 충고를 줄 때 자주 사용되는 패턴</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section mistakes" id="mistakes">
+            <h2>9. 흔한 실수 (Common Mistakes)</h2>
+            <ul>
+                <li><span class="incorrect">❌ She can to swim.</span> → <span class="correct">✅ She **can swim**.</span> (조동사 뒤에 to 사용 금지)</li>
+                <li><span class="incorrect">❌ He could speaks French.</span> → <span class="correct">✅ He **could speak** French.</span> (조동사 뒤에 동사원형 사용)</li>
+                <li><span class="incorrect">❌ You should to study.</span> → <span class="correct">✅ You **should study**.</span> (조동사 뒤에 to 사용 금지)</li>
+                <li><span class="incorrect">❌ They can helps us.</span> → <span class="correct">✅ They **can help** us.</span> (조동사 뒤에 동사원형 사용, S를 붙이지 않음)</li>
+                <li><span class="incorrect">❌ We can went there.</span> → <span class="correct">✅ We **can go** there.</span> (조동사 뒤에 동사원형 사용)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section tips" id="tips">
+            <h2>10. 레벨업 팁 (Level-Up Tips)</h2>
+            <ul>
+                <li>**could의 이중 역할:** **could**는 can의 과거형뿐만 아니라, **현재**의 요청이나 가능성을 나타낼 때 **can보다 공손한** 표현으로 사용됩니다. (예: **Could** you close the door, please?)</li>
+                <li>**be able to 대체:** **can**은 `be able to`로 대체 가능하며, 특히 미래 시제나 to 부정사 뒤에서는 `can` 대신 `be able to`를 사용해야 합니다. (예: I **will be able to** go tomorrow.)</li>
+                <li>**should의 뉘앙스:** **should**는 강제성이 없는 가벼운 충고나 제안에 사용됩니다. 강한 의무는 **must**나 **have to**를 사용합니다.</li>
+                <li>**부정문 축약:** 구어체에서 **can't, couldn't, shouldn't**를 자연스럽게 사용하세요.</li>
+                <li>**동사원형 강조:** 모든 조동사 뒤에는 **무조건** 동사원형이 온다는 규칙을 머릿속에 각인하세요.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section practice" id="practice">
+            <h2>11. 연습문제 (Practice Exercises)</h2>
+
+            <h4>객관식</h4>
+            <ol>
+                <li id="q1">Which is correct?<br />A. She can to swim. B. She **can swim**.
+                    <div class="options" data-correct="B">
+                        <div class="option" data-value="A">A. She can to swim.</div>
+                        <div class="option" data-value="B">B. She **can swim**.</div>
+                    </div>
+                </li>
+                <li id="q2">Choose the correct modal:<br />You ___ study more. (Advice/충고)
+                    <div class="options" data-correct="A">
+                        <div class="option" data-value="A">A. **should**</div>
+                        <div class="option" data-value="B">B. can’t</div>
+                    </div>
+                </li>
+                <li id="q3">Fill in: I **could** ___ English when I was young.<br />A. spoke B. **speak**
+                    <div class="options" data-correct="B">
+                        <div class="option" data-value="A">A. spoke</div>
+                        <div class="option" data-value="B">B. **speak**</div>
+                    </div>
+                </li>
+            </ol>
+            
+            <button class="submit-btn" onclick="checkAnswers()">정답 확인하기</button>
+            <div id="answers" class="hidden">
+                <p><strong>1. B</strong>. 조동사 뒤에는 **to** 없이 동사원형을 씁니다.</p>
+                <p><strong>2. A</strong>. **Should**는 충고나 조언을 나타낼 때 사용합니다.</p>
+                <p><strong>3. B</strong>. **Could** 뒤에는 **동사원형(speak)**을 사용합니다.</p>
+            </div>
+
+            <h4>문장 결합 (정답 예시 제공)</h4>
+            <ol start="4">
+                <li>I swim. (Can) → I **can swim**. <input type="text" id="q4" placeholder="I can swim."/></li>
+                <li>She speak French. (Could) → She **could speak** French. <input type="text" id="q5" placeholder="She could speak French."/></li>
+                <li>You study more. (Should) → You **should study** more. <input type="text" id="q6" placeholder="You should study more."/></li>
+                <li>He help us. (Can) → He **can help** us. <input type="text" id="q7" placeholder="He can help us."/></li>
+                <li>We go now. (Should) → We **should go** now. <input type="text" id="q8" placeholder="We should go now."/></li>
+            </ol>
+
+            <h4>오류 수정 (정답 예시 제공)</h4>
+            <ol start="9">
+                <li>❌ I can to swim. → ✅ I **can swim**. <input type="text" id="q9" placeholder="I can swim."/></li>
+                <li>❌ She could speaks French. → ✅ She **could speak** French. <input type="text" id="q10" placeholder="She could speak French."/></li>
+                <li>❌ You should to study. → ✅ You **should study**. <input type="text" id="q11" placeholder="You should study."/></li>
+                <li>❌ He can helps us. → ✅ He **can help** us. <input type="text" id="q12" placeholder="He can help us."/></li>
+                <li>❌ We should to be kind. → ✅ We **should be** kind. <input type="text" id="q13" placeholder="We should be kind."/></li>
+            </ol>
+
+            <h4>표현 연습 (모범 답안)</h4>
+            <ol start="14">
+                <li>Write 3 sentences using “can.” (예: I **can** drive. / **Can** you hear that? / We **can** go now.)</li>
+                <li>Write 3 sentences using “could.” (예: He **could** play the piano. / **Could** you open the window? / It **could** be true.)</li>
+                <li>Write 3 sentences using “should.” (예: You **should** call him. / She **shouldn't** be late. / We **should** save money.)</li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section checklist" id="checklist">
+            <h2>12. 자가진단 체크리스트 (Self-Check)</h2>
+
+            <h4>학습 완료 체크</h4>
+            <div id="progress-container">
+                <div id="progress-bar">0%</div>
+            </div>
+            <ul>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I understand what modal verbs are.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can use “can,” “could,” and “should” correctly.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I know when to use each modal verb (ability, request, advice).</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can make positive, negative, and question forms with modals.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can correct common mistakes in modal verb usage (e.g., no 'to' or 's').</li>
+            </ul>
+
+            <h4>자가진단 문항</h4>
+            <ol>
+                <li class="checklist-question">Can you explain why “She can swim” is correct?</li>
+                <li class="checklist-question">Can you write a sentence using “He could help us”?</li>
+                <li class="checklist-question">Can you correct “You should to study”?</li>
+                <li class="checklist-question">Can you describe three things you **can** do well?</li>
+                <li class="checklist-question">Can you make a **polite request** using **could**?</li>
+            </ol>
+
+            <h4>다음 단계 학습 가이드</h4>
+            <ul>
+                <li>Review the difference between **can** (능력) and **could** (공손한 요청)의 미묘한 차이를 상황별로 연습하세요.</li>
+                <li>Practice making negative questions (e.g., **Shouldn't** you call him?).</li>
+                <li>다른 조동사 (**must, may, might**)와 비교하며 심화 학습을 준비하세요.</li>
+                <li>실제 대화 상황에서 can, could, should를 사용하여 즉각적으로 반응하는 연습을 하세요.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.getElementById('progress-bar');
+            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+            const answersBox = document.getElementById('answers');
+
+            // Progress Bar and Checklist Logic
+            if (progressBar && checkboxes.length > 0) {
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateProgress);
+                });
+            }
+
+            function updateProgress() {
+                const totalCheckboxes = checkboxes.length;
+                const checkedCheckboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').length;
+                
+                if (totalCheckboxes > 0 && progressBar) {
+                    const progress = (checkedCheckboxes / totalCheckboxes) * 100;
+                    progressBar.style.width = progress + '%';
+                    progressBar.textContent = Math.round(progress) + '%';
+                }
+            }
+
+            // Multiple Choice Question Logic
+            const mcqOptions = document.querySelectorAll('.practice .option');
+
+            if (mcqOptions.length > 0) {
+                mcqOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const parentOptions = this.parentElement.querySelectorAll('.option');
+                        parentOptions.forEach(opt => {
+                            opt.classList.remove('correct', 'incorrect');
+                        });
+
+                        const parentDiv = this.closest('.options');
+                        const correctAnswer = parentDiv.getAttribute('data-correct');
+
+                        if (this.getAttribute('data-value') === correctAnswer) {
+                            this.classList.add('correct');
+                        } else {
+                            this.classList.add('incorrect');
+                        }
+                    });
+                });
+            }
+            
+            // Show Answers Button Logic
+            const showAnswersBtn = document.querySelector('.submit-btn');
+            if (showAnswersBtn) {
+                showAnswersBtn.addEventListener('click', function() {
+                    answersBox.classList.toggle('hidden');
+                    if (!answersBox.classList.contains('hidden')) {
+                         this.textContent = '정답 숨기기';
+                    } else {
+                         this.textContent = '정답 확인하기';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
