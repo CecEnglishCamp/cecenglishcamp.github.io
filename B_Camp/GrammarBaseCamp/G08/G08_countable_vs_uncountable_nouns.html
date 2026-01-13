@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G08 Part 1: Countable vs Uncountable Nouns</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --blue-light: #e3f2fd;
+            --blue-medium: #bbdefb;
+            --green: #e8f5e9;
+            --orange: #fff3e0;
+            --purple: #f3e5f5;
+            --sky: #e0f7fa;
+            --gray-light: #f5f5f5;
+            --gray-dark: #bdbdbd;
+            --noun-color: #f1c40f; /* Yellow for Nouns */
+            --blue-main: #3498db;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--blue-main);
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid var(--blue-main);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid var(--blue-main);
+            padding-left: 15px;
+        }
+
+        .concept-card {
+            background-color: var(--blue-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: var(--noun-color); /* Noun Color */
+        }
+
+        .concept-card h4 {
+            color: #1f3a5f;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .concept-icon {
+            font-size: 1.5rem;
+            color: var(--noun-color);
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .concept-meaning strong, .concept-examples strong {
+            color: var(--noun-color);
+        }
+
+        .grammar ul, .positive ul, .question ul, .dialogue p, .sentence_combining ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .grammar li, .positive li, .question li, .dialogue p, .sentence_combining li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .grammar li:hover, .positive li:hover, .question li:hover, .dialogue p:hover, .sentence_combining li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section.concept { background-color: var(--blue-light); }
+        .section.grammar { background-color: var(--blue-medium); }
+        .section.positive { background-color: var(--green); }
+        .section.question { background-color: var(--orange); }
+        .section.dialogue { background-color: var(--purple); }
+        .section.sentence_combining { background-color: var(--sky); }
+        
+        .section.concept h2 { border-color: var(--noun-color); color: var(--noun-color); }
+        .section.grammar h2 { border-color: #2c3e50; color: #2c3e50; }
+        .section.positive h2 { border-color: #27ae60; color: #27ae60; }
+        .section.question h2 { border-color: #e67e22; color: #e67e22; }
+        .section.dialogue h2 { border-color: #8e44ad; color: #8e44ad; }
+        .section.sentence_combining h2 { border-color: #3498db; color: #3498db; }
+        
+        .positive strong, .question strong, .dialogue strong, .sentence_combining strong { color: #2980b9; }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G08. 명사 (Nouns) - 가산 vs 불가산 (Part 1)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol>
+                <li><a href="#concept">기본 개념 (Basic Concept)</a></li>
+                <li><a href="#grammar">문법 규칙 (Grammar Rules)</a></li>
+                <li><a href="#positive">긍정문 예시 (Positive Examples)</a></li>
+                <li><a href="#question">의문문 예시 (Question Examples)</a></li>
+                <li><a href="#dialogue">상황별 대화 (Situational Dialogues)</a></li>
+                <li><a href="#sentence_combining">문장 결합 연습 (Sentence Combining)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+        
+        <div class="section concept" id="concept">
+            <h2>1. 기본 개념 (Basic Concept)</h2>
+            <div class="concept-card">
+                <h4><span class="concept-icon">NOUN</span>Countable vs Uncountable Nouns</h4>
+                <div class="concept-meaning">
+                    <strong>가산명사 (Countable):</strong> **셀 수 있는** 명사. 개별적인 형태로 존재.<br>
+                    **불가산명사 (Uncountable):** **셀 수 없는** 명사. 액체, 물질, 개념 등 집합적인 형태.<br>
+                    가산명사는 복수형 가능 (**-s** 부착) / 불가산명사는 **단수형**만 사용
+                </div>
+                <div class="concept-examples">
+                    <p>I have **two apples**. (**가산**)</p>
+                    <p>I need **some water**. (**불가산**)</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section grammar" id="grammar">
+            <h2>2. 문법 규칙 (Grammar Rules)</h2>
+            <ul>
+                <li>**가산명사 단수:** **a/an** + 명사 (a book, an apple)</li>
+                <li>**가산명사 복수:** 숫자 + 명사**-s** (two books, many chairs)</li>
+                <li>**불가산명사:** **a/an 사용 불가** (❌ an advice)</li>
+                <li>**불가산명사에는 복수형 없음** (❌ informations)</li>
+                <li>**불가산 수량 표현:** **much**, **a little**, **some** 사용 (much rice, a little milk)</li>
+                <li>**가산 수량 표현:** **many**, **a few**, **some** 사용 (many books, a few apples)</li>
+                <li>**some, a lot of:** 가산/불가산 명사 **모두** 사용 가능</li>
+                <li>**의문문/부정문:** **any** 사용 (Do you have **any** rice?)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section positive" id="positive">
+            <h2>3. 긍정문 예시 (Positive Examples)</h2>
+            <ul>
+                <li>I have **a book**. (가산)</li>
+                <li>She has **two pens**. (가산)</li>
+                <li>We need **some chairs**. (가산 - 복수형)</li>
+                <li>I need **some water**. (불가산)</li>
+                <li>He wants **a little rice**. (불가산)</li>
+                <li>They have **much information**. (불가산)</li>
+                <li>She gave me **some advice**. (불가산)</li>
+                <li>We need **a few apples**. (가산 - 복수형)</li>
+                <li>I drank **a lot of milk**. (불가산)</li>
+                <li>He bought **three notebooks**. (가산 - 복수형)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section question" id="question">
+            <h2>4. 의문문 예시 (Question Examples)</h2>
+            <ul>
+                <li>**Do** you have **a pen**? (가산 단수)</li>
+                <li>**Do** they need **some chairs**? (가산 복수)</li>
+                <li>**Is** there **any water**? (불가산)</li>
+                <li>**Do** you want **some rice**? (불가산)</li>
+                <li>**How many** books **do** you have? (가산 수량)</li>
+                <li>**How much** milk **do** you drink? (불가산 수량)</li>
+                <li>**Do** you have **any advice**? (불가산)</li>
+                <li>**Are** there **any apples**? (가산 복수)</li>
+                <li>**Is** there **any sugar**? (불가산)</li>
+                <li>**Do** you need **a notebook**? (가산 단수)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section dialogue" id="dialogue">
+            <h2>5. 상황별 대화 흐름 (Situational Dialogues)</h2>
+
+            <p><strong>학교 상황 (가산)</strong><br />
+            A: **Do** you have **a pen**?<br />
+            B: Yes, I have **two pens**.<br />
+            A: Great!</p>
+
+            <p><strong>여행 상황 (불가산)</strong><br />
+            A: **Is** there **any water** in the bottle?<br />
+            B: Yes, there’s **a little water** left.<br />
+            A: Thanks!</p>
+
+            <p><strong>직장 상황 (가산)</strong><br />
+            A: **Do** we have **any chairs** for the meeting?<br />
+            B: Yes, we have **some chairs** in the next room.<br />
+            A: Perfect.</p>
+
+            <p><strong>온라인 상황 (불가산)</strong><br />
+            A: **Do** you need **any information**?<br />
+            B: Yes, I need **some advice** about the project.<br />
+            A: I’ll send it.</p>
+
+            <p><strong>가족 상황 (가산)</strong><br />
+            A: **Do** we have **any apples**?<br />
+            B: Yes, we have **a few apples** in the fridge.<br />
+            A: Let’s eat!</p>
+
+            <p><strong>병원 상황 (불가산)</strong><br />
+            A: **Do** you need **some water**?<br />
+            B: Yes, please. Just **a little**.<br />
+            A: Here you go.</p>
+        </div>
+
+        <hr>
+
+        <div class="section sentence_combining" id="sentence_combining">
+            <h2>6. 문장 결합 연습 (Sentence Combining)</h2>
+            <ul>
+                <li>I have book. → I have **a book**. (가산 단수)</li>
+                <li>She needs water. → She needs **some water**. (불가산)</li>
+                <li>We bought apples. → We bought **a few apples**. (가산 복수)</li>
+                <li>He wants rice. → He wants **a little rice**. (불가산)</li>
+                <li>They have chairs. → They have **many chairs**. (가산 복수)</li>
+                <li>I need information. → I need **some information**. (불가산)</li>
+                <li>She gave me advice. → She gave me **some advice**. (불가산)</li>
+                <li>We drank milk. → We drank **a lot of milk**. (불가산)</li>
+                <li>You have pens. → You have **several pens**. (가산 복수)</li>
+                <li>He brought sugar. → He brought **some sugar**. (불가산)</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G08 Part 2: Countable vs Uncountable Nouns</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --yellow-light: #fffde7;
+            --pink-light: #fce4ec;
+            --orange-light: #ffecb3;
+            --green: #e8f5e9;
+            --gray: #e0e0e0;
+            --gray-dark: #bdbdbd;
+            --red-strong: #c0392b;
+            --blue-main: #3498db;
+            --noun-color: #f1c40f; /* Yellow for Nouns */
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--blue-main);
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid var(--blue-main);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid var(--blue-main);
+            padding-left: 15px;
+        }
+
+        .real_life_usage.section { background-color: var(--yellow-light); }
+        .common_patterns.section { background-color: var(--pink-light); }
+        .mistakes.section { background-color: var(--orange-light); }
+        .tips.section { background-color: var(--green); }
+        .practice.section { background-color: var(--gray); }
+        .checklist.section { background-color: var(--gray-dark); }
+        
+        .section.real_life_usage h2 { border-color: #f1c40f; color: #f1c40f; }
+        .section.common_patterns h2 { border-color: #e91e63; color: #e91e63; }
+        .section.mistakes h2 { border-color: #f39c12; color: #f39c12; }
+        .section.tips h2 { border-color: #2ecc71; color: #2ecc71; }
+        .section.practice h2 { border-color: #7f8c8d; color: #7f8c8d; }
+        .section.checklist h2 { border-color: #95a5a6; color: #95a5a6; }
+
+        .section ul, .section ol {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .section li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .mistakes li .correct { color: #2ecc71; font-weight: bold; }
+        .mistakes li .incorrect { color: var(--red-strong); font-weight: bold; text-decoration: line-through; }
+        .section li strong { color: var(--noun-color); }
+
+        .practice h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .practice ol {
+            padding-left: 20px;
+        }
+
+        .practice li {
+            margin-bottom: 15px;
+            background-color: #fff;
+        }
+        
+        .practice .options {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .practice .option {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        
+        .practice .option:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.01);
+        }
+
+        .practice .option.correct {
+            background-color: #e8f5e9;
+            border-color: #27ae60;
+        }
+
+        .practice input[type="text"] {
+            width: 90%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        
+        #progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        #progress-bar {
+            width: 0;
+            height: 20px;
+            background-color: var(--noun-color);
+            border-radius: 10px;
+            text-align: center;
+            color: #333;
+            line-height: 20px;
+            transition: width 0.4s ease-in-out;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .checklist h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--blue-main);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G08. 명사 (Nouns) - 가산 vs 불가산 (Part 2)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol start="7">
+                <li><a href="#real_life_usage">실생활 사용 예시 (Real-Life Usage)</a></li>
+                <li><a href="#common_patterns">자주 쓰이는 패턴 (Common Patterns)</a></li>
+                <li><a href="#mistakes">흔한 실수 (Common Mistakes)</a></li>
+                <li><a href="#tips">레벨업 팁 (Level-Up Tips)</a></li>
+                <li><a href="#practice">연습문제 (Practice Exercises)</a></li>
+                <li><a href="#checklist">자가진단 체크리스트 (Self-Check)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section real_life_usage" id="real_life_usage">
+            <h2>7. 실생활 사용 예시 (Real-Life Usage)</h2>
+            <ul>
+                <li>**학교 상황:** I need **a notebook** and **some paper**. (가산+불가산)</li>
+                <li>**직장 상황:** We received **some feedback** and **many emails**. (불가산+가산)</li>
+                <li>**가족 상황:** She bought **a few apples** and **some milk**. (가산+불가산)</li>
+                <li>**온라인 상황:** I sent **some information** and **two files**. (불가산+가산)</li>
+                <li>**병원 상황:** He needs **some water** and **a blanket**. (불가산+가산)</li>
+                <li>**여행 상황:** We packed **a lot of clothes** and **some snacks**. (가산+가산)</li>
+                <li>**회의 상황:** They shared **some advice** and **several ideas**. (불가산+가산)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section common_patterns" id="common_patterns">
+            <h2>8. 자주 쓰이는 패턴 (Common Patterns)</h2>
+            <ul>
+                <li>**a/an + 단수 가산명사:** a book, an apple</li>
+                <li>**숫자 + 복수 가산명사:** two pens, three chairs</li>
+                <li>**some + 불가산명사:** **some water**, **some advice**</li>
+                <li>**much/little + 불가산명사:** **much rice**, **a little sugar**</li>
+                <li>**many/few + 복수 가산명사:** **many books**, **a few apples**</li>
+                <li>**a lot of + 가산/불가산 모두 가능:** a lot of milk, a lot of students</li>
+                <li>**any + 의문문/부정문:** Do you have **any** sugar? / I don’t have **any** pens.</li>
+                <li>**불가산명사에는 복수형 없음:** ❌ informations → ✅ **information**</li>
+                <li>**불가산명사에는 a/an 사용 불가:** ❌ an advice → ✅ **some advice**</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section mistakes" id="mistakes">
+            <h2>9. 흔한 실수 (Common Mistakes)</h2>
+            <ul>
+                <li><span class="incorrect">❌ I have books.</span> (처음 언급) → <span class="correct">✅ I have **a book**.</span> (단수 가산명사에는 a/an을 붙여야 함)</li>
+                <li><span class="incorrect">❌ She needs an information.</span> → <span class="correct">✅ She needs **some information**.</span> (불가산명사 앞에 a/an 사용 불가)</li>
+                <li><span class="incorrect">❌ We bought many rice.</span> → <span class="correct">✅ We bought **much rice**.</span> (rice는 불가산이므로 much 사용)</li>
+                <li><span class="incorrect">❌ He gave me advices.</span> → <span class="correct">✅ He gave me **some advice**.</span> (advice는 불가산이므로 복수형 없음)</li>
+                <li><span class="incorrect">❌ I drank waters.</span> → <span class="correct">✅ I drank **some water**.</span> (water는 불가산이므로 복수형 없음)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section tips" id="tips">
+            <h2>10. 레벨업 팁 (Level-Up Tips)</h2>
+            <ul>
+                <li>**수량 표현 구분:**
+                    <ul>
+                        <li>**가산:** **many** (많은), **few/a few** (적은/약간의)</li>
+                        <li>**불가산:** **much** (많은), **little/a little** (적은/약간의)</li>
+                    </ul>
+                </li>
+                <li>**불가산명사 암기:** `Advice, Information, Furniture, Luggage, Money, News, Bread, Rice` 등 자주 틀리는 불가산 명사를 따로 암기하세요.</li>
+                <li>**측정 단위:** 불가산 명사를 셀 때는 단위를 사용합니다. (예: **a cup of** coffee, **a piece of** advice, **two slices of** bread)</li>
+                <li>**some/any의 사용:** 긍정문에서는 주로 **some**, 의문문/부정문에서는 주로 **any**를 사용합니다. (단, 권유나 요청의 의문문에서는 **some** 사용 가능)</li>
+                <li>**a lot of/lots of:** 일상 대화에서 가산/불가산을 크게 신경 쓰지 않고 **'많은'** 이라는 의미로 편하게 사용하기 좋습니다.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section practice" id="practice">
+            <h2>11. 연습문제 (Practice Exercises)</h2>
+
+            <h4>객관식</h4>
+            <ol>
+                <li id="q1">Which is correct?
+                    <div class="question">A. I need an information. B. I need **some information**.</div>
+                    <div class="options" data-correct="B">
+                        <div class="option" data-value="A">A. I need an information.</div>
+                        <div class="option" data-value="B">B. I need **some information**.</div>
+                    </div>
+                </li>
+                <li id="q2">Choose the correct noun type:
+                    <div class="question">Milk is a(n) ___ noun.</div>
+                    <div class="options" data-correct="B">
+                        <div class="option" data-value="A">A. countable</div>
+                        <div class="option" data-value="B">B. **uncountable**</div>
+                    </div>
+                </li>
+                <li id="q3">Fill in: She has ___ apples.
+                    <div class="options" data-correct="B">
+                        <div class="option" data-value="A">A. much</div>
+                        <div class="option" data-value="B">B. **a few**</div>
+                    </div>
+                </li>
+            </ol>
+            
+            <button class="submit-btn" onclick="checkAnswers()">정답 확인하기</button>
+            <div id="answers" class="hidden">
+                <p><strong>1. B</strong>. **Information**은 불가산명사입니다. (a/an 사용 불가)</p>
+                <p><strong>2. B</strong>. **Milk**는 액체이므로 셀 수 없는 **uncountable** 명사입니다.</p>
+                <p><strong>3. B</strong>. **Apples**는 가산명사의 복수형이므로 **a few**를 사용합니다. (much는 불가산에 사용)</p>
+            </div>
+            
+            <h4>문장 결합 및 오류 수정 (정답 예시 제공)</h4>
+            <ol start="4">
+                <li>I have book. → I have **a book**. <input type="text" id="q4" placeholder="I have a book."/></li>
+                <li>She needs water. → She needs **some water**. <input type="text" id="q5" placeholder="She needs some water."/></li>
+                <li>❌ We bought many rice. → ✅ We bought **much rice**. <input type="text" id="q6" placeholder="We bought much rice."/></li>
+                <li>❌ He gave me advices. → ✅ He gave me **some advice**. <input type="text" id="q7" placeholder="He gave me some advice."/></li>
+                <li>❌ I have books. (처음 언급) → ✅ I have **a book**. <input type="text" id="q8" placeholder="I have a book."/></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section checklist" id="checklist">
+            <h2>12. 자가진단 체크리스트 (Self-Check)</h2>
+
+            <h4>학습 완료 체크</h4>
+            <div id="progress-container">
+                <div id="progress-bar">0%</div>
+            </div>
+            <ul>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I understand the difference between countable and uncountable nouns.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can use correct articles (a/an) and quantity words (many/much).</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I know that uncountable nouns do not use -s or a/an.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can correctly use 'some' and 'any' with both noun types.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can identify and correct common mistakes like 'an advice' or 'much apples'.</li>
+            </ul>
+
+            <h4>자가진단 문항</h4>
+            <ol>
+                <li class="checklist-question">Can you explain why “some information” is correct?</li>
+                <li class="checklist-question">Can you write a sentence using “a few apples”?</li>
+                <li class="checklist-question">Can you correct “She needs an information”?</li>
+                <li class="checklist-question">Can you describe what you bought using both noun types?</li>
+                <li class="checklist-question">Can you translate “나는 물이 좀 필요해”?</li>
+                <li class="checklist-question">Can you use “How many…” and “How much…” correctly in questions?</li>
+            </ol>
+
+            <h4>다음 단계 학습 가이드</h4>
+            <ul>
+                <li>Review lists of common confusing 불가산 명사 (**advice, furniture, luggage, news**).</li>
+                <li>Practice creating sentences using **measuring units** (e.g., a slice of bread, two bottles of water).</li>
+                <li>Focus on the correct verb agreement: Uncountable nouns are always treated as singular (e.g., The **information is** helpful).</li>
+                <li>Use noun types to improve the clarity and precision of your writing and speech.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.getElementById('progress-bar');
+            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+            const answersBox = document.getElementById('answers');
+
+            // Progress Bar and Checklist Logic
+            if (progressBar && checkboxes.length > 0) {
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateProgress);
+                });
+            }
+
+            function updateProgress() {
+                const totalCheckboxes = checkboxes.length;
+                const checkedCheckboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').length;
+                
+                if (totalCheckboxes > 0 && progressBar) {
+                    const progress = (checkedCheckboxes / totalCheckboxes) * 100;
+                    progressBar.style.width = progress + '%';
+                    progressBar.textContent = Math.round(progress) + '%';
+                }
+            }
+
+            // Multiple Choice Question Logic
+            const mcqOptions = document.querySelectorAll('.practice .option');
+
+            if (mcqOptions.length > 0) {
+                mcqOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const parentOptions = this.parentElement.querySelectorAll('.option');
+                        parentOptions.forEach(opt => {
+                            opt.classList.remove('correct', 'incorrect');
+                        });
+
+                        const parentDiv = this.closest('.options');
+                        const correctAnswer = parentDiv.getAttribute('data-correct');
+
+                        if (this.getAttribute('data-value') === correctAnswer) {
+                            this.classList.add('correct');
+                        } else {
+                            this.classList.add('incorrect');
+                        }
+                    });
+                });
+            }
+            
+            // Show Answers Button Logic
+            const showAnswersBtn = document.querySelector('.submit-btn');
+            if (showAnswersBtn) {
+                showAnswersBtn.addEventListener('click', function() {
+                    answersBox.classList.toggle('hidden');
+                    if (!answersBox.classList.contains('hidden')) {
+                         this.textContent = '정답 숨기기';
+                    } else {
+                         this.textContent = '정답 확인하기';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

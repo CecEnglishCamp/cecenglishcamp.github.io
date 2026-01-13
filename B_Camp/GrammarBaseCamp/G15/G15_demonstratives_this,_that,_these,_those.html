@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G15 Part 1: Demonstratives (this / that / these / those)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --blue-light: #e3f2fd;
+            --blue-medium: #bbdefb;
+            --green: #e8f5e9;
+            --orange: #fff3e0;
+            --purple: #f3e5f5;
+            --teal: #e0f2f1;
+            --gray-light: #f5f5f5;
+            --gray-dark: #bdbdbd;
+            --point-color: #00bcd4; /* Cyan/Teal for Demonstratives */
+            --blue-main: #3498db;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--blue-main);
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid var(--blue-main);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid var(--blue-main);
+            padding-left: 15px;
+        }
+
+        .concept-card {
+            background-color: var(--blue-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: var(--point-color); /* Demonstrative Color */
+        }
+
+        .concept-card h4 {
+            color: #1f3a5f;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .concept-icon {
+            font-size: 1.5rem;
+            color: var(--point-color);
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .concept-meaning strong, .concept-examples strong {
+            color: var(--point-color);
+        }
+
+        .grammar ul, .positive ul, .question ul, .dialogue p, .sentence_combining ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .grammar li, .positive li, .question li, .dialogue p, .sentence_combining li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .grammar li:hover, .positive li:hover, .question li:hover, .dialogue p:hover, .sentence_combining li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section.concept { background-color: var(--blue-light); }
+        .section.grammar { background-color: var(--blue-medium); }
+        .section.positive { background-color: var(--green); }
+        .section.question { background-color: var(--orange); }
+        .section.dialogue { background-color: var(--purple); }
+        .section.sentence_combining { background-color: var(--teal); }
+        
+        .section.concept h2 { border-color: var(--point-color); color: var(--point-color); }
+        .section.grammar h2 { border-color: #2c3e50; color: #2c3e50; }
+        .section.positive h2 { border-color: #27ae60; color: #27ae60; }
+        .section.question h2 { border-color: #e67e22; color: #e67e22; }
+        .section.dialogue h2 { border-color: #8e44ad; color: #8e44ad; }
+        .section.sentence_combining h2 { border-color: #3498db; color: #3498db; }
+        
+        .positive strong, .question strong, .dialogue strong, .sentence_combining strong { color: var(--point-color); }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G15. 지시 형용사 (Demonstratives) - this / that / these / those (Part 1)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol>
+                <li><a href="#concept">기본 개념 (Basic Concept)</a></li>
+                <li><a href="#grammar">문법 규칙 (Grammar Rules)</a></li>
+                <li><a href="#positive">긍정문 예시 (Positive Examples)</a></li>
+                <li><a href="#question">의문문 예시 (Question Examples)</a></li>
+                <li><a href="#dialogue">상황별 대화 (Situational Dialogues)</a></li>
+                <li><a href="#sentence_combining">문장 결합 연습 (Sentence Combining)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+        
+        <div class="section concept" id="concept">
+            <h2>1. 기본 개념 (Basic Concept)</h2>
+            <div class="concept-card">
+                <h4><span class="concept-icon">POINT</span>Demonstratives – this / that / these / those</h4>
+                <div class="concept-meaning">
+                    **지시 형용사 (Demonstratives):** 사람이나 사물을 **가리키며** 설명할 때 사용하는 단어입니다. <br>
+                    지시 대상과의 **거리** (가까움/멂)와 **수** (단수/복수)에 따라 선택됩니다.
+                    <br><br>
+                    **this (단수/가까움):** 이것, 이 (this book) <br>
+                    **that (단수/멂):** 저것, 저 (that chair) <br>
+                    **these (복수/가까움):** 이것들, 이 (these books) <br>
+                    **those (복수/멂):** 저것들, 저 (those chairs) 
+                </div>
+                <div class="concept-examples">
+                    <p>**This** is my pen. (가까운 펜 하나)</p>
+                    <p>**That** is your bag. (먼 가방 하나)</p>
+                    <p>**These** are my shoes. (가까운 신발 여러 켤레)</p>
+                    <p>**Those** are her keys. (먼 열쇠 꾸러미)</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section grammar" id="grammar">
+            <h2>2. 문법 규칙 (Grammar Rules)</h2>
+            <ul>
+                <li>**this + 단수 명사:** **this** book, **this** phone (가까운 단수)</li>
+                <li>**that + 단수 명사:** **that** chair, **that** bag (먼 단수)</li>
+                <li>**these + 복수 명사:** **these** books, **these** pens (가까운 복수)</li>
+                <li>**those + 복수 명사:** **those** chairs, **those** shoes (먼 복수)</li>
+                <li>**지시 대명사 형태:** 지시어 + **be동사** + 명사 (주어로 사용)
+                    <br>→ **This is** my notebook. / **These are** your pencils.
+                </li>
+                <li>**지시 형용사 형태:** 지시어 + **명사** (명사를 수식)
+                    <br>→ **That book** is mine. / **Those chairs** are comfortable.
+                </li>
+                <li>**수량 기준 (Number):** 단수는 **this/that**, 복수는 **these/those**를 사용하며, be동사도 **is/are**로 일치시켜야 합니다.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section positive" id="positive">
+            <h2>3. 긍정문 예시 (Positive Examples)</h2>
+            <ul>
+                <li>**This** is my notebook. (이것은 내 공책이야.)</li>
+                <li>**That** is your pencil. (저것은 네 연필이야.)</li>
+                <li>**These** are my shoes. (이것들은 내 신발이야.)</li>
+                <li>**Those** are her keys. (저것들은 그녀의 열쇠야.)</li>
+                <li>**This** phone is new. (이 핸드폰은 새것이야.)</li>
+                <li>**That** bag is old. (저 가방은 낡았어.)</li>
+                <li>**These** books are interesting. (이 책들은 흥미로워.)</li>
+                <li>**Those** chairs are comfortable. (저 의자들은 편안해.)</li>
+                <li>**This** is my folder. (이것은 내 폴더야.)</li>
+                <li>**Those** are his glasses. (저것들은 그의 안경이야.)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section question" id="question">
+            <h2>4. 의문문 예시 (Question Examples)</h2>
+            <ul>
+                <li>**Is** **this** your notebook? (이것이 네 공책이니?)</li>
+                <li>**Is** **that** your pencil? (저것이 네 연필이니?)</li>
+                <li>**Are** **these** your shoes? (이것들이 네 신발이니?)</li>
+                <li>**Are** **those** her keys? (저것들이 그녀의 열쇠이니?)</li>
+                <li>**Is** **this** phone new? (이 핸드폰이 새것이니?)</li>
+                <li>**Is** **that** bag yours? (저 가방이 네 것이니?)</li>
+                <li>**Are** **these** books interesting? (이 책들이 흥미롭니?)</li>
+                <li>**Are** **those** chairs comfortable? (저 의자들은 편안하니?)</li>
+                <li>**Is** **this** your folder? (이것이 네 폴더니?)</li>
+                <li>**Are** **those** his glasses? (저것들이 그의 안경이니?)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section dialogue" id="dialogue">
+            <h2>5. 상황별 대화 흐름 (Situational Dialogues)</h2>
+
+            <p><strong>학교 상황 (This/That)</strong><br />
+            A: **Is** **this** your notebook? (가까이 있는 공책)<br />
+            B: No, **that** one is mine. (멀리 있는 공책)<br />
+            A: Okay, I’ll take it.</p>
+
+            <p><strong>여행 상황 (These/Those)</strong><br />
+            A: **Are** **these** your tickets? (가까이 있는 티켓들)<br />
+            B: No, **those** are ours. (멀리 있는 티켓들)<br />
+            A: Got it.</p>
+
+            <p><strong>직장 상황 (That/This)</strong><br />
+            A: **Is** **that** your report? (저기 있는 보고서)<br />
+            B: Yes, **this** one is the final version. (내가 들고 있는 보고서)<br />
+            A: Thanks!</p>
+
+            <p><strong>온라인 상황 (This/That)</strong><br />
+            A: **Is** **this** the correct file?<br />
+            B: No, **that** one is outdated.<br />
+            A: I’ll update it.</p>
+
+            <p><strong>가족 상황 (Those/These)</strong><br />
+            A: **Are** **those** her shoes? (저기 있는 신발들)<br />
+            B: No, **these** are hers. (가까이 있는 신발들)<br />
+            A: She’ll be happy.</p>
+
+            <p><strong>병원 상황 (This/That)</strong><br />
+            A: **Is** **this** his medicine?<br />
+            B: No, **that** is for another patient.<br />
+            A: I’ll check again.</p>
+        </div>
+
+        <hr>
+
+        <div class="section sentence_combining" id="sentence_combining">
+            <h2>6. 문장 결합 연습 (Sentence Combining)</h2>
+            <p>(지시 대명사를 지시 형용사로 바꾸어 명사를 수식하는 형태로 결합하세요.)</p>
+            <ul>
+                <li>This is a pen. → **This pen** is mine.</li>
+                <li>That is a bag. → **That bag** is yours.</li>
+                <li>These are shoes. → **These shoes** are new.</li>
+                <li>Those are keys. → **Those keys** are hers.</li>
+                <li>This is my notebook. → **This notebook** is mine.</li>
+                <li>That is your pencil. → **That pencil** is yours.</li>
+                <li>These are my books. → **These books** are interesting.</li>
+                <li>Those are her glasses. → **Those glasses** are expensive.</li>
+                <li>This is a folder. → **This folder** is blue.</li>
+                <li>Those are chairs. → **Those chairs** are comfortable.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G15 Part 2: Demonstratives (this / that / these / those)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --yellow-light: #fffde7;
+            --pink-light: #fce4ec;
+            --orange-light: #ffecb3;
+            --green: #e8f5e9;
+            --gray: #e0e0e0;
+            --gray-dark: #bdbdbd;
+            --red-strong: #c0392b;
+            --blue-main: #3498db;
+            --point-color: #00bcd4; /* Cyan/Teal for Demonstratives */
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--blue-main);
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid var(--blue-main);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid var(--blue-main);
+            padding-left: 15px;
+        }
+
+        .real_life_usage.section { background-color: var(--yellow-light); }
+        .common_patterns.section { background-color: var(--pink-light); }
+        .mistakes.section { background-color: var(--orange-light); }
+        .tips.section { background-color: var(--green); }
+        .practice.section { background-color: var(--gray); }
+        .checklist.section { background-color: var(--gray-dark); }
+        
+        .section.real_life_usage h2 { border-color: #f1c40f; color: #f1c40f; }
+        .section.common_patterns h2 { border-color: #e91e63; color: #e91e63; }
+        .section.mistakes h2 { border-color: #f39c12; color: #f39c12; }
+        .section.tips h2 { border-color: #2ecc71; color: #2ecc71; }
+        .section.practice h2 { border-color: #7f8c8d; color: #7f8c8d; }
+        .section.checklist h2 { border-color: #95a5a6; color: #95a5a6; }
+
+        .section ul, .section ol {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .section li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .mistakes li .correct { color: #2ecc71; font-weight: bold; }
+        .mistakes li .incorrect { color: var(--red-strong); font-weight: bold; text-decoration: line-through; }
+        .section li strong { color: var(--point-color); }
+
+        .practice h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .practice ol {
+            padding-left: 20px;
+        }
+
+        .practice li {
+            margin-bottom: 15px;
+            background-color: #fff;
+        }
+        
+        .practice .options {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .practice .option {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        
+        .practice .option:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.01);
+        }
+
+        .practice .option.correct {
+            background-color: #e8f5e9;
+            border-color: #27ae60;
+        }
+
+        .practice input[type="text"] {
+            width: 90%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        
+        #progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        #progress-bar {
+            width: 0;
+            height: 20px;
+            background-color: var(--point-color);
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            line-height: 20px;
+            transition: width 0.4s ease-in-out;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .checklist h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--blue-main);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G15. 지시 형용사 (Demonstratives) - this / that / these / those (Part 2)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol start="7">
+                <li><a href="#real_life_usage">실생활 사용 예시 (Real-Life Usage)</a></li>
+                <li><a href="#common_patterns">자주 쓰이는 패턴 (Common Patterns)</a></li>
+                <li><a href="#mistakes">흔한 실수 (Common Mistakes)</a></li>
+                <li><a href="#tips">레벨업 팁 (Level-Up Tips)</a></li>
+                <li><a href="#practice">연습문제 (Practice Exercises)</a></li>
+                <li><a href="#checklist">자가진단 체크리스트 (Self-Check)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section real_life_usage" id="real_life_usage">
+            <h2>7. 실생활 사용 예시 (Real-Life Usage)</h2>
+            <ul>
+                <li>**학교 상황:** **This** notebook is mine. **Those** pencils are hers. (이 공책은 내 것이고, 저 연필들은 그녀의 것이다.)</li>
+                <li>**직장 상황:** **That** report is final. **These** files are for review. (저 보고서는 최종본이다. 이 파일들은 검토용이다.)</li>
+                <li>**가족 상황:** **These** shoes are mine. **That** bag is mom’s. (이 신발들은 내 것이다. 저 가방은 엄마 것이다.)</li>
+                <li>**온라인 상황:** **This** file is correct. **Those** links are broken. (이 파일이 정확하다. 저 링크들은 깨졌다.)</li>
+                <li>**병원 상황:** **That** chart is for Room 3. **These** pills are for today. (저 차트는 3호실용이다. 이 약들은 오늘 복용할 것이다.)</li>
+                <li>**여행 상황:** **These** tickets are ours. **That** seat is yours. (이 티켓들은 우리의 것이다. 저 좌석은 당신의 것이다.)</li>
+                <li>**회의 상황:** **This** idea is good. **Those** suggestions are helpful. (이 아이디어는 좋다. 저 제안들은 도움이 된다.)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section common_patterns" id="common_patterns">
+            <h2>8. 자주 쓰이는 패턴 (Common Patterns)</h2>
+            <ul>
+                <li>**This/That + 단수:** **This** book is new. / **That** phone is ringing. (단수 명사 수식)</li>
+                <li>**These/Those + 복수:** **These** shoes are clean. / **Those** keys are lost. (복수 명사 수식)</li>
+                <li>**지시 대명사 + be동사:** **This is** mine. / **Those are** hers. (주어로 사용)</li>
+                <li>**질문 패턴:** **Is this** yours? / **Are those** your papers? (Be동사와 수일치)</li>
+                <li>**부정문:** **This is not** the answer. / **These are not** the correct files. (Be동사 뒤에 not 사용)</li>
+                <li>**거리 및 수량 기준:** **가까운 단수** (**This**), **먼 단수** (**That**), **가까운 복수** (**These**), **먼 복수** (**Those**)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section mistakes" id="mistakes">
+            <h2>9. 흔한 실수 (Common Mistakes)</h2>
+            <ul>
+                <li><span class="incorrect">❌ **This** **are** my shoes. (단수 지시어와 복수 be동사)</span> → <span class="correct">✅ **These** **are** my shoes.</span></li>
+                <li><span class="incorrect">❌ **That** **are** her keys. (단수 지시어와 복수 be동사)</span> → <span class="correct">✅ **Those** **are** her keys.</span></li>
+                <li><span class="incorrect">❌ **These** **is** my pen. (복수 지시어와 단수 be동사)</span> → <span class="correct">✅ **This** **is** my pen.</span></li>
+                <li><span class="incorrect">❌ **Those** **is** your bag. (복수 지시어와 단수 be동사)</span> → <span class="correct">✅ **That** **is** your bag.</span></li>
+                <li><span class="incorrect">❌ **This** books are good. (단수 지시어와 복수 명사)</span> → <span class="correct">✅ **These** books are good.</span></li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section tips" id="tips">
+            <h2>10. 레벨업 팁 (Level-Up Tips)</h2>
+            <ul>
+                <li>**전화 통화:** 전화 통화 시 자신을 소개할 때는 거리에 상관없이 항상 **This**를 사용합니다. (예: Hello, **This** is John speaking.)</li>
+                <li>**감정적 거리:** **That/Those**는 물리적인 거리가 멀다는 것 외에도, 화자가 어떤 대상에 대해 **부정적인 감정**을 가질 때도 사용될 수 있습니다. (예: I hate **that** song!)</li>
+                <li>**시간적 거리:** **This/These**는 **현재** 가까운 시간(this week, this morning)을, **That/Those**는 **과거**의 먼 시간(that year, those days)을 지칭할 때도 사용됩니다.</li>
+                <li>**수일치 강조:** 지시 형용사(**This/That/These/Those**)가 명사를 수식할 때, 항상 **명사의 수**와 **be동사의 수**가 일치하는지 재확인하세요. (**This** pen **is** / **These** pens **are**)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section practice" id="practice">
+            <h2>11. 연습문제 (Practice Exercises)</h2>
+
+            <h4>객관식</h4>
+            <ol>
+                <li id="q1">Choose the correct demonstrative (near, plural):
+                    <div class="question">___ are my friends here.</div>
+                    <div class="options" data-correct="B">
+                        <div class="option" data-value="A">A. That</div>
+                        <div class="option" data-value="B">B. **These**</div>
+                    </div>
+                </li>
+                <li id="q2">Choose the correct demonstrative (far, singular):
+                    <div class="question">Look at ___ star in the sky.</div>
+                    <div class="options" data-correct="A">
+                        <div class="option" data-value="A">A. **that**</div>
+                        <div class="option" data-value="B">B. these</div>
+                    </div>
+                </li>
+                <li id="q3">Fill in: **Is** ___ pen yours? (near)
+                    <div class="options" data-correct="A">
+                        <div class="option" data-value="A">A. **this**</div>
+                        <div class="option" data-value="B">B. those</div>
+                    </div>
+                </li>
+            </ol>
+            
+            <button class="submit-btn" onclick="checkAnswers()">정답 확인하기</button>
+            <div id="answers" class="hidden">
+                <p><strong>1. B</strong>. 가까운 복수 (**friends**)이므로 **These**를 사용합니다.</p>
+                <p><strong>2. A</strong>. 먼 단수 (**star**)이므로 **that**을 사용합니다.</p>
+                <p><strong>3. A</strong>. 가까운 단수 (**pen**)이므로 **this**를 사용하며, be동사 **is**와 수일치합니다.</p>
+            </div>
+            
+            <h4>오류 수정 및 번역 (정답 예시 제공)</h4>
+            <ol start="4">
+                <li>❌ That are my keys. (복수) → ✅ **Those are my keys.** <input type="text" id="q4" placeholder="Those are my keys."/></li>
+                <li>❌ These is my phone. (단수) → ✅ **This is my phone.** <input type="text" id="q5" placeholder="This is my phone."/></li>
+                <li>Translate: 저것들은 네 책이니? → ✅ **Are those your books?** <input type="text" id="q6" placeholder="Are those your books?"/></li>
+                <li>Translate: 이 가방은 무거워. → ✅ **This bag is heavy.** <input type="text" id="q7" placeholder="This bag is heavy."/></li>
+                <li>Translate: 저 신발들은 누구의 것이니? → ✅ **Whose are those shoes?** <input type="text" id="q8" placeholder="Whose are those shoes?"/></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section checklist" id="checklist">
+            <h2>12. 자가진단 체크리스트 (Self-Check)</h2>
+
+            <h4>학습 완료 체크</h4>
+            <div id="progress-container">
+                <div id="progress-bar">0%</div>
+            </div>
+            <ul>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can correctly identify and use **this** (near, singular).</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can correctly identify and use **that** (far, singular).</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can correctly identify and use **these** (near, plural).</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can correctly identify and use **those** (far, plural).</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I ensure that the demonstrative, noun, and be-verb all agree in number (e.g., This is / These are).</li>
+            </ul>
+
+            <h4>자가진단 문항</h4>
+            <ol>
+                <li class="checklist-question">Can you explain the difference between **this** and **that**?</li>
+                <li class="checklist-question">Can you write a sentence describing three items close to you using **these**?</li>
+                <li class="checklist-question">Can you write a question using **Are those**...?</li>
+                <li class="checklist-question">Can you describe a past event using **that** or **those**?</li>
+                <li class="checklist-question">Can you translate **저것은 내 차야**?</li>
+            </ol>
+
+            <h4>다음 단계 학습 가이드</h4>
+            <ul>
+                <li>Review the concepts of **singular vs. plural** and **near vs. far**.</li>
+                <li>Practice using demonstratives in **shopping dialogues** (e.g., "How much is **this** shirt?").</li>
+                <li>Challenge yourself by using demonstratives to refer to abstract ideas (**This** idea is great, **That** theory is complex).</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.getElementById('progress-bar');
+            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+            const answersBox = document.getElementById('answers');
+
+            // Progress Bar and Checklist Logic
+            if (progressBar && checkboxes.length > 0) {
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateProgress);
+                });
+            }
+
+            function updateProgress() {
+                const totalCheckboxes = checkboxes.length;
+                const checkedCheckboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').length;
+                
+                if (totalCheckboxes > 0 && progressBar) {
+                    const progress = (checkedCheckboxes / totalCheckboxes) * 100;
+                    progressBar.style.width = progress + '%';
+                    progressBar.textContent = Math.round(progress) + '%';
+                    if (progress > 50) {
+                        progressBar.style.backgroundColor = '#2ecc71'; /* Change color for good progress */
+                    } else {
+                        progressBar.style.backgroundColor = 'var(--point-color)';
+                    }
+                }
+            }
+
+            // Multiple Choice Question Logic
+            const mcqOptions = document.querySelectorAll('.practice .option');
+
+            if (mcqOptions.length > 0) {
+                mcqOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const parentOptions = this.parentElement.querySelectorAll('.option');
+                        parentOptions.forEach(opt => {
+                            opt.classList.remove('correct', 'incorrect');
+                        });
+
+                        const parentDiv = this.closest('.options');
+                        const correctAnswer = parentDiv.getAttribute('data-correct');
+
+                        if (this.getAttribute('data-value') === correctAnswer) {
+                            this.classList.add('correct');
+                        } else {
+                            this.classList.add('incorrect');
+                        }
+                    });
+                });
+            }
+            
+            // Show Answers Button Logic
+            const showAnswersBtn = document.querySelector('.submit-btn');
+            if (showAnswersBtn) {
+                showAnswersBtn.addEventListener('click', function() {
+                    answersBox.classList.toggle('hidden');
+                    if (!answersBox.classList.contains('hidden')) {
+                         this.textContent = '정답 숨기기';
+                    } else {
+                         this.textContent = '정답 확인하기';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

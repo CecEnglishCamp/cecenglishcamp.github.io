@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G76 Part 1: Fronting and Inversion</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --blue-light: #e3f2fd;
+            --blue-medium: #bbdefb;
+            --green: #e8f5e9;
+            --orange: #fff3e0;
+            --purple: #f3e5f5;
+            --sky: #e0f7fa;
+            --gray-light: #f5f5f5;
+            --gray-dark: #bdbdbd;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+
+        .concept-card {
+            background-color: var(--blue-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: #3498db;
+        }
+
+        .concept-card h4 {
+            color: #1f3a5f;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .concept-icon {
+            font-size: 1.5rem;
+            color: #2980b9;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .concept-meaning strong, .concept-examples strong {
+            color: #e74c3c;
+        }
+
+        .grammar ul, .positive ul, .question ul, .dialogue p, .sentence_combining ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .grammar li, .positive li, .question li, .dialogue p, .sentence_combining li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .grammar li:hover, .positive li:hover, .question li:hover, .dialogue p:hover, .sentence_combining li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section.concept { background-color: var(--blue-light); }
+        .section.grammar { background-color: var(--blue-medium); }
+        .section.positive { background-color: var(--green); }
+        .section.question { background-color: var(--orange); }
+        .section.dialogue { background-color: var(--purple); }
+        .section.sentence_combining { background-color: var(--sky); }
+        
+        .section.concept h2 { border-color: #2980b9; color: #2980b9; }
+        .section.grammar h2 { border-color: #2c3e50; color: #2c3e50; }
+        .section.positive h2 { border-color: #27ae60; color: #27ae60; }
+        .section.question h2 { border-color: #e67e22; color: #e67e22; }
+        .section.dialogue h2 { border-color: #8e44ad; color: #8e44ad; }
+        .section.sentence_combining h2 { border-color: #3498db; color: #3498db; }
+        
+        .dialogue strong { color: #c0392b; }
+        .sentence_combining strong { color: #2980b9; }
+        .positive strong { color: #2980b9; }
+        .positive em { font-weight: bold; color: #1a6496; } /* Highlight the inverted part */
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G76. 문두 강조와 도치 (Part 1)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol>
+                <li><a href="#concept">기본 개념 (Basic Concept)</a></li>
+                <li><a href="#grammar">문법 규칙 (Grammar Rules)</a></li>
+                <li><a href="#positive">긍정문 예시 (Positive Examples)</a></li>
+                <li><a href="#question">의문문 예시 (Question Examples)</a></li>
+                <li><a href="#dialogue">상황별 대화 (Situational Dialogues)</a></li>
+                <li><a href="#sentence_combining">문장 결합 연습 (Sentence Combining)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+        
+        <div class="section concept" id="concept">
+            <h2>1. 기본 개념 (Basic Concept)</h2>
+            <div class="concept-card">
+                <h4><span class="concept-icon">INVERT</span>Fronting and Inversion (문두 강조와 도치)</h4>
+                <div class="concept-meaning">
+                    <strong>Fronting:</strong> 문장의 특정 요소를 **문두로 이동**시켜 강조하거나 흐름을 조절함<br>
+                    <strong>Inversion:</strong> 주어와 동사의 순서를 **바꾸어** 강조하거나 문법적 구조를 조정함<br>
+                    고급 글쓰기, 발표, 시험 응답에서 **효과적인 강조** 수단으로 사용
+                </div>
+                <div class="concept-examples">
+                    <p><strong>기본:</strong> He didn’t understand until later.</p>
+                    <p><strong>강조:</strong> **Only then did he understand.**</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section grammar" id="grammar">
+            <h2>2. 문법 규칙 (Grammar Rules)</h2>
+            <ul>
+                <li><strong>부사구 도치:</strong> Only then **did** he understand. (조동사 + 주어 + 본동사)</li>
+                <li><strong>부정어 도치:</strong> Never **have** I seen such chaos. (조동사 + 주어 + 본동사)</li>
+                <li><strong>조건절 도치 (If 생략):</strong> **Had** I known, I would have helped. (Had/Were/Should + 주어 + ...)</li>
+                <li><strong>장소/시간 전치:</strong> On the table **lay** the book. (장소 부사구 + 동사 + 주어, 주어가 명사일 때)</li>
+                <li>도치 시 주어와 동사의 순서가 바뀜 (**동사 → 주어**)</li>
+                <li>조동사(do/does/did/have/had/will 등)와 함께 도치 발생 (be동사나 조동사가 있으면 그것을 문두로)</li>
+                <li>강조 표현 앞에 쉼표 사용 가능 (예: Only then, did he…)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section positive" id="positive">
+            <h2>3. 긍정문 예시 (Positive Examples)</h2>
+            <h4>부사구 도치 (Only, Not until)</h4>
+            <ul>
+                <li>Only then **did** she realize the truth.</li>
+                <li>Only after the meeting **did** they decide.</li>
+                <li>Not until now **have** we understood.</li>
+                <li>Only by working together **can** we succeed.</li>
+                <li>Only in emergencies **should** this button be used.</li>
+            </ul>
+
+            <h4>부정어 도치 (Never, Rarely, Not once)</h4>
+            <ul>
+                <li>Never **have** I felt so proud.</li>
+                <li>Rarely **does** he speak in public.</li>
+                <li>Not once **did** she complain.</li>
+                <li>Hardly ever **do** they arrive on time.</li>
+                <li>Under no circumstances **should** you open the door.</li>
+            </ul>
+
+            <h4>조건절 도치 (If 생략)</h4>
+            <ul>
+                <li>Had I known, I would have helped.</li>
+                <li>Were it easier, more people would try.</li>
+                <li>Should you need help, call me.</li>
+                <li>Had they arrived earlier, they would have seen it.</li>
+                <li>Should this continue, we’ll need a new plan.</li>
+            </ul>
+
+            <h4>장소/시간 전치 (묘사)</h4>
+            <ul>
+                <li>On the wall **hung** a painting.</li>
+                <li>In the corner **stood** a tall lamp.</li>
+                <li>Next to the window **sat** the cat.</li>
+                <li>At the end of the street **was** a bakery.</li>
+                <li>Beside the river **lay** a small boat.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section question" id="question">
+            <h2>4. 의문문 예시 (Question Examples)</h2>
+            <ul>
+                <li>Why do we say “**Never have I**…” instead of “I have never…”?</li>
+                <li>Can you explain how “**Had I known**” works?</li>
+                <li>What’s the difference between “**Only then**” and “Then only”?</li>
+                <li>Can you use “**On the table lay**…” in a sentence?</li>
+                <li>Why is **inversion** used for emphasis?</li>
+                <li>Can you show a sentence with “**Should you need**…”?</li>
+                <li>How does **fronting** change sentence rhythm?</li>
+                <li>Can you use “**Rarely does**…” in a school context?</li>
+                <li>What verbs often follow inversion structures?</li>
+                <li>Can you write your own example of each type?</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section dialogue" id="dialogue">
+            <h2>5. 상황별 대화 흐름 (Situational Dialogues)</h2>
+            <p><strong>학교 상황</strong><br />A: He didn’t understand until later.<br />B: **Only then did he understand**.<br />A: True.</p>
+            <p><strong>여행 상황</strong><br />A: We didn’t see the sign.<br />B: **Had we seen it**, we wouldn’t be lost.<br />A: Good point.</p>
+            <p><strong>직장 상황</strong><br />A: She never missed a deadline.<br />B: **Not once did she fail**.<br />A: Impressive.</p>
+            <p><strong>온라인 상황</strong><br />A: The error appeared suddenly.<br />B: **Only after the update did it appear**.<br />A: Let’s report it.</p>
+            <p><strong>가족 상황</strong><br />A: Dad rarely cooks.<br />B: **Rarely does he enter the kitchen**.<br />A: That’s true.</p>
+            <p><strong>병원 상황</strong><br />A: She didn’t complain once.<br />B: **Not once did she complain**.<br />A: She’s strong.</p>
+        </div>
+
+        <hr>
+
+        <div class="section sentence_combining" id="sentence_combining">
+            <h2>6. 문장 결합 연습 (Sentence Combining)</h2>
+            <ul>
+                <li>He didn’t understand until later. → **Only then did he understand.**</li>
+                <li>I have never seen such chaos. → **Never have I seen such chaos.**</li>
+                <li>If I had known, I would have helped. → **Had I known, I would have helped.**</li>
+                <li>The book was on the table. → **On the table lay the book.**</li>
+                <li>She rarely speaks in public. → **Rarely does she speak in public.**</li>
+                <li>We didn’t realize until now. → **Not until now have we realized.**</li>
+                <li>He should call if he needs help. → **Should he need help, he should call.**</li>
+                <li>The cat sat next to the window. → **Next to the window sat the cat.**</li>
+                <li>They didn’t complain once. → **Not once did they complain.**</li>
+                <li>She was proud. Never before had she felt that way. → **Never before had she felt so proud.**</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G76 Part 2: Fronting and Inversion</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --yellow-light: #fffde7;
+            --pink-light: #fce4ec;
+            --orange-light: #ffecb3;
+            --green: #e8f5e9;
+            --gray: #e0e0e0;
+            --gray-dark: #bdbdbd;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+
+        .real_life_usage.section { background-color: var(--yellow-light); }
+        .common_patterns.section { background-color: var(--pink-light); }
+        .mistakes.section { background-color: var(--orange-light); }
+        .tips.section { background-color: var(--green); }
+        .practice.section { background-color: var(--gray); }
+        .checklist.section { background-color: var(--gray-dark); }
+        
+        .section.real_life_usage h2 { border-color: #f1c40f; color: #f1c40f; }
+        .section.common_patterns h2 { border-color: #e91e63; color: #e91e63; }
+        .section.mistakes h2 { border-color: #f39c12; color: #f39c12; }
+        .section.tips h2 { border-color: #2ecc71; color: #2ecc71; }
+        .section.practice h2 { border-color: #7f8c8d; color: #7f8c8d; }
+        .section.checklist h2 { border-color: #95a5a6; color: #95a5a6; }
+
+        .section ul, .section ol {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .section li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .mistakes li .correct { color: #2ecc71; font-weight: bold; }
+        .mistakes li .incorrect { color: #e74c3c; font-weight: bold; text-decoration: line-through; }
+
+        .practice h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .practice ol {
+            padding-left: 20px;
+        }
+
+        .practice li {
+            margin-bottom: 15px;
+            background-color: #fff;
+        }
+
+        .practice .question {
+            font-weight: bold;
+        }
+        
+        .practice .options {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .practice .option {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        
+        .practice .option:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.01);
+        }
+
+        .practice .option.correct {
+            background-color: #e8f5e9;
+            border-color: #27ae60;
+        }
+
+        .practice .option.incorrect {
+            background-color: #ffebee;
+            border-color: #c0392b;
+        }
+
+        .answer-box {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            display: none;
+        }
+
+        .answer-box.visible {
+            display: block;
+        }
+
+        .practice input[type="text"] {
+            width: 90%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        
+        .practice .answer-feedback {
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        
+        .practice .answer-feedback.correct-text { color: #2ecc71; }
+        .practice .answer-feedback.incorrect-text { color: #e74c3c; }
+
+        #progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        #progress-bar {
+            width: 0;
+            height: 20px;
+            background-color: #3498db;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            line-height: 20px;
+            transition: width 0.4s ease-in-out;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .checklist h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .checklist-question {
+            margin-bottom: 10px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G76. 문두 강조와 도치 (Part 2)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol start="7">
+                <li><a href="#real_life_usage">실생활 사용 예시 (Real-Life Usage)</a></li>
+                <li><a href="#common_patterns">자주 쓰이는 패턴 (Common Patterns)</a></li>
+                <li><a href="#mistakes">흔한 실수 (Common Mistakes)</a></li>
+                <li><a href="#tips">레벨업 팁 (Level-Up Tips)</a></li>
+                <li><a href="#practice">연습문제 (Practice Exercises)</a></li>
+                <li><a href="#checklist">자가진단 체크리스트 (Self-Check)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section real_life_usage" id="real_life_usage">
+            <h2>7. 실생활 사용 예시 (Real-Life Usage)</h2>
+            <ul>
+                <li><strong>학교 상황 (강조):</strong> **Only after the test did they relax.** (시험이 끝난 후에야 비로소 그들은 쉴 수 있었다.)</li>
+                <li><strong>직장 상황 (부정어):</strong> **Rarely does the manager approve changes quickly.** (매니저가 변화를 빠르게 승인하는 일은 거의 없다.)</li>
+                <li><strong>가족 상황 (부정어):</strong> **Not once did Dad raise his voice.** (아빠는 한 번도 소리친 적이 없다.)</li>
+                <li><strong>온라인 상황 (부정어):</strong> **Never have I seen this error before.** (이런 오류는 전에 본 적이 없다.)</li>
+                <li><strong>병원 상황 (조건):</strong> **Had she arrived earlier, she would have seen the doctor.** (그녀가 더 일찍 도착했더라면, 의사를 만났을 것이다.)</li>
+                <li><strong>여행 상황 (장소):</strong> **On the hill stood an old castle.** (언덕 위에는 오래된 성이 서 있었다.)</li>
+                <li><strong>회의 상황 (조건):</strong> **Only by reviewing the data can we decide.** (데이터를 검토함으로써만 우리는 결정할 수 있다.)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section common_patterns" id="common_patterns">
+            <h2>8. 자주 쓰이는 패턴 (Common Patterns)</h2>
+            <ul>
+                <li><strong>Only + 부사구 + 조동사 + 주어 + 동사:</strong> **Only then did he understand.**</li>
+                <li><strong>Never / Rarely / Not once + 조동사 + 주어 + 동사:</strong> **Never have I seen this.**</li>
+                <li><strong>Had / Were / Should + 주어 + 동사:</strong> **Had I known**, I would have helped.</li>
+                <li><strong>장소/시간 표현 + 동사 + 주어:</strong> **On the table lay the book.**</li>
+                <li><strong>Not until + 시간 + 조동사 + 주어 + 동사:</strong> **Not until now have we realized.**</li>
+                <li><strong>Under no circumstances + 조동사 + 주어 + 동사:</strong> **Under no circumstances should you open it.**</li>
+                <li><strong>Only by + 명사/동명사 + 조동사 + 주어 + 동사:</strong> **Only by trying can we succeed.**</li>
+                <li><strong>Next to / Beside / At / In + 장소 + 동사 + 주어:</strong> **Beside the river lay a boat.**</li>
+                <li><strong>Should + 주어 + 동사:</strong> **Should you need help**, call me.</li>
+                <li><strong>Never before + 조동사 + 주어 + 동사:</strong> **Never before had she felt so proud.**</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section mistakes" id="mistakes">
+            <h2>9. 흔한 실수 (Common Mistakes)</h2>
+            <ul>
+                <li><span class="incorrect">❌ Only then he understood.</span> → <span class="correct">✅ **Only then did he understand.**</span> (조동사 도치 필수)</li>
+                <li><span class="incorrect">❌ Never I have seen this.</span> → <span class="correct">✅ **Never have I seen this.**</span> (조동사 도치 필수)</li>
+                <li><span class="incorrect">❌ Had known I, I would help.</span> → <span class="correct">✅ **Had I known, I would have helped.**</span> (주어-동사 순서 & 시제 일치)</li>
+                <li><span class="incorrect">❌ On the table the book lay.</span> → <span class="correct">✅ **On the table lay the book.**</span> (동사-주어 순서)</li>
+                <li><span class="incorrect">❌ Rarely she speaks in public.</span> → <span class="correct">✅ **Rarely does she speak in public.**</span> (조동사 do/does/did 사용)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section tips" id="tips">
+            <h2>10. 레벨업 팁 (Level-Up Tips)</h2>
+            <ul>
+                <li>도치 구조는 **강조 효과**를 주며, 글쓰기에서 고급 표현으로 인정받음</li>
+                <li>**조동사 위치**가 핵심 (**do/does/did/have/had/will** 등)</li>
+                <li>**부정어 도치**는 감정이나 극적인 표현에 효과적 (Never, Rarely, Not once)</li>
+                <li>**조건절 도치**는 가정 표현을 더 세련되게 만듦 (Had I, Were it, Should you)</li>
+                <li>**장소/시간 전치**는 묘사 중심 문장에서 자주 사용됨 (On the table, In the corner)</li>
+                <li>도치 구조는 **문장 리듬과 강조**를 동시에 조절함</li>
+                <li>문장 결합 연습을 통해 **자연스러운 도치 표현 향상**</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section practice" id="practice">
+            <h2>11. 연습문제 (Practice Exercises)</h2>
+
+            <h4>객관식</h4>
+            <ol>
+                <li id="q1">Which is correct?
+                    <div class="options" data-correct="B">
+                        <div class="option" data-value="A">A. Only then he understood.</div>
+                        <div class="option" data-value="B">B. Only then did he understand.</div>
+                    </div>
+                </li>
+                <li id="q2">Choose the correct form:
+                    <div class="question">___ have I seen such chaos.</div>
+                    <div class="options" data-correct="A">
+                        <div class="option" data-value="A">A. Never</div>
+                        <div class="option" data-value="B">B. Not</div>
+                    </div>
+                </li>
+                <li id="q3">Fill in: ___ I known, I would have helped.
+                    <div class="options" data-correct="A">
+                        <div class="option" data-value="A">A. Had</div>
+                        <div class="option" data-value="B">B. If</div>
+                    </div>
+                </li>
+            </ol>
+            
+            <button class="submit-btn" onclick="checkAnswers()">정답 확인하기</button>
+            <div id="answers" class="hidden">
+                <p><strong>1. B</strong>. 'Only then'으로 문장이 시작할 때, 주어-동사가 도치되어 **조동사(did)**가 주어(he) 앞으로 와야 합니다.</p>
+                <p><strong>2. A</strong>. 'Never'는 부정어로, 문두에 오면 조동사(have)를 주어(I) 앞으로 도치시킵니다.</p>
+                <p><strong>3. A</strong>. 가정법 과거완료 조건절에서 'If'가 생략되면 **Had**가 주어(I) 앞으로 도치됩니다.</p>
+            </div>
+            
+            <h4>문장 결합 (정답 예시 제공)</h4>
+            <ol start="4">
+                <li><label>He didn’t understand until later. (Only then) → <input type="text" id="q4" placeholder="Only then did he understand."/></label></li>
+                <li><label>I have never seen such chaos. (Never) → <input type="text" id="q5" placeholder="Never have I seen such chaos."/></label></li>
+                <li><label>If I had known, I would have helped. (If 생략) → <input type="text" id="q6" placeholder="Had I known, I would have helped."/></label></li>
+                <li><label>The book was on the table. (장소 전치) → <input type="text" id="q7" placeholder="On the table lay the book."/></label></li>
+                <li><label>She rarely speaks in public. (Rarely) → <input type="text" id="q8" placeholder="Rarely does she speak in public."/></label></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section checklist" id="checklist">
+            <h2>12. 자가진단 체크리스트 (Self-Check)</h2>
+            
+            <h4>학습 완료 체크</h4>
+            <div id="progress-container">
+                <div id="progress-bar">0%</div>
+            </div>
+            <ul>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I understand what fronting and inversion are.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can use “Only then,” “Never have I,” and “Had I…” correctly.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can transform regular sentences into inverted ones.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can correct common mistakes in inversion usage.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can use inversion to emphasize and vary sentence structure.</li>
+            </ul>
+
+            <h4>자가진단 문항</h4>
+            <ol>
+                <li class="checklist-question">Can you explain why “Only then did he understand” is more emphatic?</li>
+                <li class="checklist-question">Can you write a sentence using “Had I known…”?</li>
+                <li class="checklist-question">Can you correct “Never I have seen this”?</li>
+                <li class="checklist-question">Can you describe a location using “On the table lay…”?</li>
+                <li class="checklist-question">Can you translate “그는 나중에야 이해했다”?</li>
+                <li class="checklist-question">Can you use “Rarely does…” in a school context?</li>
+                <li class="checklist-question">Can you write a short story using inversion?</li>
+                <li class="checklist-question">Can you explain how inversion improves writing style?</li>
+                <li class="checklist-question">Can you use inversion naturally in conversation?</li>
+                <li class="checklist-question">Can you describe a condition using “Should you…”?</li>
+                <li class="checklist-question">Can you teach someone how to form inversion sentences?</li>
+                <li class="checklist-question">Can you compare inverted and regular sentence forms?</li>
+                <li class="checklist-question">Can you use inversion to express emotion and logic?</li>
+                <li class="checklist-question">Can you identify which part of the sentence is the inverted part?</li>
+                <li class="checklist-question">Can you use inversion with clarity and fluency?</li>
+            </ol>
+            
+            <h4>다음 단계 학습 가이드</h4>
+            <ul>
+                <li>Review inversion structures and their functions.</li>
+                <li>Practice transforming regular sentences into inverted ones.</li>
+                <li>Use inversion to improve writing emphasis and rhythm.</li>
+                <li>Compare with standard word order to understand impact.</li>
+                <li>Record and review your own sentences to improve fluency and clarity.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.getElementById('progress-bar');
+            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+            
+            if (progressBar && checkboxes.length > 0) {
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateProgress);
+                });
+            }
+
+            function updateProgress() {
+                const totalCheckboxes = checkboxes.length;
+                const checkedCheckboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').length;
+                
+                if (totalCheckboxes > 0 && progressBar) {
+                    const progress = (checkedCheckboxes / totalCheckboxes) * 100;
+                    progressBar.style.width = progress + '%';
+                    progressBar.textContent = Math.round(progress) + '%';
+                }
+            }
+
+            const mcqOptions = document.querySelectorAll('.practice .option');
+            const showAnswersBtn = document.querySelector('.submit-btn');
+            const answersBox = document.getElementById('answers');
+
+            if (mcqOptions.length > 0) {
+                mcqOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const parentOptions = this.parentElement.querySelectorAll('.option');
+                        parentOptions.forEach(opt => {
+                            opt.classList.remove('correct', 'incorrect');
+                        });
+
+                        const parentDiv = this.closest('.options');
+                        const correctAnswer = parentDiv.getAttribute('data-correct');
+
+                        if (this.getAttribute('data-value') === correctAnswer) {
+                            this.classList.add('correct');
+                        } else {
+                            this.classList.add('incorrect');
+                        }
+                    });
+                });
+            }
+            
+            if (showAnswersBtn) {
+                showAnswersBtn.addEventListener('click', function() {
+                    answersBox.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

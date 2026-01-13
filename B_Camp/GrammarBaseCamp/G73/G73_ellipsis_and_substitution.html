@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G73 Part 1: Ellipsis and Substitution</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --blue-light: #e3f2fd;
+            --blue-medium: #bbdefb;
+            --green: #e8f5e9;
+            --orange: #fff3e0;
+            --purple: #f3e5f5;
+            --sky: #e0f7fa;
+            --gray-light: #f5f5f5;
+            --gray-dark: #bdbdbd;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+
+        .concept-card {
+            background-color: var(--blue-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: #3498db;
+        }
+
+        .concept-card h4 {
+            color: #1f3a5f;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .concept-icon {
+            font-size: 1.5rem;
+            color: #2980b9;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .concept-meaning strong, .concept-examples strong {
+            color: #e74c3c;
+        }
+
+        .grammar ul, .positive ul, .question ul, .dialogue p, .sentence_combining ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .grammar li, .positive li, .question li, .dialogue p, .sentence_combining li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .grammar li:hover, .positive li:hover, .question li:hover, .dialogue p:hover, .sentence_combining li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section.concept { background-color: var(--blue-light); }
+        .section.grammar { background-color: var(--blue-medium); }
+        .section.positive { background-color: var(--green); }
+        .section.question { background-color: var(--orange); }
+        .section.dialogue { background-color: var(--purple); }
+        .section.sentence_combining { background-color: var(--sky); }
+        
+        .section.concept h2 { border-color: #2980b9; color: #2980b9; }
+        .section.grammar h2 { border-color: #2c3e50; color: #2c3e50; }
+        .section.positive h2 { border-color: #27ae60; color: #27ae60; }
+        .section.question h2 { border-color: #e67e22; color: #e67e22; }
+        .section.dialogue h2 { border-color: #8e44ad; color: #8e44ad; }
+        .section.sentence_combining h2 { border-color: #3498db; color: #3498db; }
+        
+        .dialogue strong { color: #c0392b; }
+        .sentence_combining strong { color: #2980b9; }
+        .positive strong { color: #2980b9; }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G73. 생략과 대용 (Part 1)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol>
+                <li><a href="#concept">기본 개념 (Basic Concept)</a></li>
+                <li><a href="#grammar">문법 규칙 (Grammar Rules)</a></li>
+                <li><a href="#positive">긍정문 예시 (Positive Examples)</a></li>
+                <li><a href="#question">의문문 예시 (Question Examples)</a></li>
+                <li><a href="#dialogue">상황별 대화 (Situational Dialogues)</a></li>
+                <li><a href="#sentence_combining">문장 결합 연습 (Sentence Combining)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+        
+        <div class="section concept" id="concept">
+            <h2>1. 기본 개념 (Basic Concept)</h2>
+            <div class="concept-card">
+                <h4><span class="concept-icon">ELLIPSIS</span>Ellipsis and Substitution</h4>
+                <div class="concept-meaning">
+                    <strong>Ellipsis:</strong> 반복되는 단어나 구를 생략하여 문장을 간결하게 만듦<br>
+                    <strong>Substitution:</strong> 반복되는 표현을 다른 단어나 구조로 대체함<br>
+                    문장 응집력 향상, 회화 간결화, 시험 응답 간소화에 효과적
+                </div>
+                <div class="concept-examples">
+                    <p><strong>Ellipsis:</strong> I can play the guitar, and she can ___.</p>
+                    <p><strong>Substitution:</strong> I like apples. **So does he.** / I’ll take the **red one.**</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section grammar" id="grammar">
+            <h2>2. 문법 규칙 (Grammar Rules)</h2>
+            <ul>
+                <li><strong>Ellipsis (생략):</strong>
+                    <ul>
+                        <li>조동사/동사 생략: I can swim, and she can **___.**</li>
+                        <li>to부정사 생략: He wants to go, and I want **to ___.**</li>
+                        <li>명사구 생략: I’ll take the red shirt, and you take the blue **___.**</li>
+                    </ul>
+                </li>
+                <li><strong>Substitution (대용):</strong>
+                    <ul>
+                        <li>do/does/did: She likes tea. So **do** I.</li>
+                        <li>so/neither/too: I’m tired. **So is he**. / I’m not hungry. **Neither am I**.</li>
+                        <li>one/ones (명사 대용): I’ll take the red **one**. / These shoes are better than those **ones**.</li>
+                        <li>that/those (지시 대용): I prefer **that**. / **Those** are mine.</li>
+                    </ul>
+                </li>
+                <li>Substitution은 문맥에 따라 정확한 대명사/조동사 선택이 필요</li>
+                <li>Ellipsis는 반복 제거를 통해 문장을 간결하고 유기적으로 만듦</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section positive" id="positive">
+            <h2>3. 긍정문 예시 (Positive Examples)</h2>
+            <h4>Ellipsis</h4>
+            <ul>
+                <li>I can play the guitar, and she **can** ___.</li>
+                <li>He wants to go, and I **want to** ___.</li>
+                <li>I’ll take the red shirt, and you take the **blue** ___.</li>
+                <li>She’s reading a book, and he **is** ___.</li>
+                <li>They were laughing, and we **were** ___ too.</li>
+            </ul>
+
+            <h4>Substitution</h4>
+            <ul>
+                <li>I like apples. **So do I**. (나도 그래)</li>
+                <li>She is tired. **So is he**. (그도 그래)</li>
+                <li>I’m not hungry. **Neither am I**. (나도 안 그래)</li>
+                <li>He plays soccer. **I do too**. (나도 해)</li>
+                <li>I’ll take the **red one**. (빨간 것)</li>
+                <li>These are better than **those**. (저것들)</li>
+                <li>She wants **that**. I want **this**. (저것/이것)</li>
+                <li>He likes tea. **So does she**. (그녀도 그래)</li>
+                <li>I didn’t go. **Neither did they**. (그들도 안 갔어)</li>
+                <li>We chose the big **ones**. (큰 것들)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section question" id="question">
+            <h2>4. 의문문 예시 (Question Examples)</h2>
+            <ul>
+                <li>Why do we say “So do I” instead of repeating “I like apples”?</li>
+                <li>Can you explain how **“neither”** works in negative agreement?</li>
+                <li>What’s the difference between **“one”** and **“that”** for substitution?</li>
+                <li>Can you use ellipsis with **“can”** and **“will”**?</li>
+                <li>Why is ellipsis useful in conversation?</li>
+                <li>Can you show a sentence using **“do too”**?</li>
+                <li>How do we choose between **“those”** and **“ones”**?</li>
+                <li>Can you use substitution in a shopping dialogue?</li>
+                <li>How does ellipsis improve writing style?</li>
+                <li>Can you write your own example of each type?</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section dialogue" id="dialogue">
+            <h2>5. 상황별 대화 흐름 (Situational Dialogues)</h2>
+            <p><strong>학교 상황</strong><br />A: I like math.<br />B: **So do I.**<br />A: Let’s study together.</p>
+            <p><strong>여행 상황</strong><br />A: I want to visit Paris.<br />B: I want **to** ___.<br />A: Maybe next summer.</p>
+            <p><strong>직장 상황</strong><br />A: She finished the report.<br />B: He **did** ___ as well.<br />A: Great teamwork.</p>
+            <p><strong>온라인 상황</strong><br />A: I bought the red phone.<br />B: I’ll take the **blue one**.<br />A: Good choice.</p>
+            <p><strong>가족 상황</strong><br />A: I’m not hungry.<br />B: **Neither am I.**<br />A: Let’s eat later.</p>
+            <p><strong>병원 상황</strong><br />A: She’s feeling better.<br />B: He **is** ___ too.<br />A: That’s good news.</p>
+        </div>
+
+        <hr>
+
+        <div class="section sentence_combining" id="sentence_combining">
+            <h2>6. 문장 결합 연습 (Sentence Combining)</h2>
+            <ul>
+                <li>I like apples. He likes apples too. → I like apples, and **so does he**.</li>
+                <li>I’m not hungry. You’re not hungry. → I’m not hungry, and **neither are you**.</li>
+                <li>She can swim. He can swim. → She can swim, and **he can too**.</li>
+                <li>I want to go. You want to go. → I want to go, and **so do you**.</li>
+                <li>I’ll take the red shirt. You’ll take the blue shirt. → I’ll take the red shirt, and **you’ll take the blue one**.</li>
+                <li>He bought the small phone. I bought the big phone. → He bought the small phone, and **I bought the big one**.</li>
+                <li>She is tired. He is tired. → She is tired, and **so is he**.</li>
+                <li>I didn’t go. They didn’t go. → I didn’t go, and **neither did they**.</li>
+                <li>We chose the red shoes. They chose the blue shoes. → We chose the red shoes, and **they chose the blue ones**.</li>
+                <li>I prefer this. You prefer that. → I prefer this, and **you prefer that**.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G73 Part 2: Ellipsis and Substitution</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --yellow-light: #fffde7;
+            --pink-light: #fce4ec;
+            --orange-light: #ffecb3;
+            --green: #e8f5e9;
+            --gray: #e0e0e0;
+            --gray-dark: #bdbdbd;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+
+        .real_life_usage.section { background-color: var(--yellow-light); }
+        .common_patterns.section { background-color: var(--pink-light); }
+        .mistakes.section { background-color: var(--orange-light); }
+        .tips.section { background-color: var(--green); }
+        .practice.section { background-color: var(--gray); }
+        .checklist.section { background-color: var(--gray-dark); }
+        
+        .section.real_life_usage h2 { border-color: #f1c40f; color: #f1c40f; }
+        .section.common_patterns h2 { border-color: #e91e63; color: #e91e63; }
+        .section.mistakes h2 { border-color: #f39c12; color: #f39c12; }
+        .section.tips h2 { border-color: #2ecc71; color: #2ecc71; }
+        .section.practice h2 { border-color: #7f8c8d; color: #7f8c8d; }
+        .section.checklist h2 { border-color: #95a5a6; color: #95a5a6; }
+
+        .section ul, .section ol {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .section li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .mistakes li .correct { color: #2ecc71; font-weight: bold; }
+        .mistakes li .incorrect { color: #e74c3c; font-weight: bold; text-decoration: line-through; }
+
+        .practice h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .practice ol {
+            padding-left: 20px;
+        }
+
+        .practice li {
+            margin-bottom: 15px;
+            background-color: #fff;
+        }
+
+        .practice .question {
+            font-weight: bold;
+        }
+        
+        .practice .options {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .practice .option {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        
+        .practice .option:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.01);
+        }
+
+        .practice .option.correct {
+            background-color: #e8f5e9;
+            border-color: #27ae60;
+        }
+
+        .practice .option.incorrect {
+            background-color: #ffebee;
+            border-color: #c0392b;
+        }
+
+        .answer-box {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            display: none;
+        }
+
+        .answer-box.visible {
+            display: block;
+        }
+
+        .practice input[type="text"] {
+            width: 90%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        
+        .practice .answer-feedback {
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        
+        .practice .answer-feedback.correct-text { color: #2ecc71; }
+        .practice .answer-feedback.incorrect-text { color: #e74c3c; }
+
+        #progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        #progress-bar {
+            width: 0;
+            height: 20px;
+            background-color: #3498db;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            line-height: 20px;
+            transition: width 0.4s ease-in-out;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .checklist h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .checklist-question {
+            margin-bottom: 10px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G73. 생략과 대용 (Part 2)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol start="7">
+                <li><a href="#real_life_usage">실생활 사용 예시 (Real-Life Usage)</a></li>
+                <li><a href="#common_patterns">자주 쓰이는 패턴 (Common Patterns)</a></li>
+                <li><a href="#mistakes">흔한 실수 (Common Mistakes)</a></li>
+                <li><a href="#tips">레벨업 팁 (Level-Up Tips)</a></li>
+                <li><a href="#practice">연습문제 (Practice Exercises)</a></li>
+                <li><a href="#checklist">자가진단 체크리스트 (Self-Check)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section real_life_usage" id="real_life_usage">
+            <h2>7. 실생활 사용 예시 (Real-Life Usage)</h2>
+            <ul>
+                <li><strong>학교 상황:</strong> I finished my homework. So did she.</li>
+                <li><strong>직장 상황:</strong> He submitted the report. I did too.</li>
+                <li><strong>가족 상황:</strong> I’m not hungry. Neither is Dad.</li>
+                <li><strong>온라인 상황:</strong> I’ll buy the red phone. You take the blue one.</li>
+                <li><strong>병원 상황:</strong> She feels better. So does he.</li>
+                <li><strong>여행 상황:</strong> I want to visit Paris. So do they.</li>
+                <li><strong>회의 상황:</strong> We agree with the plan. So does the manager.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section common_patterns" id="common_patterns">
+            <h2>8. 자주 쓰이는 패턴 (Common Patterns)</h2>
+            <ul>
+                <li><strong>So + 조동사 + 주어</strong> → 긍정 동의 (So do I)</li>
+                <li><strong>Neither + 조동사 + 주어</strong> → 부정 동의 (Neither am I)</li>
+                <li><strong>주어 + 조동사 + too</strong> → 긍정 동의 (I do too)</li>
+                <li><strong>Ellipsis with modal:</strong> She can swim, and he can ___.</li>
+                <li><strong>Ellipsis with to:</strong> He wants to go, and I want to ___.</li>
+                <li><strong>Substitution with one/ones:</strong> I’ll take the red one / the blue ones</li>
+                <li><strong>Substitution with that/those:</strong> I prefer that / Those are mine</li>
+                <li><strong>Negative agreement:</strong> I didn’t go. Neither did he.</li>
+                <li><strong>Positive agreement:</strong> I like tea. So does she.</li>
+                <li><strong>Ellipsis with be:</strong> She is tired, and he is ___ too.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section mistakes" id="mistakes">
+            <h2>9. 흔한 실수 (Common Mistakes)</h2>
+            <ul>
+                <li><span class="incorrect">❌ I like apples. So he does.</span> → <span class="correct">✅ I like apples. <strong>So does he</strong>.</span></li>
+                <li><span class="incorrect">❌ I’m not hungry. Neither I am.</span> → <span class="correct">✅ <strong>Neither am I</strong>.</span></li>
+                <li><span class="incorrect">❌ She can swim, and he can swim too.</span> → <span class="correct">✅ She can swim, and <strong>he can too</strong>.</span></li>
+                <li><span class="incorrect">❌ I’ll take the red shirt, and you take the blue shirt.</span> → <span class="correct">✅ I’ll take the red shirt, and <strong>you take the blue one</strong>.</span></li>
+                <li><span class="incorrect">❌ He didn’t go. Neither he did.</span> → <span class="correct">✅ <strong>Neither did he</strong>.</span></li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section tips" id="tips">
+            <h2>10. 레벨업 팁 (Level-Up Tips)</h2>
+            <ul>
+                <li>Ellipsis는 반복 제거, Substitution은 대체 표현</li>
+                <li>조동사(do/does/did/can/will 등)를 정확히 선택해야 함</li>
+                <li>긍정 동의: So do I / I do too</li>
+                <li>부정 동의: Neither do I / I don’t either</li>
+                <li>one/ones는 명사 대체, that/those는 지시 대명사로 사용</li>
+                <li>문맥에 따라 생략 위치와 대체 표현이 달라짐</li>
+                <li>문장 결합 연습을 통해 <strong>자연스러운 응집력 향상</strong></li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section practice" id="practice">
+            <h2>11. 연습문제 (Practice Exercises)</h2>
+
+            <h4>객관식</h4>
+            <ol>
+                <li id="q1">Which is correct?
+                    <div class="options" data-correct="B">
+                        <div class="option" data-value="A">A. So he does.</div>
+                        <div class="option" data-value="B">B. So does he.</div>
+                    </div>
+                </li>
+                <li id="q2">Choose the correct form:
+                    <div class="question">I’m not hungry. ___ am I.</div>
+                    <div class="options" data-correct="A">
+                        <div class="option" data-value="A">A. Neither</div>
+                        <div class="option" data-value="B">B. So</div>
+                    </div>
+                </li>
+                <li id="q3">Fill in: I’ll take the red shirt. You take the blue ___.
+                    <div class="options" data-correct="A">
+                        <div class="option" data-value="A">A. one</div>
+                        <div class="option" data-value="B">B. it</div>
+                    </div>
+                </li>
+            </ol>
+            
+            <button class="submit-btn" onclick="checkAnswers()">정답 확인하기</button>
+            <div id="answers" class="hidden">
+                <p><strong>1. B</strong>. 'So'를 이용한 긍정 동의 구문은 'So + 조동사 + 주어'의 도치 형태를 사용합니다. (So does he)</p>
+                <p><strong>2. A</strong>. 'Neither'는 부정문 동의에 사용되며 'Neither + 조동사 + 주어' 형태를 따릅니다. ('So'는 긍정 동의에 사용)</p>
+                <p><strong>3. A</strong>. 명사 'shirt'의 반복을 피하기 위해 대용어 'one'을 사용합니다. ('it'은 특정 사물을 지칭)</p>
+            </div>
+            
+            <h4>문장 결합 (정답 예시 제공)</h4>
+            <ol start="4">
+                <li><label>I like apples. He likes apples too. → <input type="text" id="q4" placeholder="I like apples, and so does he."/></label></li>
+                <li><label>I’m not hungry. You’re not hungry. → <input type="text" id="q5" placeholder="I'm not hungry, and neither are you."/></label></li>
+                <li><label>She can swim. He can swim. → <input type="text" id="q6" placeholder="She can swim, and he can too."/></label></li>
+                <li><label>I’ll take the red shirt. You’ll take the blue shirt. → <input type="text" id="q7" placeholder="I'll take the red shirt, and you'll take the blue one."/></label></li>
+                <li><label>He bought the small phone. I bought the big phone. → <input type="text" id="q8" placeholder="He bought the small phone, and I bought the big one."/></label></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section checklist" id="checklist">
+            <h2>12. 자가진단 체크리스트 (Self-Check)</h2>
+            
+            <h4>학습 완료 체크</h4>
+            <div id="progress-container">
+                <div id="progress-bar">0%</div>
+            </div>
+            <ul>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I understand what ellipsis and substitution mean.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can use “so,” “neither,” “too,” and “do” correctly.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can transform repeated sentences into compact ones.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can correct common mistakes in ellipsis and substitution.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can use “one,” “that,” and “those” for substitution.</li>
+            </ul>
+
+            <h4>자가진단 문항</h4>
+            <ol>
+                <li class="checklist-question">Can you explain why “So does he” is correct?</li>
+                <li class="checklist-question">Can you write a sentence using “Neither am I”?</li>
+                <li class="checklist-question">Can you correct “So he does”?</li>
+                <li class="checklist-question">Can you describe a situation using “one” or “ones”?</li>
+                <li class="checklist-question">Can you translate “나는 사과를 좋아해. 그도 그래”?</li>
+                <li class="checklist-question">Can you use ellipsis with modal verbs like “can”?</li>
+                <li class="checklist-question">Can you write a short story using ellipsis and substitution?</li>
+                <li class="checklist-question">Can you explain how these tools improve fluency?</li>
+                <li class="checklist-question">Can you use ellipsis naturally in conversation?</li>
+                <li class="checklist-question">Can you describe agreement using “so,” “too,” and “neither”?</li>
+                <li class="checklist-question">Can you teach someone how to form ellipsis sentences?</li>
+                <li class="checklist-question">Can you compare full repetition with substitution?</li>
+                <li class="checklist-question">Can you use ellipsis and substitution to express emotion and logic?</li>
+                <li class="checklist-question">Can you identify which part of the sentence is substituted or omitted?</li>
+                <li class="checklist-question">Can you use these structures with clarity and fluency?</li>
+            </ol>
+            
+            <h4>다음 단계 학습 가이드</h4>
+            <ul>
+                <li>Review reported speech structures and transformation rules.</li>
+                <li>Practice converting direct speech into reported speech.</li>
+                <li>Use reported speech to improve writing style and narrative flow.</li>
+                <li>Compare with direct speech to understand impact.</li>
+                <li>Record and review your own sentences to improve fluency and clarity.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.getElementById('progress-bar');
+            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+            
+            if (progressBar && checkboxes.length > 0) {
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateProgress);
+                });
+            }
+
+            function updateProgress() {
+                const totalCheckboxes = checkboxes.length;
+                const checkedCheckboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').length;
+                
+                if (totalCheckboxes > 0 && progressBar) {
+                    const progress = (checkedCheckboxes / totalCheckboxes) * 100;
+                    progressBar.style.width = progress + '%';
+                    progressBar.textContent = Math.round(progress) + '%';
+                }
+            }
+
+            const mcqOptions = document.querySelectorAll('.practice .option');
+            const showAnswersBtn = document.querySelector('.submit-btn');
+            const answersBox = document.getElementById('answers');
+
+            if (mcqOptions.length > 0) {
+                mcqOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const parentOptions = this.parentElement.querySelectorAll('.option');
+                        parentOptions.forEach(opt => {
+                            opt.classList.remove('correct', 'incorrect');
+                        });
+
+                        const parentDiv = this.closest('.options');
+                        const correctAnswer = parentDiv.getAttribute('data-correct');
+
+                        if (this.getAttribute('data-value') === correctAnswer) {
+                            this.classList.add('correct');
+                        } else {
+                            this.classList.add('incorrect');
+                        }
+                    });
+                });
+            }
+            
+            if (showAnswersBtn) {
+                showAnswersBtn.addEventListener('click', function() {
+                    answersBox.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
