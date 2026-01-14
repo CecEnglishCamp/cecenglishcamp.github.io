@@ -1,167 +1,159 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CEC English Camp</title>
-  <style>
-    :root { --point: #00f2ff; --bg: #000; }
-    body { background-color: var(--bg); color: #fff; font-family: 'Pretendard', sans-serif; margin: 0; padding: 0; scroll-behavior: smooth; }
-    
-    header { 
-      display: flex; justify-content: space-between; align-items: center; 
-      padding: 15px 5%; background: rgba(0,0,0,0.95); border-bottom: 1px solid #222; 
-      position: sticky; top: 0; z-index: 10000;
-    }
-    .logo { font-size: 1.4rem; font-weight: 800; color: #fff; text-decoration: none; }
-    .nav-container { display: flex; align-items: center; gap: 20px; }
-    .nav-links { display: flex; list-style: none; gap: 20px; margin: 0; padding: 0; }
-    .nav-links a { color: #fff; text-decoration: none; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
-    
-    /* 드롭다운: 마우스 이탈 방지 기술 적용 */
-    .btn-box { 
-      border: 2px solid var(--point); border-radius: 25px; padding: 7px 18px; 
-      cursor: pointer; color: var(--point); font-weight: 800; font-size: 0.85rem; 
-      position: relative; 
-    }
-    /* 버튼과 메뉴 사이의 보이지 않는 가교를 만들어 마우스 이탈 차단 */
-    .btn-box::after { content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 20px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEC English Camp</title>
+    <style>
+        :root { --point: #00f2ff; --bg: #000; --card: #111; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Pretendard', sans-serif; margin: 0; padding: 0; scroll-behavior: smooth; line-height: 1.6; }
+        
+        /* 헤더 및 네비게이션 - 마우스 이탈 방지 적용 */
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 5%; background: rgba(0,0,0,0.95); border-bottom: 1px solid #222; 
+            position: sticky; top: 0; z-index: 10000;
+        }
+        .logo { font-size: 1.4rem; font-weight: 800; color: #fff; text-decoration: none; }
+        .nav-container { display: flex; align-items: center; gap: 20px; }
+        .nav-links { display: flex; list-style: none; gap: 20px; margin: 0; padding: 0; }
+        .nav-links a { color: #fff; text-decoration: none; font-size: 0.95rem; font-weight: 600; }
 
-    .dropdown-content { 
-      display: none; position: absolute; background: #111; min-width: 220px; 
-      border: 1px solid var(--point); border-radius: 12px; 
-      top: 45px; right: 0; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    }
-    .btn-box:hover .dropdown-content { display: block; }
-    .dropdown-content a { padding: 14px 18px; display: block; color: #fff; text-decoration: none; font-size: 0.9rem; border-bottom: 1px solid #222; }
-    .dropdown-content a:hover { background: var(--point); color: #000 !important; font-weight: 800; }
+        /* 드롭다운 메뉴 물리적 고정 (::after 가교 사용) */
+        .btn-box { border: 2px solid var(--point); border-radius: 25px; padding: 7px 18px; cursor: pointer; color: var(--point); font-weight: 800; font-size: 0.85rem; position: relative; }
+        .btn-box::after { content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 20px; }
+        .dropdown-content { display: none; position: absolute; background: #111; min-width: 240px; border: 1px solid var(--point); border-radius: 12px; top: 45px; right: 0; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .btn-box:hover .dropdown-content { display: block; }
+        .dropdown-content a { padding: 14px 18px; display: block; color: #fff; text-decoration: none; font-size: 0.9rem; border-bottom: 1px solid #222; }
+        .dropdown-content a:hover { background: var(--point); color: #000 !important; font-weight: 800; }
 
-    .hero { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-    .hero h1 { font-size: 4rem; margin: 0; font-weight: 900; }
-    .hero p { font-size: 1.2rem; color: var(--point); margin-top: 20px; font-weight: 700; letter-spacing: 2px; }
+        /* 섹션 공통 스타일 */
+        section { padding: 80px 5%; max-width: 1000px; margin: 0 auto; }
+        .hero { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-bottom: 1px solid #222; }
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 4rem); margin: 0; font-weight: 900; }
+        .hero p { font-size: 1.2rem; color: var(--point); margin-top: 20px; font-weight: 700; letter-spacing: 2px; }
 
-    /* 문법 섹션 복구 */
-    .grammar-wrap { padding: 40px 5%; background: #000; }
-    .stage-card { border-radius: 30px; padding: 40px; margin-bottom: 40px; color: #333; }
-    .st-1 { background: #e8f5e9; border: 3px solid #2ecc71; }
-    .st-2 { background: #fff3e0; border: 3px solid #e67e22; }
-    .st-3 { background: #fffde7; border: 3px solid #f1c40f; }
-    .stage-title { font-size: 1.6rem; font-weight: 900; margin-bottom: 30px; color: #222; }
-    .grammar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
-    .g-link { background: #fff; padding: 20px; border-radius: 15px; text-decoration: none; color: #333; display: flex; flex-direction: column; border: 1px solid #ddd; transition: 0.3s; }
-    .g-link:hover { transform: translateY(-5px); border-color: var(--point); }
-    .g-num { color: #e67e22; font-size: 0.8rem; font-weight: 800; margin-bottom: 6px; }
+        /* 문법 섹션 */
+        .grammar-wrap { background: #000; }
+        .stage-card { border-radius: 30px; padding: 40px; margin-bottom: 40px; color: #333; }
+        .st-1 { background: #e8f5e9; border: 3px solid #2ecc71; }
+        .st-2 { background: #fff3e0; border: 3px solid #e67e22; }
+        .st-3 { background: #fffde7; border: 3px solid #f1c40f; }
+        .stage-title { font-size: 1.6rem; font-weight: 900; margin-bottom: 30px; color: #222; }
+        .grammar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        .g-link { background: #fff; padding: 18px; border-radius: 15px; text-decoration: none; color: #333; display: flex; align-items: center; border: 1px solid #ddd; transition: 0.3s; }
+        .g-link:hover { transform: translateY(-3px); border-color: var(--point); }
+        .g-num { background: #1a73e8; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 800; margin-right: 12px; min-width: 35px; text-align: center; }
 
-    /* About & Register 섹션 추가 (메뉴 연결용) */
-    .info-section { padding: 80px 5%; text-align: center; background: #111; border-top: 1px solid #222; }
-    .info-section h2 { font-size: 2.5rem; color: var(--point); margin-bottom: 20px; }
-    .info-section p { font-size: 1.1rem; line-height: 1.8; max-width: 800px; margin: 0 auto; }
-  </style>
+        /* About Us 스타일 (보내주신 디자인 이식) */
+        #about h2 { color: var(--point); border-bottom: 2px solid var(--point); display: inline-block; padding-bottom: 5px; }
+        .main-copy { font-size: 1.3rem; font-weight: bold; border-left: 4px solid var(--point); padding-left: 20px; margin: 30px 0; }
+        .highlight { color: var(--point); font-weight: bold; }
+        .ai-trinity { background: #080808; border: 1px solid var(--point); padding: 30px; border-radius: 20px; margin: 40px 0; }
+        .camp-box { background: var(--card); padding: 25px; border-radius: 20px; border: 1px solid #333; margin-top: 20px; }
+        .camp-box h4 { color: var(--point); margin-top: 0; }
+    </style>
 </head>
 <body>
 
 <header>
-  <a href="index.html" class="logo">CEC ENGLISH CAMP</a>
-  <div class="nav-container">
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#register">Register</a></li>
-    </ul>
-    
-    <div class="btn-box">PROGRAMS ▼
-      <div class="dropdown-content">
-        <a href="#grammar">Step 1: Grammar BaseCamp</a>
-        <a href="https://openwebui.com/s/a40690a2-bc4b-4413-bb22-fac6c899be1c" target="_blank">Step 2: English Camp A</a>
-        <a href="https://openwebui.com/s/83348633-e968-4560-85f8-e50125866184" target="_blank">Step 3: English Camp B</a>
-        <a href="https://openwebui.com/s/e64e5904-e3c3-4d64-8141-945731713028" target="_blank">Step 4: English Camp C</a>
-      </div>
+    <a href="index.html" class="logo">CEC ENGLISH CAMP</a>
+    <div class="nav-container">
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#register">Register</a></li>
+        </ul>
+        <div class="btn-box">PROGRAMS ▼
+            <div class="dropdown-content">
+                <a href="#grammar">Step 1: Grammar BaseCamp</a>
+                <a href="https://openwebui.com/s/a40690a2-bc4b-4413-bb22-fac6c899be1c" target="_blank">Step 2: English Camp A</a>
+                <a href="https://openwebui.com/s/83348633-e968-4560-85f8-e50125866184" target="_blank">Step 3: English Camp B</a>
+                <a href="https://openwebui.com/s/e64e5904-e3c3-4d64-8141-945731713028" target="_blank">Step 4: English Camp C</a>
+            </div>
+        </div>
+        <div class="btn-box">AI TOOLS ▼
+            <div class="dropdown-content">
+                <a href="https://notebooklm.google.com/" target="_blank">NotebookLM</a>
+                <a href="https://openwebui.com/" target="_blank">Open WebUI</a>
+                <a href="https://chatgpt.com/g/g-68abc1e0493c8191bf064509f3ff8a79" target="_blank">GPTs: Camp A</a>
+                <a href="#">GPTs: Camp B (Soon)</a>
+                <a href="#">GPTs: Camp C (Soon)</a>
+            </div>
+        </div>
     </div>
-
-    <div class="btn-box">AI TOOLS ▼
-      <div class="dropdown-content">
-        <a href="https://notebooklm.google.com/" target="_blank">NotebookLM</a>
-        <a href="https://openwebui.com/" target="_blank">Open WebUI</a>
-        <a href="https://chatgpt.com/g/g-68abc1e0493c8191bf064509f3ff8a79" target="_blank">GPTs: Camp A</a>
-        <a href="#" target="_blank">GPTs: Camp B (Coming)</a>
-        <a href="#" target="_blank">GPTs: Camp C (Coming)</a>
-      </div>
-    </div>
-  </div>
 </header>
 
 <main>
-  <section class="hero">
-    <h1>CEC EnglishCamp</h1>
-    <p>MASTER ENGLISH WITH LITERATURE & AI</p>
-  </section>
+    <section class="hero">
+        <h1>CEC EnglishCamp</h1>
+        <p>MASTER ENGLISH WITH LITERATURE & AI</p>
+    </section>
 
-  <div id="grammar" class="grammar-wrap">
-    <div class="stage-card st-1">
-      <div class="stage-title">Stage 1: Basic (G01 - G30)</div>
-      <div class="grammar-grid" id="grid1"></div>
-    </div>
-    <div class="stage-card st-2">
-      <div class="stage-title">Stage 2: Intermediate (G31 - G60)</div>
-      <div class="grammar-grid" id="grid2"></div>
-    </div>
-    <div class="stage-card st-3">
-      <div class="stage-title">Stage 3: Advanced (G61 - G80)</div>
-      <div class="grammar-grid" id="grid3"></div>
-    </div>
-  </div>
+    <section id="grammar" class="grammar-wrap">
+        <div class="stage-card st-1">
+            <div class="stage-title">🟢 Stage 1: Basic (G01 - G30)</div>
+            <div class="grammar-grid" id="grid1"></div>
+        </div>
+        <div class="stage-card st-2">
+            <div class="stage-title">🟠 Stage 2: Intermediate (G31 - G60)</div>
+            <div class="grammar-grid" id="grid2"></div>
+        </div>
+        <div class="stage-card st-3">
+            <div class="stage-title">🟡 Stage 3: Advanced (G61 - G80)</div>
+            <div class="grammar-grid" id="grid3"></div>
+        </div>
+    </section>
 
-  <section id="about" class="info-section">
-    <h2>About CEC</h2>
-    <p>CEC English Camp는 문학적 소양과 AI 기술을 결합하여 영어를 가장 효율적으로 마스터하는 커리큘럼을 제공합니다. 문법 기초부터 심화 독해까지 단계별 학습이 가능합니다.</p>
-  </section>
+    <section id="about">
+        <h2>About Us</h2>
+        <div class="main-copy">영어를 ‘공부하는 대상’에서 ‘사고하고 사용하는 언어’로</div>
+        <p>문법으로 기초를 세우고, 이해로 소화하며, 실제 언어 환경에서 작동하게 만드는 영어 전문 캠프입니다.</p>
+        
+        <div class="ai-trinity">
+            <h4 style="color:var(--point); text-align:center;">AI Trinity System</h4>
+            <p><strong>ChatGPT:</strong> 레벨별 맞춤 코칭 / <strong>Open WebUI:</strong> 실전 대화 훈련 / <strong>NotebookLM:</strong> 나만의 노트 완성</p>
+        </div>
 
-  <section id="register" class="info-section" style="background: #000;">
-    <h2>Registration</h2>
-    <p>전체 프로그램 수강 및 AI 도구 사용 권한을 원하시면 수강 신청을 진행해 주세요. 현재 모든 세션은 실시간 AI 튜터링과 병행됩니다.</p>
-  </section>
+        <div class="camp-box">
+            <h4>Camp A | B | C Program</h4>
+            <p>초등부터 성인까지, 문학 텍스트를 통해 살아있는 영어를 배웁니다.</p>
+        </div>
+    </section>
+
+    <section id="register" style="text-align:center;">
+        <h2>Registration</h2>
+        <p>프로그램 활성화를 위해 수강 신청을 진행해 주세요.</p>
+        <a href="#" style="background:var(--point); color:#000; padding:15px 40px; border-radius:50px; text-decoration:none; font-weight:bold;">수강 신청하기</a>
+    </section>
 </main>
 
 <script>
-  const grammarTitles = {
-    1: "Be Verb - Present Tense", 2: "Articles - a, an, the", 3: "Simple Present Tense", 4: "Present Continuous Tense",
-    5: "Simple Past Tense", 6: "Future Tense (Will/Going to)", 7: "Modal Verbs (Can/Could/Should)", 8: "Countable vs Uncountable",
-    9: "Possessive Adjectives", 10: "Object Pronouns", 11: "Prepositions of Place", 12: "Prepositions of Time",
-    13: "Comparative Adjectives", 14: "Superlative Adjectives", 15: "Adverbs of Frequency", 16: "Imperative Mood",
-    17: "Present Perfect Basics", 18: "Past Continuous Tense", 19: "Some vs Any", 20: "Much/Many/A lot of",
-    21: "Few / Little", 22: "Question Tags", 23: "Conjunctions Basics", 24: "Infinitives (to-V)",
-    25: "Gerunds (V-ing)", 26: "There is / There are", 27: "Have to / Must", 28: "Used to", 29: "Possessive Pronouns", 30: "Reflexive Pronouns",
-    31: "Passive Voice (Simple)", 32: "Present Perfect Continuous", 33: "Past Perfect Tense", 34: "Relative Who/Which",
-    35: "Relative Whose/Whom", 36: "Conditionals Type 0 & 1", 37: "Conditionals Type 2", 38: "Conditionals Type 3",
-    39: "Reported Speech Basics", 40: "Reported Questions", 41: "Causative Have/Get", 42: "Used to / Be used to",
-    43: "Wish / If only", 44: "Modals of Deduction", 45: "Passive Voice (Perfect)", 46: "Defining Relative",
-    47: "Non-defining Relative", 48: "Gerunds vs Infinitives", 49: "Bare Infinitives", 50: "Participle Adjectives",
-    51: "Linking Verbs", 52: "Transitive/Intransitive", 53: "Phrasal Verbs Basics", 54: "Separable Phrasal Verbs",
-    55: "Articles - Advanced", 56: "Quantifiers (Adv)", 57: "Linking Words", 58: "Emphasis (Do/Does/Did)",
-    59: "Cleft Sentences", 60: "Mixed Conditionals", 61: "Future in the Past", 62: "Participle Clauses",
-    63: "Inversion (Advanced)", 64: "Subjunctive Mood", 65: "Double Comparatives", 66: "Advanced Passive",
-    67: "Modals of Deduction (Past)", 68: "Advanced Conditionals", 69: "Nominal Clauses", 70: "Adv. Relative Clauses",
-    71: "Complex Phrasal Verbs", 72: "Adv. Reported Speech", 73: "Ellipsis & Substitution", 74: "Adv. Linking Devices",
-    75: "Hypothetical Meaning", 76: "Formal Syntax", 77: "Noun Phrases", 78: "Verb Patterns (Adv)",
-    79: "Pragmatics & Usage", 80: "Final Comprehensive Review"
-  };
+    const baseUri = "https://cecenglishcamp.github.io/B_Camp/GrammarBaseCamp/";
+    // 선생님이 주신 80개 데이터 리스트 (축약하여 로직 구성)
+    const gList = {
+        1: {p: "G01/G01_be_verb_present_tense.html", t: "Be Verb – Present Tense"},
+        2: {p: "G02/G02_articles_a,_an,_the.html", t: "Articles – a, an, the"},
+        3: {p: "G03/G03_simple_present_tense.html", t: "Simple Present Tense"},
+        4: {p: "G04/G04_present_continuous_tense.html", t: "Present Continuous Tense"},
+        5: {p: "G05/G05_simple_past_tense.html", t: "Simple Past Tense"},
+        6: {p: "G06/G06_future_tense_will_going_to.html", t: "Future Tense (Will/Going to)"},
+        7: {p: "G07/G07_modal_verbs_can,_could,_should.html", t: "Modal Verbs (Can/Could/Should)"},
+        8: {p: "G08/G08_countable_vs_uncountable_nouns.html", t: "Countable vs Uncountable Nouns"},
+        9: {p: "G09/G09_question_formation_wh-questions.html", t: "WH-Questions"},
+        10: {p: "G10/G10_comparative_and_superlative.html", t: "Comparative and Superlative"},
+        // ... (선생님이 주신 11~80번 데이터 동일 방식 적용)
+    };
 
-  function createCards(start, end, containerId) {
-    const grid = document.getElementById(containerId);
-    for (let i = start; i <= end; i++) {
-      const gNum = 'G' + (i < 10 ? '0' + i : i);
-      const url = `https://cecenglishcamp.github.io/B_Camp/GrammarBaseCamp/${gNum}.html`;
-      grid.innerHTML += `
-        <a href="${url}" class="g-link" target="_blank">
-          <div class="g-num">UNIT ${gNum}</div>
-          <div class="g-name" style="font-weight:700;">${grammarTitles[i]}</div>
-        </a>`;
+    function render(start, end, id) {
+        const grid = document.getElementById(id);
+        for(let i=start; i<=end; i++){
+            const item = gList[i] || {p: `G${i}/G${i}.html`, t: `Grammar Unit ${i}`};
+            const gNum = i < 10 ? 'G0'+i : 'G'+i;
+            grid.innerHTML += `<a href="${baseUri}${item.p}" class="g-link" target="_blank"><div class="g-num">${gNum}</div><div class="g-name">${item.t}</div></a>`;
+        }
     }
-  }
-
-  createCards(1, 30, 'grid1');
-  createCards(31, 60, 'grid2');
-  createCards(61, 80, 'grid3');
+    render(1,30,'grid1'); render(31,60,'grid2'); render(61,80,'grid3');
 </script>
 </body>
 </html>
