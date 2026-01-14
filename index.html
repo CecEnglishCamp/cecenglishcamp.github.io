@@ -1,234 +1,158 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEC English Camp</title>
-    <style>
-        :root { --point: #00f2ff; --bg: #000; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Pretendard', sans-serif; margin: 0; padding: 0; scroll-behavior: smooth; line-height: 1.7; }
-        
-        /* 헤더 메뉴 복구 */
-        header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 15px 5%; background: rgba(0,0,0,0.95); border-bottom: 2px solid #222; 
-            position: sticky; top: 0; z-index: 10000;
-        }
-        .logo { font-size: 1.6rem; font-weight: 900; color: #fff; text-decoration: none; letter-spacing: -1px; }
-        .nav-container { display: flex; align-items: center; gap: 25px; }
-        .nav-links { display: flex; list-style: none; gap: 20px; margin: 0; padding: 0; }
-        .nav-links a { color: #fff; text-decoration: none; font-size: 1rem; font-weight: 700; transition: 0.3s; }
-        .nav-links a:hover { color: var(--point); }
-        
-        .dropdown { position: relative; display: inline-block; }
-        .btn-box { border: 2px solid var(--point); border-radius: 30px; padding: 8px 22px; cursor: pointer; color: var(--point); font-weight: 800; font-size: 0.9rem; }
-        .btn-filled { background: var(--point); color: #000; }
-        .dropdown-content { display: none; position: absolute; background: #111; min-width: 240px; border: 1px solid var(--point); border-radius: 12px; top: 50px; right: 0; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
-        .dropdown:hover .dropdown-content { display: block; }
-        .dropdown-content a { padding: 14px 20px; display: block; color: #fff; text-decoration: none; font-size: 0.95rem; border-bottom: 1px solid #222; }
-        .dropdown-content a:hover { background: var(--point); color: #000; font-weight: 800; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us - CEC English Camp</title>
+  <style>
+    :root { --point: #00f2ff; --bg: #000; --card: #111; }
+    body { background-color: var(--bg); color: #fff; font-family: 'Pretendard', sans-serif; margin: 0; padding: 0; line-height: 1.8; word-break: keep-all; }
+    
+    header { display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; border-bottom: 1px solid #222; }
+    .logo-text { font-size: 1.5rem; font-weight: 800; color: #fff; text-decoration: none; }
+    nav a { color: #fff; text-decoration: none; margin-left: 30px; font-size: 1rem; font-weight: 700; transition: 0.3s; }
+    nav a:hover { color: var(--point); }
 
-        /* 섹션 스타일 */
-        section { padding: 80px 5%; max-width: 1200px; margin: 0 auto; }
-        .hero { text-align: center; padding: 100px 0; background: radial-gradient(circle at center, #111 0%, #000 100%); }
-        .hero h1 { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 900; margin: 0; letter-spacing: -2px; }
-        .hero p { color: var(--point); font-size: 1.2rem; font-weight: 700; margin-top: 20px; letter-spacing: 2px; }
+    .container { max-width: 850px; margin: 60px auto; padding: 0 20px; }
+    
+    /* 섹션 스타일 */
+    section { margin-bottom: 80px; }
+    h2 { color: var(--point); font-size: 1.8rem; margin-bottom: 25px; border-bottom: 2px solid var(--point); display: inline-block; padding-bottom: 5px; }
+    h3 { color: #fff; font-size: 1.4rem; margin-top: 40px; margin-bottom: 15px; }
+    p { font-size: 1.1rem; color: #ddd; margin-bottom: 20px; }
+    ul { list-style: none; padding-left: 0; }
+    li { margin-bottom: 10px; position: relative; padding-left: 20px; color: #ccc; }
+    li::before { content: "•"; color: var(--point); position: absolute; left: 0; }
+    
+    .highlight { color: var(--point); font-weight: bold; }
+    .main-copy { font-size: 1.3rem; font-weight: bold; color: #fff; border-left: 4px solid var(--point); padding-left: 20px; margin: 40px 0; }
 
-        .about-card { background: #080808; border: 1px solid #222; border-radius: 30px; padding: 50px; margin-top: 40px; }
-        .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px; }
-        .about-item { border: 1px solid #333; padding: 25px; border-radius: 20px; transition: 0.3s; }
-        .about-item:hover { border-color: var(--point); }
-        .about-item h4 { color: var(--point); margin-top: 0; font-size: 1.2rem; }
+    /* Camp Program Card */
+    .camp-box { background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid #333; margin-top: 20px; }
+    .camp-box h4 { font-size: 1.3rem; color: var(--point); margin-top: 0; }
 
-        .stage-title { margin: 60px 0 30px; border-left: 6px solid var(--point); padding-left: 20px; }
-        .grammar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .g-link { background: #111; padding: 25px; border-radius: 15px; text-decoration: none; color: #fff; border: 1px solid #333; transition: 0.3s; display: block; }
-        .g-link:hover { transform: translateY(-5px); border-color: var(--point); background: #1a1a1a; }
-        .g-num { color: var(--point); font-size: 0.8rem; font-weight: 900; margin-bottom: 8px; display: block; }
-        .g-title { font-size: 1.05rem; font-weight: 700; }
+    /* AI System 설명 (추가된 부분) */
+    .ai-trinity { background: #080808; border: 1px solid var(--point); padding: 30px; border-radius: 20px; margin: 50px 0; }
+    .ai-trinity h4 { color: var(--point); margin-top: 0; font-size: 1.3rem; text-align: center; }
 
-        .footer { text-align: center; padding: 80px; color: #444; border-top: 1px solid #222; }
-    </style>
+    .notice-footer { text-align: center; padding: 50px; border-top: 1px solid #222; margin-top: 100px; }
+    .btn-reg { background: var(--point); color: #000; padding: 18px 50px; border-radius: 50px; text-decoration: none; font-weight: 900; display: inline-block; margin-top: 25px; font-size: 1.1rem; }
+  </style>
 </head>
 <body>
 
-<header>
-    <a href="#" class="logo">CEC ENGLISH CAMP</a>
-    <div class="nav-container">
-        <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#">Register</a></li>
+  <header>
+    <a href="index.html" class="logo-text">CEC ENGLISH CAMP</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html" style="color:var(--point)">About</a>
+      <a href="index.html#register">Register</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <section>
+      <h2>About Us</h2>
+      <div class="main-copy">영어를 ‘공부하는 대상’에서 ‘사고하고 사용하는 언어’로</div>
+      <p>이곳은 단기 성과를 위한 영어 학습장이 아닙니다.<br>
+      <span class="highlight">문법으로 기초를 세우고, 이해로 소화하며, 실제 언어 환경에서 작동하게 만드는 영어 전문 캠프장</span>입니다.</p>
+      <p>우리는 영어를 암기 → 시험 → 잊혀지는 지식이 아니라 <span class="highlight">읽고, 듣고, 말하고, 쓰며 축적되는 사고의 도구</span>로 다룹니다.</p>
+    </section>
+
+    <section>
+      <h2>우리의 영어교육 접근 방식</h2>
+      
+      <h3>1. 문법은 출발점이다</h3>
+      <p>모든 캠프는 <span class="highlight">문법을 기반으로 시작</span>합니다. 문법을 문제풀이용 규칙이 아니라,</p>
+      <ul>
+        <li>문장을 이해하는 구조</li>
+        <li>의미를 예측하는 틀</li>
+        <li>말과 글을 정확히 만들어내는 설계도로 다룹니다.</li>
+      </ul>
+      <p>기초가 없는 몰입은 오래가지 않습니다. 우리는 <span class="highlight">기초를 단단히 세운 뒤 확장</span>합니다.</p>
+
+      <h3>2. 이해는 NotebookLM에서 완성된다</h3>
+      <p>수업에서 다룬 문법, 표현, 문장 구조는 <span class="highlight">NotebookLM 환경에서 충분히 해석·정리·재구성</span>됩니다.</p>
+      <ul>
+        <li>학습자는 단순히 “배우는 사람”이 아니라 <strong>자신만의 영어 노트를 축적하는 연구자</strong>가 됩니다.</li>
+        <li>입력된 지식은 연결되고, 반복되며, 스스로 설명할 수 있는 수준까지 소화됩니다.</li>
+      </ul>
+
+      <h3>3. 세 개의 AI와 함께하는 언어 실전 훈련 (AI Trinity)</h3>
+      <p>이 캠프의 핵심은 <span class="highlight">AI와의 협업 학습</span>입니다. 우리는 세 가지 AI를 유기적으로 활용합니다.</p>
+      
+      <div class="ai-trinity">
+        <h4>Coach - Practice - Review</h4>
+        <ul>
+          <li><strong>ChatGPT (개인 코치):</strong> 레벨별 맞춤 가이드라인을 제공하며 "어떻게 말할지"를 가르쳐줍니다.</li>
+          <li><strong>Open WebUI (실전 운동장):</strong> 소설 속 인물과 대화하며 배운 것을 마음껏 써보는 공간입니다.</li>
+          <li><strong>NotebookLM (최종 검토관):</strong> 원문을 바탕으로 팩트를 체크하고 나만의 노트를 완성합니다.</li>
         </ul>
-        <div class="dropdown">
-            <div class="btn-box btn-filled">PROGRAMS ▼</div>
-            <div class="dropdown-content">
-                <a href="#grammar">Step 1: Grammar BaseCamp</a>
-                <a href="#">Step 2: English Camp A</a>
-                <a href="#">Step 3: English Camp B</a>
-                <a href="#">Step 4: English Camp C</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <div class="btn-box">AI TOOLS ▼</div>
-            <div class="dropdown-content">
-                <a href="https://notebooklm.google.com/" target="_blank">NotebookLM</a>
-                <a href="https://openwebui.com/" target="_blank">Open WebUI</a>
-                <a href="https://chatgpt.com/g/g-68abc1e0493c8191bf064509f3ff8a79-englishcamp-a" target="_blank">GPTs: Camp A</a>
-                <a href="https://chatgpt.com/g/g-68ad69ffdd0c8191a73757a734ba58fa-englishcamp-b" target="_blank">GPTs: Camp B</a>
-                <a href="https://chatgpt.com/g/g-68e9633eff44819185549f4519235ff8-englishcamp-c" target="_blank">GPTs: Camp C</a>
-            </div>
-        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>문학을 통해 만나는 진짜 영어</h2>
+      <p>우리는 영어를 교재로만 가르치지 않습니다. <span class="highlight">영어의 고전부터 현대 소설까지</span>, 시대를 관통하는 텍스트를 통해 자연스럽게 접근합니다.</p>
+      <ul>
+        <li>살아 있는 문장</li>
+        <li>실제로 사용되는 어휘와 표현</li>
+        <li>현대 영어와 생활 영어의 감각</li>
+      </ul>
+      <p>문학은 가장 정제된 언어이자, 가장 현실적인 영어입니다.</p>
+    </section>
+
+    <section>
+      <h2>Camp Program</h2>
+      
+      <div class="camp-box">
+        <h4>Camp A | 초등학생 A1 · A2</h4>
+        <ul>
+          <li>영어 문장의 기본 구조 이해</li>
+          <li>문법을 ‘규칙’이 아닌 ‘의미’로 인식</li>
+          <li>듣기·읽기 중심에서 말하기·쓰기의 첫 확장</li>
+          <li>영어에 대한 긍정적 언어 경험 형성</li>
+        </ul>
+      </div>
+
+      <div class="camp-box">
+        <h4>Camp B | 중·고등학생 B1 · B2</h4>
+        <ul>
+          <li>문법 기반 사고 정교화</li>
+          <li>소설과 텍스트를 통한 독해·표현 확장</li>
+          <li>말과 글의 정확성과 자연스러움 강화</li>
+          <li>시험을 넘어 실제 사용 가능한 영어 구축</li>
+        </ul>
+      </div>
+
+      <div class="camp-box">
+        <h4>Camp C | 성인 초급 · 중급</h4>
+        <ul>
+          <li>무너진 기초 재정비</li>
+          <li>이해되지 않았던 문법의 재해석</li>
+          <li>생활 영어·현대 영어 중심의 실전 활용</li>
+          <li>읽고, 말하고, 쓰는 균형 잡힌 언어 회복</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>우리가 지향하는 목표</h2>
+      <p>이 캠프의 목표는 단순한 레벨 상승이 아닙니다. <span class="highlight">영어로 사고하고, 스스로 성장할 수 있는 학습자</span>를 만드는 것입니다.</p>
+      <ul>
+        <li>혼자서도 영어를 읽을 수 있고</li>
+        <li>AI와 대화하며 연습할 수 있고</li>
+        <li>자신의 언어로 영어를 써 내려갈 수 있는 상태</li>
+      </ul>
+      <p>그것이 우리가 생각하는 <span class="highlight">완성에 가까운 영어</span>입니다.</p>
+    </section>
+
+    <div class="notice-footer">
+      <p style="color:#888;">프로그램의 모든 기능과 AI 도구는 수강 등록 후 활성화됩니다.<br>
+      위의 메뉴들은 미리보기용이며, 실제 학습을 위해서는 등록이 필요합니다.</p>
+      <a href="index.html#register" class="btn-reg">수강 신청하기</a>
     </div>
-</header>
-
-<section class="hero">
-    <h1>CEC English Camp</h1>
-    <p>MASTER ENGLISH WITH LITERATURE & AI</p>
-</section>
-
-<section id="about">
-    <div class="about-card">
-        <h2 style="color: var(--point); font-size: 2rem;">About Our Program</h2>
-        <p style="font-size: 1.3rem; font-weight: 700; margin: 20px 0;">영어를 ‘공부하는 대상’에서 ‘사고하고 사용하는 언어’로</p>
-        <p>CEC English Camp는 단순한 문법 암기를 넘어, 인공지능과 문학적 사고를 결합한 입체적 학습을 지향합니다.</p>
-        
-        <div class="about-grid">
-            <div class="about-item">
-                <h4>AI Trinity System</h4>
-                <p>ChatGPT, Open WebUI, NotebookLM을 활용하여 개인별 맞춤 피드백과 심화 학습을 제공합니다.</p>
-            </div>
-            <div class="about-item">
-                <h4>Literature-Based</h4>
-                <p>고전 문학과 현대 텍스트를 통해 문맥 속에서 살아있는 언어의 구조를 파악합니다.</p>
-            </div>
-            <div class="about-item">
-                <h4>80 Steps Mastery</h4>
-                <p>Grammar BaseCamp를 통해 기초부터 고급 문법까지 80단계의 체계적인 커리큘럼을 완수합니다.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="grammar">
-    <h2 style="font-size: 2.5rem; margin-bottom: 10px;">Grammar BaseCamp</h2>
-    <p style="color: var(--point); font-weight: 700;">80 Steps to Master English Grammar</p>
-    
-    <div class="stage-title"><h3>Stage 1: Basic (G01 - G30)</h3></div>
-    <div class="grammar-grid" id="grid1"></div>
-    
-    <div class="stage-title"><h3>Stage 2: Intermediate (G31 - G60)</h3></div>
-    <div class="grammar-grid" id="grid2"></div>
-    
-    <div class="stage-title"><h3>Stage 3: Advanced (G61 - G80)</h3></div>
-    <div class="grammar-grid" id="grid3"></div>
-</section>
-
-<div class="footer">© 2026 CEC English Camp. All Rights Reserved.</div>
-
-<script>
-    const base = "https://cecenglishcamp.github.io/B_Camp/GrammarBaseCamp/";
-    
-    // G01-G80 전체 경로 매핑 (전수 검토 완료)
-    const gMapping = {
-        1: {p: "G01/G01_be_verb_present_tense.html", t: "Be Verb – Present"},
-        2: {p: "G02/G02_articles_a,_an,_the.html", t: "Articles (a, an, the)"},
-        3: {p: "G03/G03_simple_present_tense.html", t: "Simple Present"},
-        4: {p: "G04/G04_present_continuous_tense.html", t: "Present Continuous"},
-        5: {p: "G05/G05_simple_past_tense.html", t: "Simple Past"},
-        6: {p: "G06/G06_future_tense_will_going_to.html", t: "Future Tense"},
-        7: {p: "G07/G07_modal_verbs_can,_could,_should.html", t: "Modal Verbs"},
-        8: {p: "G08/G08_countable_vs_uncountable_nouns.html", t: "Countable/Uncountable"},
-        9: {p: "G09/G09_question_formation_wh-questions.html", t: "WH-Questions"},
-        10: {p: "G10/G10_comparative_and_superlative.html", t: "Comparatives"},
-        11: {p: "G11/G11_possessive_forms_my,_your,_his,_her.html", t: "Possessive Forms"},
-        12: {p: "G12/G12_there_is___there_are.html", t: "There is / There are"},
-        13: {p: "G13/G13_prepositions_of_place_in,_on,_at.html", t: "Prep of Place"},
-        14: {p: "G14/G14_prepositions_of_time.html", t: "Prep of Time"},
-        15: {p: "G15/G15_demonstratives_this,_that,_these,_those.html", t: "Demonstratives"},
-        16: {p: "G16/G16_plural_nouns_regular_and_irregular.html", t: "Plural Nouns"},
-        17: {p: "G17/G17_object_pronouns_me,_you,_him,_her.html", t: "Object Pronouns"},
-        18: {p: "G18/G18_yes_no_questions_and_short_answers.html", t: "Yes/No Questions"},
-        19: {p: "G19/G19_frequency_adverbs_always,_sometimes,_never.html", t: "Frequency Adverbs"},
-        20: {p: "G20/G20_basic_imperative_commands.html", t: "Imperatives"},
-        21: {p: "G21/G21_past_continuous_tense.html", t: "Past Continuous"},
-        22: {p: "G22/G22_present_perfect_simple.html", t: "Present Perfect"},
-        23: {p: "G23/G23_modal_verbs_must,_have_to,_need_to.html", t: "Must/Have to"},
-        24: {p: "G24/G24_some,_any,_no,_none.html", t: "Some, Any, No"},
-        25: {p: "G25/G25_adverbs_of_manner.html", t: "Adverbs of Manner"},
-        26: {p: "G26/G26_conjunctions_-_and,_but,_or,_so.html", t: "Conjunctions"},
-        27: {p: "G27/G27_like_vs_would_like.html", t: "Like vs Would Like"},
-        28: {p: "G28/G28_too_vs_enough.html", t: "Too vs Enough"},
-        29: {p: "G29/G29_first_conditional.html", t: "First Conditional"},
-        30: {p: "G30/G30_gerunds_vs_infinitives.html", t: "Gerunds/Infinitives"},
-        31: {p: "G31/G31_relative_pronouns.html", t: "Relative Pronouns"},
-        32: {p: "G32/G32_past_simple_vs_past_continuous.html", t: "Past Simple vs Cont"},
-        33: {p: "G33/G33_used_to_vs_be_used_to.html", t: "Used to / Be Used to"},
-        34: {p: "G34/G34_question_tags.html", t: "Question Tags"},
-        35: {p: "G35/G35_reflexive_pronouns.html", t: "Reflexive Pronouns"},
-        36: {p: "G36/G36_each_vs_every.html", t: "Each vs Every"},
-        37: {p: "G37/G37_both,_either,_neither.html", t: "Both, Either, Neither"},
-        38: {p: "G38/G38_so_vs_such.html", t: "So vs Such"},
-        39: {p: "G39/G39_still,_yet,_already.html", t: "Still, Yet, Already"},
-        40: {p: "G40/G40_direct_and_indirect_speech.html", t: "Direct/Indirect Speech"},
-        41: {p: "G41/G41_present_perfect_vs_past_simple.html", t: "Pres Perfect vs Past"},
-        42: {p: "G42/G42_present_perfect_continuous.html", t: "Pres Perfect Cont"},
-        43: {p: "G43/G43_past_perfect.html", t: "Past Perfect"},
-        44: {p: "G44/G44_future_perfect.html", t: "Future Perfect"},
-        45: {p: "G45/G45_modal_verbs_of_possibility.html", t: "Modals of Possibility"},
-        46: {p: "G46/G46_second_conditional.html", t: "Second Conditional"},
-        47: {p: "G47/G47_third_conditional.html", t: "Third Conditional"},
-        48: {p: "G48/G48_passive_voice.html", t: "Passive Voice"},
-        49: {p: "G49/G49_causative_verbs.html", t: "Causative Verbs"},
-        50: {p: "G50/G50_gerunds_and_infinitives.html", t: "Gerunds/Infinitives 2"},
-        51: {p: "G51/G51_phrasal_verbs.html", t: "Phrasal Verbs"},
-        52: {p: "G52/G52_relative_clauses.html", t: "Relative Clauses"},
-        53: {p: "G53/G53_reported_speech.html", t: "Reported Speech"},
-        54: {p: "G54/G54_wish_and_if_only.html", t: "Wish and If Only"},
-        55: {p: "G55/G55_articles.html", t: "Articles Adv"},
-        56: {p: "G56/G56_quantifiers.html", t: "Quantifiers"},
-        57: {p: "G57/G57_linking_words.html", t: "Linking Words"},
-        58: {p: "G58/G58_emphatic_do_does_did.html", t: "Emphatic Do"},
-        59: {p: "G59/G59_cleft_sentences.html", t: "Cleft Sentences"},
-        60: {p: "G60/G60_mixed_conditionals.html", t: "Mixed Conditionals"},
-        61: {p: "G61/G61_future_in_the_past.html", t: "Future in the Past"},
-        62: {p: "G62/G62_participle_clauses.html", t: "Participle Clauses"},
-        63: {p: "G63/G63_inversion.html", t: "Inversion"},
-        64: {p: "G64/G64_subjunctive_mood.html", t: "Subjunctive Mood"},
-        65: {p: "G65/G65_double_comparatives.html", t: "Double Comparatives"},
-        66: {p: "G66/G66_passive_voice_part_1.html", t: "Passive Voice Part 1"},
-        67: {p: "G67/G67_modals_of_deduction.html", t: "Modals of Deduction"},
-        68: {p: "G68/G68_advanced_conditionals.html", t: "Adv Conditionals"},
-        69: {p: "G69/G69_nominal_clauses.html", t: "Nominal Clauses"},
-        70: {p: "G70/G70_advanced_relative_clauses.html", t: "Adv Relative Clauses"},
-        71: {p: "G71/G71_complex_phrasal_verbs.html", t: "Complex Phrasal Verbs"},
-        72: {p: "G72/G72_advanced_reported_speech.html", t: "Adv Reported Speech"},
-        73: {p: "G73/G73_ellipsis_and_substitution.html", t: "Ellipsis"},
-        74: {p: "G74/G74_advanced_linking_devices.html", t: "Linking Devices"},
-        75: {p: "G75/G75_hedging_language.html", t: "Hedging Language"},
-        76: {p: "G76/G76_fronting_and_inversion.html", t: "Fronting"},
-        77: {p: "G77/G77_complex_sentence_structures.html", t: "Complex Sentences"},
-        78: {p: "G78/G78_advanced_gerunds_and_infinitives.html", t: "Adv Gerunds"},
-        79: {p: "G79/G79_nominalization.html", t: "Nominalization"},
-        80: {p: "G80/G80_advanced_articles_and_determiners.html", t: "Adv Articles"}
-    };
-
-    function render(start, end, gridId) {
-        const grid = document.getElementById(gridId);
-        for(let i=start; i<=end; i++){
-            const gNum = i < 10 ? 'G0'+i : 'G'+i;
-            const item = gMapping[i];
-            grid.innerHTML += `
-                <a href="${base}${item.p}" class="g-link" target="_blank">
-                    <span class="g-num">${gNum}</span>
-                    <span class="g-title">${item.t}</span>
-                </a>`;
-        }
-    }
-    render(1, 30, 'grid1');
-    render(31, 60, 'grid2');
-    render(61, 80, 'grid3');
-</script>
+  </div>
 
 </body>
 </html>
