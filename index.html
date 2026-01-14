@@ -21,15 +21,47 @@
         .nav-links a:hover { color: var(--point); }
         
         /* 버튼 및 드롭다운 */
-        .dropdown { position: relative; display: inline-block; padding-bottom: 0; }
-        .btn-box { border: 2px solid var(--point); border-radius: 30px; padding: 8px 22px; cursor: pointer; color: var(--point); font-weight: 800; font-size: 0.9rem; }
+        .dropdown { position: relative; display: inline-block; }
+        .btn-box { border: 2px solid var(--point); border-radius: 30px; padding: 8px 22px; cursor: pointer; color: var(--point); font-weight: 800; font-size: 0.9rem; transition: 0.3s; }
+        .btn-box:hover { background: var(--point); color: #000; }
         .btn-filled { background: var(--point); color: #000; }
-        .dropdown-content { display: none; position: absolute; background: #111; min-width: 240px; border: 1px solid var(--point); border-radius: 12px; top: 100%; right: 0; overflow: visible; box-shadow: 0 10px 40px rgba(0,0,0,0.8); z-index: 9999; margin-top: 5px; }
-        .dropdown:hover .dropdown-content { display: block; }
-        .dropdown-content:hover { display: block; }
-        .dropdown-content a { padding: 14px 20px; display: block; color: #fff; text-decoration: none; font-size: 0.95rem; border-bottom: 1px solid #222; }
-        .dropdown-content a:last-child { border-bottom: none; }
-        .dropdown-content a:hover { background: var(--point); color: #000; font-weight: 800; }
+        .dropdown-content { 
+            display: none; 
+            position: absolute; 
+            background: #111; 
+            min-width: 260px; 
+            border: 2px solid var(--point); 
+            border-radius: 12px; 
+            top: 45px; 
+            right: 0; 
+            overflow: visible; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+            z-index: 10001;
+            padding: 0;
+        }
+        .dropdown:hover .dropdown-content { 
+            display: block !important; 
+        }
+        .dropdown-content:hover { 
+            display: block !important; 
+        }
+        .dropdown-content a { 
+            padding: 15px 20px; 
+            display: block; 
+            color: #fff; 
+            text-decoration: none; 
+            font-size: 0.95rem; 
+            border-bottom: 1px solid #333;
+            transition: 0.2s;
+        }
+        .dropdown-content a:last-child { 
+            border-bottom: none; 
+        }
+        .dropdown-content a:hover { 
+            background: var(--point); 
+            color: #000; 
+            font-weight: 800; 
+        }
 
         /* 섹션 공통 */
         section { padding: 100px 5% 60px; max-width: 1000px; margin: 0 auto; }
@@ -186,6 +218,17 @@
 <div class="footer-info">© 2026 CEC English Camp. All Rights Reserved.</div>
 
 <script>
+    // 드롭다운 안정화
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+        const content = dropdown.querySelector('.dropdown-content');
+        dropdown.addEventListener('mouseenter', () => {
+            content.style.display = 'block';
+        });
+        dropdown.addEventListener('mouseleave', () => {
+            content.style.display = 'none';
+        });
+    });
+
     const base = "https://cecenglishcamp.github.io/B_Camp/GrammarBaseCamp/";
     const gMapping = {
         1: {p: "G01/G01_be_verb_present_tense.html", t: "Be Verb – Present"},
