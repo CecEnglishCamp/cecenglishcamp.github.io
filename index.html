@@ -39,10 +39,7 @@
             z-index: 10001;
             padding: 0;
         }
-        .dropdown:hover .dropdown-content { 
-            display: block !important; 
-        }
-        .dropdown-content:hover { 
+        .dropdown.active .dropdown-content { 
             display: block !important; 
         }
         .dropdown-content a { 
@@ -61,6 +58,11 @@
             background: var(--point); 
             color: #000; 
             font-weight: 800; 
+        }
+        
+        @media (hover: none) and (pointer: coarse) {
+            .dropdown:hover .dropdown-content { display: none; }
+            .dropdown.active .dropdown-content { display: block; }
         }
 
         /* 섹션 공통 */
@@ -221,14 +223,42 @@
 </div>
 
 <script>
-    // 드롭다운 안정화
+    // 모바일/데스크톱 드롭다운 최적화
     document.querySelectorAll('.dropdown').forEach(dropdown => {
+        const btn = dropdown.querySelector('.btn-box');
         const content = dropdown.querySelector('.dropdown-content');
-        dropdown.addEventListener('mouseenter', () => {
-            content.style.display = 'block';
+        
+        // 버튼 클릭 이벤트 (모바일용)
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('active');
         });
+        
+        // 링크 클릭 시 드롭다운 닫기
+        content.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                dropdown.classList.remove('active');
+            });
+        });
+        
+        // 데스크톱: 마우스 오버
+        dropdown.addEventListener('mouseenter', () => {
+            if (window.innerWidth > 768) {
+                dropdown.classList.add('active');
+            }
+        });
+        
         dropdown.addEventListener('mouseleave', () => {
-            content.style.display = 'none';
+            if (window.innerWidth > 768) {
+                dropdown.classList.remove('active');
+            }
+        });
+    });
+    
+    // 다른 곳 클릭 시 드롭다운 닫기
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.dropdown').forEach(d => {
+            d.classList.remove('active');
         });
     });
 
