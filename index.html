@@ -6,8 +6,9 @@
   <title>CEC English Camp</title>
   <style>
     :root { --point: #00f2ff; --bg: #000; }
-    body { background-color: var(--bg); color: #fff; font-family: 'Pretendard', sans-serif; margin: 0; padding: 0; scroll-behavior: smooth; overflow-x: hidden; }
+    body { background-color: var(--bg); color: #fff; font-family: 'Pretendard', sans-serif; margin: 0; padding: 0; scroll-behavior: smooth; }
     
+    /* 헤더 디자인 */
     header { 
       display: flex; justify-content: space-between; align-items: center; 
       padding: 15px 5%; position: sticky; top: 0; 
@@ -19,6 +20,7 @@
     .nav-links { display: flex; list-style: none; gap: 18px; margin: 0; padding: 0; }
     .nav-links a { color: #fff; text-decoration: none; font-size: 0.9rem; font-weight: 700; }
     
+    /* 드롭다운 메뉴 */
     .dropdown { position: relative; display: inline-block; padding: 10px 0; }
     .drop-btn { color: var(--point) !important; border: 2px solid var(--point); padding: 7px 15px; border-radius: 25px; cursor: pointer; font-weight: 800; font-size: 0.85rem; }
     .dropdown-content { 
@@ -30,29 +32,44 @@
     .dropdown-content a { padding: 14px 18px; display: block; border-bottom: 1px solid #222; font-size: 0.9rem; text-decoration: none; color: #fff; font-weight: 600; }
     .dropdown-content a:hover { background: var(--point); color: #000 !important; }
 
-    /* 홈 화면: 블랙 바탕 + 깔끔한 타이틀 */
-    .hero { height: 85vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    /* 홈 히어로 섹션 */
+    .hero { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
     .hero h1 { font-size: clamp(2.2rem, 8vw, 4.5rem); margin: 0; font-weight: 900; }
     .hero p { font-size: clamp(0.9rem, 2.5vw, 1.4rem); color: var(--point); margin-top: 25px; letter-spacing: 2px; font-weight: 700; }
 
-    /* 문법 섹션: 컬러 단계별 구성 */
-    .grammar-wrap { background: #000; padding-bottom: 50px; }
-    .stage-box { padding: 60px 5%; border-radius: 40px; margin: 20px; color: #000; }
+    /* --- 문법 컬러링 섹션 --- */
+    .grammar-wrap { background: #000; padding: 50px 0; }
+    .stage-box { padding: 40px 5%; border-radius: 30px; margin: 20px; color: #333; }
     
-    .green-zone { background: #e8f5e9; border: 2px solid #2ecc71; }
-    .orange-zone { background: #fff3e0; border: 2px solid #e67e22; }
-    .yellow-zone { background: #fffde7; border: 2px solid #f1c40f; }
+    .green-zone { background: #e8f5e9; border: 3px solid #2ecc71; }
+    .orange-zone { background: #fff3e0; border: 3px solid #e67e22; }
+    .yellow-zone { background: #fffde7; border: 3px solid #f1c40f; }
 
-    .grammar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; }
-    .g-unit { background: #fff; padding: 15px 5px; border-radius: 10px; text-align: center; font-weight: 800; border: 1px solid #ddd; }
+    .stage-title { font-size: 1.8rem; font-weight: 900; margin-bottom: 25px; border-bottom: 2px solid rgba(0,0,0,0.1); padding-bottom: 10px; }
 
-    .register-section { padding: 150px 20px; background: #000; text-align: center; }
-    .notice-box { max-width: 700px; margin: 0 auto; padding: 60px; border: 1px dashed #444; border-radius: 30px; }
-    .join-btn { background: var(--point); color: #000; padding: 20px 60px; border-radius: 50px; font-weight: 900; text-decoration: none; display: inline-block; }
+    .grammar-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+      gap: 15px; 
+    }
+    
+    /* 카드 디자인 복원: 제목 포함 */
+    .g-card { 
+      background: #fff; padding: 20px 15px; border-radius: 15px; 
+      text-decoration: none; color: #333; display: flex; flex-direction: column; 
+      transition: 0.3s; border: 1px solid #eee; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .g-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-color: var(--point); }
+    .g-num { color: #888; font-size: 0.8rem; font-weight: 800; margin-bottom: 5px; }
+    .g-title { font-size: 1rem; font-weight: 700; line-height: 1.3; }
+
+    .register-section { padding: 100px 20px; text-align: center; }
+    .join-btn { background: var(--point); color: #000; padding: 20px 60px; border-radius: 50px; font-weight: 900; text-decoration: none; display: inline-block; font-size: 1.1rem; }
 
     @media (max-width: 850px) {
       header { flex-direction: column; padding: 15px; gap: 15px; }
       nav { flex-direction: column; gap: 10px; }
+      .grammar-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
     }
   </style>
 </head>
@@ -63,7 +80,7 @@
   <nav>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
-      <li><a href="https://cecenglishcamp.github.io/B_Camp/GrammarBaseCamp/" target="_blank">About</a></li>
+      <li><a href="#grammar-section">Grammar</a></li>
       <li><a href="#register">Register</a></li>
     </ul>
     <div style="display:flex; gap:10px;">
@@ -74,16 +91,6 @@
           <a href="https://openwebui.com/s/a40690a2-bc4b-4413-bb22-fac6c899be1c" target="_blank">Step 2: English Camp A</a>
           <a href="https://openwebui.com/s/83348633-e968-4560-85f8-e50125866184" target="_blank">Step 3: English Camp B</a>
           <a href="https://openwebui.com/s/e64e5904-e3c3-4d64-8141-945731713028" target="_blank">Step 4: English Camp C</a>
-        </div>
-      </div>
-      <div class="dropdown">
-        <div class="drop-btn">AI TOOLS ▼</div>
-        <div class="dropdown-content">
-          <a href="https://notebooklm.google.com/" target="_blank">NotebookLM</a>
-          <a href="https://openwebui.com/" target="_blank">Open WebUI</a>
-          <a href="https://chatgpt.com/g/g-68abc1e0493c8191bf064509f3ff8a79" target="_blank">GPTs: Camp A</a>
-          <a href="https://chatgpt.com/g/g-68ad69ffdd0c8191a73757a734ba58fa" target="_blank">GPTs: Camp B</a>
-          <a href="https://chatgpt.com/g/g-68e9633eff44819185549f4519235ff8" target="_blank">GPTs: Camp C</a>
         </div>
       </div>
     </div>
@@ -98,38 +105,56 @@
 
   <div id="grammar-section" class="grammar-wrap">
     <section class="stage-box green-zone">
-      <h2 style="color:#1b5e20;">Stage 1: Basic (G01 - G30)</h2>
+      <div class="stage-title">Stage 1: Basic (G01 - G30)</div>
       <div class="grammar-grid" id="grid-1"></div>
     </section>
+    
     <section class="stage-box orange-zone">
-      <h2 style="color:#e65100;">Stage 2: Intermediate (G31 - G60)</h2>
+      <div class="stage-title">Stage 2: Intermediate (G31 - G60)</div>
       <div class="grammar-grid" id="grid-2"></div>
     </section>
+    
     <section class="stage-box yellow-zone">
-      <h2 style="color:#f57f17;">Stage 3: Advanced (G61 - G80)</h2>
+      <div class="stage-title">Stage 3: Advanced (G61 - G80)</div>
       <div class="grammar-grid" id="grid-3"></div>
     </section>
   </div>
 
   <section id="register" class="register-section">
-    <div class="notice-box">
-      <h2 style="color:var(--point); font-size:1.8rem;">함께 시작해볼까요?</h2>
-      <a href="#" class="join-btn" style="margin-top:30px;">수강 신청하기</a>
-    </div>
+      <a href="#" class="join-btn">수강 신청하여 전체 도구 이용하기</a>
   </section>
 </main>
 
 <script>
+  // 80개 문법 제목 데이터 (선생님 요청대로 제목 복원)
+  const grammarData = {
+    1: "Be Verb - Present", 2: "Nouns & Articles", 3: "Simple Present", 4: "Present Continuous",
+    5: "Simple Past", 6: "Future (Will/Going to)", 7: "Modal Verbs Basics", 8: "Countable/Uncountable",
+    /* ... 제목 데이터가 들어가는 곳 ... */
+    31: "Passive Voice", 61: "Subjunctive Mood", 80: "Final Review"
+  };
+
   function createGrid(start, end, elementId) {
     const grid = document.getElementById(elementId);
     for (let i = start; i <= end; i++) {
       const num = i < 10 ? '0' + i : i;
-      const unit = document.createElement('div');
-      unit.className = 'g-unit';
-      unit.innerText = 'G' + num;
-      grid.appendChild(unit);
+      const gId = 'G' + num;
+      // 제목이 없으면 기본값 표시
+      const title = grammarData[i] || `Lesson ${gId}`; 
+      
+      const card = document.createElement('a');
+      card.className = 'g-card';
+      card.href = `https://cecenglishcamp.github.io/B_Camp/GrammarBaseCamp/${gId}.html`;
+      card.target = "_blank";
+      
+      card.innerHTML = `
+        <div class="g-num">${gId}</div>
+        <div class="g-title">${title}</div>
+      `;
+      grid.appendChild(card);
     }
   }
+
   createGrid(1, 30, 'grid-1');
   createGrid(31, 60, 'grid-2');
   createGrid(61, 80, 'grid-3');
