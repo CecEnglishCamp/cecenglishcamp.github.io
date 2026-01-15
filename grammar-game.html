@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Game - 문법 게임</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #000 0%, #111 100%);
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #00f2ff;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #888;
+        }
+
+        .game-content {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        .robot-section {
+            flex: 0 0 250px;
+            text-align: center;
+        }
+
+        .robot-container {
+            position: relative;
+            width: 200px;
+            height: 280px;
+            margin: 0 auto 30px;
+            background: rgba(17, 17, 17, 0.8);
+            border: 2px solid #00f2ff;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+        }
+
+        .robot-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.3));
+        }
+
+        .robot-container.active {
+            box-shadow: 0 0 50px rgba(0, 242, 255, 0.5);
+            border-color: #00ff88;
+        }
+
+        .battery-info {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #00f2ff;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 40px;
+            background: #222;
+            border: 2px solid #00f2ff;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00f2ff, #00ff88);
+            width: 3%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .quiz-section {
+            flex: 1;
+        }
+
+        .question-box {
+            background: rgba(17, 17, 17, 0.9);
+            border: 2px solid #333;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .question-box h2 {
+            font-size: 1.4rem;
+            color: #00f2ff;
+            margin-bottom: 20px;
+        }
+
+        .question-box p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #ddd;
+            margin-bottom: 25px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            padding: 18px;
+            background: #222;
+            border: 2px solid #444;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .option-btn:hover {
+            border-color: #00f2ff;
+            background: #1a1a1a;
+            transform: translateY(-2px);
+        }
+
+        .option-btn.correct {
+            background: #00ff88;
+            color: #000;
+            border-color: #00ff88;
+            animation: pulse 0.6s;
+        }
+
+        .option-btn.wrong {
+            background: #ff4444;
+            color: #fff;
+            border-color: #ff4444;
+            animation: shake 0.6s;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .robot-container.eyes-glow {
+            animation: eyeGlow 0.8s;
+        }
+
+        @keyframes eyeGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.3)); }
+            50% { filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.8)); }
+            100% { filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.3)); }
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #00f2ff;
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .completion-screen {
+            text-align: center;
+            padding: 60px 30px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid #00ff88;
+            border-radius: 20px;
+            display: none;
+        }
+
+        .completion-screen.show {
+            display: block;
+            animation: slideIn 0.6s;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .completion-screen h2 {
+            font-size: 3rem;
+            color: #00ff88;
+            margin-bottom: 20px;
+        }
+
+        .completion-screen p {
+            font-size: 1.3rem;
+            color: #ddd;
+            margin-bottom: 30px;
+        }
+
+        .restart-btn {
+            padding: 15px 50px;
+            background: #00f2ff;
+            color: #000;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00f2ff;
+        }
+
+        @media (max-width: 768px) {
+            .game-content {
+                flex-direction: column;
+            }
+
+            .robot-section {
+                flex: 1;
+                width: 100%;
+            }
+
+            .options {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🤖 Grammar Game</h1>
+        <p>문법을 정복해서 로봇을 깨워주세요!</p>
+    </div>
+
+    <div class="game-content">
+        <div class="robot-section">
+            <div class="robot-container" id="robotContainer">
+                <img src="assets/img/logo.png" alt="Robot" class="robot-img">
+            </div>
+            <div class="battery-info">배터리: <span id="batteryPercent">3</span>%</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <div class="question-box" id="questionBox">
+                <span class="question-number" id="questionNum">Q1/10</span>
+                <h2 id="questionTitle">문법 주제</h2>
+                <p id="questionText">문제가 여기에 표시됩니다</p>
+                <div class="options" id="options"></div>
+            </div>
+
+            <div class="completion-screen" id="completionScreen">
+                <h2>축하합니다! 🎉</h2>
+                <p>로봇이 완전히 깨어났습니다!</p>
+                <p id="finalScore"></p>
+                <button class="restart-btn" onclick="location.reload()">다시 시작하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            id: 1,
+            title: "Be Verb (Present)",
+            text: "She ___ a teacher.",
+            options: ["am", "is", "are", "be"],
+            correct: 1
+        },
+        {
+            id: 2,
+            title: "Simple Present",
+            text: "They ___ to school every day.",
+            options: ["go", "goes", "going", "gone"],
+            correct: 0
+        },
+        {
+            id: 3,
+            title: "Present Perfect",
+            text: "I ___ finished my homework.",
+            options: ["have", "has", "had", "having"],
+            correct: 0
+        },
+        {
+            id: 4,
+            title: "Past Tense",
+            text: "Yesterday, he ___ to the park.",
+            options: ["goes", "went", "going", "go"],
+            correct: 1
+        },
+        {
+            id: 5,
+            title: "Future Tense",
+            text: "Next week, we ___ on vacation.",
+            options: ["are", "will be", "were", "have been"],
+            correct: 1
+        },
+        {
+            id: 6,
+            title: "Passive Voice",
+            text: "The cake ___ by my mother.",
+            options: ["made", "is made", "makes", "making"],
+            correct: 1
+        },
+        {
+            id: 7,
+            title: "Relative Pronouns",
+            text: "The girl ___ won the prize is smart.",
+            options: ["who", "which", "that", "whose"],
+            correct: 0
+        },
+        {
+            id: 8,
+            title: "Negative Form",
+            text: "She ___ like pizza.",
+            options: ["not does", "does not", "not do", "do not"],
+            correct: 1
+        },
+        {
+            id: 9,
+            title: "Present Continuous",
+            text: "He ___ eating dinner right now.",
+            options: ["is", "are", "am", "be"],
+            correct: 0
+        },
+        {
+            id: 10,
+            title: "Modal Verbs",
+            text: "You ___ help your friend.",
+            options: ["must", "should", "can", "will"],
+            correct: 1
+        }
+    ];
+
+    let currentQuestion = 0;
+    let battery = 3;
+    let answered = false;
+
+    function updateRobot() {
+        const robot = document.getElementById("robotContainer");
+        const percent = document.getElementById("batteryPercent");
+        const fill = document.getElementById("progressFill");
+
+        percent.textContent = battery;
+        fill.style.width = battery + "%";
+
+        if (battery >= 80) {
+            robot.style.background = "rgba(0, 255, 136, 0.1)";
+            robot.style.borderColor = "#00ff88";
+        } else if (battery >= 50) {
+            robot.style.background = "rgba(0, 242, 255, 0.1)";
+            robot.style.borderColor = "#00f2ff";
+        }
+    }
+
+    function displayQuestion() {
+        const q = questions[currentQuestion];
+        document.getElementById("questionNum").textContent = `Q${currentQuestion + 1}/10`;
+        document.getElementById("questionTitle").textContent = q.title;
+        document.getElementById("questionText").textContent = q.text;
+
+        const optionsContainer = document.getElementById("options");
+        optionsContainer.innerHTML = "";
+
+        q.options.forEach((option, idx) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.textContent = option;
+            btn.onclick = () => selectAnswer(idx);
+            optionsContainer.appendChild(btn);
+        });
+
+        answered = false;
+    }
+
+    function selectAnswer(selectedIdx) {
+        if (answered) return;
+        answered = true;
+
+        const q = questions[currentQuestion];
+        const buttons = document.querySelectorAll(".option-btn");
+        const robot = document.getElementById("robotContainer");
+
+        buttons[selectedIdx].classList.add(selectedIdx === q.correct ? "correct" : "wrong");
+        buttons[q.correct].classList.add("correct");
+
+        robot.classList.add("eyes-glow");
+
+        if (selectedIdx === q.correct) {
+            battery = Math.min(battery + 10, 100);
+            updateRobot();
+            
+            speak("정답입니다!");
+
+            setTimeout(() => {
+                robot.classList.remove("eyes-glow");
+                if (currentQuestion < 9) {
+                    currentQuestion++;
+                    displayQuestion();
+                } else {
+                    completeGame();
+                }
+            }, 1500);
+        } else {
+            speak("틀렸어요! 다시 시도해보세요.");
+            setTimeout(() => {
+                robot.classList.remove("eyes-glow");
+                answered = false;
+            }, 1500);
+        }
+    }
+
+    function completeGame() {
+        document.getElementById("questionBox").style.display = "none";
+        document.getElementById("completionScreen").classList.add("show");
+        document.getElementById("finalScore").textContent = `최종 배터리: ${battery}%`;
+
+        speak("축하합니다!");
+    }
+
+    function speak(text) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ko-KR';
+            utterance.rate = 1;
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    displayQuestion();
+    updateRobot();
+</script>
+
+</body>
+</html>
