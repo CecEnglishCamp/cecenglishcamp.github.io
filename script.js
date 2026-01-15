@@ -1,24 +1,24 @@
-// 드롭다운 메뉴 제어
+// ===== DROPDOWN MENU CONTROL =====
 document.querySelectorAll('.dropdown').forEach(dropdown => {
     const btn = dropdown.querySelector('.btn-box');
     const content = dropdown.querySelector('.dropdown-content');
     
     if (!btn || !content) return;
 
-    // 버튼 클릭 (모바일용)
+    // Click to toggle (mobile)
     btn.addEventListener('click', (e) => {
         e.stopPropagation();
         dropdown.classList.toggle('active');
     });
     
-    // 링크 클릭 시 드롭다운 닫기
+    // Close when link clicked
     content.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             dropdown.classList.remove('active');
         });
     });
     
-    // 데스크톱: 마우스 오버
+    // Desktop: hover
     dropdown.addEventListener('mouseenter', () => {
         if (window.innerWidth > 768) {
             dropdown.classList.add('active');
@@ -32,14 +32,14 @@ document.querySelectorAll('.dropdown').forEach(dropdown => {
     });
 });
 
-// 다른 곳 클릭 시 모든 드롭다운 닫기
+// Close all dropdowns when clicking elsewhere
 document.addEventListener('click', () => {
     document.querySelectorAll('.dropdown').forEach(d => {
         d.classList.remove('active');
     });
 });
 
-// Grammar 그리드 생성
+// ===== GRAMMAR MAPPING DATA =====
 const grammarMapping = {
     1: {p: "G01/G01_be_verb_present_tense.html", t: "Be Verb – Present"},
     2: {p: "G02/G02_articles_a,_an,_the.html", t: "Articles (a, an, the)"},
@@ -125,6 +125,7 @@ const grammarMapping = {
 
 const baseURL = "https://cecenglishcamp.github.io/B_Camp/GrammarBaseCamp/";
 
+// ===== RENDER GRAMMAR GRID =====
 function renderGrammarGrid(start, end, gridId) {
     const grid = document.getElementById(gridId);
     if (!grid) return;
@@ -138,15 +139,12 @@ function renderGrammarGrid(start, end, gridId) {
         link.href = baseURL + item.p;
         link.target = '_blank';
         link.className = 'g-link';
-        link.innerHTML = `
-            <span class="g-num">${gNum}</span>
-            <span class="g-title">${item.t}</span>
-        `;
+        link.innerHTML = `<span class="g-num">${gNum}</span><span class="g-title">${item.t}</span>`;
         grid.appendChild(link);
     }
 }
 
-// 페이지 로드 시 Grammar 그리드 생성
+// ===== INITIALIZE =====
 document.addEventListener('DOMContentLoaded', () => {
     renderGrammarGrid(1, 30, 'grid1');
     renderGrammarGrid(31, 60, 'grid2');
