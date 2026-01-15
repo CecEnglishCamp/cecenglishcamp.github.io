@@ -51,31 +51,101 @@
             text-align: center;
         }
 
-        .robot-container {
-            position: relative;
+        /* 로봇 SVG 스타일 */
+        .robot-svg {
             width: 200px;
             height: 280px;
             margin: 0 auto 30px;
-            background: rgba(17, 17, 17, 0.8);
-            border: 2px solid #00f2ff;
-            border-radius: 20px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
         }
 
-        .robot-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.3));
+        .robot-body {
+            fill: #DAA520;
+            stroke: #B8860B;
+            stroke-width: 2;
         }
 
-        .robot-container.active {
-            box-shadow: 0 0 50px rgba(0, 242, 255, 0.5);
-            border-color: #00ff88;
+        .robot-head {
+            fill: #DAA520;
+            stroke: #B8860B;
+            stroke-width: 2;
+        }
+
+        .robot-eye {
+            fill: #00f2ff;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+
+        .robot-antenna {
+            fill: #FFD700;
+            stroke: #B8860B;
+            stroke-width: 1;
+        }
+
+        /* 라이트 부위별 */
+        .light-legs {
+            opacity: 0.2;
+            transition: opacity 0.5s ease;
+            filter: drop-shadow(0 0 5px rgba(0, 242, 255, 0));
+        }
+
+        .light-legs.active {
+            opacity: 1;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.8));
+        }
+
+        .light-knees {
+            opacity: 0.2;
+            transition: opacity 0.5s ease;
+            filter: drop-shadow(0 0 5px rgba(0, 242, 255, 0));
+        }
+
+        .light-knees.active {
+            opacity: 1;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.8));
+        }
+
+        .light-torso {
+            opacity: 0.2;
+            transition: opacity 0.5s ease;
+            filter: drop-shadow(0 0 5px rgba(0, 242, 255, 0));
+        }
+
+        .light-torso.active {
+            opacity: 1;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.8));
+        }
+
+        .light-chest {
+            opacity: 0.2;
+            transition: opacity 0.5s ease;
+            fill: #00f2ff;
+            filter: drop-shadow(0 0 5px rgba(0, 242, 255, 0));
+        }
+
+        .light-chest.active {
+            opacity: 1;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.8));
+        }
+
+        .light-neck {
+            opacity: 0.2;
+            transition: opacity 0.5s ease;
+            filter: drop-shadow(0 0 5px rgba(0, 242, 255, 0));
+        }
+
+        .light-neck.active {
+            opacity: 1;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.8));
+        }
+
+        .light-head {
+            opacity: 0.3;
+            transition: opacity 0.5s ease;
+        }
+
+        .light-head.active {
+            opacity: 1;
         }
 
         .battery-info {
@@ -184,16 +254,6 @@
             75% { transform: translateX(10px); }
         }
 
-        .robot-container.eyes-glow {
-            animation: eyeGlow 0.8s;
-        }
-
-        @keyframes eyeGlow {
-            0% { filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.3)); }
-            50% { filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.8)); }
-            100% { filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.3)); }
-        }
-
         .question-number {
             display: inline-block;
             background: #00f2ff;
@@ -282,9 +342,41 @@
 
     <div class="game-content">
         <div class="robot-section">
-            <div class="robot-container" id="robotContainer">
-                <img src="assets/img/logo.png" alt="Robot" class="robot-img">
-            </div>
+            <svg class="robot-svg" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+                <!-- 다리 (Legs) -->
+                <rect class="light-legs" x="60" y="220" width="25" height="40" rx="5" fill="#DAA520" stroke="#B8860B" stroke-width="2"/>
+                <rect class="light-legs" x="115" y="220" width="25" height="40" rx="5" fill="#DAA520" stroke="#B8860B" stroke-width="2"/>
+
+                <!-- 무릎 (Knees) -->
+                <circle class="light-knees" cx="72.5" cy="205" r="8" fill="#FFD700" stroke="#B8860B" stroke-width="1"/>
+                <circle class="light-knees" cx="127.5" cy="205" r="8" fill="#FFD700" stroke="#B8860B" stroke-width="1"/>
+
+                <!-- 몸통 (Torso) -->
+                <rect class="light-torso" x="50" y="140" width="100" height="70" rx="10" fill="#DAA520" stroke="#B8860B" stroke-width="2"/>
+
+                <!-- 가슴 라이트 (Chest Light) -->
+                <circle class="light-chest" cx="100" cy="160" r="15"/>
+
+                <!-- 목 (Neck) -->
+                <rect class="light-neck" x="85" y="120" width="30" height="20" fill="#DAA520" stroke="#B8860B" stroke-width="1"/>
+
+                <!-- 머리 (Head) -->
+                <rect class="light-head" x="40" y="40" width="120" height="85" rx="15" fill="#DAA520" stroke="#B8860B" stroke-width="2"/>
+
+                <!-- 눈 (Eyes) -->
+                <circle class="robot-eye light-head" cx="70" cy="70" r="12" fill="#00f2ff"/>
+                <circle class="robot-eye light-head" cx="130" cy="70" r="12" fill="#00f2ff"/>
+                <circle cx="70" cy="70" r="6" fill="#fff" opacity="0.6"/>
+                <circle cx="130" cy="70" r="6" fill="#fff" opacity="0.6"/>
+
+                <!-- 입 (Mouth) -->
+                <path class="light-head" d="M 80 95 Q 100 105 120 95" stroke="#000" stroke-width="2" fill="none"/>
+
+                <!-- 안테나 (Antenna) -->
+                <line class="robot-antenna" x1="100" y1="35" x2="100" y2="10" stroke-width="2"/>
+                <circle class="robot-antenna" cx="100" cy="5" r="4"/>
+            </svg>
+
             <div class="battery-info">배터리: <span id="batteryPercent">3</span>%</div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
@@ -386,21 +478,20 @@
     let currentQuestion = 0;
     let battery = 3;
     let answered = false;
+    const parts = ['legs', 'knees', 'torso', 'chest', 'neck', 'head'];
 
     function updateRobot() {
-        const robot = document.getElementById("robotContainer");
         const percent = document.getElementById("batteryPercent");
         const fill = document.getElementById("progressFill");
 
         percent.textContent = battery;
         fill.style.width = battery + "%";
 
-        if (battery >= 80) {
-            robot.style.background = "rgba(0, 255, 136, 0.1)";
-            robot.style.borderColor = "#00ff88";
-        } else if (battery >= 50) {
-            robot.style.background = "rgba(0, 242, 255, 0.1)";
-            robot.style.borderColor = "#00f2ff";
+        // 각 부위별 라이트 활성화
+        const partIndex = Math.floor((currentQuestion) / 2);
+        for (let i = 0; i <= partIndex && i < parts.length; i++) {
+            const element = document.querySelector(`.light-${parts[i]}`);
+            if (element) element.classList.add('active');
         }
     }
 
@@ -430,21 +521,16 @@
 
         const q = questions[currentQuestion];
         const buttons = document.querySelectorAll(".option-btn");
-        const robot = document.getElementById("robotContainer");
 
         buttons[selectedIdx].classList.add(selectedIdx === q.correct ? "correct" : "wrong");
         buttons[q.correct].classList.add("correct");
 
-        robot.classList.add("eyes-glow");
-
         if (selectedIdx === q.correct) {
             battery = Math.min(battery + 10, 100);
             updateRobot();
-            
             speak("정답입니다!");
 
             setTimeout(() => {
-                robot.classList.remove("eyes-glow");
                 if (currentQuestion < 9) {
                     currentQuestion++;
                     displayQuestion();
@@ -455,13 +541,18 @@
         } else {
             speak("틀렸어요! 다시 시도해보세요.");
             setTimeout(() => {
-                robot.classList.remove("eyes-glow");
                 answered = false;
             }, 1500);
         }
     }
 
     function completeGame() {
+        // 모든 라이트 활성화
+        parts.forEach(part => {
+            const element = document.querySelector(`.light-${part}`);
+            if (element) element.classList.add('active');
+        });
+
         document.getElementById("questionBox").style.display = "none";
         document.getElementById("completionScreen").classList.add("show");
         document.getElementById("finalScore").textContent = `최종 배터리: ${battery}%`;
