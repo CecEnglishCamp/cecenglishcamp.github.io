@@ -1,4 +1,28 @@
-// Grammar 데이터 생성 (G01 ~ G80)
+// ===== DROPDOWN 기능 =====
+document.querySelectorAll('.dropdown').forEach(dropdown => {
+  const btn = dropdown.querySelector('.btn-box');
+  
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    
+    // 다른 드롭다운 닫기
+    document.querySelectorAll('.dropdown.active').forEach(d => {
+      if (d !== dropdown) d.classList.remove('active');
+    });
+    
+    // 현재 드롭다운 토글
+    dropdown.classList.toggle('active');
+  });
+});
+
+// 문서 클릭 시 드롭다운 닫기
+document.addEventListener('click', () => {
+  document.querySelectorAll('.dropdown.active').forEach(d => {
+    d.classList.remove('active');
+  });
+});
+
+// ===== GRAMMAR 그리드 생성 =====
 const grammarData = {
   stage1: [
     { id: 'G01', title: 'Present Simple' },
@@ -91,6 +115,7 @@ const grammarData = {
 // 그리드 생성 함수
 function generateGrammarGrid(containerId, data) {
   const container = document.getElementById(containerId);
+  if (!container) return;
   
   data.forEach(item => {
     const link = document.createElement('a');
@@ -104,7 +129,7 @@ function generateGrammarGrid(containerId, data) {
   });
 }
 
-// 페이지 로드 시 그리드 생성
+// 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', () => {
   generateGrammarGrid('grid1', grammarData.stage1);
   generateGrammarGrid('grid2', grammarData.stage2);
