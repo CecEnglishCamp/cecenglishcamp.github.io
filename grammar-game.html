@@ -287,6 +287,16 @@
             animation: batteryWarning 0.6s infinite;
         }
 
+        @keyframes lightFlash {
+            0% { box-shadow: 0 0 40px rgba(0, 242, 255, 0.3); }
+            50% { box-shadow: 0 0 80px rgba(0, 242, 255, 0.9), inset 0 0 40px rgba(0, 242, 255, 0.4); }
+            100% { box-shadow: 0 0 40px rgba(0, 242, 255, 0.3); }
+        }
+
+        .robot-container.light-flash {
+            animation: lightFlash 0.4s ease-out;
+        }
+
         .question-number {
             display: inline-block;
             background: #00f2ff;
@@ -650,6 +660,11 @@
             
             state.completed = true;
             updateRobot();
+            
+            // 50% 이상일 때 라이트 플래시 효과
+            if (battery >= 50) {
+                flashLight();
+            }
 
             setTimeout(() => {
                 if (currentQuestion < 9) {
@@ -745,6 +760,16 @@
         } catch(e) {
             console.log('Audio context not available');
         }
+    }
+
+    function flashLight() {
+        const robot = document.getElementById("robotContainer");
+        robot.classList.remove('light-flash');
+        
+        // 애니메이션을 다시 트리거하기 위해 짧은 딜레이
+        setTimeout(() => {
+            robot.classList.add('light-flash');
+        }, 10);
     }
 
     displayQuestion();
