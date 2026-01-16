@@ -272,6 +272,21 @@
             100% { transform: scale(1) rotate(0deg) translateY(0); }
         }
 
+        @keyframes batteryWarning {
+            0%, 100% { 
+                border-color: #00f2ff;
+                box-shadow: 0 0 40px rgba(0, 242, 255, 0.3);
+            }
+            50% { 
+                border-color: #ff4444;
+                box-shadow: 0 0 60px rgba(255, 68, 68, 0.6);
+            }
+        }
+
+        .robot-container.warning {
+            animation: batteryWarning 0.6s infinite;
+        }
+
         .question-number {
             display: inline-block;
             background: #00f2ff;
@@ -550,6 +565,16 @@
         percent.textContent = battery;
         fill.style.width = battery + "%";
 
+        // 배터리 3~20%: 경고 깜박임 + 경고음
+        if (battery <= 20 && battery > 0) {
+            robot.classList.add('warning');
+            if (battery === 3 || battery === 13) {
+                playWarningSound();
+            }
+        } else {
+            robot.classList.remove('warning');
+        }
+
         // 배터리 50% 도달: 엔진 소리 + 밝아짐
         if (battery >= 50 && battery < 80) {
             robot.classList.add('glow');
@@ -577,6 +602,7 @@
         // 배터리 100% 이상: 완전 부활 + 춤추기
         if (battery >= 100) {
             robot.classList.add('full');
+            robot.classList.remove('warning');
             robotImg.classList.add('full');
             robot.style.animation = 'none';
         }
@@ -690,6 +716,32 @@
             
             osc.start(now);
             osc.stop(now + 0.5);
+        } catch(e) {
+            console.log('Audio context not available');
+        }
+    }
+
+    function playWarningSound() {
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const now = audioContext.currentTime;
+            
+            // 높은 톤의 경고음
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.frequency.setValueAtTime(800, now);
+            osc.frequency.setValueAtTime(800, now + 0.15);
+            
+            gain.gain.setValueAtTime(0.08, now);
+            gain.gain.setValueAtTime(0.08, now + 0.15);
+            gain.gain.setValueAtTime(0, now + 0.2);
+            
+            osc.start(now);
+            osc.stop(now + 0.2);
         } catch(e) {
             console.log('Audio context not available');
         }
