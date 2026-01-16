@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G75 Part 1: Hedging Language</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --blue-light: #e3f2fd;
+            --blue-medium: #bbdefb;
+            --green: #e8f5e9;
+            --orange: #fff3e0;
+            --purple: #f3e5f5;
+            --sky: #e0f7fa;
+            --gray-light: #f5f5f5;
+            --gray-dark: #bdbdbd;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+
+        .concept-card {
+            background-color: var(--blue-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .concept-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: #3498db;
+        }
+
+        .concept-card h4 {
+            color: #1f3a5f;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .concept-icon {
+            font-size: 1.5rem;
+            color: #2980b9;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .concept-meaning strong, .concept-examples strong {
+            color: #e74c3c;
+        }
+
+        .grammar ul, .positive ul, .question ul, .dialogue p, .sentence_combining ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .grammar li, .positive li, .question li, .dialogue p, .sentence_combining li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .grammar li:hover, .positive li:hover, .question li:hover, .dialogue p:hover, .sentence_combining li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section.concept { background-color: var(--blue-light); }
+        .section.grammar { background-color: var(--blue-medium); }
+        .section.positive { background-color: var(--green); }
+        .section.question { background-color: var(--orange); }
+        .section.dialogue { background-color: var(--purple); }
+        .section.sentence_combining { background-color: var(--sky); }
+        
+        .section.concept h2 { border-color: #2980b9; color: #2980b9; }
+        .section.grammar h2 { border-color: #2c3e50; color: #2c3e50; }
+        .section.positive h2 { border-color: #27ae60; color: #27ae60; }
+        .section.question h2 { border-color: #e67e22; color: #e67e22; }
+        .section.dialogue h2 { border-color: #8e44ad; color: #8e44ad; }
+        .section.sentence_combining h2 { border-color: #3498db; color: #3498db; }
+        
+        .dialogue strong { color: #c0392b; }
+        .sentence_combining strong { color: #2980b9; }
+        .positive strong { color: #2980b9; }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            .section h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G75. 완곡어법 (Part 1)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol>
+                <li><a href="#concept">기본 개념 (Basic Concept)</a></li>
+                <li><a href="#grammar">문법 규칙 (Grammar Rules)</a></li>
+                <li><a href="#positive">긍정문 예시 (Positive Examples)</a></li>
+                <li><a href="#question">의문문 예시 (Question Examples)</a></li>
+                <li><a href="#dialogue">상황별 대화 (Situational Dialogues)</a></li>
+                <li><a href="#sentence_combining">문장 결합 연습 (Sentence Combining)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+        
+        <div class="section concept" id="concept">
+            <h2>1. 기본 개념 (Basic Concept)</h2>
+            <div class="concept-card">
+                <h4><span class="concept-icon">HEDGE</span>Hedging Language (완곡어법)</h4>
+                <div class="concept-meaning">
+                    <strong>Hedging:</strong> 확신을 줄이고, 말투를 부드럽게 하며, 일반화나 추측을 표현하는 **전략적 언어**<br>
+                    직접 단정하지 않고, **가능성이나 경향**을 표현함<br>
+                    학술적 글쓰기, 토론, 시험 응답, 일상 대화에서 유용함
+                </div>
+                <div class="concept-examples">
+                    <p><strong>단정:</strong> He is late.</p>
+                    <p><strong>완화:</strong> He **tends to be** late. / He **seems** to be late.</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section grammar" id="grammar">
+            <h2>2. 문법 규칙 (Grammar Rules)</h2>
+            <ul>
+                <li><strong>seem / appear + to + 동사원형:</strong> It **seems to work**. / She **appears to know**.</li>
+                <li><strong>tend to + 동사원형:</strong> He **tends to forget** things. (경향)</li>
+                <li><strong>may / might + 동사원형:</strong> It **may help**. / She **might come**. (가능성/추측)</li>
+                <li><strong>빈도 부사 (일반화):</strong> **often / usually / generally** → They **often arrive** late.</li>
+                <li>Hedging 표현은 문장 전체를 부드럽게 만들며, **논리적/객관적 느낌**을 줌</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section positive" id="positive">
+            <h2>3. 긍정문 예시 (Positive Examples)</h2>
+            <h4>seems / appears (관찰 기반 추측)</h4>
+            <ul>
+                <li>She **seems to understand** the topic.</li>
+                <li>It **appears to be working**.</li>
+                <li>He **seems tired** today.</li>
+                <li>The results **appear unclear**.</li>
+                <li>This method **seems effective**.</li>
+            </ul>
+
+            <h4>tend to (일반적인 경향)</h4>
+            <ul>
+                <li>He **tends to be late**.</li>
+                <li>They **tend to forget** instructions.</li>
+                <li>Students **tend to struggle** with grammar.</li>
+                <li>We **tend to rely** on examples.</li>
+                <li>She **tends to speak** quickly.</li>
+            </ul>
+
+            <h4>may / might / often (가능성 및 빈도)</h4>
+            <ul>
+                <li>It **may help** to review again.</li>
+                <li>She **might join** later.</li>
+                <li>They **often miss** the deadline.</li>
+                <li>We **usually check** twice.</li>
+                <li>He **generally agrees** with the plan.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section question" id="question">
+            <h2>4. 의문문 예시 (Question Examples)</h2>
+            <ul>
+                <li>Why do we say “**seems to be**” instead of “is”?</li>
+                <li>Can you explain how “**tend to**” shows general behavior?</li>
+                <li>What’s the difference between “**may**” and “**might**”?</li>
+                <li>Can you use “**appears**” in a sentence about results?</li>
+                <li>Why is **hedging** useful in writing?</li>
+                <li>Can you show a sentence using “**often**” for frequency?</li>
+                <li>How does “**generally**” soften a statement?</li>
+                <li>Can you use “**might**” in a polite suggestion?</li>
+                <li>How do hedging expressions improve tone?</li>
+                <li>Can you write your own example of each type?</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section dialogue" id="dialogue">
+            <h2>5. 상황별 대화 흐름 (Situational Dialogues)</h2>
+            <p><strong>학교 상황</strong><br />A: He didn’t answer.<br />B: He **might be busy**.<br />A: That makes sense.</p>
+            <p><strong>여행 상황</strong><br />A: The train is late again.<br />B: It **tends to be delayed** on weekends.<br />A: True.</p>
+            <p><strong>직장 상황</strong><br />A: She didn’t join the meeting.<br />B: She **may have forgotten**.<br />A: Let’s remind her.</p>
+            <p><strong>온라인 상황</strong><br />A: The app isn’t loading.<br />B: It **appears to be down**.<br />A: I’ll check again later.</p>
+            <p><strong>가족 상황</strong><br />A: Dad’s not home yet.<br />B: He **often stays late** on Fridays.<br />A: Right.</p>
+            <p><strong>병원 상황</strong><br />A: She looks tired.<br />B: She **seems to need rest**.<br />A: Let’s give her time.</p>
+        </div>
+
+        <hr>
+
+        <div class="section sentence_combining" id="sentence_combining">
+            <h2>6. 문장 결합 연습 (Sentence Combining)</h2>
+            <ul>
+                <li>He is late. → He **tends to be** late.</li>
+                <li>She knows the answer. → She **seems to know** the answer.</li>
+                <li>It works well. → It **appears to work** well.</li>
+                <li>They forget instructions. → They **tend to forget** instructions.</li>
+                <li>She will come. → She **might come**.</li>
+                <li>He is tired. → He **seems tired**.</li>
+                <li>We rely on examples. → We **tend to rely** on examples.</li>
+                <li>She agrees. → She **generally agrees**.</li>
+                <li>He is focused. → He **appears focused**.</li>
+                <li>They miss deadlines. → They **often miss** deadlines.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G75 Part 2: Hedging Language</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+
+        :root {
+            --yellow-light: #fffde7;
+            --pink-light: #fce4ec;
+            --orange-light: #ffecb3;
+            --green: #e8f5e9;
+            --gray: #e0e0e0;
+            --gray-dark: #bdbdbd;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #2980b9;
+        }
+
+        .toc ol {
+            padding-left: 20px;
+        }
+
+        .toc li a {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc li a:hover {
+            color: #1a6496;
+            text-decoration: underline;
+        }
+
+        .section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section h2 {
+            font-size: 1.8rem;
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+
+        .real_life_usage.section { background-color: var(--yellow-light); }
+        .common_patterns.section { background-color: var(--pink-light); }
+        .mistakes.section { background-color: var(--orange-light); }
+        .tips.section { background-color: var(--green); }
+        .practice.section { background-color: var(--gray); }
+        .checklist.section { background-color: var(--gray-dark); }
+        
+        .section.real_life_usage h2 { border-color: #f1c40f; color: #f1c40f; }
+        .section.common_patterns h2 { border-color: #e91e63; color: #e91e63; }
+        .section.mistakes h2 { border-color: #f39c12; color: #f39c12; }
+        .section.tips h2 { border-color: #2ecc71; color: #2ecc71; }
+        .section.practice h2 { border-color: #7f8c8d; color: #7f8c8d; }
+        .section.checklist h2 { border-color: #95a5a6; color: #95a5a6; }
+
+        .section ul, .section ol {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .section li {
+            background-color: #f9f9f9;
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .mistakes li .correct { color: #2ecc71; font-weight: bold; }
+        .mistakes li .incorrect { color: #e74c3c; font-weight: bold; text-decoration: line-through; }
+
+        .practice h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .practice ol {
+            padding-left: 20px;
+        }
+
+        .practice li {
+            margin-bottom: 15px;
+            background-color: #fff;
+        }
+
+        .practice .question {
+            font-weight: bold;
+        }
+        
+        .practice .options {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .practice .option {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        
+        .practice .option:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.01);
+        }
+
+        .practice .option.correct {
+            background-color: #e8f5e9;
+            border-color: #27ae60;
+        }
+
+        .practice .option.incorrect {
+            background-color: #ffebee;
+            border-color: #c0392b;
+        }
+
+        .answer-box {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            display: none;
+        }
+
+        .answer-box.visible {
+            display: block;
+        }
+
+        .practice input[type="text"] {
+            width: 90%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        
+        .practice .answer-feedback {
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        
+        .practice .answer-feedback.correct-text { color: #2ecc71; }
+        .practice .answer-feedback.incorrect-text { color: #e74c3c; }
+
+        #progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        #progress-bar {
+            width: 0;
+            height: 20px;
+            background-color: #3498db;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+            line-height: 20px;
+            transition: width 0.4s ease-in-out;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        
+        .checklist h4 {
+            margin-top: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .checklist-question {
+            margin-bottom: 10px;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>G75. 완곡어법 (Part 2)</h1>
+
+        <div class="toc">
+            <h2>📚 목차 (Table of Contents)</h2>
+            <ol start="7">
+                <li><a href="#real_life_usage">실생활 사용 예시 (Real-Life Usage)</a></li>
+                <li><a href="#common_patterns">자주 쓰이는 패턴 (Common Patterns)</a></li>
+                <li><a href="#mistakes">흔한 실수 (Common Mistakes)</a></li>
+                <li><a href="#tips">레벨업 팁 (Level-Up Tips)</a></li>
+                <li><a href="#practice">연습문제 (Practice Exercises)</a></li>
+                <li><a href="#checklist">자가진단 체크리스트 (Self-Check)</a></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section real_life_usage" id="real_life_usage">
+            <h2>7. 실생활 사용 예시 (Real-Life Usage)</h2>
+            <ul>
+                <li><strong>학교 상황:</strong> Students <strong>tend to struggle</strong> with grammar.</li>
+                <li><strong>직장 상황:</strong> She <strong>might join</strong> the meeting later.</li>
+                <li><strong>가족 상황:</strong> Dad <strong>often stays</strong> late on Fridays.</li>
+                <li><strong>온라인 상황:</strong> The app <strong>appears to be down</strong> right now.</li>
+                <li><strong>병원 상황:</strong> She <strong>seems to need</strong> more rest.</li>
+                <li><strong>여행 상황:</strong> Trains <strong>tend to be delayed</strong> on weekends.</li>
+                <li><strong>회의 상황:</strong> He <strong>generally agrees</strong> with the proposal.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section common_patterns" id="common_patterns">
+            <h2>8. 자주 쓰이는 패턴 (Common Patterns)</h2>
+            <ul>
+                <li><strong>seem(s) to + 동사원형:</strong> She **seems to understand**.</li>
+                <li><strong>appear(s) to + 동사원형:</strong> It **appears to work**.</li>
+                <li><strong>tend(s) to + 동사원형:</strong> He **tends to forget**.</li>
+                <li><strong>may / might + 동사원형:</strong> She **might come**.</li>
+                <li><strong>빈도 부사 + 동사:</strong> They **often miss** deadlines.</li>
+                <li><strong>generally / usually + 동사:</strong> We **generally agree**.</li>
+                <li><strong>seem + 형용사:</strong> He **seems tired**.</li>
+                <li><strong>appear + 형용사:</strong> She **appears confident**.</li>
+                <li><strong>might / may + be + 형용사:</strong> He **might be busy**.</li>
+                <li><strong>tend to + be + 형용사:</strong> They **tend to be late**.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section mistakes" id="mistakes">
+            <h2>9. 흔한 실수 (Common Mistakes)</h2>
+            <ul>
+                <li><span class="incorrect">❌ He seems like tired.</span> → <span class="correct">✅ He **seems tired**.</span> (Like 불필요)</li>
+                <li><span class="incorrect">❌ She tend to forget.</span> → <span class="correct">✅ She **tends to forget**.</span> (주어-동사 수 일치)</li>
+                <li><span class="incorrect">❌ It appears working.</span> → <span class="correct">✅ It **appears to be working**.</span> (Appear 뒤 to be + V-ing)</li>
+                <li><span class="incorrect">❌ He might comes.</span> → <span class="correct">✅ He **might come**.</span> (조동사 뒤 동사원형)</li>
+                <li><span class="incorrect">❌ They often to be late.</span> → <span class="correct">✅ They **often are** late / **tend to be** late.</span> (구조 오류)</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section tips" id="tips">
+            <h2>10. 레벨업 팁 (Level-Up Tips)</h2>
+            <ul>
+                <li>Hedging은 <strong>확신을 줄이고 부드럽게 표현</strong>할 때 사용</li>
+                <li><strong>seems / appears</strong>는 외부 관찰 기반 표현</li>
+                <li><strong>tend to</strong>는 일반적인 경향을 나타냄</li>
+                <li><strong>may / might</strong>는 가능성을 표현하며 정중함을 더함</li>
+                <li><strong>often / usually / generally</strong>는 빈도와 일반화를 표현</li>
+                <li>문장 흐름을 부드럽게 만들고, <strong>논리적이고 객관적인 느낌</strong>을 줌</li>
+                <li>문장 결합 연습을 통해 <strong>자연스러운 완화 표현 향상</strong></li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section practice" id="practice">
+            <h2>11. 연습문제 (Practice Exercises)</h2>
+
+            <h4>객관식</h4>
+            <ol>
+                <li id="q1">Which is correct?
+                    <div class="options" data-correct="B">
+                        <div class="option" data-value="A">A. She tend to forget.</div>
+                        <div class="option" data-value="B">B. She tends to forget.</div>
+                    </div>
+                </li>
+                <li id="q2">Choose the correct form:
+                    <div class="question">He ___ to be late.</div>
+                    <div class="options" data-correct="B">
+                        <div class="option" data-value="A">A. tend</div>
+                        <div class="option" data-value="B">B. tends</div>
+                    </div>
+                </li>
+                <li id="q3">Fill in: It ___ to be working.
+                    <div class="options" data-correct="A">
+                        <div class="option" data-value="A">A. appears</div>
+                        <div class="option" data-value="B">B. appear</div>
+                    </div>
+                </li>
+            </ol>
+            
+            <button class="submit-btn" onclick="checkAnswers()">정답 확인하기</button>
+            <div id="answers" class="hidden">
+                <p><strong>1. B</strong>. 주어가 3인칭 단수(She)이므로 동사도 3인칭 단수형('tends')을 사용해야 합니다.</p>
+                <p><strong>2. B</strong>. 주어가 3인칭 단수(He)이므로 동사 'tend'에 -s를 붙여 'tends'를 사용합니다.</p>
+                <p><strong>3. A</strong>. 주어가 3인칭 단수(It)이므로 동사 'appear'에 -s를 붙여 'appears'를 사용합니다. ('to be working'은 현재 진행형을 완화하는 형태입니다.)</p>
+            </div>
+            
+            <h4>문장 결합 (정답 예시 제공)</h4>
+            <ol start="4">
+                <li><label>He is late. (Hedging with tend to) → <input type="text" id="q4" placeholder="He tends to be late."/></label></li>
+                <li><label>She knows the answer. (Hedging with seem) → <input type="text" id="q5" placeholder="She seems to know the answer."/></label></li>
+                <li><label>It works well. (Hedging with appear) → <input type="text" id="q6" placeholder="It appears to work well."/></label></li>
+                <li><label>They forget instructions. (Hedging with tend to) → <input type="text" id="q7" placeholder="They tend to forget instructions."/></label></li>
+                <li><label>She will come. (Hedging with might) → <input type="text" id="q8" placeholder="She might come."/></label></li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="section checklist" id="checklist">
+            <h2>12. 자가진단 체크리스트 (Self-Check)</h2>
+            
+            <h4>학습 완료 체크</h4>
+            <div id="progress-container">
+                <div id="progress-bar">0%</div>
+            </div>
+            <ul>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I understand what hedging language is.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can use “seems,” “appears,” and “tend to” correctly.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can soften statements using hedging expressions.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can correct common mistakes in hedging usage.</li>
+                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can use hedging to express possibility, generalization, and politeness.</li>
+            </ul>
+
+            <h4>자가진단 문항</h4>
+            <ol>
+                <li class="checklist-question">Can you explain why “He tends to be late” is softer than “He is late”?</li>
+                <li class="checklist-question">Can you write a sentence using “She seems to understand”?</li>
+                <li class="checklist-question">Can you correct “She tend to forget”?</li>
+                <li class="checklist-question">Can you describe a possibility using “might”?</li>
+                <li class="checklist-question">Can you translate “그녀는 피곤해 보인다”?</li>
+                <li class="checklist-question">Can you use “often” in a sentence about habits?</li>
+                <li class="checklist-question">Can you write a short story using hedging language?</li>
+                <li class="checklist-question">Can you explain how hedging improves tone and clarity?</li>
+                <li class="checklist-question">Can you use hedging naturally in conversation?</li>
+                <li class="checklist-question">Can you describe a general behavior using “tend to”?</li>
+                <li class="checklist-question">Can you teach someone how to form hedging sentences?</li>
+                <li class="checklist-question">Can you compare direct vs hedged statements?</li>
+                <li class="checklist-question">Can you use hedging to express uncertainty and respect?</li>
+                <li class="checklist-question">Can you identify which part of the sentence is the hedge?</li>
+                <li class="checklist-question">Can you use hedging with clarity and fluency?</li>
+            </ol>
+            
+            <h4>다음 단계 학습 가이드</h4>
+            <ul>
+                <li>Review hedging structures and their functions.</li>
+                <li>Practice transforming direct statements into hedged ones.</li>
+                <li>Use hedging to improve writing tone and conversational politeness.</li>
+                <li>Compare with direct speech to understand impact.</li>
+                <li>Record and review your own sentences to improve fluency and clarity.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.getElementById('progress-bar');
+            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+            
+            if (progressBar && checkboxes.length > 0) {
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateProgress);
+                });
+            }
+
+            function updateProgress() {
+                const totalCheckboxes = checkboxes.length;
+                const checkedCheckboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').length;
+                
+                if (totalCheckboxes > 0 && progressBar) {
+                    const progress = (checkedCheckboxes / totalCheckboxes) * 100;
+                    progressBar.style.width = progress + '%';
+                    progressBar.textContent = Math.round(progress) + '%';
+                }
+            }
+
+            const mcqOptions = document.querySelectorAll('.practice .option');
+            const showAnswersBtn = document.querySelector('.submit-btn');
+            const answersBox = document.getElementById('answers');
+
+            if (mcqOptions.length > 0) {
+                mcqOptions.forEach(option => {
+                    option.addEventListener('click', function() {
+                        const parentOptions = this.parentElement.querySelectorAll('.option');
+                        parentOptions.forEach(opt => {
+                            opt.classList.remove('correct', 'incorrect');
+                        });
+
+                        const parentDiv = this.closest('.options');
+                        const correctAnswer = parentDiv.getAttribute('data-correct');
+
+                        if (this.getAttribute('data-value') === correctAnswer) {
+                            this.classList.add('correct');
+                        } else {
+                            this.classList.add('incorrect');
+                        }
+                    });
+                });
+            }
+            
+            if (showAnswersBtn) {
+                showAnswersBtn.addEventListener('click', function() {
+                    answersBox.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
