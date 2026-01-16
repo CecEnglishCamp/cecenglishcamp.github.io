@@ -24,9 +24,56 @@
             margin: 0 auto;
         }
 
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom: 1px solid #222;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            margin: -20px -20px 0 -20px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .game-nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        .game-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .game-nav a:hover {
+            color: #00f2ff;
+        }
+
         .header {
             text-align: center;
             margin-bottom: 30px;
+            margin-top: 20px;
         }
 
         .header h1 {
@@ -46,7 +93,6 @@
             align-items: flex-start;
         }
 
-        /* 로봇 섹션 - 왼쪽 */
         .robot-section {
             text-align: center;
             flex: 1;
@@ -116,7 +162,6 @@
             font-size: 0.95rem;
         }
 
-        /* 퀴즈 섹션 - 오른쪽 */
         .quiz-section {
             flex: 1;
             min-width: 350px;
@@ -194,6 +239,20 @@
             75% { transform: translateX(10px); }
         }
 
+        @keyframes eyeFlash {
+            0% { opacity: 0; box-shadow: 0 0 0 #00f2ff; }
+            50% { opacity: 1; box-shadow: 0 0 40px #00f2ff; }
+            100% { opacity: 1; box-shadow: 0 0 25px #00f2ff; }
+        }
+
+        @keyframes wakeUp {
+            0% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(-2deg) scale(1.03); }
+            50% { transform: rotate(2deg) scale(1.05); }
+            75% { transform: rotate(-1deg) scale(1.03); }
+            100% { transform: rotate(0deg) scale(1.05); }
+        }
+
         .question-number {
             display: inline-block;
             background: #00f2ff;
@@ -234,6 +293,39 @@
             font-size: 1rem;
             color: #ddd;
             margin-bottom: 20px;
+        }
+
+        .robo-gif-container {
+            width: 100%;
+            max-width: 400px;
+            height: 300px;
+            margin: 20px auto;
+            position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .robo-gif-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.6));
+            animation: wakeUp 1.2s ease-in-out;
+        }
+
+        .eye-glow {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #00f2ff;
+            border-radius: 50%;
+            opacity: 1;
+            box-shadow: 0 0 30px #00f2ff;
+            animation: eyeFlash 0.8s ease-in-out;
         }
 
         .restart-btn {
@@ -302,7 +394,7 @@
 
 <header>
     <a href="index.html" class="logo">
-        <img src="assets/img/logo.png" alt="CEC Logo" style="width: 40px; height: 40px; margin-right: 10px;">
+        <img src="assets/img/logo.png" alt="CEC Logo">
         <span>CEC ENGLISH CAMP</span>
     </a>
     <nav class="game-nav">
@@ -313,45 +405,6 @@
     </nav>
 </header>
 
-<style>
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 5%;
-    background: rgba(0, 0, 0, 0.95);
-    border-bottom: 1px solid #222;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    font-size: 1.2rem;
-    font-weight: 900;
-    color: #fff;
-    text-decoration: none;
-}
-
-.game-nav {
-    display: flex;
-    gap: 25px;
-}
-
-.game-nav a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 700;
-    transition: 0.3s;
-}
-
-.game-nav a:hover {
-    color: #00f2ff;
-}
-</style>
-
 <div class="container">
     <div class="header">
         <h1>🤖 Grammar Game</h1>
@@ -359,7 +412,7 @@ header {
     </div>
 
     <div class="game-content">
-        <!-- 로봇 섹션 - 중앙 배치 -->
+        <!-- 로봇 섹션 -->
         <div class="robot-section">
             <div class="robot-container" id="robotContainer">
                 <img src="assets/img/logo.png" alt="Robot" class="robot-img" id="robotImg">
@@ -382,7 +435,17 @@ header {
             <div class="completion-screen" id="completionScreen">
                 <h2>축하합니다! 🎉</h2>
                 <p>로봇이 완전히 깨어났습니다!</p>
-                <p id="finalScore" style="font-weight: bold; color: #00f2ff;"></p>
+                
+                <!-- 🎬 움직이는 로봇 GIF -->
+                <div class="robo-gif-container">
+                    <img src="assets/img/robo.gif" alt="Robo Celebration" id="roboCelebration">
+                </div>
+
+                <p style="font-weight: bold; color: #00ff88; font-size: 1.2rem; margin: 15px 0;">
+                    "축하해! 그리고 고마워.<br>나를 구해줘서…"
+                </p>
+                
+                <p id="finalScore" style="font-weight: bold; color: #00f2ff; margin: 10px 0;"></p>
                 <button class="restart-btn" onclick="location.reload()">다시 시작하기</button>
             </div>
         </div>
@@ -393,72 +456,72 @@ header {
     const questions = [
         {
             id: 1,
-            title: "Be Verb (Present)",
-            text: "She ___ a teacher.",
-            options: ["am", "is", "are", "be"],
-            correct: 1
-        },
-        {
-            id: 2,
             title: "Simple Present",
-            text: "They ___ to school every day.",
-            options: ["go", "goes", "going", "gone"],
+            text: "I ___ milk every morning.",
+            options: ["drink", "drank"],
             correct: 0
         },
         {
+            id: 2,
+            title: "Simple Past",
+            text: "Yesterday, I ___ to the park.",
+            options: ["go", "went"],
+            correct: 1
+        },
+        {
             id: 3,
-            title: "Present Perfect",
-            text: "I ___ finished my homework.",
-            options: ["have", "has", "had", "having"],
+            title: "Future (will)",
+            text: "I ___ help you tomorrow.",
+            options: ["will", "did"],
             correct: 0
         },
         {
             id: 4,
-            title: "Past Tense",
-            text: "Yesterday, he ___ to the park.",
-            options: ["goes", "went", "going", "go"],
+            title: "Present Continuous",
+            text: "She is ___ now.",
+            options: ["run", "running"],
             correct: 1
         },
         {
             id: 5,
-            title: "Future Tense",
-            text: "Next week, we ___ on vacation.",
-            options: ["are", "will be", "were", "have been"],
-            correct: 1
+            title: "Imperatives",
+            text: "___ your book, please.",
+            options: ["Open", "Opened"],
+            correct: 0
         },
         {
             id: 6,
-            title: "Passive Voice",
-            text: "The cake ___ by my mother.",
-            options: ["made", "is made", "makes", "making"],
-            correct: 1
+            title: "Yes / No Questions",
+            text: "___ you like pizza?",
+            options: ["Do", "Did"],
+            correct: 0
         },
         {
             id: 7,
-            title: "Relative Pronouns",
-            text: "The girl ___ won the prize is smart.",
-            options: ["who", "which", "that", "whose"],
+            title: "Adjectives",
+            text: "The dog is ___.",
+            options: ["quick", "quickly"],
             correct: 0
         },
         {
             id: 8,
-            title: "Negative Form",
-            text: "She ___ like pizza.",
-            options: ["not does", "does not", "not do", "do not"],
-            correct: 1
+            title: "Adverbs",
+            text: "He runs ___.",
+            options: ["fast", "quick"],
+            correct: 0
         },
         {
             id: 9,
-            title: "Present Continuous",
-            text: "He ___ eating dinner right now.",
-            options: ["is", "are", "am", "be"],
+            title: "Prepositions",
+            text: "The cat is ___ the box.",
+            options: ["in", "on"],
             correct: 0
         },
         {
             id: 10,
-            title: "Modal Verbs",
-            text: "You ___ help your friend.",
-            options: ["must", "should", "can", "will"],
+            title: "Present Perfect",
+            text: "I have ___ pizza before.",
+            options: ["eat", "eaten"],
             correct: 1
         }
     ];
@@ -466,6 +529,12 @@ header {
     let currentQuestion = 0;
     let battery = 3;
     let answered = false;
+    let missionStates = questions.map(q => ({
+        id: q.id,
+        completed: false,
+        triedOnce: false,
+        usedBaseCamp: false
+    }));
 
     function updateRobot() {
         const percent = document.getElementById("batteryPercent");
@@ -476,7 +545,6 @@ header {
         percent.textContent = battery;
         fill.style.width = battery + "%";
 
-        // 배터리 50% 이상이면 로봇 글로우 시작
         if (battery >= 50) {
             robot.classList.add('glow');
             robotImg.classList.add('glow');
@@ -485,7 +553,6 @@ header {
             robotImg.classList.remove('glow');
         }
 
-        // 배터리 80% 이상이면 더 강한 글로우
         if (battery >= 80) {
             robot.style.boxShadow = '0 0 80px rgba(0, 242, 255, 0.8), inset 0 0 60px rgba(0, 242, 255, 0.2)';
         } else if (battery >= 50) {
@@ -519,12 +586,21 @@ header {
 
         const q = questions[currentQuestion];
         const buttons = document.querySelectorAll(".option-btn");
+        const state = missionStates[currentQuestion];
 
         buttons[selectedIdx].classList.add(selectedIdx === q.correct ? "correct" : "wrong");
         buttons[q.correct].classList.add("correct");
 
         if (selectedIdx === q.correct) {
-            battery = Math.min(battery + 10, 100);
+            // 정답 처리
+            if (!state.triedOnce) {
+                battery = Math.min(battery + 10, 100);
+                state.triedOnce = true;
+            } else if (state.usedBaseCamp) {
+                battery = Math.min(battery + 15, 100);
+            }
+            
+            state.completed = true;
             updateRobot();
             speak("정답입니다!");
 
@@ -537,7 +613,10 @@ header {
                 }
             }, 1500);
         } else {
-            speak("틀렸어요! 다시 시도해보세요.");
+            speak("틀렸어요! Grammar Base Camp에서 공부하고 다시 도전해봐요!");
+            state.triedOnce = true;
+            state.usedBaseCamp = true;
+            
             setTimeout(() => {
                 answered = false;
             }, 1500);
@@ -557,7 +636,7 @@ header {
         document.getElementById("completionScreen").classList.add("show");
         document.getElementById("finalScore").textContent = `최종 배터리: ${battery}%`;
 
-        speak("축하합니다!");
+        speak("축하해! 그리고 고마워. 나를 구해줘서!");
     }
 
     function speak(text) {
