@@ -3,487 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grammar Game - 문법 게임</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: linear-gradient(135deg, #000 0%, #111 100%);
-            color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            padding: 40px 20px;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            color: #00f2ff;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.1rem;
-            color: #888;
-        }
-
-        .game-content {
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-        }
-
-        .robot-section {
-            flex: 0 0 250px;
-            text-align: center;
-        }
-
-        .robot-container {
-            position: relative;
-            width: 200px;
-            height: 280px;
-            margin: 0 auto 30px;
-            background: rgba(17, 17, 17, 0.8);
-            border: 2px solid #00f2ff;
-            border-radius: 20px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
-        }
-
-        .robot-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.3));
-        }
-
-        .robot-container.active {
-            box-shadow: 0 0 50px rgba(0, 242, 255, 0.5);
-            border-color: #00ff88;
-        }
-
-        .battery-info {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #00f2ff;
-            margin-bottom: 20px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 40px;
-            background: #222;
-            border: 2px solid #00f2ff;
-            border-radius: 20px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00f2ff, #00ff88);
-            width: 3%;
-            transition: width 0.5s ease;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 10px;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .quiz-section {
-            flex: 1;
-        }
-
-        .question-box {
-            background: rgba(17, 17, 17, 0.9);
-            border: 2px solid #333;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-        }
-
-        .question-box h2 {
-            font-size: 1.4rem;
-            color: #00f2ff;
-            margin-bottom: 20px;
-        }
-
-        .question-box p {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: #ddd;
-            margin-bottom: 25px;
-        }
-
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .option-btn {
-            padding: 18px;
-            background: #222;
-            border: 2px solid #444;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-
-        .option-btn:hover {
-            border-color: #00f2ff;
-            background: #1a1a1a;
-            transform: translateY(-2px);
-        }
-
-        .option-btn.correct {
-            background: #00ff88;
-            color: #000;
-            border-color: #00ff88;
-            animation: pulse 0.6s;
-        }
-
-        .option-btn.wrong {
-            background: #ff4444;
-            color: #fff;
-            border-color: #ff4444;
-            animation: shake 0.6s;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        .robot-container.eyes-glow {
-            animation: eyeGlow 0.8s;
-        }
-
-        @keyframes eyeGlow {
-            0% { filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.3)); }
-            50% { filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.8)); }
-            100% { filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.3)); }
-        }
-
-        .question-number {
-            display: inline-block;
-            background: #00f2ff;
-            color: #000;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .completion-screen {
-            text-align: center;
-            padding: 60px 30px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 2px solid #00ff88;
-            border-radius: 20px;
-            display: none;
-        }
-
-        .completion-screen.show {
-            display: block;
-            animation: slideIn 0.6s;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .completion-screen h2 {
-            font-size: 3rem;
-            color: #00ff88;
-            margin-bottom: 20px;
-        }
-
-        .completion-screen p {
-            font-size: 1.3rem;
-            color: #ddd;
-            margin-bottom: 30px;
-        }
-
-        .restart-btn {
-            padding: 15px 50px;
-            background: #00f2ff;
-            color: #000;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .restart-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px #00f2ff;
-        }
-
-        @media (max-width: 768px) {
-            .game-content {
-                flex-direction: column;
-            }
-
-            .robot-section {
-                flex: 1;
-                width: 100%;
-            }
-
-            .options {
-                grid-template-columns: 1fr;
-            }
-
-            .header h1 {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
+    <title>CEC English Camp</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <h1>🤖 Grammar Game</h1>
-        <p>문법을 정복해서 로봇을 깨워주세요!</p>
-    </div>
-
-    <div class="game-content">
-        <div class="robot-section">
-            <div class="robot-container" id="robotContainer">
-                <img src="assets/img/logo.png" alt="Robot" class="robot-img">
-            </div>
-            <div class="battery-info">배터리: <span id="batteryPercent">3</span>%</div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-        </div>
-
-        <div class="quiz-section">
-            <div class="question-box" id="questionBox">
-                <span class="question-number" id="questionNum">Q1/10</span>
-                <h2 id="questionTitle">문법 주제</h2>
-                <p id="questionText">문제가 여기에 표시됩니다</p>
-                <div class="options" id="options"></div>
-            </div>
-
-            <div class="completion-screen" id="completionScreen">
-                <h2>축하합니다! 🎉</h2>
-                <p>로봇이 완전히 깨어났습니다!</p>
-                <p id="finalScore"></p>
-                <button class="restart-btn" onclick="location.reload()">다시 시작하기</button>
+<header>
+    <a href="index.html" class="logo">
+        <img src="assets/img/logo.png" alt="CEC Logo" class="logo-img">
+        <span>CEC ENGLISH CAMP</span>
+    </a>
+    <div class="nav-container">
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="grammar-game.html">Game</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#register">Register</a></li>
+        </ul>
+        <div class="dropdown">
+            <div class="btn-box btn-filled">PROGRAMS ▼</div>
+            <div class="dropdown-content">
+                <a href="grammar-game.html">🎮 Grammar Game</a>
+                <a href="#grammar">Step 1: Grammar BaseCamp</a>
+                <a href="https://journey-bronzy-fruitily.ngrok-free.dev/c/d9ec80fe-b35f-470c-b8f2-4999c1f82b1f" target="_blank">Step 2: English Camp A</a>
+                <a href="https://journey-bronzy-fruitily.ngrok-free.dev/c/d9ec80fe-b35f-470c-b8f2-4999c1f82b1f" target="_blank">Step 3: English Camp B</a>
+                <a href="https://journey-bronzy-fruitily.ngrok-free.dev/c/d9ec80fe-b35f-470c-b8f2-4999c1f82b1f" target="_blank">Step 4: English Camp C</a>
             </div>
         </div>
+        <div class="dropdown">
+            <div class="btn-box">AI TOOLS ▼</div>
+            <div class="dropdown-content">
+                <a href="https://notebooklm.google.com/" target="_blank">NotebookLM</a>
+                <a href="https://journey-bronzy-fruitily.ngrok-free.dev/c/d9ec80fe-b35f-470c-b8f2-4999c1f82b1f" target="_blank">Open WebUI (Qwen2.5)</a>
+                <a href="https://chatgpt.com/g/g-68abc1e0493c8191bf064509f3ff8a79-englishcamp-a" target="_blank">ChatGPT Coach - Camp A</a>
+                <a href="https://chatgpt.com/g/g-68ad69ffdd0c8191a73757a734ba58fa-englishcamp-b" target="_blank">ChatGPT Coach - Camp B</a>
+                <a href="https://chatgpt.com/g/g-68e9633eff44819185549f4519235ff8-englishcamp-c" target="_blank">ChatGPT Coach - Camp C</a>
+            </div>
+        </div>
     </div>
+</header>
+
+<section class="hero">
+    <h1>CEC English Camp</h1>
+    <p>Master English with Literature & AI</p>
+</section>
+
+<section id="about">
+    <h2>About Us</h2>
+    <div class="main-copy">영어를 '공부하는 대상'에서 '사고하고 사용하는 언어'로</div>
+    <p>이곳은 단기 성과를 위한 영어 학습장이 아닙니다.<br>
+    <span class="highlight">문법으로 기초를 세우고, 이해로 소화하며, 실제 언어 환경에서 작동하게 만드는 영어 전문 캠프장</span>입니다.</p>
+    <p>우리는 영어를 암기 → 시험 → 잊혀지는 지식이 아니라 <span class="highlight">읽고, 듣고, 말하고, 쓰며 축적되는 사고의 도구</span>로 다룹니다.</p>
+
+    <h2 style="margin-top:100px;">우리의 영어교육 접근 방식</h2>
+    
+    <h3>1. 문법은 출발점이다</h3>
+    <p>모든 캠프는 <span class="highlight">문법을 기반으로 시작</span>합니다. 문법을 문제풀이용 규칙이 아니라,</p>
+    <ul>
+        <li>문장을 이해하는 구조</li>
+        <li>의미를 예측하는 틀</li>
+        <li>말과 글을 정확히 만들어내는 설계도로 다룹니다.</li>
+    </ul>
+    <p>기초가 없는 몰입은 오래가지 않습니다. 우리는 <span class="highlight">기초를 단단히 세운 뒤 확장</span>합니다.</p>
+
+    <h3>2. 이해는 NotebookLM에서 완성된다</h3>
+    <p>수업에서 다룬 문법, 표현, 문장 구조는 <span class="highlight">NotebookLM 환경에서 충분히 해석·정리·재구성</span>됩니다.</p>
+    <ul>
+        <li>학습자는 단순히 "배우는 사람"이 아니라 <strong>자신만의 영어 노트를 축적하는 연구자</strong>가 됩니다.</li>
+        <li>입력된 지식은 연결되고, 반복되며, 스스로 설명할 수 있는 수준까지 소화됩니다.</li>
+    </ul>
+
+    <h3>3. 세 개의 AI와 함께하는 언어 실전 훈련 (AI Trinity)</h3>
+    <div class="ai-trinity">
+        <h4>Coach - Practice - Review</h4>
+        <ul>
+            <li><strong>ChatGPT (개인 코치):</strong> 레벨별 맞춤 가이드라인을 제공하며 "어떻게 말할지"를 가르쳐줍니다.</li>
+            <li><strong>Open WebUI (실전 운동장):</strong> 소설 속 인물과 대화하며 배운 것을 마음껏 써보는 공간입니다.</li>
+            <li><strong>NotebookLM (최종 검토관):</strong> 원문을 바탕으로 팩트를 체크하고 나만의 노트를 완성합니다.</li>
+        </ul>
+    </div>
+
+    <h2>Camp Program</h2>
+    <div class="camp-box">
+        <h4>Camp A | 초등학생 A1 · A2</h4>
+        <ul>
+            <li>영어 문장의 기본 구조 이해 / 문법을 '의미'로 인식</li>
+            <li>듣기·읽기 중심에서 말하기·쓰기의 첫 확장</li>
+        </ul>
+    </div>
+    <div class="camp-box">
+        <h4>Camp B | 중·고등학생 B1 · B2</h4>
+        <ul>
+            <li>문법 기반 사고 정교화 / 소설과 텍스트를 통한 독해·표현 확장</li>
+            <li>시험을 넘어 실제 사용 가능한 영어 구축</li>
+        </ul>
+    </div>
+    <div class="camp-box">
+        <h4>Camp C | 성인 초급 · 중급</h4>
+        <ul>
+            <li>무너진 기초 재정비 / 생활 영어·현대 영어 중심의 실전 활용</li>
+            <li>읽고, 말하고, 쓰는 균형 잡힌 언어 회복</li>
+        </ul>
+    </div>
+</section>
+
+<section id="grammar">
+    <h2 style="border:none; padding:0;">Grammar BaseCamp</h2>
+    <p style="color: var(--point); font-weight: 700; margin-top:-20px;">80 Steps to Master English Grammar</p>
+    
+    <div class="stage-title"><h3>Stage 1: Basic (G01 - G30)</h3></div>
+    <div class="grammar-grid" id="grid1"></div>
+    <div class="stage-title"><h3>Stage 2: Intermediate (G31 - G60)</h3></div>
+    <div class="grammar-grid" id="grid2"></div>
+    <div class="stage-title"><h3>Stage 3: Advanced (G61 - G80)</h3></div>
+    <div class="grammar-grid" id="grid3"></div>
+</section>
+
+<div id="register" class="notice-footer">
+    <p style="color:#888;">프로그램의 모든 기능과 AI 도구는 수강 등록 후 활성화됩니다.<br>실제 학습을 위해서는 등록이 필요합니다.</p>
+    <a href="#" class="btn-reg">수강 신청하기</a>
 </div>
 
-<script>
-    const questions = [
-        {
-            id: 1,
-            title: "Be Verb (Present)",
-            text: "She ___ a teacher.",
-            options: ["am", "is", "are", "be"],
-            correct: 1
-        },
-        {
-            id: 2,
-            title: "Simple Present",
-            text: "They ___ to school every day.",
-            options: ["go", "goes", "going", "gone"],
-            correct: 0
-        },
-        {
-            id: 3,
-            title: "Present Perfect",
-            text: "I ___ finished my homework.",
-            options: ["have", "has", "had", "having"],
-            correct: 0
-        },
-        {
-            id: 4,
-            title: "Past Tense",
-            text: "Yesterday, he ___ to the park.",
-            options: ["goes", "went", "going", "go"],
-            correct: 1
-        },
-        {
-            id: 5,
-            title: "Future Tense",
-            text: "Next week, we ___ on vacation.",
-            options: ["are", "will be", "were", "have been"],
-            correct: 1
-        },
-        {
-            id: 6,
-            title: "Passive Voice",
-            text: "The cake ___ by my mother.",
-            options: ["made", "is made", "makes", "making"],
-            correct: 1
-        },
-        {
-            id: 7,
-            title: "Relative Pronouns",
-            text: "The girl ___ won the prize is smart.",
-            options: ["who", "which", "that", "whose"],
-            correct: 0
-        },
-        {
-            id: 8,
-            title: "Negative Form",
-            text: "She ___ like pizza.",
-            options: ["not does", "does not", "not do", "do not"],
-            correct: 1
-        },
-        {
-            id: 9,
-            title: "Present Continuous",
-            text: "He ___ eating dinner right now.",
-            options: ["is", "are", "am", "be"],
-            correct: 0
-        },
-        {
-            id: 10,
-            title: "Modal Verbs",
-            text: "You ___ help your friend.",
-            options: ["must", "should", "can", "will"],
-            correct: 1
-        }
-    ];
+<div class="footer-info">
+    © 2026 CEC English Camp. All Rights Reserved.<br>
+    <small>✅ 모든 링크 연결 완료 | Grammar: 80개 | AI Tools: 5개</small>
+</div>
 
-    let currentQuestion = 0;
-    let battery = 3;
-    let answered = false;
-
-    function updateRobot() {
-        const robot = document.getElementById("robotContainer");
-        const percent = document.getElementById("batteryPercent");
-        const fill = document.getElementById("progressFill");
-
-        percent.textContent = battery;
-        fill.style.width = battery + "%";
-
-        if (battery >= 80) {
-            robot.style.background = "rgba(0, 255, 136, 0.1)";
-            robot.style.borderColor = "#00ff88";
-        } else if (battery >= 50) {
-            robot.style.background = "rgba(0, 242, 255, 0.1)";
-            robot.style.borderColor = "#00f2ff";
-        }
-    }
-
-    function displayQuestion() {
-        const q = questions[currentQuestion];
-        document.getElementById("questionNum").textContent = `Q${currentQuestion + 1}/10`;
-        document.getElementById("questionTitle").textContent = q.title;
-        document.getElementById("questionText").textContent = q.text;
-
-        const optionsContainer = document.getElementById("options");
-        optionsContainer.innerHTML = "";
-
-        q.options.forEach((option, idx) => {
-            const btn = document.createElement("button");
-            btn.className = "option-btn";
-            btn.textContent = option;
-            btn.onclick = () => selectAnswer(idx);
-            optionsContainer.appendChild(btn);
-        });
-
-        answered = false;
-    }
-
-    function selectAnswer(selectedIdx) {
-        if (answered) return;
-        answered = true;
-
-        const q = questions[currentQuestion];
-        const buttons = document.querySelectorAll(".option-btn");
-        const robot = document.getElementById("robotContainer");
-
-        buttons[selectedIdx].classList.add(selectedIdx === q.correct ? "correct" : "wrong");
-        buttons[q.correct].classList.add("correct");
-
-        robot.classList.add("eyes-glow");
-
-        if (selectedIdx === q.correct) {
-            battery = Math.min(battery + 10, 100);
-            updateRobot();
-            
-            speak("정답입니다!");
-
-            setTimeout(() => {
-                robot.classList.remove("eyes-glow");
-                if (currentQuestion < 9) {
-                    currentQuestion++;
-                    displayQuestion();
-                } else {
-                    completeGame();
-                }
-            }, 1500);
-        } else {
-            speak("틀렸어요! 다시 시도해보세요.");
-            setTimeout(() => {
-                robot.classList.remove("eyes-glow");
-                answered = false;
-            }, 1500);
-        }
-    }
-
-    function completeGame() {
-        const robotImg = document.querySelector(".robot-img");
-        robotImg.src = "robo.gif";
-        
-        document.getElementById("questionBox").style.display = "none";
-        document.getElementById("completionScreen").classList.add("show");
-        document.getElementById("finalScore").textContent = `최종 배터리: ${battery}%`;
-
-        speak("축하합니다!");
-    }
-
-    function speak(text) {
-        if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'ko-KR';
-            utterance.rate = 1;
-            window.speechSynthesis.speak(utterance);
-        }
-    }
-
-    displayQuestion();
-    updateRobot();
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
