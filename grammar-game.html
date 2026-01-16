@@ -140,7 +140,7 @@
         }
 
         .robot-img.full {
-            animation: wakeUp 1.2s ease-in-out;
+            animation: robotDance 0.8s ease-in-out infinite;
             filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.8));
         }
 
@@ -253,25 +253,25 @@
             75% { transform: translateX(10px); }
         }
 
-        @keyframes eyeFlash {
-            0% { opacity: 0; box-shadow: 0 0 0 #00f2ff; }
-            50% { opacity: 1; box-shadow: 0 0 40px #00f2ff; }
-            100% { opacity: 1; box-shadow: 0 0 25px #00f2ff; }
-        }
-
-        @keyframes wakeUp {
-            0% { transform: rotate(0deg) scale(1); }
-            25% { transform: rotate(-2deg) scale(1.03); }
-            50% { transform: rotate(2deg) scale(1.05); }
-            75% { transform: rotate(-1deg) scale(1.03); }
-            100% { transform: rotate(0deg) scale(1.05); }
-        }
-
         @keyframes engineVibration {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             25% { transform: translateY(-3px) rotate(-1deg); }
             50% { transform: translateY(3px) rotate(1deg); }
             75% { transform: translateY(-2px) rotate(-0.5deg); }
+        }
+
+        @keyframes robotDance {
+            0% { transform: scale(1) rotate(0deg) translateY(0); }
+            10% { transform: scale(1.05) rotate(-3deg) translateY(-5px); }
+            20% { transform: scale(1.08) rotate(3deg) translateY(5px); }
+            30% { transform: scale(1.05) rotate(-2deg) translateY(-8px); }
+            40% { transform: scale(1.1) rotate(2deg) translateY(8px); }
+            50% { transform: scale(1.08) rotate(-3deg) translateY(-5px); }
+            60% { transform: scale(1.05) rotate(3deg) translateY(5px); }
+            70% { transform: scale(1.1) rotate(-2deg) translateY(-8px); }
+            80% { transform: scale(1.08) rotate(2deg) translateY(8px); }
+            90% { transform: scale(1.05) rotate(-1deg) translateY(-4px); }
+            100% { transform: scale(1) rotate(0deg) translateY(0); }
         }
 
         .question-number {
@@ -292,11 +292,11 @@
             border: 2px solid #00ff88;
             border-radius: 20px;
             display: none;
+            animation: slideIn 0.8s ease-out;
         }
 
         .completion-screen.show {
             display: block;
-            animation: slideIn 0.6s;
         }
 
         @keyframes slideIn {
@@ -305,9 +305,29 @@
         }
 
         .completion-screen h2 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: #00ff88;
             margin-bottom: 15px;
+            animation: bounce 0.6s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .completion-screen .exciting-text {
+            font-size: 1.4rem;
+            color: #00ff88;
+            font-weight: bold;
+            margin: 20px 0;
+            line-height: 1.8;
+            animation: fadeInScale 0.8s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .completion-screen p {
@@ -400,7 +420,7 @@
     </div>
 
     <div class="game-content">
-        <!-- 로봇 섹션 (왼쪽) - 변화하는 로봇 -->
+        <!-- 로봇 섹션 (왼쪽) - 변화하고 춤추는 로봇 -->
         <div class="robot-section">
             <div class="robot-container" id="robotContainer">
                 <img src="assets/img/robo2.png" alt="Robot" class="robot-img" id="robotImg">
@@ -421,18 +441,16 @@
             </div>
 
             <div class="completion-screen" id="completionScreen">
-                <h2>축하합니다! 🎉</h2>
+                <h2>🎉 축하합니다!</h2>
                 <p>로봇이 완전히 깨어났습니다!</p>
                 
-                <!-- 🎬 robo.gif 동영상 -->
-                <div style="margin: 20px 0; display: flex; justify-content: center;">
-                    <img src="assets/img/robo.gif" alt="Robo Celebration" style="width: 200px; height: 200px; object-fit: contain; filter: drop-shadow(0 0 30px rgba(0, 255, 136, 0.8));">
+                <div class="exciting-text">
+                    ⚡ 넌 최고야! ⚡<br>
+                    고마워! 정말 고마워!<br>
+                    나를 구해줘서! 🚀
                 </div>
                 
-                <p style="font-weight: bold; color: #00ff88; font-size: 1.2rem; margin: 15px 0;">
-                    "축하해! 그리고 고마워.<br>나를 구해줘서…"
-                </p>
-                <p id="finalScore" style="font-weight: bold; color: #00f2ff; margin: 10px 0;"></p>
+                <p id="finalScore" style="font-weight: bold; color: #00f2ff; margin: 15px 0; font-size: 1.1rem;"></p>
                 <button class="restart-btn" onclick="location.reload()">다시 시작하기</button>
             </div>
         </div>
@@ -516,6 +534,7 @@
     let currentQuestion = 0;
     let battery = 3;
     let answered = false;
+    let engineSoundPlayed = false;
     let missionStates = questions.map(q => ({
         id: q.id,
         completed: false,
@@ -536,29 +555,27 @@
         if (battery >= 50 && battery < 80) {
             robot.classList.add('glow');
             robotImg.classList.add('glow');
-            // 한 번만 재생
-            if (battery === 50 || (battery > 50 && battery < 55)) {
+            if (!engineSoundPlayed) {
                 playEngineSound();
+                engineSoundPlayed = true;
             }
         } else if (battery < 50) {
             robot.classList.remove('glow');
             robotImg.classList.remove('glow');
         }
 
-        // 배터리 80~99%: 더 강한 엔진 가동
+        // 배터리 80~99%: 더 강한 엔진 가동 + 흔들림
         if (battery >= 80 && battery < 100) {
             robot.classList.add('glow');
             robotImg.classList.add('glow');
             robot.style.boxShadow = '0 0 80px rgba(0, 242, 255, 0.8), inset 0 0 60px rgba(0, 242, 255, 0.2)';
-            
-            // 흔들림 애니메이션 추가
             robot.style.animation = 'engineVibration 0.3s infinite';
         } else if (battery >= 50 && battery < 80) {
             robot.style.boxShadow = '0 0 60px rgba(0, 242, 255, 0.6), inset 0 0 40px rgba(0, 242, 255, 0.1)';
             robot.style.animation = 'none';
         }
 
-        // 배터리 100% 이상: 완전 부활
+        // 배터리 100% 이상: 완전 부활 + 춤추기
         if (battery >= 100) {
             robot.classList.add('full');
             robotImg.classList.add('full');
@@ -598,7 +615,7 @@
         buttons[q.correct].classList.add("correct");
 
         if (selectedIdx === q.correct) {
-            // 정답 처리 (음성 제거)
+            // 정답 처리
             if (!state.triedOnce) {
                 battery = Math.min(battery + 10, 100);
                 state.triedOnce = true;
@@ -618,7 +635,7 @@
                 }
             }, 1500);
         } else {
-            // 틀린 답 (다시 도전 안내만)
+            // 틀린 답
             speak("틀렸어요! 다시 도전해봐요!");
             state.triedOnce = true;
             state.usedBaseCamp = true;
@@ -630,17 +647,14 @@
     }
 
     function completeGame() {
-        const robot = document.getElementById("robotContainer");
-        const robotImg = document.getElementById("robotImg");
-        
         battery = 100;
         updateRobot();
 
         document.getElementById("questionBox").style.display = "none";
         document.getElementById("completionScreen").classList.add("show");
-        document.getElementById("finalScore").textContent = `최종 배터리: ${battery}%`;
+        document.getElementById("finalScore").textContent = `최종 배터리: 100% ⚡ 완벽해! 넌 진짜 최고야!`;
 
-        speak("축하해! 그리고 고마워. 나를 구해줘서!");
+        speak("축하해! 고마워! 나를 구해줘서!");
     }
 
     function speak(text) {
@@ -653,25 +667,27 @@
     }
 
     function playEngineSound() {
-        // 웹 오디오 API로 엔진 소리 생성
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const now = audioContext.currentTime;
-        
-        // 저주파 톤 (엔진음)
-        const osc = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-        
-        osc.connect(gain);
-        gain.connect(audioContext.destination);
-        
-        osc.frequency.setValueAtTime(80, now);
-        osc.frequency.exponentialRampToValueAtTime(100, now + 0.5);
-        
-        gain.gain.setValueAtTime(0.1, now);
-        gain.gain.exponentialRampToValueAtTime(0.05, now + 0.5);
-        
-        osc.start(now);
-        osc.stop(now + 0.5);
+        try {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const now = audioContext.currentTime;
+            
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.frequency.setValueAtTime(80, now);
+            osc.frequency.exponentialRampToValueAtTime(100, now + 0.5);
+            
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.05, now + 0.5);
+            
+            osc.start(now);
+            osc.stop(now + 0.5);
+        } catch(e) {
+            console.log('Audio context not available');
+        }
     }
 
     displayQuestion();
