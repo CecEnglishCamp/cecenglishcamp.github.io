@@ -1,28 +1,4 @@
-// ===== DROPDOWN 기능 =====
-document.querySelectorAll('.dropdown').forEach(dropdown => {
-  const btn = dropdown.querySelector('.btn-box');
-  
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    
-    // 다른 드롭다운 닫기
-    document.querySelectorAll('.dropdown.active').forEach(d => {
-      if (d !== dropdown) d.classList.remove('active');
-    });
-    
-    // 현재 드롭다운 토글
-    dropdown.classList.toggle('active');
-  });
-});
-
-// 문서 클릭 시 드롭다운 닫기
-document.addEventListener('click', () => {
-  document.querySelectorAll('.dropdown.active').forEach(d => {
-    d.classList.remove('active');
-  });
-});
-
-// ===== GRAMMAR 그리드 생성 =====
+// ===== GRAMMAR 데이터 =====
 const grammarData = {
   stage1: [
     { id: 'G01', title: 'Be Verb – Present Tense', path: './G01/G01_be_verb_present_tense.html' },
@@ -129,8 +105,37 @@ function generateGrammarGrid(containerId, data) {
   });
 }
 
-// 페이지 로드 시 실행
+// 드롭다운 초기화 함수
+function initDropdown() {
+  document.querySelectorAll('.dropdown').forEach(dropdown => {
+    const btn = dropdown.querySelector('.btn-box');
+    
+    if (btn) {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        // 다른 드롭다운 닫기
+        document.querySelectorAll('.dropdown.active').forEach(d => {
+          if (d !== dropdown) d.classList.remove('active');
+        });
+        
+        // 현재 드롭다운 토글
+        dropdown.classList.toggle('active');
+      });
+    }
+  });
+
+  // 문서 클릭 시 드롭다운 닫기
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.dropdown.active').forEach(d => {
+      d.classList.remove('active');
+    });
+  });
+}
+
+// 페이지 로드 시 모든 기능 실행
 document.addEventListener('DOMContentLoaded', () => {
+  initDropdown();
   generateGrammarGrid('grid1', grammarData.stage1);
   generateGrammarGrid('grid2', grammarData.stage2);
   generateGrammarGrid('grid3', grammarData.stage3);
