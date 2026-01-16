@@ -143,8 +143,6 @@
             animation: robotDance 0.8s ease-in-out infinite;
             filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.8));
         }
-
-        .battery-info {
             font-size: 1.4rem;
             font-weight: bold;
             color: #00f2ff;
@@ -424,6 +422,7 @@
         <div class="robot-section">
             <div class="robot-container" id="robotContainer">
                 <img src="assets/img/robo2.png" alt="Robot" class="robot-img" id="robotImg">
+                <img src="assets/img/robo.gif" alt="Robot Dance" class="robot-gif" id="robotGif" style="display: none;">
             </div>
             <div class="battery-info">배터리: <span id="batteryPercent">3</span>%</div>
             <div class="progress-bar">
@@ -451,7 +450,7 @@
                 </div>
                 
                 <p id="finalScore" style="font-weight: bold; color: #00f2ff; margin: 15px 0; font-size: 1.1rem;"></p>
-                <button class="restart-btn" onclick="location.reload()">다시 시작하기</button>
+                <button class="restart-btn" onclick="resetGame()">다시 시작하기</button>
             </div>
         </div>
     </div>
@@ -650,6 +649,12 @@
         battery = 100;
         updateRobot();
 
+        // 왼쪽 로봇을 GIF 동영상으로 변경
+        const robotImg = document.getElementById("robotImg");
+        const robotGif = document.getElementById("robotGif");
+        robotImg.style.display = "none";
+        robotGif.style.display = "block";
+
         document.getElementById("questionBox").style.display = "none";
         document.getElementById("completionScreen").classList.add("show");
         document.getElementById("finalScore").textContent = `최종 배터리: 100% ⚡ 완벽해! 넌 진짜 최고야!`;
@@ -692,6 +697,40 @@
 
     displayQuestion();
     updateRobot();
+
+    function resetGame() {
+        // 게임 상태 초기화
+        currentQuestion = 0;
+        battery = 3;
+        answered = false;
+        engineSoundPlayed = false;
+        missionStates = questions.map(q => ({
+            id: q.id,
+            completed: false,
+            triedOnce: false,
+            usedBaseCamp: false
+        }));
+
+        // UI 초기화
+        document.getElementById("completionScreen").classList.remove("show");
+        document.getElementById("questionBox").style.display = "block";
+
+        // 왼쪽 로봇을 정지 화면으로 변경
+        const robotImg = document.getElementById("robotImg");
+        const robotGif = document.getElementById("robotGif");
+        robotImg.style.display = "block";
+        robotGif.style.display = "none";
+
+        // 로봇 스타일 초기화
+        const robot = document.getElementById("robotContainer");
+        robot.classList.remove('glow', 'full');
+        robot.style.animation = 'none';
+        robot.style.boxShadow = '0 0 40px rgba(0, 242, 255, 0.3)';
+        
+        // 다시 시작
+        displayQuestion();
+        updateRobot();
+    }
 </script>
 
 </body>
