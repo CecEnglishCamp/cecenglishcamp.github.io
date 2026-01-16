@@ -1,558 +1,477 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grammar Game - 문법 게임</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grammar Game - 문법 게임</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            background: #0a0a0a;
-            color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            padding: 20px;
-            min-height: 100vh;
-        }
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      padding: 20px;
+      min-height: 100vh;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 5%;
-            background: rgba(0, 0, 0, 0.95);
-            border-bottom: 1px solid #222;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            margin: -20px -20px 0 -20px;
-            padding-left: 20px;
-            padding-right: 20px;
-        }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 5%;
+      background: rgba(0, 0, 0, 0.95);
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      margin: -20px -20px 0 -20px;
+    }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: #fff;
-            text-decoration: none;
-        }
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: #fff;
+      text-decoration: none;
+    }
 
-        .logo img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
+    .logo img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
 
-        .game-nav {
-            display: flex;
-            gap: 25px;
-        }
+    .game-nav {
+      display: flex;
+      gap: 25px;
+    }
 
-        .game-nav a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 700;
-            transition: 0.3s;
-        }
+    .game-nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      transition: 0.3s;
+    }
 
-        .game-nav a:hover {
-            color: #00f2ff;
-        }
+    .game-nav a:hover {
+      color: #00f2ff;
+    }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            margin-top: 20px;
-        }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      margin-top: 20px;
+    }
 
-        .header h1 {
-            font-size: 2.2rem;
-            color: #00f2ff;
-            margin-bottom: 8px;
-        }
+    .header h1 {
+      font-size: 2.2rem;
+      color: #00f2ff;
+      margin-bottom: 8px;
+    }
 
-        .header p {
-            font-size: 0.95rem;
-            color: #888;
-        }
+    .header p {
+      font-size: 0.95rem;
+      color: #888;
+    }
 
-        .game-content {
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-            justify-content: center;
-        }
+    .game-content {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
 
-        .robot-section {
-            text-align: center;
-            flex: 1;
-            min-width: 350px;
-            max-width: 500px;
-        }
+    .robot-section {
+      text-align: center;
+      flex: 1;
+      min-width: 350px;
+      max-width: 500px;
+    }
 
-        .robot-container {
-            position: relative;
-            width: 100%;
-            height: 400px;
-            margin-bottom: 25px;
-            background: rgba(17, 17, 17, 0.6);
-            border: 3px solid #00f2ff;
-            border-radius: 30px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 40px rgba(0, 242, 255, 0.3);
-            transition: all 0.5s ease;
-        }
+    .robot-container {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      height: 400px;
+      margin: 0 auto 25px;
+      background: rgba(17, 17, 17, 0.6);
+      border: 3px solid #00f2ff;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 40px rgba(0, 242, 255, 0.3);
+      overflow: hidden;
+      transition: all 0.5s ease;
+    }
 
-        .robot-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.2));
-            transition: filter 0.3s, transform 0.5s;
-        }
+    .robot-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.2));
+      transition: filter 0.3s, transform 0.5s;
+    }
 
-        .robot-container.glow {
-            box-shadow: 0 0 60px rgba(0, 242, 255, 0.6), inset 0 0 40px rgba(0, 242, 255, 0.1);
-            border-color: #00ff88;
-        }
+    .robot-gif {
+      width: 100%;
+      height: auto;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out;
+    }
 
-        .robot-img.glow {
-            filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.9));
-        }
+    .robot-gif.show {
+      opacity: 1;
+    }
 
-        .robot-container.full {
-            box-shadow: 0 0 100px rgba(0, 255, 136, 0.9), inset 0 0 80px rgba(0, 255, 136, 0.3);
-            border-color: #00ff88;
-        }
+    .robot-container.glow {
+      box-shadow: 0 0 60px rgba(0, 242, 255, 0.6), inset 0 0 40px rgba(0, 242, 255, 0.1);
+      border-color: #00ff88;
+    }
 
-        .robot-img.full {
-            animation: robotDance 0.8s ease-in-out infinite;
-            filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.8));
-        }
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #00f2ff;
-            margin-bottom: 20px;
-        }
+    .robot-img.glow {
+      filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.9));
+    }
 
-        .progress-bar {
-            width: 100%;
-            max-width: 400px;
-            height: 45px;
-            background: #222;
-            border: 2px solid #00f2ff;
-            border-radius: 25px;
-            overflow: hidden;
-            margin: 0 auto;
-        }
+    .robot-container.full {
+      box-shadow: 0 0 100px rgba(0, 255, 136, 0.9), inset 0 0 80px rgba(0, 255, 136, 0.3);
+      border-color: #00ff88;
+    }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00f2ff, #00ff88);
-            width: 3%;
-            transition: width 0.5s ease;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 12px;
-            font-weight: bold;
-            font-size: 0.95rem;
-        }
+    .robot-img.full {
+      animation: robotDance 0.8s ease-in-out infinite;
+      filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.8));
+    }
 
-        .quiz-section {
-            flex: 1;
-            min-width: 350px;
-            max-width: 500px;
-        }
+    @keyframes batteryWarning {
+      0%, 100% { 
+        border-color: #00f2ff;
+        box-shadow: 0 0 40px rgba(0, 242, 255, 0.3);
+      }
+      50% { 
+        border-color: #ff4444;
+        box-shadow: 0 0 60px rgba(255, 68, 68, 0.6);
+      }
+    }
 
-        .question-box {
-            background: rgba(17, 17, 17, 0.95);
-            border: 2px solid #333;
-            border-radius: 20px;
-            padding: 35px;
-            margin-bottom: 30px;
-        }
+    .robot-container.warning {
+      animation: batteryWarning 0.6s infinite;
+    }
 
-        .question-box h2 {
-            font-size: 1.3rem;
-            color: #00f2ff;
-            margin-bottom: 15px;
-        }
+    @keyframes lightFlash {
+      0% { box-shadow: 0 0 40px rgba(0, 242, 255, 0.3); }
+      50% { box-shadow: 0 0 80px rgba(0, 242, 255, 0.9), inset 0 0 40px rgba(0, 242, 255, 0.4); }
+      100% { box-shadow: 0 0 40px rgba(0, 242, 255, 0.3); }
+    }
 
-        .question-box p {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            color: #ddd;
-            margin-bottom: 25px;
-        }
+    .robot-container.light-flash {
+      animation: lightFlash 0.4s ease-out;
+    }
 
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
+    @keyframes engineVibration {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-3px) rotate(-1deg); }
+      50% { transform: translateY(3px) rotate(1deg); }
+      75% { transform: translateY(-2px) rotate(-0.5deg); }
+    }
 
-        .option-btn {
-            padding: 16px;
-            background: #222;
-            border: 2px solid #444;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
+    @keyframes robotDance {
+      0% { transform: scale(1) rotate(0deg) translateY(0); }
+      10% { transform: scale(1.05) rotate(-3deg) translateY(-5px); }
+      20% { transform: scale(1.08) rotate(3deg) translateY(5px); }
+      30% { transform: scale(1.05) rotate(-2deg) translateY(-8px); }
+      40% { transform: scale(1.1) rotate(2deg) translateY(8px); }
+      50% { transform: scale(1.08) rotate(-3deg) translateY(-5px); }
+      60% { transform: scale(1.05) rotate(3deg) translateY(5px); }
+      70% { transform: scale(1.1) rotate(-2deg) translateY(-8px); }
+      80% { transform: scale(1.08) rotate(2deg) translateY(8px); }
+      90% { transform: scale(1.05) rotate(-1deg) translateY(-4px); }
+      100% { transform: scale(1) rotate(0deg) translateY(0); }
+    }
 
-        .option-btn:hover {
-            border-color: #00f2ff;
-            background: #1a1a1a;
-            transform: translateY(-2px);
-        }
+    .battery-info {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #00f2ff;
+      font-size: 1.4rem;
+    }
 
-        .option-btn.correct {
-            background: #00ff88;
-            color: #000;
-            border-color: #00ff88;
-            animation: pulse 0.6s;
-        }
+    .progress-bar {
+      width: 100%;
+      max-width: 400px;
+      height: 45px;
+      background: #222;
+      border: 2px solid #00f2ff;
+      border-radius: 25px;
+      overflow: hidden;
+      margin: 0 auto;
+    }
 
-        .option-btn.wrong {
-            background: #ff4444;
-            color: #fff;
-            border-color: #ff4444;
-            animation: shake 0.6s;
-        }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00f2ff, #00ff88);
+      width: 3%;
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 12px;
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
+    .quiz-section {
+      flex: 1;
+      min-width: 350px;
+      max-width: 500px;
+    }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
+    .question-box {
+      background: rgba(17, 17, 17, 0.95);
+      border: 2px solid #333;
+      border-radius: 20px;
+      padding: 35px;
+      margin-bottom: 30px;
+    }
 
-        @keyframes engineVibration {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-3px) rotate(-1deg); }
-            50% { transform: translateY(3px) rotate(1deg); }
-            75% { transform: translateY(-2px) rotate(-0.5deg); }
-        }
+    .question-box h2 {
+      font-size: 1.3rem;
+      color: #00f2ff;
+      margin-bottom: 15px;
+    }
 
-        @keyframes robotDance {
-            0% { transform: scale(1) rotate(0deg) translateY(0); }
-            10% { transform: scale(1.05) rotate(-3deg) translateY(-5px); }
-            20% { transform: scale(1.08) rotate(3deg) translateY(5px); }
-            30% { transform: scale(1.05) rotate(-2deg) translateY(-8px); }
-            40% { transform: scale(1.1) rotate(2deg) translateY(8px); }
-            50% { transform: scale(1.08) rotate(-3deg) translateY(-5px); }
-            60% { transform: scale(1.05) rotate(3deg) translateY(5px); }
-            70% { transform: scale(1.1) rotate(-2deg) translateY(-8px); }
-            80% { transform: scale(1.08) rotate(2deg) translateY(8px); }
-            90% { transform: scale(1.05) rotate(-1deg) translateY(-4px); }
-            100% { transform: scale(1) rotate(0deg) translateY(0); }
-        }
+    .question-box p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: #ddd;
+      margin-bottom: 25px;
+    }
 
-        @keyframes batteryWarning {
-            0%, 100% { 
-                border-color: #00f2ff;
-                box-shadow: 0 0 40px rgba(0, 242, 255, 0.3);
-            }
-            50% { 
-                border-color: #ff4444;
-                box-shadow: 0 0 60px rgba(255, 68, 68, 0.6);
-            }
-        }
+    .question-number {
+      display: inline-block;
+      background: #00f2ff;
+      color: #000;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+    }
 
-        .robot-container.warning {
-            animation: batteryWarning 0.6s infinite;
-        }
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
 
-        @keyframes lightFlash {
-            0% { box-shadow: 0 0 40px rgba(0, 242, 255, 0.3); }
-            50% { box-shadow: 0 0 80px rgba(0, 242, 255, 0.9), inset 0 0 40px rgba(0, 242, 255, 0.4); }
-            100% { box-shadow: 0 0 40px rgba(0, 242, 255, 0.3); }
-        }
+    .option-btn {
+      padding: 16px;
+      background: #222;
+      border: 2px solid #444;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
 
-        .robot-container.light-flash {
-            animation: lightFlash 0.4s ease-out;
-        }
+    .option-btn:hover {
+      border-color: #00f2ff;
+      background: #1a1a1a;
+      transform: translateY(-2px);
+    }
 
-        .question-number {
-            display: inline-block;
-            background: #00f2ff;
-            color: #000;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            margin-bottom: 12px;
-            font-size: 0.85rem;
-        }
+    .option-btn.correct {
+      background: #00ff88;
+      color: #000;
+      border-color: #00ff88;
+      animation: pulse 0.6s;
+    }
 
-        .completion-screen {
-            text-align: center;
-            padding: 40px 30px;
-            background: rgba(0, 10, 10, 0.95);
-            border: 2px solid #00ff88;
-            border-radius: 20px;
-            display: none;
-            animation: slideIn 0.8s ease-out;
-        }
+    .option-btn.wrong {
+      background: #ff4444;
+      color: #fff;
+      border-color: #ff4444;
+      animation: shake 0.6s;
+    }
 
-        .completion-screen.show {
-            display: block;
-        }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
 
-        .completion-screen h2 {
-            font-size: 2rem;
-            color: #00ff88;
-            margin-bottom: 15px;
-            animation: bounce 0.6s;
-        }
+    .completion-screen {
+      display: none;
+      text-align: center;
+      background: rgba(0, 10, 10, 0.95);
+      border: 2px solid #00ff88;
+      border-radius: 15px;
+      padding: 40px 30px;
+    }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
+    .completion-screen.show {
+      display: block;
+      animation: fadeIn 0.8s ease-in-out;
+    }
 
-        .completion-screen .exciting-text {
-            font-size: 1.4rem;
-            color: #00ff88;
-            font-weight: bold;
-            margin: 20px 0;
-            line-height: 1.8;
-            animation: fadeInScale 0.8s ease-out;
-        }
+    .completion-screen h2 {
+      font-size: 1.8rem;
+      color: #00ff88;
+      margin-bottom: 15px;
+      animation: bounce 0.6s;
+    }
 
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
 
-        .completion-screen p {
-            font-size: 1rem;
-            color: #ddd;
-            margin-bottom: 20px;
-        }
+    .completion-screen .exciting-text {
+      font-size: 1.4rem;
+      color: #00ff88;
+      font-weight: bold;
+      margin: 20px 0;
+      line-height: 1.8;
+      animation: fadeInScale 0.8s ease-out;
+    }
 
-        .restart-btn {
-            padding: 12px 40px;
-            background: #00f2ff;
-            color: #000;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
 
-        .restart-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px #00f2ff;
-        }
+    .completion-screen p {
+      font-size: 1rem;
+      color: #ddd;
+      margin-bottom: 20px;
+    }
 
-        @media (max-width: 1024px) {
-            .game-content {
-                flex-direction: column;
-                align-items: center;
-            }
+    .restart-btn {
+      padding: 12px 40px;
+      background: #00f2ff;
+      color: #000;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
 
-            .robot-section {
-                width: 100%;
-                max-width: 500px;
-            }
+    .restart-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00f2ff;
+    }
 
-            .quiz-section {
-                width: 100%;
-                max-width: 500px;
-            }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
 
-            .robot-container {
-                height: 450px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8rem;
-            }
-
-            .robot-container {
-                max-width: 350px;
-                height: 350px;
-            }
-
-            .options {
-                grid-template-columns: 1fr;
-            }
-
-            .quiz-section {
-                max-width: 100%;
-            }
-
-            .question-box {
-                padding: 25px;
-            }
-        }
-    </style>
+    @media (max-width: 768px) {
+      .robot-container {
+        max-width: 300px;
+        height: 300px;
+      }
+      .options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-
-<header>
+  <header>
     <a href="index.html" class="logo">
-        <img src="assets/img/robo2.png" alt="CEC Logo">
-        <span>CEC ENGLISH CAMP</span>
+      <img src="assets/img/robo2.png" alt="CEC Logo">
+      <span>CEC ENGLISH CAMP</span>
     </a>
     <nav class="game-nav">
-        <a href="index.html">Home</a>
-        <a href="grammar-game.html">Game</a>
-        <a href="index.html#about">About</a>
-        <a href="index.html#register">Register</a>
+      <a href="index.html">Home</a>
+      <a href="grammar-game.html">Game</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#register">Register</a>
     </nav>
-</header>
+  </header>
 
-<div class="container">
+  <div class="container">
     <div class="header">
-        <h1>🤖 Grammar Game</h1>
-        <p>문제를 풀어서 로보를 구해주세요. 배터리가 점점 약해지고 겨우 3% 남았어요.</p>
+      <h1>🤖 Grammar Game</h1>
+      <p>문제를 풀어서 로보를 구해주세요. 배터리가 점점 약해지고 겨우 3% 남았어요.</p>
     </div>
 
     <div class="game-content">
-        <!-- 로봇 섹션 (왼쪽) - 변화하고 춤추는 로봇 -->
-        <div class="robot-section">
-            <div class="robot-container" id="robotContainer">
-                <img src="assets/img/robo2.png" alt="Robot" class="robot-img" id="robotImg">
-                <img src="assets/img/robo.gif" alt="Robot Dance" class="robot-gif" id="robotGif" style="display: none;">
-            </div>
-            <div class="battery-info">배터리: <span id="batteryPercent">3</span>%</div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
+      <div class="robot-section">
+        <div class="robot-container" id="robotContainer">
+          <img src="assets/img/robo2.png" alt="Robot" class="robot-img" id="robotImg">
+          <img src="assets/img/robo.gif" alt="Robot Dance" class="robot-gif" id="robotGif" style="display: none;">
+        </div>
+        <div class="battery-info">배터리: <span id="batteryPercent">3</span>%</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="question-box" id="questionBox">
+          <span class="question-number" id="questionNum">Q1/10</span>
+          <h2 id="questionTitle">문법 주제</h2>
+          <p id="questionText">문제가 여기에 표시됩니다</p>
+          <div class="options" id="options"></div>
         </div>
 
-        <!-- 퀴즈 섹션 (오른쪽) -->
-        <div class="quiz-section">
-            <div class="question-box" id="questionBox">
-                <span class="question-number" id="questionNum">Q1/10</span>
-                <h2 id="questionTitle">문법 주제</h2>
-                <p id="questionText">문제가 여기에 표시됩니다</p>
-                <div class="options" id="options"></div>
-            </div>
-
-            <div class="completion-screen" id="completionScreen">
-                <h2>🎉 축하합니다!</h2>
-                <p>로봇이 완전히 깨어났습니다!</p>
-                
-                <div class="exciting-text">
-                    ⚡ 넌 최고야! ⚡<br>
-                    고마워! 정말 고마워!<br>
-                    나를 구해줘서! 🚀
-                </div>
-                
-                <p id="finalScore" style="font-weight: bold; color: #00f2ff; margin: 15px 0; font-size: 1.1rem;"></p>
-                <button class="restart-btn" onclick="resetGame()">다시 시작하기</button>
-            </div>
+        <div class="completion-screen" id="completionScreen">
+          <h2>🎉 축하합니다!</h2>
+          <p>로봇이 완전히 깨어났습니다!</p>
+          <div class="exciting-text">
+            ⚡ 넌 최고야! ⚡<br>
+            고마워! 정말 고마워!<br>
+            나를 구해줘서! 🚀
+          </div>
+          <p id="finalScore" style="font-weight: bold; color: #00f2ff; margin: 15px 0; font-size: 1.1rem;"></p>
+          <button class="restart-btn" onclick="resetGame()">다시 시작하기</button>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<script>
+  <script>
     const questions = [
-        {
-            id: 1,
-            title: "Simple Present",
-            text: "I ___ milk every morning.",
-            options: ["drink", "drank"],
-            correct: 0
-        },
-        {
-            id: 2,
-            title: "Simple Past",
-            text: "Yesterday, I ___ to the park.",
-            options: ["go", "went"],
-            correct: 1
-        },
-        {
-            id: 3,
-            title: "Future (will)",
-            text: "I ___ help you tomorrow.",
-            options: ["will", "did"],
-            correct: 0
-        },
-        {
-            id: 4,
-            title: "Present Continuous",
-            text: "She is ___ now.",
-            options: ["run", "running"],
-            correct: 1
-        },
-        {
-            id: 5,
-            title: "Imperatives",
-            text: "___ your book, please.",
-            options: ["Open", "Opened"],
-            correct: 0
-        },
-        {
-            id: 6,
-            title: "Yes / No Questions",
-            text: "___ you like pizza?",
-            options: ["Do", "Did"],
-            correct: 0
-        },
-        {
-            id: 7,
-            title: "Adjectives",
-            text: "The dog is ___.",
-            options: ["quick", "quickly"],
-            correct: 0
-        },
-        {
-            id: 8,
-            title: "Adverbs",
-            text: "He runs ___.",
-            options: ["fast", "quick"],
-            correct: 0
-        },
-        {
-            id: 9,
-            title: "Prepositions",
-            text: "The cat is ___ the box.",
-            options: ["in", "on"],
-            correct: 0
-        },
-        {
-            id: 10,
-            title: "Present Perfect",
-            text: "I have ___ pizza before.",
-            options: ["eat", "eaten"],
-            correct: 1
-        }
+      { id: 1, title: "Simple Present", text: "I ___ milk every morning.", options: ["drink", "drank"], correct: 0 },
+      { id: 2, title: "Simple Past", text: "Yesterday, I ___ to the park.", options: ["go", "went"], correct: 1 },
+      { id: 3, title: "Future (will)", text: "I ___ help you tomorrow.", options: ["will", "did"], correct: 0 },
+      { id: 4, title: "Present Continuous", text: "She is ___ now.", options: ["run", "running"], correct: 1 },
+      { id: 5, title: "Imperatives", text: "___ your book, please.", options: ["Open", "Opened"], correct: 0 },
+      { id: 6, title: "Yes / No Questions", text: "___ you like pizza?", options: ["Do", "Did"], correct: 0 },
+      { id: 7, title: "Adjectives", text: "The dog is ___.", options: ["quick", "quickly"], correct: 0 },
+      { id: 8, title: "Adverbs", text: "He runs ___.", options: ["fast", "quick"], correct: 0 },
+      { id: 9, title: "Prepositions", text: "The cat is ___ the box.", options: ["in", "on"], correct: 0 },
+      { id: 10, title: "Present Perfect", text: "I have ___ pizza before.", options: ["eat", "eaten"], correct: 1 }
     ];
 
     let currentQuestion = 0;
@@ -560,262 +479,246 @@
     let answered = false;
     let engineSoundPlayed = false;
     let missionStates = questions.map(q => ({
+      id: q.id,
+      completed: false,
+      triedOnce: false,
+      usedBaseCamp: false
+    }));
+
+    function updateRobot() {
+      const percent = document.getElementById("batteryPercent");
+      const fill = document.getElementById("progressFill");
+      const robot = document.getElementById("robotContainer");
+      const robotImg = document.getElementById("robotImg");
+
+      percent.textContent = battery;
+      fill.style.width = battery + "%";
+
+      if (battery <= 20 && battery > 0) {
+        robot.classList.add('warning');
+        if (battery === 3 || battery === 13) {
+          playWarningSound();
+        }
+      } else {
+        robot.classList.remove('warning');
+      }
+
+      if (battery >= 50 && battery < 80) {
+        robot.classList.add('glow');
+        robotImg.classList.add('glow');
+        if (!engineSoundPlayed) {
+          playEngineSound();
+          engineSoundPlayed = true;
+        }
+      } else if (battery < 50) {
+        robot.classList.remove('glow');
+        robotImg.classList.remove('glow');
+      }
+
+      if (battery >= 80 && battery < 100) {
+        robot.classList.add('glow');
+        robotImg.classList.add('glow');
+        robot.style.boxShadow = '0 0 80px rgba(0, 242, 255, 0.8), inset 0 0 60px rgba(0, 242, 255, 0.2)';
+        robot.style.animation = 'engineVibration 0.3s infinite';
+      } else if (battery >= 50 && battery < 80) {
+        robot.style.boxShadow = '0 0 60px rgba(0, 242, 255, 0.6), inset 0 0 40px rgba(0, 242, 255, 0.1)';
+        robot.style.animation = 'none';
+      }
+
+      if (battery >= 100) {
+        robot.classList.add('full');
+        robot.classList.remove('warning');
+        robotImg.classList.add('full');
+        robot.style.animation = 'none';
+      }
+    }
+
+    function displayQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById("questionNum").textContent = `Q${currentQuestion + 1}/10`;
+      document.getElementById("questionTitle").textContent = q.title;
+      document.getElementById("questionText").textContent = q.text;
+
+      const optionsContainer = document.getElementById("options");
+      optionsContainer.innerHTML = "";
+
+      q.options.forEach((option, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.textContent = option;
+        btn.onclick = () => selectAnswer(idx);
+        optionsContainer.appendChild(btn);
+      });
+
+      answered = false;
+    }
+
+    function selectAnswer(selectedIdx) {
+      if (answered) return;
+      answered = true;
+
+      const q = questions[currentQuestion];
+      const buttons = document.querySelectorAll(".option-btn");
+      const state = missionStates[currentQuestion];
+
+      buttons[selectedIdx].classList.add(selectedIdx === q.correct ? "correct" : "wrong");
+      buttons[q.correct].classList.add("correct");
+
+      if (selectedIdx === q.correct) {
+        if (!state.triedOnce) {
+          battery = Math.min(battery + 10, 100);
+          state.triedOnce = true;
+        } else if (state.usedBaseCamp) {
+          battery = Math.min(battery + 15, 100);
+        }
+        
+        state.completed = true;
+        updateRobot();
+        
+        if (battery >= 50) {
+          flashLight();
+        }
+
+        setTimeout(() => {
+          if (currentQuestion < 9) {
+            currentQuestion++;
+            displayQuestion();
+          } else {
+            completeGame();
+          }
+        }, 1500);
+      } else {
+        speak("틀렸어요! 다시 도전해봐요!");
+        state.triedOnce = true;
+        state.usedBaseCamp = true;
+        
+        setTimeout(() => {
+          answered = false;
+        }, 1500);
+      }
+    }
+
+    function completeGame() {
+      battery = 100;
+      updateRobot();
+      const robotImg = document.getElementById("robotImg");
+      const robotGif = document.getElementById("robotGif");
+
+      robotImg.style.display = "none";
+      robotGif.style.display = "block";
+
+      setTimeout(() => robotGif.classList.add("show"), 10);
+
+      document.getElementById("questionBox").style.display = "none";
+      document.getElementById("completionScreen").classList.add("show");
+      document.getElementById("finalScore").textContent = `최종 배터리: 100% ⚡ 완벽해! 넌 진짜 최고야!`;
+
+      speak("축하해! 고마워! 나를 구해줘서!");
+    }
+
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ko-KR';
+        utterance.rate = 1;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function playEngineSound() {
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioContext.currentTime;
+        
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        
+        osc.frequency.setValueAtTime(80, now);
+        osc.frequency.exponentialRampToValueAtTime(100, now + 0.5);
+        
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.05, now + 0.5);
+        
+        osc.start(now);
+        osc.stop(now + 0.5);
+      } catch(e) {
+        console.log('Audio context not available');
+      }
+    }
+
+    function playWarningSound() {
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioContext.currentTime;
+        
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.setValueAtTime(800, now + 0.15);
+        
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.setValueAtTime(0.08, now + 0.15);
+        gain.gain.setValueAtTime(0, now + 0.2);
+        
+        osc.start(now);
+        osc.stop(now + 0.2);
+      } catch(e) {
+        console.log('Audio context not available');
+      }
+    }
+
+    function flashLight() {
+      const robot = document.getElementById("robotContainer");
+      robot.classList.remove('light-flash');
+      
+      setTimeout(() => {
+        robot.classList.add('light-flash');
+      }, 10);
+    }
+
+    function resetGame() {
+      currentQuestion = 0;
+      battery = 3;
+      answered = false;
+      engineSoundPlayed = false;
+      missionStates = questions.map(q => ({
         id: q.id,
         completed: false,
         triedOnce: false,
         usedBaseCamp: false
-    }));
+      }));
 
-    function updateRobot() {
-        const percent = document.getElementById("batteryPercent");
-        const fill = document.getElementById("progressFill");
-        const robot = document.getElementById("robotContainer");
-        const robotImg = document.getElementById("robotImg");
+      document.getElementById("completionScreen").classList.remove("show");
+      document.getElementById("questionBox").style.display = "block";
 
-        percent.textContent = battery;
-        fill.style.width = battery + "%";
+      const robotImg = document.getElementById("robotImg");
+      const robotGif = document.getElementById("robotGif");
+      robotImg.style.display = "block";
+      robotGif.style.display = "none";
+      robotGif.classList.remove("show");
 
-        // 배터리 3~20%: 경고 깜박임 + 경고음
-        if (battery <= 20 && battery > 0) {
-            robot.classList.add('warning');
-            if (battery === 3 || battery === 13) {
-                playWarningSound();
-            }
-        } else {
-            robot.classList.remove('warning');
-        }
-
-        // 배터리 50% 도달: 엔진 소리 + 밝아짐
-        if (battery >= 50 && battery < 80) {
-            robot.classList.add('glow');
-            robotImg.classList.add('glow');
-            if (!engineSoundPlayed) {
-                playEngineSound();
-                engineSoundPlayed = true;
-            }
-        } else if (battery < 50) {
-            robot.classList.remove('glow');
-            robotImg.classList.remove('glow');
-        }
-
-        // 배터리 80~99%: 더 강한 엔진 가동 + 흔들림
-        if (battery >= 80 && battery < 100) {
-            robot.classList.add('glow');
-            robotImg.classList.add('glow');
-            robot.style.boxShadow = '0 0 80px rgba(0, 242, 255, 0.8), inset 0 0 60px rgba(0, 242, 255, 0.2)';
-            robot.style.animation = 'engineVibration 0.3s infinite';
-        } else if (battery >= 50 && battery < 80) {
-            robot.style.boxShadow = '0 0 60px rgba(0, 242, 255, 0.6), inset 0 0 40px rgba(0, 242, 255, 0.1)';
-            robot.style.animation = 'none';
-        }
-
-        // 배터리 100% 이상: 완전 부활 + 춤추기
-        if (battery >= 100) {
-            robot.classList.add('full');
-            robot.classList.remove('warning');
-            robotImg.classList.add('full');
-            robot.style.animation = 'none';
-        }
-    }
-
-    function displayQuestion() {
-        const q = questions[currentQuestion];
-        document.getElementById("questionNum").textContent = `Q${currentQuestion + 1}/10`;
-        document.getElementById("questionTitle").textContent = q.title;
-        document.getElementById("questionText").textContent = q.text;
-
-        const optionsContainer = document.getElementById("options");
-        optionsContainer.innerHTML = "";
-
-        q.options.forEach((option, idx) => {
-            const btn = document.createElement("button");
-            btn.className = "option-btn";
-            btn.textContent = option;
-            btn.onclick = () => selectAnswer(idx);
-            optionsContainer.appendChild(btn);
-        });
-
-        answered = false;
-    }
-
-    function selectAnswer(selectedIdx) {
-        if (answered) return;
-        answered = true;
-
-        const q = questions[currentQuestion];
-        const buttons = document.querySelectorAll(".option-btn");
-        const state = missionStates[currentQuestion];
-
-        buttons[selectedIdx].classList.add(selectedIdx === q.correct ? "correct" : "wrong");
-        buttons[q.correct].classList.add("correct");
-
-        if (selectedIdx === q.correct) {
-            // 정답 처리
-            if (!state.triedOnce) {
-                battery = Math.min(battery + 10, 100);
-                state.triedOnce = true;
-            } else if (state.usedBaseCamp) {
-                battery = Math.min(battery + 15, 100);
-            }
-            
-            state.completed = true;
-            updateRobot();
-            
-            // 50% 이상일 때 라이트 플래시 효과
-            if (battery >= 50) {
-                flashLight();
-            }
-
-            setTimeout(() => {
-                if (currentQuestion < 9) {
-                    currentQuestion++;
-                    displayQuestion();
-                } else {
-                    completeGame();
-                }
-            }, 1500);
-        } else {
-            // 틀린 답
-            speak("틀렸어요! 다시 도전해봐요!");
-            state.triedOnce = true;
-            state.usedBaseCamp = true;
-            
-            setTimeout(() => {
-                answered = false;
-            }, 1500);
-        }
-    }
-
-    function completeGame() {
-        battery = 100;
-        updateRobot();
-        const robotImg = document.getElementById("robotImg");
-        const robotGif = document.getElementById("robotGif");
-
-        robotImg.style.display = "none";
-        robotGif.style.display = "block";
-
-        // ✅ 자연스러운 페이드 전환
-        setTimeout(() => robotGif.classList.add("show"), 10);
-
-        document.getElementById("questionBox").style.display = "none";
-        document.getElementById("completionScreen").classList.add("show");
-        document.getElementById("finalScore").textContent = `최종 배터리: 100% ⚡ 완벽해! 넌 진짜 최고야!`;
-
-        speak("축하해! 고마워! 나를 구해줘서!");
-    }
-
-    function speak(text) {
-        if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'ko-KR';
-            utterance.rate = 1;
-            window.speechSynthesis.speak(utterance);
-        }
-    }
-
-    function playEngineSound() {
-        try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const now = audioContext.currentTime;
-            
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            
-            osc.frequency.setValueAtTime(80, now);
-            osc.frequency.exponentialRampToValueAtTime(100, now + 0.5);
-            
-            gain.gain.setValueAtTime(0.1, now);
-            gain.gain.exponentialRampToValueAtTime(0.05, now + 0.5);
-            
-            osc.start(now);
-            osc.stop(now + 0.5);
-        } catch(e) {
-            console.log('Audio context not available');
-        }
-    }
-
-    function playWarningSound() {
-        try {
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const now = audioContext.currentTime;
-            
-            // 높은 톤의 경고음
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            
-            osc.frequency.setValueAtTime(800, now);
-            osc.frequency.setValueAtTime(800, now + 0.15);
-            
-            gain.gain.setValueAtTime(0.08, now);
-            gain.gain.setValueAtTime(0.08, now + 0.15);
-            gain.gain.setValueAtTime(0, now + 0.2);
-            
-            osc.start(now);
-            osc.stop(now + 0.2);
-        } catch(e) {
-            console.log('Audio context not available');
-        }
-    }
-
-    function flashLight() {
-        const robot = document.getElementById("robotContainer");
-        robot.classList.remove('light-flash');
-        
-        // 애니메이션을 다시 트리거하기 위해 짧은 딜레이
-        setTimeout(() => {
-            robot.classList.add('light-flash');
-        }, 10);
+      const robot = document.getElementById("robotContainer");
+      robot.classList.remove('glow', 'full', 'warning');
+      robot.style.animation = 'none';
+      robot.style.boxShadow = '0 0 40px rgba(0, 242, 255, 0.3)';
+      robot.style.border = '3px solid #00f2ff';
+      
+      robotImg.style.animation = 'none';
+      robotImg.classList.remove('glow', 'full');
+      
+      displayQuestion();
+      updateRobot();
     }
 
     displayQuestion();
     updateRobot();
-
-    function resetGame() {
-        // 게임 상태 초기화
-        currentQuestion = 0;
-        battery = 3;
-        answered = false;
-        engineSoundPlayed = false;
-        missionStates = questions.map(q => ({
-            id: q.id,
-            completed: false,
-            triedOnce: false,
-            usedBaseCamp: false
-        }));
-
-        // UI 초기화
-        document.getElementById("completionScreen").classList.remove("show");
-        document.getElementById("questionBox").style.display = "block";
-
-        // 왼쪽 로봇을 정지 화면으로 변경
-        const robotImg = document.getElementById("robotImg");
-        const robotGif = document.getElementById("robotGif");
-        robotImg.style.display = "block";
-        robotGif.style.display = "none";
-        robotGif.classList.remove("show");
-
-        // 로봇 스타일 완전 초기화
-        const robot = document.getElementById("robotContainer");
-        robot.classList.remove('glow', 'full');
-        robot.style.animation = 'none';
-        robot.style.boxShadow = '0 0 40px rgba(0, 242, 255, 0.3)';
-        robot.style.border = '3px solid #00f2ff';
-        
-        robotImg.style.animation = 'none';
-        robotImg.classList.remove('glow', 'full');
-        
-        // 다시 시작
-        displayQuestion();
-        updateRobot();
-    }
-</script>
-
+  </script>
 </body>
 </html>
