@@ -3,527 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grammar Game - 문법 게임</title>
+  <title>Grammar Game</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: #0a0a0a;
-      color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-      padding: 20px;
-      min-height: 100vh;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 5%;
-      background: rgba(0, 0, 0, 0.95);
-      border-bottom: 1px solid #222;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      margin: -20px -20px 0 -20px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      font-size: 1.2rem;
-      font-weight: 900;
-      color: #fff;
-      text-decoration: none;
-    }
-
-    .logo img {
-      width: 40px;
-      height: 40px;
-      margin-right: 10px;
-    }
-
-    .game-nav {
-      display: flex;
-      gap: 25px;
-    }
-
-    .game-nav a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 700;
-      transition: 0.3s;
-    }
-
-    .game-nav a:hover {
-      color: #00f2ff;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
-      margin-top: 20px;
-    }
-
-    .header h1 {
-      font-size: 2.2rem;
-      color: #00f2ff;
-      margin-bottom: 8px;
-    }
-
-    .header p {
-      font-size: 0.95rem;
-      color: #888;
-      transition: opacity 0.8s ease-in-out;
-    }
-
-    .header p.hide {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    /* 레벨 선택 */
-    .level-screen {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 30px;
-      margin-top: 50px;
-    }
-
-    .level-title {
-      font-size: 1.8rem;
-      color: #00f2ff;
-      margin-bottom: 20px;
-    }
-
-    .level-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 30px;
-      max-width: 1000px;
-      width: 100%;
-    }
-
-    .level-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-      padding: 30px 20px;
-      background: rgba(17, 17, 17, 0.95);
-      border: 2px solid #00f2ff;
-      border-radius: 15px;
-      color: #fff;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .level-btn:hover {
-      border-color: #00ff88;
-      background: rgba(0, 255, 136, 0.1);
-      transform: scale(1.05);
-      box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
-    }
-
-    .level-thumbnail {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
-      filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.4));
-    }
-
-    .level-btn:hover .level-thumbnail {
-      filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.8));
-    }
-
-    .level-label {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    .level-description {
-      font-size: 0.8rem;
-      color: #888;
-    }
-
-    .game-screen {
-      display: none;
-    }
-
-    .game-screen.active {
-      display: block;
-    }
-
-    .game-content {
-      display: flex;
-      gap: 40px;
-      align-items: flex-start;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .robot-section {
-      text-align: center;
-      flex: 1;
-      min-width: 350px;
-      max-width: 500px;
-    }
-
-    .robot-container {
-      position: relative;
-      width: 100%;
-      max-width: 400px;
-      height: 400px;
-      margin: 0 auto 0;
-      background: rgba(17, 17, 17, 0.6);
-      border: 3px solid #00f2ff;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 40px rgba(0, 242, 255, 0.3);
-      overflow: hidden;
-      transition: all 0.5s ease;
-    }
-
-    .robot-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.2));
-      transition: filter 0.3s;
-      opacity: 0.6;
-    }
-
-    .robot-img.stage1 {
-      opacity: 0.5;
-      filter: drop-shadow(0 0 5px rgba(0, 100, 150, 0.3));
-    }
-
-    .robot-img.stage2 {
-      opacity: 0.8;
-      filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.6));
-    }
-
-    .robot-container.stage2-vibrate {
-      animation: gentleVibrate 0.4s infinite;
-    }
-
-    @keyframes gentleVibrate {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-2px); }
-    }
-
-    .robot-img.stage3 {
-      opacity: 1;
-      filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.8));
-    }
-
-    .robot-gif {
-      width: 100%;
-      height: auto;
-      max-height: 100%;
-      object-fit: contain;
-      display: block;
-      margin: 0 auto;
-      opacity: 0;
-      transition: opacity 0.8s ease-in-out;
-    }
-
-    .robot-gif.show {
-      opacity: 1;
-    }
-
-    .robot-container.glow {
-      box-shadow: 0 0 60px rgba(0, 242, 255, 0.6), inset 0 0 40px rgba(0, 242, 255, 0.1);
-      border-color: #00ff88;
-    }
-
-    .robot-img.glow {
-      filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.9));
-    }
-
-    .robot-container.full {
-      box-shadow: 0 0 100px rgba(0, 255, 136, 0.9), inset 0 0 80px rgba(0, 255, 136, 0.3);
-      border-color: #00ff88;
-    }
-
-    .robot-img.full {
-      animation: robotDance 0.8s ease-in-out infinite;
-      filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.8));
-    }
-
-    @keyframes batteryWarning {
-      0%, 100% { border-color: #00f2ff; box-shadow: 0 0 40px rgba(0, 242, 255, 0.3); }
-      50% { border-color: #ff4444; box-shadow: 0 0 60px rgba(255, 68, 68, 0.6); }
-    }
-
-    .robot-container.warning {
-      animation: batteryWarning 0.6s infinite;
-    }
-
-    @keyframes lightFlash {
-      0% { box-shadow: 0 0 40px rgba(0, 242, 255, 0.3); }
-      50% { box-shadow: 0 0 80px rgba(0, 242, 255, 0.9), inset 0 0 40px rgba(0, 242, 255, 0.4); }
-      100% { box-shadow: 0 0 40px rgba(0, 242, 255, 0.3); }
-    }
-
-    .robot-container.light-flash {
-      animation: lightFlash 0.4s ease-out;
-    }
-
-    @keyframes engineVibration {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      25% { transform: translateY(-3px) rotate(-1deg); }
-      50% { transform: translateY(3px) rotate(1deg); }
-      75% { transform: translateY(-2px) rotate(-0.5deg); }
-    }
-
-    @keyframes robotDance {
-      0% { transform: scale(1) rotate(0deg) translateY(0); }
-      10% { transform: scale(1.05) rotate(-3deg) translateY(-5px); }
-      20% { transform: scale(1.08) rotate(3deg) translateY(5px); }
-      30% { transform: scale(1.05) rotate(-2deg) translateY(-8px); }
-      40% { transform: scale(1.1) rotate(2deg) translateY(8px); }
-      50% { transform: scale(1.08) rotate(-3deg) translateY(-5px); }
-      60% { transform: scale(1.05) rotate(3deg) translateY(5px); }
-      70% { transform: scale(1.1) rotate(-2deg) translateY(-8px); }
-      80% { transform: scale(1.08) rotate(2deg) translateY(8px); }
-      90% { transform: scale(1.05) rotate(-1deg) translateY(-4px); }
-      100% { transform: scale(1) rotate(0deg) translateY(0); }
-    }
-
-    .battery-display {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
-      z-index: 10;
-      text-align: center;
-    }
-
-    .battery-percent {
-      font-size: 0.7rem;
-      font-weight: bold;
-      color: #00f2ff;
-      margin-bottom: 4px;
-    }
-
-    .battery-bar {
-      width: 100%;
-      height: 12px;
-      background: rgba(0, 0, 0, 0.7);
-      border: 1px solid #00f2ff;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .battery-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #00f2ff 0%, #00ff88 50%, #00f2ff 100%);
-      background-size: 200% 100%;
-      animation: shimmer 2s infinite;
-      transition: width 0.5s ease;
-      width: 3%;
-    }
-
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    .quiz-section {
-      flex: 1;
-      min-width: 350px;
-      max-width: 500px;
-    }
-
-    .question-box {
-      background: rgba(17, 17, 17, 0.95);
-      border: 2px solid #333;
-      border-radius: 20px;
-      padding: 35px;
-      margin-bottom: 30px;
-    }
-
-    .question-box h2 {
-      font-size: 1.3rem;
-      color: #00f2ff;
-      margin-bottom: 15px;
-    }
-
-    .question-box p {
-      font-size: 1.1rem;
-      line-height: 1.7;
-      color: #ddd;
-      margin-bottom: 25px;
-    }
-
-    .question-number {
-      display: inline-block;
-      background: #00f2ff;
-      color: #000;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-weight: bold;
-      margin-bottom: 12px;
-      font-size: 0.85rem;
-    }
-
-    .options {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px;
-    }
-
-    .option-btn {
-      padding: 16px;
-      background: #222;
-      border: 2px solid #444;
-      border-radius: 10px;
-      color: #fff;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-align: center;
-    }
-
-    .option-btn:hover {
-      border-color: #00f2ff;
-      background: #1a1a1a;
-      transform: translateY(-2px);
-    }
-
-    .option-btn.correct {
-      background: #00ff88;
-      color: #000;
-      border-color: #00ff88;
-      animation: pulse 0.6s;
-    }
-
-    .option-btn.wrong {
-      background: #ff4444;
-      color: #fff;
-      border-color: #ff4444;
-      animation: shake 0.6s;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-10px); }
-      75% { transform: translateX(10px); }
-    }
-
-    .completion-screen {
-      display: none;
-      text-align: center;
-      background: rgba(0, 10, 10, 0.95);
-      border: 2px solid #00ff88;
-      border-radius: 15px;
-      padding: 40px 30px;
-    }
-
-    .completion-screen.show {
-      display: block;
-      animation: fadeIn 0.8s ease-in-out;
-    }
-
-    .completion-screen h2 {
-      font-size: 1.8rem;
-      color: #00ff88;
-      margin-bottom: 15px;
-    }
-
-    .completion-screen .exciting-text {
-      font-size: 1.4rem;
-      color: #00ff88;
-      font-weight: bold;
-      margin: 20px 0;
-      line-height: 1.8;
-    }
-
-    .completion-screen p {
-      font-size: 1rem;
-      color: #ddd;
-      margin-bottom: 20px;
-    }
-
-    .button-group {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-    }
-
-    .restart-btn {
-      padding: 12px 40px;
-      background: #00f2ff;
-      color: #000;
-      border: none;
-      border-radius: 25px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .restart-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px #00f2ff;
-    }
-
-    .home-btn {
-      padding: 12px 40px;
-      background: #666;
-      color: #fff;
-      border: none;
-      border-radius: 25px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-
-    .home-btn:hover {
-      background: #888;
-      transform: scale(1.05);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @media (max-width: 768px) {
-      .robot-container { max-width: 300px; height: 300px; }
-      .options { grid-template-columns: 1fr; }
-      .level-grid { grid-template-columns: 1fr; }
-      .level-thumbnail { width: 80px; height: 80px; }
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a0a; color: #fff; font-family: sans-serif; padding: 20px; min-height: 100vh; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(0,0,0,0.95); border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 1000; margin: -20px -20px 0 -20px; }
+    .logo { display: flex; align-items: center; font-size: 1.2rem; font-weight: 900; color: #fff; text-decoration: none; }
+    .logo img { width: 40px; height: 40px; margin-right: 10px; }
+    .game-nav { display: flex; gap: 25px; }
+    .game-nav a { color: #fff; text-decoration: none; font-weight: 700; transition: 0.3s; }
+    .game-nav a:hover { color: #00f2ff; }
+    .header { text-align: center; margin-bottom: 30px; margin-top: 20px; }
+    .header h1 { font-size: 2.2rem; color: #00f2ff; margin-bottom: 8px; }
+    .header p { font-size: 0.95rem; color: #888; transition: opacity 0.8s; }
+    .header p.hide { opacity: 0; visibility: hidden; }
+    .level-screen { display: flex; flex-direction: column; align-items: center; gap: 30px; margin-top: 50px; }
+    .level-title { font-size: 1.8rem; color: #00f2ff; margin-bottom: 20px; }
+    .level-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; max-width: 1000px; width: 100%; }
+    .level-btn { display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 30px 20px; background: rgba(17,17,17,0.95); border: 2px solid #00f2ff; border-radius: 15px; color: #fff; cursor: pointer; transition: all 0.3s; }
+    .level-btn:hover { border-color: #00ff88; background: rgba(0,255,136,0.1); transform: scale(1.05); box-shadow: 0 0 30px rgba(0,255,136,0.5); }
+    .level-thumbnail { width: 100px; height: 100px; object-fit: contain; }
+    .level-label { font-size: 1.5rem; font-weight: bold; }
+    .level-description { font-size: 0.8rem; color: #888; }
+    .game-screen { display: none; }
+    .game-screen.active { display: block; }
+    .game-content { display: flex; gap: 40px; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+    .robot-section { text-align: center; flex: 1; min-width: 350px; max-width: 500px; }
+    .robot-container { position: relative; width: 100%; max-width: 400px; height: 400px; margin: 0 auto; background: rgba(17,17,17,0.6); border: 3px solid #00f2ff; border-radius: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 40px rgba(0,242,255,0.3); overflow: hidden; transition: all 0.5s; }
+    .robot-img { width: 100%; height: 100%; object-fit: contain; opacity: 0.6; transition: filter 0.3s; }
+    .robot-img.stage1 { opacity: 0.5; filter: drop-shadow(0 0 5px rgba(0,100,150,0.3)); }
+    .robot-img.stage2 { opacity: 0.8; filter: drop-shadow(0 0 15px rgba(0,200,255,0.6)); }
+    .robot-img.stage3 { opacity: 1; filter: drop-shadow(0 0 40px rgba(0,255,136,0.8)); }
+    .robot-gif { width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.8s; }
+    .robot-gif.show { opacity: 1; }
+    .battery-display { position: absolute; bottom: 20px; left: 20px; right: 20px; z-index: 10; text-align: center; }
+    .battery-percent { font-size: 0.7rem; font-weight: bold; color: #00f2ff; margin-bottom: 4px; }
+    .battery-bar { width: 100%; height: 12px; background: rgba(0,0,0,0.7); border: 1px solid #00f2ff; border-radius: 10px; overflow: hidden; }
+    .battery-fill { height: 100%; background: linear-gradient(90deg, #00f2ff, #00ff88, #00f2ff); transition: width 0.5s; width: 3%; }
+    .quiz-section { flex: 1; min-width: 350px; max-width: 500px; }
+    .question-box { background: rgba(17,17,17,0.95); border: 2px solid #333; border-radius: 20px; padding: 35px; margin-bottom: 30px; }
+    .question-box h2 { font-size: 1.3rem; color: #00f2ff; margin-bottom: 15px; }
+    .question-box p { font-size: 1.1rem; line-height: 1.7; color: #ddd; margin-bottom: 25px; }
+    .question-number { display: inline-block; background: #00f2ff; color: #000; padding: 6px 16px; border-radius: 20px; font-weight: bold; margin-bottom: 12px; font-size: 0.85rem; }
+    .options { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .option-btn { padding: 16px; background: #222; border: 2px solid #444; border-radius: 10px; color: #fff; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+    .option-btn:hover { border-color: #00f2ff; background: #1a1a1a; transform: translateY(-2px); }
+    .option-btn.correct { background: #00ff88; color: #000; border-color: #00ff88; }
+    .option-btn.wrong { background: #ff4444; color: #fff; border-color: #ff4444; }
+    .completion-screen { display: none; text-align: center; background: rgba(0,10,10,0.95); border: 2px solid #00ff88; border-radius: 15px; padding: 40px 30px; }
+    .completion-screen.show { display: block; animation: fadeIn 0.8s; }
+    .completion-screen .exciting-text { font-size: 1.4rem; color: #00ff88; font-weight: bold; margin: 20px 0; }
+    .completion-screen p { font-size: 1rem; color: #ddd; margin-bottom: 20px; }
+    .button-group { display: flex; gap: 10px; justify-content: center; }
+    .restart-btn { padding: 12px 40px; background: #00f2ff; color: #000; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; }
+    .restart-btn:hover { transform: scale(1.05); }
+    .home-btn { padding: 12px 40px; background: #666; color: #fff; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; }
+    .home-btn:hover { background: #888; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @media (max-width: 768px) { .options { grid-template-columns: 1fr; } .level-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <header>
-    <a href="index.html" class="logo">
-      <img src="assets/img/robo2.png" alt="CEC Logo">
-      <span>CEC ENGLISH CAMP</span>
-    </a>
+    <a href="index.html" class="logo"><img src="assets/img/robo2.png" alt="CEC"><span>CEC ENGLISH CAMP</span></a>
     <nav class="game-nav">
       <a href="index.html">Home</a>
       <a href="grammar-game.html">Game</a>
@@ -535,43 +78,25 @@
   <div class="container">
     <div class="header">
       <h1>🤖 Grammar Game</h1>
-      <p id="headerDesc">구해줘요. 내 배터리가 3% 밖에 안 남았어요. 문제를 맞춰서 저를 살려주세요!!</p>
+      <p id="headerDesc">급해요. 내 배터리가 3% 밖에 안 남았어요. 문제를 맞춰서 저를 구해해주세요!!</p>
     </div>
 
-    <!-- 레벨 선택 -->
     <div class="level-screen" id="levelScreen">
       <div class="level-title">📚 레벨을 선택하세요</div>
       <div class="level-grid">
-        <button class="level-btn" onclick="startGame('A1')">
-          <img src="assets/img/robo2.png" class="level-thumbnail" alt="A1">
-          <div class="level-label">A1</div>
-          <div class="level-description">초급</div>
-        </button>
-        <button class="level-btn" onclick="startGame('A2')">
-          <img src="assets/img/robo2.png" class="level-thumbnail" alt="A2">
-          <div class="level-label">A2</div>
-          <div class="level-description">초급+</div>
-        </button>
-        <button class="level-btn" onclick="startGame('B1')">
-          <img src="assets/img/robo_jump.png" class="level-thumbnail" alt="B1">
-          <div class="level-label">B1</div>
-          <div class="level-description">중급</div>
-        </button>
-        <button class="level-btn" onclick="startGame('B2')">
-          <img src="assets/img/robo_jump.png" class="level-thumbnail" alt="B2">
-          <div class="level-label">B2</div>
-          <div class="level-description">중급+</div>
-        </button>
+        <button class="level-btn" onclick="startGame('A1')"><img src="assets/img/robo2.png" class="level-thumbnail" alt="A1"><div class="level-label">A1</div><div class="level-description">초급</div></button>
+        <button class="level-btn" onclick="startGame('A2')"><img src="assets/img/robo2.png" class="level-thumbnail" alt="A2"><div class="level-label">A2</div><div class="level-description">초급+</div></button>
+        <button class="level-btn" onclick="startGame('B1')"><img src="assets/img/robo_jump.png" class="level-thumbnail" alt="B1"><div class="level-label">B1</div><div class="level-description">중급</div></button>
+        <button class="level-btn" onclick="startGame('B2')"><img src="assets/img/robo_jump.png" class="level-thumbnail" alt="B2"><div class="level-label">B2</div><div class="level-description">중급+</div></button>
       </div>
     </div>
 
-    <!-- 게임 -->
     <div class="game-screen" id="gameScreen">
       <div class="game-content">
         <div class="robot-section">
           <div class="robot-container" id="robotContainer">
             <img src="assets/img/robo2.png" alt="Robot" class="robot-img" id="robotImg">
-            <img src="assets/img/robo.gif" alt="Robot Dance" class="robot-gif" id="robotGif" style="display: none;">
+            <img src="assets/img/robo.gif" alt="Robot" class="robot-gif" id="robotGif">
             <div class="battery-display">
               <div class="battery-percent"><span id="batteryPercent">3</span>%</div>
               <div class="battery-bar"><div class="battery-fill" id="batteryFill"></div></div>
@@ -590,7 +115,7 @@
           <div class="completion-screen" id="completionScreen">
             <p>로봇이 완전히 깨어났습니다!</p>
             <div class="exciting-text">정말 고마워</div>
-            <p id="finalScore" style="font-weight: bold; color: #00f2ff; margin: 15px 0; font-size: 1.1rem;"></p>
+            <p id="finalScore" style="font-weight: bold; color: #00f2ff; margin: 15px 0;"></p>
             <div class="button-group">
               <button class="restart-btn" onclick="resetGame()">다시 시작</button>
               <button class="home-btn" onclick="goHome()">홈</button>
@@ -602,14 +127,8 @@
   </div>
 
   <script>
-    let currentLevel = 'A1';
-    let currentQuestion = 0;
-    let battery = 3;
-    let answered = false;
-    let engineSoundPlayed = false;
-    let questions = [];
-    let missionStates = [];
-
+    let currentLevel = 'A1', currentQuestion = 0, battery = 3, answered = false, questions = [], missionStates = [];
+    
     const questionsA1 = [
       { title: "Simple Present", text: "I ___ to school every day.", options: ["goes", "go", "going"], correct: 1 },
       { title: "Simple Past", text: "She ___ to the movies yesterday.", options: ["went", "goes", "going"], correct: 0 },
@@ -667,32 +186,20 @@
       currentQuestion = 0;
       battery = 3;
       answered = false;
-      engineSoundPlayed = false;
 
       if (level === 'A1') questions = questionsA1;
       else if (level === 'A2') questions = questionsA2;
       else if (level === 'B1') questions = questionsB1;
       else questions = questionsB2;
 
-      missionStates = questions.map((q, i) => ({
-        id: i,
-        completed: false,
-        triedOnce: false,
-        usedBaseCamp: false
-      }));
+      missionStates = questions.map((q, i) => ({ id: i, completed: false, triedOnce: false, usedBaseCamp: false }));
 
       document.getElementById('levelScreen').style.display = 'none';
       document.getElementById('gameScreen').classList.add('active');
       document.getElementById('questionBox').style.display = 'block';
       document.getElementById('completionScreen').classList.remove('show');
-
-      const robotImg = document.getElementById('robotImg');
-      const robotGif = document.getElementById('robotGif');
-      robotImg.style.display = 'block';
-      robotGif.style.display = 'none';
-      robotGif.classList.remove('show');
-      robotImg.classList.add('stage1');
-      robotImg.classList.remove('stage2', 'stage3');
+      document.getElementById('robotImg').style.display = 'block';
+      document.getElementById('robotGif').style.display = 'none';
 
       displayQuestion();
       updateRobot();
@@ -703,10 +210,8 @@
       document.getElementById("questionNum").textContent = `Q${currentQuestion + 1}/10`;
       document.getElementById("questionTitle").textContent = q.title;
       document.getElementById("questionText").textContent = q.text;
-
       const optionsContainer = document.getElementById("options");
       optionsContainer.innerHTML = "";
-
       q.options.forEach((option, idx) => {
         const btn = document.createElement("button");
         btn.className = "option-btn";
@@ -714,8 +219,71 @@
         btn.onclick = () => selectAnswer(idx);
         optionsContainer.appendChild(btn);
       });
-
       answered = false;
     }
 
-    function selectAnswer
+    function selectAnswer(selectedIdx) {
+      if (answered) return;
+      answered = true;
+      const q = questions[currentQuestion];
+      const buttons = document.querySelectorAll(".option-btn");
+      const state = missionStates[currentQuestion];
+      buttons[selectedIdx].classList.add(selectedIdx === q.correct ? "correct" : "wrong");
+      buttons[q.correct].classList.add("correct");
+
+      if (selectedIdx === q.correct) {
+        if (!state.triedOnce) { battery = Math.min(battery + 10, 100); state.triedOnce = true; }
+        state.completed = true;
+        updateRobot();
+        setTimeout(() => {
+          if (currentQuestion < 9) { currentQuestion++; displayQuestion(); }
+          else { completeGame(); }
+        }, 1500);
+      } else {
+        speak("틀렸어요! 다시 도전해봐요!");
+        state.triedOnce = true;
+        setTimeout(() => { answered = false; }, 1500);
+      }
+    }
+
+    function updateRobot() {
+      document.getElementById("batteryPercent").textContent = battery;
+      document.getElementById("batteryFill").style.width = battery + "%";
+      const robotImg = document.getElementById("robotImg");
+      const robot = document.getElementById("robotContainer");
+      
+      if (battery < 40) { robotImg.classList.add('stage1'); robotImg.classList.remove('stage2', 'stage3'); }
+      else if (battery < 100) { robotImg.classList.add('stage2'); robotImg.classList.remove('stage1', 'stage3'); }
+      else { robotImg.classList.add('stage3'); robotImg.classList.remove('stage1', 'stage2'); }
+      
+      if (battery >= 100) { robot.classList.add('full'); }
+    }
+
+    function completeGame() {
+      battery = 100;
+      updateRobot();
+      document.getElementById('robotImg').style.display = 'none';
+      document.getElementById('robotGif').style.display = 'block';
+      document.getElementById('questionBox').style.display = 'none';
+      document.getElementById('completionScreen').classList.add('show');
+      document.getElementById('finalScore').textContent = `최종 배터리: 100% ⚡`;
+      speak("고마워요! 나를 구해줘서!");
+    }
+
+    function resetGame() {
+      document.getElementById('levelScreen').style.display = 'flex';
+      document.getElementById('gameScreen').classList.remove('active');
+    }
+
+    function goHome() { window.location.href = 'index.html'; }
+
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ko-KR';
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+  </script>
+</body>
+</html>
