@@ -749,3 +749,149 @@
             displayQuestion();
           } else {
             completeGame();
+          }
+        }, 1500);
+      } else {
+        speak("틀렸어요! 다시 도전해봐요!");
+        state.triedOnce = true;
+        state.usedBaseCamp = true;
+        
+        setTimeout(() => { answered = false; }, 1500);
+      }
+    }
+
+    function updateRobot() {
+      const percent = document.getElementById("batteryPercent");
+      const fill = document.getElementById("batteryFill");
+      const robot = document.getElementById("robotContainer");
+      const robotImg = document.getElementById("robotImg");
+
+      percent.textContent = battery;
+      fill.style.width = battery + "%";
+
+      if (battery < 40) {
+        robotImg.classList.add('stage1');
+        robotImg.classList.remove('stage2', 'stage3');
+        robot.classList.remove('stage2-vibrate');
+      } else if (battery < 100) {
+        robotImg.classList.add('stage2');
+        robotImg.classList.remove('stage1', 'stage3');
+        robot.classList.add('stage2-vibrate');
+      } else {
+        robotImg.classList.add('stage3');
+        robotImg.classList.remove('stage1', 'stage2');
+        robot.classList.remove('stage2-vibrate');
+      }
+
+      if (battery <= 30 && battery > 0) {
+        robot.classList.add('warning');
+        if (battery === 3 || battery === 13 || battery === 23) playWarningSound();
+      } else {
+        robot.classList.remove('warning');
+      }
+
+      if (battery >= 50 && battery < 80) {
+        robot.classList.add('glow');
+        robotImg.classList.add('glow');
+        if (!engineSoundPlayed) { playEngineSound(); engineSoundPlayed = true; }
+      } else if (battery < 50) {
+        robot.classList.remove('glow');
+        robotImg.classList.remove('glow');
+      }
+
+      if (battery >= 80 && battery < 100) {
+        robot.classList.add('glow');
+        robotImg.classList.add('glow');
+        robot.style.animation = 'engineVibration 0.3s infinite';
+      } else if (battery >= 50 && battery < 80) {
+        robot.style.animation = 'none';
+      }
+
+      if (battery >= 100) {
+        robot.classList.add('full');
+        robot.classList.remove('warning');
+        robotImg.classList.add('full');
+        robot.style.animation = 'none';
+      }
+    }
+
+    function completeGame() {
+      battery = 100;
+      updateRobot();
+      const robotImg = document.getElementById('robotImg');
+      const robotGif = document.getElementById('robotGif');
+      const headerP = document.getElementById('headerDesc');
+
+      robotImg.style.display = 'none';
+      robotGif.style.display = 'block';
+      setTimeout(() => robotGif.classList.add('show'), 10);
+
+      if (headerP) headerP.classList.add('hide');
+
+      document.getElementById('questionBox').style.display = 'none';
+      document.getElementById('completionScreen').classList.add('show');
+      document.getElementById('finalScore').textContent = `최종 배터리: 100% ⚡ 완벽해! 넌 진짜 최고야!`;
+
+      speak("축하해! 고마워! 나를 구해줘서!");
+    }
+
+    function resetGame() {
+      document.getElementById('levelScreen').style.display = 'flex';
+      document.getElementById('gameScreen').classList.remove('active');
+      const headerP = document.getElementById('headerDesc');
+      if (headerP) headerP.classList.remove('hide');
+    }
+
+    function goHome() {
+      window.location.href = 'index.html';
+    }
+
+    function flashLight() {
+      const robot = document.getElementById('robotContainer');
+      robot.classList.remove('light-flash');
+      setTimeout(() => { robot.classList.add('light-flash'); }, 10);
+    }
+
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ko-KR';
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function playEngineSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.setValueAtTime(80, now);
+        osc.frequency.exponentialRampToValueAtTime(100, now + 0.5);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.05, now + 0.5);
+        osc.start(now);
+        osc.stop(now + 0.5);
+      } catch(e) {}
+    }
+
+    function playWarningSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.setValueAtTime(800, now);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.setValueAtTime(0, now + 0.2);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      } catch(e) {}
+    }
+  </script>
+</body>
+</html>
