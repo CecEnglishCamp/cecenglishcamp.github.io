@@ -100,12 +100,19 @@
       max-width: 500px;
     }
 
+    .robot-wrapper {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: 400px;
+    }
+
     .robot-container {
       position: relative;
       width: 100%;
       max-width: 400px;
       height: 400px;
-      margin: 0 auto 25px;
+      margin: 0 auto 0;
       background: rgba(17, 17, 17, 0.6);
       border: 3px solid #00f2ff;
       border-radius: 30px;
@@ -115,6 +122,52 @@
       box-shadow: 0 0 40px rgba(0, 242, 255, 0.3);
       overflow: hidden;
       transition: all 0.5s ease;
+    }
+
+    .battery-display {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      z-index: 10;
+      text-align: center;
+    }
+
+    .battery-percent {
+      font-size: 0.7rem;
+      font-weight: bold;
+      color: #00f2ff;
+      margin-bottom: 4px;
+    }
+
+    .battery-bar {
+      width: 100%;
+      height: 12px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid #00f2ff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .battery-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00f2ff 0%, #00ff88 50%, #00f2ff 100%);
+      background-size: 200% 100%;
+      animation: shimmer 2s infinite;
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 3px;
+      font-weight: bold;
+      font-size: 0.65rem;
+      color: #000;
+      width: 3%;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
 
     .robot-img {
@@ -455,13 +508,19 @@
 
     <div class="game-content">
       <div class="robot-section">
-        <div class="robot-container" id="robotContainer">
-          <img src="assets/img/robo2.png" alt="Robot" class="robot-img" id="robotImg">
-          <img src="assets/img/robo.gif" alt="Robot Dance" class="robot-gif" id="robotGif" style="display: none;">
-        </div>
-        <div class="battery-info">배터리: <span id="batteryPercent">3</span>%</div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill"></div>
+        <div class="robot-wrapper">
+          <div class="robot-container" id="robotContainer">
+            <img src="assets/img/robo2.png" alt="Robot" class="robot-img" id="robotImg">
+            <img src="assets/img/robo.gif" alt="Robot Dance" class="robot-gif" id="robotGif" style="display: none;">
+            
+            <!-- 배터리 디스플레이 (로봇 이미지 안에) -->
+            <div class="battery-display">
+              <div class="battery-percent"><span id="batteryPercent">3</span>%</div>
+              <div class="battery-bar">
+                <div class="battery-fill" id="batteryFill"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -515,12 +574,13 @@
 
     function updateRobot() {
       const percent = document.getElementById("batteryPercent");
-      const fill = document.getElementById("progressFill");
+      const fill = document.getElementById("batteryFill");
       const robot = document.getElementById("robotContainer");
       const robotImg = document.getElementById("robotImg");
 
       percent.textContent = battery;
       fill.style.width = battery + "%";
+      fill.textContent = battery > 10 ? battery + "%" : "";
 
       // Stage 1: 0~40% - 어두움
       if (battery < 40) {
@@ -759,7 +819,8 @@
       robot.style.border = '3px solid #00f2ff';
       
       robotImg.style.animation = 'none';
-      robotImg.classList.remove('glow', 'full');
+      robotImg.classList.remove('glow', 'full', 'stage1', 'stage2', 'stage3');
+      robotImg.classList.add('stage1');
       
       displayQuestion();
       updateRobot();
