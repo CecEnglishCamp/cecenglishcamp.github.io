@@ -123,6 +123,34 @@
       object-fit: contain;
       filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.2));
       transition: filter 0.3s, transform 0.5s;
+      opacity: 0.6;
+    }
+
+    /* Stage 1: 0~40% - 어두움 + 투명도 낮음 */
+    .robot-img.stage1 {
+      opacity: 0.5;
+      filter: drop-shadow(0 0 5px rgba(0, 100, 150, 0.3));
+    }
+
+    /* Stage 2: 40~80% - 깨어나는 중 + 점점 밝아짐 */
+    .robot-img.stage2 {
+      opacity: 0.8;
+      filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.6));
+    }
+
+    .robot-container.stage2-vibrate {
+      animation: gentleVibrate 0.4s infinite;
+    }
+
+    @keyframes gentleVibrate {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+
+    /* Stage 3: 100% - 완전 부활 */
+    .robot-img.stage3 {
+      opacity: 1;
+      filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.8));
     }
 
     .robot-gif {
@@ -494,9 +522,29 @@
       percent.textContent = battery;
       fill.style.width = battery + "%";
 
-      if (battery <= 20 && battery > 0) {
+      // Stage 1: 0~40% - 어두움
+      if (battery < 40) {
+        robotImg.classList.add('stage1');
+        robotImg.classList.remove('stage2', 'stage3');
+        robot.classList.remove('stage2-vibrate');
+      }
+      // Stage 2: 40~80% - 깨어나는 중
+      else if (battery < 100) {
+        robotImg.classList.add('stage2');
+        robotImg.classList.remove('stage1', 'stage3');
+        robot.classList.add('stage2-vibrate');
+      }
+      // Stage 3: 100% - 완전 부활
+      else {
+        robotImg.classList.add('stage3');
+        robotImg.classList.remove('stage1', 'stage2');
+        robot.classList.remove('stage2-vibrate');
+      }
+
+      // 경고음: 3%, 13%, 23% (30% 이하)
+      if (battery <= 30 && battery > 0) {
         robot.classList.add('warning');
-        if (battery === 3 || battery === 13) {
+        if (battery === 3 || battery === 13 || battery === 23) {
           playWarningSound();
         }
       } else {
