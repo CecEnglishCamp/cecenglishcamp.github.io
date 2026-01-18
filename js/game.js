@@ -1,3 +1,4 @@
+console.log("✅ game.js loaded successfully!");
 let currentLevel = 'A1';
 let currentQuestion = 0;
 let battery = 3;
