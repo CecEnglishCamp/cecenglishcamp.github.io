@@ -1,100 +1,118 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grammar Game - CEC English Camp</title>
-  
-  <!-- ✅ 외부 CSS 연결 -->
-  <link rel="stylesheet" href="assets/css/grammar-game.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grammar Game | CEC English Camp</title>
 
-  <!-- 폰트 -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- ✅ CSS 경로 수정 -->
+  <link rel="stylesheet" href="/assets/css/grammar-game.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* 깜빡이는 경고 문구 효과 */
+    @keyframes blinkAlert {
+      0%, 100% { color: #ff3333; opacity: 1; }
+      50% { color: #ff9999; opacity: 0.5; }
+    }
+    #headerDesc {
+      animation: blinkAlert 1.2s infinite;
+      font-weight: 600;
+    }
+  </style>
 </head>
-<body>
 
-  <!-- ===== HEADER ===== -->
+<body>
+  <!-- ✅ HEADER -->
   <header>
     <div class="container">
-      <a href="index.html" class="logo">
-        <img src="assets/img/robo2.png" alt="CEC Logo" style="width:40px;height:40px;vertical-align:middle;margin-right:8px;">
+      <a href="/index.html" class="logo">
+        <img src="/assets/img/robo2.png" alt="CEC Logo" style="width:40px;height:40px;margin-right:10px;vertical-align:middle;">
         <strong>CEC ENGLISH CAMP</strong>
       </a>
       <nav class="game-nav">
-        <a href="index.html">Home</a>
-        <a href="grammar-game.html" style="color:#00f2ff;">Game</a>
-        <a href="index.html#about">About</a>
-        <a href="index.html#register">Register</a>
+        <a href="/index.html">Home</a>
+        <a href="/grammar-game.html" style="color:#00f2ff;">Game</a>
+        <a href="/index.html#about">About</a>
+        <a href="/index.html#register">Register</a>
       </nav>
     </div>
   </header>
 
-  <!-- ===== GAME TITLE ===== -->
-  <div class="header" style="text-align:center;margin-top:30px;">
-    <h1 style="font-size:2rem;color:#00f2ff;">🤖 Grammar Game</h1>
-    <p id="headerDesc">
-      급해요! Robo의 배터리가 3%밖에 안 남았어요! 문제를 맞춰서 다시 100%로 충전시켜 주세요!
-    </p>
-  </div>
+  <!-- ✅ TITLE AREA -->
+  <section class="header" style="text-align:center;margin-top:30px;">
+    <h1 style="font-size:2.3rem;color:#00f2ff;">🤖 Grammar Game</h1>
+    <p id="headerDesc">급해요! Robo의 배터리가 3%밖에 안 남았어요! 문제를 맞춰서 다시 100%로 충전시켜 주세요!</p>
+  </section>
 
-  <!-- ===== LEVEL SELECT SCREEN ===== -->
-  <section id="levelScreen">
-    <div class="level-card" onclick="startGame('A1')">
-      <img src="assets/img/robo2.png" alt="A1 Level">
-      <h3>A1</h3>
-      <p>초급</p>
-    </div>
+  <!-- ✅ LEVEL SELECTION -->
+  <section id="levelScreen" class="level-screen">
+    <div class="level-grid">
+      <button class="level-btn" onclick="startGame('A1')">
+        <img src="/assets/img/robo2.png" alt="A1" class="level-thumbnail">
+        <div class="level-label">A1</div>
+        <div class="level-description">초급</div>
+      </button>
 
-    <div class="level-card" onclick="startGame('A2')">
-      <img src="assets/img/robo2.png" alt="A2 Level">
-      <h3>A2</h3>
-      <p>초급+</p>
-    </div>
+      <button class="level-btn" onclick="startGame('A2')">
+        <img src="/assets/img/robo2.png" alt="A2" class="level-thumbnail">
+        <div class="level-label">A2</div>
+        <div class="level-description">초급+</div>
+      </button>
 
-    <div class="level-card" onclick="startGame('B1')">
-      <img src="assets/img/robo_jump.png" alt="B1 Level">
-      <h3>B1</h3>
-      <p>중급</p>
-    </div>
+      <button class="level-btn" onclick="startGame('B1')">
+        <img src="/assets/img/robo_jump.png" alt="B1" class="level-thumbnail">
+        <div class="level-label">B1</div>
+        <div class="level-description">중급</div>
+      </button>
 
-    <div class="level-card" onclick="startGame('B2')">
-      <img src="assets/img/robo_jump.png" alt="B2 Level">
-      <h3>B2</h3>
-      <p>중급+</p>
+      <button class="level-btn" onclick="startGame('B2')">
+        <img src="/assets/img/robo_jump.png" alt="B2" class="level-thumbnail">
+        <div class="level-label">B2</div>
+        <div class="level-description">중급+</div>
+      </button>
     </div>
   </section>
 
-  <!-- ===== GAME SCREEN ===== -->
-  <section id="gameScreen">
-    <div id="robotContainer">
-      <img id="robotImg" src="assets/img/robo2.png" alt="Robot" />
-      <img id="robotGif" src="assets/img/robo.gif" alt="Robot Animation" />
-      <div id="batteryBar"><div id="batteryFill"></div></div>
-      <div id="batteryPercent">3%</div>
-    </div>
-
-    <div id="questionBox">
-      <span id="questionNum">Q1/10</span>
-      <h2 id="questionTitle">문법 문제</h2>
-      <p id="questionText">문제 내용</p>
-      <div id="options"></div>
-    </div>
-
-    <div id="completionScreen">
-      <h2>⚡⚡</h2>
-      <p>Robo가 완전히 충전되었습니다!</p>
-      <div class="exciting-text">
-        정말 고마워! 나를 구해줘서! 🚀
+  <!-- ✅ GAME AREA -->
+  <section id="gameScreen" class="game-screen">
+    <div class="game-content">
+      <div class="robot-section">
+        <div class="robot-container" id="robotContainer">
+          <img src="/assets/img/robo2.png" id="robotImg" class="robot-img" alt="Robot" />
+          <img src="/assets/img/robo.gif" id="robotGif" class="robot-gif" style="display:none;" alt="Robot Animation" />
+          <div class="battery-display">
+            <div class="battery-percent"><span id="batteryPercent">3</span>%</div>
+            <div class="battery-bar"><div class="battery-fill" id="batteryFill"></div></div>
+          </div>
+        </div>
       </div>
-      <p id="finalScore"></p>
-      <div class="button-group">
-        <button class="restart-btn" onclick="resetGame()">다시 시작</button>
-        <button class="home-btn" onclick="location.href='index.html'">홈</button>
+
+      <div class="quiz-section">
+        <div class="question-box" id="questionBox">
+          <span class="question-number" id="questionNum">Q1/10</span>
+          <h2 id="questionTitle">문법 문제</h2>
+          <p id="questionText">문제 내용</p>
+          <div class="options" id="options"></div>
+        </div>
+
+        <div class="completion-screen" id="completionScreen">
+          <h2>⚡⚡</h2>
+          <p>Robo가 완전히 충전되었습니다!</p>
+          <div class="exciting-text">정말 고마워! 나를 구해줘서! 🚀</div>
+          <p id="finalScore" style="color:#00f2ff;font-weight:bold;"></p>
+          <div class="button-group">
+            <button class="restart-btn" onclick="resetGame()">다시 시작</button>
+            <button class="home-btn" onclick="goHome()">홈</button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ✅ 외부 JS 불러오기 -->
-  <script src="js/game.js?v=2001"></script>
+  <!-- ✅ JS 연결 (경로 수정 완료) -->
+  <script src="/js/game.js?v=2001"></script>
 </body>
 </html>
