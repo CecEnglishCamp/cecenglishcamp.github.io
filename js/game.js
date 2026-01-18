@@ -1,17 +1,15 @@
 let currentLevel = 'A1';
 let currentQuestion = 0;
 let battery = 3;
-let answered = false;
 let questions = [];
 
-// 레벨별 문제 세트
+// 레벨별 문제
 const questionSets = {
   A1: [
     { title: "Simple Present", text: "I ___ to school every day.", options: ["goes", "go", "going"], correct: 1 },
-    { title: "Simple Past", text: "She ___ to the movies yesterday.", options: ["went", "goes", "going"], correct: 0 },
   ],
   A2: [
-    { title: "Present Perfect", text: "He has ___ to London.", options: ["go", "gone", "going"], correct: 1 },
+    { title: "Present Perfect", text: "I have ___ my homework.", options: ["do", "did", "done"], correct: 2 },
   ],
   B1: [
     { title: "Complex Sentence", text: "Although tired, she ___.", options: ["continue", "continued", "continues"], correct: 1 },
@@ -26,26 +24,26 @@ function startGame(level) {
   currentLevel = level;
   currentQuestion = 0;
   battery = 3;
-  answered = false;
   questions = questionSets[level];
 
-  // 레벨 선택 화면 숨기기
   document.querySelector("#level-select").style.display = "none";
+  document.querySelector("#game-area").style.display = "flex";
 
-  // 레벨별 이미지 변경
   const robotContainer = document.querySelector("#robot-container");
+
+  // 레벨별 로봇 이미지 표시
   if (level === "B1" || level === "B2") {
     robotContainer.innerHTML = `
-      <img src="assets/videos/robo_jump.png" 
-           alt="Robo Jump"
-           id="robot-image"
+      <img src="assets/img/robo_jump.png"
+           alt="Robo Jump Ready"
+           id="robot-img"
            style="max-width: 400px; border-radius: 15px; box-shadow: 0 0 20px #00ffcc;">
     `;
   } else {
     robotContainer.innerHTML = `
-      <img src="assets/videos/robo_idle.png" 
-           alt="Robo Idle"
-           id="robot-image"
+      <img src="assets/img/robo2.png"
+           alt="Robo Default"
+           id="robot-img"
            style="max-width: 400px; border-radius: 15px; box-shadow: 0 0 20px #ff4444;">
     `;
   }
@@ -74,7 +72,7 @@ function loadQuestion() {
 function checkAnswer(index) {
   const q = questions[currentQuestion];
   const buttons = document.querySelectorAll(".option");
-  buttons.forEach(btn => btn.disabled = true);
+  buttons.forEach(b => b.disabled = true);
 
   if (index === q.correct) {
     buttons[index].style.backgroundColor = "#00ff88";
@@ -91,25 +89,36 @@ function checkAnswer(index) {
     } else {
       endGame();
     }
-  }, 1000);
+  }, 800);
 }
 
-// 🔹 게임 종료
+// 🔹 게임 종료 (레벨별로 다른 애니메이션)
 function endGame() {
   const qBox = document.querySelector("#question-box");
   const robotContainer = document.querySelector("#robot-container");
 
   qBox.innerHTML = `
     <h2>⚡ Robo가 완전히 충전되었습니다! ⚡</h2>
-    <p>정말 고마워! 나를 구해줬어! 🚀</p>
+    <p>정말 고마워요! 나를 구해줬어요! 🚀</p>
     <button onclick="location.reload()">다시 시작</button>
   `;
 
-  // 🎬 완료 시 robo_jump.gif 로 변경
-  robotContainer.innerHTML = `
-    <img src="assets/videos/robo_jump.gif"
-         alt="Robo Jump Animation"
-         id="robot-gif"
-         style="max-width: 420px; border-radius: 15px; box-shadow: 0 0 25px #00ffcc;">
-  `;
+  // ✅ B1, B2에서는 점프 GIF
+  if (currentLevel === "B1" || currentLevel === "B2") {
+    robotContainer.innerHTML = `
+      <img src="assets/videos/robo_jump.gif"
+           alt="Robo Jump Animation"
+           id="robot-gif"
+           style="max-width: 420px; border-radius: 15px; box-shadow: 0 0 25px #00ffcc;">
+    `;
+  } 
+  // ✅ A1, A2에서는 기본 robo.gif
+  else {
+    robotContainer.innerHTML = `
+      <img src="assets/img/robo.gif"
+           alt="Robo Default Animation"
+           id="robot-gif"
+           style="max-width: 420px; border-radius: 15px; box-shadow: 0 0 25px #ff4444;">
+    `;
+  }
 }
