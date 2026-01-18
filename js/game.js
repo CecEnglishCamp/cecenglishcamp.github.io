@@ -1,292 +1,183 @@
+// ===============================
+// Grammar Game JS
+// ===============================
 
-    let currentLevel = 'A1';
-    let currentQuestion = 0;
-    let battery = 3;
-    let answered = false;
-    let engineSoundPlayed = false;
-    let questions = [];
-    let missionStates = [];
+// 전역 변수
+let currentLevel = 'A1';
+let currentQuestion = 0;
+let battery = 3;
+let answered = false;
+let engineSoundPlayed = false;
+let questions = [];
+let missionStates = [];
 
-    const questionsA1 = [
-      { title: "Simple Present", text: "I ___ to school every day.", options: ["goes", "go", "going"], correct: 1 },
-      { title: "Simple Past", text: "She ___ to the movies yesterday.", options: ["went", "goes", "going"], correct: 0 },
-      { title: "Be Verb", text: "They ___ students.", options: ["is", "are", "am"], correct: 1 },
-      { title: "Present Continuous", text: "He ___ eating now.", options: ["eat", "is eating", "eats"], correct: 1 },
-      { title: "Negative", text: "I ___ like apples.", options: ["not", "don't", "doesn't"], correct: 1 },
-      { title: "Yes/No Question", text: "___ you have a pen?", options: ["Do", "Does", "Are"], correct: 0 },
-      { title: "Plural", text: "I have three ___.", options: ["book", "books", "bokes"], correct: 1 },
-      { title: "Possessive", text: "This is ___ cat.", options: ["my", "me", "I"], correct: 0 },
-      { title: "Articles", text: "___ apple is red.", options: ["A", "An", "The"], correct: 1 },
-      { title: "Future", text: "I ___ visit you tomorrow.", options: ["will visit", "visit", "visits"], correct: 0 }
-    ];
+// ===============================
+// 질문 데이터 (레벨별)
+// ===============================
 
-    const questionsA2 = [
-      { title: "Present Habit", text: "He usually ___ coffee in the morning.", options: ["drink", "drinks", "drinking"], correct: 1 },
-      { title: "Past Continuous", text: "I ___ when he called.", options: ["sleep", "was sleeping", "slept"], correct: 1 },
-      { title: "Present Perfect", text: "Have you ___ London?", options: ["visit", "visited", "visiting"], correct: 1 },
-      { title: "Conditional", text: "If I ___ time, I would help.", options: ["have", "had", "having"], correct: 1 },
-      { title: "Comparative", text: "This book is ___ than that one.", options: ["more interesting", "interestinger", "interesting"], correct: 0 },
-      { title: "Must/Might", text: "You ___ finish your homework.", options: ["must", "might", "can"], correct: 0 },
-      { title: "Relative Clause", text: "The girl ___ won the prize.", options: ["who", "which", "whose"], correct: 0 },
-      { title: "Passive Voice", text: "The letter was ___ by my sister.", options: ["write", "written", "writing"], correct: 1 },
-      { title: "Gerund", text: "___ is good for health.", options: ["Exercise", "Exercising", "Exercises"], correct: 1 },
-      { title: "Reported Speech", text: "She said she ___ a student.", options: ["is", "was", "were"], correct: 1 }
-    ];
+const questionsA1 = [
+  { title: "Simple Present", text: "I ___ to school every day.", options: ["goes", "go", "going"], correct: 1 },
+  { title: "Simple Past", text: "She ___ to the movies yesterday.", options: ["went", "goes", "going"], correct: 0 },
+  { title: "Be Verb", text: "They ___ students.", options: ["is", "are", "am"], correct: 1 },
+  { title: "Present Continuous", text: "He ___ eating now.", options: ["eat", "is eating", "eats"], correct: 1 },
+  { title: "Negative", text: "I ___ like apples.", options: ["not", "don't", "doesn't"], correct: 1 },
+  { title: "Yes/No Question", text: "___ you have a pen?", options: ["Do", "Does", "Are"], correct: 0 },
+  { title: "Plural", text: "I have three ___ on my desk.", options: ["book", "books", "bokes"], correct: 1 },
+  { title: "Possessive", text: "This is ___ cat.", options: ["my", "me", "I"], correct: 0 },
+  { title: "Articles", text: "___ apple is red.", options: ["A", "An", "The"], correct: 1 },
+  { title: "Future", text: "I ___ visit you tomorrow.", options: ["will visit", "visit", "visits"], correct: 0 }
+];
 
-    const questionsB1 = [
-      { title: "Complex Sentence", text: "Although tired, she ___.", options: ["continue", "continued", "continues"], correct: 1 },
-      { title: "Perf Continuous", text: "I ___ English for 5 years.", options: ["study", "have studied", "have been studying"], correct: 2 },
-      { title: "Subjunctive", text: "I suggest he ___ earlier.", options: ["come", "comes", "came"], correct: 0 },
-      { title: "Inversion", text: "Never ___ I seen such beauty.", options: ["have", "had", "has"], correct: 0 },
-      { title: "Participle", text: "___ by noise, I couldn't sleep.", options: ["Disturb", "Disturbing", "Disturbed"], correct: 2 },
-      { title: "Cleft", text: "It is John ___ did the work.", options: ["who", "that", "which"], correct: 0 },
-      { title: "Phrasal Verb", text: "They decided to ___ their trip.", options: ["put on", "put off", "put up"], correct: 1 },
-      { title: "Collocation", text: "I ___ an important decision.", options: ["make", "do", "take"], correct: 0 },
-      { title: "Idiom", text: "She's ___ a tough time.", options: ["going through", "going over", "going by"], correct: 0 },
-      { title: "Advanced", text: "The project is said ___ soon.", options: ["to be", "being", "to have"], correct: 0 }
-    ];
+const questionsA2 = [
+  { title: "Present Habit", text: "He usually ___ coffee in the morning.", options: ["drink", "drinks", "drinking"], correct: 1 },
+  { title: "Past Continuous", text: "I ___ when he called.", options: ["sleep", "was sleeping", "slept"], correct: 1 },
+  { title: "Present Perfect", text: "Have you ___ London?", options: ["visit", "visited", "visiting"], correct: 1 },
+  { title: "Conditional", text: "If I ___ time, I would help.", options: ["have", "had", "having"], correct: 1 },
+  { title: "Comparative", text: "This book is ___ than that one.", options: ["more interesting", "interestinger", "interesting"], correct: 0 },
+  { title: "Must/Might", text: "You ___ do your homework.", options: ["must", "might", "can"], correct: 0 },
+  { title: "Relative Clause", text: "The girl ___ won the prize is my friend.", options: ["who", "which", "whose"], correct: 0 },
+  { title: "Passive Voice", text: "The letter ___ by my sister.", options: ["write", "written", "writing"], correct: 1 },
+  { title: "Gerund", text: "___ is good for health.", options: ["Exercise", "Exercising", "Exercises"], correct: 1 },
+  { title: "Reported Speech", text: "She said she ___ a student.", options: ["is", "was", "were"], correct: 1 }
+];
 
-    const questionsB2 = [
-      { title: "Mixed Conditional", text: "Had I known, I ___ you.", options: ["would contact", "would have contacted", "will contact"], correct: 1 },
-      { title: "Hypothetical", text: "If you studied, you ___ pass.", options: ["would", "would be", "would have"], correct: 0 },
-      { title: "Nominalization", text: "The ___ was delayed.", options: ["implement", "implementation", "implementing"], correct: 1 },
-      { title: "Parallel", text: "She enjoys reading, writing, ___.", options: ["to speak", "speaking", "speak"], correct: 1 },
-      { title: "Passive Advanced", text: "It is believed ___ change is real.", options: ["that", "which", "who"], correct: 0 },
-      { title: "Discourse", text: "___ said, we must act.", options: ["In light of", "As a result", "Therefore"], correct: 0 },
-      { title: "Ellipsis", text: "Who solved it? John ___.", options: ["did", "solved", "did solve"], correct: 0 },
-      { title: "Hedging", text: "Results ___ suggest correlation.", options: ["might", "could", "appear to"], correct: 2 },
-      { title: "Causative", text: "She had the mechanic ___ car.", options: ["repair", "to repair", "repaired"], correct: 0 },
-      { title: "Vocabulary", text: "Proposal was met with ___.", options: ["resistance", "persist", "assistance"], correct: 0 }
-    ];
+const questionsB1 = [
+  { title: "Complex Sentence", text: "Although tired, she ___.", options: ["continue", "continued", "continues"], correct: 1 },
+  { title: "Perfect Continuous", text: "I ___ English for 5 years.", options: ["study", "have studied", "have been studying"], correct: 2 },
+  { title: "Subjunctive", text: "I suggest he ___ earlier.", options: ["come", "comes", "came"], correct: 0 },
+  { title: "Inversion", text: "Never ___ I seen such beauty.", options: ["have", "had", "has"], correct: 0 },
+  { title: "Participle", text: "___ by noise, I couldn’t sleep.", options: ["Disturbing", "Disturbed", "Disturbs"], correct: 1 },
+  { title: "Cleft", text: "It is John ___ I met.", options: ["who", "that", "which"], correct: 0 },
+  { title: "Phrasal Verb", text: "They decided to ___ the meeting.", options: ["put on", "put off", "put up"], correct: 1 },
+  { title: "Collocation", text: "I ___ an important decision.", options: ["make", "do", "take"], correct: 0 },
+  { title: "Idiom", text: "She’s ___ a tough time.", options: ["going through", "going over", "going by"], correct: 0 },
+  { title: "Advanced", text: "The project is said ___ soon.", options: ["to be", "being", "to have"], correct: 0 }
+];
 
-    function startGame(level) {
-      currentLevel = level;
-      currentQuestion = 0;
-      battery = 3;
-      answered = false;
-      engineSoundPlayed = false;
+// ===============================
+// 게임 시작
+// ===============================
 
-      if (level === 'A1') questions = questionsA1;
-      else if (level === 'A2') questions = questionsA2;
-      else if (level === 'B1') questions = questionsB1;
-      else questions = questionsB2;
+function startGame(level) {
+  currentLevel = level;
+  battery = 3;
+  currentQuestion = 0;
+  answered = false;
 
-      missionStates = questions.map((q, i) => ({
-        id: i,
-        completed: false,
-        triedOnce: false,
-        usedBaseCamp: false
-      }));
+  const robotImg = document.getElementById("robotImage");
+  const robotContainer = document.querySelector(".robot-container");
 
-      document.getElementById('levelScreen').style.display = 'none';
-      document.getElementById('gameScreen').classList.add('active');
-      document.getElementById('questionBox').style.display = 'block';
-      document.getElementById('completionScreen').classList.remove('show');
+  // ✅ 기존 애니메이션 제거
+  robotImg.classList.remove("shake", "jump", "fadeIn", "happy", "charged");
 
-      const robotImg = document.getElementById('robotImg');
-      const robotGif = document.getElementById('robotGif');
-      robotImg.style.display = 'block';
-      robotGif.style.display = 'none';
-      robotGif.classList.remove('show');
-      robotImg.classList.add('stage1');
-      robotImg.classList.remove('stage2', 'stage3');
+  // ✅ 레벨별 로봇 이미지 변경
+  if (level === "B1" || level === "B2") {
+    robotImg.src = "assets/img/robo_jump.gif";
+  } else {
+    robotImg.src = "assets/img/robo2.png";
+  }
 
-      displayQuestion();
-      updateRobot();
-    }
+  // ✅ 게임 UI 세팅
+  document.querySelector(".level-grid").style.display = "none";
+  document.getElementById("gameContainer").style.display = "flex";
 
-    function displayQuestion() {
-      const q = questions[currentQuestion];
-      document.getElementById("questionNum").textContent = `Q${currentQuestion + 1}/10`;
-      document.getElementById("questionTitle").textContent = q.title;
-      document.getElementById("questionText").textContent = q.text;
+  if (level === "A1") questions = questionsA1;
+  else if (level === "A2") questions = questionsA2;
+  else if (level === "B1") questions = questionsB1;
+  else questions = questionsA1;
 
-      const optionsContainer = document.getElementById("options");
-      optionsContainer.innerHTML = "";
+  loadQuestion();
+}
 
-      q.options.forEach((option, idx) => {
-        const btn = document.createElement("button");
-        btn.className = "option-btn";
-        btn.textContent = option;
-        btn.onclick = () => selectAnswer(idx);
-        optionsContainer.appendChild(btn);
-      });
+// ===============================
+// 문제 로드
+// ===============================
 
-      answered = false;
-    }
+function loadQuestion() {
+  const question = questions[currentQuestion];
+  const questionText = document.getElementById("questionText");
+  const optionsContainer = document.getElementById("options");
 
-    function selectAnswer(selectedIdx) {
-      if (answered) return;
-      answered = true;
+  document.getElementById("questionTitle").textContent = question.title;
+  questionText.textContent = question.text;
+  optionsContainer.innerHTML = "";
 
-      const q = questions[currentQuestion];
-      const buttons = document.querySelectorAll(".option-btn");
-      const state = missionStates[currentQuestion];
+  question.options.forEach((option, index) => {
+    const button = document.createElement("button");
+    button.textContent = option;
+    button.onclick = () => checkAnswer(index);
+    optionsContainer.appendChild(button);
+  });
 
-      buttons[selectedIdx].classList.add(selectedIdx === q.correct ? "correct" : "wrong");
-      buttons[q.correct].classList.add("correct");
+  document.getElementById("questionCount").textContent = `Q${currentQuestion + 1}/10`;
+}
 
-      if (selectedIdx === q.correct) {
-        if (!state.triedOnce) {
-          battery = Math.min(battery + 10, 100);
-          state.triedOnce = true;
-        } else if (state.usedBaseCamp) {
-          battery = Math.min(battery + 15, 100);
-        }
-        
-        state.completed = true;
-        updateRobot();
-        
-        if (battery >= 50) flashLight();
+// ===============================
+// 정답 체크
+// ===============================
 
-        setTimeout(() => {
-          if (currentQuestion < 9) {
-            currentQuestion++;
-            displayQuestion();
-          } else {
-            completeGame();
-          }
-        }, 1500);
-      } else {
-        speak("틀렸어요! 다시 도전해봐요!");
-        state.triedOnce = true;
-        state.usedBaseCamp = true;
-        
-        setTimeout(() => { answered = false; }, 1500);
-      }
-    }
+function checkAnswer(selected) {
+  const correct = questions[currentQuestion].correct;
+  const robotImg = document.getElementById("robotImage");
 
-    function updateRobot() {
-      const percent = document.getElementById("batteryPercent");
-      const fill = document.getElementById("batteryFill");
-      const robot = document.getElementById("robotContainer");
-      const robotImg = document.getElementById("robotImg");
+  if (selected === correct) {
+    battery += 10;
+    robotImg.classList.add("happy");
+  } else {
+    battery -= 10;
+    robotImg.classList.add("shake");
+  }
 
-      percent.textContent = battery;
-      fill.style.width = battery + "%";
+  setTimeout(() => {
+    robotImg.classList.remove("happy", "shake");
+    nextQuestion();
+  }, 1000);
+}
 
-      if (battery < 40) {
-        robotImg.classList.add('stage1');
-        robotImg.classList.remove('stage2', 'stage3');
-        robot.classList.remove('stage2-vibrate');
-      } else if (battery < 100) {
-        robotImg.classList.add('stage2');
-        robotImg.classList.remove('stage1', 'stage3');
-        robot.classList.add('stage2-vibrate');
-      } else {
-        robotImg.classList.add('stage3');
-        robotImg.classList.remove('stage1', 'stage2');
-        robot.classList.remove('stage2-vibrate');
-      }
+// ===============================
+// 다음 문제
+// ===============================
 
-      if (battery <= 30 && battery > 0) {
-        robot.classList.add('warning');
-        if (battery === 3 || battery === 13 || battery === 23) playWarningSound();
-      } else {
-        robot.classList.remove('warning');
-      }
+function nextQuestion() {
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    loadQuestion();
+  } else {
+    showResult();
+  }
+}
 
-      if (battery >= 50 && battery < 80) {
-        robot.classList.add('glow');
-        robotImg.classList.add('glow');
-        if (!engineSoundPlayed) { playEngineSound(); engineSoundPlayed = true; }
-      } else if (battery < 50) {
-        robot.classList.remove('glow');
-        robotImg.classList.remove('glow');
-      }
+// ===============================
+// 결과 화면
+// ===============================
 
-      if (battery >= 80 && battery < 100) {
-        robot.classList.add('glow');
-        robotImg.classList.add('glow');
-        robot.style.animation = 'engineVibration 0.3s infinite';
-      } else if (battery >= 50 && battery < 80) {
-        robot.style.animation = 'none';
-      }
+function showResult() {
+  const gameContainer = document.getElementById("gameContainer");
+  const resultContainer = document.getElementById("resultContainer");
+  const robotContainer = document.querySelector(".robot-container");
 
-      if (battery >= 100) {
-        robot.classList.add('full');
-        robot.classList.remove('warning');
-        robotImg.classList.add('full');
-        robot.style.animation = 'none';
-      }
-    }
+  gameContainer.style.display = "none";
+  resultContainer.style.display = "flex";
 
-    function completeGame() {
-      battery = 100;
-      updateRobot();
-      const robotImg = document.getElementById('robotImg');
-      const robotGif = document.getElementById('robotGif');
-      const headerP = document.getElementById('headerDesc');
+  // ✅ 완료 시 GIF 또는 동영상 표시
+  // robotContainer.innerHTML = `<video src="assets/video/robo_end.mp4" autoplay muted loop></video>`;
+  robotContainer.innerHTML = `<img id="robotImage" src="assets/img/robo_charged.gif" alt="Robo Charged">`;
 
-      robotImg.style.display = 'none';
-      robotGif.style.display = 'block';
-      setTimeout(() => robotGif.classList.add('show'), 10);
+  resultContainer.innerHTML = `
+    <h2 style="font-size: 1.6rem;">🎉 축하합니다!</h2>
+    <p style="font-size: 1.2rem;">Robo가 완전히 충전되었습니다!</p>
+    <p style="font-size: 1.2rem;">고맙습니다! ⚡</p>
+    <button onclick="restartGame()">다시 시작</button>
+  `;
+}
 
-      if (headerP) headerP.classList.add('hide');
+// ===============================
+// 다시 시작
+// ===============================
 
-      document.getElementById('questionBox').style.display = 'none';
-      document.getElementById('completionScreen').classList.add('show');
-      document.getElementById('finalScore').textContent = `최종 배터리: 100% ⚡ 완벽해! 넌 진짜 최고야!`;
-
-      speak("축하해! 고마워! 나를 구해줘서!");
-    }
-
-    function resetGame() {
-      document.getElementById('levelScreen').style.display = 'flex';
-      document.getElementById('gameScreen').classList.remove('active');
-      const headerP = document.getElementById('headerDesc');
-      if (headerP) headerP.classList.remove('hide');
-    }
-
-    function goHome() {
-      window.location.href = 'index.html';
-    }
-
-    function flashLight() {
-      const robot = document.getElementById('robotContainer');
-      robot.classList.remove('light-flash');
-      setTimeout(() => { robot.classList.add('light-flash'); }, 10);
-    }
-
-    function speak(text) {
-      if ('speechSynthesis' in window) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ko-KR';
-        window.speechSynthesis.speak(utterance);
-      }
-    }
-
-    function playEngineSound() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.frequency.setValueAtTime(80, now);
-        osc.frequency.exponentialRampToValueAtTime(100, now + 0.5);
-        gain.gain.setValueAtTime(0.1, now);
-        gain.gain.exponentialRampToValueAtTime(0.05, now + 0.5);
-        osc.start(now);
-        osc.stop(now + 0.5);
-      } catch(e) {}
-    }
-
-    function playWarningSound() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.frequency.setValueAtTime(800, now);
-        gain.gain.setValueAtTime(0.08, now);
-        gain.gain.setValueAtTime(0, now + 0.2);
-        osc.start(now);
-        osc.stop(now + 0.2);
-      } catch(e) {}
-    }
-  
-
+function restartGame() {
+  document.getElementById("resultContainer").style.display = "none";
+  document.querySelector(".level-grid").style.display = "grid";
+  document.getElementById("headerDesc").textContent = 
+    "⚡ 급해요! Robo의 배터리가 3%밖에 안 남았어요! 문제를 맞춰서 다시 100%로 충전시켜 주세요! 🔋";
+}
