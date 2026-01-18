@@ -1,125 +1,310 @@
 console.log("✅ game.js loaded successfully!");
+
 let currentLevel = 'A1';
 let currentQuestion = 0;
 let battery = 3;
+let answered = false;
+let engineSoundPlayed = false;
 let questions = [];
+let missionStates = [];
 
-// 레벨별 문제
-const questionSets = {
-  A1: [
-    { title: "Simple Present", text: "I ___ to school every day.", options: ["goes", "go", "going"], correct: 1 },
-  ],
-  A2: [
-    { title: "Present Perfect", text: "I have ___ my homework.", options: ["do", "did", "done"], correct: 2 },
-  ],
-  B1: [
-    { title: "Complex Sentence", text: "Although tired, she ___.", options: ["continue", "continued", "continues"], correct: 1 },
-  ],
-  B2: [
-    { title: "Subjunctive", text: "I suggest he ___ earlier.", options: ["come", "comes", "came"], correct: 0 },
-  ]
-};
+// ===== A1 Questions =====
+const questionsA1 = [
+  { title: "Simple Present", text: "I ___ to school every day.", options: ["goes", "go", "going"], correct: 1 },
+  { title: "Simple Past", text: "She ___ to the movies yesterday.", options: ["went", "goes", "going"], correct: 0 },
+  { title: "Be Verb", text: "They ___ students.", options: ["is", "are", "am"], correct: 1 },
+  { title: "Present Continuous", text: "He ___ eating now.", options: ["eat", "is eating", "eats"], correct: 1 },
+  { title: "Negative", text: "I ___ like apples.", options: ["not", "don't", "doesn't"], correct: 1 },
+  { title: "Yes/No Question", text: "___ you have a pen?", options: ["Do", "Does", "Are"], correct: 0 },
+  { title: "Plural", text: "I have three ___.", options: ["book", "books", "bokes"], correct: 1 },
+  { title: "Possessive", text: "This is ___ cat.", options: ["my", "me", "I"], correct: 0 },
+  { title: "Articles", text: "___ apple is red.", options: ["A", "An", "The"], correct: 1 },
+  { title: "Future", text: "I ___ visit you tomorrow.", options: ["will visit", "visit", "visits"], correct: 0 }
+];
 
-// 🔹 게임 시작
+// ===== A2 Questions =====
+const questionsA2 = [
+  { title: "Present Habit", text: "He usually ___ coffee in the morning.", options: ["drink", "drinks", "drinking"], correct: 1 },
+  { title: "Past Continuous", text: "I ___ when he called.", options: ["sleep", "was sleeping", "slept"], correct: 1 },
+  { title: "Present Perfect", text: "Have you ___ London?", options: ["visit", "visited", "visiting"], correct: 1 },
+  { title: "Conditional", text: "If I ___ time, I would help.", options: ["have", "had", "having"], correct: 1 },
+  { title: "Comparative", text: "This book is ___ than that one.", options: ["more interesting", "interestinger", "interesting"], correct: 0 },
+  { title: "Must/Might", text: "You ___ finish your homework.", options: ["must", "might", "can"], correct: 0 },
+  { title: "Relative Clause", text: "The girl ___ won the prize.", options: ["who", "which", "whose"], correct: 0 },
+  { title: "Passive Voice", text: "The letter was ___ by my sister.", options: ["write", "written", "writing"], correct: 1 },
+  { title: "Gerund", text: "___ is good for health.", options: ["Exercise", "Exercising", "Exercises"], correct: 1 },
+  { title: "Reported Speech", text: "She said she ___ a student.", options: ["is", "was", "were"], correct: 1 }
+];
+
+// ===== B1 Questions =====
+const questionsB1 = [
+  { title: "Complex Sentence", text: "Although tired, she ___.", options: ["continue", "continued", "continues"], correct: 1 },
+  { title: "Perf Continuous", text: "I ___ English for 5 years.", options: ["study", "have studied", "have been studying"], correct: 2 },
+  { title: "Subjunctive", text: "I suggest he ___ earlier.", options: ["come", "comes", "came"], correct: 0 },
+  { title: "Inversion", text: "Never ___ I seen such beauty.", options: ["have", "had", "has"], correct: 0 },
+  { title: "Participle", text: "___ by noise, I couldn't sleep.", options: ["Disturb", "Disturbing", "Disturbed"], correct: 2 },
+  { title: "Cleft", text: "It is John ___ did the work.", options: ["who", "that", "which"], correct: 0 },
+  { title: "Phrasal Verb", text: "They decided to ___ their trip.", options: ["put on", "put off", "put up"], correct: 1 },
+  { title: "Collocation", text: "I ___ an important decision.", options: ["make", "do", "take"], correct: 0 },
+  { title: "Idiom", text: "She's ___ a tough time.", options: ["going through", "going over", "going by"], correct: 0 },
+  { title: "Advanced", text: "The project is said ___ soon.", options: ["to be", "being", "to have"], correct: 0 }
+];
+
+// ===== B2 Questions =====
+const questionsB2 = [
+  { title: "Mixed Conditional", text: "Had I known, I ___ you.", options: ["would contact", "would have contacted", "will contact"], correct: 1 },
+  { title: "Hypothetical", text: "If you studied, you ___ pass.", options: ["would", "would be", "would have"], correct: 0 },
+  { title: "Nominalization", text: "The ___ was delayed.", options: ["implement", "implementation", "implementing"], correct: 1 },
+  { title: "Parallel", text: "She enjoys reading, writing, ___.", options: ["to speak", "speaking", "speak"], correct: 1 },
+  { title: "Passive Advanced", text: "It is believed ___ change is real.", options: ["that", "which", "who"], correct: 0 },
+  { title: "Discourse", text: "___ said, we must act.", options: ["In light of", "As a result", "Therefore"], correct: 0 },
+  { title: "Ellipsis", text: "Who solved it? John ___.", options: ["did", "solved", "did solve"], correct: 0 },
+  { title: "Hedging", text: "Results ___ suggest correlation.", options: ["might", "could", "appear to"], correct: 2 },
+  { title: "Causative", text: "She had the mechanic ___ car.", options: ["repair", "to repair", "repaired"], correct: 0 },
+  { title: "Vocabulary", text: "Proposal was met with ___.", options: ["resistance", "persist", "assistance"], correct: 0 }
+];
+
+// ===== GAME START =====
 function startGame(level) {
   currentLevel = level;
   currentQuestion = 0;
   battery = 3;
-  questions = questionSets[level];
+  answered = false;
+  engineSoundPlayed = false;
 
-  document.querySelector("#level-select").style.display = "none";
-  document.querySelector("#game-area").style.display = "flex";
+  if (level === 'A1') questions = questionsA1;
+  else if (level === 'A2') questions = questionsA2;
+  else if (level === 'B1') questions = questionsB1;
+  else questions = questionsB2;
 
-  const robotContainer = document.querySelector("#robot-container");
+  missionStates = questions.map((q, i) => ({
+    id: i,
+    completed: false,
+    triedOnce: false,
+    usedBaseCamp: false
+  }));
 
-  // 레벨별 로봇 이미지 표시
-  if (level === "B1" || level === "B2") {
-    robotContainer.innerHTML = `
-      <img src="assets/img/robo_jump.png"
-           alt="Robo Jump Ready"
-           id="robot-img"
-           style="max-width: 400px; border-radius: 15px; box-shadow: 0 0 20px #00ffcc;">
-    `;
-  } else {
-    robotContainer.innerHTML = `
-      <img src="assets/img/robo2.png"
-           alt="Robo Default"
-           id="robot-img"
-           style="max-width: 400px; border-radius: 15px; box-shadow: 0 0 20px #ff4444;">
-    `;
-  }
+  document.getElementById('levelScreen').style.display = 'none';
+  document.getElementById('gameScreen').classList.add('active');
+  document.getElementById('questionBox').style.display = 'block';
+  document.getElementById('completionScreen').classList.remove('show');
 
-  loadQuestion();
+  const robotImg = document.getElementById('robotImg');
+  const robotGif = document.getElementById('robotGif');
+  robotImg.style.display = 'block';
+  robotGif.style.display = 'none';
+  robotGif.classList.remove('show');
+  robotImg.classList.add('stage1');
+  robotImg.classList.remove('stage2', 'stage3');
+
+  displayQuestion();
+  updateRobot();
 }
 
-// 🔹 문제 로드
-function loadQuestion() {
+// ===== DISPLAY QUESTIONS =====
+function displayQuestion() {
   const q = questions[currentQuestion];
-  const qBox = document.querySelector("#question-box");
+  document.getElementById("questionNum").textContent = `Q${currentQuestion + 1}/10`;
+  document.getElementById("questionTitle").textContent = q.title;
+  document.getElementById("questionText").textContent = q.text;
 
-  qBox.innerHTML = `
-    <h3>Q${currentQuestion + 1}/${questions.length}</h3>
-    <h2>${q.title}</h2>
-    <p>${q.text}</p>
-    <div id="options">
-      ${q.options.map((opt, i) => `
-        <button class="option" onclick="checkAnswer(${i})">${opt}</button>
-      `).join('')}
-    </div>
-  `;
+  const optionsContainer = document.getElementById("options");
+  optionsContainer.innerHTML = "";
+
+  q.options.forEach((option, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "option-btn";
+    btn.textContent = option;
+    btn.onclick = () => selectAnswer(idx);
+    optionsContainer.appendChild(btn);
+  });
+
+  answered = false;
 }
 
-// 🔹 정답 확인
-function checkAnswer(index) {
+// ===== SELECT ANSWER =====
+function selectAnswer(selectedIdx) {
+  if (answered) return;
+  answered = true;
+
   const q = questions[currentQuestion];
-  const buttons = document.querySelectorAll(".option");
-  buttons.forEach(b => b.disabled = true);
+  const buttons = document.querySelectorAll(".option-btn");
+  const state = missionStates[currentQuestion];
 
-  if (index === q.correct) {
-    buttons[index].style.backgroundColor = "#00ff88";
-    battery = Math.min(battery + 10, 100);
-  } else {
-    buttons[index].style.backgroundColor = "#ff4444";
-    battery = Math.max(battery - 10, 0);
-  }
+  buttons[selectedIdx].classList.add(selectedIdx === q.correct ? "correct" : "wrong");
+  buttons[q.correct].classList.add("correct");
 
-  setTimeout(() => {
-    currentQuestion++;
-    if (currentQuestion < questions.length) {
-      loadQuestion();
-    } else {
-      endGame();
+  if (selectedIdx === q.correct) {
+    if (!state.triedOnce) {
+      battery = Math.min(battery + 10, 100);
+      state.triedOnce = true;
+    } else if (state.usedBaseCamp) {
+      battery = Math.min(battery + 15, 100);
     }
-  }, 800);
+
+    state.completed = true;
+    updateRobot();
+
+    if (battery >= 50) flashLight();
+
+    setTimeout(() => {
+      if (currentQuestion < 9) {
+        currentQuestion++;
+        displayQuestion();
+      } else {
+        completeGame();
+      }
+    }, 1500);
+  } else {
+    speak("틀렸어요! 다시 도전해봐요!");
+    state.triedOnce = true;
+    state.usedBaseCamp = true;
+
+    setTimeout(() => { answered = false; }, 1500);
+  }
 }
 
-// 🔹 게임 종료 (레벨별로 다른 애니메이션)
-function endGame() {
-  const qBox = document.querySelector("#question-box");
-  const robotContainer = document.querySelector("#robot-container");
+// ===== UPDATE ROBOT =====
+function updateRobot() {
+  const percent = document.getElementById("batteryPercent");
+  const fill = document.getElementById("batteryFill");
+  const robot = document.getElementById("robotContainer");
+  const robotImg = document.getElementById("robotImg");
 
-  qBox.innerHTML = `
-    <h2>⚡ Robo가 완전히 충전되었습니다! ⚡</h2>
-    <p>정말 고마워요! 나를 구해줬어요! 🚀</p>
-    <button onclick="location.reload()">다시 시작</button>
-  `;
+  percent.textContent = battery;
+  fill.style.width = battery + "%";
 
-  // ✅ B1, B2에서는 점프 GIF
-  if (currentLevel === "B1" || currentLevel === "B2") {
-    robotContainer.innerHTML = `
-      <img src="assets/videos/robo_jump.gif"
-           alt="Robo Jump Animation"
-           id="robot-gif"
-           style="max-width: 420px; border-radius: 15px; box-shadow: 0 0 25px #00ffcc;">
-    `;
-  } 
-  // ✅ A1, A2에서는 기본 robo.gif
-  else {
-    robotContainer.innerHTML = `
-      <img src="assets/img/robo.gif"
-           alt="Robo Default Animation"
-           id="robot-gif"
-           style="max-width: 420px; border-radius: 15px; box-shadow: 0 0 25px #ff4444;">
-    `;
+  if (battery < 40) {
+    robotImg.classList.add('stage1');
+    robotImg.classList.remove('stage2', 'stage3');
+    robot.classList.remove('stage2-vibrate');
+  } else if (battery < 100) {
+    robotImg.classList.add('stage2');
+    robotImg.classList.remove('stage1', 'stage3');
+    robot.classList.add('stage2-vibrate');
+  } else {
+    robotImg.classList.add('stage3');
+    robotImg.classList.remove('stage1', 'stage2');
+    robot.classList.remove('stage2-vibrate');
   }
+
+  if (battery <= 30 && battery > 0) {
+    robot.classList.add('warning');
+    if (battery === 3 || battery === 13 || battery === 23) playWarningSound();
+  } else {
+    robot.classList.remove('warning');
+  }
+
+  if (battery >= 50 && battery < 80) {
+    robot.classList.add('glow');
+    robotImg.classList.add('glow');
+    if (!engineSoundPlayed) { playEngineSound(); engineSoundPlayed = true; }
+  } else if (battery < 50) {
+    robot.classList.remove('glow');
+    robotImg.classList.remove('glow');
+  }
+
+  if (battery >= 80 && battery < 100) {
+    robot.classList.add('glow');
+    robotImg.classList.add('glow');
+    robot.style.animation = 'engineVibration 0.3s infinite';
+  } else if (battery >= 50 && battery < 80) {
+    robot.style.animation = 'none';
+  }
+
+  if (battery >= 100) {
+    robot.classList.add('full');
+    robot.classList.remove('warning');
+    robotImg.classList.add('full');
+    robot.style.animation = 'none';
+  }
+}
+
+// ===== COMPLETE GAME =====
+function completeGame() {
+  battery = 100;
+  updateRobot();
+
+  const robotImg = document.getElementById('robotImg');
+  const robotGif = document.getElementById('robotGif');
+  const headerP = document.getElementById('headerDesc');
+
+  // ✅ B1, B2만 robo_jump.gif로 변경
+  if (currentLevel === 'B1' || currentLevel === 'B2') {
+    robotGif.src = 'assets/videos/robo_jump.gif';
+  } else {
+    robotGif.src = 'assets/img/robo.gif';
+  }
+
+  robotImg.style.display = 'none';
+  robotGif.style.display = 'block';
+  setTimeout(() => robotGif.classList.add('show'), 10);
+
+  if (headerP) headerP.classList.add('hide');
+
+  document.getElementById('questionBox').style.display = 'none';
+  document.getElementById('completionScreen').classList.add('show');
+  document.getElementById('finalScore').textContent =
+    `최종 배터리: 100% ⚡ 완벽해! 넌 진짜 최고야!`;
+
+  speak("축하해! 고마워! 나를 구해줘서!");
+}
+
+// ===== UTILITIES =====
+function resetGame() {
+  document.getElementById('levelScreen').style.display = 'flex';
+  document.getElementById('gameScreen').classList.remove('active');
+  const headerP = document.getElementById('headerDesc');
+  if (headerP) headerP.classList.remove('hide');
+}
+
+function goHome() {
+  window.location.href = 'index.html';
+}
+
+function flashLight() {
+  const robot = document.getElementById('robotContainer');
+  robot.classList.remove('light-flash');
+  setTimeout(() => { robot.classList.add('light-flash'); }, 10);
+}
+
+function speak(text) {
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ko-KR';
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
+function playEngineSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(80, now);
+    osc.frequency.exponentialRampToValueAtTime(100, now + 0.5);
+    gain.gain.setValueAtTime(0.1, now);
+    gain.gain.exponentialRampToValueAtTime(0.05, now + 0.5);
+    osc.start(now);
+    osc.stop(now + 0.5);
+  } catch (e) {}
+}
+
+function playWarningSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(800, now);
+    gain.gain.setValueAtTime(0.08, now);
+    gain.gain.setValueAtTime(0, now + 0.2);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  } catch (e) {}
 }
