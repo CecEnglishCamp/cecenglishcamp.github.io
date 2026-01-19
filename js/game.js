@@ -4,15 +4,8 @@
   const START_BATTERY = 3;
   const TOTAL = 10;
 
-  // ✅ 실제 mp4 쓰시면 넣으세요(없으면 자동으로 gif로 fallback)
-  const VIDEO_MAP = {
-    A1: "",
-    A2: "",
-    B1: "",
-    B2: "",
-  };
+  const VIDEO_MAP = { A1: "", A2: "", B1: "", B2: "" };
 
-  // ✅ B1/B2 100% 달성 시: assets/videos/robo_jump.gif 사용
   const COMPLETION_GIF_MAP = {
     A1: "./assets/img/robo.gif",
     A2: "./assets/img/robo.gif",
@@ -91,10 +84,21 @@
     window.speechSynthesis.speak(u);
   }
 
+  function setHeaderVisible(isVisible) {
+    const headerDesc = $("headerDesc");
+    if (!headerDesc) return;
+    headerDesc.style.display = isVisible ? "" : "none";
+  }
+
   function applyBatteryStageVisuals() {
     const frame = $("robotFrame");
     const headerDesc = $("headerDesc");
     if (!frame) return;
+
+    // ✅ 100%이면 “급해요…” 숨김
+    if (battery >= 100) {
+      setHeaderVisible(false);
+    }
 
     frame.classList.remove(
       "card--danger",
@@ -106,35 +110,30 @@
       "is-shaking-hard",
     );
 
-    // 0~29: red blinking
     if (battery < 30) {
       frame.classList.add("card--danger");
       if (headerDesc) headerDesc.classList.add("alert");
       return;
     }
 
-    // 30~69: green
     if (battery < 70) {
       frame.classList.add("card--ok");
       if (headerDesc) headerDesc.classList.remove("alert");
       return;
     }
 
-    // 70~89: stronger green + soft shake
     if (battery < 90) {
       frame.classList.add("card--boost", "is-shaking-soft");
       if (headerDesc) headerDesc.classList.remove("alert");
       return;
     }
 
-    // 90~99: ultra bright + hard shake
     if (battery < 100) {
       frame.classList.add("card--ultra", "is-shaking-hard");
       if (headerDesc) headerDesc.classList.remove("alert");
       return;
     }
 
-    // 100: complete
     frame.classList.add("card--complete-left");
     if (headerDesc) headerDesc.classList.remove("alert");
   }
@@ -195,7 +194,6 @@
     const img = $("robotImg");
     const gif = $("robotGif");
     const vid = $("robotVideo");
-
     if (img) img.style.display = "none";
 
     const videoSrc = (VIDEO_MAP[level] || "").trim();
@@ -293,7 +291,6 @@
     }
 
     correctCount += 1;
-
     const gain = Math.ceil((100 - START_BATTERY) / TOTAL);
     setBattery(battery + gain);
 
@@ -330,6 +327,7 @@
     correctCount = 0;
     locked = false;
 
+    setHeaderVisible(true); // ✅ 게임 시작 시 다시 표시
     showGame();
 
     const qbox = $("questionBox");
@@ -347,6 +345,7 @@
   }
 
   function resetGame() {
+    setHeaderVisible(true); // ✅ 리셋 시 다시 표시
     showLevel();
 
     const qbox = $("questionBox");
@@ -374,6 +373,7 @@
   window.goHome = goHome;
 
   document.addEventListener("DOMContentLoaded", () => {
+    setHeaderVisible(true);
     setBattery(START_BATTERY);
   });
 })();
