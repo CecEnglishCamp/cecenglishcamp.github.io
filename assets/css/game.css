@@ -1,19 +1,28 @@
 :root{
   --bg:#050505;
-  --panel:#0f0f0f;
   --text:#ffffff;
   --muted:#9aa0a6;
 
   --cyan:#00f2ff;
 
   --danger:#ff2b2b;
-  --danger2:#ff7070;
+  --dangerDim: rgba(255,43,43,.35);
 
-  --ok:#19ff88;
-  --ok2:#00ffc3;
+  --green:#19ff88;
+  --greenStrong:#00ffc3;
+
+  --cardBg: rgba(255,255,255,.03);
+  --cardBg2: rgba(255,255,255,.01);
+  --line: rgba(255,255,255,.10);
+
+  --cardW: 540px;
+  --cardH: 640px;
+  --radius: 22px;
+  --border: 2px;
 }
 
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 html,body{height:100%}
 body{
   margin:0;
@@ -102,88 +111,31 @@ a{color:inherit;text-decoration:none}
 .game-screen{max-width:1200px;margin:0 auto;padding:10px 20px 50px}
 .game-grid{
   display:grid;
-  grid-template-columns: 520px 1fr;
+  grid-template-columns: var(--cardW) var(--cardW);
   gap:44px;
   align-items:start;
   justify-content:center;
 }
-@media (max-width: 1100px){
+@media (max-width: 1180px){
   .game-grid{grid-template-columns:1fr;gap:26px}
 }
 
-/* LEFT: ROBOT FRAME */
-.robot-frame{
-  width:520px;
+/* ✅ Common card (same size for left/right) */
+.card{
+  width:var(--cardW);
   max-width:95vw;
-  border-radius:26px;
-  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+  min-height:var(--cardH);
+  border-radius:var(--radius);
+  background:linear-gradient(180deg, var(--cardBg), var(--cardBg2));
+  border:var(--border) solid var(--line);
   position:relative;
   overflow:hidden;
-  padding:22px 18px 18px;
+  padding:20px 18px 18px;
 }
 
-/* ✅ 빨간 네모 점멸 (링 없음) */
-.robot-frame.is-danger{
-  border:3px solid var(--danger);
-  box-shadow:
-    0 0 0 1px rgba(255,43,43,.18),
-    0 0 52px rgba(255,43,43,.22),
-    0 0 120px rgba(255,43,43,.10);
-  animation: dangerBlink 1.05s ease-in-out infinite;
-}
-@keyframes dangerBlink{
-  0%,100%{
-    border-color: rgba(255,43,43,.95);
-    box-shadow:
-      0 0 0 1px rgba(255,43,43,.20),
-      0 0 58px rgba(255,43,43,.26),
-      0 0 140px rgba(255,43,43,.12);
-  }
-  50%{
-    border-color: rgba(255,43,43,.35);
-    box-shadow:
-      0 0 0 1px rgba(255,43,43,.10),
-      0 0 20px rgba(255,43,43,.10),
-      0 0 70px rgba(255,43,43,.05);
-  }
-}
-
-/* ✅ 완료 시 초록 */
-.robot-frame.is-complete{
-  border:3px solid rgba(25,255,136,.9);
-  box-shadow:
-    0 0 0 1px rgba(25,255,136,.18),
-    0 0 52px rgba(0,255,195,.18),
-    0 0 140px rgba(0,255,195,.10);
-  animation:none;
-}
-
-/* ROBOT MEDIA */
-.robot-media{
-  display:block;
-  width:360px;
-  max-width:85%;
-  margin:18px auto 0;
-  position:relative;
-  z-index:2;
-}
-.robot-gif{display:none;opacity:0}
-.robot-gif.show{display:block;opacity:1}
-.robot-video{
-  display:none;
-  width:360px;
-  max-width:85%;
-  margin:18px auto 0;
-  border-radius:16px;
-  background:#000;
-}
-.robot-video.show{display:block}
-
-/* Battery */
+/* LEFT: battery */
 .battery{
-  margin-top:16px;
-  position:relative;
-  z-index:3;
+  margin-top:14px;
   text-align:center;
 }
 .battery__percent{
@@ -208,14 +160,28 @@ a{color:inherit;text-decoration:none}
   transition:width .45s ease;
 }
 
-/* RIGHT PANEL */
-.panel{
-  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
-  border:2px solid rgba(255,255,255,.10);
-  border-radius:26px;
-  padding:26px 28px;
-  min-height:280px;
+/* ROBOT MEDIA */
+.robot-media{
+  display:block;
+  width:420px;
+  max-width:86%;
+  margin:32px auto 0;
+  position:relative;
+  z-index:2;
 }
+.robot-gif{display:none;opacity:0}
+.robot-gif.show{display:block;opacity:1}
+.robot-video{
+  display:none;
+  width:420px;
+  max-width:86%;
+  margin:32px auto 0;
+  border-radius:16px;
+  background:#000;
+}
+.robot-video.show{display:block}
+
+/* RIGHT: question */
 .badge{
   display:inline-block;
   background:rgba(0,242,255,.95);
@@ -226,7 +192,7 @@ a{color:inherit;text-decoration:none}
 }
 .panel__title{
   margin:18px 0 10px;
-  font-size:28px;
+  font-size:32px;
   font-weight:800;
   color:var(--cyan);
 }
@@ -240,7 +206,7 @@ a{color:inherit;text-decoration:none}
   display:grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap:14px;
-  margin-top:12px;
+  margin-top:18px;
 }
 @media (max-width: 560px){
   .panel__options{grid-template-columns:1fr}
@@ -264,24 +230,22 @@ a{color:inherit;text-decoration:none}
 .option-btn.correct{
   background:rgba(25,255,136,.22);
   border-color:rgba(25,255,136,.85);
-  color:#d9ffe9;
 }
 .option-btn.wrong{
   background:rgba(255,68,68,.22);
   border-color:rgba(255,68,68,.85);
-  color:#ffd9d9;
 }
 .option-btn[disabled]{opacity:.7;cursor:not-allowed}
 
-/* Completion */
-.panel--complete{display:none}
-.panel--complete.show{display:block}
+/* ✅ Completion (right card) */
+.card--complete{display:none}
+.card--complete.show{display:block}
 .complete__icons{font-size:22px;margin-top:12px}
 .complete__line{margin-top:10px;color:rgba(255,255,255,.85)}
 .complete__big{
   margin:34px 0 16px;
   font-size:34px;
-  color:var(--ok);
+  color:var(--green);
   text-align:center;
   font-weight:900;
 }
@@ -310,4 +274,103 @@ a{color:inherit;text-decoration:none}
   background:rgba(255,255,255,.22);
   color:#fff;
   min-width:120px;
+}
+
+/* =========================================================
+Battery stage visuals (applied to LEFT card #robotFrame)
+========================================================= */
+
+/* 0~29%: red blinking border */
+.card--danger{
+  border:var(--border) solid var(--danger);
+  box-shadow: 0 0 0 1px rgba(255,43,43,.18),
+              0 0 44px rgba(255,43,43,.20),
+              0 0 110px rgba(255,43,43,.10);
+  animation: dangerBlink 1.05s ease-in-out infinite;
+}
+@keyframes dangerBlink{
+  0%,100%{
+    border-color: rgba(255,43,43,.95);
+    box-shadow:
+      0 0 0 1px rgba(255,43,43,.20),
+      0 0 48px rgba(255,43,43,.22),
+      0 0 130px rgba(255,43,43,.12);
+  }
+  50%{
+    border-color: rgba(255,43,43,.35);
+    box-shadow:
+      0 0 0 1px rgba(255,43,43,.10),
+      0 0 18px rgba(255,43,43,.10),
+      0 0 70px rgba(255,43,43,.05);
+  }
+}
+
+/* 30~69%: green (no blink) */
+.card--ok{
+  border:var(--border) solid rgba(25,255,136,.85);
+  box-shadow: 0 0 0 1px rgba(25,255,136,.16),
+              0 0 34px rgba(0,255,195,.14);
+  animation:none;
+}
+
+/* 70~89%: stronger green + shake */
+.card--boost{
+  border:var(--border) solid rgba(0,255,195,.92);
+  box-shadow: 0 0 0 1px rgba(0,255,195,.18),
+              0 0 58px rgba(0,255,195,.20),
+              0 0 140px rgba(0,255,195,.12);
+  animation:none;
+}
+
+/* 90~99%: very bright + stronger shake */
+.card--ultra{
+  border:var(--border) solid rgba(0,255,195,1);
+  box-shadow: 0 0 0 1px rgba(0,255,195,.22),
+              0 0 88px rgba(0,255,195,.28),
+              0 0 190px rgba(0,255,195,.16);
+  animation:none;
+}
+
+/* 100%: complete */
+.card--complete-left{
+  border:var(--border) solid rgba(25,255,136,.95);
+  box-shadow: 0 0 0 1px rgba(25,255,136,.22),
+              0 0 70px rgba(0,255,195,.22),
+              0 0 200px rgba(0,255,195,.14);
+  animation:none;
+}
+
+/* shake */
+@keyframes shakeSoft{
+  0%,100%{transform:translate(0,0) rotate(0deg)}
+  20%{transform:translate(-1px, 1px) rotate(-0.4deg)}
+  40%{transform:translate( 1px,-1px) rotate( 0.4deg)}
+  60%{transform:translate(-1px,-1px) rotate( 0.3deg)}
+  80%{transform:translate( 1px, 1px) rotate(-0.3deg)}
+}
+@keyframes shakeHard{
+  0%,100%{transform:translate(0,0) rotate(0deg)}
+  20%{transform:translate(-2px, 2px) rotate(-0.8deg)}
+  40%{transform:translate( 2px,-2px) rotate( 0.8deg)}
+  60%{transform:translate(-2px,-1px) rotate( 0.6deg)}
+  80%{transform:translate( 2px, 1px) rotate(-0.6deg)}
+}
+.is-shaking-soft{animation:shakeSoft .22s linear infinite}
+.is-shaking-hard{animation:shakeHard .16s linear infinite}
+
+/* About/Register basic */
+.info{
+  max-width:1200px;
+  margin:0 auto;
+  padding:52px 20px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.info h2{margin:0 0 14px;font-size:28px;color:var(--cyan)}
+.info p{margin:0;color:rgba(255,255,255,.75);line-height:1.6}
+
+.footer{
+  max-width:1200px;
+  margin:0 auto;
+  padding:24px 20px 40px;
+  color:rgba(255,255,255,.55);
 }
