@@ -1,284 +1,76 @@
-/* =========================================
-File: assets/css/game.css
-Grammar Game Final CSS
-========================================= */
-
-/* ===== 기본 변수 ===== */
-:root {
-  --bg: #080808;
-  --card: #111;
-  --line: #2a2a2a;
-  --text: #fff;
-  --muted: #9aa0a6;
-  --cyan: #00f2ff;
-  --good: #00ff99;
-  --bad: #ff4444;
+/* ======= HEADER 수정 ======= */
+.logo strong {
+  color: #fff; /* 캠프 이름 흰색으로 복원 */
 }
 
-/* ===== 공통 ===== */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Poppins', sans-serif;
-  overflow-x: hidden;
-}
-
-/* ===== 헤더 ===== */
-header {
-  position: sticky;
-  top: 0;
-  background: rgba(8, 8, 8, 0.92);
-  border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(5px);
-  z-index: 10;
-}
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 14px 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.logo { display: flex; align-items: center; font-weight: 700; gap: 10px; }
-.logo-img { width: 40px; height: 40px; }
-.game-nav { display: flex; gap: 14px; flex-wrap: wrap; }
-.game-nav a {
-  color: var(--muted);
-  padding: 6px 10px;
-  border-radius: 10px;
-  text-decoration: none;
-}
-.game-nav a.active, .game-nav a:hover {
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--line);
-}
-
-/* ===== 상단 문구 ===== */
-.header {
-  text-align: center;
-  padding: 24px 18px;
-}
-.header h1 {
-  color: var(--cyan);
-  font-size: 2.3rem;
-}
+/* ======= ALERT 문구 사이즈 조정 ======= */
 #headerDesc {
   margin-top: 10px;
-  font-size: 18px;
-  color: #fff;
+  font-size: 15px; /* 기존 18px → 15px */
+  color: white;
   transition: color 0.3s;
 }
 
-/* 🔴 깜빡임 효과 */
+/* 깜빡임 그대로 유지 */
 @keyframes alertBlink {
-  0%, 100% { color: #ff5555; text-shadow: 0 0 10px rgba(255, 0, 0, 0.7); }
-  50% { color: #fff; text-shadow: none; }
+  0%, 100% {
+    color: #ff5555;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+  }
+  50% {
+    color: #ffffff;
+    text-shadow: none;
+  }
 }
 #headerDesc.alert {
   animation: alertBlink 1.2s infinite ease-in-out;
 }
 
-/* ===== 레벨 선택 ===== */
-#levelScreen {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 40px;
-  margin: 20px auto 40px;
-  max-width: 1000px;
-  padding: 0 18px;
-}
-.level-btn {
-  background: var(--card);
-  border: 2px solid var(--cyan);
-  border-radius: 20px;
-  padding: 25px 15px;
-  text-align: center;
-  width: 220px;
-  height: 280px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.level-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px var(--cyan);
-}
-.level-thumbnail {
-  width: 130px;
-  height: auto;
-  margin-bottom: 10px;
-}
-.level-label {
-  color: var(--cyan);
-  font-size: 26px;
-  font-weight: 700;
-}
-.level-description {
-  color: #999;
-  font-size: 15px;
-  margin-top: 6px;
-}
-
-/* ===== 게임 화면 ===== */
-.game-screen {
-  display: none;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 18px;
-}
-.game-screen.active { display: block; }
-
-.game-content {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 40px;
-}
-
-/* ===== 로봇 컨테이너 ===== */
+/* ======= 로봇 컨테이너 크기 확대 ======= */
 .robot-container {
   background: var(--card);
-  border: 2px solid var(--line);
-  border-radius: 20px;
-  padding: 20px;
-  text-align: center;
+  border: 2.5px solid var(--line);
+  border-radius: 24px;
+  padding: 25px;
+  width: min(460px, 94vw);
   transition: all 0.4s ease-in-out;
+  text-align: center;
 }
+
 .robot-img, .robot-gif {
-  width: 280px;
+  width: 320px; /* 기존 280px → 320px */
   transition: opacity 0.5s ease-in-out;
 }
-.robot-gif {
-  display: none;
-  opacity: 0;
-}
-.robot-gif.show {
-  display: block;
-  opacity: 1;
-}
 
-/* ===== 배터리 ===== */
-.battery-display {
-  margin-top: 10px;
-  text-align: center;
+/* ======= GAME 화면 구성: 로봇 왼쪽 / 문제 오른쪽 ======= */
+.game-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 50px;
+  margin-top: 20px;
 }
-.battery-bar {
-  width: 250px;
-  height: 12px;
-  background: #333;
-  border-radius: 10px;
-  margin: 10px auto;
-  overflow: hidden;
+.robot-section {
+  flex: 1 1 380px;
+  display: flex;
+  justify-content: center;
 }
-.battery-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #00f2ff, #00ff99);
-  width: 3%;
-  transition: width 0.5s ease;
-}
-.battery-percent {
-  color: var(--cyan);
-  font-weight: 700;
-  font-size: 0.9rem;
-}
-
-/* ===== 문제 영역 ===== */
 .quiz-section {
+  flex: 1 1 500px;
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 20px;
-  padding: 18px;
-  width: min(720px, 92vw);
-}
-#questionNum {
-  background: var(--cyan);
-  color: black;
-  padding: 6px 16px;
-  border-radius: 25px;
-  font-weight: 600;
-}
-#questionTitle {
-  color: var(--cyan);
-  font-size: 22px;
-  margin-top: 20px;
-}
-#questionText {
-  color: #fff;
-  font-size: 20px;
-  margin-top: 12px;
-}
-.option-btn {
-  background: #222;
-  border: 2px solid #444;
-  color: #fff;
-  padding: 12px 20px;
-  margin: 12px;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.option-btn:hover {
-  background: #333;
-  border-color: var(--cyan);
-}
-.option-btn.correct {
-  background: var(--good);
-  color: #000;
-  border-color: var(--good);
-}
-.option-btn.wrong {
-  background: var(--bad);
-  border-color: var(--bad);
+  padding: 22px;
 }
 
-/* ===== 완료 화면 ===== */
-.completion-screen {
-  display: none;
-  text-align: center;
-  opacity: 0;
-  transition: opacity 0.6s ease-in-out;
-}
-.completion-screen.show {
-  display: block;
-  opacity: 1;
-}
-.completion-screen h2 {
-  color: var(--good);
-  font-size: 1.8rem;
-}
-#finalScore {
-  font-size: 1.1rem;
-  color: var(--cyan);
-  margin-top: 15px;
-}
-.button-group {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
-}
-.restart-btn, .home-btn {
-  background: #222;
-  color: #fff;
-  border: 1px solid #444;
-  border-radius: 12px;
-  padding: 10px 16px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.restart-btn:hover, .home-btn:hover {
-  border-color: var(--cyan);
-  color: var(--cyan);
-}
-
-/* ===== 반응형 ===== */
-@media (max-width: 768px) {
-  .level-btn { width: 160px; height: 220px; }
-  .level-thumbnail { width: 100px; }
-  .robot-img, .robot-gif { width: 220px; }
-  .game-content { flex-direction: column; align-items: center; }
+/* ======= 반응형 보완 ======= */
+@media (max-width: 900px) {
+  .game-content {
+    flex-direction: column;
+    align-items: center;
+  }
+  .robot-img, .robot-gif {
+    width: 280px;
+  }
 }
