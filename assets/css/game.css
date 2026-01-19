@@ -1,19 +1,22 @@
-/* =========================================
+/* =========================================================
 File: assets/css/game.css
-Purpose: 전체 스타일 유지 + headerDesc 워닝 효과만 추가
-========================================= */
-
+========================================================= */
 :root{
-  --bg:#080808;
-  --panel:#101010;
-  --line:#2a2a2a;
+  --bg:#050505;
+  --panel:#0f0f0f;
+  --panel2:#0b0b0b;
   --text:#ffffff;
-  --muted:#a6a6a6;
+  --muted:#9aa0a6;
+
   --cyan:#00f2ff;
 
-  --red:#ff2b2b;
-  --good:#00ff99;
-  --bad:#ff4444;
+  --danger:#ff2b2b;
+  --danger2:#ff7070;
+
+  --ok:#19ff88;
+  --ok2:#00ffc3;
+
+  --line: rgba(255,255,255,.12);
 }
 
 *{box-sizing:border-box}
@@ -21,98 +24,342 @@ html,body{height:100%}
 body{
   margin:0;
   font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  background:var(--bg);
+  background: radial-gradient(1200px 600px at 50% 0%, rgba(0,242,255,.05), transparent 55%),
+              radial-gradient(1000px 700px at 20% 40%, rgba(255,43,43,.10), transparent 55%),
+              var(--bg);
   color:var(--text);
   overflow-x:hidden;
 }
 a{color:inherit;text-decoration:none}
 
-/* HEADER */
-header{
+/* TOP BAR */
+.topbar{
   position:sticky;top:0;z-index:10;
-  background:rgba(8,8,8,.92);
-  backdrop-filter: blur(6px);
-  border-bottom:1px solid var(--line);
+  background:rgba(0,0,0,.85);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(10px);
 }
-.container{
-  max-width:1100px;margin:0 auto;
-  padding:14px 18px;
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
+.topbar__inner{
+  max-width:1200px;
+  margin:0 auto;
+  padding:16px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
 }
-.logo{display:flex;align-items:center;gap:10px;font-weight:700}
-.logo-img{width:40px;height:40px;vertical-align:middle}
-.game-nav{display:flex;gap:12px;flex-wrap:wrap}
-.game-nav a{padding:8px 10px;border-radius:12px;color:var(--muted)}
-.game-nav a.active{color:var(--text);border:1px solid var(--line);background:rgba(255,255,255,.04)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.3px}
+.brand__logo{width:26px;height:26px;object-fit:contain}
+.brand__name{font-size:20px}
+.nav{display:flex;gap:26px;flex-wrap:wrap}
+.nav a{color:#fff;opacity:.9;font-weight:600}
+.nav a.active{opacity:1}
 
-/* HEADER TEXT */
-.header{
-  max-width:1100px;margin:0 auto;
-  padding:24px 18px 8px;
+/* TITLE */
+.title{
+  max-width:1200px;
+  margin:0 auto;
+  padding:26px 20px 8px;
   text-align:center;
 }
-.header h1{font-size:2.3rem;color:var(--cyan)}
-
-/* ✅ 워닝 문구 */
-#headerDesc{
-  margin-top:10px;
-  font-size:15px;          /* 작게 유지 */
-  color:#ffffff;
-  transition:color 0.3s;
+.title h1{
+  margin:0;
+  font-size:44px;
+  font-weight:800;
+  color:var(--cyan);
+  text-shadow:0 0 14px rgba(0,242,255,.15);
 }
-
-/* 🔴 깜빡이는 워닝 효과 */
-@keyframes textWarning {
-  0%, 100% {
-    color: #ff5555;
-    text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
-  }
-  50% {
-    color: #ffffff;
-    text-shadow: none;
-  }
+.title__emoji{margin-right:10px}
+.title__sub{margin-top:6px;color:rgba(255,255,255,.7)}
+.title__desc{margin-top:10px;color:#fff}
+@keyframes alertBlink{
+  0%,100%{color:#ff5555;text-shadow:0 0 12px rgba(255,0,0,.65)}
+  50%{color:#ffffff;text-shadow:0 0 0 rgba(255,0,0,0)}
 }
-
-#headerDesc.warning {
-  animation: textWarning 1s ease-in-out infinite; /* 1초 간격 깜빡임 */
-}
+#headerDesc.alert{animation:alertBlink 1.2s infinite ease-in-out}
 
 /* LEVEL SELECT */
-#levelScreen{
-  display:flex;justify-content:center;align-items:center;flex-wrap:wrap;
-  gap:40px;margin:26px 0 40px;padding:0 18px;
+.level-screen{
+  display:flex;
+  justify-content:center;
+  padding:18px 20px 40px;
 }
-.level-grid{display:flex;gap:40px;flex-wrap:wrap;justify-content:center}
-.level-btn{
-  width:220px;height:280px;
-  background:#111;
-  border:2px solid var(--cyan);
-  border-radius:20px;
-  text-align:center;
-  transition:transform .25s, box-shadow .25s;
+.level-grid{display:flex;gap:44px;flex-wrap:wrap;justify-content:center}
+.level-card{
+  width:240px;height:300px;
+  background:#0d0d0d;
+  border:2px solid rgba(0,242,255,.85);
+  border-radius:24px;
   cursor:pointer;
-  padding-top:25px;
-  color:var(--text);
+  transition:transform .2s, box-shadow .2s;
+  padding:26px 18px;
+  text-align:center;
+  color:#fff;
 }
-.level-btn:hover{transform:scale(1.05);box-shadow:0 0 20px var(--cyan)}
-.level-thumbnail{width:130px;height:auto;margin-bottom:10px}
-.level-label{font-size:26px;color:var(--cyan);font-weight:700}
-.level-description{font-size:16px;color:#888;margin-top:6px}
+.level-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 26px rgba(0,242,255,.25);
+}
+.level-card img{width:140px;height:auto;margin-bottom:8px}
+.level-card h3{margin:0;font-size:28px;color:var(--cyan)}
+.level-card p{margin-top:8px;color:rgba(255,255,255,.55)}
 
-/* GAME SCREEN (추후 게임 실행 시용) */
-#gameScreen{display:none}
-#gameScreen.active{display:block}
-.game-screen{max-width:1100px;margin:0 auto;padding:18px}
+/* GAME LAYOUT */
+.game-screen{max-width:1200px;margin:0 auto;padding:10px 20px 50px}
+.game-grid{
+  display:grid;
+  grid-template-columns: 520px 1fr;
+  gap:44px;
+  align-items:start;
+  justify-content:center;
+}
+@media (max-width: 1100px){
+  .game-grid{grid-template-columns:1fr;gap:26px}
+}
 
-/* 기본 버튼 스타일 */
-button{border:none;outline:none;cursor:pointer}
+/* LEFT: ROBOT FRAME */
+.robot-frame{
+  width:520px;
+  max-width:95vw;
+  border-radius:26px;
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+  position:relative;
+  overflow:hidden;
+  padding:22px 18px 18px;
+}
 
-/* 기본 퀴즈 영역 (미니멀 유지) */
-.quiz-section{
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:18px;
-  width:min(720px, 92vw);
+/* ✅ 빨간 네모 + 점멸 */
+.robot-frame.is-danger{
+  border:3px solid var(--danger);
+  box-shadow:
+    0 0 0 1px rgba(255,43,43,.18),
+    0 0 52px rgba(255,43,43,.22),
+    0 0 120px rgba(255,43,43,.10);
+  animation: dangerPulse 1.25s ease-in-out infinite;
+}
+@keyframes dangerPulse{
+  0%,100%{
+    border-color: rgba(255,43,43,.95);
+    box-shadow:
+      0 0 0 1px rgba(255,43,43,.20),
+      0 0 52px rgba(255,43,43,.25),
+      0 0 120px rgba(255,43,43,.12);
+  }
+  50%{
+    border-color: rgba(255,112,112,.55);
+    box-shadow:
+      0 0 0 1px rgba(255,112,112,.12),
+      0 0 22px rgba(255,43,43,.12),
+      0 0 70px rgba(255,43,43,.06);
+  }
+}
+
+/* ✅ 완료 시: 초록 네모 */
+.robot-frame.is-complete{
+  border:3px solid rgba(25,255,136,.9);
+  box-shadow:
+    0 0 0 1px rgba(25,255,136,.18),
+    0 0 52px rgba(0,255,195,.18),
+    0 0 140px rgba(0,255,195,.10);
+  animation:none;
+}
+
+/* ✅ 원형 링(빨강) 회전 */
+.ring-anim{
+  position:absolute;
+  inset:-60px;
+  pointer-events:none;
+  opacity:.95;
+
+  background:
+    conic-gradient(from 0deg,
+      rgba(255,43,43,0) 0deg,
+      rgba(255,43,43,.95) 45deg,
+      rgba(255,43,43,0) 100deg,
+      rgba(255,43,43,0) 180deg,
+      rgba(255,43,43,.85) 240deg,
+      rgba(255,43,43,0) 290deg,
+      rgba(255,43,43,0) 360deg
+    );
+
+  -webkit-mask: radial-gradient(circle, transparent 60%, #000 63%);
+  mask: radial-gradient(circle, transparent 60%, #000 63%);
+  filter: blur(.2px) drop-shadow(0 0 12px rgba(255,43,43,.35));
+  animation: spinRing 2.1s linear infinite;
+}
+@keyframes spinRing{to{transform:rotate(360deg)}}
+
+/* ✅ 완료 시 링(초록) */
+.robot-frame.is-complete .ring-anim{
+  background:
+    conic-gradient(from 0deg,
+      rgba(0,255,195,0) 0deg,
+      rgba(0,255,195,.95) 50deg,
+      rgba(0,255,195,0) 110deg,
+      rgba(0,255,195,0) 180deg,
+      rgba(25,255,136,.85) 245deg,
+      rgba(0,255,195,0) 300deg,
+      rgba(0,255,195,0) 360deg
+    );
+  -webkit-mask: radial-gradient(circle, transparent 60%, #000 63%);
+  mask: radial-gradient(circle, transparent 60%, #000 63%);
+  animation: spinRing 1.55s linear infinite;
+  filter: drop-shadow(0 0 14px rgba(0,255,195,.28));
+}
+
+/* ROBOT MEDIA */
+.robot-media{
+  display:block;
+  width:360px;
+  max-width:85%;
+  margin:18px auto 0;
+  position:relative;
+  z-index:2;
+}
+.robot-gif{display:none;opacity:0}
+.robot-gif.show{display:block;opacity:1}
+.robot-video{
+  display:none;
+  width:360px;
+  max-width:85%;
+  margin:18px auto 0;
+  border-radius:16px;
+  background:#000;
+}
+.robot-video.show{display:block}
+
+/* Battery (bottom like screenshot) */
+.battery{
+  margin-top:16px;
+  position:relative;
+  z-index:3;
+  text-align:center;
+}
+.battery__percent{
+  font-weight:700;
+  color:var(--cyan);
+  margin-bottom:6px;
+}
+.battery__bar{
+  width:92%;
+  height:14px;
   margin:0 auto;
+  background:rgba(0,0,0,.45);
+  border:1px solid rgba(0,242,255,.55);
+  border-radius:999px;
+  overflow:hidden;
 }
+.battery__fill{
+  height:100%;
+  width:3%;
+  background:linear-gradient(90deg, #00ffb3, #00f2ff);
+  border-radius:999px;
+  transition:width .45s ease;
+}
+
+/* RIGHT PANEL */
+.panel{
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+  border:2px solid rgba(255,255,255,.10);
+  border-radius:26px;
+  padding:26px 28px;
+  min-height:280px;
+}
+.badge{
+  display:inline-block;
+  background:rgba(0,242,255,.95);
+  color:#000;
+  font-weight:800;
+  padding:8px 16px;
+  border-radius:999px;
+}
+.panel__title{
+  margin:18px 0 10px;
+  font-size:28px;
+  font-weight:800;
+  color:var(--cyan);
+}
+.panel__text{
+  margin:0 0 20px;
+  font-size:20px;
+  color:#fff;
+  opacity:.95;
+}
+
+/* Options (3 buttons row) */
+.panel__options{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap:14px;
+  margin-top:12px;
+}
+@media (max-width: 560px){
+  .panel__options{grid-template-columns:1fr}
+}
+.option-btn{
+  background:rgba(255,255,255,.06);
+  border:2px solid rgba(255,255,255,.12);
+  color:#fff;
+  padding:16px 14px;
+  border-radius:14px;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+  transition: transform .12s, border-color .12s, background .12s;
+}
+.option-btn:hover{
+  transform:translateY(-1px);
+  border-color:rgba(0,242,255,.55);
+  background:rgba(255,255,255,.09);
+}
+.option-btn.correct{
+  background:rgba(25,255,136,.22);
+  border-color:rgba(25,255,136,.85);
+  color:#d9ffe9;
+}
+.option-btn.wrong{
+  background:rgba(255,68,68,.22);
+  border-color:rgba(255,68,68,.85);
+  color:#ffd9d9;
+}
+.option-btn[disabled]{opacity:.7;cursor:not-allowed}
+
+/* Completion panel */
+.panel--complete{display:none}
+.panel--complete.show{display:block}
+.complete__icons{font-size:22px;margin-top:12px}
+.complete__line{margin-top:10px;color:rgba(255,255,255,.85)}
+.complete__big{
+  margin:34px 0 16px;
+  font-size:34px;
+  color:var(--ok);
+  text-align:center;
+  font-weight:900;
+}
+.complete__score{
+  margin-top:10px;
+  text-align:center;
+  font-size:22px;
+  color:var(--cyan);
+  font-weight:800;
+}
+.btn-row{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:24px}
+.btn{
+  border:none;
+  padding:16px 22px;
+  border-radius:999px;
+  font-size:18px;
+  font-weight:900;
+  cursor:pointer;
+}
+.btn--primary{
+  background:rgba(0,242,255,.95);
+  color:#000;
+  min-width:220px;
+}
+.btn--ghost{
+  background:rgba(255,255,255,.22);
+  color:#fff;
+  min-width:120px;
+}
+
