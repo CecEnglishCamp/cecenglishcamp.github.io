@@ -4,20 +4,20 @@
   const START_BATTERY = 3;
   const TOTAL = 10;
 
-  // ✅ B1/B2 완료 시 이 GIF로 전환 (스크린샷 경로)
-  const COMPLETION_GIF_MAP = {
-    A1: "./assets/img/robo.gif",
-    A2: "./assets/img/robo.gif",
-    B1: "./assets/videos/robo_jump.gif",
-    B2: "./assets/videos/robo_jump.gif",
-  };
-
-  // (선택) A레벨에서 mp4 쓰고 싶으면 여기에 넣으셔도 됩니다. 없으면 자동 무시.
+  // ✅ 실제 mp4 쓰시면 넣으세요(없으면 자동으로 gif로 fallback)
   const VIDEO_MAP = {
     A1: "",
     A2: "",
     B1: "",
     B2: "",
+  };
+
+  // ✅ B1/B2 100% 달성 시: assets/videos/robo_jump.gif 사용
+  const COMPLETION_GIF_MAP = {
+    A1: "./assets/img/robo.gif",
+    A2: "./assets/img/robo.gif",
+    B1: "./assets/videos/robo_jump.gif",
+    B2: "./assets/videos/robo_jump.gif",
   };
 
   const QUESTIONS = {
@@ -91,6 +91,54 @@
     window.speechSynthesis.speak(u);
   }
 
+  function applyBatteryStageVisuals() {
+    const frame = $("robotFrame");
+    const headerDesc = $("headerDesc");
+    if (!frame) return;
+
+    frame.classList.remove(
+      "card--danger",
+      "card--ok",
+      "card--boost",
+      "card--ultra",
+      "card--complete-left",
+      "is-shaking-soft",
+      "is-shaking-hard",
+    );
+
+    // 0~29: red blinking
+    if (battery < 30) {
+      frame.classList.add("card--danger");
+      if (headerDesc) headerDesc.classList.add("alert");
+      return;
+    }
+
+    // 30~69: green
+    if (battery < 70) {
+      frame.classList.add("card--ok");
+      if (headerDesc) headerDesc.classList.remove("alert");
+      return;
+    }
+
+    // 70~89: stronger green + soft shake
+    if (battery < 90) {
+      frame.classList.add("card--boost", "is-shaking-soft");
+      if (headerDesc) headerDesc.classList.remove("alert");
+      return;
+    }
+
+    // 90~99: ultra bright + hard shake
+    if (battery < 100) {
+      frame.classList.add("card--ultra", "is-shaking-hard");
+      if (headerDesc) headerDesc.classList.remove("alert");
+      return;
+    }
+
+    // 100: complete
+    frame.classList.add("card--complete-left");
+    if (headerDesc) headerDesc.classList.remove("alert");
+  }
+
   function setBattery(value) {
     battery = clamp(value, 0, 100);
 
@@ -99,17 +147,15 @@
     if (percent) percent.textContent = String(battery);
     if (fill) fill.style.width = `${battery}%`;
 
-    const headerDesc = $("headerDesc");
-    if (headerDesc) headerDesc.classList.toggle("alert", battery <= 10);
+    applyBatteryStageVisuals();
   }
 
   function showGame() {
     const levelScreen = $("levelScreen");
     const gameScreen = $("gameScreen");
-
     if (levelScreen) levelScreen.style.display = "none";
     if (gameScreen) {
-      gameScreen.style.display = "block"; // ✅ inline display:none 깨기
+      gameScreen.style.display = "block";
       gameScreen.classList.add("active");
     }
   }
@@ -122,20 +168,6 @@
       gameScreen.style.display = "none";
       gameScreen.classList.remove("active");
     }
-  }
-
-  function setFrameDanger() {
-    const frame = $("robotFrame");
-    if (!frame) return;
-    frame.classList.add("is-danger");
-    frame.classList.remove("is-complete");
-  }
-
-  function setFrameComplete() {
-    const frame = $("robotFrame");
-    if (!frame) return;
-    frame.classList.remove("is-danger");
-    frame.classList.add("is-complete");
   }
 
   function showRobotImage() {
@@ -177,19 +209,19 @@
       if (p && typeof p.catch === "function") {
         p.catch(() => {
           if (vid) { vid.classList.remove("show"); vid.style.display = "none"; }
-          showCompletionGif();
+          showGifFallback();
         });
       }
       vid.onerror = () => {
         if (vid) { vid.classList.remove("show"); vid.style.display = "none"; }
-        showCompletionGif();
+        showGifFallback();
       };
       return;
     }
 
-    showCompletionGif();
+    showGifFallback();
 
-    function showCompletionGif() {
+    function showGifFallback() {
       if (!gif) return;
       gif.src = COMPLETION_GIF_MAP[level] || "./assets/img/robo.gif";
       gif.style.display = "block";
@@ -198,8 +230,7 @@
   }
 
   function render() {
-    const list = QUESTIONS[level];
-    const q = list?.[index];
+    const q = QUESTIONS[level]?.[index];
     if (!q) return finish();
 
     const num = $("questionNum");
@@ -275,7 +306,6 @@
 
   function finish() {
     setBattery(100);
-    setFrameComplete();
 
     const qbox = $("questionBox");
     const complete = $("completionScreen");
@@ -285,12 +315,7 @@
     if (complete) complete.classList.add("show");
     if (finalScore) finalScore.textContent = `정답: ${correctCount} / ${TOTAL}   (배터리 100% ⚡)`;
 
-    // ✅ B1/B2는 robo_jump.gif로
     showCompletionMedia();
-
-    const headerDesc = $("headerDesc");
-    if (headerDesc) headerDesc.classList.remove("alert");
-
     speak("축하해! 고마워! 나를 구해줘서!");
   }
 
@@ -306,8 +331,6 @@
     locked = false;
 
     showGame();
-    setFrameDanger();
-    setBattery(START_BATTERY);
 
     const qbox = $("questionBox");
     const complete = $("completionScreen");
@@ -319,16 +342,12 @@
     const img = $("robotImg");
     if (img) img.src = getRobotImageForLevel(level);
 
-    const headerDesc = $("headerDesc");
-    if (headerDesc) headerDesc.classList.add("alert");
-
+    setBattery(START_BATTERY);
     render();
   }
 
   function resetGame() {
     showLevel();
-    setFrameDanger();
-    setBattery(START_BATTERY);
 
     const qbox = $("questionBox");
     const complete = $("completionScreen");
@@ -343,8 +362,7 @@
     const img = $("robotImg");
     if (img) img.src = "./assets/img/robo2.png";
 
-    const headerDesc = $("headerDesc");
-    if (headerDesc) headerDesc.classList.remove("alert");
+    setBattery(START_BATTERY);
   }
 
   function goHome() {
