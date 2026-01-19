@@ -1,21 +1,15 @@
-File: js/game.js
-- A1/A2 only
-- 10 questions each
-- Left frame: danger (red blink + ring)
-- On 10 correct: frame turns green + video plays
-========================================================= */
 (() => {
   "use strict";
 
   const START_BATTERY = 3;
   const TOTAL = 10;
 
-  // ✅ 영상 파일은 여기만 바꾸시면 됩니다.
-  // - repo에 assets/videos/a1.mp4 / a2.mp4 업로드 권장
-  // - 없으면 자동으로 gif로 fallback 됩니다.
+  // ✅ 본인 영상 파일로 교체
   const VIDEO_MAP = {
     A1: "./assets/videos/a1.mp4",
     A2: "./assets/videos/a2.mp4",
+    B1: "./assets/videos/b1.mp4",
+    B2: "./assets/videos/b2.mp4",
   };
 
   const QUESTIONS = {
@@ -42,6 +36,30 @@ File: js/game.js
       { title: "Modal", text: "You __ wear a helmet.", options: ["should", "would", "used"], correct: 0 },
       { title: "Gerund", text: "I enjoy __ music.", options: ["listen", "to listen", "listening"], correct: 2 },
       { title: "Because", text: "I stayed home __ it rained.", options: ["because", "but", "so"], correct: 0 },
+    ],
+    B1: [
+      { title: "Relative", text: "The man __ lives next door is kind.", options: ["who", "where", "when"], correct: 0 },
+      { title: "Present Perfect", text: "She has __ to Japan.", options: ["go", "went", "been"], correct: 2 },
+      { title: "Complex", text: "Although tired, she ___.", options: ["continue", "continued", "continues"], correct: 1 },
+      { title: "Passive", text: "The room __ every day.", options: ["cleans", "is cleaned", "cleaned"], correct: 1 },
+      { title: "Reported", text: "He said he __ busy.", options: ["is", "was", "be"], correct: 1 },
+      { title: "Conditional", text: "If it rains, we __ inside.", options: ["stay", "stayed", "would stay"], correct: 0 },
+      { title: "Quantifiers", text: "There are __ people here.", options: ["a little", "a few", "fewest"], correct: 1 },
+      { title: "Infinitive", text: "I decided __ early.", options: ["leave", "to leave", "leaving"], correct: 1 },
+      { title: "Linking", text: "I was tired, __ I went to bed.", options: ["so", "because", "although"], correct: 0 },
+      { title: "Comparative", text: "This is __ interesting than that.", options: ["more", "most", "much"], correct: 0 },
+    ],
+    B2: [
+      { title: "Mixed Conditional", text: "Had I known, I __ you.", options: ["would contact", "would have contacted", "will contact"], correct: 1 },
+      { title: "Inversion", text: "Rarely __ such a view.", options: ["I have seen", "have I seen", "I saw"], correct: 1 },
+      { title: "Passive", text: "The cake __ by my mom.", options: ["was made", "made", "is make"], correct: 0 },
+      { title: "Reported", text: "He said he __ tired.", options: ["is", "was", "be"], correct: 1 },
+      { title: "2nd Conditional", text: "If I were you, I __ apologize.", options: ["will", "would", "did"], correct: 1 },
+      { title: "Perfect Modal", text: "You __ have told me.", options: ["should", "should to", "should have"], correct: 2 },
+      { title: "Subjunctive", text: "I suggest that he __ earlier.", options: ["leave", "leaves", "left"], correct: 0 },
+      { title: "Concession", text: "__ he was late, he apologized.", options: ["Despite", "Although", "Because"], correct: 1 },
+      { title: "Causative", text: "I had my phone __", options: ["repair", "repaired", "repairing"], correct: 1 },
+      { title: "Ellipsis", text: "I can play guitar and so __ my brother.", options: ["can", "does", "did"], correct: 0 },
     ],
   };
 
@@ -83,7 +101,7 @@ File: js/game.js
 
     if (levelScreen) levelScreen.style.display = "none";
     if (gameScreen) {
-      gameScreen.style.display = "block";
+      gameScreen.style.display = "block"; // ✅ inline display:none 깨기
       gameScreen.classList.add("active");
     }
   }
@@ -91,7 +109,6 @@ File: js/game.js
   function showLevel() {
     const levelScreen = $("levelScreen");
     const gameScreen = $("gameScreen");
-
     if (levelScreen) levelScreen.style.display = "flex";
     if (gameScreen) {
       gameScreen.style.display = "none";
@@ -119,7 +136,11 @@ File: js/game.js
     const vid = $("robotVideo");
     if (img) img.style.display = "block";
     if (gif) { gif.classList.remove("show"); gif.style.display = "none"; }
-    if (vid) { vid.classList.remove("show"); vid.style.display = "none"; vid.pause(); }
+    if (vid) { vid.classList.remove("show"); vid.style.display = "none"; vid.pause(); vid.removeAttribute("src"); vid.load(); }
+  }
+
+  function getRobotImageForLevel(lv) {
+    return (lv === "B1" || lv === "B2") ? "./assets/img/robo_jump.png" : "./assets/img/robo2.png";
   }
 
   function showRobotVideoOrFallback() {
@@ -136,10 +157,9 @@ File: js/game.js
       vid.classList.add("show");
       vid.currentTime = 0;
 
-      const playPromise = vid.play();
-      if (playPromise && typeof playPromise.catch === "function") {
-        playPromise.catch(() => {
-          // autoplay 정책 등으로 실패 -> fallback
+      const p = vid.play();
+      if (p && typeof p.catch === "function") {
+        p.catch(() => {
           if (vid) { vid.classList.remove("show"); vid.style.display = "none"; }
           if (gif) {
             gif.src = "./assets/img/robo.gif";
@@ -148,7 +168,6 @@ File: js/game.js
           }
         });
       }
-      // 비디오 파일 404/로드 실패 -> fallback
       vid.onerror = () => {
         if (vid) { vid.classList.remove("show"); vid.style.display = "none"; }
         if (gif) {
@@ -160,7 +179,6 @@ File: js/game.js
       return;
     }
 
-    // no video element or map -> fallback gif
     if (gif) {
       gif.src = "./assets/img/robo.gif";
       gif.style.display = "block";
@@ -168,14 +186,9 @@ File: js/game.js
     }
   }
 
-  function setRobotLevelImage() {
-    const img = $("robotImg");
-    if (!img) return;
-    img.src = "./assets/img/robo2.png";
-  }
-
   function render() {
-    const q = QUESTIONS[level][index];
+    const list = QUESTIONS[level];
+    const q = list?.[index];
     if (!q) return finish();
 
     const num = $("questionNum");
@@ -259,9 +272,10 @@ File: js/game.js
 
     if (qbox) qbox.style.display = "none";
     if (complete) complete.classList.add("show");
-    if (finalScore) finalScore.textContent = `최종 배터리: 100% ⚡  완벽해! 넌 진짜 최고야!`;
+    if (finalScore) finalScore.textContent = `정답: ${correctCount} / ${TOTAL}   (배터리 100% ⚡)`;
 
     showRobotVideoOrFallback();
+
     const headerDesc = $("headerDesc");
     if (headerDesc) headerDesc.classList.remove("alert");
 
@@ -289,7 +303,9 @@ File: js/game.js
     if (complete) complete.classList.remove("show");
 
     showRobotImage();
-    setRobotLevelImage();
+
+    const img = $("robotImg");
+    if (img) img.src = getRobotImageForLevel(level);
 
     const headerDesc = $("headerDesc");
     if (headerDesc) headerDesc.classList.add("alert");
@@ -312,6 +328,9 @@ File: js/game.js
 
     showRobotImage();
 
+    const img = $("robotImg");
+    if (img) img.src = "./assets/img/robo2.png";
+
     const headerDesc = $("headerDesc");
     if (headerDesc) headerDesc.classList.remove("alert");
   }
@@ -320,7 +339,6 @@ File: js/game.js
     window.location.href = "index.html";
   }
 
-  // inline onclick 유지
   window.startGame = startGame;
   window.resetGame = resetGame;
   window.goHome = goHome;
