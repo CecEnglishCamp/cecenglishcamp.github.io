@@ -15,12 +15,15 @@
   --cardBg2: rgba(255,255,255,.01);
   --line: rgba(255,255,255,.10);
 
-  --cardW: 540px;
-  --cardH: 640px;
-  --radius: 22px;
+  /* ✅ 기존(540x640)에서 약 30% 축소 */
+  --cardW: 378px;  /* 540 * 0.7 */
+  --cardH: 448px;  /* 640 * 0.7 */
+
+  --radius: 20px;
   --border: 2px;
 }
 
+/* ===== 아래는 기존 game.css 전체 그대로 유지 ===== */
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 html,body{height:100%}
@@ -112,15 +115,15 @@ a{color:inherit;text-decoration:none}
 .game-grid{
   display:grid;
   grid-template-columns: var(--cardW) var(--cardW);
-  gap:44px;
+  gap:34px; /* ✅ 살짝 줄임 */
   align-items:start;
   justify-content:center;
 }
-@media (max-width: 1180px){
-  .game-grid{grid-template-columns:1fr;gap:26px}
+@media (max-width: 920px){
+  .game-grid{grid-template-columns:1fr;gap:22px}
 }
 
-/* ✅ Common card (same size for left/right) */
+/* CARD */
 .card{
   width:var(--cardW);
   max-width:95vw;
@@ -130,22 +133,15 @@ a{color:inherit;text-decoration:none}
   border:var(--border) solid var(--line);
   position:relative;
   overflow:hidden;
-  padding:20px 18px 18px;
+  padding:18px 16px 16px;
 }
 
-/* LEFT: battery */
-.battery{
-  margin-top:14px;
-  text-align:center;
-}
-.battery__percent{
-  font-weight:700;
-  color:var(--cyan);
-  margin-bottom:6px;
-}
+/* Battery */
+.battery{margin-top:12px;text-align:center}
+.battery__percent{font-weight:700;color:var(--cyan);margin-bottom:6px}
 .battery__bar{
   width:92%;
-  height:14px;
+  height:12px; /* ✅ 살짝 줄임 */
   margin:0 auto;
   background:rgba(0,0,0,.45);
   border:1px solid rgba(0,242,255,.55);
@@ -160,12 +156,12 @@ a{color:inherit;text-decoration:none}
   transition:width .45s ease;
 }
 
-/* ROBOT MEDIA */
+/* Robot media */
 .robot-media{
   display:block;
-  width:420px;
+  width:320px;     /* ✅ 카드에 맞게 같이 축소 */
   max-width:86%;
-  margin:32px auto 0;
+  margin:26px auto 0;
   position:relative;
   z-index:2;
 }
@@ -173,13 +169,15 @@ a{color:inherit;text-decoration:none}
 .robot-gif.show{display:block;opacity:1}
 .robot-video{
   display:none;
-  width:420px;
+  width:320px;     /* ✅ 카드에 맞게 같이 축소 */
   max-width:86%;
-  margin:32px auto 0;
+  margin:26px auto 0;
   border-radius:16px;
   background:#000;
 }
 .robot-video.show{display:block}
+
+/* (이하 옵션/완료/스테이지/쉐이크/섹션 등 기존 그대로 유지) */
 
 /* RIGHT: question */
 .badge{
@@ -190,97 +188,46 @@ a{color:inherit;text-decoration:none}
   padding:8px 16px;
   border-radius:999px;
 }
-.panel__title{
-  margin:18px 0 10px;
-  font-size:32px;
-  font-weight:800;
-  color:var(--cyan);
-}
-.panel__text{
-  margin:0 0 20px;
-  font-size:20px;
-  color:#fff;
-  opacity:.95;
-}
+.panel__title{margin:18px 0 10px;font-size:28px;font-weight:800;color:var(--cyan)}
+.panel__text{margin:0 0 18px;font-size:18px;color:#fff;opacity:.95}
 .panel__options{
   display:grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap:14px;
-  margin-top:18px;
+  gap:12px;
+  margin-top:14px;
 }
-@media (max-width: 560px){
-  .panel__options{grid-template-columns:1fr}
-}
+@media (max-width: 560px){.panel__options{grid-template-columns:1fr}}
 .option-btn{
   background:rgba(255,255,255,.06);
   border:2px solid rgba(255,255,255,.12);
   color:#fff;
-  padding:16px 14px;
+  padding:14px 12px;
   border-radius:14px;
-  font-size:18px;
+  font-size:16px;
   font-weight:700;
   cursor:pointer;
   transition: transform .12s, border-color .12s, background .12s;
 }
-.option-btn:hover{
-  transform:translateY(-1px);
-  border-color:rgba(0,242,255,.55);
-  background:rgba(255,255,255,.09);
-}
-.option-btn.correct{
-  background:rgba(25,255,136,.22);
-  border-color:rgba(25,255,136,.85);
-}
-.option-btn.wrong{
-  background:rgba(255,68,68,.22);
-  border-color:rgba(255,68,68,.85);
-}
+.option-btn:hover{transform:translateY(-1px);border-color:rgba(0,242,255,.55);background:rgba(255,255,255,.09)}
+.option-btn.correct{background:rgba(25,255,136,.22);border-color:rgba(25,255,136,.85)}
+.option-btn.wrong{background:rgba(255,68,68,.22);border-color:rgba(255,68,68,.85)}
 .option-btn[disabled]{opacity:.7;cursor:not-allowed}
 
-/* ✅ Completion (right card) */
+/* Completion */
 .card--complete{display:none}
 .card--complete.show{display:block}
 .complete__icons{font-size:22px;margin-top:12px}
 .complete__line{margin-top:10px;color:rgba(255,255,255,.85)}
-.complete__big{
-  margin:34px 0 16px;
-  font-size:34px;
-  color:var(--green);
-  text-align:center;
-  font-weight:900;
-}
-.complete__score{
-  margin-top:10px;
-  text-align:center;
-  font-size:22px;
-  color:var(--cyan);
-  font-weight:800;
-}
-.btn-row{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:24px}
-.btn{
-  border:none;
-  padding:16px 22px;
-  border-radius:999px;
-  font-size:18px;
-  font-weight:900;
-  cursor:pointer;
-}
-.btn--primary{
-  background:rgba(0,242,255,.95);
-  color:#000;
-  min-width:220px;
-}
-.btn--ghost{
-  background:rgba(255,255,255,.22);
-  color:#fff;
-  min-width:120px;
-}
+.complete__big{margin:30px 0 14px;font-size:30px;color:var(--green);text-align:center;font-weight:900}
+.complete__score{margin-top:10px;text-align:center;font-size:20px;color:var(--cyan);font-weight:800}
 
-/* =========================================================
-Battery stage visuals (applied to LEFT card #robotFrame)
-========================================================= */
+/* Buttons */
+.btn-row{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:22px}
+.btn{border:none;padding:14px 20px;border-radius:999px;font-size:16px;font-weight:900;cursor:pointer}
+.btn--primary{background:rgba(0,242,255,.95);color:#000;min-width:200px}
+.btn--ghost{background:rgba(255,255,255,.22);color:#fff;min-width:110px}
 
-/* 0~29%: red blinking border */
+/* stages */
 .card--danger{
   border:var(--border) solid var(--danger);
   box-shadow: 0 0 0 1px rgba(255,43,43,.18),
@@ -289,56 +236,13 @@ Battery stage visuals (applied to LEFT card #robotFrame)
   animation: dangerBlink 1.05s ease-in-out infinite;
 }
 @keyframes dangerBlink{
-  0%,100%{
-    border-color: rgba(255,43,43,.95);
-    box-shadow:
-      0 0 0 1px rgba(255,43,43,.20),
-      0 0 48px rgba(255,43,43,.22),
-      0 0 130px rgba(255,43,43,.12);
-  }
-  50%{
-    border-color: rgba(255,43,43,.35);
-    box-shadow:
-      0 0 0 1px rgba(255,43,43,.10),
-      0 0 18px rgba(255,43,43,.10),
-      0 0 70px rgba(255,43,43,.05);
-  }
+  0%,100%{border-color: rgba(255,43,43,.95);box-shadow:0 0 0 1px rgba(255,43,43,.20),0 0 48px rgba(255,43,43,.22),0 0 130px rgba(255,43,43,.12)}
+  50%{border-color: rgba(255,43,43,.35);box-shadow:0 0 0 1px rgba(255,43,43,.10),0 0 18px rgba(255,43,43,.10),0 0 70px rgba(255,43,43,.05)}
 }
-
-/* 30~69%: green (no blink) */
-.card--ok{
-  border:var(--border) solid rgba(25,255,136,.85);
-  box-shadow: 0 0 0 1px rgba(25,255,136,.16),
-              0 0 34px rgba(0,255,195,.14);
-  animation:none;
-}
-
-/* 70~89%: stronger green + shake */
-.card--boost{
-  border:var(--border) solid rgba(0,255,195,.92);
-  box-shadow: 0 0 0 1px rgba(0,255,195,.18),
-              0 0 58px rgba(0,255,195,.20),
-              0 0 140px rgba(0,255,195,.12);
-  animation:none;
-}
-
-/* 90~99%: very bright + stronger shake */
-.card--ultra{
-  border:var(--border) solid rgba(0,255,195,1);
-  box-shadow: 0 0 0 1px rgba(0,255,195,.22),
-              0 0 88px rgba(0,255,195,.28),
-              0 0 190px rgba(0,255,195,.16);
-  animation:none;
-}
-
-/* 100%: complete */
-.card--complete-left{
-  border:var(--border) solid rgba(25,255,136,.95);
-  box-shadow: 0 0 0 1px rgba(25,255,136,.22),
-              0 0 70px rgba(0,255,195,.22),
-              0 0 200px rgba(0,255,195,.14);
-  animation:none;
-}
+.card--ok{border:var(--border) solid rgba(25,255,136,.85);box-shadow:0 0 0 1px rgba(25,255,136,.16),0 0 34px rgba(0,255,195,.14);animation:none}
+.card--boost{border:var(--border) solid rgba(0,255,195,.92);box-shadow:0 0 0 1px rgba(0,255,195,.18),0 0 58px rgba(0,255,195,.20),0 0 140px rgba(0,255,195,.12);animation:none}
+.card--ultra{border:var(--border) solid rgba(0,255,195,1);box-shadow:0 0 0 1px rgba(0,255,195,.22),0 0 88px rgba(0,255,195,.28),0 0 190px rgba(0,255,195,.16);animation:none}
+.card--complete-left{border:var(--border) solid rgba(25,255,136,.95);box-shadow:0 0 0 1px rgba(25,255,136,.22),0 0 70px rgba(0,255,195,.22),0 0 200px rgba(0,255,195,.14);animation:none}
 
 /* shake */
 @keyframes shakeSoft{
@@ -359,18 +263,7 @@ Battery stage visuals (applied to LEFT card #robotFrame)
 .is-shaking-hard{animation:shakeHard .16s linear infinite}
 
 /* About/Register basic */
-.info{
-  max-width:1200px;
-  margin:0 auto;
-  padding:52px 20px;
-  border-top:1px solid rgba(255,255,255,.06);
-}
+.info{max-width:1200px;margin:0 auto;padding:52px 20px;border-top:1px solid rgba(255,255,255,.06)}
 .info h2{margin:0 0 14px;font-size:28px;color:var(--cyan)}
 .info p{margin:0;color:rgba(255,255,255,.75);line-height:1.6}
-
-.footer{
-  max-width:1200px;
-  margin:0 auto;
-  padding:24px 20px 40px;
-  color:rgba(255,255,255,.55);
-}
+.footer{max-width:1200px;margin:0 auto;padding:24px 20px 40px;color:rgba(255,255,255,.55)}
