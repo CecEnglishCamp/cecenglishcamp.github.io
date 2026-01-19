@@ -1,197 +1,198 @@
 /* =========================================
 File: assets/css/game.css
-(Your original style + HTML class/id alignment)
+Grammar Game Final CSS
 ========================================= */
 
-/* ========== GENERAL ========== */
-:root{
-  --bg:#080808;
-  --card:#111;
-  --line:#2a2a2a;
-  --text:#fff;
-  --muted:#9aa0a6;
-  --cyan: cyan;
-  --good:#00ff99;
-  --bad:#ff4444;
+/* ===== 기본 변수 ===== */
+:root {
+  --bg: #080808;
+  --card: #111;
+  --line: #2a2a2a;
+  --text: #fff;
+  --muted: #9aa0a6;
+  --cyan: #00f2ff;
+  --good: #00ff99;
+  --bad: #ff4444;
 }
 
-*{box-sizing:border-box}
+/* ===== 공통 ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background-color: var(--bg);
+  background: var(--bg);
   color: var(--text);
+  font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
 }
 
-h1, h2, h3, p { margin: 0; padding: 0; }
-a{color:inherit;text-decoration:none}
-
-#gameScreen { display: none; transition: all 0.4s ease-in-out; }
-#gameScreen.active { display: block; }
-
-/* ========== HEADER ========== */
-header{
-  position:sticky;top:0;
-  background:rgba(8,8,8,.92);
-  backdrop-filter: blur(6px);
-  border-bottom:1px solid var(--line);
-  z-index:10;
+/* ===== 헤더 ===== */
+header {
+  position: sticky;
+  top: 0;
+  background: rgba(8, 8, 8, 0.92);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(5px);
+  z-index: 10;
 }
-.container{
-  max-width:1100px;
-  margin:0 auto;
-  padding:14px 18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.logo{display:flex;align-items:center;gap:10px;font-weight:700}
-.logo-img{width:40px;height:40px;margin-right:0;vertical-align:middle}
-.game-nav{display:flex;gap:14px;flex-wrap:wrap}
-.game-nav a{padding:8px 10px;border-radius:12px;color:var(--muted)}
-.game-nav a.active{color:var(--text);border:1px solid var(--line);background:rgba(255,255,255,.04)}
+.logo { display: flex; align-items: center; font-weight: 700; gap: 10px; }
+.logo-img { width: 40px; height: 40px; }
+.game-nav { display: flex; gap: 14px; flex-wrap: wrap; }
+.game-nav a {
+  color: var(--muted);
+  padding: 6px 10px;
+  border-radius: 10px;
+  text-decoration: none;
+}
+.game-nav a.active, .game-nav a:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+}
 
-.header{
-  max-width:1100px;
-  margin:0 auto;
-  padding:24px 18px 6px;
-  text-align:center;
+/* ===== 상단 문구 ===== */
+.header {
+  text-align: center;
+  padding: 24px 18px;
 }
-.header h1{font-size:2.3rem;color:var(--cyan)}
+.header h1 {
+  color: var(--cyan);
+  font-size: 2.3rem;
+}
 #headerDesc {
   margin-top: 10px;
   font-size: 18px;
-  color: white;
+  color: #fff;
   transition: color 0.3s;
 }
 
-/* 🔴 Header Alert Animation */
+/* 🔴 깜빡임 효과 */
 @keyframes alertBlink {
-  0%, 100% {
-    color: #ff5555;
-    text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
-  }
-  50% {
-    color: #ffffff;
-    text-shadow: 0 0 0 rgba(255, 0, 0, 0);
-  }
+  0%, 100% { color: #ff5555; text-shadow: 0 0 10px rgba(255, 0, 0, 0.7); }
+  50% { color: #fff; text-shadow: none; }
 }
-#headerDesc.alert { animation: alertBlink 1.2s infinite ease-in-out; }
+#headerDesc.alert {
+  animation: alertBlink 1.2s infinite ease-in-out;
+}
 
-/* ========== LEVEL SELECT ========== */
+/* ===== 레벨 선택 ===== */
 #levelScreen {
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-wrap: wrap;
   gap: 40px;
-  margin: 26px 0 40px;
+  margin: 20px auto 40px;
+  max-width: 1000px;
   padding: 0 18px;
 }
-.level-grid{display:flex;gap:40px;flex-wrap:wrap;justify-content:center}
-
 .level-btn {
-  width: 220px;
-  height: 280px;
   background: var(--card);
   border: 2px solid var(--cyan);
   border-radius: 20px;
+  padding: 25px 15px;
   text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
+  width: 220px;
+  height: 280px;
   cursor: pointer;
-  padding-top: 25px;
-  color: white;
+  transition: 0.3s;
 }
 .level-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 20px var(--cyan);
 }
-.level-thumbnail { width: 130px; height: auto; margin-bottom: 10px; }
-.level-label { font-size: 26px; color: var(--cyan); font-weight: 700; }
-.level-description { font-size: 16px; color: #888; margin-top: 6px; }
-
-/* ========== GAME LAYOUT ========== */
-.game-screen{max-width:1100px;margin:0 auto;padding:18px}
-.game-content{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:30px;
-  padding:10px;
+.level-thumbnail {
+  width: 130px;
+  height: auto;
+  margin-bottom: 10px;
 }
-.robot-section, .quiz-section{min-width:320px}
+.level-label {
+  color: var(--cyan);
+  font-size: 26px;
+  font-weight: 700;
+}
+.level-description {
+  color: #999;
+  font-size: 15px;
+  margin-top: 6px;
+}
 
-/* ========== ROBOT CONTAINER ========== */
-#robotContainer {
-  position: relative;
+/* ===== 게임 화면 ===== */
+.game-screen {
+  display: none;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 18px;
+}
+.game-screen.active { display: block; }
+
+.game-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+
+/* ===== 로봇 컨테이너 ===== */
+.robot-container {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 20px;
+  padding: 20px;
   text-align: center;
-  margin-top: 10px;
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:18px;
-  width:min(420px, 92vw);
   transition: all 0.4s ease-in-out;
 }
-
-#robotImg, #robotGif {
+.robot-img, .robot-gif {
   width: 280px;
-  transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
 }
-
-#robotGif {
+.robot-gif {
   display: none;
   opacity: 0;
 }
-#robotGif.show {
+.robot-gif.show {
   display: block;
   opacity: 1;
 }
 
-/* BATTERY */
-.battery-display{margin-top:6px}
+/* ===== 배터리 ===== */
+.battery-display {
+  margin-top: 10px;
+  text-align: center;
+}
 .battery-bar {
   width: 250px;
-  height: 10px;
+  height: 12px;
   background: #333;
   border-radius: 10px;
   margin: 10px auto;
   overflow: hidden;
 }
-#batteryFill {
+.battery-fill {
   height: 100%;
+  background: linear-gradient(90deg, #00f2ff, #00ff99);
   width: 3%;
-  background: var(--cyan);
-  transition: width 0.5s;
+  transition: width 0.5s ease;
 }
-.battery-percent{font-weight:700;color:var(--cyan)}
-#batteryPercent { margin-top: 6px; font-size: 16px; }
-
-/* STAGE STYLES */
-.stage1 { filter: brightness(0.6); }
-.stage2 { filter: brightness(1); }
-.stage3 { filter: brightness(1.2) drop-shadow(0 0 10px var(--cyan)); }
-.warning { filter: drop-shadow(0 0 10px red); }
-.full { filter: brightness(1.2) drop-shadow(0 0 15px #00ffcc); }
-
-/* FLASH EFFECT */
-.light-flash { animation: flashLight 0.4s ease-in-out; }
-@keyframes flashLight {
-  0%, 100% { filter: brightness(1.2); }
-  50% { filter: brightness(2); }
+.battery-percent {
+  color: var(--cyan);
+  font-weight: 700;
+  font-size: 0.9rem;
 }
 
-/* ========== QUESTION SECTION ========== */
-.quiz-section{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:18px;
-  width:min(720px, 92vw);
+/* ===== 문제 영역 ===== */
+.quiz-section {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 18px;
+  width: min(720px, 92vw);
 }
-#questionBox { display: block; margin-top: 12px; text-align: center; }
 #questionNum {
   background: var(--cyan);
   color: black;
@@ -199,51 +200,85 @@ header{
   border-radius: 25px;
   font-weight: 600;
 }
-#questionTitle { font-size: 22px; color: var(--cyan); margin-top: 20px; }
-#questionText { font-size: 20px; margin-top: 12px; color: white; }
-
+#questionTitle {
+  color: var(--cyan);
+  font-size: 22px;
+  margin-top: 20px;
+}
+#questionText {
+  color: #fff;
+  font-size: 20px;
+  margin-top: 12px;
+}
 .option-btn {
   background: #222;
   border: 2px solid #444;
-  color: white;
+  color: #fff;
   padding: 12px 20px;
   margin: 12px;
   border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.3s;
 }
-.option-btn:hover { background: #333; }
-.option-btn.correct { background: var(--good); border-color: var(--good); color: black; }
-.option-btn.wrong { background: var(--bad); border-color: var(--bad); }
+.option-btn:hover {
+  background: #333;
+  border-color: var(--cyan);
+}
+.option-btn.correct {
+  background: var(--good);
+  color: #000;
+  border-color: var(--good);
+}
+.option-btn.wrong {
+  background: var(--bad);
+  border-color: var(--bad);
+}
 
-button { border: none; outline: none; }
-
-/* COMPLETION SCREEN */
-#completionScreen {
+/* ===== 완료 화면 ===== */
+.completion-screen {
   display: none;
   text-align: center;
-  margin-top: 18px;
   opacity: 0;
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.6s ease-in-out;
 }
-#completionScreen.show { display: block; opacity: 1; }
-
+.completion-screen.show {
+  display: block;
+  opacity: 1;
+}
+.completion-screen h2 {
+  color: var(--good);
+  font-size: 1.8rem;
+}
 #finalScore {
-  font-size: 22px;
+  font-size: 1.1rem;
   color: var(--cyan);
   margin-top: 15px;
 }
-
-.button-group{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:12px}
-.restart-btn,.home-btn{
-  background:#222;
-  color:#fff;
-  border:1px solid #444;
-  border-radius:12px;
-  padding:10px 14px;
-  cursor:pointer;
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
 }
-.restart-btn:hover,.home-btn:hover{border-color:var(--cyan)}
+.restart-btn, .home-btn {
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.restart-btn:hover, .home-btn:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
 
-
+/* ===== 반응형 ===== */
+@media (max-width: 768px) {
+  .level-btn { width: 160px; height: 220px; }
+  .level-thumbnail { width: 100px; }
+  .robot-img, .robot-gif { width: 220px; }
+  .game-content { flex-direction: column; align-items: center; }
+}
