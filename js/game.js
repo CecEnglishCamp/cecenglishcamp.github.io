@@ -1,20 +1,22 @@
 /* =========================================
 File: js/game.js
-(Fixed: screen toggle, Q counter, battery gain, retries, goHome, gif path)
+Grammar Game Final Version
 ========================================= */
-console.log("✅ game.js loaded successfully!");
 
+console.log("✅ Grammar Game JS loaded successfully!");
+
+// 기본 변수
 let currentLevel = "A1";
 let currentQuestion = 0;
 let battery = 3;
 let answered = false;
-
 let questions = [];
 let missionStates = [];
 
+// 초기 배터리
 const START_BATTERY = 3;
 
-/* ======== 예시 문제셋 (원본 유지 + 필요시 추가) ======== */
+/* ======== 문제 세트 ======== */
 const questionsA1 = [
   { title: "Simple Present", text: "I ___ to school every day.", options: ["goes", "go", "going"], correct: 1 },
 ];
@@ -28,30 +30,23 @@ const questionsB2 = [
   { title: "Mixed Conditional", text: "Had I known, I ___ you.", options: ["would contact", "would have contacted", "will contact"], correct: 1 },
 ];
 
-function byId(id) {
-  return document.getElementById(id);
+/* ======== DOM 헬퍼 ======== */
+const byId = (id) => document.getElementById(id);
+const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+
+/* ======== 로봇 경로 설정 ======== */
+function getRobotImage(level) {
+  return (level === "B1" || level === "B2")
+    ? "./assets/img/robo_jump.png"
+    : "./assets/img/robo2.png";
+}
+function getRobotGif(level) {
+  return (level === "B1" || level === "B2")
+    ? "./assets/videos/robo_jump.gif"
+    : "./assets/img/robo.gif";
 }
 
-function clamp(n, min, max) {
-  return Math.max(min, Math.min(max, n));
-}
-
-function setBattery(value) {
-  battery = clamp(value, 0, 100);
-  updateRobot();
-}
-
-function getLevelQuestions(level) {
-  if (level === "A1") return questionsA1;
-  if (level === "A2") return questionsA2;
-  if (level === "B1") return questionsB1;
-  return questionsB2;
-}
-
-function getRobotImageForLevel(level) {
-  return (level === "B1" || level === "B2") ? "./assets/img/robo_jump.png" : "./assets/img/robo2.png";
-}
-
+/* ======== 음성 ======== */
 function speak(text) {
   if (!("speechSynthesis" in window)) return;
   const utter = new SpeechSynthesisUtterance(text);
@@ -65,35 +60,28 @@ function startGame(level) {
   currentLevel = level;
   currentQuestion = 0;
   answered = false;
+  battery = START_BATTERY;
 
-  questions = getLevelQuestions(level);
-  if (!questions || questions.length === 0) {
-    console.error("❌ questions is empty for level:", level);
-    return;
-  }
+  // 문제 선택
+  if (level === "A1") questions = questionsA1;
+  else if (level === "A2") questions = questionsA2;
+  else if (level === "B1") questions = questionsB1;
+  else questions = questionsB2;
 
   missionStates = questions.map((_, i) => ({
     id: i,
     completed: false,
     triedOnce: false,
-    usedBaseCamp: false,
   }));
 
-  const levelScreen = byId("levelScreen");
+  // 화면 전환
+  byId("levelScreen").style.display = "none";
   const gameScreen = byId("gameScreen");
-  const questionBox = byId("questionBox");
-  const completionScreen = byId("completionScreen");
-
-  if (!levelScreen || !gameScreen || !questionBox || !completionScreen) {
-    console.error("❌ 필수 DOM 요소를 찾지 못했습니다. (id 확인 필요)");
-    return;
-  }
-
-  // ✅ 핵심: inline style="display:none" 깨기
-  levelScreen.style.display = "none";
   gameScreen.style.display = "block";
   gameScreen.classList.add("active");
 
+  const questionBox = byId("questionBox");
+  const completionScreen = byId("completionScreen");
   questionBox.style.display = "block";
   completionScreen.classList.remove("show");
 
@@ -101,26 +89,17 @@ function startGame(level) {
   const robotGif = byId("robotGif");
   const robotContainer = byId("robotContainer");
 
-  if (!robotImg || !robotGif || !robotContainer) {
-    console.error("❌ 로봇 DOM 요소를 찾지 못했습니다.");
-    return;
-  }
-
-  robotImg.src = getRobotImageForLevel(currentLevel);
-  robotImg.style.display = "block";
-  robotImg.style.opacity = "1";
-
+  // 초기 로봇 세팅
+  robotImg.src = getRobotImage(currentLevel);
   robotGif.style.display = "none";
   robotGif.classList.remove("show");
-
   robotContainer.classList.remove("stage2-vibrate");
-  robotImg.classList.add("stage1");
-  robotImg.classList.remove("stage2", "stage3", "warning", "full", "light-flash");
 
+  // “급해요!” 문구 깜빡임 시작
   const headerDesc = byId("headerDesc");
   if (headerDesc) headerDesc.classList.add("alert");
 
-  setBattery(START_BATTERY);
+  updateBattery(START_BATTERY);
   displayQuestion();
 }
 
@@ -132,29 +111,19 @@ function displayQuestion() {
     return;
   }
 
-  const questionNum = byId("questionNum");
-  const questionTitle = byId("questionTitle");
-  const questionText = byId("questionText");
-  const optionsContainer = byId("options");
+  byId("questionNum").textContent = `Q${currentQuestion + 1}/${questions.length}`;
+  byId("questionTitle").textContent = q.title;
+  byId("questionText").textContent = q.text;
 
-  if (!questionNum || !questionTitle || !questionText || !optionsContainer) {
-    console.error("❌ 문제 표시 DOM 요소를 찾지 못했습니다.");
-    return;
-  }
+  const options = byId("options");
+  options.innerHTML = "";
 
-  questionNum.textContent = `Q${currentQuestion + 1}/${questions.length}`;
-  questionTitle.textContent = q.title;
-  questionText.textContent = q.text;
-
-  optionsContainer.innerHTML = "";
-
-  q.options.forEach((option, idx) => {
+  q.options.forEach((opt, idx) => {
     const btn = document.createElement("button");
     btn.className = "option-btn";
-    btn.type = "button";
-    btn.textContent = option;
+    btn.textContent = opt;
     btn.onclick = () => selectAnswer(idx);
-    optionsContainer.appendChild(btn);
+    options.appendChild(btn);
   });
 
   answered = false;
@@ -163,148 +132,106 @@ function displayQuestion() {
 /* ======== 정답 선택 ======== */
 function selectAnswer(selectedIdx) {
   if (answered) return;
-
-  const q = questions[currentQuestion];
-  if (!q) return;
-
   answered = true;
 
+  const q = questions[currentQuestion];
   const buttons = document.querySelectorAll(".option-btn");
-  const state = missionStates[currentQuestion];
 
-  if (!buttons[selectedIdx] || !buttons[q.correct]) {
-    console.error("❌ option button index mismatch");
-    answered = false;
-    return;
-  }
+  const correctIdx = q.correct;
+  const isCorrect = selectedIdx === correctIdx;
 
-  // 클릭할 때마다 표시 초기화(재도전 대응)
-  buttons.forEach((b) => b.classList.remove("correct", "wrong"));
-
-  const isCorrect = selectedIdx === q.correct;
   buttons[selectedIdx].classList.add(isCorrect ? "correct" : "wrong");
-  buttons[q.correct].classList.add("correct");
+  buttons[correctIdx].classList.add("correct");
 
   if (isCorrect) {
-    state.completed = true;
+    missionStates[currentQuestion].completed = true;
 
-    // ✅ 배터리: 문제 수에 따라 고르게 증가 (1문제면 바로 100%)
     const gain = Math.ceil((100 - START_BATTERY) / questions.length);
-    setBattery(battery + gain);
+    updateBattery(battery + gain);
 
     setTimeout(() => {
-      currentQuestion += 1;
+      currentQuestion++;
       if (currentQuestion >= questions.length) completeGame();
       else displayQuestion();
-    }, 650);
+    }, 800);
   } else {
     speak("틀렸어요! 다시 도전해봐요!");
-    answered = false; // 재도전 허용
+    setTimeout(() => { answered = false; }, 1000);
   }
 }
 
-/* ======== 로봇 상태 갱신 ======== */
-function updateRobot() {
+/* ======== 배터리 갱신 ======== */
+function updateBattery(value) {
+  battery = clamp(value, 0, 100);
   const percent = byId("batteryPercent");
   const fill = byId("batteryFill");
-  if (!percent || !fill) return;
-
-  percent.textContent = String(battery);
+  percent.textContent = battery;
   fill.style.width = `${battery}%`;
 
-  const headerDesc = byId("headerDesc");
   const robotImg = byId("robotImg");
-
-  if (headerDesc) headerDesc.classList.toggle("alert", battery <= 10);
-  if (robotImg) {
-    robotImg.classList.toggle("warning", battery <= 10);
-    robotImg.classList.toggle("full", battery >= 100);
-  }
+  if (battery >= 100) robotImg.classList.add("full");
+  else robotImg.classList.remove("full");
 }
 
 /* ======== 게임 완료 ======== */
 function completeGame() {
+  updateBattery(100);
+
   const robotImg = byId("robotImg");
   const robotGif = byId("robotGif");
   const headerDesc = byId("headerDesc");
-
-  const questionBox = byId("questionBox");
   const completionScreen = byId("completionScreen");
+  const questionBox = byId("questionBox");
   const finalScore = byId("finalScore");
 
-  if (!robotImg || !robotGif || !questionBox || !completionScreen || !finalScore) {
-    console.error("❌ 완료 화면 DOM 요소를 찾지 못했습니다.");
-    return;
-  }
-
-  setBattery(100);
-
-  // ✅ B1/B2는 assets/videos/robo_jump.gif (스크린샷 기준)
-  const bGif = "./assets/videos/robo_jump.gif";
-  const aGif = "./assets/img/robo.gif";
-
-  robotGif.src = (currentLevel === "B1" || currentLevel === "B2") ? bGif : aGif;
-  robotGif.onerror = () => { robotGif.src = aGif; };
+  // 로봇 교체
+  robotGif.src = getRobotGif(currentLevel);
+  robotGif.onerror = () => { robotGif.src = "./assets/img/robo.gif"; };
 
   robotImg.style.display = "none";
   robotGif.style.display = "block";
   setTimeout(() => robotGif.classList.add("show"), 10);
 
+  // 문구 정지
   if (headerDesc) headerDesc.classList.remove("alert");
 
+  // 화면 전환
   questionBox.style.display = "none";
   completionScreen.classList.add("show");
-
   finalScore.textContent = "최종 배터리: 100% ⚡ 완벽해! 넌 진짜 최고야!";
+
   speak("축하해! 고마워! 나를 구해줘서!");
 }
 
-/* ======== 기타 ======== */
+/* ======== 게임 리셋 ======== */
 function resetGame() {
-  const levelScreen = byId("levelScreen");
+  byId("levelScreen").style.display = "flex";
   const gameScreen = byId("gameScreen");
-  const questionBox = byId("questionBox");
-  const completionScreen = byId("completionScreen");
+  gameScreen.classList.remove("active");
+  gameScreen.style.display = "none";
 
   const headerDesc = byId("headerDesc");
-  const robotImg = byId("robotImg");
-  const robotGif = byId("robotGif");
-
-  if (levelScreen) levelScreen.style.display = "flex";
-  if (gameScreen) {
-    gameScreen.classList.remove("active");
-    gameScreen.style.display = "none";
-  }
-  if (questionBox) questionBox.style.display = "block";
-  if (completionScreen) completionScreen.classList.remove("show");
-
   if (headerDesc) headerDesc.classList.remove("alert");
 
-  if (robotGif) {
-    robotGif.classList.remove("show");
-    robotGif.style.display = "none";
-  }
-  if (robotImg) {
-    robotImg.style.display = "block";
-    robotImg.style.opacity = "1";
-    robotImg.src = "./assets/img/robo2.png";
-    robotImg.classList.remove("warning", "full", "light-flash");
-    robotImg.classList.add("stage1");
-  }
+  const robotImg = byId("robotImg");
+  const robotGif = byId("robotGif");
+  robotGif.classList.remove("show");
+  robotGif.style.display = "none";
+  robotImg.style.display = "block";
+  robotImg.src = "./assets/img/robo2.png";
 
   currentQuestion = 0;
   answered = false;
-  setBattery(START_BATTERY);
-
-  const options = byId("options");
-  if (options) options.innerHTML = "";
+  updateBattery(START_BATTERY);
+  byId("options").innerHTML = "";
 }
 
+/* ======== 홈 이동 ======== */
 function goHome() {
   window.location.href = "index.html";
 }
 
-// ✅ inline onclick을 위한 전역 노출
+/* ======== 전역 등록 ======== */
 window.startGame = startGame;
 window.resetGame = resetGame;
 window.goHome = goHome;
