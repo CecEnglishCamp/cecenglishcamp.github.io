@@ -1,237 +1,339 @@
 /* =========================================
 File: js/game.js
-Grammar Game Final Version
+- Left image + right quiz (DOM ids match index.html)
+- 10 questions per level
 ========================================= */
+(() => {
+  "use strict";
 
-console.log("✅ Grammar Game JS loaded successfully!");
+  console.log("✅ game.js loaded successfully!");
 
-// 기본 변수
-let currentLevel = "A1";
-let currentQuestion = 0;
-let battery = 3;
-let answered = false;
-let questions = [];
-let missionStates = [];
+  const START_BATTERY = 3;
+  const QUESTIONS_PER_LEVEL = 10;
 
-// 초기 배터리
-const START_BATTERY = 3;
+  let currentLevel = "A1";
+  let currentQuestionIndex = 0;
+  let battery = START_BATTERY;
+  let answeredLock = false;
 
-/* ======== 문제 세트 ======== */
-const questionsA1 = [
-  { title: "Simple Present", text: "I ___ to school every day.", options: ["goes", "go", "going"], correct: 1 },
-];
-const questionsA2 = [
-  { title: "Past Continuous", text: "I ___ when he called.", options: ["sleep", "was sleeping", "slept"], correct: 1 },
-];
-const questionsB1 = [
-  { title: "Complex Sentence", text: "Although tired, she ___.", options: ["continue", "continued", "continues"], correct: 1 },
-];
-const questionsB2 = [
-  { title: "Mixed Conditional", text: "Had I known, I ___ you.", options: ["would contact", "would have contacted", "will contact"], correct: 1 },
-];
+  /** @type {Array<{title:string,text:string,options:string[],correct:number}>} */
+  let activeQuestions = [];
+  let correctCount = 0;
 
-/* ======== DOM 헬퍼 ======== */
-const byId = (id) => document.getElementById(id);
-const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+  const QUESTION_BANK = {
+    A1: [
+      { title: "Simple Present", text: "I ___ to school every day.", options: ["goes", "go", "going"], correct: 1 },
+      { title: "Be Verb", text: "She ___ happy.", options: ["am", "is", "are"], correct: 1 },
+      { title: "Articles", text: "This is ___ apple.", options: ["a", "an", "the"], correct: 1 },
+      { title: "Prepositions", text: "The cat is ___ the table.", options: ["in", "on", "at"], correct: 1 },
+      { title: "Plural", text: "Two ___ are on the desk.", options: ["book", "books", "bookes"], correct: 1 },
+      { title: "This/That", text: "___ is my bag (near).", options: ["This", "That", "Those"], correct: 0 },
+      { title: "Can", text: "I ___ swim.", options: ["can", "cans", "can'ts"], correct: 0 },
+      { title: "Have", text: "They ___ a dog.", options: ["has", "have", "having"], correct: 1 },
+      { title: "Adverbs", text: "He runs ___.", options: ["quick", "quickly", "quicks"], correct: 1 },
+      { title: "Possessive", text: "This is ___ pen.", options: ["I", "me", "my"], correct: 2 },
+    ],
+    A2: [
+      { title: "Past Simple", text: "We ___ soccer yesterday.", options: ["play", "played", "playing"], correct: 1 },
+      { title: "Past Continuous", text: "I ___ when he called.", options: ["sleep", "was sleeping", "slept"], correct: 1 },
+      { title: "Future", text: "I ___ visit tomorrow.", options: ["will", "was", "did"], correct: 0 },
+      { title: "Comparatives", text: "Tom is ___ than Jim.", options: ["tall", "taller", "tallest"], correct: 1 },
+      { title: "Much/Many", text: "How ___ apples?", options: ["much", "many", "more"], correct: 1 },
+      { title: "Some/Any", text: "Do you have ___ water?", options: ["some", "any", "many"], correct: 1 },
+      { title: "Present Perfect", text: "I have ___ my homework.", options: ["finish", "finished", "finishing"], correct: 1 },
+      { title: "Modal", text: "You ___ wear a helmet.", options: ["should", "would", "used"], correct: 0 },
+      { title: "Gerund", text: "I enjoy ___ music.", options: ["listen", "to listen", "listening"], correct: 2 },
+      { title: "Because", text: "I stayed home ___ it rained.", options: ["because", "but", "so"], correct: 0 },
+    ],
+    B1: [
+      { title: "Relative Clause", text: "The man ___ lives next door is kind.", options: ["who", "where", "when"], correct: 0 },
+      { title: "Present Perfect", text: "She has ___ to Japan.", options: ["go", "went", "been"], correct: 2 },
+      { title: "Complex Sentence", text: "Although tired, she ___.", options: ["continue", "continued", "continues"], correct: 1 },
+      { title: "Passive", text: "The room ___ every day.", options: ["cleans", "is cleaned", "cleaned"], correct: 1 },
+      { title: "Reported", text: "He said he ___ busy.", options: ["is", "was", "be"], correct: 1 },
+      { title: "Conditionals", text: "If it rains, we ___ inside.", options: ["stay", "stayed", "would stay"], correct: 0 },
+      { title: "Quantifiers", text: "There are ___ people here.", options: ["a little", "a few", "fewest"], correct: 1 },
+      { title: "Infinitive", text: "I decided ___ early.", options: ["leave", "to leave", "leaving"], correct: 1 },
+      { title: "Linking", text: "I was tired, ___ I went to bed.", options: ["so", "because", "although"], correct: 0 },
+      { title: "Comparative", text: "This is ___ interesting than that.", options: ["more", "most", "much"], correct: 0 },
+    ],
+    B2: [
+      { title: "Mixed Conditional", text: "Had I known, I ___ you.", options: ["would contact", "would have contacted", "will contact"], correct: 1 },
+      { title: "Inversion", text: "Rarely ___ such a view.", options: ["I have seen", "have I seen", "I saw"], correct: 1 },
+      { title: "Passive", text: "The cake ___ by my mom.", options: ["was made", "made", "is make"], correct: 0 },
+      { title: "Reported", text: "He said he ___ tired.", options: ["is", "was", "be"], correct: 1 },
+      { title: "Conditionals", text: "If I were you, I ___ apologize.", options: ["will", "would", "did"], correct: 1 },
+      { title: "Perfect Modal", text: "You ___ have told me.", options: ["should", "should to", "should have"], correct: 2 },
+      { title: "Subjunctive", text: "I suggest that he ___ earlier.", options: ["leave", "leaves", "left"], correct: 0 },
+      { title: "Concession", text: "___ he was late, he apologized.", options: ["Despite", "Although", "Because"], correct: 1 },
+      { title: "Causative", text: "I had my phone ___", options: ["repair", "repaired", "repairing"], correct: 1 },
+      { title: "Ellipsis", text: "I can play guitar and so ___ my brother.", options: ["can", "does", "did"], correct: 0 },
+    ],
+  };
 
-/* ======== 로봇 경로 설정 ======== */
-function getRobotImage(level) {
-  return (level === "B1" || level === "B2")
-    ? "./assets/img/robo_jump.png"
-    : "./assets/img/robo2.png";
-}
-function getRobotGif(level) {
-  return (level === "B1" || level === "B2")
-    ? "./assets/videos/robo_jump.gif"
-    : "./assets/img/robo.gif";
-}
-
-/* ======== 음성 ======== */
-function speak(text) {
-  if (!("speechSynthesis" in window)) return;
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = "ko-KR";
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(utter);
-}
-
-/* ======== 게임 시작 ======== */
-function startGame(level) {
-  currentLevel = level;
-  currentQuestion = 0;
-  answered = false;
-  battery = START_BATTERY;
-
-  // 문제 선택
-  if (level === "A1") questions = questionsA1;
-  else if (level === "A2") questions = questionsA2;
-  else if (level === "B1") questions = questionsB1;
-  else questions = questionsB2;
-
-  missionStates = questions.map((_, i) => ({
-    id: i,
-    completed: false,
-    triedOnce: false,
-  }));
-
-  // 화면 전환
-  byId("levelScreen").style.display = "none";
-  const gameScreen = byId("gameScreen");
-  gameScreen.style.display = "block";
-  gameScreen.classList.add("active");
-
-  const questionBox = byId("questionBox");
-  const completionScreen = byId("completionScreen");
-  questionBox.style.display = "block";
-  completionScreen.classList.remove("show");
-
-  const robotImg = byId("robotImg");
-  const robotGif = byId("robotGif");
-  const robotContainer = byId("robotContainer");
-
-  // 초기 로봇 세팅
-  robotImg.src = getRobotImage(currentLevel);
-  robotGif.style.display = "none";
-  robotGif.classList.remove("show");
-  robotContainer.classList.remove("stage2-vibrate");
-
-  // “급해요!” 문구 깜빡임 시작
-  const headerDesc = byId("headerDesc");
-  if (headerDesc) headerDesc.classList.add("alert");
-
-  updateBattery(START_BATTERY);
-  displayQuestion();
-}
-
-/* ======== 문제 표시 ======== */
-function displayQuestion() {
-  const q = questions[currentQuestion];
-  if (!q) {
-    completeGame();
-    return;
+  function byId(id) {
+    return /** @type {HTMLElement|null} */ (document.getElementById(id));
   }
 
-  byId("questionNum").textContent = `Q${currentQuestion + 1}/${questions.length}`;
-  byId("questionTitle").textContent = q.title;
-  byId("questionText").textContent = q.text;
+  function clamp(n, min, max) {
+    return Math.max(min, Math.min(max, n));
+  }
 
-  const options = byId("options");
-  options.innerHTML = "";
+  function setBattery(value) {
+    battery = clamp(value, 0, 100);
 
-  q.options.forEach((opt, idx) => {
-    const btn = document.createElement("button");
-    btn.className = "option-btn";
-    btn.textContent = opt;
-    btn.onclick = () => selectAnswer(idx);
-    options.appendChild(btn);
-  });
+    const percent = byId("batteryPercent");
+    const fill = byId("batteryFill");
+    if (percent) percent.textContent = String(battery);
+    if (fill) fill.style.width = `${battery}%`;
 
-  answered = false;
-}
+    const headerDesc = byId("headerDesc");
+    if (headerDesc) headerDesc.classList.toggle("alert", battery <= 10);
 
-/* ======== 정답 선택 ======== */
-function selectAnswer(selectedIdx) {
-  if (answered) return;
-  answered = true;
+    const robotImg = /** @type {HTMLImageElement|null} */ (byId("robotImg"));
+    if (robotImg) {
+      robotImg.classList.toggle("warning", battery <= 10);
+      robotImg.classList.toggle("full", battery >= 100);
+    }
+  }
 
-  const q = questions[currentQuestion];
-  const buttons = document.querySelectorAll(".option-btn");
+  function getRobotImageForLevel(level) {
+    return (level === "B1" || level === "B2") ? "./assets/img/robo_jump.png" : "./assets/img/robo2.png";
+  }
 
-  const correctIdx = q.correct;
-  const isCorrect = selectedIdx === correctIdx;
+  function getCompletionGifForLevel(level) {
+    // your repo has assets/videos/robo_jump.gif
+    return (level === "B1" || level === "B2") ? "./assets/videos/robo_jump.gif" : "./assets/img/robo.gif";
+  }
 
-  buttons[selectedIdx].classList.add(isCorrect ? "correct" : "wrong");
-  buttons[correctIdx].classList.add("correct");
+  function speak(text) {
+    if (!("speechSynthesis" in window)) return;
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "ko-KR";
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utter);
+  }
 
-  if (isCorrect) {
-    missionStates[currentQuestion].completed = true;
+  function showGameScreen() {
+    const levelScreen = byId("levelScreen");
+    const gameScreen = byId("gameScreen");
+    if (levelScreen) levelScreen.style.display = "none";
+    if (gameScreen) {
+      gameScreen.style.display = "block";
+      gameScreen.classList.add("active");
+    }
+  }
 
-    const gain = Math.ceil((100 - START_BATTERY) / questions.length);
-    updateBattery(battery + gain);
+  function showLevelScreen() {
+    const levelScreen = byId("levelScreen");
+    const gameScreen = byId("gameScreen");
+    if (levelScreen) levelScreen.style.display = "flex";
+    if (gameScreen) {
+      gameScreen.classList.remove("active");
+      gameScreen.style.display = "none";
+    }
+  }
 
-    setTimeout(() => {
-      currentQuestion++;
-      if (currentQuestion >= questions.length) completeGame();
-      else displayQuestion();
-    }, 800);
-  } else {
+  function setRobotToStatic() {
+    const robotImg = /** @type {HTMLImageElement|null} */ (byId("robotImg"));
+    const robotGif = /** @type {HTMLImageElement|null} */ (byId("robotGif"));
+    if (!robotImg || !robotGif) return;
+
+    robotImg.src = getRobotImageForLevel(currentLevel);
+    robotImg.style.display = "block";
+    robotImg.style.opacity = "1";
+    robotImg.classList.remove("light-flash");
+
+    robotGif.classList.remove("show");
+    robotGif.style.display = "none";
+    robotGif.style.opacity = "0";
+  }
+
+  function renderQuestion() {
+    const q = activeQuestions[currentQuestionIndex];
+    if (!q) return finishGame();
+
+    const questionNum = byId("questionNum");
+    const questionTitle = byId("questionTitle");
+    const questionText = byId("questionText");
+    const options = byId("options");
+
+    if (!questionNum || !questionTitle || !questionText || !options) return;
+
+    questionNum.textContent = `Q${currentQuestionIndex + 1}/${QUESTIONS_PER_LEVEL}`;
+    questionTitle.textContent = q.title;
+    questionText.textContent = q.text;
+
+    options.innerHTML = "";
+    answeredLock = false;
+
+    q.options.forEach((opt, idx) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "option-btn";
+      btn.textContent = opt;
+      btn.onclick = () => selectAnswer(idx);
+      options.appendChild(btn);
+    });
+
+    const questionBox = byId("questionBox");
+    const completion = byId("completionScreen");
+    if (questionBox) questionBox.style.display = "block";
+    if (completion) completion.classList.remove("show");
+  }
+
+  function lockOptions() {
+    const options = byId("options");
+    if (!options) return;
+    options.querySelectorAll("button").forEach((b) => b.setAttribute("disabled", "true"));
+  }
+
+  function markOptions(correctIdx, selectedIdx) {
+    const buttons = document.querySelectorAll(".option-btn");
+    buttons.forEach((b, idx) => {
+      b.classList.remove("correct", "wrong");
+      if (idx === correctIdx) b.classList.add("correct");
+      if (idx === selectedIdx && selectedIdx !== correctIdx) b.classList.add("wrong");
+    });
+  }
+
+  function flashRobot() {
+    const robotImg = byId("robotImg");
+    if (!robotImg) return;
+    robotImg.classList.add("light-flash");
+    window.setTimeout(() => robotImg.classList.remove("light-flash"), 380);
+  }
+
+  function selectAnswer(selectedIdx) {
+    if (answeredLock) return;
+    answeredLock = true;
+
+    const q = activeQuestions[currentQuestionIndex];
+    if (!q) return;
+
+    lockOptions();
+    markOptions(q.correct, selectedIdx);
+
+    const isCorrect = selectedIdx === q.correct;
+
+    if (isCorrect) {
+      correctCount += 1;
+
+      // 3% -> 100%를 10문제에 나눠 충전
+      const gain = Math.ceil((100 - START_BATTERY) / QUESTIONS_PER_LEVEL); // 10
+      setBattery(battery + gain);
+      flashRobot();
+
+      window.setTimeout(() => {
+        currentQuestionIndex += 1;
+        if (currentQuestionIndex >= QUESTIONS_PER_LEVEL) finishGame();
+        else renderQuestion();
+      }, 650);
+      return;
+    }
+
     speak("틀렸어요! 다시 도전해봐요!");
-    setTimeout(() => { answered = false; }, 1000);
+    window.setTimeout(() => {
+      answeredLock = false;
+      const options = byId("options");
+      if (!options) return;
+      options.querySelectorAll("button").forEach((b) => b.removeAttribute("disabled"));
+    }, 450);
   }
-}
 
-/* ======== 배터리 갱신 ======== */
-function updateBattery(value) {
-  battery = clamp(value, 0, 100);
-  const percent = byId("batteryPercent");
-  const fill = byId("batteryFill");
-  percent.textContent = battery;
-  fill.style.width = `${battery}%`;
+  function finishGame() {
+    setBattery(100);
 
-  const robotImg = byId("robotImg");
-  if (battery >= 100) robotImg.classList.add("full");
-  else robotImg.classList.remove("full");
-}
+    const questionBox = byId("questionBox");
+    const completion = byId("completionScreen");
+    const finalScore = byId("finalScore");
 
-/* ======== 게임 완료 ======== */
-function completeGame() {
-  updateBattery(100);
+    if (questionBox) questionBox.style.display = "none";
+    if (completion) completion.classList.add("show");
+    if (finalScore) finalScore.textContent = `정답: ${correctCount} / ${QUESTIONS_PER_LEVEL}   (배터리 100% ⚡)`;
 
-  const robotImg = byId("robotImg");
-  const robotGif = byId("robotGif");
-  const headerDesc = byId("headerDesc");
-  const completionScreen = byId("completionScreen");
-  const questionBox = byId("questionBox");
-  const finalScore = byId("finalScore");
+    const robotImg = /** @type {HTMLImageElement|null} */ (byId("robotImg"));
+    const robotGif = /** @type {HTMLImageElement|null} */ (byId("robotGif"));
+    if (robotImg && robotGif) {
+      robotGif.src = getCompletionGifForLevel(currentLevel);
+      robotGif.onerror = () => { robotGif.src = "./assets/img/robo.gif"; };
 
-  // 로봇 교체
-  robotGif.src = getRobotGif(currentLevel);
-  robotGif.onerror = () => { robotGif.src = "./assets/img/robo.gif"; };
+      robotImg.style.display = "none";
+      robotGif.style.display = "block";
+      window.setTimeout(() => robotGif.classList.add("show"), 10);
+    }
 
-  robotImg.style.display = "none";
-  robotGif.style.display = "block";
-  setTimeout(() => robotGif.classList.add("show"), 10);
+    const headerDesc = byId("headerDesc");
+    if (headerDesc) headerDesc.classList.remove("alert");
 
-  // 문구 정지
-  if (headerDesc) headerDesc.classList.remove("alert");
+    speak("축하해! 고마워! 나를 구해줘서!");
+  }
 
-  // 화면 전환
-  questionBox.style.display = "none";
-  completionScreen.classList.add("show");
-  finalScore.textContent = "최종 배터리: 100% ⚡ 완벽해! 넌 진짜 최고야!";
+  function startGame(level) {
+    currentLevel = level;
 
-  speak("축하해! 고마워! 나를 구해줘서!");
-}
+    const bank = QUESTION_BANK[level];
+    if (!bank || bank.length < QUESTIONS_PER_LEVEL) {
+      console.error("❌ 해당 레벨 문제(10개)가 부족합니다:", level);
+      return;
+    }
 
-/* ======== 게임 리셋 ======== */
-function resetGame() {
-  byId("levelScreen").style.display = "flex";
-  const gameScreen = byId("gameScreen");
-  gameScreen.classList.remove("active");
-  gameScreen.style.display = "none";
+    activeQuestions = bank.slice(0, QUESTIONS_PER_LEVEL);
+    currentQuestionIndex = 0;
+    correctCount = 0;
 
-  const headerDesc = byId("headerDesc");
-  if (headerDesc) headerDesc.classList.remove("alert");
+    showGameScreen();
+    setRobotToStatic();
+    setBattery(START_BATTERY);
 
-  const robotImg = byId("robotImg");
-  const robotGif = byId("robotGif");
-  robotGif.classList.remove("show");
-  robotGif.style.display = "none";
-  robotImg.style.display = "block";
-  robotImg.src = "./assets/img/robo2.png";
+    const headerDesc = byId("headerDesc");
+    if (headerDesc) headerDesc.classList.add("alert");
 
-  currentQuestion = 0;
-  answered = false;
-  updateBattery(START_BATTERY);
-  byId("options").innerHTML = "";
-}
+    renderQuestion();
+  }
 
-/* ======== 홈 이동 ======== */
-function goHome() {
-  window.location.href = "index.html";
-}
+  function resetGame() {
+    showLevelScreen();
 
-/* ======== 전역 등록 ======== */
-window.startGame = startGame;
-window.resetGame = resetGame;
-window.goHome = goHome;
+    const completion = byId("completionScreen");
+    if (completion) completion.classList.remove("show");
+
+    const headerDesc = byId("headerDesc");
+    if (headerDesc) headerDesc.classList.remove("alert");
+
+    activeQuestions = [];
+    currentQuestionIndex = 0;
+    correctCount = 0;
+    answeredLock = false;
+
+    setBattery(START_BATTERY);
+
+    const options = byId("options");
+    if (options) options.innerHTML = "";
+
+    const robotImg = /** @type {HTMLImageElement|null} */ (byId("robotImg"));
+    const robotGif = /** @type {HTMLImageElement|null} */ (byId("robotGif"));
+    if (robotGif) {
+      robotGif.classList.remove("show");
+      robotGif.style.display = "none";
+    }
+    if (robotImg) {
+      robotImg.style.display = "block";
+      robotImg.src = "./assets/img/robo2.png";
+      robotImg.classList.remove("warning", "full");
+    }
+  }
+
+  function goHome() {
+    window.location.href = "index.html";
+  }
+
+  // inline onclick 유지
+  window.startGame = startGame;
+  window.resetGame = resetGame;
+  window.goHome = goHome;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    setBattery(START_BATTERY);
+  });
+})();
