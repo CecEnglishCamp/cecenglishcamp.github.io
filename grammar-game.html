@@ -1,3 +1,6 @@
+<!-- =========================================================
+File: index.html
+========================================================= -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -11,13 +14,15 @@
 </head>
 
 <body>
-  <header>
-    <div class="container">
-      <a href="index.html" class="logo">
-        <img src="./assets/img/robo2.png" alt="CEC Logo" class="logo-img">
-        <strong>CEC ENGLISH CAMP</strong>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a href="index.html" class="brand">
+        <img src="./assets/img/robo2.png" alt="CEC Logo" class="brand__logo">
+        <span class="brand__name">CEC ENGLISH CAMP</span>
       </a>
-      <nav class="game-nav">
+
+      <nav class="nav">
+        <a href="index.html">Home</a>
         <a href="index.html" class="active">Game</a>
         <a href="#about">About</a>
         <a href="#register">Register</a>
@@ -25,81 +30,78 @@
     </div>
   </header>
 
-  <section class="header">
-    <h1>🤖 Grammar Game</h1>
-    <p id="headerDesc">급해요! Robo의 배터리가 3%밖에 안 남았어요! 문제를 맞춰서 다시 100%로 충전시켜 주세요!</p>
+  <section class="title">
+    <h1><span class="title__emoji">🤖</span> Grammar Game</h1>
+    <p class="title__sub">레벨을 선택해서 게임을 시작하세요!</p>
+    <p id="headerDesc" class="title__desc">급해요! Robo의 배터리가 3%밖에 안 남았어요! 문제를 맞춰서 다시 100%로 충전시켜 주세요!</p>
   </section>
 
-  <!-- LEVEL SELECT -->
+  <!-- LEVEL SELECT (A1/A2 only) -->
   <section id="levelScreen" class="level-screen">
     <div class="level-grid">
-      <button class="level-btn" onclick="startGame('A1')">
-        <img src="./assets/img/robo2.png" alt="A1" class="level-thumbnail">
-        <div class="level-label">A1</div>
-        <div class="level-description">초급</div>
+      <button class="level-card" type="button" onclick="startGame('A1')">
+        <img src="./assets/img/robo2.png" alt="A1" />
+        <h3>A1</h3>
+        <p>초급</p>
       </button>
 
-      <button class="level-btn" onclick="startGame('A2')">
-        <img src="./assets/img/robo2.png" alt="A2" class="level-thumbnail">
-        <div class="level-label">A2</div>
-        <div class="level-description">초급+</div>
-      </button>
-
-      <button class="level-btn" onclick="startGame('B1')">
-        <img src="./assets/img/robo_jump.png" alt="B1" class="level-thumbnail">
-        <div class="level-label">B1</div>
-        <div class="level-description">중급</div>
-      </button>
-
-      <button class="level-btn" onclick="startGame('B2')">
-        <img src="./assets/img/robo_jump.png" alt="B2" class="level-thumbnail">
-        <div class="level-label">B2</div>
-        <div class="level-description">중급+</div>
+      <button class="level-card" type="button" onclick="startGame('A2')">
+        <img src="./assets/img/robo2.png" alt="A2" />
+        <h3>A2</h3>
+        <p>초급+</p>
       </button>
     </div>
   </section>
 
-  <!-- ✅ GAME SCREEN (추가된 부분) -->
+  <!-- GAME -->
   <section id="gameScreen" class="game-screen" style="display:none;">
-    <div class="game-layout">
-      
-      <!-- LEFT: 로봇 -->
-      <aside class="left-panel">
-        <div class="robot-frame" id="robotFrame">
-          <img src="./assets/img/robo2.png" id="robotImg" alt="Robot" />
-          <div class="battery-display">
-            <div class="battery-percent"><span id="batteryPercent">3</span>%</div>
-            <div class="battery-bar">
-              <div class="battery-fill" id="batteryFill" style="width:3%;"></div>
+    <div class="game-grid">
+
+      <!-- LEFT: ROBOT FRAME -->
+      <aside class="left">
+        <div id="robotFrame" class="robot-frame is-danger">
+          <div class="ring-anim" aria-hidden="true"></div>
+
+          <img id="robotImg" class="robot-media" src="./assets/img/robo2.png" alt="Robot" />
+          <img id="robotGif" class="robot-media robot-gif" src="./assets/img/robo.gif" alt="Robot GIF" />
+
+          <!-- ✅ video: 10개 전부 맞추면 여기로 전환 -->
+          <video id="robotVideo" class="robot-media robot-video" muted playsinline loop preload="metadata"></video>
+
+          <div class="battery">
+            <div class="battery__percent"><span id="batteryPercent">3</span>%</div>
+            <div class="battery__bar">
+              <div id="batteryFill" class="battery__fill" style="width:3%;"></div>
             </div>
           </div>
         </div>
       </aside>
 
-      <!-- RIGHT: 문제 영역 -->
-      <main class="right-panel">
-        <div class="question-box" id="questionBox">
-          <span class="question-number" id="questionNum">Q1/10</span>
-          <h2 id="questionTitle">문법 문제</h2>
-          <p id="questionText">문제 내용</p>
-          <div class="options" id="options"></div>
+      <!-- RIGHT: QUIZ PANEL -->
+      <main class="right">
+        <div id="questionBox" class="panel">
+          <div class="badge" id="questionNum">Q1/10</div>
+          <h2 class="panel__title" id="questionTitle">Simple Present</h2>
+          <p class="panel__text" id="questionText">I __ to school every day.</p>
+          <div class="panel__options" id="options"></div>
         </div>
 
-        <!-- 완료 화면 -->
-        <div class="completion-screen" id="completionScreen">
-          <h2>⚡⚡</h2>
-          <p>Robo가 완전히 충전되었습니다!</p>
-          <p id="finalScore"></p>
-          <div class="button-group">
-            <button class="restart-btn" onclick="resetGame()">다시 시작</button>
-            <button class="home-btn" onclick="window.location.href='index.html'">홈</button>
+        <div id="completionScreen" class="panel panel--complete">
+          <div class="complete__icons">⚡ ⚡</div>
+          <p class="complete__line">Robo가 완전히 충전되었습니다!</p>
+          <h2 class="complete__big">정말 고마워!<br/>나를 구해줘서! 🚀</h2>
+          <p id="finalScore" class="complete__score">최종 배터리: 100%</p>
+
+          <div class="btn-row">
+            <button class="btn btn--primary" type="button" onclick="resetGame()">다시 시작</button>
+            <button class="btn btn--ghost" type="button" onclick="goHome()">홈</button>
           </div>
         </div>
       </main>
+
     </div>
   </section>
 
-  <!-- JS -->
-  <script defer src="./js/game.js?v=4102"></script>
+  <script defer src="./js/game.js?v=5001"></script>
 </body>
 </html>
