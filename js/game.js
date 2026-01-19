@@ -4,12 +4,20 @@
   const START_BATTERY = 3;
   const TOTAL = 10;
 
-  // ✅ 본인 영상 파일로 교체
+  // ✅ B1/B2 완료 시 이 GIF로 전환 (스크린샷 경로)
+  const COMPLETION_GIF_MAP = {
+    A1: "./assets/img/robo.gif",
+    A2: "./assets/img/robo.gif",
+    B1: "./assets/videos/robo_jump.gif",
+    B2: "./assets/videos/robo_jump.gif",
+  };
+
+  // (선택) A레벨에서 mp4 쓰고 싶으면 여기에 넣으셔도 됩니다. 없으면 자동 무시.
   const VIDEO_MAP = {
-    A1: "./assets/videos/a1.mp4",
-    A2: "./assets/videos/a2.mp4",
-    B1: "./assets/videos/b1.mp4",
-    B2: "./assets/videos/b2.mp4",
+    A1: "",
+    A2: "",
+    B1: "",
+    B2: "",
   };
 
   const QUESTIONS = {
@@ -134,23 +142,31 @@
     const img = $("robotImg");
     const gif = $("robotGif");
     const vid = $("robotVideo");
+
     if (img) img.style.display = "block";
     if (gif) { gif.classList.remove("show"); gif.style.display = "none"; }
-    if (vid) { vid.classList.remove("show"); vid.style.display = "none"; vid.pause(); vid.removeAttribute("src"); vid.load(); }
+
+    if (vid) {
+      vid.classList.remove("show");
+      vid.style.display = "none";
+      vid.pause();
+      vid.removeAttribute("src");
+      vid.load();
+    }
   }
 
   function getRobotImageForLevel(lv) {
     return (lv === "B1" || lv === "B2") ? "./assets/img/robo_jump.png" : "./assets/img/robo2.png";
   }
 
-  function showRobotVideoOrFallback() {
+  function showCompletionMedia() {
     const img = $("robotImg");
     const gif = $("robotGif");
     const vid = $("robotVideo");
 
     if (img) img.style.display = "none";
 
-    const videoSrc = VIDEO_MAP[level];
+    const videoSrc = (VIDEO_MAP[level] || "").trim();
     if (vid && videoSrc) {
       vid.src = videoSrc;
       vid.style.display = "block";
@@ -161,26 +177,21 @@
       if (p && typeof p.catch === "function") {
         p.catch(() => {
           if (vid) { vid.classList.remove("show"); vid.style.display = "none"; }
-          if (gif) {
-            gif.src = "./assets/img/robo.gif";
-            gif.style.display = "block";
-            setTimeout(() => gif.classList.add("show"), 10);
-          }
+          showCompletionGif();
         });
       }
       vid.onerror = () => {
         if (vid) { vid.classList.remove("show"); vid.style.display = "none"; }
-        if (gif) {
-          gif.src = "./assets/img/robo.gif";
-          gif.style.display = "block";
-          setTimeout(() => gif.classList.add("show"), 10);
-        }
+        showCompletionGif();
       };
       return;
     }
 
-    if (gif) {
-      gif.src = "./assets/img/robo.gif";
+    showCompletionGif();
+
+    function showCompletionGif() {
+      if (!gif) return;
+      gif.src = COMPLETION_GIF_MAP[level] || "./assets/img/robo.gif";
       gif.style.display = "block";
       setTimeout(() => gif.classList.add("show"), 10);
     }
@@ -252,7 +263,7 @@
 
     correctCount += 1;
 
-    const gain = Math.ceil((100 - START_BATTERY) / TOTAL); // 10
+    const gain = Math.ceil((100 - START_BATTERY) / TOTAL);
     setBattery(battery + gain);
 
     setTimeout(() => {
@@ -274,7 +285,8 @@
     if (complete) complete.classList.add("show");
     if (finalScore) finalScore.textContent = `정답: ${correctCount} / ${TOTAL}   (배터리 100% ⚡)`;
 
-    showRobotVideoOrFallback();
+    // ✅ B1/B2는 robo_jump.gif로
+    showCompletionMedia();
 
     const headerDesc = $("headerDesc");
     if (headerDesc) headerDesc.classList.remove("alert");
