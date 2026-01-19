@@ -20,94 +20,110 @@
 
       <nav class="nav">
         <a href="index.html">Home</a>
-        <a href="index.html" class="active">Game</a>
+        <a href="#game" class="active">Game</a>
         <a href="#about">About</a>
         <a href="#register">Register</a>
       </nav>
     </div>
   </header>
 
-  <section class="title">
-    <h1><span class="title__emoji">🤖</span> Grammar Game</h1>
-    <p id="headerDesc" class="title__desc">급해요! Robo의 배터리가 3%밖에 안 남았어요! 문제를 맞춰서 다시 100%로 충전시켜 주세요!</p>
-  </section>
+  <main id="game">
+    <section class="title">
+      <h1><span class="title__emoji">🤖</span> Grammar Game</h1>
+      <p class="title__sub">레벨을 선택해서 게임을 시작하세요!</p>
+      <p id="headerDesc" class="title__desc">급해요! Robo의 배터리가 3%밖에 안 남았어요! 문제를 맞춰서 다시 100%로 충전시켜 주세요!</p>
+    </section>
 
-  <!-- ✅ LEVEL SELECT: 4개 모두 -->
-  <section id="levelScreen" class="level-screen">
-    <div class="level-grid">
-      <button class="level-card" type="button" onclick="startGame('A1')">
-        <img src="./assets/img/robo2.png" alt="A1" />
-        <h3>A1</h3>
-        <p>초급</p>
-      </button>
+    <!-- LEVEL SELECT -->
+    <section id="levelScreen" class="level-screen">
+      <div class="level-grid">
+        <button class="level-card" type="button" onclick="startGame('A1')">
+          <img src="./assets/img/robo2.png" alt="A1" />
+          <h3>A1</h3>
+          <p>초급</p>
+        </button>
 
-      <button class="level-card" type="button" onclick="startGame('A2')">
-        <img src="./assets/img/robo2.png" alt="A2" />
-        <h3>A2</h3>
-        <p>초급+</p>
-      </button>
+        <button class="level-card" type="button" onclick="startGame('A2')">
+          <img src="./assets/img/robo2.png" alt="A2" />
+          <h3>A2</h3>
+          <p>초급+</p>
+        </button>
 
-      <button class="level-card" type="button" onclick="startGame('B1')">
-        <img src="./assets/img/robo_jump.png" alt="B1" />
-        <h3>B1</h3>
-        <p>중급</p>
-      </button>
+        <button class="level-card" type="button" onclick="startGame('B1')">
+          <img src="./assets/img/robo_jump.png" alt="B1" />
+          <h3>B1</h3>
+          <p>중급</p>
+        </button>
 
-      <button class="level-card" type="button" onclick="startGame('B2')">
-        <img src="./assets/img/robo_jump.png" alt="B2" />
-        <h3>B2</h3>
-        <p>중급+</p>
-      </button>
-    </div>
-  </section>
+        <button class="level-card" type="button" onclick="startGame('B2')">
+          <img src="./assets/img/robo_jump.png" alt="B2" />
+          <h3>B2</h3>
+          <p>중급+</p>
+        </button>
+      </div>
+    </section>
 
-  <!-- ✅ GAME -->
-  <section id="gameScreen" class="game-screen" style="display:none;">
-    <div class="game-grid">
+    <!-- GAME -->
+    <section id="gameScreen" class="game-screen" style="display:none;">
+      <div class="game-grid">
 
-      <!-- LEFT: ROBOT FRAME -->
-      <aside class="left">
-        <div id="robotFrame" class="robot-frame is-danger">
-          <!-- ✅ ring 요소 제거: “빨간 뱅글뱅글” 없음 -->
+        <!-- LEFT -->
+        <aside class="left">
+          <div id="robotFrame" class="card card--danger">
+            <img id="robotImg" class="robot-media" src="./assets/img/robo2.png" alt="Robot" />
+            <img id="robotGif" class="robot-media robot-gif" src="./assets/img/robo.gif" alt="Robot GIF" />
+            <video id="robotVideo" class="robot-media robot-video" muted playsinline loop preload="metadata"></video>
 
-          <img id="robotImg" class="robot-media" src="./assets/img/robo2.png" alt="Robot" />
-          <img id="robotGif" class="robot-media robot-gif" src="./assets/img/robo.gif" alt="Robot GIF" />
-          <video id="robotVideo" class="robot-media robot-video" muted playsinline loop preload="metadata"></video>
-
-          <div class="battery">
-            <div class="battery__percent"><span id="batteryPercent">3</span>%</div>
-            <div class="battery__bar">
-              <div id="batteryFill" class="battery__fill" style="width:3%;"></div>
+            <div class="battery">
+              <div class="battery__percent"><span id="batteryPercent">3</span>%</div>
+              <div class="battery__bar">
+                <div id="batteryFill" class="battery__fill" style="width:3%;"></div>
+              </div>
             </div>
           </div>
-        </div>
-      </aside>
+        </aside>
 
-      <!-- RIGHT: QUIZ PANEL -->
-      <main class="right">
-        <div id="questionBox" class="panel">
-          <div class="badge" id="questionNum">Q1/10</div>
-          <h2 class="panel__title" id="questionTitle">문법 문제</h2>
-          <p class="panel__text" id="questionText">문제 내용</p>
-          <div class="panel__options" id="options"></div>
-        </div>
-
-        <div id="completionScreen" class="panel panel--complete">
-          <div class="complete__icons">⚡ ⚡</div>
-          <p class="complete__line">Robo가 완전히 충전되었습니다!</p>
-          <h2 class="complete__big">정말 고마워!<br/>나를 구해줘서! 🚀</h2>
-          <p id="finalScore" class="complete__score">최종 배터리: 100%</p>
-
-          <div class="btn-row">
-            <button class="btn btn--primary" type="button" onclick="resetGame()">다시 시작</button>
-            <button class="btn btn--ghost" type="button" onclick="goHome()">홈</button>
+        <!-- RIGHT -->
+        <main class="right">
+          <div id="questionBox" class="card">
+            <div class="badge" id="questionNum">Q1/10</div>
+            <h2 class="panel__title" id="questionTitle">문법 문제</h2>
+            <p class="panel__text" id="questionText">문제 내용</p>
+            <div class="panel__options" id="options"></div>
           </div>
-        </div>
-      </main>
 
-    </div>
+          <div id="completionScreen" class="card card--complete">
+            <div class="complete__icons">⚡ ⚡</div>
+            <p class="complete__line">Robo가 완전히 충전되었습니다!</p>
+            <h2 class="complete__big">정말 고마워!<br/>나를 구해줘서! 🚀</h2>
+            <p id="finalScore" class="complete__score">최종 배터리: 100%</p>
+
+            <div class="btn-row">
+              <button class="btn btn--primary" type="button" onclick="resetGame()">다시 시작</button>
+              <button class="btn btn--ghost" type="button" onclick="goHome()">홈</button>
+            </div>
+          </div>
+        </main>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- About / Register sections -->
+  <section id="about" class="info">
+    <h2>About</h2>
+    <p>CEC English Camp 프로그램 소개 영역입니다. (원하시면 기존 index.html의 About 내용을 여기에 붙여 넣어드릴게요.)</p>
   </section>
 
-  <script defer src="./js/game.js?v=7001"></script>
+  <section id="register" class="info">
+    <h2>Register</h2>
+    <p>등록/신청 영역입니다. (Google Form / 신청 링크 버튼 넣을 수 있습니다.)</p>
+  </section>
+
+  <footer class="footer">
+    <p>© CEC English Camp</p>
+  </footer>
+
+  <script defer src="./js/game.js?v=8001"></script>
 </body>
 </html>
