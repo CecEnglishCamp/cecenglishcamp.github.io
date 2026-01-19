@@ -95,9 +95,8 @@
     const headerDesc = $("headerDesc");
     if (!frame) return;
 
-    // ✅ 100%이면 “급해요…” 숨김
     if (battery >= 100) {
-      setHeaderVisible(false);
+      setHeaderVisible(false); // ✅ 100%면 “급해요…” 자동 숨김
     }
 
     frame.classList.remove(
@@ -291,6 +290,7 @@
     }
 
     correctCount += 1;
+
     const gain = Math.ceil((100 - START_BATTERY) / TOTAL);
     setBattery(battery + gain);
 
@@ -327,7 +327,7 @@
     correctCount = 0;
     locked = false;
 
-    setHeaderVisible(true); // ✅ 게임 시작 시 다시 표시
+    setHeaderVisible(true);
     showGame();
 
     const qbox = $("questionBox");
@@ -345,7 +345,7 @@
   }
 
   function resetGame() {
-    setHeaderVisible(true); // ✅ 리셋 시 다시 표시
+    setHeaderVisible(true);
     showLevel();
 
     const qbox = $("questionBox");
@@ -368,6 +368,27 @@
     window.location.href = "index.html";
   }
 
+  function initRegisterForm() {
+    const form = $("registerForm");
+    const msg = $("registerMsg");
+    if (!form || !msg) return;
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const payload = Object.fromEntries(fd.entries());
+
+      // 최소 검증 (전화/이메일은 브라우저 기본 검증이 1차로 처리)
+      if (!payload.name || !payload.phone || !payload.email || !payload.address || !payload.grade) {
+        msg.textContent = "필수 항목을 모두 입력해 주세요.";
+        return;
+      }
+
+      msg.textContent = "제출되었습니다! (현재는 임시 저장/백엔드 미연결 상태입니다.)";
+      form.reset();
+    });
+  }
+
   window.startGame = startGame;
   window.resetGame = resetGame;
   window.goHome = goHome;
@@ -375,5 +396,6 @@
   document.addEventListener("DOMContentLoaded", () => {
     setHeaderVisible(true);
     setBattery(START_BATTERY);
+    initRegisterForm();
   });
 })();
