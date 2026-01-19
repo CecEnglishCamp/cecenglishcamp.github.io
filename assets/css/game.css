@@ -1,76 +1,215 @@
-/* ======= HEADER 수정 ======= */
-.logo strong {
-  color: #fff; /* 캠프 이름 흰색으로 복원 */
+/* =========================================
+File: assets/css/game.css
+Goal:
+- Left image with RED rectangle border + animated RED circular ring overlay
+- Right quiz panel
+========================================= */
+:root{
+  --bg:#080808;
+  --panel:#101010;
+  --line:#2a2a2a;
+  --text:#ffffff;
+  --muted:#a6a6a6;
+  --cyan: #00f2ff;
+
+  --red:#ff2b2b;
+  --red2:#ff7070;
+  --good:#00ff99;
+  --bad:#ff4444;
 }
 
-/* ======= ALERT 문구 사이즈 조정 ======= */
-#headerDesc {
-  margin-top: 10px;
-  font-size: 15px; /* 기존 18px → 15px */
-  color: white;
-  transition: color 0.3s;
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+
+/* Header/Nav */
+header{
+  position:sticky;top:0;z-index:10;
+  background:rgba(8,8,8,.92);
+  backdrop-filter: blur(6px);
+  border-bottom:1px solid var(--line);
+}
+.container{
+  max-width:1100px;margin:0 auto;
+  padding:14px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px
+}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700}
+.logo-img{width:40px;height:40px;vertical-align:middle}
+.game-nav{display:flex;gap:12px;flex-wrap:wrap}
+.game-nav a{padding:8px 10px;border-radius:12px;color:var(--muted)}
+.game-nav a.active{color:var(--text);border:1px solid var(--line);background:rgba(255,255,255,.04)}
+
+/* Header text */
+.header{
+  max-width:1100px;margin:0 auto;
+  padding:24px 18px 8px;
+  text-align:center;
+}
+.header h1{font-size:2.3rem;color:var(--cyan)}
+#headerDesc{
+  margin-top:10px;font-size:18px;color:#fff;transition:color .3s
+}
+@keyframes alertBlink{
+  0%,100%{color:#ff5555;text-shadow:0 0 10px rgba(255,0,0,.7)}
+  50%{color:#ffffff;text-shadow:0 0 0 rgba(255,0,0,0)}
+}
+#headerDesc.alert{animation:alertBlink 1.2s infinite ease-in-out}
+
+/* Level select */
+#levelScreen{
+  display:flex;justify-content:center;align-items:center;flex-wrap:wrap;
+  gap:40px;margin:26px 0 40px;padding:0 18px
+}
+.level-grid{display:flex;gap:40px;flex-wrap:wrap;justify-content:center}
+.level-btn{
+  width:220px;height:280px;
+  background:#111;
+  border:2px solid cyan;
+  border-radius:20px;
+  text-align:center;
+  transition:transform .25s, box-shadow .25s;
+  cursor:pointer;
+  padding-top:25px;
+  color:var(--text);
+}
+.level-btn:hover{transform:scale(1.05);box-shadow:0 0 20px cyan}
+.level-thumbnail{width:130px;height:auto;margin-bottom:10px}
+.level-label{font-size:26px;color:cyan;font-weight:700}
+.level-description{font-size:16px;color:#888;margin-top:6px}
+
+/* Game layout: LEFT image / RIGHT quiz */
+#gameScreen{display:none}
+#gameScreen.active{display:block}
+.game-screen{max-width:1100px;margin:0 auto;padding:18px}
+.game-layout{
+  display:grid;
+  grid-template-columns: 420px 1fr;
+  gap:18px;
+  align-items:start;
+}
+@media (max-width: 980px){
+  .game-layout{grid-template-columns:1fr}
 }
 
-/* 깜빡임 그대로 유지 */
-@keyframes alertBlink {
-  0%, 100% {
-    color: #ff5555;
-    text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
-  }
-  50% {
-    color: #ffffff;
-    text-shadow: none;
-  }
-}
-#headerDesc.alert {
-  animation: alertBlink 1.2s infinite ease-in-out;
+/* LEFT PANEL: red rectangle border + red circular ring animation */
+.left-panel{display:flex;justify-content:center}
+.robot-frame{
+  width:min(420px, 95vw);
+  background:var(--panel);
+  border:3px solid var(--red);          /* ✅ 빨간 네모 테두리 */
+  border-radius:22px;
+  padding:18px 14px 16px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 0 18px rgba(255,43,43,.18);
 }
 
-/* ======= 로봇 컨테이너 크기 확대 ======= */
-.robot-container {
-  background: var(--card);
-  border: 2.5px solid var(--line);
-  border-radius: 24px;
-  padding: 25px;
-  width: min(460px, 94vw);
-  transition: all 0.4s ease-in-out;
-  text-align: center;
+/* ring overlay */
+.ring-anim{
+  position:absolute;
+  inset:-32px;
+  pointer-events:none;
+  opacity:.95;
+
+  /* conic gradient ring */
+  background:
+    conic-gradient(from 0deg,
+      rgba(255,43,43,0) 0deg,
+      rgba(255,43,43,.9) 40deg,
+      rgba(255,43,43,0) 90deg,
+      rgba(255,43,43,0) 180deg,
+      rgba(255,43,43,.75) 235deg,
+      rgba(255,43,43,0) 280deg,
+      rgba(255,43,43,0) 360deg
+    );
+
+  /* make it a ring (mask the center) */
+  -webkit-mask: radial-gradient(circle, transparent 58%, #000 61%);
+  mask: radial-gradient(circle, transparent 58%, #000 61%);
+  animation: spinRing 2.2s linear infinite;
+  filter: drop-shadow(0 0 10px rgba(255,43,43,.35));
+}
+@keyframes spinRing{to{transform:rotate(360deg)}}
+
+#robotImg,#robotGif{
+  width:280px;
+  display:block;
+  margin:10px auto 0;
+  transition:opacity .35s ease;
+}
+#robotGif{display:none;opacity:0}
+#robotGif.show{display:block;opacity:1}
+
+.battery-display{margin-top:10px;text-align:center}
+.battery-percent{font-weight:700;color:cyan}
+.battery-bar{
+  width:250px;height:10px;background:#333;border-radius:10px;
+  margin:10px auto 0;overflow:hidden
+}
+#batteryFill{
+  height:100%;
+  width:3%;
+  background:cyan;
+  transition:width .45s ease;
+}
+.warning{filter:drop-shadow(0 0 10px red)}
+.full{filter:brightness(1.15) drop-shadow(0 0 14px #00ffcc)}
+
+.light-flash{animation:flashLight .35s ease-in-out}
+@keyframes flashLight{
+  0%,100%{filter:brightness(1.1)}
+  50%{filter:brightness(1.9)}
 }
 
-.robot-img, .robot-gif {
-  width: 320px; /* 기존 280px → 320px */
-  transition: opacity 0.5s ease-in-out;
+/* RIGHT PANEL (quiz) */
+.right-panel{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:18px;
 }
+#questionBox{display:block;text-align:center}
+#questionNum{
+  background:cyan;color:#000;
+  padding:6px 16px;border-radius:25px;font-weight:600
+}
+#questionTitle{font-size:22px;color:cyan;margin-top:18px}
+#questionText{font-size:20px;margin-top:10px;color:#fff}
 
-/* ======= GAME 화면 구성: 로봇 왼쪽 / 문제 오른쪽 ======= */
-.game-content {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 50px;
-  margin-top: 20px;
+.options{margin-top:12px}
+.option-btn{
+  background:#222;border:2px solid #444;color:#fff;
+  padding:12px 20px;margin:12px;
+  border-radius:10px;font-size:16px;
+  cursor:pointer;transition:.2s;
 }
-.robot-section {
-  flex: 1 1 380px;
-  display: flex;
-  justify-content: center;
-}
-.quiz-section {
-  flex: 1 1 500px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 20px;
-  padding: 22px;
-}
+.option-btn:hover{background:#333}
+.option-btn.correct{background:var(--good);border-color:var(--good);color:#000}
+.option-btn.wrong{background:var(--bad);border-color:var(--bad)}
+.option-btn[disabled]{opacity:.7;cursor:not-allowed}
 
-/* ======= 반응형 보완 ======= */
-@media (max-width: 900px) {
-  .game-content {
-    flex-direction: column;
-    align-items: center;
-  }
-  .robot-img, .robot-gif {
-    width: 280px;
-  }
+button{border:none;outline:none}
+
+/* Completion */
+#completionScreen{
+  display:none;text-align:center;margin-top:18px;
+  opacity:0;transition:opacity .5s ease-in-out
 }
+#completionScreen.show{display:block;opacity:1}
+#finalScore{font-size:22px;color:cyan;margin-top:15px}
+.button-group{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.restart-btn,.home-btn{
+  background:#222;color:#fff;border:1px solid #444;
+  border-radius:12px;padding:10px 14px;cursor:pointer
+}
+.restart-btn:hover,.home-btn:hover{border-color:cyan}
+
+
