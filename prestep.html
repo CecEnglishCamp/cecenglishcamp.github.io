@@ -3,476 +3,521 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CEC English Camp - Let's Get Started!</title>
+<title>CEC English Camp — Let's Go!</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #235390;
-    color: #3c3c3c;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .container {
-    width: 100%;
-    max-width: 480px;
-    padding: 24px;
-  }
-
-  /* Progress bar */
-  .progress-bar {
-    width: 100%;
-    height: 16px;
-    background: rgba(255,255,255,0.25);
-    border-radius: 8px;
-    margin-bottom: 32px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: #58cc02;
-    border-radius: 8px;
-    transition: width 0.4s ease;
-  }
-
-  /* Card */
-  .card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 32px 24px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    text-align: center;
-    min-height: 380px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .card.hidden { display: none; }
-
-  .card h2 {
-    font-size: 22px;
-    color: #235390;
-    margin-bottom: 8px;
-  }
-  .card .subtitle {
-    font-size: 14px;
-    color: #777;
-    margin-bottom: 24px;
-  }
-  .card .emoji-big {
-    font-size: 56px;
-    margin-bottom: 16px;
-  }
-
-  /* Input */
-  .input-group { margin-bottom: 16px; text-align: left; }
-  .input-group label {
-    display: block;
-    font-size: 13px;
-    color: #888;
-    margin-bottom: 6px;
-    font-weight: 600;
-  }
-  .input-group input {
-    width: 100%;
-    padding: 14px 16px;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    font-size: 16px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .input-group input:focus { border-color: #58cc02; }
-
-  /* Option buttons (Duolingo style) */
-  .options { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
-  .option-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 18px;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    background: #fff;
-    cursor: pointer;
-    font-size: 15px;
-    transition: all 0.15s;
-    text-align: left;
-  }
-  .option-btn:hover { border-color: #58cc02; background: #f7fff0; }
-  .option-btn.selected {
-    border-color: #58cc02;
-    background: #d7ffb8;
-    font-weight: 600;
-  }
-  .option-btn .opt-emoji { font-size: 24px; flex-shrink: 0; }
-
-  /* Chip-style multi-select */
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 16px 0; }
-  .chip {
-    padding: 10px 16px;
-    border: 2px solid #e0e0e0;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.15s;
-    user-select: none;
-  }
-  .chip:hover { border-color: #58cc02; }
-  .chip.selected { border-color: #58cc02; background: #d7ffb8; font-weight: 600; }
-
-  /* Energy slider */
-  .energy-row {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin: 20px 0;
-  }
-  .energy-btn {
-    width: 56px; height: 56px;
-    border: 2px solid #e0e0e0;
-    border-radius: 14px;
-    background: #fff;
-    font-size: 28px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.15s;
-  }
-  .energy-btn:hover { border-color: #58cc02; transform: scale(1.08); }
-  .energy-btn.selected { border-color: #58cc02; background: #d7ffb8; transform: scale(1.1); }
-
-  /* Goal */
-  .goal-options { display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
-
-  /* Buttons */
-  .btn-row { margin-top: 24px; display: flex; gap: 12px; justify-content: center; }
-  .btn {
-    padding: 14px 32px;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .btn-next {
-    background: #58cc02;
-    color: #fff;
-    box-shadow: 0 4px 0 #46a302;
-  }
-  .btn-next:hover { background: #46a302; }
-  .btn-next:active { box-shadow: none; transform: translateY(4px); }
-  .btn-next:disabled { background: #e0e0e0; box-shadow: 0 4px 0 #c0c0c0; cursor: not-allowed; }
-  .btn-back {
-    background: #fff;
-    color: #888;
-    border: 2px solid #e0e0e0;
-  }
-  .btn-back:hover { border-color: #aaa; }
-
-  .btn-start {
-    background: #ff9600;
-    color: #fff;
-    font-size: 18px;
-    padding: 16px 40px;
-    box-shadow: 0 4px 0 #cd7b00;
-    width: 100%;
-  }
-  .btn-start:hover { background: #e88600; }
-  .btn-start:active { box-shadow: none; transform: translateY(4px); }
-
-  /* Summary */
-  .summary-list {
-    text-align: left;
-    margin: 16px 0;
-    list-style: none;
-  }
-  .summary-list li {
-    padding: 10px 0;
-    border-bottom: 1px solid #f0f0f0;
-    font-size: 15px;
-    display: flex;
-    justify-content: space-between;
-  }
-  .summary-list li span:first-child { color: #888; }
-  .summary-list li span:last-child { font-weight: 600; color: #235390; }
-
-.robo-container {
-    text-align: center;
-    margin-bottom: 10px;
+:root {
+  --bg:        #000000;
+  --card:      #000000;
+  --border:    rgba(0,229,255,0.14);
+  --border-h:  rgba(0,229,255,0.5);
+  --cyan:      #00e5ff;
+  --cyan-dim:  rgba(0,229,255,0.07);
+  --cyan-glow: rgba(0,229,255,0.25);
+  --teal:      #00897b;
+  --white:     #f0f8ff;
+  --grey:      #3a6070;
+  --grey2:     #0d1e2c;
+  --danger:    #ff4569;
+  --r:         14px;
+  --rs:        10px;
 }
-.robo-img {
-    width: 100px;
-    height: auto;
-    filter: drop-shadow(0 0 10px rgba(0,255,255,0.5));
-    animation: robo-float 3s ease-in-out infinite;
+*{margin:0;padding:0;box-sizing:border-box;}
+body {
+  font-family:'Noto Sans KR',sans-serif;
+  background:#000000;
+  min-height:100vh;
+  display:flex; flex-direction:column; align-items:center;
+  padding:0 16px 40px;
+  color:var(--white);
+  position:relative; overflow-x:hidden;
 }
-@keyframes robo-float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-8px); }
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(0,229,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.015) 1px,transparent 1px);
+  background-size:52px 52px;pointer-events:none;
+}
+
+/* ══ TOP NAV ══ */
+.topnav{
+  width:100%;max-width:1100px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 0 16px;position:relative;z-index:10;
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{display:flex;align-items:center;gap:14px;text-decoration:none;}
+.nav-robo-wrap{
+  width:68px;height:68px;border-radius:14px;overflow:hidden;flex-shrink:0;
+  border:2px solid var(--cyan);background:#000;
+  box-shadow:0 0 24px rgba(0,229,255,0.45),0 0 50px rgba(0,229,255,0.15);
+  animation:navGlow 2.5s ease-in-out infinite;
+}
+.nav-robo-wrap video{width:100%;height:100%;object-fit:cover;display:block;}
+@keyframes navGlow{
+  0%,100%{box-shadow:0 0 20px rgba(0,229,255,0.4),0 0 40px rgba(0,229,255,0.12);}
+  50%{box-shadow:0 0 38px rgba(0,229,255,0.7),0 0 70px rgba(0,229,255,0.25);}
+}
+.nav-text{display:flex;flex-direction:column;gap:4px;}
+.nav-title{font-family:'Orbitron',monospace;font-size:17px;font-weight:900;color:var(--white);letter-spacing:1.5px;line-height:1;}
+.nav-title span{color:var(--cyan);}
+.nav-sub{font-family:'Orbitron',monospace;font-size:9px;color:var(--grey);letter-spacing:2px;}
+.nav-badge{
+  font-family:'Orbitron',monospace;font-size:11px;color:var(--cyan);letter-spacing:2px;
+  background:var(--cyan-dim);border:1px solid var(--border);
+  padding:7px 18px;border-radius:99px;
+  box-shadow:0 0 12px rgba(0,229,255,0.18);
+}
+
+/* ══ WRAPPER ══ */
+.wrapper{position:relative;z-index:1;width:100%;max-width:520px;padding-top:28px;}
+
+/* MISSION HEADER */
+.mission-header{text-align:center;margin-bottom:22px;animation:fadeDown 0.5s ease both;}
+.mission-sup{font-family:'Orbitron',monospace;font-size:10px;color:var(--cyan);letter-spacing:3px;margin-bottom:8px;opacity:0.75;}
+.mission-title{font-family:'Black Han Sans',sans-serif;font-size:30px;color:var(--white);margin-bottom:5px;}
+.mission-title em{color:var(--cyan);font-style:normal;text-shadow:0 0 20px var(--cyan-glow);}
+.mission-sub{font-size:13px;color:var(--grey);}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+
+/* PROGRESS */
+.prog-wrap{margin-bottom:20px;animation:fadeDown 0.5s 0.05s ease both;}
+.prog-labels{display:flex;justify-content:space-between;margin-bottom:7px;}
+.prog-label{font-family:'Orbitron',monospace;font-size:9px;color:var(--grey);letter-spacing:1.5px;}
+.prog-label.active{color:var(--cyan);}
+.prog-track{height:3px;background:rgba(255,255,255,0.06);border-radius:99px;position:relative;}
+.prog-fill{
+  height:100%;background:linear-gradient(90deg,var(--teal),var(--cyan));
+  border-radius:99px;transition:width 0.7s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow:0 0 10px var(--cyan),0 0 20px rgba(0,229,255,0.2);position:relative;
+}
+.prog-fill::after{
+  content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);
+  width:11px;height:11px;background:var(--cyan);border-radius:50%;
+  box-shadow:0 0 10px var(--cyan),0 0 20px var(--cyan);
+}
+.prog-steps{display:flex;justify-content:space-between;margin-top:8px;}
+.prog-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid var(--grey);transition:all 0.3s;}
+.prog-dot.done{background:var(--teal);border-color:var(--teal);}
+.prog-dot.cur{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+
+/* CARD — 완전 검정 */
+.card{
+  background:#000000;border:1px solid var(--border);
+  border-radius:var(--r);padding:28px 26px;
+  position:relative;overflow:hidden;
+  animation:slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow:0 8px 60px rgba(0,0,0,0.95);
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--cyan) 30%,var(--teal) 70%,transparent 100%);opacity:0.45;}
+.card::after{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--cyan),var(--teal));opacity:0.55;}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+/* ROBO BOX */
+.robo-box{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;margin-bottom:22px;
+  background:rgba(0,137,123,0.07);
+  border:1px solid rgba(0,137,123,0.22);
+  border-radius:var(--rs);
+}
+.robo-av{
+  width:54px;height:54px;border-radius:12px;overflow:hidden;flex-shrink:0;
+  border:2px solid var(--teal);background:#000;
+  box-shadow:0 0 20px rgba(0,137,123,0.4),0 0 6px var(--teal);
+  animation:breathe 3s ease-in-out infinite;
+}
+.robo-av video{width:100%;height:100%;object-fit:cover;display:block;}
+@keyframes breathe{
+  0%,100%{box-shadow:0 0 14px rgba(0,137,123,0.3),0 0 4px var(--teal);}
+  50%{box-shadow:0 0 28px rgba(0,137,123,0.6),0 0 10px var(--teal);}
+}
+.robo-name{font-family:'Orbitron',monospace;font-size:9px;color:var(--teal);letter-spacing:2px;margin-bottom:5px;}
+.robo-msg{font-size:14px;font-weight:700;color:var(--white);line-height:1.55;opacity:0.92;}
+.cursor{color:var(--cyan);animation:blink 1s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* INPUT */
+.igrp{margin-bottom:11px;}
+.lbl{display:block;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;color:var(--cyan);letter-spacing:2px;margin-bottom:6px;}
+.ifield{
+  width:100%;padding:13px 16px;
+  font-family:'Noto Sans KR',sans-serif;font-size:16px;font-weight:700;color:var(--white);
+  background:#000000;border:1.5px solid rgba(0,229,255,0.15);
+  border-radius:var(--rs);outline:none;transition:all 0.2s;
+}
+.ifield:focus{border-color:var(--cyan);background:#020c14;box-shadow:0 0 0 3px rgba(0,229,255,0.08);}
+.ifield::placeholder{color:var(--grey);font-weight:400;}
+
+/* GRADE GRID */
+.ggrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
+.gcard{
+  background:#000000;border:1.5px solid rgba(0,229,255,0.1);
+  border-radius:var(--rs);padding:18px 10px;
+  text-align:center;cursor:pointer;transition:all 0.22s;position:relative;overflow:hidden;
+}
+.gcard:hover{border-color:var(--border-h);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.7);}
+.gcard.sel{border-color:var(--cyan);background:#030d16;box-shadow:0 0 0 1px var(--cyan),0 0 24px rgba(0,229,255,0.1);}
+.gcard .ge{font-size:30px;display:block;margin-bottom:8px;}
+.gcard .gn{font-family:'Black Han Sans',sans-serif;font-size:17px;color:var(--white);}
+.gcard.sel .gn{color:var(--cyan);text-shadow:0 0 10px rgba(0,229,255,0.4);}
+.gcard .gs{font-size:10px;color:var(--grey);margin-top:3px;}
+.chk{position:absolute;top:7px;right:7px;width:18px;height:18px;background:var(--cyan);border-radius:50%;font-size:10px;display:none;align-items:center;justify-content:center;color:#000;font-weight:900;}
+.gcard.sel .chk{display:flex;}
+
+/* ENERGY */
+.erow{display:flex;gap:7px;margin-bottom:4px;}
+.ebtn{
+  flex:1;height:66px;border-radius:var(--rs);
+  border:1.5px solid rgba(0,229,255,0.1);background:#000000;
+  color:var(--white);font-size:22px;cursor:pointer;
+  transition:all 0.2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+}
+.ebtn .en{font-family:'Orbitron',monospace;font-size:9px;color:var(--grey);letter-spacing:1px;}
+.ebtn:hover{border-color:var(--border-h);transform:translateY(-2px);}
+.ebtn.sel{border-color:var(--cyan);background:#030d16;box-shadow:0 0 20px rgba(0,229,255,0.12);}
+.ebtn.sel .en{color:var(--cyan);}
+.edesc{text-align:center;font-size:13px;font-weight:700;color:var(--grey);margin-top:12px;min-height:18px;}
+.edesc.on{color:var(--cyan);text-shadow:0 0 10px rgba(0,229,255,0.35);}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
+.chip{
+  padding:8px 14px;border-radius:99px;
+  border:1.5px solid rgba(0,229,255,0.1);background:#000000;
+  font-family:'Noto Sans KR',sans-serif;font-size:13px;font-weight:700;
+  color:var(--white);cursor:pointer;transition:all 0.2s;user-select:none;
+}
+.chip:hover{border-color:var(--border-h);}
+.chip.sel{border-color:var(--cyan);background:#030d16;color:var(--cyan);box-shadow:0 0 12px rgba(0,229,255,0.1);}
+
+/* GOALS */
+.goalg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.goalc{
+  background:#000000;border:1.5px solid rgba(0,229,255,0.1);
+  border-radius:var(--rs);padding:18px 10px;text-align:center;cursor:pointer;transition:all 0.22s;
+}
+.goalc:hover{border-color:var(--border-h);transform:translateY(-2px);}
+.goalc.sel{border-color:var(--cyan);background:#030d16;box-shadow:0 0 20px rgba(0,229,255,0.1);}
+.goalc .ge{font-size:28px;display:block;margin-bottom:8px;}
+.goalc .gt{font-family:'Black Han Sans',sans-serif;font-size:14px;color:var(--white);}
+.goalc.sel .gt{color:var(--cyan);}
+.goalc .gs{font-size:10px;color:var(--grey);margin-top:3px;}
+
+/* SUMMARY */
+.sumg{display:grid;gap:8px;}
+.sumr{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;background:#000000;
+  border:1px solid rgba(0,229,255,0.1);border-radius:var(--rs);
+  position:relative;overflow:hidden;
+}
+.sumr::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--cyan),var(--teal));}
+.sico{font-size:16px;width:22px;text-align:center;}
+.skey{font-family:'Orbitron',monospace;font-size:9px;color:var(--grey);letter-spacing:1px;width:52px;flex-shrink:0;}
+.sval{font-size:14px;font-weight:900;color:var(--white);}
+
+/* BUTTON */
+.btn{
+  width:100%;padding:15px;margin-top:20px;
+  border-radius:var(--rs);border:1.5px solid var(--cyan);background:transparent;
+  color:var(--cyan);font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:2px;
+  cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;
+  box-shadow:0 0 14px rgba(0,229,255,0.1);
+}
+.btn::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,var(--teal),var(--cyan));transform:translateX(-101%);transition:transform 0.3s ease;z-index:0;}
+.btn:hover::before{transform:translateX(0);}
+.btn:hover{color:#000;box-shadow:0 0 30px rgba(0,229,255,0.4);}
+.btn span{position:relative;z-index:1;}
+.btn.launch{
+  background:linear-gradient(90deg,var(--teal),var(--cyan));
+  color:#000;font-size:13px;border:none;
+  box-shadow:0 0 30px rgba(0,229,255,0.3);
+  animation:pulseBtn 2s ease-in-out infinite;
+}
+.btn.launch:hover{box-shadow:0 0 50px rgba(0,229,255,0.6);transform:translateY(-1px);}
+@keyframes pulseBtn{0%,100%{box-shadow:0 0 25px rgba(0,229,255,0.28);}50%{box-shadow:0 0 45px rgba(0,229,255,0.5);}}
+
+/* BACK + ERR */
+.back{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--grey);font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;margin-bottom:16px;padding:4px 0;transition:color 0.2s;}
+.back:hover{color:var(--cyan);}
+.err{font-size:12px;color:#ff4569;font-weight:700;margin-top:8px;text-align:center;min-height:16px;}
+
+/* LAUNCH OVERLAY */
+.overlay{
+  position:fixed;inset:0;
+  background:radial-gradient(ellipse at center,#030d16 0%,#000000 65%);
+  z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
+  opacity:0;pointer-events:none;transition:opacity 0.5s;
+}
+.overlay.on{opacity:1;pointer-events:all;}
+.ov-robo{width:96px;height:96px;border-radius:18px;overflow:hidden;background:#000;border:2px solid var(--cyan);box-shadow:0 0 50px rgba(0,229,255,0.5),0 0 100px rgba(0,229,255,0.2);animation:ovPulse 1s ease-in-out infinite;}
+.ov-robo video{width:100%;height:100%;object-fit:cover;}
+@keyframes ovPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+.ov-title{font-family:'Black Han Sans',sans-serif;font-size:22px;color:var(--white);}
+.ov-title em{color:var(--cyan);font-style:normal;}
+.ov-txt{font-family:'Orbitron',monospace;font-size:11px;color:var(--cyan);letter-spacing:3px;animation:blink 0.8s step-end infinite;}
+.ov-bar{width:260px;height:3px;background:rgba(255,255,255,0.06);border-radius:99px;overflow:hidden;}
+.ov-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--cyan));box-shadow:0 0 10px var(--cyan);width:0;animation:lf 2s ease forwards 0.4s;}
+@keyframes lf{to{width:100%;}}
+.ov-pct{text-align:center;margin-top:8px;font-family:'Orbitron',monospace;font-size:10px;color:var(--grey);letter-spacing:1px;}
+
+/* PARTICLE */
+.pt{position:fixed;width:4px;height:4px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:999;animation:pf var(--dur) ease-out forwards;}
+@keyframes pf{0%{opacity:1;transform:translate(0,0)scale(1);}100%{opacity:0;transform:translate(var(--tx),var(--ty))scale(0);}}
+
+@media(max-width:480px){
+  .card{padding:20px 14px;}
+  .ebtn{height:58px;font-size:18px;}
+  .mission-title{font-size:25px;}
+  .nav-robo-wrap{width:54px;height:54px;}
+  .nav-title{font-size:14px;}
 }
 </style>
 </head>
 <body>
-<div class="container">
-<div class="robo-container">
-    <img class="robo-img" src="data:image/png;base64,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" alt="Robo">
+
+<canvas id="stars"></canvas>
+
+<!-- LAUNCH OVERLAY -->
+<div class="overlay" id="ov">
+  <div class="ov-robo"><video src="robo_jump.mp4" autoplay loop muted playsinline></video></div>
+  <div class="ov-title">수업 <em>시작!</em></div>
+  <div class="ov-txt" id="ovTxt">INITIALIZING LESSON...</div>
+  <div>
+    <div class="ov-bar"><div class="ov-fill"></div></div>
+    <div class="ov-pct" id="ovPct">0%</div>
+  </div>
 </div>
 
-  <div class="progress-bar">
-    <div class="progress-fill" id="progressFill" style="width: 20%"></div>
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a class="nav-brand" href="index.html">
+    <div class="nav-robo-wrap">
+      <video src="robo_jump.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="nav-text">
+      <div class="nav-title">CEC <span>English</span> Camp</div>
+      <div class="nav-sub">CAMP A · AI TUTOR ROBO</div>
+    </div>
+  </a>
+  <div class="nav-badge" id="sb">STEP 01 / 06</div>
+</nav>
+
+<!-- WRAPPER -->
+<div class="wrapper">
+  <button class="back" id="backBtn" onclick="back()" style="display:none">◀ BACK</button>
+
+  <div class="mission-header">
+    <div class="mission-sup">CAMP A · PRE-STEP</div>
+    <div class="mission-title" id="mttl">안녕, <em>이름이 뭐야?</em></div>
+    <div class="mission-sub" id="msub">수업 시작 전 잠깐 체크인해볼게!</div>
   </div>
 
-  <!-- Step 1: Name -->
-  <div class="card" id="step1">
-    <div>
-      <div class="emoji-big">👋</div>
-      <h2>안녕! 이름이 뭐야?</h2>
-      <p class="subtitle">What's your name?</p>
+  <div class="prog-wrap">
+    <div class="prog-labels">
+      <span class="prog-label active" id="pleft">이름</span>
+      <span class="prog-label" id="pright">완료</span>
     </div>
-    <div>
-      <div class="input-group">
-        <label>성 (Last Name)</label>
-        <input type="text" id="lastName" placeholder="김" maxlength="10">
-      </div>
-      <div class="input-group">
-        <label>이름 (First Name)</label>
-        <input type="text" id="firstName" placeholder="민준" maxlength="20">
-      </div>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-next" onclick="nextStep(2)">다음 Next →</button>
-    </div>
+    <div class="prog-track"><div class="prog-fill" id="pf" style="width:16.6%"></div></div>
+    <div class="prog-steps" id="pdots"></div>
   </div>
 
-  <!-- Step 2: Grade -->
-  <div class="card hidden" id="step2">
-    <div>
-      <div class="emoji-big">📚</div>
-      <h2>몇 학년이야?</h2>
-      <p class="subtitle">What grade are you in?</p>
-    </div>
-    <div class="options" id="gradeOptions">
-      <button class="option-btn" onclick="selectGrade(this, '3학년')">
-        <span class="opt-emoji">3️⃣</span> 3학년 (Grade 3)
-      </button>
-      <button class="option-btn" onclick="selectGrade(this, '4학년')">
-        <span class="opt-emoji">4️⃣</span> 4학년 (Grade 4)
-      </button>
-      <button class="option-btn" onclick="selectGrade(this, '5학년')">
-        <span class="opt-emoji">5️⃣</span> 5학년 (Grade 5)
-      </button>
-      <button class="option-btn" onclick="selectGrade(this, '6학년')">
-        <span class="opt-emoji">6️⃣</span> 6학년 (Grade 6)
-      </button>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-back" onclick="prevStep(1)">← 뒤로</button>
-      <button class="btn btn-next" id="gradeNext" disabled onclick="nextStep(3)">다음 Next →</button>
-    </div>
-  </div>
-
-  <!-- Step 3: Energy -->
-  <div class="card hidden" id="step3">
-    <div>
-      <div class="emoji-big">🔋</div>
-      <h2>오늘 에너지는?</h2>
-      <p class="subtitle">How's your energy today?</p>
-    </div>
-    <div class="energy-row" id="energyRow">
-      <button class="energy-btn" onclick="selectEnergy(this, 1)" title="피곤해요">😴</button>
-      <button class="energy-btn" onclick="selectEnergy(this, 2)" title="좀 졸려요">😐</button>
-      <button class="energy-btn" onclick="selectEnergy(this, 3)" title="보통이에요">🙂</button>
-      <button class="energy-btn" onclick="selectEnergy(this, 4)" title="좋아요!">😊</button>
-      <button class="energy-btn" onclick="selectEnergy(this, 5)" title="완전 충전!">🔥</button>
-    </div>
-    <div id="energyLabel" style="font-size: 14px; color: #888; min-height: 20px;"></div>
-    <div class="btn-row">
-      <button class="btn btn-back" onclick="prevStep(2)">← 뒤로</button>
-      <button class="btn btn-next" id="energyNext" disabled onclick="nextStep(4)">다음 Next →</button>
-    </div>
-  </div>
-
-  <!-- Step 4: Interests -->
-  <div class="card hidden" id="step4">
-    <div>
-      <div class="emoji-big">🎮</div>
-      <h2>요즘 뭐에 빠져있어?</h2>
-      <p class="subtitle">Pick your interests! (여러 개 OK)</p>
-    </div>
-    <div class="chips" id="interestChips">
-      <span class="chip" onclick="toggleChip(this, 'games')">🎮 게임</span>
-      <span class="chip" onclick="toggleChip(this, 'youtube')">📺 유튜브</span>
-      <span class="chip" onclick="toggleChip(this, 'sports')">⚽ 스포츠</span>
-      <span class="chip" onclick="toggleChip(this, 'music')">🎵 음악</span>
-      <span class="chip" onclick="toggleChip(this, 'animals')">🐶 동물</span>
-      <span class="chip" onclick="toggleChip(this, 'drawing')">🎨 그림</span>
-      <span class="chip" onclick="toggleChip(this, 'cooking')">🍳 요리</span>
-      <span class="chip" onclick="toggleChip(this, 'reading')">📖 독서</span>
-      <span class="chip" onclick="toggleChip(this, 'kpop')">🎤 K-pop</span>
-      <span class="chip" onclick="toggleChip(this, 'science')">🔬 과학</span>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-back" onclick="prevStep(3)">← 뒤로</button>
-      <button class="btn btn-next" id="interestNext" disabled onclick="nextStep(5)">다음 Next →</button>
-    </div>
-  </div>
-
-  <!-- Step 5: Goal + Summary -->
-  <div class="card hidden" id="step5">
-    <div>
-      <div class="emoji-big">🎯</div>
-      <h2>오늘의 목표!</h2>
-      <p class="subtitle">What do you want to do today?</p>
-    </div>
-    <div class="options" id="goalOptions">
-      <button class="option-btn" onclick="selectGoal(this, 'reading')">
-        <span class="opt-emoji">📖</span> 재미있는 영어 읽기
-      </button>
-      <button class="option-btn" onclick="selectGoal(this, 'speaking')">
-        <span class="opt-emoji">🗣️</span> 영어로 말하기 연습
-      </button>
-      <button class="option-btn" onclick="selectGoal(this, 'homework')">
-        <span class="opt-emoji">📝</span> 숙제 도움
-      </button>
-      <button class="option-btn" onclick="selectGoal(this, 'exam')">
-        <span class="opt-emoji">🎯</span> 시험 준비
-      </button>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-back" onclick="prevStep(4)">← 뒤로</button>
-      <button class="btn btn-next" id="goalNext" disabled onclick="nextStep(6)">다음 Next →</button>
-    </div>
-  </div>
-
-  <!-- Step 6: Summary + Start -->
-  <div class="card hidden" id="step6">
-    <div>
-      <div class="emoji-big">🚀</div>
-      <h2>준비 완료!</h2>
-      <p class="subtitle">Ready to start your lesson!</p>
-    </div>
-    <ul class="summary-list" id="summaryList"></ul>
-    <div class="btn-row" style="flex-direction: column;">
-      <button class="btn btn-start" onclick="startLesson()">수업 시작! Let's go! 🚀</button>
-      <button class="btn btn-back" style="width: 100%; margin-top: 8px;" onclick="prevStep(5)">← 수정하기</button>
-    </div>
-  </div>
+  <div class="card" id="card"></div>
 </div>
 
 <script>
-const state = {
-  lastName: '',
-  firstName: '',
-  grade: '',
-  energy: 0,
-  interests: [],
-  goal: '',
-};
-
-const TOTAL_STEPS = 6;
-
-function updateProgress(step) {
-  const pct = Math.round((step / TOTAL_STEPS) * 100);
-  document.getElementById('progressFill').style.width = pct + '%';
-}
-
-function showStep(n) {
-  for (let i = 1; i <= TOTAL_STEPS; i++) {
-    document.getElementById('step' + i).classList.toggle('hidden', i !== n);
+/* STARS */
+(function(){
+  const c=document.getElementById('stars'),ctx=c.getContext('2d');
+  let W,H,stars=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  function init(){
+    resize();stars=[];
+    for(let i=0;i<170;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+0.2,a:Math.random(),da:(Math.random()-0.5)*0.005,speed:Math.random()*0.07+0.015});
   }
-  updateProgress(n);
-  if (n === 6) buildSummary();
-}
-
-function nextStep(n) {
-  // Validate current step
-  if (n === 2) {
-    state.lastName = document.getElementById('lastName').value.trim();
-    state.firstName = document.getElementById('firstName').value.trim();
-    if (!state.firstName) {
-      document.getElementById('firstName').focus();
-      document.getElementById('firstName').style.borderColor = '#ff4b4b';
-      return;
-    }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    stars.forEach(s=>{
+      s.a+=s.da;if(s.a<0||s.a>1)s.da*=-1;
+      s.y+=s.speed;if(s.y>H){s.y=0;s.x=Math.random()*W;}
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,229,255,${s.a*0.5})`;ctx.fill();
+    });
+    requestAnimationFrame(draw);
   }
-  showStep(n);
+  window.addEventListener('resize',init);init();draw();
+})();
+
+/* DATA */
+const NGROK='https://journey-bronzy-fruitily.ngrok-free.dev';
+const st={step:1,ln:'',fn:'',grade:null,energy:null,interests:[],goal:null};
+const GRADES=[
+  {g:3,e:'🐰',n:'3학년',s:'The Velveteen Rabbit'},
+  {g:4,e:'📖',n:'4학년',s:'A Christmas Carol'},
+  {g:5,e:'⚡',n:'5학년',s:'Harry Potter'},
+  {g:6,e:'🔱',n:'6학년',s:'Percy Jackson'},
+];
+const ENRG=[
+  {v:1,e:'😴',k:'완전 피곤',x:'Very Tired'},
+  {v:2,e:'😌',k:'좀 졸려',x:'A bit sleepy'},
+  {v:3,e:'🙂',k:'보통이야',x:'Normal'},
+  {v:4,e:'😄',k:'기분 좋아',x:'Feeling good'},
+  {v:5,e:'🤩',k:'완전 신나!',x:'Super hyped!'},
+];
+const INTS=['⚽ 스포츠','🎮 게임','🎵 음악','📚 독서','🎨 그림','🍔 음식','🐾 동물','✈️ 여행','🎬 영화','💻 코딩','🧪 과학','🎭 연기'];
+const GOALS=[
+  {id:'reading',e:'📖',k:'읽기 연습',x:'Reading'},
+  {id:'speaking',e:'🗣️',k:'말하기 연습',x:'Speaking'},
+  {id:'homework',e:'📝',k:'숙제 도움',x:'Homework'},
+  {id:'exam',e:'🏆',k:'시험 준비',x:'Exam Prep'},
+];
+const MSGS=[
+  '안녕! 나는 Robo야. 이름을 알려줘! 😊',
+  '좋아! 몇 학년인지 골라봐.',
+  '오늘 컨디션은 어때? 솔직하게!',
+  '어떤 게 제일 재미있어? 여러 개도 OK!',
+  '오늘 집중할 목표를 하나 골라봐!',
+  '완벽해! 수업 바로 시작해보자 🚀',
+];
+const HEADERS=[
+  ['안녕, ','이름이 뭐야?','What\'s your name?'],
+  ['학년을 ','선택해줘','What grade are you in?'],
+  ['오늘 ','에너지는?','How\'s your energy today?'],
+  ['관심사가 ','뭐야?','What are you into? (최대 4개)'],
+  ['오늘의 ','목표는?','What\'s your goal today?'],
+  ['준비 ','완료!','All systems go!'],
+];
+const PLABELS=['이름','학년','에너지','관심사','목표','완료!'];
+
+function render(){
+  const card=document.getElementById('card');
+  card.style.animation='none';void card.offsetHeight;
+  card.style.animation='slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1)';
+  document.getElementById('sb').textContent=`STEP 0${st.step} / 06`;
+  document.getElementById('pf').style.width=`${(st.step/6)*100}%`;
+  document.getElementById('backBtn').style.display=st.step>1?'flex':'none';
+  const [a,b,sub]=HEADERS[st.step-1];
+  document.getElementById('mttl').innerHTML=a+`<em>${b}</em>`;
+  document.getElementById('msub').textContent=sub;
+  document.getElementById('pdots').innerHTML=PLABELS.map((_,i)=>`<div class="prog-dot ${i<st.step-1?'done':i===st.step-1?'cur':''}"></div>`).join('');
+  document.getElementById('pleft').textContent=PLABELS[st.step-1];
+  document.getElementById('pright').textContent=st.step<6?PLABELS[st.step]:'';
+  const steps=[null,s1,s2,s3,s4,s5,s6];
+  card.innerHTML=roboBox(MSGS[st.step-1])+steps[st.step]();
+  bindK();
 }
 
-function prevStep(n) {
-  showStep(n);
+function roboBox(msg){
+  return`<div class="robo-box">
+    <div class="robo-av"><video src="robo_jump.mp4" autoplay loop muted playsinline></video></div>
+    <div><div class="robo-name">ROBO · AI TUTOR</div><div class="robo-msg">${msg}<span class="cursor">▌</span></div></div>
+  </div>`;
 }
 
-function selectGrade(btn, grade) {
-  document.querySelectorAll('#gradeOptions .option-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  state.grade = grade;
-  document.getElementById('gradeNext').disabled = false;
+function s1(){return`
+  <div class="igrp"><label class="lbl">성 · LAST NAME</label><input class="ifield" id="iL" placeholder="김" value="${st.ln}" maxlength="5"></div>
+  <div class="igrp"><label class="lbl">이름 · FIRST NAME</label><input class="ifield" id="iF" placeholder="민준" value="${st.fn}" maxlength="10"></div>
+  <div class="err" id="er"></div>
+  <button class="btn" onclick="A1()"><span>NEXT →</span></button>`;}
+
+function A1(){
+  const l=document.getElementById('iL').value.trim(),f=document.getElementById('iF').value.trim();
+  if(!l||!f){document.getElementById('er').textContent='이름을 입력해 주세요!';return;}
+  st.ln=l;st.fn=f;st.step=2;render();
 }
 
-const energyLabels = {
-  1: '😴 오늘 좀 피곤해...',
-  2: '😐 졸려요...',
-  3: '🙂 보통이야!',
-  4: '😊 좋아! 준비됐어!',
-  5: '🔥 완전 충전! 달려보자!',
-};
+function s2(){return`
+  <div class="ggrid">
+    ${GRADES.map(({g,e,n,s})=>`<div class="gcard ${st.grade===g?'sel':''}" onclick="pG(${g},event)"><div class="chk">✓</div><span class="ge">${e}</span><div class="gn">${n}</div><div class="gs">${s}</div></div>`).join('')}
+  </div>
+  <div class="err" id="er"></div>
+  <button class="btn" onclick="A2()"><span>NEXT →</span></button>`;}
 
-function selectEnergy(btn, level) {
-  document.querySelectorAll('#energyRow .energy-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  state.energy = level;
-  document.getElementById('energyLabel').textContent = energyLabels[level];
-  document.getElementById('energyNext').disabled = false;
+function pG(g,ev){st.grade=g;document.querySelectorAll('.gcard').forEach((c,i)=>c.classList.toggle('sel',GRADES[i].g===g));spk(ev);}
+function A2(){if(!st.grade){document.getElementById('er').textContent='학년을 선택해 주세요!';return;}st.step=3;render();}
+
+function s3(){return`
+  <div class="erow">${ENRG.map(({v,e})=>`<button class="ebtn ${st.energy===v?'sel':''}" onclick="pE(${v},event)">${e}<span class="en">${v}</span></button>`).join('')}</div>
+  <div class="edesc ${st.energy?'on':''}" id="ed">${st.energy?ENRG[st.energy-1].k+' / '+ENRG[st.energy-1].x:'눌러봐!'}</div>
+  <div class="err" id="er"></div>
+  <button class="btn" onclick="A3()"><span>NEXT →</span></button>`;}
+
+function pE(v,ev){
+  st.energy=v;
+  document.querySelectorAll('.ebtn').forEach((b,i)=>b.classList.toggle('sel',i+1===v));
+  const d=document.getElementById('ed');d.textContent=ENRG[v-1].k+' / '+ENRG[v-1].x;d.className='edesc on';
+  spk(ev);
+}
+function A3(){if(!st.energy){document.getElementById('er').textContent='에너지를 선택해 주세요!';return;}st.step=4;render();}
+
+function s4(){return`
+  <div class="chips">${INTS.map(o=>`<div class="chip ${st.interests.includes(o)?'sel':''}" onclick="tC('${o}',event)">${o}</div>`).join('')}</div>
+  <div class="err" id="er"></div>
+  <button class="btn" onclick="A4()"><span>NEXT →</span></button>`;}
+
+function tC(o,ev){
+  const i=st.interests.indexOf(o);
+  if(i>-1)st.interests.splice(i,1);
+  else if(st.interests.length<4){st.interests.push(o);spk(ev);}
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('sel',st.interests.includes(c.textContent)));
+}
+function A4(){if(!st.interests.length){document.getElementById('er').textContent='최소 1개 선택해 주세요!';return;}st.step=5;render();}
+
+function s5(){return`
+  <div class="goalg">${GOALS.map(({id,e,k,x})=>`<div class="goalc ${st.goal===id?'sel':''}" onclick="pGoal('${id}',event)"><span class="ge">${e}</span><div class="gt">${k}</div><div class="gs">${x}</div></div>`).join('')}</div>
+  <div class="err" id="er"></div>
+  <button class="btn" onclick="A5()"><span>NEXT →</span></button>`;}
+
+function pGoal(id,ev){st.goal=id;document.querySelectorAll('.goalc').forEach((c,i)=>c.classList.toggle('sel',GOALS[i].id===id));spk(ev);}
+function A5(){if(!st.goal){document.getElementById('er').textContent='목표를 선택해 주세요!';return;}st.step=6;render();}
+
+function s6(){
+  const nm=st.ln+st.fn,g=GOALS.find(x=>x.id===st.goal),gr=GRADES.find(x=>x.g===st.grade);
+  return`
+  <div class="sumg">
+    <div class="sumr"><span class="sico">👤</span><span class="skey">NAME</span><span class="sval">${nm}</span></div>
+    <div class="sumr"><span class="sico">🎒</span><span class="skey">GRADE</span><span class="sval">${st.grade}학년 — ${gr.s}</span></div>
+    <div class="sumr"><span class="sico">⚡</span><span class="skey">ENERGY</span><span class="sval">${st.energy}/5 — ${ENRG[st.energy-1].k}</span></div>
+    <div class="sumr"><span class="sico">💫</span><span class="skey">LIKES</span><span class="sval">${st.interests.map(i=>i.split(' ')[1]).join(', ')}</span></div>
+    <div class="sumr"><span class="sico">🎯</span><span class="skey">GOAL</span><span class="sval">${g.k} (${g.x})</span></div>
+  </div>
+  <button class="btn launch" onclick="launch()"><span>🚀 수업 시작! LAUNCH LESSON</span></button>`;}
+
+const OV_MSGS=['CHECKING PROFILE...','LOADING CURRICULUM...','CONNECTING TO ROBO...','LAUNCHING LESSON...'];
+function launch(){
+  const nm=st.ln+st.fn,likes=st.interests.map(i=>i.split(' ')[1]).join(',');
+  const tag=`[PRESTEP] name=${nm} grade=${st.grade} energy=${st.energy} interests=${likes} goal=${st.goal}`;
+  document.getElementById('ov').classList.add('on');
+  let step=0;
+  const iv=setInterval(()=>{
+    step++;
+    document.getElementById('ovTxt').textContent=OV_MSGS[Math.min(step,OV_MSGS.length-1)];
+    document.getElementById('ovPct').textContent=Math.min(step*28,100)+'%';
+    if(step>=4){clearInterval(iv);setTimeout(()=>{window.location.href=`${NGROK}/?q=${encodeURIComponent(tag)}`;},600);}
+  },480);
 }
 
-function toggleChip(chip, interest) {
-  chip.classList.toggle('selected');
-  const idx = state.interests.indexOf(interest);
-  if (idx === -1) {
-    state.interests.push(interest);
-  } else {
-    state.interests.splice(idx, 1);
+function back(){if(st.step>1){st.step--;render();}}
+function bindK(){
+  const l=document.getElementById('iL'),f=document.getElementById('iF');
+  if(l)l.addEventListener('keydown',e=>{if(e.key==='Enter')f&&f.focus();});
+  if(f)f.addEventListener('keydown',e=>{if(e.key==='Enter')A1();});
+}
+function spk(ev){
+  if(!ev)return;
+  const x=ev.clientX||(ev.touches?.[0]?.clientX)||window.innerWidth/2;
+  const y=ev.clientY||(ev.touches?.[0]?.clientY)||window.innerHeight/2;
+  const cols=['#00e5ff','#00897b','#ffffff','#ffd600'];
+  for(let i=0;i<12;i++){
+    const p=document.createElement('div');p.className='pt';
+    const a=Math.random()*Math.PI*2,d=35+Math.random()*55;
+    p.style.cssText=`left:${x}px;top:${y}px;background:${cols[i%cols.length]};--dur:${0.45+Math.random()*0.5}s;--tx:${Math.cos(a)*d}px;--ty:${Math.sin(a)*d}px;`;
+    document.body.appendChild(p);setTimeout(()=>p.remove(),950);
   }
-  document.getElementById('interestNext').disabled = state.interests.length === 0;
 }
 
-function selectGoal(btn, goal) {
-  document.querySelectorAll('#goalOptions .option-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  state.goal = goal;
-  document.getElementById('goalNext').disabled = false;
-}
-
-function buildSummary() {
-  const list = document.getElementById('summaryList');
-  const goalNames = { reading: '영어 읽기', speaking: '말하기 연습', homework: '숙제 도움', exam: '시험 준비' };
-  list.innerHTML = `
-    <li><span>이름</span><span>${state.lastName}${state.firstName}</span></li>
-    <li><span>학년</span><span>${state.grade}</span></li>
-    <li><span>에너지</span><span>${'🔋'.repeat(state.energy)}</span></li>
-    <li><span>관심사</span><span>${state.interests.join(', ')}</span></li>
-    <li><span>오늘 목표</span><span>${goalNames[state.goal] || state.goal}</span></li>
-  `;
-}
-
-async function startLesson() {
-  const prestepMsg = `[PRESTEP] name=${state.lastName+state.firstName} grade=${state.grade} energy=${state.energy} interests=${state.interests.join(',')} goal=${state.goal}`;
-
-  const btn = document.querySelector('.btn-start');
-  btn.textContent = '연결 중... ⏳';
-  btn.disabled = true;
-
-  const url = 'https://journey-bronzy-fruitily.ngrok-free.dev/?q='
-              + encodeURIComponent(prestepMsg);
-  window.location.href = url;
-}
+render();
 </script>
 </body>
 </html>
