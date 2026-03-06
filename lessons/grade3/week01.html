@@ -514,7 +514,7 @@ body {
     <div class="chat-header">
       <div class="av-wrap">
         <div class="av">
-          <video src="../../video/robo.mp4" autoplay loop muted playsinline></video>
+          <video src="../../video/robo.mp4" autoplay loop muted playsinline preload="auto"></video>
         </div>
         <div class="av-ring"></div>
       </div>
@@ -670,7 +670,15 @@ body {
 <script>
 // Robo video autoplay
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('video').forEach(v => { v.muted = true; v.play().catch(()=>{}); });
+  document.querySelectorAll('video').forEach(v => {
+    v.muted = true;
+    v.volume = 0;
+    const tryPlay = () => v.play().catch(() => setTimeout(tryPlay, 500));
+    tryPlay();
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('video').forEach(v => v.play().catch(()=>{}));
+  }, { once: true });
 });
 
 const SYS = `너는 로보(Robo)야. CEC English Camp의 따뜻하고 재미있는 AI 영어 튜터! 🤖
