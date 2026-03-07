@@ -531,6 +531,7 @@ body::before {
       <div class="complete-screen">
         <div class="complete-icon">🎉</div>
         <h2>등록 완료!</h2>
+        <p id="receiptMsg" style="font-size:16px;color:var(--accent);font-weight:700;margin-bottom:12px;display:none"></p>
         <p id="welcomeMsg">지민 학생, CEC English Camp에 오신 걸 환영해요!<br>Robo와 함께 신나는 영어 여행이 시작됩니다! 🤖</p>
 
         <div class="bank-box">
@@ -718,6 +719,39 @@ function step3Next() {
 
   goStep(4);
   confetti();
+
+  // Worker API로 등록 데이터 POST
+  const WORKER_URL = 'https://cec-register.cec-english-camp.workers.dev/register';
+  fetch(WORKER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      last_name: formData.lastName,
+      first_name: formData.firstName,
+      camp: formData.camp,
+      grade: formData.grade,
+      parent_phone: formData.phone,
+      email: formData.email,
+      username: formData.userId
+    })
+  })
+  .then(r => r.json())
+  .then(d => {
+    const el = document.getElementById('receiptMsg');
+    if (d.ok && d.receipt_no) {
+      el.textContent = '접수 번호: ' + d.receipt_no;
+    } else {
+      el.textContent = '접수 번호 발급 실패 — 관리자에게 문의하세요';
+      el.style.color = 'var(--muted2)';
+    }
+    el.style.display = 'block';
+  })
+  .catch(() => {
+    const el = document.getElementById('receiptMsg');
+    el.textContent = '접수 번호 발급 실패 — 관리자에게 문의하세요';
+    el.style.color = 'var(--muted2)';
+    el.style.display = 'block';
+  });
 }
 
 function goStep(n) {
