@@ -574,6 +574,12 @@ let grade = '';
 let camp = '';
 let formData = {};
 
+// 페이지 로드 시 Camp A 기본 선택
+document.addEventListener('DOMContentLoaded', () => {
+  const campABtn = document.querySelector('.camp-btn');
+  if (campABtn) selCamp(campABtn, 'A');
+});
+
 function selCamp(btn, val) {
   document.querySelectorAll('.camp-btn').forEach(b => b.classList.remove('sel'));
   btn.classList.add('sel');
@@ -618,10 +624,9 @@ function step1Next() {
   const em = document.getElementById('email').value.trim();
   let ok = true;
 
-  if (!camp || !grade) { document.getElementById('errGrade').classList.add('show'); ok = false; }
+  if (!camp || (!grade && camp !== 'C') || (camp === 'C' && !grade)) { document.getElementById('errGrade').classList.add('show'); ok = false; }
   else document.getElementById('errGrade').classList.remove('show');
 
-  const ph = document.getElementById('phone').value.trim();
   if (camp !== 'C' && !ph.match(/^01[0-9]-\d{4}-\d{4}$/)) {
     document.getElementById('errPhone').classList.add('show'); ok = false;
   } else document.getElementById('errPhone').classList.remove('show');
