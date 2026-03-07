@@ -125,7 +125,7 @@ const grammarMapping = {
     80: {p: "G80/G80_advanced_articles_and_determiners.html", t: "Adv Articles"}
 };
 
-const baseURL = "https://cecenglishcamp.github.io/camp-b/GrammarBaseCamp/";
+const baseURL = "https://cecenglishcamp.github.io/GrammarBaseCamp/";
 
 // ===== RENDER GRAMMAR GRID =====
 function renderGrammarGrid(start, end, gridId) {
