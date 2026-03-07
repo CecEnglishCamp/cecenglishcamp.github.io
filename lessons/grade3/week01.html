@@ -557,7 +557,7 @@ body {
         <button class="sbtn" onclick="send()">➤</button>
       </div>
     </div>
-    <a href="https://journey-bronzy-fruitily.ngrok-free.dev" class="next-fixed-btn">✅ 다음으로 가요!</a>
+    <a href="#" onclick="event.preventDefault();goToWebUI();" class="next-fixed-btn">✅ 다음으로 가요!</a>
   </div>
 
   <!-- RIGHT: CONTENT -->
@@ -674,6 +674,36 @@ body {
 <div class="tip" id="tip"></div>
 
 <script>
+// Auth gate: must come from prestep
+(function(){
+  const auth = sessionStorage.getItem('cecAuth');
+  if (!auth) { window.location.href = '../../prestep.html'; return; }
+  try { const d = JSON.parse(auth); if (Date.now() - d.ts > 3*60*60*1000) { sessionStorage.removeItem('cecAuth'); window.location.href = '../../prestep.html'; return; } } catch(e) { window.location.href = '../../prestep.html'; return; }
+})();
+
+// Auto-signin to Open WebUI and redirect via relay page
+function goToWebUI() {
+  const API = 'https://journey-bronzy-fruitily.ngrok-free.dev';
+  const btn = document.querySelector('.next-fixed-btn');
+  if (btn) { btn.textContent = '연결 중...'; btn.style.pointerEvents = 'none'; }
+  fetch(API + '/api/v1/auths/signin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': '1' },
+    body: JSON.stringify({ email: 'student@cec.camp', password: 'cec2026student' })
+  })
+  .then(r => r.json())
+  .then(d => {
+    if (d.token) {
+      window.location.href = API + '/static/auth-relay.html?t=' + encodeURIComponent(d.token);
+    } else {
+      if (btn) { btn.textContent = '연결 실패 - 다시 시도'; btn.style.pointerEvents = 'auto'; }
+    }
+  })
+  .catch(() => {
+    if (btn) { btn.textContent = '연결 실패 - 다시 시도'; btn.style.pointerEvents = 'auto'; }
+  });
+}
+
 // Robo video autoplay
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('video').forEach(v => {
