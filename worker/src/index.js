@@ -17,22 +17,6 @@ export default {
       const data = await request.json();
       const now = new Date().toISOString();
 
-      // 테이블 없으면 생성
-      await env.cec_registrations.exec(`
-        CREATE TABLE IF NOT EXISTS registrations (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          receipt_no TEXT,
-          last_name TEXT,
-          first_name TEXT,
-          camp TEXT,
-          grade TEXT,
-          parent_phone TEXT,
-          email TEXT,
-          username TEXT,
-          created_at TEXT
-        )
-      `);
-
       // 접수 번호 생성 (CEC-2026-001)
       const countResult = await env.cec_registrations.prepare(
         'SELECT COUNT(*) as cnt FROM registrations'
