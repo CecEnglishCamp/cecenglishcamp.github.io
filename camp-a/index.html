@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEC English Camp A — 영어 모험 시작!</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --surface2: #1C2330;
+  --gold: #F0C040;
+  --gold2: #FFD966;
+  --amber: #E8943A;
+  --green: #3CB371;
+  --blue: #4A9EE0;
+  --purple: #9B6ED4;
+  --text: #F0E6CC;
+  --muted: #6B7280;
+  --muted2: #9CA3AF;
+  --border: rgba(240,192,64,0.12);
+  --border2: rgba(240,192,64,0.25);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 15% 15%, rgba(240,192,64,0.05) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 85%, rgba(74,158,224,0.05) 0%, transparent 45%);
+  pointer-events: none; z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, rgba(240,192,64,0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none; z-index: 0;
+}
+
+/* TOPBAR */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 56px;
+  background: rgba(13,17,23,0.94);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; z-index: 100;
+}
+.topbar::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(240,192,64,0.5), transparent);
+}
+.logo {
+  font-family: 'Baloo 2', sans-serif; font-size: 18px; font-weight: 800;
+  color: var(--gold2); text-decoration: none;
+  display: flex; align-items: center; gap: 10px; letter-spacing: 1px;
+}
+.logo-robo { width: 30px; height: 30px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border2); }
+.logo-robo img { width: 100%; height: 100%; object-fit: cover; }
+.logo-badge {
+  background: linear-gradient(135deg, #E8943A, #F0C040); color: #0D1117;
+  font-size: 10px; font-weight: 800; padding: 2px 10px; border-radius: 20px; letter-spacing: 1px;
+}
+.nav-links { display: flex; align-items: center; gap: 6px; }
+.nav-link {
+  font-size: 12px; color: var(--muted2); text-decoration: none; transition: all .2s;
+  letter-spacing: 0.5px; padding: 6px 14px; border-radius: 20px; border: 1px solid transparent;
+}
+.nav-link:hover { color: var(--gold2); border-color: var(--border2); }
+.nav-link.game {
+  background: linear-gradient(135deg, rgba(155,110,212,0.15), rgba(74,158,224,0.15));
+  border-color: rgba(155,110,212,0.3); color: #C9A8FF; font-weight: 600;
+}
+.nav-link.game:hover { background: linear-gradient(135deg, rgba(155,110,212,0.3), rgba(74,158,224,0.3)); color: #fff; }
+
+/* MAIN */
+.main { position: relative; z-index: 1; padding: 76px 20px 60px; max-width: 900px; margin: 0 auto; }
+
+/* 나침반 SVG 장식 */
+.compass-deco { position: absolute; top: 80px; right: 20px; width: 56px; height: 56px; opacity: 0.12; animation: spin 20s linear infinite; }
+@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+/* HERO */
+.hero { text-align: center; padding: 40px 20px 50px; position: relative; }
+.hero-robo {
+  width: 110px; height: 110px; border-radius: 22px; overflow: hidden;
+  border: 2px solid var(--border2); box-shadow: 0 0 40px rgba(240,192,64,0.2);
+  margin: 0 auto 20px; animation: float 3s ease-in-out infinite;
+}
+.hero-robo video { width: 100%; height: 100%; object-fit: cover; display: block; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(240,192,64,0.1); border: 1px solid var(--border2);
+  color: var(--gold2); font-size: 12px; font-weight: 600;
+  padding: 5px 16px; border-radius: 20px; margin-bottom: 16px; letter-spacing: 1px;
+}
+.hero-badge img { width: 16px; height: 16px; object-fit: cover; border-radius: 50%; }
+.hero h1 { font-family: 'Baloo 2', sans-serif; font-size: 40px; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 12px; }
+.hero h1 span { color: var(--gold2); }
+.hero p { font-size: 15px; color: var(--muted2); line-height: 1.8; max-width: 480px; margin: 0 auto; }
+
+/* 섹션 제목 */
+.section-title { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.section-title h2 { font-family: 'Baloo 2', sans-serif; font-size: 20px; font-weight: 700; color: #fff; letter-spacing: 1px; white-space: nowrap; }
+.sec-robo { width: 24px; height: 24px; border-radius: 6px; overflow: hidden; flex-shrink: 0; }
+.sec-robo img { width: 100%; height: 100%; object-fit: cover; }
+.section-line { flex: 1; height: 1px; background: var(--border); }
+
+/* 동기부여 배너 */
+.motivate-banner {
+  background: linear-gradient(135deg, rgba(240,192,64,0.08), rgba(232,148,58,0.06));
+  border: 1px solid rgba(240,192,64,0.2); border-radius: 16px;
+  padding: 20px 24px; display: flex; align-items: center; gap: 16px; margin-bottom: 48px;
+}
+.motivate-robo { width: 52px; height: 52px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border2); flex-shrink: 0; }
+.motivate-robo img { width: 100%; height: 100%; object-fit: cover; }
+.motivate-text h3 { font-family: 'Baloo 2', sans-serif; font-size: 16px; font-weight: 700; color: var(--gold2); margin-bottom: 4px; }
+.motivate-text p { font-size: 13px; color: var(--muted2); line-height: 1.6; }
+
+/* Grammar Game 배너 */
+.game-banner {
+  background: linear-gradient(135deg, rgba(155,110,212,0.1), rgba(74,158,224,0.1));
+  border: 1px solid rgba(155,110,212,0.25); border-radius: 16px;
+  padding: 22px 28px; display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; margin-bottom: 48px; cursor: pointer; transition: all .25s; text-decoration: none;
+}
+.game-banner:hover { transform: translateY(-2px); border-color: rgba(155,110,212,0.5); box-shadow: 0 8px 28px rgba(0,0,0,0.3); }
+.game-left { display: flex; align-items: center; gap: 16px; }
+.game-robo { width: 52px; height: 52px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(155,110,212,0.3); flex-shrink: 0; }
+.game-robo img { width: 100%; height: 100%; object-fit: cover; }
+.game-text h3 { font-family: 'Baloo 2', sans-serif; font-size: 17px; font-weight: 700; color: #C9A8FF; margin-bottom: 4px; }
+.game-text p { font-size: 12px; color: var(--muted2); }
+.game-btn { padding: 10px 22px; background: linear-gradient(135deg, #6C3483, #2980B9); border-radius: 20px; color: #fff; font-family: 'Baloo 2', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; white-space: nowrap; flex-shrink: 0; }
+
+/* 이번 주 스토리 */
+.story-section { margin-bottom: 48px; }
+.story-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.story-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden; cursor: pointer; transition: all .25s;
+}
+.story-card:hover { transform: translateY(-4px); border-color: var(--border2); box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+.story-card.active { border-color: var(--gold); box-shadow: 0 0 20px rgba(240,192,64,0.15); }
+.story-thumb {
+  width: 100%; aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #1C2330, #252D3A);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.story-thumb img { width: 70px; height: 70px; object-fit: cover; border-radius: 14px; opacity: 0.8; }
+.story-info { padding: 12px; }
+.story-grade { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+.story-title { font-family: 'Baloo 2', sans-serif; font-size: 13px; font-weight: 700; color: #fff; line-height: 1.3; margin-bottom: 4px; }
+.story-week { font-size: 10px; color: var(--muted); }
+
+/* 학년 선택 */
+.grade-section { margin-bottom: 48px; }
+.grade-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.grade-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 24px 16px; text-align: center;
+  transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-decoration: none; display: block; position: relative; overflow: hidden;
+}
+.grade-card.g3{--c:#3CB371;--cr:60,179,113}
+.grade-card.g4{--c:#E8943A;--cr:232,148,58}
+.grade-card.g5{--c:#9B6ED4;--cr:155,110,212}
+.grade-card.g6{--c:#4A9EE0;--cr:74,158,224}
+.grade-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(var(--cr),0.1) 0%, transparent 70%);
+  opacity: 0; transition: opacity .3s;
+}
+.grade-card:hover { transform: translateY(-6px) scale(1.02); border-color: var(--c); box-shadow: 0 8px 28px rgba(0,0,0,0.4), 0 0 0 1px var(--c); }
+.grade-card:hover::before { opacity: 1; }
+.grade-robo { width: 56px; height: 56px; border-radius: 14px; overflow: hidden; border: 2px solid var(--border2); margin: 0 auto 12px; transition: border-color .3s; }
+.grade-robo img { width: 100%; height: 100%; object-fit: cover; }
+.grade-card:hover .grade-robo { border-color: var(--c); }
+.grade-num { font-family: 'Baloo 2', sans-serif; font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+.grade-book { font-size: 11px; color: var(--muted2); line-height: 1.5; margin-bottom: 14px; }
+.prog-bar { width: 100%; height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; margin-bottom: 5px; }
+.prog-fill { height: 100%; border-radius: 3px; background: var(--c); }
+.prog-text { font-size: 10px; color: var(--muted); text-align: right; margin-bottom: 12px; }
+.grade-btn { display: inline-block; padding: 7px 18px; border-radius: 20px; font-size: 12px; font-weight: 700; font-family: 'Baloo 2', sans-serif; letter-spacing: 0.5px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.1); transition: all .2s; }
+.grade-card:hover .grade-btn { background: var(--c); color: #0D1117; border-color: var(--c); }
+
+/* 탐험 지도 */
+.progress-section { margin-bottom: 48px; }
+.progress-map { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 28px; position: relative; overflow: hidden; }
+.map-bg-robo { position: absolute; top: 12px; right: 16px; width: 48px; height: 48px; border-radius: 10px; overflow: hidden; opacity: 0.12; }
+.map-bg-robo img { width: 100%; height: 100%; object-fit: cover; }
+.map-title { font-family: 'Baloo 2', sans-serif; font-size: 15px; font-weight: 700; color: var(--gold2); margin-bottom: 20px; }
+.map-trail { display: flex; align-items: center; overflow-x: auto; padding-bottom: 8px; }
+.map-trail::-webkit-scrollbar { height: 3px; }
+.map-trail::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.trail-node { display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; }
+.node-dot { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; font-family: 'Baloo 2', sans-serif; color: var(--muted); background: var(--surface2); transition: all .3s; overflow: hidden; }
+.node-dot.done { border-color: var(--green); color: var(--green); background: rgba(60,179,113,0.1); }
+.node-dot.current { border-color: var(--gold); background: rgba(240,192,64,0.1); animation: pulse 2s infinite; padding: 2px; }
+.node-dot.current img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+@keyframes pulse { 0%,100%{box-shadow:0 0 12px rgba(240,192,64,0.3)} 50%{box-shadow:0 0 24px rgba(240,192,64,0.5)} }
+.node-label { font-size: 9px; color: var(--muted); white-space: nowrap; }
+.trail-line { width: 28px; height: 2px; background: var(--border); flex-shrink: 0; margin: 0 0 22px; }
+.trail-line.done { background: var(--green); }
+
+@media (max-width: 700px) {
+  .grade-grid { grid-template-columns: repeat(2, 1fr); }
+  .story-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero h1 { font-size: 26px; }
+  .topbar { padding: 0 16px; }
+  .nav-link:not(.game) { display: none; }
+  .game-banner { flex-direction: column; text-align: center; }
+  .game-left { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo">
+    <div class="logo-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+    CEC English Camp
+    <span class="logo-badge">CAMP A</span>
+  </a>
+  <div class="nav-links">
+    <a href="../grammar-game.html" class="nav-link game">Grammar Game</a>
+    <a href="../GrammarBaseCamp/G01/G01_be_verb_present_tense.html" class="nav-link">Grammar Base</a>
+    <a href="../register.html" class="nav-link">Register</a>
+    <a href="../index.html" class="nav-link">Home</a>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- 나침반 SVG 장식 -->
+  <svg class="compass-deco" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="28" cy="28" r="26" stroke="#F0C040" stroke-width="1.5"/>
+    <circle cx="28" cy="28" r="3" fill="#F0C040"/>
+    <polygon points="28,4 31,28 28,24 25,28" fill="#F0C040"/>
+    <polygon points="28,52 25,28 28,32 31,28" fill="#9CA3AF"/>
+    <polygon points="4,28 28,25 24,28 28,31" fill="#9CA3AF"/>
+    <polygon points="52,28 28,31 32,28 28,25" fill="#9CA3AF"/>
+    <text x="28" y="12" text-anchor="middle" fill="#F0C040" font-size="6" font-weight="bold">N</text>
+    <text x="28" y="49" text-anchor="middle" fill="#9CA3AF" font-size="6">S</text>
+    <text x="9" y="30" text-anchor="middle" fill="#9CA3AF" font-size="6">W</text>
+    <text x="48" y="30" text-anchor="middle" fill="#9CA3AF" font-size="6">E</text>
+  </svg>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-robo">
+      <video src="../video/robo_small.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <div class="hero-badge">
+      <img src="../assets/images/robo.png" alt="Robo">
+      CEC English Camp — 영어 모험 탐험대
+    </div>
+    <h1>안녕! 나는 <span>Robo</span>야!<br>오늘도 같이 탐험하자!</h1>
+    <p>세계 명작 속으로 떠나는 영어 모험<br>매주 새로운 이야기가 기다리고 있어</p>
+  </div>
+
+  <!-- 동기부여 배너 -->
+  <div class="motivate-banner">
+    <div class="motivate-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+    <div class="motivate-text">
+      <h3>이번 주 미션!</h3>
+      <p>각 학년의 이번 주 이야기를 들어보고 빈칸을 모두 채워봐! 다 맞히면 Robo가 특별한 칭찬을 해줄 거야</p>
+    </div>
+  </div>
+
+  <!-- Grammar Game 배너 -->
+  <a href="../grammar-game.html" class="game-banner">
+    <div class="game-left">
+      <div class="game-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+      <div class="game-text">
+        <h3>Grammar Game — Robo와 함께!</h3>
+        <p>G01~G80 문법 단계를 게임으로 정복하자. Robo가 함께 응원해줄게!</p>
+      </div>
+    </div>
+    <div class="game-btn">지금 플레이 →</div>
+  </a>
+
+  <!-- 이번 주 스토리 -->
+  <div class="story-section">
+    <div class="section-title">
+      <div class="sec-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+      <h2>이번 주 탐험 이야기</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="story-grid">
+      <div class="story-card active" onclick="goLesson(3)">
+        <div class="story-thumb"><img src="../assets/images/robo.png" alt="Grade 3"></div>
+        <div class="story-info">
+          <div class="story-grade" style="color:#3CB371">Grade 3</div>
+          <div class="story-title">The Tale of Peter Rabbit</div>
+          <div class="story-week">Week 1 · Beatrix Potter</div>
+        </div>
+      </div>
+      <div class="story-card" onclick="goLesson(4)">
+        <div class="story-thumb"><img src="../assets/images/robo.png" alt="Grade 4"></div>
+        <div class="story-info">
+          <div class="story-grade" style="color:#E8943A">Grade 4</div>
+          <div class="story-title">A Christmas Carol</div>
+          <div class="story-week">Week 1 · Charles Dickens</div>
+        </div>
+      </div>
+      <div class="story-card" onclick="goLesson(5)">
+        <div class="story-thumb"><img src="../assets/images/robo.png" alt="Grade 5"></div>
+        <div class="story-info">
+          <div class="story-grade" style="color:#9B6ED4">Grade 5</div>
+          <div class="story-title">Harry Potter Book 1</div>
+          <div class="story-week">Week 1 · J.K. Rowling</div>
+        </div>
+      </div>
+      <div class="story-card" onclick="goLesson(6)">
+        <div class="story-thumb"><img src="../assets/images/robo.png" alt="Grade 6"></div>
+        <div class="story-info">
+          <div class="story-grade" style="color:#4A9EE0">Grade 6</div>
+          <div class="story-title">Percy Jackson Book 1</div>
+          <div class="story-week">Week 1 · Rick Riordan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 학년 선택 -->
+  <div class="grade-section">
+    <div class="section-title">
+      <div class="sec-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+      <h2>내 학년 선택하기</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="grade-grid">
+      <a href="lessons/grade3/week01.html" class="grade-card g3">
+        <div class="grade-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+        <div class="grade-num">Grade 3</div>
+        <div class="grade-book">Peter Rabbit<br>동화 모험</div>
+        <div class="prog-bar"><div class="prog-fill" style="width:3%"></div></div>
+        <div class="prog-text">Week 1 / 36</div>
+        <span class="grade-btn">탐험 시작 →</span>
+      </a>
+      <a href="lessons/grade4/week01.html" class="grade-card g4">
+        <div class="grade-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+        <div class="grade-num">Grade 4</div>
+        <div class="grade-book">A Christmas Carol<br>고전 명작</div>
+        <div class="prog-bar"><div class="prog-fill" style="width:3%"></div></div>
+        <div class="prog-text">Week 1 / 36</div>
+        <span class="grade-btn">탐험 시작 →</span>
+      </a>
+      <a href="lessons/grade5/week01.html" class="grade-card g5">
+        <div class="grade-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+        <div class="grade-num">Grade 5</div>
+        <div class="grade-book">Harry Potter<br>마법 세계</div>
+        <div class="prog-bar"><div class="prog-fill" style="width:3%"></div></div>
+        <div class="prog-text">Week 1 / 36</div>
+        <span class="grade-btn">탐험 시작 →</span>
+      </a>
+      <a href="lessons/grade6/week01.html" class="grade-card g6">
+        <div class="grade-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+        <div class="grade-num">Grade 6</div>
+        <div class="grade-book">Percy Jackson<br>신화 모험</div>
+        <div class="prog-bar"><div class="prog-fill" style="width:3%"></div></div>
+        <div class="prog-text">Week 1 / 36</div>
+        <span class="grade-btn">탐험 시작 →</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 탐험 지도 -->
+  <div class="progress-section">
+    <div class="section-title">
+      <div class="sec-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+      <h2>탐험 지도 (Grade 3 기준)</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="progress-map">
+      <div class="map-bg-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+      <div class="map-title">지금까지의 모험 경로</div>
+      <div class="map-trail" id="trail"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('video').forEach(v => { v.muted = true; v.play().catch(()=>{}); });
+  buildTrail();
+});
+
+function buildTrail() {
+  const trail = document.getElementById('trail');
+  const total = 12;
+  const current = 1;
+  let html = '';
+  for (let i = 1; i <= total; i++) {
+    const isDone = i < current;
+    const isCurrent = i === current;
+    const cls = isDone ? 'done' : isCurrent ? 'current' : '';
+    const inner = isCurrent
+      ? `<img src="../assets/images/robo.png" alt="Robo">`
+      : isDone ? '&#10003;' : i;
+    html += `<div class="trail-node"><div class="node-dot ${cls}">${inner}</div><div class="node-label">W${i}</div></div>`;
+    if (i < total) html += `<div class="trail-line ${isDone ? 'done' : ''}"></div>`;
+  }
+  trail.innerHTML = html;
+}
+
+function goLesson(grade) {
+  window.location.href = `lessons/grade${grade}/week01.html`;
+}
+</script>
+</body>
+</html>
