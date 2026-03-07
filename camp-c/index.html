@@ -3,17 +3,418 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CEC English Camp — Camp C</title>
+<title>CEC English Camp C — 성인·비즈니스 영어</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-body { margin:0; background:#050508; color:#00E5FF; font-family:'Noto Sans KR',sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; flex-direction:column; gap:16px; }
-h1 { font-size:2em; letter-spacing:2px; }
-p { color:rgba(255,255,255,0.5); }
-a { color:#00E5FF; }
+:root {
+  --bg: #111214;
+  --surface: #191B1E;
+  --surface2: #202428;
+  --charcoal: #1E2124;
+  --gold: #B8960C;
+  --gold2: #D4AF37;
+  --gold3: #F0D060;
+  --text: #E8E4DC;
+  --muted: #505560;
+  --muted2: #8A9098;
+  --border: rgba(184,150,12,0.1);
+  --border2: rgba(212,175,55,0.22);
+  --accent: #C0392B;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(184,150,12,0.06) 0%, transparent 40%),
+    radial-gradient(ellipse at 100% 100%, rgba(184,150,12,0.04) 0%, transparent 40%);
+  pointer-events: none; z-index: 0;
+}
+/* 수직선 패턴 (비즈니스) */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg, transparent, transparent 79px,
+    rgba(184,150,12,0.03) 79px, rgba(184,150,12,0.03) 80px
+  );
+  pointer-events: none; z-index: 0;
+}
+
+/* TOPBAR */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 60px;
+  background: rgba(17,18,20,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 36px; z-index: 100;
+}
+.topbar::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.5), transparent);
+}
+.logo {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--gold2); text-decoration: none;
+  display: flex; align-items: center; gap: 12px; letter-spacing: 0.5px;
+}
+.logo-robo { width: 32px; height: 32px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border2); }
+.logo-robo img { width: 100%; height: 100%; object-fit: cover; }
+.logo-divider { width: 1px; height: 20px; background: var(--border2); }
+.logo-badge {
+  font-size: 10px; font-weight: 600; letter-spacing: 3px;
+  color: var(--gold2); text-transform: uppercase;
+}
+.nav-links { display: flex; align-items: center; gap: 6px; }
+.nav-link {
+  font-size: 13px; color: var(--muted2); text-decoration: none;
+  padding: 7px 16px; border-radius: 3px; border: 1px solid transparent;
+  transition: all .2s; letter-spacing: 0.3px; font-weight: 400;
+}
+.nav-link:hover { color: var(--gold2); border-color: var(--border2); }
+.nav-link.game {
+  background: rgba(184,150,12,0.08);
+  border-color: rgba(184,150,12,0.2); color: var(--gold2); font-weight: 500;
+}
+.nav-link.game:hover { background: rgba(184,150,12,0.18); }
+
+/* MAIN */
+.main { position: relative; z-index: 1; padding: 80px 28px 80px; max-width: 960px; margin: 0 auto; }
+
+/* HERO */
+.hero {
+  padding: 60px 0 64px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+.hero-left {}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--border2); border-radius: 2px;
+  padding: 5px 14px; margin-bottom: 24px;
+  font-size: 11px; font-weight: 500; letter-spacing: 2px;
+  color: var(--gold2); text-transform: uppercase;
+}
+.hero-tag-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold2); }
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 54px; font-weight: 700; color: #fff;
+  line-height: 1.15; margin-bottom: 20px;
+}
+.hero h1 em { font-style: italic; color: var(--gold2); }
+.hero p {
+  font-size: 15px; color: var(--muted2); line-height: 1.9;
+  font-weight: 300; max-width: 380px;
+}
+.hero-right {
+  display: flex; flex-direction: column; gap: 14px;
+}
+.hero-stat {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 6px; padding: 18px 22px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: border-color .2s;
+}
+.hero-stat:hover { border-color: var(--border2); }
+.stat-label { font-size: 12px; color: var(--muted2); letter-spacing: 1px; text-transform: uppercase; }
+.stat-value { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--gold2); }
+.hero-robo-wrap {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 6px; padding: 20px; display: flex; align-items: center; gap: 14px;
+}
+.hero-robo { width: 52px; height: 52px; border-radius: 10px; overflow: hidden; flex-shrink: 0; }
+.hero-robo img { width: 100%; height: 100%; object-fit: cover; }
+.hero-robo-text { font-size: 13px; color: var(--muted2); line-height: 1.6; }
+.hero-robo-text strong { color: var(--gold2); display: block; margin-bottom: 2px; font-size: 14px; }
+
+/* 섹션 제목 */
+.section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.section-header h2 { font-family: 'DM Sans', sans-serif; font-size: 18px; font-weight: 600; color: #fff; white-space: nowrap; letter-spacing: 0.5px; }
+.section-tag { font-size: 10px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border2); border-radius: 2px; }
+.section-rule { flex: 1; height: 1px; background: var(--border); }
+
+/* Grammar Game */
+.game-banner {
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 6px; padding: 24px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; margin-bottom: 52px; text-decoration: none; transition: all .25s;
+}
+.game-banner:hover { border-color: var(--gold2); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+.game-left { display: flex; align-items: center; gap: 16px; }
+.game-robo { width: 44px; height: 44px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border2); flex-shrink: 0; }
+.game-robo img { width: 100%; height: 100%; object-fit: cover; }
+.game-text h3 { font-size: 15px; font-weight: 600; color: var(--gold2); margin-bottom: 3px; }
+.game-text p { font-size: 12px; color: var(--muted2); }
+.game-btn { padding: 10px 24px; background: var(--gold2); border-radius: 3px; color: #111214; font-size: 13px; font-weight: 600; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0; }
+
+/* 과정 선택 */
+.course-section { margin-bottom: 52px; }
+.course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.course-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 6px; padding: 28px 22px;
+  text-decoration: none; display: block; transition: all .25s;
+  position: relative; overflow: hidden;
+}
+.course-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: var(--gold2); transform: scaleX(0); transition: transform .3s;
+}
+.course-card:hover { border-color: var(--border2); transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.5); }
+.course-card:hover::after { transform: scaleX(1); }
+.course-level { font-size: 10px; font-weight: 600; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; display: block; }
+.course-name { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 6px; line-height: 1.2; }
+.course-sub { font-size: 12px; color: var(--muted2); margin-bottom: 18px; }
+.course-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+.course-tag { font-size: 10px; padding: 3px 10px; border: 1px solid var(--border2); border-radius: 2px; color: var(--muted2); letter-spacing: 0.5px; }
+.prog-bar { width: 100%; height: 2px; background: rgba(255,255,255,0.06); margin-bottom: 4px; }
+.prog-fill { height: 100%; background: var(--gold2); }
+.prog-text { font-size: 10px; color: var(--muted); text-align: right; margin-bottom: 16px; letter-spacing: 1px; }
+.course-btn { display: inline-block; font-size: 12px; color: var(--gold2); letter-spacing: 1px; font-weight: 500; }
+.course-btn::after { content: ' →'; }
+
+/* 커리큘럼 */
+.curriculum-section { margin-bottom: 52px; }
+.curriculum-list { display: flex; flex-direction: column; gap: 10px; }
+.curriculum-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 4px; padding: 16px 22px;
+  display: flex; align-items: center; gap: 16px; transition: border-color .2s;
+}
+.curriculum-item:hover { border-color: var(--border2); }
+.curr-num { font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--gold); font-weight: 600; min-width: 32px; }
+.curr-info { flex: 1; }
+.curr-title { font-size: 14px; font-weight: 500; color: #fff; margin-bottom: 2px; }
+.curr-desc { font-size: 12px; color: var(--muted2); }
+.curr-level { font-size: 10px; letter-spacing: 1.5px; color: var(--gold); text-transform: uppercase; margin-left: auto; }
+
+/* 진도 */
+.progress-section { margin-bottom: 52px; }
+.progress-map { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 26px 28px; position: relative; }
+.map-bg { position: absolute; top: 14px; right: 18px; width: 40px; height: 40px; border-radius: 8px; overflow: hidden; opacity: 0.1; }
+.map-bg img { width: 100%; height: 100%; object-fit: cover; }
+.map-title { font-size: 13px; font-weight: 500; color: var(--gold2); margin-bottom: 20px; letter-spacing: 1px; text-transform: uppercase; }
+.map-trail { display: flex; align-items: center; overflow-x: auto; padding-bottom: 8px; }
+.map-trail::-webkit-scrollbar { height: 2px; }
+.map-trail::-webkit-scrollbar-thumb { background: var(--border2); }
+.trail-node { display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; }
+.node-dot { width: 32px; height: 32px; border-radius: 3px; border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--muted); background: var(--surface2); transition: all .3s; overflow: hidden; }
+.node-dot.done { border-color: var(--gold); color: var(--gold); background: rgba(184,150,12,0.1); }
+.node-dot.current { border-color: var(--gold2); background: rgba(212,175,55,0.12); animation: pulse 2s infinite; padding: 2px; }
+.node-dot.current img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; }
+@keyframes pulse { 0%,100%{box-shadow:0 0 6px rgba(212,175,55,0.3)} 50%{box-shadow:0 0 14px rgba(212,175,55,0.5)} }
+.node-label { font-size: 9px; color: var(--muted); letter-spacing: 0.5px; white-space: nowrap; }
+.trail-line { width: 22px; height: 1px; background: var(--border); flex-shrink: 0; margin: 0 0 19px; }
+.trail-line.done { background: var(--gold); }
+
+@media (max-width: 760px) {
+  .hero { grid-template-columns: 1fr; gap: 32px; }
+  .course-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 36px; }
+  .topbar { padding: 0 16px; }
+  .nav-link:not(.game) { display: none; }
+}
 </style>
 </head>
 <body>
-<h1>Camp C</h1>
-<p>Coming Soon</p>
-<a href="../index.html">Home</a>
+
+<div class="topbar">
+  <a href="../index.html" class="logo">
+    <div class="logo-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+    <div class="logo-divider"></div>
+    CEC English Camp
+    <div class="logo-divider"></div>
+    <span class="logo-badge">Camp C</span>
+  </a>
+  <div class="nav-links">
+    <a href="../grammar-game.html" class="nav-link game">Grammar Game</a>
+    <a href="../GrammarBaseCamp/G01/G01_be_verb_present_tense.html" class="nav-link">Grammar Base</a>
+    <a href="../register.html" class="nav-link">Register</a>
+    <a href="../index.html" class="nav-link">Home</a>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-tag">
+        <span class="hero-tag-dot"></span>
+        Adult & Business English
+      </div>
+      <h1>실전 영어,<br><em>지금 시작하다</em></h1>
+      <p>성인·직장인을 위한 비즈니스 영어 전문 과정.<br>Robo와 함께 실무에서 바로 쓰이는 영어를 만든다.</p>
+    </div>
+    <div class="hero-right">
+      <div class="hero-robo-wrap">
+        <div class="hero-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+        <div class="hero-robo-text">
+          <strong>Robo와 함께하는 1:1 영어</strong>
+          AI 튜터 Robo가 당신의 수준에 맞춰 맞춤형 수업을 제공합니다.
+        </div>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-label">과정 레벨</span>
+        <span class="stat-value">Beginner → Advanced</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-label">수업 방식</span>
+        <span class="stat-value">AI + 실전 회화</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-label">교재</span>
+        <span class="stat-value">비즈니스 + 명작</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grammar Game -->
+  <a href="../grammar-game.html" class="game-banner">
+    <div class="game-left">
+      <div class="game-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+      <div class="game-text">
+        <h3>Grammar Game — G01~G80</h3>
+        <p>기초 문법부터 비즈니스 영어까지, 단계별 게임으로 실력을 쌓자</p>
+      </div>
+    </div>
+    <div class="game-btn">Play Now</div>
+  </a>
+
+  <!-- 과정 선택 -->
+  <div class="course-section">
+    <div class="section-header">
+      <span class="section-tag">Courses</span>
+      <h2>수강 과정 선택</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="course-grid">
+      <a href="lessons/beginner/" class="course-card">
+        <span class="course-level">Level 01</span>
+        <div class="course-name">Beginner</div>
+        <div class="course-sub">입문 과정</div>
+        <div class="course-tags">
+          <span class="course-tag">기초 회화</span>
+          <span class="course-tag">핵심 문법</span>
+          <span class="course-tag">일상 영어</span>
+        </div>
+        <div class="prog-bar"><div class="prog-fill" style="width:3%"></div></div>
+        <div class="prog-text">Week 1 / 36</div>
+        <span class="course-btn">시작하기</span>
+      </a>
+      <a href="lessons/intermediate/" class="course-card">
+        <span class="course-level">Level 02</span>
+        <div class="course-name">Intermediate</div>
+        <div class="course-sub">중급 과정</div>
+        <div class="course-tags">
+          <span class="course-tag">비즈니스 영어</span>
+          <span class="course-tag">이메일 작성</span>
+          <span class="course-tag">프레젠테이션</span>
+        </div>
+        <div class="prog-bar"><div class="prog-fill" style="width:3%"></div></div>
+        <div class="prog-text">Week 1 / 36</div>
+        <span class="course-btn">시작하기</span>
+      </a>
+      <a href="lessons/advanced/" class="course-card">
+        <span class="course-level">Level 03</span>
+        <div class="course-name">Advanced</div>
+        <div class="course-sub">고급 과정</div>
+        <div class="course-tags">
+          <span class="course-tag">협상 영어</span>
+          <span class="course-tag">명작 원서</span>
+          <span class="course-tag">TOEIC/IELTS</span>
+        </div>
+        <div class="prog-bar"><div class="prog-fill" style="width:3%"></div></div>
+        <div class="prog-text">Week 1 / 36</div>
+        <span class="course-btn">시작하기</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 커리큘럼 -->
+  <div class="curriculum-section">
+    <div class="section-header">
+      <span class="section-tag">Curriculum</span>
+      <h2>주요 커리큘럼</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="curriculum-list">
+      <div class="curriculum-item">
+        <div class="curr-num">01</div>
+        <div class="curr-info">
+          <div class="curr-title">Business Email & Writing</div>
+          <div class="curr-desc">비즈니스 이메일, 보고서, 제안서 작성</div>
+        </div>
+        <div class="curr-level">Intermediate</div>
+      </div>
+      <div class="curriculum-item">
+        <div class="curr-num">02</div>
+        <div class="curr-info">
+          <div class="curr-title">Presentation & Public Speaking</div>
+          <div class="curr-desc">영어 프레젠테이션 구성 및 발표 기술</div>
+        </div>
+        <div class="curr-level">Intermediate</div>
+      </div>
+      <div class="curriculum-item">
+        <div class="curr-num">03</div>
+        <div class="curr-info">
+          <div class="curr-title">Negotiation & Meetings</div>
+          <div class="curr-desc">미팅, 협상, 네트워킹 실전 영어</div>
+        </div>
+        <div class="curr-level">Advanced</div>
+      </div>
+      <div class="curriculum-item">
+        <div class="curr-num">04</div>
+        <div class="curr-info">
+          <div class="curr-title">Classic Literature Reading</div>
+          <div class="curr-desc">영미 명작 원서 읽기 — 어휘·표현 심화</div>
+        </div>
+        <div class="curr-level">Advanced</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 진도 -->
+  <div class="progress-section">
+    <div class="section-header">
+      <span class="section-tag">Progress</span>
+      <h2>학습 진도 (Beginner 기준)</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="progress-map">
+      <div class="map-bg"><img src="../assets/images/robo.png" alt="Robo"></div>
+      <div class="map-title">Current Progress</div>
+      <div class="map-trail" id="trail"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', buildTrail);
+function buildTrail() {
+  const trail = document.getElementById('trail');
+  const total = 12, current = 1;
+  let html = '';
+  for (let i = 1; i <= total; i++) {
+    const isDone = i < current, isCurrent = i === current;
+    const cls = isDone ? 'done' : isCurrent ? 'current' : '';
+    const inner = isCurrent ? `<img src="../assets/images/robo.png" alt="Robo">` : isDone ? '✓' : i;
+    html += `<div class="trail-node"><div class="node-dot ${cls}">${inner}</div><div class="node-label">W${i}</div></div>`;
+    if (i < total) html += `<div class="trail-line ${isDone ? 'done' : ''}"></div>`;
+  }
+  trail.innerHTML = html;
+}
+</script>
 </body>
 </html>
