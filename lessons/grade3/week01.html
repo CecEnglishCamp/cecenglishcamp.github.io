@@ -486,6 +486,11 @@ body {
 /* Tooltip */
 .tip { position: fixed; background: var(--surface2); border: 1px solid rgba(0,229,255,0.3); color: var(--gold3); padding: 7px 14px; border-radius: 8px; font-size: 13px; pointer-events: none; opacity: 0; transition: opacity .15s; z-index: 999; box-shadow: 0 8px 24px rgba(0,0,0,0.5); white-space: nowrap; }
 .tip.show { opacity: 1; }
+.next-fixed-btn { display:block; text-align:center; padding:14px; margin:8px 12px 12px; background:linear-gradient(135deg,#00C853,#00E676); color:#fff; border-radius:14px; text-decoration:none; font-weight:800; font-size:1.05em; box-shadow:0 4px 16px rgba(0,200,83,0.4); transition:transform .15s,box-shadow .15s; }
+.next-fixed-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,200,83,0.5); }
+.confetti-wrap { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999; overflow:hidden; }
+.confetti { position:absolute; width:10px; height:10px; border-radius:2px; animation:confettiFall 3s ease-out forwards; }
+@keyframes confettiFall { 0%{transform:translateY(-10px) rotate(0deg);opacity:1;} 100%{transform:translateY(100vh) rotate(720deg);opacity:0;} }
 </style>
 </head>
 <body>
@@ -552,6 +557,7 @@ body {
         <button class="sbtn" onclick="send()">➤</button>
       </div>
     </div>
+    <a href="https://journey-bronzy-fruitily.ngrok-free.dev" class="next-fixed-btn">✅ 다음으로 가요!</a>
   </div>
 
   <!-- RIGHT: CONTENT -->
@@ -778,13 +784,13 @@ function check() {
   if (ok === 4) {
     r.style.color='var(--green3)';
     r.textContent='🎉 완벽! 4개 모두 정답!';
-    addC(`수업 완료! 오늘 기분이 어때? 😊
+    showConfetti();
+    addC(`🎉🎉🎉 대단해! 전부 맞았어! 🌟⭐✨<br><br>수업 완료! 오늘 기분이 어때? 😊
 <br><br><b>집에서도 계속 공부하고 싶으면:</b>
 <br><br>
 <a href="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/audio/grade3/003_the_tale_of_peter_rabbit.mp3" target="_blank" style="display:inline-block;padding:10px 18px;margin:4px;background:#00B8D9;color:#fff;border-radius:12px;text-decoration:none;font-weight:700;">🎧 Peter Rabbit 다시 듣기</a>
 <a href="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/audio/grade3/003_the_tale_of_peter_rabbit.pdf" target="_blank" style="display:inline-block;padding:10px 18px;margin:4px;background:#235390;color:#fff;border-radius:12px;text-decoration:none;font-weight:700;">📖 Peter Rabbit 읽기</a>
-<br><br>
-<a href="https://journey-bronzy-fruitily.ngrok-free.dev" style="display:inline-block;padding:12px 24px;margin-top:8px;background:#00C853;color:#fff;border-radius:14px;text-decoration:none;font-weight:800;font-size:1.05em;">✅ 다음으로 가요!</a>`);
+<br><br>아래 <b>✅ 다음으로 가요!</b> 버튼을 눌러줘!`);
   } else {
     r.style.color='#AF7070';
     r.textContent=`${ok}/4 정답! 틀린 것 다시 해봐! 힌트 필요하면 Robo에게 물어봐 😊`;
@@ -797,6 +803,18 @@ document.querySelectorAll('.hw').forEach(w=>{
   w.addEventListener('mousemove',e=>{tip.style.left=(e.clientX+14)+'px';tip.style.top=(e.clientY-38)+'px';});
   w.addEventListener('mouseleave',()=>tip.classList.remove('show'));
 });
+
+function showConfetti(){
+  const wrap=document.createElement('div');wrap.className='confetti-wrap';document.body.appendChild(wrap);
+  const colors=['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#FF6BD6','#00E5FF','#FFB74D'];
+  for(let i=0;i<80;i++){
+    const c=document.createElement('div');c.className='confetti';
+    c.style.left=Math.random()*100+'%';c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDelay=Math.random()*2+'s';c.style.width=(6+Math.random()*8)+'px';c.style.height=(6+Math.random()*8)+'px';
+    wrap.appendChild(c);
+  }
+  setTimeout(()=>wrap.remove(),5000);
+}
 
 function openPDF(){
   window.open('https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/audio/grade3/003_the_tale_of_peter_rabbit.pdf','_blank');
