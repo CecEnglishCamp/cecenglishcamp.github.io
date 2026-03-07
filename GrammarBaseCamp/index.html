@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar BaseCamp — G01~G80 | CEC English Camp</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --surface2: #1C2330;
+  --cyan: #00C8FF;
+  --cyan2: #40DFFF;
+  --gold: #F0C040;
+  --green: #3CB371;
+  --purple: #9B6ED4;
+  --red: #E05C5C;
+  --text: #E8F0F8;
+  --muted: #4A5568;
+  --muted2: #8A9AB0;
+  --border: rgba(0,200,255,0.1);
+  --border2: rgba(0,200,255,0.22);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse at 10% 10%, rgba(0,200,255,0.05) 0%, transparent 45%),
+    radial-gradient(ellipse at 90% 90%, rgba(155,110,212,0.04) 0%, transparent 45%);
+  pointer-events: none; z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, rgba(0,200,255,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none; z-index: 0;
+}
+
+/* TOPBAR */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 56px;
+  background: rgba(13,17,23,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; z-index: 100;
+}
+.topbar::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,200,255,0.5), transparent);
+}
+.logo {
+  font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600;
+  color: var(--cyan2); text-decoration: none;
+  display: flex; align-items: center; gap: 10px;
+}
+.logo-robo { width: 30px; height: 30px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border2); }
+.logo-robo img { width: 100%; height: 100%; object-fit: cover; }
+.logo-badge { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--cyan); background: rgba(0,200,255,0.1); border: 1px solid var(--border2); padding: 2px 10px; border-radius: 20px; }
+.nav-links { display: flex; align-items: center; gap: 6px; }
+.nav-link { font-size: 12px; color: var(--muted2); text-decoration: none; padding: 6px 14px; border-radius: 20px; border: 1px solid transparent; transition: all .2s; }
+.nav-link:hover { color: var(--cyan2); border-color: var(--border2); }
+
+/* MAIN */
+.main { position: relative; z-index: 1; padding: 76px 24px 80px; max-width: 1100px; margin: 0 auto; }
+
+/* HERO */
+.hero { text-align: center; padding: 44px 20px 52px; }
+.hero-robo { width: 80px; height: 80px; border-radius: 18px; overflow: hidden; border: 2px solid var(--border2); box-shadow: 0 0 30px rgba(0,200,255,0.15); margin: 0 auto 18px; }
+.hero-robo img { width: 100%; height: 100%; object-fit: cover; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,200,255,0.08); border: 1px solid var(--border2); color: var(--cyan2); font-size: 11px; font-weight: 600; padding: 4px 16px; border-radius: 20px; margin-bottom: 16px; letter-spacing: 1.5px; text-transform: uppercase; }
+.hero h1 { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 600; color: #fff; line-height: 1.2; margin-bottom: 10px; }
+.hero h1 span { color: var(--cyan2); font-style: italic; }
+.hero p { font-size: 14px; color: var(--muted2); line-height: 1.8; }
+
+/* 스탯 바 */
+.stats { display: flex; justify-content: center; gap: 32px; margin-bottom: 48px; }
+.stat-item { text-align: center; }
+.stat-num { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 600; color: var(--cyan2); display: block; }
+.stat-label { font-size: 11px; color: var(--muted2); letter-spacing: 1px; text-transform: uppercase; }
+
+/* 검색 */
+.search-wrap { max-width: 400px; margin: 0 auto 48px; position: relative; }
+.search-input {
+  width: 100%; padding: 12px 20px 12px 44px;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: 12px; color: var(--text); font-size: 14px;
+  font-family: 'DM Sans', sans-serif; outline: none;
+  transition: border-color .2s;
+}
+.search-input:focus { border-color: var(--cyan); }
+.search-input::placeholder { color: var(--muted); }
+.search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; opacity: 0.5; }
+
+/* 스테이지 섹션 */
+.stage { margin-bottom: 48px; }
+.stage-header {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--border);
+}
+.stage-badge { padding: 4px 16px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+.stage-badge.basic { background: rgba(60,179,113,0.15); color: var(--green); border: 1px solid rgba(60,179,113,0.3); }
+.stage-badge.inter { background: rgba(0,200,255,0.12); color: var(--cyan2); border: 1px solid rgba(0,200,255,0.25); }
+.stage-badge.upper { background: rgba(155,110,212,0.15); color: var(--purple); border: 1px solid rgba(155,110,212,0.3); }
+.stage-badge.adv { background: rgba(240,192,64,0.12); color: var(--gold); border: 1px solid rgba(240,192,64,0.25); }
+.stage-title { font-family: 'DM Sans', sans-serif; font-size: 18px; font-weight: 600; color: #fff; }
+.stage-range { font-size: 12px; color: var(--muted2); margin-left: auto; }
+
+/* 그리드 */
+.grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.g-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 12px;
+  text-decoration: none; display: block;
+  transition: all .22s; position: relative; overflow: hidden;
+}
+.g-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  opacity: 0; transition: opacity .22s;
+}
+.stage-basic .g-card::before { background: var(--green); }
+.stage-inter .g-card::before { background: var(--cyan); }
+.stage-upper .g-card::before { background: var(--purple); }
+.stage-adv .g-card::before { background: var(--gold); }
+.g-card:hover { transform: translateY(-3px); border-color: var(--border2); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+.g-card:hover::before { opacity: 1; }
+.g-num { font-size: 10px; font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
+.stage-basic .g-num { color: var(--green); }
+.stage-inter .g-num { color: var(--cyan2); }
+.stage-upper .g-num { color: var(--purple); }
+.stage-adv .g-num { color: var(--gold); }
+.g-title { font-size: 12px; color: #fff; line-height: 1.4; font-weight: 500; }
+
+/* 필터 탭 */
+.filter-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 36px; flex-wrap: wrap; }
+.filter-tab { padding: 7px 18px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border2); color: var(--muted2); background: transparent; transition: all .2s; letter-spacing: 0.5px; }
+.filter-tab.active, .filter-tab:hover { color: #fff; }
+.filter-tab.all.active { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: #fff; }
+.filter-tab.basic.active { background: rgba(60,179,113,0.15); border-color: rgba(60,179,113,0.4); color: var(--green); }
+.filter-tab.inter.active { background: rgba(0,200,255,0.12); border-color: rgba(0,200,255,0.35); color: var(--cyan2); }
+.filter-tab.upper.active { background: rgba(155,110,212,0.15); border-color: rgba(155,110,212,0.4); color: var(--purple); }
+.filter-tab.adv.active { background: rgba(240,192,64,0.12); border-color: rgba(240,192,64,0.35); color: var(--gold); }
+
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 700px) { .grid { grid-template-columns: repeat(3, 1fr); } .hero h1 { font-size: 32px; } .topbar { padding: 0 16px; } .nav-link { display: none; } .stats { gap: 20px; } }
+@media (max-width: 480px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="logo">
+    <div class="logo-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+    CEC English Camp
+    <span class="logo-badge">Grammar Base</span>
+  </a>
+  <div class="nav-links">
+    <a href="../grammar-game.html" class="nav-link">Grammar Game</a>
+    <a href="../camp-a/" class="nav-link">Camp A</a>
+    <a href="../camp-b/" class="nav-link">Camp B</a>
+    <a href="../camp-c/" class="nav-link">Camp C</a>
+    <a href="../index.html" class="nav-link">Home</a>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
+    <div class="hero-badge">CEC Grammar BaseCamp</div>
+    <h1>80 Steps to<br><span>Master English Grammar</span></h1>
+    <p>기초부터 고급까지 — Robo와 함께 영문법을 완성하자</p>
+  </div>
+
+  <!-- 스탯 -->
+  <div class="stats">
+    <div class="stat-item"><span class="stat-num">80</span><span class="stat-label">Total Units</span></div>
+    <div class="stat-item"><span class="stat-num">4</span><span class="stat-label">Stages</span></div>
+    <div class="stat-item"><span class="stat-num">G01</span><span class="stat-label">Start Here</span></div>
+  </div>
+
+  <!-- 필터 -->
+  <div class="filter-tabs">
+    <button class="filter-tab all active" onclick="filterStage('all')">All 80</button>
+    <button class="filter-tab basic" onclick="filterStage('basic')">Stage 1 · Basic G01–G30</button>
+    <button class="filter-tab inter" onclick="filterStage('inter')">Stage 2 · Intermediate G31–G55</button>
+    <button class="filter-tab upper" onclick="filterStage('upper')">Stage 3 · Upper G56–G70</button>
+    <button class="filter-tab adv" onclick="filterStage('adv')">Stage 4 · Advanced G71–G80</button>
+  </div>
+
+  <!-- 검색 -->
+  <div class="search-wrap">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+    </svg>
+    <input class="search-input" type="text" placeholder="문법 검색... (예: past, 관계사, modal)" oninput="searchGrammar(this.value)">
+  </div>
+
+  <!-- STAGE 1: BASIC -->
+  <div class="stage stage-basic" id="stage-basic">
+    <div class="stage-header">
+      <span class="stage-badge basic">Stage 1</span>
+      <span class="stage-title">Basic Grammar</span>
+      <span class="stage-range">G01 – G30</span>
+    </div>
+    <div class="grid" id="grid-basic"></div>
+  </div>
+
+  <!-- STAGE 2: INTERMEDIATE -->
+  <div class="stage stage-inter" id="stage-inter">
+    <div class="stage-header">
+      <span class="stage-badge inter">Stage 2</span>
+      <span class="stage-title">Intermediate Grammar</span>
+      <span class="stage-range">G31 – G55</span>
+    </div>
+    <div class="grid" id="grid-inter"></div>
+  </div>
+
+  <!-- STAGE 3: UPPER INTERMEDIATE -->
+  <div class="stage stage-upper" id="stage-upper">
+    <div class="stage-header">
+      <span class="stage-badge upper">Stage 3</span>
+      <span class="stage-title">Upper Intermediate</span>
+      <span class="stage-range">G56 – G70</span>
+    </div>
+    <div class="grid" id="grid-upper"></div>
+  </div>
+
+  <!-- STAGE 4: ADVANCED -->
+  <div class="stage stage-adv" id="stage-adv">
+    <div class="stage-header">
+      <span class="stage-badge adv">Stage 4</span>
+      <span class="stage-title">Advanced Grammar</span>
+      <span class="stage-range">G71 – G80</span>
+    </div>
+    <div class="grid" id="grid-adv"></div>
+  </div>
+
+</div>
+
+<script>
+const units = [
+  // Stage 1: Basic G01–G30
+  {n:'G01',title:'Be Verb – Present',file:'G01/G01_be_verb_present_tense.html',stage:'basic'},
+  {n:'G02',title:'Articles (a, an, the)',file:'G02/G02_articles_a,_an,_the.html',stage:'basic'},
+  {n:'G03',title:'Simple Present',file:'G03/G03_simple_present_tense.html',stage:'basic'},
+  {n:'G04',title:'Present Continuous',file:'G04/G04_present_continuous_tense.html',stage:'basic'},
+  {n:'G05',title:'Simple Past',file:'G05/G05_simple_past_tense.html',stage:'basic'},
+  {n:'G06',title:'Future Tense',file:'G06/G06_future_tense.html',stage:'basic'},
+  {n:'G07',title:'Nouns & Pronouns',file:'G07/G07_nouns_and_pronouns.html',stage:'basic'},
+  {n:'G08',title:'Adjectives',file:'G08/G08_adjectives.html',stage:'basic'},
+  {n:'G09',title:'Adverbs',file:'G09/G09_adverbs.html',stage:'basic'},
+  {n:'G10',title:'Prepositions',file:'G10/G10_prepositions.html',stage:'basic'},
+  {n:'G11',title:'Conjunctions',file:'G11/G11_conjunctions.html',stage:'basic'},
+  {n:'G12',title:'Question Forms',file:'G12/G12_question_forms.html',stage:'basic'},
+  {n:'G13',title:'Negation',file:'G13/G13_negation.html',stage:'basic'},
+  {n:'G14',title:'There is / There are',file:'G14/G14_there_is_there_are.html',stage:'basic'},
+  {n:'G15',title:'Possessives',file:'G15/G15_possessives.html',stage:'basic'},
+  {n:'G16',title:'Comparatives',file:'G16/G16_comparatives.html',stage:'basic'},
+  {n:'G17',title:'Superlatives',file:'G17/G17_superlatives.html',stage:'basic'},
+  {n:'G18',title:'Modal Verbs',file:'G18/G18_modal_verbs.html',stage:'basic'},
+  {n:'G19',title:'Imperatives',file:'G19/G19_imperatives.html',stage:'basic'},
+  {n:'G20',title:'Countable & Uncountable',file:'G20/G20_countable_and_uncountable_nouns.html',stage:'basic'},
+  {n:'G21',title:'Much / Many / A lot',file:'G21/G21_much,_many,_a_lot_of.html',stage:'basic'},
+  {n:'G22',title:'Some & Any',file:'G22/G22_some_and_any.html',stage:'basic'},
+  {n:'G23',title:'This / That / These / Those',file:'G23/G23_this,_that,_these,_those.html',stage:'basic'},
+  {n:'G24',title:'Frequency Adverbs',file:'G24/G24_frequency_adverbs.html',stage:'basic'},
+  {n:'G25',title:'Present Perfect',file:'G25/G25_present_perfect.html',stage:'basic'},
+  {n:'G26',title:'Past Continuous',file:'G26/G26_past_continuous.html',stage:'basic'},
+  {n:'G27',title:'Infinitives & Gerunds',file:'G27/G27_infinitives_and_gerunds.html',stage:'basic'},
+  {n:'G28',title:'Phrasal Verbs Intro',file:'G28/G28_phrasal_verbs_intro.html',stage:'basic'},
+  {n:'G29',title:'Sentence Types',file:'G29/G29_sentence_types.html',stage:'basic'},
+  {n:'G30',title:'Linking Words',file:'G30/G30_linking_words.html',stage:'basic'},
+  // Stage 2: Intermediate G31–G55
+  {n:'G31',title:'Past Perfect',file:'G31/G31_past_perfect.html',stage:'inter'},
+  {n:'G32',title:'Future Perfect',file:'G32/G32_future_perfect.html',stage:'inter'},
+  {n:'G33',title:'Conditionals 0 & 1',file:'G33/G33_conditionals_0_and_1.html',stage:'inter'},
+  {n:'G34',title:'Conditionals 2 & 3',file:'G34/G34_conditionals_2_and_3.html',stage:'inter'},
+  {n:'G35',title:'Passive Voice',file:'G35/G35_passive_voice.html',stage:'inter'},
+  {n:'G36',title:'Reported Speech',file:'G36/G36_reported_speech.html',stage:'inter'},
+  {n:'G37',title:'Relative Clauses',file:'G37/G37_relative_clauses.html',stage:'inter'},
+  {n:'G38',title:'Indirect Questions',file:'G38/G38_indirect_questions.html',stage:'inter'},
+  {n:'G39',title:'Wish & If Only',file:'G39/G39_wish_and_if_only.html',stage:'inter'},
+  {n:'G40',title:'Emphasis – Cleft Sentences',file:'G40/G40_emphasis_cleft_sentences.html',stage:'inter'},
+  {n:'G41',title:'Participle Clauses',file:'G41/G41_participle_clauses.html',stage:'inter'},
+  {n:'G42',title:'Causative Have & Get',file:'G42/G42_causative_have_and_get.html',stage:'inter'},
+  {n:'G43',title:'Determiners & Quantifiers',file:'G43/G43_determiners_and_quantifiers.html',stage:'inter'},
+  {n:'G44',title:'Conjunctions Advanced',file:'G44/G44_conjunctions_advanced.html',stage:'inter'},
+  {n:'G45',title:'Modal Perfect',file:'G45/G45_modal_perfect.html',stage:'inter'},
+  {n:'G46',title:'Inversion',file:'G46/G46_inversion.html',stage:'inter'},
+  {n:'G47',title:'Ellipsis',file:'G47/G47_ellipsis.html',stage:'inter'},
+  {n:'G48',title:'Mixed Conditionals',file:'G48/G48_mixed_conditionals.html',stage:'inter'},
+  {n:'G49',title:'Subjunctive',file:'G49/G49_subjunctive.html',stage:'inter'},
+  {n:'G50',title:'Phrasal Verbs Advanced',file:'G50/G50_phrasal_verbs_advanced.html',stage:'inter'},
+  {n:'G51',title:'Prepositions Advanced',file:'G51/G51_prepositions_advanced.html',stage:'inter'},
+  {n:'G52',title:'Collocations',file:'G52/G52_collocations.html',stage:'inter'},
+  {n:'G53',title:'Word Formation',file:'G53/G53_word_formation.html',stage:'inter'},
+  {n:'G54',title:'Punctuation',file:'G54/G54_punctuation.html',stage:'inter'},
+  {n:'G55',title:'Cohesion & Coherence',file:'G55/G55_cohesion_and_coherence.html',stage:'inter'},
+  // Stage 3: Upper G56–G70
+  {n:'G56',title:'Complex Passives',file:'G56/G56_complex_passives.html',stage:'upper'},
+  {n:'G57',title:'Discourse Markers',file:'G57/G57_discourse_markers.html',stage:'upper'},
+  {n:'G58',title:'Stance Adverbials',file:'G58/G58_stance_adverbials.html',stage:'upper'},
+  {n:'G59',title:'Concession & Contrast',file:'G59/G59_concession_and_contrast.html',stage:'upper'},
+  {n:'G60',title:'Expressing Attitude',file:'G60/G60_expressing_attitude.html',stage:'upper'},
+  {n:'G61',title:'Logical Connectors',file:'G61/G61_logical_connectors.html',stage:'upper'},
+  {n:'G62',title:'Impersonal It',file:'G62/G62_impersonal_it.html',stage:'upper'},
+  {n:'G63',title:'Existential There',file:'G63/G63_existential_there.html',stage:'upper'},
+  {n:'G64',title:'Complex Noun Phrases',file:'G64/G64_complex_noun_phrases.html',stage:'upper'},
+  {n:'G65',title:'Verb Patterns',file:'G65/G65_verb_patterns.html',stage:'upper'},
+  {n:'G66',title:'Aspect & Tense Review',file:'G66/G66_aspect_and_tense_review.html',stage:'upper'},
+  {n:'G67',title:'Information Structure',file:'G67/G67_information_structure.html',stage:'upper'},
+  {n:'G68',title:'Register & Style',file:'G68/G68_register_and_style.html',stage:'upper'},
+  {n:'G69',title:'Academic Writing Grammar',file:'G69/G69_academic_writing_grammar.html',stage:'upper'},
+  {n:'G70',title:'Business English Grammar',file:'G70/G70_business_english_grammar.html',stage:'upper'},
+  // Stage 4: Advanced G71–G80
+  {n:'G71',title:'Advanced Passives',file:'G71/G71_advanced_passives.html',stage:'adv'},
+  {n:'G72',title:'Advanced Modals',file:'G72/G72_advanced_modals.html',stage:'adv'},
+  {n:'G73',title:'Ellipsis & Substitution',file:'G73/G73_ellipsis_and_substitution.html',stage:'adv'},
+  {n:'G74',title:'Advanced Linking',file:'G74/G74_advanced_linking_devices.html',stage:'adv'},
+  {n:'G75',title:'Hedging Language',file:'G75/G75_hedging_language_seems,_appears,_tend_to.html',stage:'adv'},
+  {n:'G76',title:'Fronting & Inversion',file:'G76/G76_fronting_and_inversion.html',stage:'adv'},
+  {n:'G77',title:'Complex Sentences',file:'G77/G77_complex_sentence_structures.html',stage:'adv'},
+  {n:'G78',title:'Advanced Gerunds & Infinitives',file:'G78/G78_advanced_gerunds_and_infinitives.html',stage:'adv'},
+  {n:'G79',title:'Nominalization',file:'G79/G79_nominalization.html',stage:'adv'},
+  {n:'G80',title:'Advanced Articles',file:'G80/G80_advanced_articles_and_determiners.html',stage:'adv'},
+];
+
+function renderAll(list) {
+  ['basic','inter','upper','adv'].forEach(s => {
+    document.getElementById('grid-'+s).innerHTML = '';
+    document.getElementById('stage-'+s).style.display = 'none';
+  });
+  list.forEach(u => {
+    const grid = document.getElementById('grid-'+u.stage);
+    const stage = document.getElementById('stage-'+u.stage);
+    if (grid) {
+      stage.style.display = 'block';
+      grid.innerHTML += `<a href="${u.file}" class="g-card">
+        <div class="g-num">${u.n}</div>
+        <div class="g-title">${u.title}</div>
+      </a>`;
+    }
+  });
+}
+
+function filterStage(stage) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.filter-tab.'+stage).classList.add('active');
+  document.querySelector('.search-input').value = '';
+  if (stage === 'all') { renderAll(units); return; }
+  renderAll(units.filter(u => u.stage === stage));
+}
+
+function searchGrammar(q) {
+  if (!q.trim()) { renderAll(units); return; }
+  const lq = q.toLowerCase();
+  renderAll(units.filter(u => u.title.toLowerCase().includes(lq) || u.n.toLowerCase().includes(lq)));
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+}
+
+// 초기 렌더
+renderAll(units);
+</script>
+</body>
+</html>
