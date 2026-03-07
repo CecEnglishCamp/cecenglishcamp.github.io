@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEC English Camp — 수강 등록</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050508;
+  --surface: #0A0B10;
+  --surface2: #111320;
+  --border: rgba(0,229,255,0.08);
+  --border2: rgba(0,229,255,0.18);
+  --accent: #00E5FF;
+  --accent2: #40EFFF;
+  --gold: #FFD700;
+  --text: #E0F8FF;
+  --muted: #3A6070;
+  --muted2: #5A8A9A;
+  --red: #FF4444;
+  --green: #00E096;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* 배경 별 효과 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(0,229,255,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(0,100,180,0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* TOPBAR */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 58px;
+  background: rgba(5,5,8,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  z-index: 100;
+}
+.topbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,229,255,0.5), transparent);
+}
+.logo {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent2);
+  letter-spacing: 2px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-sub { font-size: 10px; font-weight: 300; color: var(--muted2); letter-spacing: 2px; }
+.back-btn {
+  font-size: 12px;
+  color: var(--muted2);
+  text-decoration: none;
+  border: 1px solid var(--border2);
+  padding: 6px 16px;
+  border-radius: 20px;
+  transition: all .2s;
+  font-family: 'Montserrat', sans-serif;
+}
+.back-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+/* MAIN */
+.main {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 90px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* PAGE TITLE */
+.page-title {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.page-title h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.page-title h1 span { color: var(--accent); }
+.page-title p { font-size: 14px; color: var(--muted2); margin-top: 10px; letter-spacing: 0.5px; }
+
+/* STEP INDICATOR */
+.steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 48px;
+}
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.step-dot {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  transition: all .3s;
+  background: var(--surface);
+}
+.step-dot.active { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 16px rgba(0,229,255,0.3); }
+.step-dot.done { border-color: var(--green); color: var(--green); background: rgba(0,224,150,0.08); }
+.step-label { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; white-space: nowrap; }
+.step-label.active { color: var(--accent); }
+.step-label.done { color: var(--green); }
+.step-line { width: 60px; height: 1px; background: var(--border2); margin: 0 8px; }
+.step-line.done { background: var(--green); }
+
+/* CARD */
+.card {
+  width: 100%;
+  max-width: 560px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.card-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+.card-sub { font-size: 13px; color: var(--muted2); margin-bottom: 32px; }
+
+/* FORM */
+.field { margin-bottom: 22px; }
+.field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted2);
+  margin-bottom: 8px;
+}
+.field label span { color: var(--accent); margin-left: 2px; }
+.field input, .field select {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 13px 16px;
+  color: var(--text);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: all .2s;
+  appearance: none;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--accent);
+  background: rgba(0,229,255,0.04);
+  box-shadow: 0 0 0 3px rgba(0,229,255,0.08);
+}
+.field input::placeholder { color: var(--muted); }
+.field select option { background: #111320; color: #fff; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* 학년 선택 버튼 */
+.grade-btns { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.grade-btn {
+  padding: 12px 8px;
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  color: var(--muted2);
+  font-size: 13px;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+}
+.grade-btn:hover { border-color: rgba(0,229,255,0.3); color: var(--accent2); }
+.grade-btn.sel { border-color: var(--accent); color: var(--accent); background: rgba(0,229,255,0.08); box-shadow: 0 0 12px rgba(0,229,255,0.15); }
+
+/* 동의 체크박스 */
+.consent-box {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.consent-box h4 { font-size: 13px; color: var(--accent2); margin-bottom: 12px; letter-spacing: 0.5px; }
+.consent-box p { font-size: 12px; color: var(--muted2); line-height: 1.8; margin-bottom: 16px; }
+.check-row { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; }
+.check-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; margin-top: 2px; cursor: pointer; }
+.check-row span { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+
+/* 비밀번호 강도 */
+.pw-strength { display: flex; gap: 4px; margin-top: 8px; }
+.pw-bar { height: 3px; flex: 1; border-radius: 2px; background: var(--border2); transition: background .3s; }
+.pw-bar.weak { background: var(--red); }
+.pw-bar.ok { background: var(--gold); }
+.pw-bar.strong { background: var(--green); }
+.pw-hint { font-size: 11px; color: var(--muted); margin-top: 6px; }
+
+/* 버튼 */
+.btn-primary {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #005A70, #00B8D9);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all .25s;
+  margin-top: 8px;
+  box-shadow: 0 4px 20px rgba(0,184,217,0.25);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,184,217,0.35); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.err { font-size: 12px; color: var(--red); margin-top: 6px; display: none; }
+.err.show { display: block; }
+
+/* 완료 화면 */
+.complete-screen {
+  text-align: center;
+  padding: 20px 0;
+}
+.complete-icon { font-size: 60px; margin-bottom: 20px; animation: pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+.complete-screen h2 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+.complete-screen p { font-size: 14px; color: var(--muted2); line-height: 1.8; margin-bottom: 28px; }
+
+/* 계좌 안내 박스 */
+.bank-box {
+  background: rgba(0,229,255,0.04);
+  border: 1px solid rgba(0,229,255,0.2);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+.bank-box h4 { font-size: 12px; letter-spacing: 1.5px; color: var(--accent); margin-bottom: 14px; text-transform: uppercase; }
+.bank-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.bank-row:last-child { border: none; }
+.bank-row .lbl { font-size: 12px; color: var(--muted2); }
+.bank-row .val { font-size: 14px; font-weight: 600; color: #fff; font-family: 'Montserrat', sans-serif; }
+.bank-row .val.accent { color: var(--accent); }
+
+.btn-start {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #005A70, #00B8D9);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all .25s;
+  box-shadow: 0 4px 20px rgba(0,184,217,0.3);
+}
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,184,217,0.4); }
+
+/* 패널 전환 */
+.panel { display: none; }
+.panel.on { display: block; animation: fadeIn .4s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 600px) {
+  .card { padding: 28px 20px; }
+  .field-row { grid-template-columns: 1fr; }
+  .grade-btns { grid-template-columns: repeat(2, 1fr); }
+  .steps { gap: 0; }
+  .step-line { width: 30px; }
+  .step-label { display: none; }
+  .page-title h1 { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="index.html" class="logo">
+    CEC English Camp
+    <span class="logo-sub">Camp A</span>
+  </a>
+  <a href="index.html" class="back-btn">← 홈으로</a>
+</div>
+
+<div class="main">
+
+  <div class="page-title">
+    <h1>수강 <span>등록</span></h1>
+    <p>CEC English Camp와 함께 영어 여행을 시작해보세요! 🚀</p>
+  </div>
+
+  <!-- STEP INDICATOR -->
+  <div class="steps" id="stepIndicator">
+    <div class="step-item">
+      <div class="step-dot active" id="dot1">1</div>
+      <span class="step-label active" id="lbl1">학생 정보</span>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step-item">
+      <div class="step-dot" id="dot2">2</div>
+      <span class="step-label" id="lbl2">부모 동의</span>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step-item">
+      <div class="step-dot" id="dot3">3</div>
+      <span class="step-label" id="lbl3">ID 만들기</span>
+    </div>
+    <div class="step-line" id="line3"></div>
+    <div class="step-item">
+      <div class="step-dot" id="dot4">4</div>
+      <span class="step-label" id="lbl4">완료</span>
+    </div>
+  </div>
+
+  <div class="card">
+
+    <!-- STEP 1: 학생 정보 -->
+    <div class="panel on" id="step1">
+      <div class="card-title">학생 정보 입력</div>
+      <div class="card-sub">수강할 학생의 정보를 입력해주세요.</div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>성 (Last Name)<span>*</span></label>
+          <input type="text" id="lastName" placeholder="김">
+        </div>
+        <div class="field">
+          <label>이름 (First Name)<span>*</span></label>
+          <input type="text" id="firstName" placeholder="민준">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>캠프 선택<span>*</span></label>
+        <div class="grade-btns" style="grid-template-columns:repeat(3,1fr);margin-bottom:12px">
+          <button class="grade-btn camp-btn" onclick="selCamp(this,'A')">
+            <div style="font-size:18px;margin-bottom:4px">🏕️</div>
+            <div style="font-weight:700;color:#00E5FF">Camp A</div>
+            <div style="font-size:10px;margin-top:2px">초등학생</div>
+          </button>
+          <button class="grade-btn camp-btn" onclick="selCamp(this,'B')">
+            <div style="font-size:18px;margin-bottom:4px">🏕️</div>
+            <div style="font-weight:700;color:#FFB347">Camp B</div>
+            <div style="font-size:10px;margin-top:2px">중·고등학생</div>
+          </button>
+          <button class="grade-btn camp-btn" onclick="selCamp(this,'C')">
+            <div style="font-size:18px;margin-bottom:4px">🏕️</div>
+            <div style="font-weight:700;color:#A29BFE">Camp C</div>
+            <div style="font-size:10px;margin-top:2px">직장인·성인</div>
+          </button>
+        </div>
+
+        <!-- Camp A 학년 -->
+        <div id="gradeA" style="display:none">
+          <div style="font-size:11px;color:var(--muted2);margin-bottom:8px;letter-spacing:1px">▸ 학년 선택</div>
+          <div class="grade-btns">
+            <button class="grade-btn sub-btn" onclick="selGrade(this,'초등 3학년')">3학년</button>
+            <button class="grade-btn sub-btn" onclick="selGrade(this,'초등 4학년')">4학년</button>
+            <button class="grade-btn sub-btn" onclick="selGrade(this,'초등 5학년')">5학년</button>
+            <button class="grade-btn sub-btn" onclick="selGrade(this,'초등 6학년')">6학년</button>
+          </div>
+        </div>
+
+        <!-- Camp B 학년 -->
+        <div id="gradeB" style="display:none">
+          <div style="font-size:11px;color:var(--muted2);margin-bottom:8px;letter-spacing:1px">▸ 학년 선택</div>
+          <div class="grade-btns" style="grid-template-columns:repeat(3,1fr)">
+            <button class="grade-btn sub-btn" onclick="selGrade(this,'중학교 1학년')">중1</button>
+            <button class="grade-btn sub-btn" onclick="selGrade(this,'중학교 2학년')">중2</button>
+            <button class="grade-btn sub-btn" onclick="selGrade(this,'중학교 3학년')">중3</button>
+            <button class="grade-btn sub-btn" onclick="selGrade(this,'고등학교 1학년')">고1</button>
+            <button class="grade-btn sub-btn" onclick="selGrade(this,'고등학교 2학년')">고2</button>
+            <button class="grade-btn sub-btn" onclick="selGrade(this,'고등학교 3학년')">고3</button>
+          </div>
+        </div>
+
+        <!-- Camp C 레벨 -->
+        <div id="gradeC" style="display:none">
+          <div style="font-size:11px;color:var(--muted2);margin-bottom:8px;letter-spacing:1px">▸ 레벨 선택</div>
+          <div class="grade-btns" style="grid-template-columns:repeat(3,1fr)">
+            <button class="grade-btn sub-btn" onclick="selGrade(this,'입문 (Beginner)')">입문</button>
+            <button class="grade-btn sub-btn" onclick="selGrade(this,'중급 (Intermediate)')">중급</button>
+            <button class="grade-btn sub-btn" onclick="selGrade(this,'고급 (Advanced)')">고급</button>
+          </div>
+        </div>
+
+        <div class="err" id="errGrade">캠프와 학년/레벨을 선택해주세요.</div>
+      </div>
+
+      <div class="field" id="phoneField">
+        <label id="phoneLabel">학부모 전화번호<span>*</span></label>
+        <input type="tel" id="phone" placeholder="010-0000-0000" oninput="fmtPhone(this)">
+        <div class="err" id="errPhone">올바른 전화번호를 입력해주세요.</div>
+      </div>
+
+      <div class="field">
+        <label>이메일<span>*</span></label>
+        <input type="email" id="email" placeholder="example@email.com">
+        <div class="err" id="errEmail">올바른 이메일을 입력해주세요.</div>
+      </div>
+
+      <button class="btn-primary" onclick="step1Next()">다음 →</button>
+    </div>
+
+    <!-- STEP 2: 부모 동의 -->
+    <div class="panel" id="step2">
+      <div class="card-title" id="step2Title">부모 동의</div>
+      <div class="card-sub" id="step2Sub">수강 등록을 위한 보호자 동의가 필요합니다.</div>
+
+      <div class="consent-box">
+        <h4>📋 개인정보 수집 및 이용 동의</h4>
+        <p>CEC English Camp는 수강 서비스 제공을 위해 이름, 학년/레벨, 연락처, 이메일을 수집합니다. 수집된 정보는 수업 운영 목적 외에 사용되지 않으며, 서비스 종료 시 즉시 파기합니다.</p>
+        <label class="check-row">
+          <input type="checkbox" id="consent1">
+          <span>위 개인정보 수집 및 이용에 <strong>동의합니다</strong>.</span>
+        </label>
+      </div>
+
+      <div class="consent-box" id="consentBox2">
+        <h4 id="consent2Title">✅ 수강 동의</h4>
+        <p id="consent2Desc">본인은 자녀가 CEC English Camp의 AI 기반 영어 수업에 참여하는 것에 동의하며, 수강료 납부 의무를 확인합니다.</p>
+        <label class="check-row">
+          <input type="checkbox" id="consent2">
+          <span id="consent2Label">자녀의 수강 및 수강료 납부에 <strong>동의합니다</strong>.</span>
+        </label>
+      </div>
+
+      <div class="field" id="phoneConfirmField">
+        <label>학부모 전화번호 확인<span>*</span></label>
+        <input type="tel" id="phoneConfirm" placeholder="010-0000-0000" oninput="fmtPhone(this)">
+        <div class="err" id="errPhoneConfirm">전화번호가 일치하지 않습니다.</div>
+      </div>
+
+      <div class="err" id="errConsent" style="margin-bottom:12px">모든 항목에 동의해주세요.</div>
+      <button class="btn-primary" onclick="step2Next()">다음 →</button>
+    </div>
+
+    <!-- STEP 3: ID/PW -->
+    <div class="panel" id="step3">
+      <div class="card-title">로그인 정보 만들기</div>
+      <div class="card-sub">수업에 접속할 때 사용할 ID와 비밀번호를 만들어주세요.</div>
+
+      <div class="field">
+        <label>학생 ID<span>*</span></label>
+        <input type="text" id="userId" placeholder="영문+숫자 조합 (예: jimin2015)" oninput="checkId(this)">
+        <div class="err" id="errId">영문+숫자 조합, 4자 이상으로 입력해주세요.</div>
+      </div>
+
+      <div class="field">
+        <label>비밀번호<span>*</span></label>
+        <input type="password" id="pw" placeholder="6자 이상" oninput="checkPw(this)">
+        <div class="pw-strength">
+          <div class="pw-bar" id="pw1"></div>
+          <div class="pw-bar" id="pw2"></div>
+          <div class="pw-bar" id="pw3"></div>
+        </div>
+        <div class="pw-hint" id="pwHint">6자 이상 입력해주세요</div>
+      </div>
+
+      <div class="field">
+        <label>비밀번호 확인<span>*</span></label>
+        <input type="password" id="pwConfirm" placeholder="비밀번호 다시 입력">
+        <div class="err" id="errPw">비밀번호가 일치하지 않습니다.</div>
+      </div>
+
+      <button class="btn-primary" onclick="step3Next()">등록 완료 →</button>
+    </div>
+
+    <!-- STEP 4: 완료 -->
+    <div class="panel" id="step4">
+      <div class="complete-screen">
+        <div class="complete-icon">🎉</div>
+        <h2>등록 완료!</h2>
+        <p id="welcomeMsg">지민 학생, CEC English Camp에 오신 걸 환영해요!<br>Robo와 함께 신나는 영어 여행이 시작됩니다! 🤖</p>
+
+        <div class="bank-box">
+          <h4>💳 수강료 납부 안내</h4>
+          <div class="bank-row">
+            <span class="lbl">은행</span>
+            <span class="val">국민은행</span>
+          </div>
+          <div class="bank-row">
+            <span class="lbl">계좌번호</span>
+            <span class="val accent">000-0000-0000-00</span>
+          </div>
+          <div class="bank-row">
+            <span class="lbl">예금주</span>
+            <span class="val">CEC English Camp</span>
+          </div>
+          <div class="bank-row">
+            <span class="lbl">입금자명</span>
+            <span class="val accent" id="depositorName">학생 이름</span>
+          </div>
+          <div class="bank-row">
+            <span class="lbl">월 수강료</span>
+            <span class="val accent">문의 바랍니다</span>
+          </div>
+        </div>
+
+        <p style="font-size:12px;color:var(--muted2);margin-bottom:24px">
+          입금 후 카카오톡 또는 문자로 알려주시면<br>
+          빠르게 확인하겠습니다 😊
+        </p>
+
+        <button class="btn-start" onclick="goStart()">🚀 지금 바로 시작하기!</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let grade = '';
+let camp = '';
+let formData = {};
+
+function selCamp(btn, val) {
+  document.querySelectorAll('.camp-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  camp = val;
+  grade = '';
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('sel'));
+  document.getElementById('gradeA').style.display = val === 'A' ? 'block' : 'none';
+  document.getElementById('gradeB').style.display = val === 'B' ? 'block' : 'none';
+  document.getElementById('gradeC').style.display = val === 'C' ? 'block' : 'none';
+
+  // Camp C (성인)는 학부모 전화 숨김
+  const phoneField = document.getElementById('phoneField');
+  const phoneLabel = document.getElementById('phoneLabel');
+  if (val === 'C') {
+    phoneField.style.display = 'none';
+    document.getElementById('phone').value = 'N/A';
+  } else {
+    phoneField.style.display = 'block';
+    phoneLabel.innerHTML = '학부모 전화번호<span style="color:var(--accent)">*</span>';
+    document.getElementById('phone').value = '';
+  }
+}
+
+function selGrade(btn, val) {
+  document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  grade = val;
+}
+
+function fmtPhone(el) {
+  let v = el.value.replace(/\D/g, '');
+  if (v.length >= 11) v = v.slice(0,11);
+  if (v.length > 7) v = v.slice(0,3)+'-'+v.slice(3,7)+'-'+v.slice(7);
+  else if (v.length > 3) v = v.slice(0,3)+'-'+v.slice(3);
+  el.value = v;
+}
+
+function step1Next() {
+  const ln = document.getElementById('lastName').value.trim();
+  const fn = document.getElementById('firstName').value.trim();
+  const ph = document.getElementById('phone').value.trim();
+  const em = document.getElementById('email').value.trim();
+  let ok = true;
+
+  if (!camp || !grade) { document.getElementById('errGrade').classList.add('show'); ok = false; }
+  else document.getElementById('errGrade').classList.remove('show');
+
+  const ph = document.getElementById('phone').value.trim();
+  if (camp !== 'C' && !ph.match(/^01[0-9]-\d{4}-\d{4}$/)) {
+    document.getElementById('errPhone').classList.add('show'); ok = false;
+  } else document.getElementById('errPhone').classList.remove('show');
+
+  if (!em.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) { document.getElementById('errEmail').classList.add('show'); ok = false; }
+  else document.getElementById('errEmail').classList.remove('show');
+
+  if (!ln || !fn) { ok = false; }
+
+  if (!ok) return;
+
+  formData = { lastName: ln, firstName: fn, camp, grade, phone: camp === 'C' ? 'N/A' : ph, email: em };
+
+  // Camp C면 step2 문구 변경
+  if (camp === 'C') {
+    document.getElementById('step2Title').textContent = '본인 동의';
+    document.getElementById('step2Sub').textContent = '수강 등록을 위한 본인 동의가 필요합니다.';
+    document.getElementById('consent2Title').textContent = '✅ 수강 동의';
+    document.getElementById('consent2Desc').textContent = '본인은 CEC English Camp의 AI 기반 영어 수업에 참여하는 것에 동의하며, 수강료 납부 의무를 확인합니다.';
+    document.getElementById('consent2Label').innerHTML = '본인의 수강 및 수강료 납부에 <strong>동의합니다</strong>.';
+    document.getElementById('phoneConfirmField').style.display = 'none';
+  } else {
+    document.getElementById('step2Title').textContent = '부모 동의';
+    document.getElementById('step2Sub').textContent = '수강 등록을 위한 보호자 동의가 필요합니다.';
+    document.getElementById('consent2Desc').textContent = '본인은 자녀가 CEC English Camp의 AI 기반 영어 수업에 참여하는 것에 동의하며, 수강료 납부 의무를 확인합니다.';
+    document.getElementById('consent2Label').innerHTML = '자녀의 수강 및 수강료 납부에 <strong>동의합니다</strong>.';
+    document.getElementById('phoneConfirmField').style.display = 'block';
+  }
+
+  goStep(2);
+}
+
+function step2Next() {
+  const c1 = document.getElementById('consent1').checked;
+  const c2 = document.getElementById('consent2').checked;
+  let ok = true;
+
+  if (!c1 || !c2) { document.getElementById('errConsent').classList.add('show'); ok = false; }
+  else document.getElementById('errConsent').classList.remove('show');
+
+  if (camp !== 'C') {
+    const ph = document.getElementById('phoneConfirm').value.trim();
+    if (ph !== formData.phone) { document.getElementById('errPhoneConfirm').classList.add('show'); ok = false; }
+    else document.getElementById('errPhoneConfirm').classList.remove('show');
+  }
+
+  if (!ok) return;
+  goStep(3);
+}
+
+function checkId(el) {
+  const v = el.value;
+  const ok = /^[a-zA-Z0-9]{4,}$/.test(v);
+  document.getElementById('errId').classList.toggle('show', !ok && v.length > 0);
+}
+
+function checkPw(el) {
+  const v = el.value;
+  const bars = [document.getElementById('pw1'), document.getElementById('pw2'), document.getElementById('pw3')];
+  const hint = document.getElementById('pwHint');
+  bars.forEach(b => b.className = 'pw-bar');
+  if (v.length === 0) { hint.textContent = '6자 이상 입력해주세요'; return; }
+  if (v.length < 6) { bars[0].classList.add('weak'); hint.textContent = '너무 짧아요'; }
+  else if (v.length < 10) { bars[0].classList.add('ok'); bars[1].classList.add('ok'); hint.textContent = '좋아요!'; }
+  else { bars.forEach(b => b.classList.add('strong')); hint.textContent = '완벽해요! 💪'; }
+}
+
+function step3Next() {
+  const id = document.getElementById('userId').value.trim();
+  const pw = document.getElementById('pw').value;
+  const pwc = document.getElementById('pwConfirm').value;
+  let ok = true;
+
+  if (!/^[a-zA-Z0-9]{4,}$/.test(id)) { document.getElementById('errId').classList.add('show'); ok = false; }
+  if (pw !== pwc || pw.length < 6) { document.getElementById('errPw').classList.add('show'); ok = false; }
+  else document.getElementById('errPw').classList.remove('show');
+
+  if (!ok) return;
+
+  formData.userId = id;
+
+  // Google Sheets 저장 (나중에 연결)
+  saveToSheet(formData);
+
+  // 완료 화면
+  document.getElementById('welcomeMsg').innerHTML =
+    `${formData.firstName} 학생, <strong style="color:var(--accent)">Camp ${formData.camp}</strong>에 오신 걸 환영해요!<br>Robo와 함께 신나는 영어 여행이 시작됩니다! 🤖`;
+  document.getElementById('depositorName').textContent = formData.lastName + formData.firstName;
+
+  goStep(4);
+  confetti();
+}
+
+function goStep(n) {
+  for (let i = 1; i <= 4; i++) {
+    document.getElementById('step'+i).classList.toggle('on', i === n);
+    const dot = document.getElementById('dot'+i);
+    const lbl = document.getElementById('lbl'+i);
+    dot.classList.remove('active','done');
+    lbl.classList.remove('active','done');
+    if (i < n) { dot.classList.add('done'); dot.textContent = '✓'; lbl.classList.add('done'); }
+    else if (i === n) { dot.classList.add('active'); lbl.classList.add('active'); }
+    if (i < 4) {
+      const line = document.getElementById('line'+i);
+      line.classList.toggle('done', i < n);
+    }
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function saveToSheet(data) {
+  // Google Apps Script URL — 나중에 연결
+  const SHEET_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL';
+  if (SHEET_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL') return;
+  fetch(SHEET_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...data, timestamp: new Date().toISOString() })
+  }).catch(() => {});
+}
+
+function goStart() {
+  window.location.href = 'prestep.html';
+}
+
+function confetti() {
+  const colors = ['#00E5FF','#40EFFF','#00B8D9','#FFD700','#00E096','#ffffff'];
+  for (let i = 0; i < 80; i++) {
+    const c = document.createElement('div');
+    c.style.cssText = `position:fixed;top:-10px;left:${Math.random()*100}vw;width:8px;height:8px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'2px'};z-index:9999;pointer-events:none;animation:fall${i%3} ${1+Math.random()*2}s linear forwards;`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 5000);
+  }
+  const style = document.createElement('style');
+  style.textContent = '@keyframes fall0{to{transform:translateY(105vh) rotate(360deg);opacity:0}} @keyframes fall1{to{transform:translateY(105vh) rotate(-360deg) translateX(60px);opacity:0}} @keyframes fall2{to{transform:translateY(105vh) rotate(180deg) translateX(-60px);opacity:0}}';
+  document.head.appendChild(style);
+}
+</script>
+</body>
+</html>
