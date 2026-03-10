@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEC English Camp — Peter Rabbit Week 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100vh; overflow: hidden; }
+
+body {
+  font-family: 'Montserrat', 'Noto Sans KR', Arial, sans-serif;
+  background: #000;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  height: 54px;
+  background: #000;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+.logo {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.logo-meta {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.week-badge {
+  background: #00E5FF;
+  color: #000;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+}
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+}
+.top-right .name { color: #00E5FF; font-weight: 600; }
+
+/* ── LAYOUT ── */
+.main {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ══════════════════════
+   LEFT — CECIL
+══════════════════════ */
+.chat-panel {
+  background: #050508;
+  border-right: 1px solid rgba(0,229,255,0.12);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chat-hdr {
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  background: rgba(0,229,255,0.03);
+}
+
+.av {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #003A4A, #00B8D9);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 0 0 2px rgba(0,229,255,0.2);
+  flex-shrink: 0;
+}
+
+.ch-name { font-size: 15px; font-weight: 700; color: #fff; }
+.ch-status {
+  font-size: 11px;
+  color: #00E5FF;
+  display: flex; align-items: center; gap: 5px;
+  margin-top: 2px;
+}
+.dot {
+  width: 6px; height: 6px;
+  background: #00E5FF;
+  border-radius: 50%;
+  animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-behavior: smooth;
+}
+.msgs::-webkit-scrollbar { width: 3px; }
+.msgs::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.15); border-radius: 2px; }
+
+.msg { display: flex; gap: 9px; animation: pop .3s ease; }
+.msg.u { flex-direction: row-reverse; }
+@keyframes pop { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.m-av {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, #003A4A, #00B8D9);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; flex-shrink: 0; margin-top: 2px;
+}
+.msg.u .m-av { background: linear-gradient(135deg, #1a1a2e, #444); }
+
+.bubble {
+  max-width: 270px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.85);
+  background: #0D1117;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+.msg.u .bubble {
+  background: #0A1A22;
+  border-color: rgba(0,229,255,0.15);
+}
+.bubble b { color: #00E5FF; }
+
+.typing {
+  display: flex; gap: 9px; align-items: flex-end;
+}
+.t-dots {
+  background: #0D1117;
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 12px 16px; border-radius: 14px;
+  display: flex; gap: 4px;
+}
+.td {
+  width: 6px; height: 6px; background: rgba(255,255,255,0.3);
+  border-radius: 50%; animation: bounce 1.4s infinite;
+}
+.td:nth-child(2){animation-delay:.2s}
+.td:nth-child(3){animation-delay:.4s}
+@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-7px)} }
+
+.qbtns {
+  padding: 8px 14px 4px;
+  display: flex; flex-wrap: wrap; gap: 6px;
+  flex-shrink: 0;
+}
+.qb {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
+  font-size: 11.5px; padding: 5px 12px;
+  border-radius: 20px; cursor: pointer;
+  transition: all .2s;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.qb:hover {
+  border-color: #00E5FF;
+  color: #00E5FF;
+  background: rgba(0,229,255,0.06);
+}
+
+.input-wrap {
+  padding: 10px 14px 14px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+.input-row {
+  display: flex; gap: 8px; align-items: flex-end;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 8px 8px 8px 14px;
+  transition: border-color .2s;
+}
+.input-row:focus-within { border-color: rgba(0,229,255,0.3); }
+.ci {
+  flex: 1; background: none; border: none;
+  color: #fff; font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px; resize: none; outline: none;
+  min-height: 22px; max-height: 80px; line-height: 1.5;
+}
+.ci::placeholder { color: rgba(255,255,255,0.2); }
+.sb {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: #00B8D9; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; transition: all .2s; flex-shrink: 0;
+  color: #000; font-weight: 700;
+}
+.sb:hover { background: #00E5FF; transform: scale(1.05); }
+
+/* ══════════════════════
+   RIGHT — CONTENT
+══════════════════════ */
+.content-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #080810;
+}
+
+.book-hdr {
+  background: #050508;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.cover-wrap { flex-shrink: 0; text-align: center; }
+.cover-img {
+  width: 66px; height: 90px;
+  object-fit: cover;
+  border-radius: 3px;
+  box-shadow: 3px 3px 16px rgba(0,0,0,0.6);
+  cursor: pointer;
+  transition: all .25s;
+  display: block;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.cover-img:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 20px rgba(0,229,255,0.25);
+  border-color: rgba(0,229,255,0.4);
+}
+.cover-hint { font-size: 9px; color: #00E5FF; margin-top: 4px; letter-spacing: 0.5px; }
+
+.book-info h1 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.3px;
+}
+.book-author {
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 4px;
+  font-weight: 300;
+}
+.wtag {
+  display: inline-block;
+  border: 1px solid rgba(0,229,255,0.35);
+  color: #00E5FF;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 12px; border-radius: 20px;
+  margin-top: 8px;
+}
+
+/* Player */
+.player {
+  background: #020204;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 12px 24px;
+  flex-shrink: 0;
+}
+.p-lbl { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #00E5FF; margin-bottom: 9px; font-weight: 600; }
+.p-row { display: flex; align-items: center; gap: 14px; }
+.p-play {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: #00B8D9; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: #000; font-weight: 700;
+  transition: all .2s; flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(0,184,217,0.3);
+}
+.p-play:hover { background: #00E5FF; transform: scale(1.06); }
+.p-track { flex: 1; }
+.p-name { font-size: 11px; color: rgba(255,255,255,0.35); margin-bottom: 7px; font-weight: 400; }
+.p-bar {
+  width: 100%; height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px; cursor: pointer;
+}
+.p-bar:hover { height: 5px; transition: height .1s; }
+.p-fill { height: 100%; background: #00E5FF; border-radius: 2px; width: 0%; transition: width .1s; }
+.p-time { font-size: 11px; color: rgba(255,255,255,0.25); min-width: 70px; text-align: right; }
+
+/* Tabs */
+.tabs { display: flex; background: #050508; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
+.tab {
+  flex: 1; padding: 11px 4px;
+  font-size: 11px; font-weight: 600;
+  color: rgba(255,255,255,0.3);
+  border: none; background: none; cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all .2s; text-align: center; letter-spacing: 0.5px;
+  font-family: 'Montserrat', sans-serif;
+}
+.tab.on { color: #00E5FF; border-bottom-color: #00E5FF; background: rgba(0,229,255,0.03); }
+.tab:hover:not(.on) { color: rgba(255,255,255,0.7); }
+
+/* Panels */
+.c-area { flex: 1; overflow-y: auto; padding: 28px 30px; }
+.c-area::-webkit-scrollbar { width: 3px; }
+.c-area::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.15); border-radius: 2px; }
+.panel { display: none; animation: fadein .3s ease; }
+.panel.on { display: block; }
+@keyframes fadein { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+
+/* Step 1 */
+.listen-c {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 50px 30px; gap: 18px;
+}
+.listen-icon { font-size: 72px; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.listen-title { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: 1px; }
+.listen-sub { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 2; }
+
+/* Step 2 */
+.eng { font-size: 20px; line-height: 2.2; color: #fff; font-weight: 400; }
+.eng p { margin-bottom: 20px; }
+.hw {
+  color: #00E5FF; cursor: pointer;
+  border-bottom: 1px solid rgba(0,229,255,0.35);
+  transition: all .15s;
+}
+.hw:hover { color: #80F5FF; border-bottom-color: #00E5FF; }
+.vocab-tip {
+  margin-top: 16px; font-size: 11px;
+  color: rgba(255,255,255,0.25);
+  padding: 8px 14px;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 6px; display: inline-block;
+}
+
+/* Step 3 */
+.bi {
+  margin-bottom: 20px;
+  padding: 16px 20px;
+  background: rgba(255,255,255,0.02);
+  border-left: 2px solid #00E5FF;
+  border-radius: 0 8px 8px 0;
+}
+.bi-en { font-size: 17px; color: #00E5FF; margin-bottom: 7px; line-height: 1.7; font-weight: 500; }
+.bi-ko { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.8; }
+
+/* Step 4 */
+.blank-title { font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 6px; letter-spacing: 1px; }
+.blank-sub { font-size: 12px; color: rgba(255,255,255,0.35); margin-bottom: 24px; }
+.fill-s { font-size: 18px; line-height: 2.8; color: rgba(255,255,255,0.85); }
+.bi-in {
+  border: none; border-bottom: 1px solid rgba(0,229,255,0.4);
+  background: transparent; font-family: 'Montserrat', sans-serif;
+  font-size: 18px; color: #00E5FF; width: 120px;
+  text-align: center; outline: none; padding: 0 4px;
+  transition: border-color .2s;
+}
+.bi-in:focus { border-bottom-color: #00E5FF; }
+.bi-in.ok { border-bottom-color: #00FF88; color: #00FF88; }
+.bi-in.no { border-bottom-color: #FF4444; color: #FF4444; }
+.chk-btn {
+  background: #00B8D9; border: none; color: #000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px; font-weight: 700;
+  padding: 11px 26px; border-radius: 8px;
+  cursor: pointer; margin-top: 18px;
+  transition: all .2s; letter-spacing: 0.5px;
+  box-shadow: 0 4px 16px rgba(0,184,217,0.25);
+}
+.chk-btn:hover { background: #00E5FF; transform: translateY(-2px); }
+.r-msg { margin-top: 14px; font-size: 13px; font-weight: 600; }
+
+/* PDF Modal */
+.modal {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.88); z-index: 999;
+  align-items: center; justify-content: center;
+}
+.modal.show { display: flex; }
+.m-box {
+  background: #0A0B10;
+  border: 1px solid rgba(0,229,255,0.2);
+  border-radius: 14px;
+  width: 88vw; height: 88vh;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0,229,255,0.08);
+}
+.m-hdr {
+  padding: 14px 20px;
+  background: #050508;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.m-title { font-size: 14px; font-weight: 600; color: #00E5FF; }
+.m-close {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5); cursor: pointer;
+  font-size: 15px; transition: all .2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.m-close:hover { background: rgba(255,0,0,0.15); color: #fff; border-color: rgba(255,0,0,0.3); }
+.pdf-fr { flex: 1; border: none; background: #1a1a1a; }
+
+/* Tooltip */
+.tip {
+  position: fixed;
+  background: #0D1117;
+  border: 1px solid rgba(0,229,255,0.3);
+  color: #00E5FF; padding: 6px 12px;
+  border-radius: 7px; font-size: 12px;
+  font-weight: 600;
+  pointer-events: none; opacity: 0;
+  transition: opacity .15s; z-index: 500;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+}
+.tip.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:14px">
+    <span class="logo">CEC English Camp</span>
+    <span class="logo-meta">Camp A · 3학년</span>
+    <span class="week-badge">WEEK 1</span>
+  </div>
+  <div class="top-right">
+    <span class="name">👤 지민</span>
+    <span>📖 The Tale of Peter Rabbit</span>
+    <span style="color:#00E5FF">⭐ A1 Level</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- CECIL -->
+  <div class="chat-panel">
+    <div class="chat-hdr">
+      <div class="av">🦉</div>
+      <div>
+        <div class="ch-name">Cecil 선생님</div>
+        <div class="ch-status"><span class="dot"></span> 수업 중</div>
+      </div>
+    </div>
+
+    <div class="msgs" id="msgs">
+      <div class="msg">
+        <div class="m-av">🦉</div>
+        <div class="bubble">
+          안녕 지민아! 😊<br><br>
+          오늘은 <b>Peter Rabbit</b> 이야기야! 🐰<br><br>
+          1902년 Beatrix Potter가 쓴 건데, 장난꾸러기 피터가 맥그리거 아저씨 정원에 몰래 들어가는 이야기야!<br><br>
+          먼저 오른쪽 ▶ 버튼 눌러서 들어봐. 눈 감고 상상하면서 😊
+        </div>
+      </div>
+    </div>
+
+    <div class="qbtns">
+      <button class="qb" onclick="q('다 들었어!')">🎧 다 들었어!</button>
+      <button class="qb" onclick="q('어려워..')">😅 어려워..</button>
+      <button class="qb" onclick="q('재미있어!')">😄 재미있어!</button>
+      <button class="qb" onclick="q('다음으로 가자!')">➡️ 다음!</button>
+      <button class="qb" onclick="q('모르겠어')">🤔 모르겠어</button>
+    </div>
+
+    <div class="input-wrap">
+      <div class="input-row">
+        <textarea class="ci" id="inp" placeholder="세실에게 말해봐... 😊" rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}"
+          oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+        <button class="sb" onclick="send()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content-panel">
+
+    <div class="book-hdr">
+      <div class="cover-wrap">
+        <img class="cover-img" id="cov"
+          src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/covers/003_the_tale_of_peter_rabbit_cover.jpg"
+          alt="Peter Rabbit"
+          onclick="openPDF()"
+          onerror="this.style.display='none'">
+        <div class="cover-hint">📄 클릭 → PDF</div>
+      </div>
+      <div class="book-info">
+        <h1>The Tale of Peter Rabbit</h1>
+        <div class="book-author">by Beatrix Potter · 1902</div>
+        <div class="wtag">Week 1 / 36 · Part 1</div>
+      </div>
+    </div>
+
+    <div class="player">
+      <div class="p-lbl">🎵 오늘의 MP3 듣기</div>
+      <div class="p-row">
+        <button class="p-play" id="pbtn" onclick="togglePlay()">▶</button>
+        <div class="p-track">
+          <div class="p-name">The Tale of Peter Rabbit — Part 1 &nbsp;(0:00 ~ 2:00)</div>
+          <div class="p-bar" id="pbar" onclick="seekAudio(event)">
+            <div class="p-fill" id="pfill"></div>
+          </div>
+        </div>
+        <div class="p-time" id="ptime">0:00 / 2:00</div>
+      </div>
+      <audio id="aud" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/audio/grade3/003_the_tale_of_peter_rabbit.mp3"></audio>
+    </div>
+
+    <div class="tabs">
+      <button class="tab on" onclick="showTab(0,this)">① 듣기</button>
+      <button class="tab" onclick="showTab(1,this)">② 영어 읽기</button>
+      <button class="tab" onclick="showTab(2,this)">③ 해석 보기</button>
+      <button class="tab" onclick="showTab(3,this)">④ 빈칸 채우기</button>
+    </div>
+
+    <div class="c-area">
+
+      <div class="panel on" id="p0">
+        <div class="listen-c">
+          <div class="listen-icon">🎧</div>
+          <div class="listen-title">눈 감고 들어봐!</div>
+          <div class="listen-sub">
+            위의 ▶ 버튼을 눌러서<br>
+            오늘 이야기를 먼저 들어봐 😊<br><br>
+            어떤 장면이 상상돼?<br>
+            다 들으면 왼쪽 세실에게 말해줘!
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="p1">
+        <div class="eng">
+          <p>Once upon a time there were four little <span class="hw" data-m="토끼들">rabbits</span>, and their names were <span class="hw" data-m="플롭시 (이름)">Flopsy</span>, <span class="hw" data-m="몹시 (이름)">Mopsy</span>, <span class="hw" data-m="코튼테일 (이름)">Cottontail</span>, and <span class="hw" data-m="피터 (이름)">Peter</span>.</p>
+          <p>They lived with their <span class="hw" data-m="엄마">mother</span> in a sand-bank, underneath the root of a very big <span class="hw" data-m="전나무">fir tree</span>.</p>
+          <p>"Now, my <span class="hw" data-m="사랑하는 얘들아">dears</span>," said old Mrs. Rabbit, "you may go into the fields or down the lane, but don't go into Mr. McGregor's <span class="hw" data-m="정원">garden</span>!"</p>
+          <p>Flopsy, Mopsy, and Cottontail were good little bunnies. But Peter was very <span class="hw" data-m="말 안 듣는, 장난꾸러기">naughty</span>. 😅</p>
+        </div>
+        <div class="vocab-tip">💡 파란색 단어에 마우스를 올리면 뜻이 나와요!</div>
+      </div>
+
+      <div class="panel" id="p2">
+        <div class="bi">
+          <div class="bi-en">Once upon a time there were four little rabbits: Flopsy, Mopsy, Cottontail, and Peter.</div>
+          <div class="bi-ko">옛날 옛적에 작은 토끼 네 마리가 있었어요. 이름은 플롭시, 몹시, 코튼테일, 그리고 피터였답니다. 🐰</div>
+        </div>
+        <div class="bi">
+          <div class="bi-en">They lived with their mother in a sand-bank, underneath the root of a very big fir tree.</div>
+          <div class="bi-ko">그들은 엄마와 함께 커다란 전나무 뿌리 아래 모래 둑에서 살았어요.</div>
+        </div>
+        <div class="bi">
+          <div class="bi-en">"Don't go into Mr. McGregor's garden!" said Mrs. Rabbit.</div>
+          <div class="bi-ko">"맥그리거 아저씨의 정원에는 절대 들어가면 안 돼!" 엄마 토끼가 말했어요. ⚠️</div>
+        </div>
+        <div class="bi">
+          <div class="bi-en">Flopsy, Mopsy, and Cottontail were good. But Peter was very naughty!</div>
+          <div class="bi-ko">플롭시, 몹시, 코튼테일은 착했어요. 하지만 피터는 정말 말을 안 들었답니다! 😅</div>
+        </div>
+      </div>
+
+      <div class="panel" id="p3">
+        <div class="blank-title">빈칸 채우기</div>
+        <div class="blank-sub">오늘 배운 단어로 빈칸을 채워봐!</div>
+        <div class="fill-s">1. Their names were Flopsy, Mopsy, Cottontail, and <input class="bi-in" id="b1" placeholder="______">.</div>
+        <div class="fill-s">2. They lived with their <input class="bi-in" id="b2" placeholder="______"> in a sand-bank.</div>
+        <div class="fill-s">3. Don't go into Mr. McGregor's <input class="bi-in" id="b3" placeholder="______">!</div>
+        <div class="fill-s">4. But Peter was very <input class="bi-in" id="b4" placeholder="______">.</div>
+        <button class="chk-btn" onclick="checkAnswers()">✅ 정답 확인</button>
+        <div class="r-msg" id="rmsg"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PDF Modal -->
+<div class="modal" id="pdfModal" onclick="if(event.target===this)closePDF()">
+  <div class="m-box">
+    <div class="m-hdr">
+      <div class="m-title">📄 The Tale of Peter Rabbit — Beatrix Potter (1902)</div>
+      <button class="m-close" onclick="closePDF()">✕</button>
+    </div>
+    <iframe class="pdf-fr" id="pdfFr" src=""></iframe>
+  </div>
+</div>
+
+<!-- Tooltip -->
+<div class="tip" id="tip"></div>
+
+<script>
+// ══ CECIL API ══
+const API_URL = 'https://journey-bronzy-fruitily.ngrok-free.dev';
+const API_KEY = 'sk-0bc6b3064fbd4e5119fb2eb751781345d15eee862d60775008b47a843fec9d6f';
+const MODEL   = 'cec_camp_a';
+const SYS = `너는 세실(Cecil)이야. CEC English Camp의 따뜻하고 재미있는 영어 선생님! 🦉
+학생: 지민 (초등학교 3학년, A1 레벨, 만 9세)
+교재: The Tale of Peter Rabbit by Beatrix Potter (1902)
+규칙:
+- 한국어 60%, 영어 40% 사용
+- 문장은 무조건 짧고 쉽게!
+- 이모지 많이 써줘 😊🐰✨
+- 칭찬 자주 해줘
+- 어려운 단어는 바로 한국어로 설명
+- 오늘 핵심 단어: rabbit(토끼), mother(엄마), garden(정원), naughty(말 안 듣는), fir tree(전나무)
+- 모르면 힌트 3개 주기
+- 절대 번역만 하지 말고 같이 생각하게 해줘!`;
+
+const chatHist = [];
+
+async function callCecil(userMsg) {
+  try {
+    const messages = [
+      { role: 'system', content: SYS },
+      ...chatHist,
+      { role: 'user', content: userMsg }
+    ];
+    const res = await fetch(API_URL + '/api/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + API_KEY,
+        'ngrok-skip-browser-warning': 'true'
+      },
+      body: JSON.stringify({ model: MODEL, messages: messages })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const reply = data.choices[0].message.content;
+    chatHist.push({ role: 'user', content: userMsg });
+    chatHist.push({ role: 'assistant', content: reply });
+    return reply;
+  } catch(e) {
+    console.error(e);
+    return '연결이 잠깐 불안정해! 다시 말해줘 😊';
+  }
+}
+
+function q(text) {
+  addUserMsg(text);
+  respond(text);
+}
+
+function send() {
+  const el = document.getElementById('inp');
+  const text = el.value.trim();
+  if (!text) return;
+  addUserMsg(text);
+  el.value = '';
+  el.style.height = 'auto';
+  respond(text);
+}
+
+function respond(text) {
+  const tw = addTyping();
+  callCecil(text).then(reply => {
+    tw.remove();
+    addCecilMsg(reply.replace(/\n/g, '<br>'));
+  });
+}
+
+function addUserMsg(text) {
+  const m = document.getElementById('msgs');
+  m.innerHTML += `<div class="msg u"><div class="m-av">👤</div><div class="bubble">${text}</div></div>`;
+  m.scrollTop = m.scrollHeight;
+}
+
+function addCecilMsg(html) {
+  const m = document.getElementById('msgs');
+  m.innerHTML += `<div class="msg"><div class="m-av">🦉</div><div class="bubble">${html}</div></div>`;
+  m.scrollTop = m.scrollHeight;
+}
+
+function addTyping() {
+  const m = document.getElementById('msgs');
+  const el = document.createElement('div');
+  el.className = 'typing';
+  el.innerHTML = `<div class="m-av">🦉</div><div class="t-dots"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+  m.appendChild(el);
+  m.scrollTop = m.scrollHeight;
+  return el;
+}
+
+// ══ TABS ══
+function showTab(i, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('p' + i).classList.add('on');
+  btn.classList.add('on');
+}
+
+// ══ AUDIO ══
+const aud = document.getElementById('aud');
+const END = 120;
+
+function togglePlay() {
+  const btn = document.getElementById('pbtn');
+  if (aud.paused) { aud.play(); btn.textContent = '⏸'; }
+  else { aud.pause(); btn.textContent = '▶'; }
+}
+
+aud.addEventListener('timeupdate', () => {
+  const t = Math.min(aud.currentTime, END);
+  document.getElementById('pfill').style.width = (t / END * 100) + '%';
+  document.getElementById('ptime').textContent = fmt(t) + ' / ' + fmt(END);
+  if (aud.currentTime >= END) {
+    aud.pause(); aud.currentTime = 0;
+    document.getElementById('pbtn').textContent = '▶';
+  }
+});
+
+function seekAudio(e) {
+  const bar = document.getElementById('pbar');
+  aud.currentTime = (e.offsetX / bar.offsetWidth) * END;
+}
+
+function fmt(s) {
+  return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+}
+
+// ══ BLANKS ══
+const ANS = { b1: 'peter', b2: 'mother', b3: 'garden', b4: 'naughty' };
+
+function checkAnswers() {
+  let ok = 0;
+  for (const [id, ans] of Object.entries(ANS)) {
+    const el = document.getElementById(id);
+    const val = el.value.trim().toLowerCase();
+    if (val === ans) { el.classList.add('ok'); el.classList.remove('no'); ok++; }
+    else { el.classList.add('no'); el.classList.remove('ok'); }
+  }
+  const r = document.getElementById('rmsg');
+  if (ok === 4) {
+    r.style.color = '#00FF88';
+    r.textContent = '🎉 완벽! 4개 모두 정답!';
+    addCecilMsg('와!!! 😄 4개 다 맞았어?! 정말 대단해 지민아! ⭐⭐⭐<br>피터가 정원에서 어떻게 됐는지 다음 시간에 알아보자! 🐰');
+  } else {
+    r.style.color = '#FF6666';
+    r.textContent = ok + '/4 정답! 틀린 거 다시 해봐! 세실에게 힌트 물어봐 😊';
+  }
+}
+
+// ══ TOOLTIP ══
+const tip = document.getElementById('tip');
+document.querySelectorAll('.hw').forEach(w => {
+  w.addEventListener('mouseenter', () => { tip.textContent = w.dataset.m; tip.classList.add('show'); });
+  w.addEventListener('mousemove', e => { tip.style.left = (e.clientX + 14) + 'px'; tip.style.top = (e.clientY - 38) + 'px'; });
+  w.addEventListener('mouseleave', () => tip.classList.remove('show'));
+});
+
+// ══ PDF ══
+function openPDF() {
+  document.getElementById('pdfFr').src = 'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/pdf/grade3/003_the_tale_of_peter_rabbit.pdf';
+  document.getElementById('pdfModal').classList.add('show');
+}
+
+function closePDF() {
+  document.getElementById('pdfModal').classList.remove('show');
+  document.getElementById('pdfFr').src = '';
+}
+</script>
+</body>
+</html>
