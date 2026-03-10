@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEC English Camp — Peter Rabbit Week 4</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050508;
+  --surface: #0A0B10;
+  --surface2: #111320;
+  --border: rgba(0,229,255,0.08);
+  --border2: rgba(0,229,255,0.15);
+  --gold: #00E5FF;
+  --gold2: #40EFFF;
+  --gold3: #80F5FF;
+  --cream: #FFFFFF;
+  --cream2: #D0F0FF;
+  --muted: #3A6070;
+  --muted2: #5A8A9A;
+  --green: #003A4A;
+  --green2: #005A70;
+  --green3: #00B8D9;
+  --text: #E0F8FF;
+  --chat-bg: #050508;
+  --user: #002A3A;
+  --cecil: #080B12;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Noto Sans KR', 'Montserrat', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.topbar { height: 52px; background: var(--surface); border-bottom: 1px solid var(--border2); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; flex-shrink: 0; position: relative; }
+.topbar::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,229,255,0.6), transparent); }
+.logo { font-family: 'Montserrat', sans-serif; font-size: 19px; font-weight: 700; letter-spacing: 2px; color: var(--gold2); display: flex; align-items: center; gap: 12px; }
+.logo-sub { font-size: 11px; font-weight: 300; color: var(--muted2); letter-spacing: 2px; text-transform: uppercase; }
+.week-pill { background: linear-gradient(135deg, #00B8D9, #0080A0); color: #0E0C09; font-size: 10px; font-weight: 700; padding: 3px 12px; border-radius: 20px; letter-spacing: 1.5px; text-transform: uppercase; }
+.student-info { display: flex; align-items: center; gap: 20px; font-size: 12px; color: rgba(255,255,255,0.5); }
+.student-info .sname { color: #00E5FF; font-weight: 500; }
+
+.main { display: grid; grid-template-columns: 360px 1fr; flex: 1; overflow: hidden; min-height: 0; }
+
+.chat-side { background: var(--chat-bg); display: flex; flex-direction: column; overflow: hidden; border-right: 1px solid var(--border2); position: relative; }
+.chat-side::before { content: ''; position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+.chat-header { padding: 18px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; flex-shrink: 0; position: relative; z-index: 1; background: linear-gradient(180deg, rgba(0,137,123,0.15) 0%, transparent 100%); }
+.av-wrap { position: relative; }
+.av { width: 46px; height: 46px; border-radius: 10px; overflow: hidden; border: 1px solid rgba(0,229,255,0.3); box-shadow: 0 0 20px rgba(0,229,255,0.15); animation: breathe 3s ease-in-out infinite; }
+.av video { width: 100%; height: 100%; object-fit: cover; display: block; }
+@keyframes breathe { 0%,100% { box-shadow: 0 0 14px rgba(0,137,123,0.3); } 50% { box-shadow: 0 0 28px rgba(0,229,255,0.5); } }
+.av-ring { position: absolute; inset: -3px; border-radius: 13px; border: 1px solid rgba(0,229,255,0.3); animation: ring-pulse 3s ease-in-out infinite; }
+@keyframes ring-pulse { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.05); } }
+.ch-name { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 600; color: var(--cream); letter-spacing: 0.5px; }
+.ch-status { font-size: 11px; color: #00E5FF; display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+.sdot { width: 6px; height: 6px; background: #00E5FF; border-radius: 50%; animation: sdot 2s infinite; }
+@keyframes sdot { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.msgs { flex: 1; overflow-y: auto; padding: 20px 18px; display: flex; flex-direction: column; gap: 14px; position: relative; z-index: 1; scroll-behavior: smooth; }
+.msgs::-webkit-scrollbar { width: 3px; }
+.msgs::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+.msg { display: flex; gap: 10px; animation: msgIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.msg.u { flex-direction: row-reverse; }
+@keyframes msgIn { from { opacity: 0; transform: translateY(10px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.msg-av { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #003A5A, #00B8D9); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; margin-top: 2px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+.msg.u .msg-av { background: linear-gradient(135deg, #002A3A, #00B8D9); }
+
+.bubble { max-width: 290px; padding: 11px 16px; border-radius: 16px; font-size: 13.5px; line-height: 1.7; color: rgba(255,255,255,0.85); background: var(--cecil); border: 1px solid var(--border); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+.msg.u .bubble { background: var(--user); border-color: rgba(0,229,255,0.15); color: #D4E8D0; }
+.bubble strong { color: #00E5FF; }
+.bubble em { color: var(--muted2); font-style: italic; }
+
+.typing-wrap { display: flex; gap: 10px; align-items: flex-end; }
+.typing-bubble { background: var(--cecil); border: 1px solid var(--border); padding: 14px 18px; border-radius: 16px; display: flex; gap: 5px; align-items: center; }
+.td { width: 6px; height: 6px; background: var(--muted); border-radius: 50%; animation: td 1.4s infinite; }
+.td:nth-child(2){animation-delay:.2s}
+.td:nth-child(3){animation-delay:.4s}
+@keyframes td { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-7px)} }
+
+.qbtns { padding: 10px 16px 6px; display: flex; flex-wrap: wrap; gap: 7px; position: relative; z-index: 1; }
+.qb { background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.15); color: rgba(255,255,255,0.45); font-size: 12px; padding: 6px 13px; border-radius: 20px; cursor: pointer; transition: all .25s; font-family: 'Noto Sans KR', sans-serif; letter-spacing: 0.3px; }
+.qb:hover { background: rgba(0,229,255,0.12); border-color: rgba(0,229,255,0.4); color: #00E5FF; transform: translateY(-1px); }
+
+.input-area { padding: 12px 16px 16px; border-top: 1px solid var(--border); position: relative; z-index: 1; }
+.input-row { display: flex; gap: 8px; align-items: flex-end; background: rgba(255,255,255,0.04); border: 1px solid var(--border2); border-radius: 14px; padding: 8px 8px 8px 14px; transition: border-color .2s; }
+.input-row:focus-within { border-color: rgba(0,229,255,0.3); }
+.cinput { flex: 1; background: none; border: none; color: var(--cream); font-family: 'Noto Sans KR', sans-serif; font-size: 13px; resize: none; outline: none; min-height: 22px; max-height: 80px; line-height: 1.5; }
+.cinput::placeholder { color: rgba(255,255,255,0.25); }
+.sbtn { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(135deg, #005A70, #003A4A); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all .2s; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+.sbtn:hover { background: linear-gradient(135deg, #00B8D9, #005A70); transform: scale(1.05); }
+
+.content-side { display: flex; flex-direction: column; overflow: hidden; background: var(--surface); }
+
+.book-hero { background: linear-gradient(135deg, #050508 0%, #0A0E1A 50%, #050508 100%); border-bottom: 1px solid var(--border2); padding: 18px 28px; display: flex; align-items: center; gap: 24px; flex-shrink: 0; position: relative; overflow: hidden; }
+.book-hero::before { content: ''; position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(0,229,255,0.06) 0%, transparent 70%); pointer-events: none; }
+.cover-wrap { position: relative; flex-shrink: 0; }
+.cover-img { width: 72px; height: 98px; object-fit: cover; border-radius: 4px; box-shadow: 4px 4px 20px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.1); cursor: pointer; transition: all .3s cubic-bezier(0.34, 1.56, 0.64, 1); display: block; }
+.cover-img:hover { transform: scale(1.06) rotate(-1deg); box-shadow: 6px 6px 28px rgba(0,0,0,0.7), 0 0 20px rgba(0,229,255,0.15); }
+.cover-hint { text-align: center; font-size: 9px; color: var(--muted); margin-top: 5px; letter-spacing: 0.5px; }
+.book-meta h1 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; color: #FFFFFF; letter-spacing: 1px; line-height: 1.2; }
+.book-author { font-family: 'Montserrat', sans-serif; font-style: italic; font-size: 14px; color: var(--muted2); margin-top: 4px; }
+.week-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.25); color: var(--gold2); font-size: 11px; font-weight: 500; padding: 4px 14px; border-radius: 20px; margin-top: 10px; letter-spacing: 0.5px; }
+
+.player { background: #080806; border-bottom: 1px solid var(--border); padding: 14px 28px; flex-shrink: 0; }
+.player-lbl { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #00E5FF; margin-bottom: 10px; font-weight: 500; }
+.player-row { display: flex; align-items: center; gap: 16px; }
+.pbtn { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #00B8D9, #006080); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all .25s; flex-shrink: 0; box-shadow: 0 4px 16px rgba(0,229,255,0.3); }
+.pbtn:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(0,229,255,0.4); }
+.ptrack { flex: 1; }
+.pname { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 7px; letter-spacing: 0.3px; }
+.pbar { width: 100%; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; cursor: pointer; }
+.pbar:hover { height: 5px; transition: height .15s; }
+.pfill { height: 100%; background: linear-gradient(90deg, #00B8D9, #40EFFF); border-radius: 2px; width: 0%; transition: width .1s; }
+.ptime { font-size: 11px; color: rgba(255,255,255,0.35); min-width: 70px; text-align: right; }
+
+.tabs { display: flex; background: var(--surface2); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.tab { flex: 1; padding: 11px 6px; font-size: 11.5px; font-weight: 500; color: var(--muted); border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; text-align: center; letter-spacing: 0.3px; }
+.tab.on { color: #00E5FF; border-bottom-color: #00E5FF; background: rgba(0,229,255,0.04); }
+.tab:hover:not(.on) { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.03); }
+
+.content-area { flex: 1; overflow-y: auto; padding: 28px 32px; min-height: 0; }
+.content-area::-webkit-scrollbar { width: 3px; }
+.content-area::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.panel { display: none; animation: fadeIn .3s ease; }
+.panel.on { display: block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+
+.listen-center { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 40px; gap: 20px; }
+.listen-icon { font-size: 80px; filter: drop-shadow(0 0 30px rgba(0,229,255,0.3)); animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.listen-title { font-family: 'Montserrat', sans-serif; font-size: 30px; font-weight: 600; color: #FFFFFF; letter-spacing: 2px; text-transform: uppercase; }
+.listen-body { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 2; max-width: 380px; }
+
+.eng-text { font-family: 'Montserrat', sans-serif; font-size: 15px; line-height: 1.9; color: var(--cream); }
+.eng-text p { margin-bottom: 22px; }
+.hw { position: relative; color: #00E5FF; cursor: pointer; border-bottom: 1px solid rgba(0,229,255,0.4); transition: all .2s; padding-bottom: 1px; }
+.hw:hover { color: #80F5FF; border-bottom-color: var(--gold); }
+.vocab-hint { margin-top: 20px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.35); padding: 10px 16px; background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.08); border-radius: 8px; }
+
+.bi { margin-bottom: 24px; padding: 18px 22px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-left: 2px solid var(--gold); border-radius: 0 10px 10px 0; transition: background .2s; }
+.bi:hover { background: rgba(255,255,255,0.04); }
+.bi-en { font-family: 'Montserrat', sans-serif; font-size: 15px; color: #00E5FF; margin-bottom: 8px; line-height: 1.8; }
+.bi-ko { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.8; }
+
+.blank-heading { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700; color: #FFFFFF; margin-bottom: 6px; letter-spacing: 2px; text-transform: uppercase; }
+.blank-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+.fill-s { font-family: 'Montserrat', sans-serif; font-size: 15px; line-height: 2.2; color: var(--cream2); }
+.blank-i { border: none; border-bottom: 1px solid rgba(0,229,255,0.4); background: transparent; font-family: 'Montserrat', sans-serif; font-size: 15px; color: #00E5FF; width: 130px; text-align: center; outline: none; padding: 0 4px; transition: border-color .2s; }
+.blank-i:focus { border-bottom-color: var(--gold2); }
+.blank-i.ok { border-bottom-color: var(--green3); color: var(--green3); }
+.blank-i.no { border-bottom-color: #AF5252; color: #AF5252; }
+.check-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #005A70, #003A4A); border: 1px solid rgba(0,184,217,0.3); color: var(--cream); padding: 11px 28px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 20px; transition: all .25s; font-family: 'Noto Sans KR', sans-serif; letter-spacing: 0.3px; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+.check-btn:hover { background: linear-gradient(135deg, #00B8D9, #005A70); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,0.4); }
+.result-msg { margin-top: 16px; font-size: 14px; font-weight: 500; }
+
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(6px); }
+.modal.show { display: flex; animation: fadeIn .3s ease; }
+.modal-box { background: var(--surface); border: 1px solid var(--border2); border-radius: 16px; width: 88vw; height: 88vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.7); }
+.modal-hdr { padding: 16px 22px; background: var(--surface2); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.modal-title { font-family: 'Montserrat', sans-serif; font-size: 17px; color: #00E5FF; letter-spacing: 0.5px; }
+.modal-close { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--muted2); cursor: pointer; font-size: 16px; transition: all .2s; display: flex; align-items: center; justify-content: center; }
+.modal-close:hover { background: rgba(255,255,255,0.1); color: var(--cream); }
+.pdf-frame { flex: 1; border: none; background: #fff; }
+
+.tip { position: fixed; background: var(--surface2); border: 1px solid rgba(0,229,255,0.3); color: var(--gold3); padding: 7px 14px; border-radius: 8px; font-size: 13px; pointer-events: none; opacity: 0; transition: opacity .15s; z-index: 999; box-shadow: 0 8px 24px rgba(0,0,0,0.5); white-space: nowrap; }
+.tip.show { opacity: 1; }
+
+@keyframes completePulse { 0%,100% { box-shadow: 0 4px 20px rgba(0,229,255,0.3); } 50% { box-shadow: 0 4px 36px rgba(0,229,255,0.7); } }
+.complete-btn-done { display: block; margin: 28px auto 0; padding: 15px 32px; background: linear-gradient(135deg, #00B8D9, #0080A0); color: #fff; border: none; border-radius: 30px; font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: 1px; font-family: 'Montserrat', sans-serif; animation: completePulse 2s infinite; transition: transform .2s; }
+.complete-btn-done:hover { transform: translateY(-2px); }
+.complete-btn-skip { display: block; margin: 20px auto 0; padding: 12px 26px; background: linear-gradient(135deg, #1a4a5a, #0a3040); color: #7dd4e8; border: 1px solid rgba(0,229,255,0.25); border-radius: 30px; font-size: 13px; font-weight: 600; cursor: pointer; letter-spacing: 0.5px; font-family: 'Noto Sans KR', sans-serif; transition: all .2s; }
+.complete-btn-skip:hover { border-color: rgba(0,229,255,0.5); color: #00E5FF; transform: translateY(-1px); }
+@keyframes confettiFall { 0% { transform: translateY(-100px) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+.confetti-piece { position: fixed; width: 10px; height: 10px; top: -20px; animation: confettiFall linear forwards; z-index: 9999; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:16px">
+    <div class="logo">
+      CEC English Camp
+      <span class="logo-sub">Camp A · 3학년</span>
+    </div>
+    <div class="week-pill">Week 4</div>
+  </div>
+  <div class="student-info">
+    <span class="sname">👤 ...</span>
+    <span>📖 The Tale of Peter Rabbit</span>
+    <span style="color:var(--gold);font-size:11px">⭐ A1 Level</span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="chat-side">
+    <div class="chat-header">
+      <div class="av-wrap">
+        <div class="av">
+          <video src="/static/robo.mp4" autoplay loop muted playsinline></video>
+        </div>
+        <div class="av-ring"></div>
+      </div>
+      <div>
+        <div class="ch-name">Robo</div>
+        <div class="ch-status"><span class="sdot"></span> 수업 중</div>
+      </div>
+    </div>
+
+    <div class="msgs" id="msgs">
+      <div class="msg">
+        <div class="msg-av" style="background:none;overflow:hidden;padding:0;"><img src="/materials/robo.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.parentElement.textContent='🤖';this.parentElement.style.background='linear-gradient(135deg,#003A5A,#00B8D9)';"></div>
+        <div class="bubble">⏳ 로딩 중...</div>
+      </div>
+    </div>
+
+    <div class="qbtns">
+      <button class="qb" onclick="q('다 들었어!')">🎧 다 들었어!</button>
+      <button class="qb" onclick="q('어려워..')">😅 어려워..</button>
+      <button class="qb" onclick="q('재미있어!')">😄 재미있어!</button>
+      <button class="qb" onclick="q('다음으로 가자!')">➡️ 다음!</button>
+      <button class="qb" onclick="q('모르겠어')">🤔 모르겠어</button>
+    </div>
+
+    <div class="input-area">
+      <div class="input-row">
+        <textarea class="cinput" id="inp" placeholder="Robo에게 말해봐... 😊" rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();send()}"
+          oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+        <button class="sbtn" onclick="send()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-side">
+    <div class="book-hero">
+      <div class="cover-wrap">
+        <img class="cover-img" id="cov"
+          src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/covers/003_the_tale_of_peter_rabbit_cover.jpg"
+          alt="Peter Rabbit"
+          onclick="openPDF()"
+          onerror="this.style.display='none'">
+        <div class="cover-hint">📄 클릭 → PDF</div>
+      </div>
+      <div class="book-meta">
+        <h1>The Tale of Peter Rabbit</h1>
+        <div class="book-author">by Beatrix Potter · 1902</div>
+        <div class="week-tag"><span>📖</span> Week 4 of 36 &nbsp;·&nbsp; Part 4 (Final)</div>
+      </div>
+    </div>
+
+    <div class="player">
+      <div class="player-lbl">🎵 오늘의 MP3 듣기</div>
+      <div class="player-row">
+        <button class="pbtn" id="pbtn" onclick="togglePlay()">▶</button>
+        <div class="ptrack">
+          <div class="pname">The Tale of Peter Rabbit — Part 4 &nbsp;(6:00 ~ end)</div>
+          <div class="pbar" onclick="seekAudio(event)">
+            <div class="pfill" id="pfill"></div>
+          </div>
+        </div>
+        <div class="ptime" id="ptime">0:00 / 2:00</div>
+      </div>
+      <audio id="aud" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/audio/grade3/003_the_tale_of_peter_rabbit.mp3"></audio>
+    </div>
+
+    <div class="tabs">
+      <button class="tab on" onclick="tab(0,this)">① 듣기</button>
+      <button class="tab" onclick="tab(1,this)">② 영어 읽기</button>
+      <button class="tab" onclick="tab(2,this)">③ 해석 보기</button>
+      <button class="tab" onclick="tab(3,this)">④ 빈칸 채우기</button>
+    </div>
+
+    <div class="content-area">
+
+      <div class="panel on" id="p0">
+        <div class="listen-center">
+          <div class="listen-icon">🎧</div>
+          <div class="listen-title">눈 감고 들어봐</div>
+          <div class="listen-body">
+            위의 ▶ 버튼을 눌러서<br>
+            오늘 이야기를 먼저 들어봐 😊<br><br>
+            피터의 마지막 모험! 집에 돌아갈 수 있을까?<br>
+            다 들으면 왼쪽 Robo에게 말해줘!
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" id="p1">
+        <div class="eng-text">
+          <p>Peter rushed out, upsetting three plants in a window, and Mr. McGregor just caught a <span class="hw" data-m="힐끗 봄">glimpse</span> of him disappearing through the gate.</p>
+          <p>Peter never stopped running or looked behind him till he got <span class="hw" data-m="집">home</span> to the big fir tree.</p>
+          <p>He was so <span class="hw" data-m="피곤한">tired</span> that he <span class="hw" data-m="풀썩 쓰러지다">flopped</span> down upon the nice soft sand on the floor of the rabbit-hole, and shut his eyes.</p>
+          <p>His mother was busy cooking; she wondered what he had done with his clothes. It was the second little jacket and pair of <span class="hw" data-m="신발">shoes</span> that Peter had lost in a <span class="hw" data-m="2주">fortnight</span>!</p>
+          <p>I am sorry to say that Peter was not very well during the evening.</p>
+          <p>His mother put him to bed, and made some <span class="hw" data-m="카모마일 (허브차)">camomile</span> tea; and she gave a <span class="hw" data-m="한 복용량">dose</span> of it to Peter!</p>
+          <p>"One table-spoonful to be taken at bed-time." 🍵</p>
+        </div>
+        <div class="vocab-hint">💡 파란색 단어에 마우스를 올리면 뜻이 나와요!</div>
+      </div>
+
+      <div class="panel" id="p2">
+        <div class="bi">
+          <div class="bi-en">Peter rushed out and Mr. McGregor just caught a glimpse of him disappearing through the gate.</div>
+          <div class="bi-ko">피터가 뛰쳐나가는 걸 맥그리거 아저씨가 간신히 봤어요. 대문으로 사라지고 있었답니다! 🏃</div>
+        </div>
+        <div class="bi">
+          <div class="bi-en">Peter never stopped running till he got home to the big fir tree.</div>
+          <div class="bi-ko">피터는 커다란 전나무 집에 도착할 때까지 멈추지 않고 달렸어요. 🌲</div>
+        </div>
+        <div class="bi">
+          <div class="bi-en">He was so tired that he flopped down and shut his eyes.</div>
+          <div class="bi-ko">너무 피곤해서 풀썩 쓰러져서 눈을 감았어요. 😴</div>
+        </div>
+        <div class="bi">
+          <div class="bi-en">It was the second jacket and shoes that Peter had lost in a fortnight!</div>
+          <div class="bi-ko">2주 만에 두 번째로 재킷이랑 신발을 잃어버린 거예요! 👔👟</div>
+        </div>
+        <div class="bi">
+          <div class="bi-en">His mother put him to bed, and made some camomile tea.</div>
+          <div class="bi-ko">엄마는 피터를 재우고, 카모마일 차를 끓여줬어요. 🍵</div>
+        </div>
+        <div class="bi">
+          <div class="bi-en">"One table-spoonful to be taken at bed-time."</div>
+          <div class="bi-ko">"잠자기 전에 한 숟가락 먹기!" — 약처럼 먹었답니다! 😅</div>
+        </div>
+      </div>
+
+      <div class="panel" id="p3">
+        <div class="blank-heading">빈칸 채우기</div>
+        <div class="blank-sub">오늘 배운 단어로 빈칸을 채워봐!</div>
+        <div class="fill-s">1. Peter never stopped running till he got <input class="blank-i" id="b1" placeholder="">.</div>
+        <div class="fill-s">2. His mother made some <input class="blank-i" id="b2" placeholder=""> tea.</div>
+        <div class="fill-s">3. Peter had lost his jacket and <input class="blank-i" id="b3" placeholder="">.</div>
+        <div class="fill-s">4. He was so tired that he <input class="blank-i" id="b4" placeholder=""> down.</div>
+        <button class="check-btn" onclick="check()">✅ 정답 확인</button>
+        <div id="early-next" style="margin-top:16px;">
+          <button class="complete-btn-skip" onclick="goToRobo(false)" style="margin:0;">
+            ➡️ 바로 넘어가기
+          </button>
+        </div>
+        <div class="result-msg" id="rmsg"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="pdfModal">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <div class="modal-title">📄 The Tale of Peter Rabbit — Beatrix Potter (1902)</div>
+      <button class="modal-close" onclick="closePDF()">✕</button>
+    </div>
+    <iframe class="pdf-frame" id="pdfFr" src=""></iframe>
+  </div>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<script>
+const _urlP = new URLSearchParams(window.location.search);
+const STUDENT_NAME = _urlP.get('name') || sessionStorage.getItem('student_name') || '친구';
+const STUDENT_GRADE = _urlP.get('grade') || sessionStorage.getItem('student_grade') || '3';
+sessionStorage.setItem('student_name', STUDENT_NAME);
+sessionStorage.setItem('student_grade', STUDENT_GRADE);
+
+document.addEventListener('DOMContentLoaded', () => {
+  const snameEl = document.querySelector('.sname');
+  if (snameEl) snameEl.textContent = '👤 ' + STUDENT_NAME;
+  const firstBubble = document.querySelector('.msgs .bubble');
+  if (firstBubble) {
+    firstBubble.innerHTML =
+      '안녕 ' + STUDENT_NAME + '! 😊<br><br>' +
+      '오늘은 <strong>Peter Rabbit Part 4</strong>야! 마지막 이야기! 🐰<br><br>' +
+      '피터가 드디어 정원에서 탈출해! 집에서 뭘 마셨는지 들어봐!<br><br>' +
+      '먼저 오른쪽 ▶ 버튼 눌러서 들어봐. 눈 감고 상상하면서 😊';
+  }
+  document.querySelectorAll('video').forEach(v => { v.muted = true; v.play().catch(()=>{}); });
+
+  if (_urlP.get('view') === 'summary') {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+    const p3 = document.getElementById('p3');
+    if (p3) p3.classList.add('on');
+    const tabs = document.querySelectorAll('.tab');
+    if (tabs[3]) tabs[3].classList.add('on');
+    var ans = { b1:'home', b2:'camomile', b3:'shoes', b4:'flopped' };
+    for (var id in ans) {
+      var el = document.getElementById(id);
+      if (el) { el.value = ans[id]; el.classList.add('ok'); }
+    }
+    var r = document.getElementById('rmsg');
+    if (r) { r.style.color='var(--green3)'; r.textContent='🎉 완벽! 4개 모두 정답!'; }
+    var earlyNext = document.getElementById('early-next');
+    if (earlyNext) earlyNext.style.display = 'none';
+    setTimeout(function(){ showCompleteBtn(4); }, 300);
+  }
+});
+
+const SYS = `너는 로보(Robo)야. CEC English Camp의 친절하고 재미있는 AI 영어 튜터! 🤖
+
+학생 정보:
+- 이름: ${STUDENT_NAME} (초등학교 ${STUDENT_GRADE}학년, A1 레벨)
+- 교재: The Tale of Peter Rabbit by Beatrix Potter (1902) — Part 4 (Final)
+- 오늘 단어: glimpse (힐끗 봄), flop (풀썩 쓰러지다), camomile (카모마일), shoes (신발), fortnight (2주)
+- 오늘 문법: so...that (너무 ~해서 ~했다)
+- 언어 비율: 한국어 60% 영어 40%
+
+수업 진행 순서 (이 순서대로 학생을 안내해):
+[STEP 1 - 듣기]
+처음 대화 시작 → "안녕 ${STUDENT_NAME}! 오늘은 Peter Rabbit 마지막 이야기야! 🐰 피터가 정원에서 탈출해서 집으로 돌아가! 먼저 오른쪽 ▶ 버튼 눌러서 들어봐 😊"
+학생이 들었다고 하면 → STEP 2로 안내
+
+[STEP 2 - 영어 읽기]
+"잘했어! 이제 위에 ② 영어 읽기 탭을 눌러봐! 🐇
+파란색 단어에 마우스 올리면 한국어 뜻이 나와. 천천히 읽어봐 😊"
+학생이 읽었다고 하면 → STEP 3으로 안내
+
+[STEP 3 - 해석 보기]
+"이제 ③ 해석 보기 탭을 눌러봐!
+영어랑 한국어를 같이 보면서 확인해봐 👀
+어려운 문장 있었어?"
+확인 후 → STEP 4로 안내
+
+[STEP 4 - 빈칸 채우기]
+"마지막이야! ④ 빈칸 채우기 탭 눌러봐! 📝
+오늘 배운 단어로 빈칸을 채워봐. 할 수 있어! 💪"
+학생이 다 했다고 하면 → 완료 안내
+
+[완료]
+"최고야! 🎉 Peter Rabbit 이야기를 4주 동안 전부 다 읽었어!
+정말 대단하다! 이제 피터 전문가야! 🐰⭐
+이제 오른쪽 아래 완료 버튼 눌러서 Camp A 튜터한테 가봐!
+다음 주부터는 새로운 책이 시작돼! 기대해! 📖🚀"
+
+규칙:
+- 문장 짧고 쉽게, 이모지 많이, 칭찬 자주
+- 학생이 어렵다고 하면 힌트 줘
+- 모르는 단어 물어보면 쉽게 설명해줘
+- 절대 다음 단계를 강요하지 마, 학생 페이스에 맞춰
+- 마지막 주차이므로 전체 이야기 복습 언급도 OK`;
+
+const API_URL = 'https://api.deepseek.com';
+const API_TOKEN = 'sk-eefa1e89cc0e42e4b5477b48ba188d6c';
+const MODEL = 'deepseek-chat';
+const hist = [];
+
+async function callRobo(text) {
+  hist.push({ role: 'user', content: text });
+  try {
+    const r = await fetch(`${API_URL}/v1/chat/completions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${API_TOKEN}` },
+      body: JSON.stringify({ model: MODEL, stream: false, messages: [{ role: 'system', content: SYS }, ...hist] })
+    });
+    const d = await r.json();
+    const reply = d.choices?.[0]?.message?.content || '😊 잠깐만!';
+    hist.push({ role: 'assistant', content: reply });
+    return reply;
+  } catch(e) { return '😅 연결이 잠깐 끊겼어! 다시 말해줘.'; }
+}
+
+function q(t) { addU(t); doResp(t); }
+function send() {
+  const el = document.getElementById('inp');
+  const t = el.value.trim(); if (!t) return;
+  addU(t); el.value = ''; el.style.height = 'auto'; doResp(t);
+}
+function doResp(t) {
+  const tw = addTyping();
+  callRobo(t).then(r => { tw.remove(); addC(r.replace(/\n/g,'<br>')); })
+             .catch(() => { tw.remove(); addC('연결이 잠깐 불안정해! 다시 말해줘 😊'); });
+}
+function addU(t) {
+  const m = document.getElementById('msgs');
+  m.innerHTML += `<div class="msg u"><div class="msg-av">👤</div><div class="bubble">${t}</div></div>`;
+  m.scrollTop = m.scrollHeight;
+}
+function addC(h) {
+  const m = document.getElementById('msgs');
+  const rendered = h.replace(/\*\*(.*?)\*\*/g, '<strong style="color:#00E5FF">$1</strong>').replace(/\*(.*?)\*/g, '<em>$1</em>');
+  m.innerHTML += `<div class="msg"><div class="msg-av" style="background:none;overflow:hidden;padding:0;"><img src="/materials/robo.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.parentElement.textContent='🤖';this.parentElement.style.background='linear-gradient(135deg,#003A5A,#00B8D9)';"></div><div class="bubble">${rendered}</div></div>`;
+  m.scrollTop = m.scrollHeight;
+}
+function addTyping() {
+  const m = document.getElementById('msgs');
+  const el = document.createElement('div');
+  el.className = 'typing-wrap';
+  el.innerHTML = `<div style="width:30px;height:30px;border-radius:50%;overflow:hidden;flex-shrink:0;padding:0;"><img src="/materials/robo.png" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div><div class="typing-bubble"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+  m.appendChild(el); m.scrollTop = m.scrollHeight; return el;
+}
+
+function tab(i, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('p'+i).classList.add('on');
+  btn.classList.add('on');
+}
+
+const aud = document.getElementById('aud');
+const AUD_START = 360;
+const AUD_END = 600;
+const END = AUD_END - AUD_START;
+aud.addEventListener('loadedmetadata', () => { aud.currentTime = AUD_START; });
+function togglePlay() {
+  const btn = document.getElementById('pbtn');
+  if (aud.paused) { aud.currentTime = Math.max(aud.currentTime, AUD_START); aud.play(); btn.textContent = '⏸'; }
+  else { aud.pause(); btn.textContent = '▶'; }
+}
+aud.addEventListener('timeupdate', () => {
+  const t = Math.min(aud.currentTime - AUD_START, END);
+  if (t < 0) { aud.currentTime = AUD_START; return; }
+  document.getElementById('pfill').style.width = (t/END*100)+'%';
+  document.getElementById('ptime').textContent = `${f(t)} / ${f(END)}`;
+  if (aud.currentTime >= AUD_END) { aud.pause(); aud.currentTime = AUD_START; document.getElementById('pbtn').textContent='▶'; }
+});
+function seekAudio(e) { aud.currentTime = AUD_START + (e.offsetX/e.currentTarget.offsetWidth)*END; }
+function f(s) { return `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`; }
+
+const ANS = { b1:'home', b2:'camomile', b3:'shoes', b4:'flopped' };
+function check() {
+  let ok = 0;
+  for (const [id,a] of Object.entries(ANS)) {
+    const el = document.getElementById(id);
+    if (el.value.trim().toLowerCase() === a) { el.classList.add('ok'); el.classList.remove('no'); ok++; }
+    else { el.classList.add('no'); el.classList.remove('ok'); }
+  }
+  const r = document.getElementById('rmsg');
+  if (ok === 4) {
+    r.style.color='var(--green3)';
+    r.textContent='🎉 완벽! 4개 모두 정답!';
+    document.getElementById('early-next').style.display = 'none';
+    addC('와!!! 😄 4개 다 맞았어?! 정말 대단해! ⭐⭐⭐<br>Peter Rabbit 이야기를 4주 동안 전부 완성했어! 너 진짜 최고야! 🐰🎉<br>다음 주부터 새로운 이야기가 시작돼! 기대해!');
+    setTimeout(() => showCompleteBtn(4), 1500);
+  } else {
+    r.style.color='#AF7070';
+    r.textContent=`${ok}/4 정답! 틀린 것 다시 해봐! 힌트 필요하면 Robo에게 물어봐 😊`;
+    setTimeout(() => showCompleteBtn(ok), 1000);
+  }
+}
+
+const tip = document.getElementById('tip');
+document.querySelectorAll('.hw').forEach(w=>{
+  w.addEventListener('mouseenter',()=>{tip.textContent=w.dataset.m;tip.classList.add('show');});
+  w.addEventListener('mousemove',e=>{tip.style.left=(e.clientX+14)+'px';tip.style.top=(e.clientY-38)+'px';});
+  w.addEventListener('mouseleave',()=>tip.classList.remove('show'));
+});
+
+function showCompleteBtn(score) {
+  if (document.getElementById('complete-btn')) return;
+  const wrap = document.getElementById('p3');
+
+  if (score === 4) {
+    launchConfetti();
+
+    const summary = document.createElement('div');
+    summary.style.cssText = 'margin-top:24px;padding:20px 24px;background:#000;border:1px solid #00f2ff;border-radius:12px;font-size:14px;color:#e0f8ff;line-height:2;';
+    summary.innerHTML = `
+      <div style="font-size:16px;font-weight:700;color:#00f2ff;margin-bottom:12px;font-family:Montserrat,sans-serif;letter-spacing:1px;">📚 오늘 공부 요약</div>
+      <div>📖 <strong style="color:#00E5FF">Story:</strong> The Tale of Peter Rabbit (Week 4 — Part 4 Final)</div>
+      <div>🔤 <strong style="color:#00E5FF">Vocabulary:</strong> glimpse, flop, camomile, shoes, fortnight</div>
+      <div>✏️ <strong style="color:#00E5FF">Grammar:</strong> so...that (너무 ~해서 ~했다)</div>
+      <div>✅ <strong style="color:#00E5FF">4개 모두 정답! 완벽해요!</strong></div>
+      <div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,229,255,0.2);">🎉 <strong style="color:#FFD700">Peter Rabbit 전체 완독!</strong> 4주 동안 정말 잘했어요!</div>`;
+    wrap.appendChild(summary);
+
+    const pUrl = new URLSearchParams(window.location.search);
+    const sName = pUrl.get('name') || '친구';
+    const clipContent = `Hi! I just finished Week 4 - The Tale of Peter Rabbit (Part 4 - Final!).\nMy name is ${sName}. Grade 3. Camp A.\nVocabulary learned: glimpse, flop, camomile, shoes, fortnight\nGrammar focus: so...that structure\nScore: 4/4 Perfect!\nI completed the entire Peter Rabbit book in 4 weeks!\nPlease start Step 12 English conversation with me!`;
+    const copyBtn = document.createElement('button');
+    copyBtn.style.cssText = 'display:block;margin:16px auto 0;padding:13px 28px;background:linear-gradient(135deg,#004a5a,#002a3a);border:1px solid #00f2ff;color:#00f2ff;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:Noto Sans KR,sans-serif;letter-spacing:0.5px;transition:all .25s;';
+    copyBtn.textContent = '📋 Step 12 준비 - 내용 복사하기';
+    copyBtn.onmouseover = function(){ this.style.background='linear-gradient(135deg,#006a7a,#004a5a)'; };
+    copyBtn.onmouseout = function(){ this.style.background='linear-gradient(135deg,#004a5a,#002a3a)'; };
+    copyBtn.onclick = function() {
+      navigator.clipboard.writeText(clipContent).then(function() {
+        copyBtn.textContent = '✅ 복사됐어요! 오른쪽 ChatGPT에 붙여넣기 하세요!';
+        copyBtn.style.borderColor = '#00ff88'; copyBtn.style.color = '#00ff88';
+      }).catch(function() {
+        var ta = document.createElement('textarea'); ta.value = clipContent;
+        document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+        copyBtn.textContent = '✅ 복사됐어요! 오른쪽 ChatGPT에 붙여넣기 하세요!';
+        copyBtn.style.borderColor = '#00ff88'; copyBtn.style.color = '#00ff88';
+      });
+    };
+    wrap.appendChild(copyBtn);
+
+    const btn = document.createElement('button');
+    btn.id = 'complete-btn'; btn.className = 'complete-btn-done';
+    btn.textContent = '🎉 수업 완료! Camp A 튜터에게 가기 →';
+    btn.onclick = () => goToRobo(true);
+    wrap.appendChild(btn);
+
+    const homeLink = document.createElement('div');
+    homeLink.style.cssText = 'margin-top:16px;padding:14px 20px;background:rgba(0,229,255,0.04);border:1px solid rgba(0,229,255,0.1);border-radius:12px;text-align:center;';
+    homeLink.innerHTML = `
+      <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:10px;letter-spacing:0.5px;">📚 집에서도 계속 공부할 수 있어!</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/audio/grade3/003_the_tale_of_peter_rabbit.mp3" target="_blank" style="color:#00E5FF;font-size:13px;text-decoration:none;padding:7px 16px;border:1px solid rgba(0,229,255,0.3);border-radius:20px;transition:all .2s;" onmouseover="this.style.background='rgba(0,229,255,0.1)'" onmouseout="this.style.background='none'">🎧 MP3 전체 듣기</a>
+        <a href="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/audio/grade3/003_the_tale_of_peter_rabbit.pdf" target="_blank" style="color:#00E5FF;font-size:13px;text-decoration:none;padding:7px 16px;border:1px solid rgba(0,229,255,0.3);border-radius:20px;transition:all .2s;" onmouseover="this.style.background='rgba(0,229,255,0.1)'" onmouseout="this.style.background='none'">📄 PDF 전체 보기</a>
+      </div>`;
+    wrap.appendChild(homeLink);
+  } else {
+    const msg = document.createElement('div');
+    msg.style.cssText = 'margin-top:20px;padding:14px 18px;background:rgba(0,229,255,0.04);border:1px solid rgba(0,229,255,0.12);border-radius:10px;font-size:13px;color:rgba(255,255,255,0.5);line-height:1.8;';
+    msg.innerHTML = '💡 틀린 건 Camp A 튜터에게 물어봐도 돼! 같이 공부하자 😊';
+    wrap.appendChild(msg);
+    const btn = document.createElement('button');
+    btn.id = 'complete-btn'; btn.className = 'complete-btn-skip';
+    btn.textContent = '➡️ 다음으로 넘어가기 (Camp A 튜터)';
+    btn.onclick = () => goToRobo(false);
+    wrap.appendChild(btn);
+  }
+}
+
+function launchConfetti() {
+  const colors = ['#00E5FF','#FFD700','#FF6B6B','#7BFF7B','#FF9FFF','#FFFFFF'];
+  for (let i = 0; i < 80; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div'); el.className = 'confetti-piece';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.width = (Math.random() * 8 + 6) + 'px';
+      el.style.height = (Math.random() * 8 + 6) + 'px';
+      el.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      el.style.animationDelay = (Math.random() * 0.5) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }, i * 30);
+  }
+}
+
+async function goToRobo(completed) {
+  const name = STUDENT_NAME;
+  const grade = parseInt(STUDENT_GRADE);
+  const lessonTag = `[LESSON]book=Peter Rabbit|week=4|grade=${grade}|student=${name}[/LESSON]`;
+  const btn = document.getElementById('complete-btn');
+  if (btn) { btn.textContent = '⏳ 연결 중...'; btn.disabled = true; }
+  try {
+    await fetch('/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer 0p3n-w3bu!' },
+      body: JSON.stringify({ model: 'cec_camp_a', stream: false, messages: [{ role: 'user', content: lessonTag }] })
+    });
+  } catch(e) { console.log('[LESSON] 전송 실패:', e); }
+  const _uid = new URLSearchParams(window.location.search).get('uid') || sessionStorage.getItem('student_uid') || '';
+  window.location.href = '/static/auth-relay.html?name=' + encodeURIComponent(name) + '&uid=' + encodeURIComponent(_uid) + '&grade=' + grade + '&camp=a&week=4';
+}
+
+function openPDF(){ window.open('https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/audio/grade3/003_the_tale_of_peter_rabbit.pdf','_blank'); }
+function closePDF(){ document.getElementById('pdfModal').classList.remove('show'); document.getElementById('pdfFr').src=''; }
+document.getElementById('pdfModal').addEventListener('click',e=>{ if(e.target===document.getElementById('pdfModal'))closePDF(); });
+</script>
+</body>
+</html>
