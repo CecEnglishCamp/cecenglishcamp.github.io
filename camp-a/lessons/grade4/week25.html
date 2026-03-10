@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEC Camp A - Grade 4 Week 25</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #000000;
+    --panel: #0a0a0a;
+    --card: #111111;
+    --border: #1e1e1e;
+    --cyan: #bf7fff;
+    --cyan-dim: rgba(191,127,255,0.15);
+    --text: #ffffff;
+    --text-muted: #888888;
+    --gold: #ffd700;
+    --green: #00e676;
+    --red: #ff5252;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Noto Sans KR', 'Montserrat', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  /* TOPBAR */
+  .topbar {
+    background: rgba(0,0,0,0.98);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    z-index: 100;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+  .topbar-logo { font-size: 1.1rem; font-weight: 900; color: var(--text); letter-spacing: -0.5px; }
+  .topbar-logo span { color: var(--cyan); }
+  .topbar-badge {
+    font-size: 0.7rem; font-weight: 700; color: var(--text-muted);
+    background: #1a1a1a; border: 1px solid #333;
+    padding: 2px 8px; border-radius: 4px; letter-spacing: 1px;
+  }
+  .topbar-week {
+    background: var(--cyan); color: #000;
+    font-size: 0.75rem; font-weight: 900;
+    padding: 3px 10px; border-radius: 20px; letter-spacing: 1px;
+  }
+  .topbar-right { display: flex; align-items: center; gap: 16px; }
+  .topbar-item { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+  .topbar-item .icon { font-size: 0.9rem; }
+
+  /* MAIN */
+  .main {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ROBO PANEL */
+  .robo-panel {
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .robo-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .robo-avatar {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid var(--cyan);
+    flex-shrink: 0;
+  }
+  .robo-avatar video { width: 100%; height: 100%; object-fit: cover; }
+  .robo-name { font-weight: 900; font-size: 1rem; }
+  .robo-status { font-size: 0.75rem; color: var(--cyan); }
+
+  .robo-chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .robo-chat::-webkit-scrollbar { width: 4px; }
+  .robo-chat::-webkit-scrollbar-track { background: transparent; }
+  .robo-chat::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+  .bubble {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    animation: fadeIn 0.3s ease;
+  }
+  .bubble b { color: var(--cyan); }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .robo-input-area {
+    padding: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .robo-input-row {
+    display: flex; gap: 6px;
+  }
+  .robo-input {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--text);
+    font-size: 0.82rem;
+    font-family: inherit;
+    outline: none;
+  }
+  .robo-input:focus { border-color: var(--cyan); }
+  .robo-input::placeholder { color: var(--text-muted); }
+  .robo-send {
+    background: var(--cyan);
+    border: none;
+    border-radius: 8px;
+    width: 36px; height: 36px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    color: #000;
+    font-weight: 900;
+  }
+
+  .robo-buttons {
+    padding: 8px 10px;
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .robo-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    color: var(--text);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  .robo-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  /* CONTENT PANEL */
+  .content-panel {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* BOOK HEADER */
+  .book-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+  .book-cover {
+    width: 64px; height: 80px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    background: #1a1a1a;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+  }
+  .book-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .book-info h1 { font-size: 1.3rem; font-weight: 900; }
+  .book-info .author { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; }
+  .book-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--card); border: 1px solid var(--border);
+    padding: 3px 10px; border-radius: 6px;
+    font-size: 0.75rem; font-weight: 700; color: var(--text-muted);
+    margin-top: 6px;
+  }
+  .book-tag span { color: var(--cyan); }
+  .pdf-link {
+    font-size: 0.75rem; color: var(--text-muted);
+    text-decoration: none; display: flex; align-items: center; gap: 4px;
+    margin-top: 4px; cursor: pointer;
+  }
+  .pdf-link:hover { color: var(--cyan); }
+
+  /* TABS */
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .tab {
+    padding: 10px;
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+  .tab.done { color: var(--green); }
+  .tab.locked { opacity: 0.4; cursor: not-allowed; }
+
+  /* TAB CONTENT */
+  .tab-content { flex: 1; overflow-y: auto; display: none; padding: 20px; }
+  .tab-content.active { display: block; }
+  .tab-content::-webkit-scrollbar { width: 4px; }
+  .tab-content::-webkit-scrollbar-track { background: transparent; }
+  .tab-content::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+  /* LISTEN TAB */
+  .listen-hero {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 30px 20px; text-align: center;
+  }
+  .headphone-icon { font-size: 5rem; margin-bottom: 16px; opacity: 0.8; }
+  .listen-title { font-size: 1.6rem; font-weight: 900; margin-bottom: 6px; }
+  .listen-sub { font-size: 0.9rem; color: var(--text-muted); }
+
+  .audio-section { margin-bottom: 20px; }
+  .audio-label {
+    font-size: 0.8rem; font-weight: 700; color: var(--text-muted);
+    margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+  }
+  .audio-player {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .play-btn {
+    width: 40px; height: 40px;
+    background: var(--cyan);
+    border: none; border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; color: #000;
+    flex-shrink: 0;
+  }
+  .audio-info { flex: 1; }
+  .audio-title { font-size: 0.85rem; font-weight: 700; }
+  .audio-time { font-size: 0.75rem; color: var(--text-muted); }
+  .audio-progress {
+    width: 100%; height: 3px;
+    background: var(--border);
+    border-radius: 2px; margin-top: 6px;
+    cursor: pointer;
+  }
+  .audio-progress-fill { height: 100%; background: var(--cyan); border-radius: 2px; width: 0%; transition: width 0.1s; }
+  .audio-duration { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
+
+  /* READ TAB */
+  .story-text {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    line-height: 1.9;
+    font-size: 0.92rem;
+  }
+  .story-text p { margin-bottom: 14px; }
+  .story-text p:last-child { margin-bottom: 0; }
+  .vocab-word {
+    color: var(--cyan);
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 1px dotted var(--cyan);
+  }
+  .vocab-tooltip {
+    display: none;
+    position: fixed;
+    background: #1a1a1a;
+    border: 1px solid var(--cyan);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    z-index: 1000;
+    max-width: 220px;
+    pointer-events: none;
+  }
+
+  /* TRANSLATE TAB */
+  .translate-section { margin-bottom: 16px; }
+  .translate-section h3 {
+    font-size: 0.8rem; font-weight: 700; color: var(--text-muted);
+    margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;
+  }
+  .translate-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+  .translate-card.korean { border-left: 3px solid var(--cyan); }
+  .translate-card.english { border-left: 3px solid var(--gold); color: #e0e0e0; }
+
+  /* FILL TAB */
+  .fill-intro {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+  .fill-intro b { color: var(--cyan); }
+
+  .vocab-chips {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 20px;
+  }
+  .vocab-chip {
+    background: var(--cyan-dim);
+    border: 1px solid var(--cyan);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--cyan);
+  }
+
+  .fill-questions { display: flex; flex-direction: column; gap: 14px; }
+  .fill-q {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .fill-q-text { font-size: 0.88rem; line-height: 1.7; margin-bottom: 10px; }
+  .fill-input-row { display: flex; gap: 8px; align-items: center; }
+  .fill-input {
+    flex: 1;
+    background: #0d0d0d;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 12px;
+    color: var(--text);
+    font-size: 0.88rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .fill-input:focus { border-color: var(--cyan); }
+  .fill-input.correct { border-color: var(--green); background: rgba(0,230,118,0.05); }
+  .fill-input.wrong { border-color: var(--red); background: rgba(255,82,82,0.05); }
+  .check-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 14px;
+    color: var(--text);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .check-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+  .fill-result { font-size: 0.8rem; margin-top: 6px; min-height: 18px; }
+  .fill-result.ok { color: var(--green); }
+  .fill-result.no { color: var(--red); }
+
+  .submit-all-btn {
+    margin-top: 20px;
+    width: 100%;
+    background: var(--cyan);
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-size: 1rem;
+    font-weight: 900;
+    color: #000;
+    cursor: pointer;
+    font-family: inherit;
+    display: none;
+  }
+  .submit-all-btn:hover { opacity: 0.9; }
+
+  /* COMPLETE SCREEN */
+  .complete-screen {
+    display: none;
+    text-align: center;
+    padding: 20px;
+  }
+  .complete-stars { font-size: 2rem; margin-bottom: 12px; }
+  .complete-title { font-size: 1.4rem; font-weight: 900; margin-bottom: 6px; }
+  .complete-sub { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px; }
+
+  .summary-box {
+    background: #000;
+    border: 1px solid var(--cyan);
+    border-radius: 12px;
+    padding: 16px 20px;
+    text-align: left;
+    margin-bottom: 16px;
+  }
+  .summary-box h3 {
+    font-size: 0.8rem; font-weight: 700; color: var(--cyan);
+    margin-bottom: 10px; letter-spacing: 1px;
+  }
+  .summary-row {
+    font-size: 0.85rem; margin-bottom: 6px; line-height: 1.5;
+  }
+  .summary-row b { color: var(--cyan); }
+
+  .copy-btn {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--cyan);
+    border-radius: 10px;
+    padding: 11px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--cyan);
+    cursor: pointer;
+    font-family: inherit;
+    margin-bottom: 10px;
+    transition: background 0.2s;
+  }
+  .copy-btn:hover { background: var(--cyan-dim); }
+
+  .goto-robo-btn {
+    width: 100%;
+    background: var(--cyan);
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 1.05rem;
+    font-weight: 900;
+    color: #000;
+    cursor: pointer;
+    font-family: inherit;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,242,255,0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(0,242,255,0); }
+  }
+
+  .bottom-links {
+    display: flex; gap: 10px; margin-top: 14px;
+  }
+  .bottom-link {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px;
+    text-align: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .bottom-link:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  /* SCORE BAR */
+  .score-bar {
+    position: fixed;
+    bottom: 0; left: 320px; right: 0;
+    background: rgba(0,0,0,0.95);
+    border-top: 1px solid var(--border);
+    padding: 8px 20px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 0.8rem;
+    z-index: 50;
+  }
+  .score-label { color: var(--text-muted); }
+  .score-dots { display: flex; gap: 6px; }
+  .score-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background 0.3s;
+  }
+  .score-dot.filled { background: var(--green); }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">CEC <span>English</span> Camp</div>
+    <div class="topbar-badge">CAMP A · 4학년</div>
+    <div class="topbar-week">WEEK 1</div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-item"><span class="icon">👤</span> <span id="topbar-name">친구</span></div>
+    <div class="topbar-item"><span class="icon">📖</span> A Christmas Carol</div>
+    <div class="topbar-item"><span class="icon">⭐</span> A2 Level</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- ROBO PANEL -->
+  <div class="robo-panel">
+    <div class="robo-header">
+      <div class="robo-avatar">
+        <video src="/static/robo_jump.mp4" autoplay muted loop playsinline></video>
+      </div>
+      <div>
+        <div class="robo-name">Robo</div>
+        <div class="robo-status">● 수업 중</div>
+      </div>
+    </div>
+
+    <div class="robo-chat" id="roboChatBox">
+      <div class="bubble" id="bubble-intro">
+        안녕 <b id="robo-name-span">친구</b>야! 😊<br><br>
+        오늘은 <b>A Christmas Carol</b> 이야기야! 🎄<br><br>
+        1843년 Charles Dickens가 쓴 건데, 구두쇠 스크루지 영감이 크리스마스 유령들을 만나면서 변하는 이야기야.<br><br>
+        먼저 오른쪽 ▶ 버튼 눌러서 들어봐. 눈 감고 상상하면서 😊
+      </div>
+    </div>
+
+    <div class="robo-buttons" id="roboButtons">
+      <button class="robo-btn" onclick="roboBtnClick('다 들었어!')">🎧 다 들었어!</button>
+      <button class="robo-btn" onclick="roboBtnClick('어려워..')">😅 어려워..</button>
+      <button class="robo-btn" onclick="roboBtnClick('재미있어!')">😄 재미있어!</button>
+      <button class="robo-btn" onclick="roboBtnClick('다음!')">▶ 다음!</button>
+      <button class="robo-btn" onclick="roboBtnClick('모르겠어')">🤔 모르겠어</button>
+    </div>
+
+    <div class="robo-input-area">
+      <div class="robo-input-row">
+        <input class="robo-input" id="roboInput" placeholder="Robo에게 말해봐... 😊" onkeydown="if(event.key==='Enter')sendRobo()">
+        <button class="robo-send" onclick="sendRobo()">▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT PANEL -->
+  <div class="content-panel">
+
+    <!-- BOOK HEADER -->
+    <div class="book-header">
+      <div class="book-cover">
+        <img src="https://pub-b6f9e1f4878347f598dfb8cfe30b2ba7.r2.dev/covers/christmas_carol.jpg"
+             onerror="this.style.display='none';this.parentElement.innerHTML='🎄'">
+      </div>
+      <div class="book-info">
+        <h1>A Christmas Carol</h1>
+        <div class="author">by Charles Dickens · 1843</div>
+        <div class="book-tag"><span>📖</span> Week 25 of 36 · <span>Part 1</span></div>
+        <div class="pdf-link" onclick="openPDF()">📄 클릭 → PDF</div>
+      </div>
+    </div>
+
+    <!-- AUDIO -->
+    <div style="padding: 12px 20px; border-bottom: 1px solid var(--border); flex-shrink:0;">
+      <div class="audio-label">🎵 오늘의 MP3 듣기</div>
+      <div class="audio-player">
+        <button class="play-btn" onclick="toggleAudio()">▶</button>
+        <div class="audio-info">
+          <div class="audio-title">A Christmas Carol — Part 1 &nbsp;(0:00 ~ 2:00)</div>
+          <div class="audio-progress" onclick="seekAudio(event)">
+            <div class="audio-progress-fill" id="audioFill"></div>
+          </div>
+        </div>
+        <div class="audio-duration" id="audioDuration">0:00 / 2:00</div>
+      </div>
+      <audio id="mainAudio" src="https://pub-b6f9e1f4878347f598dfb8cfe30b2ba7.r2.dev/audio/grade4/013_a_christmas_carol_stave1.mp3"
+             onended="audioEnded()" ontimeupdate="updateAudioProgress()"></audio>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab active" id="tab1" onclick="showTab(1)">① 듣기</div>
+      <div class="tab locked" id="tab2" onclick="showTab(2)">② 영어 읽기</div>
+      <div class="tab locked" id="tab3" onclick="showTab(3)">③ 해석 보기</div>
+      <div class="tab locked" id="tab4" onclick="showTab(4)">④ 빈칸 채우기</div>
+    </div>
+
+    <!-- TAB 1: LISTEN -->
+    <div class="tab-content active" id="content1">
+      <div class="listen-hero">
+        <div class="headphone-icon">🎧</div>
+        <div class="listen-title">눈 감고 들어봐</div>
+        <div class="listen-sub">위의 ▶ 버튼을 눌러서<br>오늘 이야기를 먼저 들어봐 😊<br><br>어떤 장면이 상상돼?</div>
+      </div>
+    </div>
+
+    <!-- TAB 2: READ -->
+    <div class="tab-content" id="content2">
+      <div class="story-text">
+        <p>Ebenezer <span class="vocab-word" data-meaning="scrooge: 구두쇠, 인색한 사람">Scrooge</span> was a mean old man. He had lots of money, but he never spent it on anyone — not even himself.</p>
+        <p>He worked in a counting house with his clerk, Bob Cratchit. The office was very cold, but Scrooge would not buy more coal for the fire. "Coal costs money!" he growled.</p>
+        <p>One day, Scrooge's nephew Fred came to visit. "Merry Christmas, Uncle!" said Fred with a big smile.</p>
+        <p>"<span class="vocab-word" data-meaning="humbug: 말도 안 돼, 허튼소리">Bah, humbug!</span>" said Scrooge. "Christmas is nothing but a time to spend money."</p>
+        <p>That evening, as Scrooge returned to his <span class="vocab-word" data-meaning="gloomy: 어둡고 침침한">gloomy</span> house, he saw something strange. The door knocker looked like the face of his old business partner, Jacob Marley — who had been dead for seven years!</p>
+        <p>Scrooge rubbed his eyes. The face was gone. But he felt <span class="vocab-word" data-meaning="uneasy: 불안한, 편치 않은">uneasy</span> as he climbed the dark stairs to bed.</p>
+      </div>
+    </div>
+
+    <!-- TAB 3: TRANSLATE -->
+    <div class="tab-content" id="content3">
+      <div class="translate-section">
+        <h3>📖 오늘의 이야기 — 해석</h3>
+        <div class="translate-card korean">
+          에베네저 스크루지는 고약한 노인이었어. 돈이 아주 많았지만, 아무에게도 — 심지어 자기 자신에게도 — 돈을 쓰지 않았어.<br><br>
+          그는 사무원 밥 크래칫과 함께 계산소에서 일했어. 사무실은 아주 추웠지만, 스크루지는 난로에 쓸 석탄을 더 사려 하지 않았어. "석탄은 돈이 든다고!" 그는 으르렁거렸어.<br><br>
+          어느 날, 스크루지의 조카 프레드가 방문했어. "메리 크리스마스, 삼촌!" 프레드가 환하게 웃으며 말했어.<br><br>
+          "말도 안 돼!" 스크루지가 말했어. "크리스마스는 돈이나 쓰는 시간일 뿐이야."<br><br>
+          그날 저녁, 스크루지가 어두운 집으로 돌아가다가 이상한 것을 보았어. 문 두드리개가 7년 전에 죽은 오래된 사업 동료, 제이콥 말리의 얼굴처럼 보였어!<br><br>
+          스크루지는 눈을 비볐어. 얼굴은 사라졌어. 하지만 어두운 계단을 올라 침대로 가면서 왠지 불안했어.
+        </div>
+      </div>
+
+      <div class="translate-section" style="margin-top: 16px;">
+        <h3>📝 오늘의 단어</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div class="translate-card" style="border-left: 3px solid var(--gold);">
+            <b style="color:var(--gold)">miser</b><br>
+            <span style="color:var(--text-muted); font-size:0.82rem">구두쇠, 인색한 사람</span>
+          </div>
+          <div class="translate-card" style="border-left: 3px solid var(--gold);">
+            <b style="color:var(--gold)">humbug</b><br>
+            <span style="color:var(--text-muted); font-size:0.82rem">말도 안 돼, 허튼소리</span>
+          </div>
+          <div class="translate-card" style="border-left: 3px solid var(--gold);">
+            <b style="color:var(--gold)">gloomy</b><br>
+            <span style="color:var(--text-muted); font-size:0.82rem">어둡고 침침한</span>
+          </div>
+          <div class="translate-card" style="border-left: 3px solid var(--gold);">
+            <b style="color:var(--gold)">uneasy</b><br>
+            <span style="color:var(--text-muted); font-size:0.82rem">불안한, 편치 않은</span>
+          </div>
+          <div class="translate-card" style="border-left: 3px solid var(--gold);">
+            <b style="color:var(--gold)">growl</b><br>
+            <span style="color:var(--text-muted); font-size:0.82rem">으르렁거리다, 투덜거리다</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: FILL -->
+    <div class="tab-content" id="content4">
+
+      <div class="fill-intro">
+        오늘 배운 단어들(<b>miser, humbug, gloomy, uneasy, growl</b>)로<br>
+        빈칸을 채우는 게임이야! 🎮<br><br>
+        Robo가 힌트 줄게. 할 수 있지? 💪
+      </div>
+
+      <div class="vocab-chips">
+        <div class="vocab-chip">miser</div>
+        <div class="vocab-chip">humbug</div>
+        <div class="vocab-chip">gloomy</div>
+        <div class="vocab-chip">uneasy</div>
+        <div class="vocab-chip">growl</div>
+      </div>
+
+      <div class="fill-questions">
+
+        <div class="fill-q" id="q1">
+          <div class="fill-q-text">
+            1. Scrooge was a terrible ______. He never spent money on anyone.
+            <br><span style="color:var(--text-muted); font-size:0.8rem">스크루지는 끔찍한 ______이었어. 아무에게도 돈을 쓰지 않았지.</span>
+          </div>
+          <div class="fill-input-row">
+            <input class="fill-input" id="ans1" placeholder="답을 써봐..." onkeydown="if(event.key==='Enter')checkAnswer(1)">
+            <button class="check-btn" onclick="checkAnswer(1)">확인</button>
+          </div>
+          <div class="fill-result" id="result1"></div>
+        </div>
+
+        <div class="fill-q" id="q2">
+          <div class="fill-q-text">
+            2. "Bah, ______!" Scrooge shouted. "I hate Christmas!"
+            <br><span style="color:var(--text-muted); font-size:0.8rem">"말도 안 돼, ______!" 스크루지가 외쳤어. "크리스마스가 싫어!"</span>
+          </div>
+          <div class="fill-input-row">
+            <input class="fill-input" id="ans2" placeholder="답을 써봐..." onkeydown="if(event.key==='Enter')checkAnswer(2)">
+            <button class="check-btn" onclick="checkAnswer(2)">확인</button>
+          </div>
+          <div class="fill-result" id="result2"></div>
+        </div>
+
+        <div class="fill-q" id="q3">
+          <div class="fill-q-text">
+            3. Scrooge lived in a ______ old house. No lights, no warmth.
+            <br><span style="color:var(--text-muted); font-size:0.8rem">스크루지는 ______ 낡은 집에 살았어. 불빛도, 온기도 없었지.</span>
+          </div>
+          <div class="fill-input-row">
+            <input class="fill-input" id="ans3" placeholder="답을 써봐..." onkeydown="if(event.key==='Enter')checkAnswer(3)">
+            <button class="check-btn" onclick="checkAnswer(3)">확인</button>
+          </div>
+          <div class="fill-result" id="result3"></div>
+        </div>
+
+        <div class="fill-q" id="q4">
+          <div class="fill-q-text">
+            4. Scrooge felt ______ when he saw Marley's face on the door.
+            <br><span style="color:var(--text-muted); font-size:0.8rem">스크루지는 문에서 말리의 얼굴을 봤을 때 ______ 했어.</span>
+          </div>
+          <div class="fill-input-row">
+            <input class="fill-input" id="ans4" placeholder="답을 써봐..." onkeydown="if(event.key==='Enter')checkAnswer(4)">
+            <button class="check-btn" onclick="checkAnswer(4)">확인</button>
+          </div>
+          <div class="fill-result" id="result4"></div>
+        </div>
+
+      </div>
+
+      <button class="submit-all-btn" id="submitAllBtn" onclick="submitAll()">
+        🎉 완료! 결과 확인하기
+      </button>
+
+      <!-- COMPLETE SCREEN -->
+      <div class="complete-screen" id="completeScreen">
+        <div class="complete-stars">⭐⭐⭐</div>
+        <div class="complete-title">완벽해! 오늘 수업 끝!</div>
+        <div class="complete-sub">Robo가 기다리고 있어!</div>
+
+        <div class="summary-box">
+          <h3>📚 오늘 공부 요약</h3>
+          <div class="summary-row"><b>Story:</b> A Christmas Carol (Week 25)</div>
+          <div class="summary-row"><b>Vocabulary:</b> miser, humbug, gloomy, uneasy, growl</div>
+          <div class="summary-row"><b>Grammar:</b> past tense verbs (was, said, felt, saw)</div>
+          <div class="summary-row"><b>Score:</b> <span id="finalScore">4/4</span> ✅</div>
+        </div>
+
+        <button class="copy-btn" onclick="copyContext()">
+          📋 Step 12 준비 - 내용 복사하기
+        </button>
+
+        <button class="goto-robo-btn" onclick="goToRobo()">
+          🚀 수업 완료! Camp A 튜터에게 가기 →
+        </button>
+
+        <div class="bottom-links">
+          <div class="bottom-link" onclick="playFullAudio()">🎧 MP3 전체 듣기</div>
+          <div class="bottom-link" onclick="openPDF()">📄 PDF 전체 보기</div>
+        </div>
+        <div style="text-align:center; font-size:0.75rem; color:var(--text-muted); margin-top:10px;">
+          🏠 집에서도 계속 공부할 수 있어!
+        </div>
+      </div>
+
+    </div><!-- end tab4 -->
+
+  </div><!-- end content-panel -->
+</div><!-- end main -->
+
+<!-- SCORE BAR -->
+<div class="score-bar">
+  <span class="score-label">점수:</span>
+  <div class="score-dots">
+    <div class="score-dot" id="dot1"></div>
+    <div class="score-dot" id="dot2"></div>
+    <div class="score-dot" id="dot3"></div>
+    <div class="score-dot" id="dot4"></div>
+  </div>
+  <span id="scoreText" style="color:var(--text-muted)">0 / 4</span>
+</div>
+
+<!-- VOCAB TOOLTIP -->
+<div class="vocab-tooltip" id="vocabTip"></div>
+
+<script>
+// ===================== INIT =====================
+const _urlP = new URLSearchParams(window.location.search);
+const STUDENT_NAME = _urlP.get('name') || sessionStorage.getItem('student_name') || '친구';
+const STUDENT_GRADE = _urlP.get('grade') || sessionStorage.getItem('student_grade') || '4';
+const STUDENT_UID = _urlP.get('uid') || sessionStorage.getItem('student_uid') || '';
+
+document.getElementById('topbar-name').textContent = STUDENT_NAME;
+document.getElementById('robo-name-span').textContent = STUDENT_NAME;
+
+const ANSWERS = { 1: 'miser', 2: 'humbug', 3: 'gloomy', 4: 'uneasy' };
+let correct = [false, false, false, false];
+let tabUnlocked = [true, false, false, false];
+let score = 0;
+let audioPlaying = false;
+
+// Track which transitions already fired (prevent duplicate bubbles)
+const _transitioned = { 2: false, 3: false, 4: false };
+
+// ===================== TABS =====================
+function showTab(n) {
+  if (!tabUnlocked[n-1]) return;
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('content' + n).classList.add('active');
+  document.getElementById('tab' + n).classList.add('active');
+}
+
+function unlockTab(n) {
+  if (tabUnlocked[n-1]) return; // already unlocked
+  tabUnlocked[n-1] = true;
+  document.getElementById('tab' + n).classList.remove('locked');
+}
+
+// Transition to next tab with Robo message (fires only once per tab)
+function transitionTo(n, roboMsg) {
+  if (_transitioned[n]) return;
+  _transitioned[n] = true;
+  // Mark previous tab as done
+  document.getElementById('tab' + (n-1)).classList.add('done');
+  unlockTab(n);
+  addRoboBubble(roboMsg);
+  setTimeout(() => showTab(n), 600);
+}
+
+// ===================== AUDIO =====================
+const audio = document.getElementById('mainAudio');
+
+function toggleAudio() {
+  if (audioPlaying) {
+    audio.pause();
+    audioPlaying = false;
+  } else {
+    audio.play().catch(() => {});
+    audioPlaying = true;
+  }
+}
+
+function updateAudioProgress() {
+  if (!audio.duration) return;
+  const pct = (audio.currentTime / audio.duration) * 100;
+  document.getElementById('audioFill').style.width = pct + '%';
+  document.getElementById('audioDuration').textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
+}
+
+function seekAudio(e) {
+  if (!audio.duration) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+}
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+// ① → ② : MP3 끝나면 자동 전환
+function audioEnded() {
+  audioPlaying = false;
+  transitionTo(2, '잘 들었어? 이제 영어로 읽어볼 차례야! ② 영어 읽기 탭을 눌러봐 📖');
+}
+
+function playFullAudio() { audio.currentTime = 0; audio.play(); }
+
+// ===================== ROBO CHAT =====================
+function addRoboBubble(html) {
+  const box = document.getElementById('roboChatBox');
+  const b = document.createElement('div');
+  b.className = 'bubble';
+  b.innerHTML = html;
+  box.appendChild(b);
+  box.scrollTop = box.scrollHeight;
+}
+
+function addUserBubble(text) {
+  const box = document.getElementById('roboChatBox');
+  const ub = document.createElement('div');
+  ub.className = 'bubble';
+  ub.style.background = 'rgba(191,127,255,0.08)';
+  ub.style.borderColor = 'rgba(191,127,255,0.3)';
+  ub.textContent = text;
+  box.appendChild(ub);
+  box.scrollTop = box.scrollHeight;
+}
+
+function roboBtnClick(text) {
+  addUserBubble(text);
+
+  const responses = {
+    '다 들었어!': '잘했어! 이제 ② 영어 읽기 탭을 눌러봐! 📖',
+    '어려워..': '괜찮아! 처음엔 다 어려워. 모르는 단어는 클릭하면 뜻이 나와 😊',
+    '재미있어!': '그렇지?! 스크루지가 어떻게 변할지 다음 주가 기대되지? 🎄',
+    '다음!': '오케이! 다음 단계로 가자! ▶',
+    '모르겠어': '괜찮아! Robo가 도와줄게. 파란 단어 클릭해봐 😊'
+  };
+  setTimeout(() => addRoboBubble(responses[text] || '잘 하고 있어! 계속해봐 💪'), 400);
+
+  // '다 들었어!' or '다음!' → ① → ②
+  if (text === '다 들었어!' || text === '다음!') {
+    transitionTo(2, '');
+    // transitionTo already added a bubble via audioEnded or will be skipped if already transitioned
+    // If transitionTo was already done (duplicate), just show tab
+    if (_transitioned[2]) { unlockTab(2); setTimeout(() => showTab(2), 500); }
+  }
+}
+
+function sendRobo() {
+  const inp = document.getElementById('roboInput');
+  const txt = inp.value.trim();
+  if (!txt) return;
+  inp.value = '';
+  addUserBubble(txt);
+  setTimeout(() => addRoboBubble('잘 했어! 계속 공부해봐 💪 모르는 게 있으면 또 물어봐!'), 600);
+}
+
+// ===================== VOCAB TOOLTIP =====================
+document.querySelectorAll('.vocab-word').forEach(w => {
+  w.addEventListener('mouseenter', e => {
+    const tip = document.getElementById('vocabTip');
+    tip.textContent = w.dataset.meaning;
+    tip.style.display = 'block';
+    tip.style.left = (e.clientX + 10) + 'px';
+    tip.style.top = (e.clientY - 30) + 'px';
+  });
+  w.addEventListener('mouseleave', () => {
+    document.getElementById('vocabTip').style.display = 'none';
+  });
+  w.addEventListener('click', () => {
+    addRoboBubble('<b>' + w.textContent + '</b>: ' + w.dataset.meaning);
+  });
+});
+
+// ===================== TAB AUTO-ADVANCE =====================
+
+// ② → ③ : 영어 읽기 스크롤 끝 또는 짧은 콘텐츠면 타이머
+(function() {
+  const el = document.getElementById('content2');
+  function checkContent2() {
+    if (el.scrollHeight <= el.clientHeight + 60) {
+      // Content fits without scrolling — unlock after 5s of viewing
+      let _timer = null;
+      const obs = new MutationObserver(() => {
+        if (el.classList.contains('active') && !_timer) {
+          _timer = setTimeout(() => {
+            transitionTo(3, '다 읽었어? 이제 ③ 해석 보기 탭에서 한국어 해석을 확인해봐! 🇰🇷');
+          }, 5000);
+        }
+      });
+      obs.observe(el, { attributes: true, attributeFilter: ['class'] });
+      // Also check immediately if already active
+      if (el.classList.contains('active')) {
+        _timer = setTimeout(() => {
+          transitionTo(3, '다 읽었어? 이제 ③ 해석 보기 탭에서 한국어 해석을 확인해봐! 🇰🇷');
+        }, 5000);
+      }
+    } else {
+      el.addEventListener('scroll', function() {
+        if (this.scrollTop + this.clientHeight >= this.scrollHeight - 50) {
+          transitionTo(3, '다 읽었어? 이제 ③ 해석 보기 탭에서 한국어 해석을 확인해봐! 🇰🇷');
+        }
+      });
+    }
+  }
+  // Wait for tab to be shown at least once so dimensions are real
+  setTimeout(checkContent2, 1000);
+})();
+
+// ③ → ④ : 해석 보기 스크롤 끝 또는 짧은 콘텐츠면 타이머
+(function() {
+  const el = document.getElementById('content3');
+  function checkContent3() {
+    if (el.scrollHeight <= el.clientHeight + 60) {
+      let _timer = null;
+      const obs = new MutationObserver(() => {
+        if (el.classList.contains('active') && !_timer) {
+          _timer = setTimeout(() => {
+            transitionTo(4, '이제 마지막 단계야! ④ 빈칸 채우기 탭에서 오늘 배운 단어를 써봐! 💪');
+          }, 5000);
+        }
+      });
+      obs.observe(el, { attributes: true, attributeFilter: ['class'] });
+      if (el.classList.contains('active')) {
+        _timer = setTimeout(() => {
+          transitionTo(4, '이제 마지막 단계야! ④ 빈칸 채우기 탭에서 오늘 배운 단어를 써봐! 💪');
+        }, 5000);
+      }
+    } else {
+      el.addEventListener('scroll', function() {
+        if (this.scrollTop + this.clientHeight >= this.scrollHeight - 50) {
+          transitionTo(4, '이제 마지막 단계야! ④ 빈칸 채우기 탭에서 오늘 배운 단어를 써봐! 💪');
+        }
+      });
+    }
+  }
+  setTimeout(checkContent3, 1000);
+})();
+
+// ===================== FILL ANSWERS =====================
+function checkAnswer(n) {
+  const inp = document.getElementById('ans' + n);
+  const result = document.getElementById('result' + n);
+  const val = inp.value.trim().toLowerCase();
+  const ans = ANSWERS[n].toLowerCase();
+
+  if (val === ans) {
+    inp.classList.add('correct');
+    inp.classList.remove('wrong');
+    result.textContent = '✅ 정답!';
+    result.className = 'fill-result ok';
+    inp.disabled = true;
+    if (!correct[n-1]) {
+      correct[n-1] = true;
+      score++;
+      document.getElementById('dot' + n).classList.add('filled');
+      document.getElementById('scoreText').textContent = score + ' / 4';
+    }
+    addRoboBubble('맞아! <b>' + ANSWERS[n] + '</b> 정답이야! 💪');
+
+    if (n < 4) setTimeout(() => document.getElementById('ans' + (n+1)).focus(), 300);
+
+    if (correct.every(c => c)) {
+      setTimeout(() => {
+        document.getElementById('submitAllBtn').style.display = 'block';
+        addRoboBubble('와!!! 😄 4개 다 맞았어?! 정말 대단해!<br>⭐⭐⭐<br>스크루지도 깜짝 놀라겠다! 🎄');
+      }, 400);
+    }
+  } else if (val) {
+    inp.classList.add('wrong');
+    inp.classList.remove('correct');
+    const hints = {
+      1: '힌트: 돈을 절대 안 쓰는 사람을 뭐라고 할까? m으로 시작해! 💰',
+      2: '힌트: 스크루지가 자주 하는 말이야! h로 시작해! 😤',
+      3: '힌트: 어둡고 침침한 느낌이야! g로 시작해! 🌑',
+      4: '힌트: 뭔가 불안하고 편치 않은 느낌! u로 시작해! 😰'
+    };
+    result.textContent = '❌ 다시 해봐!';
+    result.className = 'fill-result no';
+    addRoboBubble(hints[n]);
+  }
+}
+
+function submitAll() {
+  document.getElementById('finalScore').textContent = score + '/4';
+  document.getElementById('submitAllBtn').style.display = 'none';
+  document.querySelectorAll('.fill-q').forEach(q => q.style.display = 'none');
+  document.querySelector('.fill-intro').style.display = 'none';
+  document.querySelector('.vocab-chips').style.display = 'none';
+  document.getElementById('completeScreen').style.display = 'block';
+  document.getElementById('tab4').classList.add('done');
+}
+
+// ===================== COMPLETE ACTIONS =====================
+function copyContext() {
+  const ctx = `[CEC English Camp - 오늘 수업 완료]
+학생: ${STUDENT_NAME} (${STUDENT_GRADE}학년)
+Story: A Christmas Carol - Week 25, Part 1 (by Charles Dickens)
+Vocabulary: miser, humbug, gloomy, uneasy, growl
+Grammar: past tense verbs (was, said, felt, saw, growled)
+Score: ${score}/4
+
+오늘 내용 요약:
+- 스크루지는 구두쇠 노인으로 크리스마스를 싫어함
+- 사무원 밥 크래칫과 함께 추운 사무실에서 일함
+- 조카 프레드의 크리스마스 인사를 거절함
+- 집에 돌아가다 죽은 말리의 얼굴을 문에서 봄`;
+  navigator.clipboard.writeText(ctx).then(() => {
+    addRoboBubble('복사 완료! 이제 오른쪽 ChatGPT에 붙여넣기(Ctrl+V) 해봐! 📋');
+  });
+}
+
+function goToRobo() {
+  const uid = STUDENT_UID || new URLSearchParams(window.location.search).get('uid') || '';
+  window.location.href = '/static/auth-relay.html?name=' + encodeURIComponent(STUDENT_NAME)
+    + '&uid=' + uid + '&grade=' + STUDENT_GRADE + '&camp=a&week=25';
+}
+
+function openPDF() {
+  alert('📄 PDF를 준비 중입니다. 조금만 기다려주세요!');
+}
+
+// ===================== VIEW=SUMMARY =====================
+if (_urlP.get('view') === 'summary') {
+  setTimeout(() => {
+    _transitioned[2] = _transitioned[3] = _transitioned[4] = true;
+    tabUnlocked = [true, true, true, true];
+    [1,2,3,4].forEach(n => document.getElementById('tab' + n).classList.remove('locked'));
+    showTab(4);
+    for (let i = 1; i <= 4; i++) {
+      const inp = document.getElementById('ans' + i);
+      inp.value = ANSWERS[i];
+      inp.classList.add('correct');
+      document.getElementById('result' + i).textContent = '✅ 정답!';
+      document.getElementById('result' + i).className = 'fill-result ok';
+      document.getElementById('dot' + i).classList.add('filled');
+    }
+    correct = [true, true, true, true];
+    score = 4;
+    document.getElementById('scoreText').textContent = '4 / 4';
+    document.getElementById('finalScore').textContent = '4/4';
+    document.getElementById('completeScreen').style.display = 'block';
+    document.getElementById('submitAllBtn').style.display = 'none';
+    document.querySelectorAll('.fill-q').forEach(q => q.style.display = 'none');
+    document.querySelector('.fill-intro').style.display = 'none';
+    document.querySelector('.vocab-chips').style.display = 'none';
+  }, 300);
+}
+</script>
+</body>
+</html>
