@@ -887,6 +887,15 @@ let audioPlaying = false;
 // Track which transitions already fired (prevent duplicate bubbles)
 const _transitioned = { 2: false, 3: false, 4: false };
 
+// Admin bypass: ?admin=true unlocks all tabs immediately
+if (_urlP.get('admin') === 'true') {
+  tabUnlocked = [true, true, true, true];
+  _transitioned[2] = _transitioned[3] = _transitioned[4] = true;
+  setTimeout(() => {
+    [1,2,3,4].forEach(n => document.getElementById('tab' + n).classList.remove('locked'));
+  }, 100);
+}
+
 // ===================== TABS =====================
 function showTab(n) {
   if (!tabUnlocked[n-1]) return;
