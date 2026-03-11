@@ -510,12 +510,37 @@
     transition: background 0.3s;
   }
   .score-dot.filled { background: var(--green); }
+  .mobile-chat-btn { display: none; }
+  .mobile-chat-close { display: none; }
+
   /* ===== MOBILE RESPONSIVE ===== */
   @media (max-width: 768px) {
-    html, body { overflow-x: hidden; }
+    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
+    .main { height: auto; min-height: 100vh; }
+    .content-panel { overflow-y: auto; height: auto; }
+    .tab-content { overflow-y: visible; }
     .main { grid-template-columns: 1fr; }
-    .robo-panel { display: none; }
-    .topbar { padding: 0 12px; height: 42px; }
+    .robo-panel {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 200; background: var(--panel);
+    }
+    .robo-panel.mobile-open { display: flex; }
+    .mobile-chat-btn {
+      display: flex; position: fixed; bottom: 16px; right: 16px;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--cyan); border: none; color: #000;
+      font-size: 1.4rem; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4); z-index: 199; cursor: pointer;
+    }
+    .mobile-chat-close {
+      display: block; position: absolute; top: 10px; right: 10px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; font-size: 1.2rem; cursor: pointer; z-index: 201;
+    }
+    .topbar { padding: 0 12px; height: 42px; flex-wrap: nowrap; overflow: hidden; }
+    .topbar-right { display: none; }
     .topbar-left { gap: 8px; }
     .topbar-logo { font-size: 0.9rem; }
     .topbar-badge { font-size: 0.6rem; padding: 2px 6px; }
@@ -534,7 +559,7 @@
     .listen-title { font-size: 1.2rem; }
     .listen-sub { font-size: 0.8rem; }
     .audio-player { padding: 10px 12px; gap: 8px; }
-    .play-btn { width: 36px; height: 36px; font-size: 0.9rem; }
+    .play-btn { width: 44px; height: 44px; min-width: 44px; min-height: 44px; font-size: 1rem; }
     .story-text { padding: 14px; font-size: 0.85rem; }
     .translate-card { padding: 10px 12px; font-size: 0.82rem; }
     .fill-intro { padding: 10px 12px; font-size: 0.82rem; }
@@ -552,9 +577,29 @@
     .pdf-link { font-size: 0.7rem; }
   }
   @media (max-width: 900px) and (orientation: landscape) {
-    html, body { overflow-x: hidden; }
+    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
+    .main { height: auto; min-height: 100vh; }
+    .content-panel { overflow-y: auto; height: auto; }
     .main { grid-template-columns: 1fr; }
-    .robo-panel { display: none; }
+    .robo-panel {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 200; background: var(--panel);
+    }
+    .robo-panel.mobile-open { display: flex; }
+    .mobile-chat-btn {
+      display: flex; position: fixed; bottom: 16px; right: 16px;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--cyan); border: none; color: #000;
+      font-size: 1.4rem; align-items: center; justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4); z-index: 199; cursor: pointer;
+    }
+    .mobile-chat-close {
+      display: block; position: absolute; top: 10px; right: 10px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; font-size: 1.2rem; cursor: pointer; z-index: 201;
+    }
     .topbar { height: 36px; padding: 0 12px; }
     .book-header { padding: 8px 12px; }
     .book-cover { width: 40px; height: 50px; }
@@ -591,6 +636,7 @@
 
   <!-- ROBO PANEL -->
   <div class="robo-panel">
+    <button class="mobile-chat-close" onclick="this.parentElement.classList.remove('mobile-open')">✕</button>
     <div class="robo-header">
       <div class="robo-avatar">
         <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif">
@@ -914,6 +960,7 @@
 
   </div><!-- end content-panel -->
 </div><!-- end main -->
+<button class="mobile-chat-btn" onclick="document.querySelector('.robo-panel').classList.add('mobile-open')">💬</button>
 
 <!-- SCORE BAR -->
 <div class="score-bar">
@@ -993,12 +1040,15 @@ function transitionTo(n, roboMsg) {
 const audio = document.getElementById('mainAudio');
 
 function toggleAudio() {
+  const btn = document.querySelector('.play-btn');
   if (audioPlaying) {
     audio.pause();
     audioPlaying = false;
+    if (btn) btn.textContent = '▶';
   } else {
     audio.play().catch(() => {});
     audioPlaying = true;
+    if (btn) btn.textContent = '⏸';
   }
 }
 
