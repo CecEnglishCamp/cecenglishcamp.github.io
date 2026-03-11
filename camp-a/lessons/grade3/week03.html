@@ -185,9 +185,11 @@ body {
 
 /* ===== MOBILE RESPONSIVE ===== */
 @media (max-width: 768px) {
-  html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-  .content-side { overflow-y: auto; height: auto; }
-  .content-area { overflow-y: visible; }
+  html, body { overflow-x: hidden; }
+  body { height: auto; min-height: 100vh; }
+  .main { display: block; overflow-y: auto; min-height: 0; flex: none; }
+  .content-side { display: block; overflow-y: visible; }
+  .content-area { overflow-y: visible; padding: 12px; }
   .main { grid-template-columns: 1fr; }
   .chat-side {
     display: none;
@@ -243,8 +245,10 @@ body {
   .complete-btn-skip { padding: 10px 20px; font-size: 12px; }
 }
 @media (max-width: 900px) and (orientation: landscape) {
-  html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-  .content-side { overflow-y: auto; height: auto; }
+  html, body { overflow-x: hidden; }
+  body { height: auto; min-height: 100vh; }
+  .main { display: block; overflow-y: auto; min-height: 0; flex: none; }
+  .content-side { display: block; overflow-y: visible; }
   .main { grid-template-columns: 1fr; }
   .chat-side {
     display: none;
@@ -662,6 +666,14 @@ document.querySelectorAll('.hw').forEach(w=>{
   w.addEventListener('mouseenter',()=>{tip.textContent=w.dataset.m;tip.classList.add('show');});
   w.addEventListener('mousemove',e=>{tip.style.left=(e.clientX+14)+'px';tip.style.top=(e.clientY-38)+'px';});
   w.addEventListener('mouseleave',()=>tip.classList.remove('show'));
+  w.addEventListener('click',(e)=>{
+    e.preventDefault();
+    tip.textContent=w.dataset.m;
+    const r=w.getBoundingClientRect();
+    tip.style.left=r.left+'px';tip.style.top=(r.top-36)+'px';
+    tip.classList.add('show');
+    setTimeout(()=>tip.classList.remove('show'),2000);
+  });
 });
 
 function showCompleteBtn(score) {
