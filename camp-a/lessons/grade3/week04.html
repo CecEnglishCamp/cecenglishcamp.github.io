@@ -180,22 +180,48 @@ body {
 .complete-btn-skip:hover { border-color: rgba(0,229,255,0.5); color: #00E5FF; transform: translateY(-1px); }
 @keyframes confettiFall { 0% { transform: translateY(-100px) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
 .confetti-piece { position: fixed; width: 10px; height: 10px; top: -20px; animation: confettiFall linear forwards; z-index: 9999; border-radius: 2px; }
+.mobile-chat-btn { display: none; }
+.mobile-chat-close { display: none; }
+
 /* ===== MOBILE RESPONSIVE ===== */
 @media (max-width: 768px) {
-  html, body { overflow-x: hidden; }
+  html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
+  .content-side { overflow-y: auto; height: auto; }
+  .content-area { overflow-y: visible; }
   .main { grid-template-columns: 1fr; }
-  .chat-side { display: none; }
-  .topbar { padding: 0 12px; height: 42px; }
+  .chat-side {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 200; background: var(--chat-bg);
+  }
+  .chat-side.mobile-open { display: flex; }
+  .mobile-chat-btn {
+    display: flex; position: fixed; bottom: 16px; right: 16px;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: #00E5FF; border: none; color: #000;
+    font-size: 1.4rem; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4); z-index: 199; cursor: pointer;
+  }
+  .mobile-chat-close {
+    display: block; position: absolute; top: 10px; right: 10px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; font-size: 1.2rem; cursor: pointer; z-index: 201;
+  }
+  .topbar { padding: 0 12px; height: 42px; flex-wrap: nowrap; overflow: hidden; }
+  .student-info { display: none; }
   .logo { font-size: 15px; gap: 8px; }
   .logo-sub { font-size: 9px; }
   .week-pill { font-size: 9px; padding: 2px 8px; }
-  .student-info { gap: 10px; font-size: 11px; }
   .book-hero { padding: 12px; gap: 12px; }
   .cover-img { width: 52px; height: 72px; }
   .b-title { font-size: 14px; }
   .b-author { font-size: 10px; }
   .tabs { flex-wrap: nowrap; overflow-x: auto; }
   .tab { padding: 8px 6px; font-size: 12px; white-space: nowrap; }
+  .pbtn { width: 44px; height: 44px; min-width: 44px; min-height: 44px; font-size: 1rem; }
+  .player { padding: 10px 12px; }
+  .player-row { gap: 10px; }
   .content-area { padding: 12px; }
   .listen-center { padding: 20px 12px; gap: 12px; }
   .listen-title { font-size: 22px; }
@@ -217,9 +243,28 @@ body {
   .complete-btn-skip { padding: 10px 20px; font-size: 12px; }
 }
 @media (max-width: 900px) and (orientation: landscape) {
-  html, body { overflow-x: hidden; }
+  html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
+  .content-side { overflow-y: auto; height: auto; }
   .main { grid-template-columns: 1fr; }
-  .chat-side { display: none; }
+  .chat-side {
+    display: none;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 200; background: var(--chat-bg);
+  }
+  .chat-side.mobile-open { display: flex; }
+  .mobile-chat-btn {
+    display: flex; position: fixed; bottom: 16px; right: 16px;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: #00E5FF; border: none; color: #000;
+    font-size: 1.4rem; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4); z-index: 199; cursor: pointer;
+  }
+  .mobile-chat-close {
+    display: block; position: absolute; top: 10px; right: 10px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; font-size: 1.2rem; cursor: pointer; z-index: 201;
+  }
   .topbar { height: 36px; padding: 0 12px; }
   .logo { font-size: 14px; }
   .tab { padding: 6px 4px; font-size: 11px; }
@@ -255,6 +300,7 @@ body {
 
 <div class="main">
   <div class="chat-side">
+    <button class="mobile-chat-close" onclick="this.parentElement.classList.remove('mobile-open')">✕</button>
     <div class="chat-header">
       <div class="av-wrap">
         <div class="av">
@@ -431,6 +477,7 @@ body {
     </div>
   </div>
 </div>
+<button class="mobile-chat-btn" onclick="document.querySelector('.chat-side').classList.add('mobile-open')">💬</button>
 
 <div class="modal" id="pdfModal">
   <div class="modal-box">
