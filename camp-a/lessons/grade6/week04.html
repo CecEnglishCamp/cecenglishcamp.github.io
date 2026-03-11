@@ -516,10 +516,12 @@
 
   /* ===== MOBILE RESPONSIVE ===== */
   @media (max-width: 768px) {
-    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-    .main { height: auto; min-height: 100vh; }
-    .content-panel { overflow-y: auto; height: auto; }
-    .tab-content { overflow-y: visible; }
+    html, body { overflow-x: hidden; }
+    body { height: auto; min-height: 100vh; }
+    .main { display: block; overflow-y: auto; flex: none; }
+    .content-panel { display: block; overflow-y: visible; }
+    .tab-content { display: none; overflow-y: visible; padding: 12px; }
+    .tab-content.active { display: block; }
     .main { grid-template-columns: 1fr; }
     .robo-panel {
       display: none;
@@ -578,9 +580,10 @@
     .pdf-link { font-size: 0.7rem; }
   }
   @media (max-width: 900px) and (orientation: landscape) {
-    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-    .main { height: auto; min-height: 100vh; }
-    .content-panel { overflow-y: auto; height: auto; }
+    html, body { overflow-x: hidden; }
+    body { height: auto; min-height: 100vh; }
+    .main { display: block; overflow-y: auto; flex: none; }
+    .content-panel { display: block; overflow-y: visible; }
     .main { grid-template-columns: 1fr; }
     .robo-panel {
       display: none;
@@ -729,13 +732,13 @@
     <div class="tab-content" id="content2">
       <div class="story-text">
 <p><b>Day 10 — Helping classmates</b></p>
-<p>Sara helped a classmate with homework.</p>
-<p>She felt happy and proud.</p>
+<p>Sara helped a <span class="vocab-word" data-meaning="반 친구">classmate</span> with homework.</p>
+<p>She felt happy and <span class="vocab-word" data-meaning="뿌듯한">proud</span>.</p>
 <p><b>Day 11 — Evening reflection</b></p>
-<p>Sara reflected on her day.</p>
-<p>She wrote in her diary about lessons and friends.</p>
+<p>Sara <span class="vocab-word" data-meaning="돌아보다">reflected</span> on her day.</p>
+<p>She wrote in her <span class="vocab-word" data-meaning="일기">diary</span> about lessons and friends.</p>
 <p><b>Day 12 — Creative extension</b></p>
-<p>Imagine a new adventure for Sara.</p>
+<p><span class="vocab-word" data-meaning="상상하다">Imagine</span> a new <span class="vocab-word" data-meaning="모험">adventure</span> for Sara.</p>
 <p>Draw or write a story.</p>
 <p>What happens next? How do characters feel?</p>
       </div>
@@ -745,11 +748,39 @@
     <div class="tab-content" id="content3">
       <div class="translate-section">
         <h3>📖 오늘의 이야기 — 해석</h3>
-        <div class="translate-card korean">
-<b>Day 10</b><br>사라는 반 친구의 숙제를 도와줬어.<br>행복하고 뿌듯했어.<br><br>
-<b>Day 11</b><br>사라는 하루를 돌아봤어.<br>수업과 친구들에 대해 일기를 썼어.<br><br>
-<b>Day 12</b><br>사라의 새로운 모험을 상상해봐.<br>이야기를 그리거나 써봐.<br>다음엔 어떻게 될까?
-        </div>
+        <div class="translate-card korean" style="display:flex;flex-direction:column;gap:16px;">
+  <div><b>Day 10</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Sara helped a classmate with homework.</div>
+    <div>사라는 반 친구의 숙제를 도와줬어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">She felt happy and proud.</div>
+    <div>행복하고 뿌듯했어.</div>
+  </div>
+  <div><b>Day 11</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Sara reflected on her day.</div>
+    <div>사라는 하루를 돌아봤어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">She wrote in her diary about lessons and friends.</div>
+    <div>수업과 친구들에 대해 일기를 썼어.</div>
+  </div>
+  <div><b>Day 12</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Imagine a new adventure for Sara.</div>
+    <div>사라의 새로운 모험을 상상해봐.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Draw or write a story.</div>
+    <div>이야기를 그리거나 써봐.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">What happens next? How do characters feel?</div>
+    <div>다음엔 어떻게 될까?</div>
+  </div>
+</div>
       </div>
 
       <div class="translate-section" style="margin-top: 16px;">
@@ -1125,7 +1156,14 @@ document.querySelectorAll('.vocab-word').forEach(w => {
   w.addEventListener('mouseleave', () => {
     document.getElementById('vocabTip').style.display = 'none';
   });
-  w.addEventListener('click', () => {
+  w.addEventListener('click', (e) => {
+    const tip = document.getElementById('vocabTip');
+    tip.textContent = w.dataset.meaning;
+    const r = w.getBoundingClientRect();
+    tip.style.display = 'block';
+    tip.style.left = r.left + 'px';
+    tip.style.top = (r.top - 30) + 'px';
+    setTimeout(() => { tip.style.display = 'none'; }, 2000);
     addRoboBubble('<b>' + w.textContent + '</b>: ' + w.dataset.meaning);
   });
 });

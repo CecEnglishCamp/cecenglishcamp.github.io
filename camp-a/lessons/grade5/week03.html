@@ -516,10 +516,12 @@
 
   /* ===== MOBILE RESPONSIVE ===== */
   @media (max-width: 768px) {
-    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-    .main { height: auto; min-height: 100vh; }
-    .content-panel { overflow-y: auto; height: auto; }
-    .tab-content { overflow-y: visible; }
+    html, body { overflow-x: hidden; }
+    body { height: auto; min-height: 100vh; }
+    .main { display: block; overflow-y: auto; flex: none; }
+    .content-panel { display: block; overflow-y: visible; }
+    .tab-content { display: none; overflow-y: visible; padding: 12px; }
+    .tab-content.active { display: block; }
     .main { grid-template-columns: 1fr; }
     .robo-panel {
       display: none;
@@ -578,9 +580,10 @@
     .pdf-link { font-size: 0.7rem; }
   }
   @media (max-width: 900px) and (orientation: landscape) {
-    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-    .main { height: auto; min-height: 100vh; }
-    .content-panel { overflow-y: auto; height: auto; }
+    html, body { overflow-x: hidden; }
+    body { height: auto; min-height: 100vh; }
+    .main { display: block; overflow-y: auto; flex: none; }
+    .content-panel { display: block; overflow-y: visible; }
     .main { grid-template-columns: 1fr; }
     .robo-panel {
       display: none;
@@ -729,17 +732,17 @@
     <div class="tab-content" id="content2">
       <div class="story-text">
         <p><b>Day 7 — Storm at sea</b></p>
-        <p>A small storm appeared.</p>
+        <p>A small <span class="vocab-word" data-meaning="폭풍">storm</span> appeared.</p>
         <p>Jim held on tight.</p>
         <p>The crew worked together.</p>
         <p><b>Day 8 — Island sighted</b></p>
         <p>They saw the island from far.</p>
-        <p>Jim felt excited and curious.</p>
-        <p>The crew prepared to anchor.</p>
+        <p>Jim felt <span class="vocab-word" data-meaning="신난">excited</span> and <span class="vocab-word" data-meaning="궁금한">curious</span>.</p>
+        <p>The crew prepared to <span class="vocab-word" data-meaning="닻을 내리다">anchor</span>.</p>
         <p><b>Day 9 — Landing on the island</b></p>
         <p>They landed on the island carefully.</p>
-        <p>Jim explored the beach.</p>
-        <p>They looked for clues about the treasure.</p>
+        <p>Jim <span class="vocab-word" data-meaning="탐험했다">explored</span> the beach.</p>
+        <p>They looked for clues about the <span class="vocab-word" data-meaning="보물">treasure</span>.</p>
       </div>
     </div>
 
@@ -747,11 +750,47 @@
     <div class="tab-content" id="content3">
       <div class="translate-section">
         <h3>📖 오늘의 이야기 — 해석</h3>
-        <div class="translate-card korean">
-          <b>Day 7</b><br>작은 폭풍이 나타났어.<br>짐은 꽉 붙잡았어.<br>선원들은 함께 힘을 합쳤어.<br><br>
-          <b>Day 8</b><br>멀리서 섬이 보였어.<br>짐은 신나고 궁금했어.<br>선원들은 닻을 내릴 준비를 했어.<br><br>
-          <b>Day 9</b><br>그들은 조심스럽게 섬에 상륙했어.<br>짐은 해변을 탐험했어.<br>보물에 대한 단서를 찾았어.
-        </div>
+        <div class="translate-card korean" style="display:flex;flex-direction:column;gap:16px;">
+  <div><b>Day 7</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">A small storm appeared.</div>
+    <div>작은 폭풍이 나타났어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim held on tight.</div>
+    <div>짐은 꽉 붙잡았어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">The crew worked together.</div>
+    <div>선원들은 함께 힘을 합쳤어.</div>
+  </div>
+  <div><b>Day 8</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">They saw the island from far.</div>
+    <div>멀리서 섬이 보였어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim felt excited and curious.</div>
+    <div>짐은 신나고 궁금했어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">The crew prepared to anchor.</div>
+    <div>선원들은 닻을 내릴 준비를 했어.</div>
+  </div>
+  <div><b>Day 9</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">They landed on the island carefully.</div>
+    <div>그들은 조심스럽게 섬에 상륙했어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim explored the beach.</div>
+    <div>짐은 해변을 탐험했어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">They looked for clues about the treasure.</div>
+    <div>보물에 대한 단서를 찾았어.</div>
+  </div>
+</div>
       </div>
 
       <div class="translate-section" style="margin-top: 16px;">
@@ -1128,7 +1167,14 @@ document.querySelectorAll('.vocab-word').forEach(w => {
   w.addEventListener('mouseleave', () => {
     document.getElementById('vocabTip').style.display = 'none';
   });
-  w.addEventListener('click', () => {
+  w.addEventListener('click', (e) => {
+    const tip = document.getElementById('vocabTip');
+    tip.textContent = w.dataset.meaning;
+    const r = w.getBoundingClientRect();
+    tip.style.display = 'block';
+    tip.style.left = r.left + 'px';
+    tip.style.top = (r.top - 30) + 'px';
+    setTimeout(() => { tip.style.display = 'none'; }, 2000);
     addRoboBubble('<b>' + w.textContent + '</b>: ' + w.dataset.meaning);
   });
 });

@@ -516,10 +516,12 @@
 
   /* ===== MOBILE RESPONSIVE ===== */
   @media (max-width: 768px) {
-    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-    .main { height: auto; min-height: 100vh; }
-    .content-panel { overflow-y: auto; height: auto; }
-    .tab-content { overflow-y: visible; }
+    html, body { overflow-x: hidden; }
+    body { height: auto; min-height: 100vh; }
+    .main { display: block; overflow-y: auto; flex: none; }
+    .content-panel { display: block; overflow-y: visible; }
+    .tab-content { display: none; overflow-y: visible; padding: 12px; }
+    .tab-content.active { display: block; }
     .main { grid-template-columns: 1fr; }
     .robo-panel {
       display: none;
@@ -578,9 +580,10 @@
     .pdf-link { font-size: 0.7rem; }
   }
   @media (max-width: 900px) and (orientation: landscape) {
-    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-    .main { height: auto; min-height: 100vh; }
-    .content-panel { overflow-y: auto; height: auto; }
+    html, body { overflow-x: hidden; }
+    body { height: auto; min-height: 100vh; }
+    .main { display: block; overflow-y: auto; flex: none; }
+    .content-panel { display: block; overflow-y: visible; }
     .main { grid-template-columns: 1fr; }
     .robo-panel {
       display: none;
@@ -730,14 +733,14 @@
       <div class="story-text">
 <p><b>Day 4 — Meeting Miss Minchin</b></p>
 <p>Sara met Miss Minchin.</p>
-<p>She was strict but fair.</p>
-<p>Sara greeted her politely.</p>
+<p>She was <span class="vocab-word" data-meaning="엄격한">strict</span> but fair.</p>
+<p>Sara greeted her <span class="vocab-word" data-meaning="예의 바르게">politely</span>.</p>
 <p><b>Day 5 — Class introductions</b></p>
 <p>Sara introduced herself to classmates.</p>
-<p>Some girls were friendly, some jealous.</p>
+<p>Some girls were <span class="vocab-word" data-meaning="친절한">friendly</span>, some <span class="vocab-word" data-meaning="질투하는">jealous</span>.</p>
 <p><b>Day 6 — Settling in room</b></p>
 <p>Sara unpacked her things and arranged her room.</p>
-<p>She felt comfortable but a little lonely.</p>
+<p>She felt <span class="vocab-word" data-meaning="편안한">comfortable</span> but a little <span class="vocab-word" data-meaning="외로운">lonely</span>.</p>
       </div>
     </div>
 
@@ -745,18 +748,39 @@
     <div class="tab-content" id="content3">
       <div class="translate-section">
         <h3>📖 오늘의 이야기 — 해석</h3>
-        <div class="translate-card korean">
-<b>Day 4</b><br>
-사라는 민친 양을 만났어.<br>
-그녀는 엄격했지만 공정했어.<br>
-사라는 예의 바르게 인사했어.<br><br>
-<b>Day 5</b><br>
-사라는 반 친구들에게 자기소개를 했어.<br>
-어떤 아이들은 친절했고 어떤 아이들은 질투했어.<br><br>
-<b>Day 6</b><br>
-사라는 짐을 풀고 방을 정리했어.<br>
-편안했지만 약간 외로웠어.
-        </div>
+        <div class="translate-card korean" style="display:flex;flex-direction:column;gap:16px;">
+  <div><b>Day 4</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Sara met Miss Minchin.</div>
+    <div>사라는 민친 양을 만났어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">She was strict but fair.</div>
+    <div>그녀는 엄격했지만 공정했어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Sara greeted her politely.</div>
+    <div>사라는 예의 바르게 인사했어.</div>
+  </div>
+  <div><b>Day 5</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Sara introduced herself to classmates.</div>
+    <div>사라는 반 친구들에게 자기소개를 했어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Some girls were friendly, some jealous.</div>
+    <div>어떤 아이들은 친절했고 어떤 아이들은 질투했어.</div>
+  </div>
+  <div><b>Day 6</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Sara unpacked her things and arranged her room.</div>
+    <div>사라는 짐을 풀고 방을 정리했어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">She felt comfortable but a little lonely.</div>
+    <div>편안했지만 약간 외로웠어.</div>
+  </div>
+</div>
       </div>
 
       <div class="translate-section" style="margin-top: 16px;">
@@ -1132,7 +1156,14 @@ document.querySelectorAll('.vocab-word').forEach(w => {
   w.addEventListener('mouseleave', () => {
     document.getElementById('vocabTip').style.display = 'none';
   });
-  w.addEventListener('click', () => {
+  w.addEventListener('click', (e) => {
+    const tip = document.getElementById('vocabTip');
+    tip.textContent = w.dataset.meaning;
+    const r = w.getBoundingClientRect();
+    tip.style.display = 'block';
+    tip.style.left = r.left + 'px';
+    tip.style.top = (r.top - 30) + 'px';
+    setTimeout(() => { tip.style.display = 'none'; }, 2000);
     addRoboBubble('<b>' + w.textContent + '</b>: ' + w.dataset.meaning);
   });
 });

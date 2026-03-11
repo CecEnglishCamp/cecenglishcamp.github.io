@@ -516,10 +516,12 @@
 
   /* ===== MOBILE RESPONSIVE ===== */
   @media (max-width: 768px) {
-    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-    .main { height: auto; min-height: 100vh; }
-    .content-panel { overflow-y: auto; height: auto; }
-    .tab-content { overflow-y: visible; }
+    html, body { overflow-x: hidden; }
+    body { height: auto; min-height: 100vh; }
+    .main { display: block; overflow-y: auto; flex: none; }
+    .content-panel { display: block; overflow-y: visible; }
+    .tab-content { display: none; overflow-y: visible; padding: 12px; }
+    .tab-content.active { display: block; }
     .main { grid-template-columns: 1fr; }
     .robo-panel {
       display: none;
@@ -578,9 +580,10 @@
     .pdf-link { font-size: 0.7rem; }
   }
   @media (max-width: 900px) and (orientation: landscape) {
-    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-    .main { height: auto; min-height: 100vh; }
-    .content-panel { overflow-y: auto; height: auto; }
+    html, body { overflow-x: hidden; }
+    body { height: auto; min-height: 100vh; }
+    .main { display: block; overflow-y: auto; flex: none; }
+    .content-panel { display: block; overflow-y: visible; }
     .main { grid-template-columns: 1fr; }
     .robo-panel {
       display: none;
@@ -729,14 +732,14 @@
     <div class="tab-content" id="content2">
       <div class="story-text">
 <p><b>Day 7 — School routines</b></p>
-<p>Sara learned school rules and routines.</p>
-<p>She listened carefully and followed instructions.</p>
+<p>Sara learned school rules and <span class="vocab-word" data-meaning="일과">routines</span>.</p>
+<p>She listened <span class="vocab-word" data-meaning="주의 깊게">carefully</span> and followed instructions.</p>
 <p><b>Day 8 — Meeting friends</b></p>
 <p>Sara made friends.</p>
 <p>They played and studied together.</p>
 <p><b>Day 9 — First challenge</b></p>
-<p>Sara faced a small challenge in her studies.</p>
-<p>She stayed calm and solved the problem.</p>
+<p>Sara faced a small <span class="vocab-word" data-meaning="도전, 어려움">challenge</span> in her studies.</p>
+<p>She stayed <span class="vocab-word" data-meaning="침착한">calm</span> and <span class="vocab-word" data-meaning="해결했다">solved</span> the problem.</p>
       </div>
     </div>
 
@@ -744,11 +747,35 @@
     <div class="tab-content" id="content3">
       <div class="translate-section">
         <h3>📖 오늘의 이야기 — 해석</h3>
-        <div class="translate-card korean">
-<b>Day 7</b><br>사라는 학교 규칙과 일과를 배웠어.<br>주의 깊게 듣고 지시를 따랐어.<br><br>
-<b>Day 8</b><br>사라는 친구를 사귀었어.<br>함께 놀고 공부했어.<br><br>
-<b>Day 9</b><br>사라는 공부에서 작은 어려움에 부딪혔어.<br>침착하게 문제를 해결했어.
-        </div>
+        <div class="translate-card korean" style="display:flex;flex-direction:column;gap:16px;">
+  <div><b>Day 7</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Sara learned school rules and routines.</div>
+    <div>사라는 학교 규칙과 일과를 배웠어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">She listened carefully and followed instructions.</div>
+    <div>주의 깊게 듣고 지시를 따랐어.</div>
+  </div>
+  <div><b>Day 8</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Sara made friends.</div>
+    <div>사라는 친구를 사귀었어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">They played and studied together.</div>
+    <div>함께 놀고 공부했어.</div>
+  </div>
+  <div><b>Day 9</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Sara faced a small challenge in her studies.</div>
+    <div>사라는 공부에서 작은 어려움에 부딪혔어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">She stayed calm and solved the problem.</div>
+    <div>침착하게 문제를 해결했어.</div>
+  </div>
+</div>
       </div>
 
       <div class="translate-section" style="margin-top: 16px;">
@@ -1124,7 +1151,14 @@ document.querySelectorAll('.vocab-word').forEach(w => {
   w.addEventListener('mouseleave', () => {
     document.getElementById('vocabTip').style.display = 'none';
   });
-  w.addEventListener('click', () => {
+  w.addEventListener('click', (e) => {
+    const tip = document.getElementById('vocabTip');
+    tip.textContent = w.dataset.meaning;
+    const r = w.getBoundingClientRect();
+    tip.style.display = 'block';
+    tip.style.left = r.left + 'px';
+    tip.style.top = (r.top - 30) + 'px';
+    setTimeout(() => { tip.style.display = 'none'; }, 2000);
     addRoboBubble('<b>' + w.textContent + '</b>: ' + w.dataset.meaning);
   });
 });

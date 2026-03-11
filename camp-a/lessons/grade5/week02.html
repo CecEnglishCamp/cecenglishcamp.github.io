@@ -516,10 +516,12 @@
 
   /* ===== MOBILE RESPONSIVE ===== */
   @media (max-width: 768px) {
-    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-    .main { height: auto; min-height: 100vh; }
-    .content-panel { overflow-y: auto; height: auto; }
-    .tab-content { overflow-y: visible; }
+    html, body { overflow-x: hidden; }
+    body { height: auto; min-height: 100vh; }
+    .main { display: block; overflow-y: auto; flex: none; }
+    .content-panel { display: block; overflow-y: visible; }
+    .tab-content { display: none; overflow-y: visible; padding: 12px; }
+    .tab-content.active { display: block; }
     .main { grid-template-columns: 1fr; }
     .robo-panel {
       display: none;
@@ -578,9 +580,10 @@
     .pdf-link { font-size: 0.7rem; }
   }
   @media (max-width: 900px) and (orientation: landscape) {
-    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-    .main { height: auto; min-height: 100vh; }
-    .content-panel { overflow-y: auto; height: auto; }
+    html, body { overflow-x: hidden; }
+    body { height: auto; min-height: 100vh; }
+    .main { display: block; overflow-y: auto; flex: none; }
+    .content-panel { display: block; overflow-y: visible; }
     .main { grid-template-columns: 1fr; }
     .robo-panel {
       display: none;
@@ -729,16 +732,16 @@
     <div class="tab-content" id="content2">
       <div class="story-text">
         <p><b>Day 4 — Planning the journey</b></p>
-        <p>Jim planned the journey to the treasure island.</p>
-        <p>He packed supplies and hid the map carefully.</p>
+        <p>Jim planned the journey to the <span class="vocab-word" data-meaning="보물">treasure</span> island.</p>
+        <p>He packed <span class="vocab-word" data-meaning="보급품">supplies</span> and hid the map carefully.</p>
         <p><b>Day 5 — Meeting the crew</b></p>
         <p>Jim met the crew for the journey.</p>
-        <p>Some were kind, some suspicious.</p>
-        <p>Jim was careful and polite.</p>
+        <p>Some were kind, some <span class="vocab-word" data-meaning="수상한">suspicious</span>.</p>
+        <p>Jim was <span class="vocab-word" data-meaning="조심스러운">careful</span> and polite.</p>
         <p><b>Day 6 — Setting sail</b></p>
-        <p>The ship started sailing.</p>
+        <p>The ship started <span class="vocab-word" data-meaning="항해하다">sailing</span>.</p>
         <p>Jim felt excited and a little scared.</p>
-        <p>The sea was calm and beautiful.</p>
+        <p>The sea was <span class="vocab-word" data-meaning="잔잔한">calm</span> and beautiful.</p>
       </div>
     </div>
 
@@ -746,19 +749,43 @@
     <div class="tab-content" id="content3">
       <div class="translate-section">
         <h3>📖 오늘의 이야기 — 해석</h3>
-        <div class="translate-card korean">
-          <b>Day 4</b><br>
-          짐은 보물섬으로 가는 여정을 계획했어.<br>
-          물자를 챙기고 지도를 조심스럽게 숨겼어.<br><br>
-          <b>Day 5</b><br>
-          짐은 여정을 함께할 선원들을 만났어.<br>
-          어떤 이는 친절하고 어떤 이는 수상했어.<br>
-          짐은 조심스럽고 예의 바르게 행동했어.<br><br>
-          <b>Day 6</b><br>
-          배가 항해를 시작했어.<br>
-          짐은 신나면서도 약간 무서웠어.<br>
-          바다는 잔잔하고 아름다웠어.
-        </div>
+        <div class="translate-card korean" style="display:flex;flex-direction:column;gap:16px;">
+  <div><b>Day 4</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim planned the journey to the treasure island.</div>
+    <div>짐은 보물섬으로 가는 여정을 계획했어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">He packed supplies and hid the map carefully.</div>
+    <div>물자를 챙기고 지도를 조심스럽게 숨겼어.</div>
+  </div>
+  <div><b>Day 5</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim met the crew for the journey.</div>
+    <div>짐은 여정을 함께할 선원들을 만났어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Some were kind, some suspicious.</div>
+    <div>어떤 이는 친절하고 어떤 이는 수상했어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim was careful and polite.</div>
+    <div>짐은 조심스럽고 예의 바르게 행동했어.</div>
+  </div>
+  <div><b>Day 6</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">The ship started sailing.</div>
+    <div>배가 항해를 시작했어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim felt excited and a little scared.</div>
+    <div>짐은 신나면서도 약간 무서웠어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">The sea was calm and beautiful.</div>
+    <div>바다는 잔잔하고 아름다웠어.</div>
+  </div>
+</div>
       </div>
 
       <div class="translate-section" style="margin-top: 16px;">
@@ -1135,7 +1162,14 @@ document.querySelectorAll('.vocab-word').forEach(w => {
   w.addEventListener('mouseleave', () => {
     document.getElementById('vocabTip').style.display = 'none';
   });
-  w.addEventListener('click', () => {
+  w.addEventListener('click', (e) => {
+    const tip = document.getElementById('vocabTip');
+    tip.textContent = w.dataset.meaning;
+    const r = w.getBoundingClientRect();
+    tip.style.display = 'block';
+    tip.style.left = r.left + 'px';
+    tip.style.top = (r.top - 30) + 'px';
+    setTimeout(() => { tip.style.display = 'none'; }, 2000);
     addRoboBubble('<b>' + w.textContent + '</b>: ' + w.dataset.meaning);
   });
 });

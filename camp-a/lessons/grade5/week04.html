@@ -516,10 +516,12 @@
 
   /* ===== MOBILE RESPONSIVE ===== */
   @media (max-width: 768px) {
-    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-    .main { height: auto; min-height: 100vh; }
-    .content-panel { overflow-y: auto; height: auto; }
-    .tab-content { overflow-y: visible; }
+    html, body { overflow-x: hidden; }
+    body { height: auto; min-height: 100vh; }
+    .main { display: block; overflow-y: auto; flex: none; }
+    .content-panel { display: block; overflow-y: visible; }
+    .tab-content { display: none; overflow-y: visible; padding: 12px; }
+    .tab-content.active { display: block; }
     .main { grid-template-columns: 1fr; }
     .robo-panel {
       display: none;
@@ -578,9 +580,10 @@
     .pdf-link { font-size: 0.7rem; }
   }
   @media (max-width: 900px) and (orientation: landscape) {
-    html, body { overflow-x: hidden; overflow-y: auto !important; height: auto; }
-    .main { height: auto; min-height: 100vh; }
-    .content-panel { overflow-y: auto; height: auto; }
+    html, body { overflow-x: hidden; }
+    body { height: auto; min-height: 100vh; }
+    .main { display: block; overflow-y: auto; flex: none; }
+    .content-panel { display: block; overflow-y: visible; }
     .main { grid-template-columns: 1fr; }
     .robo-panel {
       display: none;
@@ -729,15 +732,15 @@
     <div class="tab-content" id="content2">
       <div class="story-text">
         <p><b>Day 10 — First discoveries</b></p>
-        <p>Jim found footprints in the sand.</p>
-        <p>He felt excited and a bit scared.</p>
+        <p>Jim found <span class="vocab-word" data-meaning="발자국">footprints</span> in the sand.</p>
+        <p>He felt <span class="vocab-word" data-meaning="신난">excited</span> and a bit scared.</p>
         <p><b>Day 11 — Hidden clues</b></p>
-        <p>They found a bottle with a message.</p>
-        <p>Jim read it carefully.</p>
+        <p>They found a <span class="vocab-word" data-meaning="병">bottle</span> with a message.</p>
+        <p>Jim read it <span class="vocab-word" data-meaning="조심스럽게">carefully</span>.</p>
         <p>The crew watched him.</p>
         <p><b>Day 12 — Creative extension</b></p>
-        <p>Imagine a hidden treasure.</p>
-        <p>Draw or write clues. Retell your adventure.</p>
+        <p><span class="vocab-word" data-meaning="상상하다">Imagine</span> a hidden treasure.</p>
+        <p>Draw or write clues. Retell your <span class="vocab-word" data-meaning="모험">adventure</span>.</p>
         <p>Where is the treasure? How do characters feel?</p>
       </div>
     </div>
@@ -746,11 +749,43 @@
     <div class="tab-content" id="content3">
       <div class="translate-section">
         <h3>📖 오늘의 이야기 — 해석</h3>
-        <div class="translate-card korean">
-          <b>Day 10</b><br>짐은 모래에서 발자국을 발견했어.<br>신나면서도 약간 무서웠어.<br><br>
-          <b>Day 11</b><br>메시지가 든 병을 발견했어.<br>짐은 조심스럽게 읽었어.<br>선원들이 그를 지켜봤어.<br><br>
-          <b>Day 12</b><br>숨겨진 보물을 상상해봐.<br>단서를 그리거나 써봐.<br>보물은 어디 있어?
-        </div>
+        <div class="translate-card korean" style="display:flex;flex-direction:column;gap:16px;">
+  <div><b>Day 10</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim found footprints in the sand.</div>
+    <div>짐은 모래에서 발자국을 발견했어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">He felt excited and a bit scared.</div>
+    <div>신나면서도 약간 무서웠어.</div>
+  </div>
+  <div><b>Day 11</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">They found a bottle with a message.</div>
+    <div>메시지가 든 병을 발견했어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim read it carefully.</div>
+    <div>짐은 조심스럽게 읽었어.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">The crew watched him.</div>
+    <div>선원들이 그를 지켜봤어.</div>
+  </div>
+  <div><b>Day 12</b></div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Imagine a hidden treasure.</div>
+    <div>숨겨진 보물을 상상해봐.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Draw or write clues. Retell your adventure.</div>
+    <div>단서를 그리거나 써봐.</div>
+  </div>
+  <div>
+    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Where is the treasure? How do characters feel?</div>
+    <div>보물은 어디 있어?</div>
+  </div>
+</div>
       </div>
 
       <div class="translate-section" style="margin-top: 16px;">
@@ -1127,7 +1162,14 @@ document.querySelectorAll('.vocab-word').forEach(w => {
   w.addEventListener('mouseleave', () => {
     document.getElementById('vocabTip').style.display = 'none';
   });
-  w.addEventListener('click', () => {
+  w.addEventListener('click', (e) => {
+    const tip = document.getElementById('vocabTip');
+    tip.textContent = w.dataset.meaning;
+    const r = w.getBoundingClientRect();
+    tip.style.display = 'block';
+    tip.style.left = r.left + 'px';
+    tip.style.top = (r.top - 30) + 'px';
+    setTimeout(() => { tip.style.display = 'none'; }, 2000);
     addRoboBubble('<b>' + w.textContent + '</b>: ' + w.dataset.meaning);
   });
 });
