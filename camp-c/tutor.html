@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>영어 튜터 — CEC EnglishCamp C</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { display: flex; flex-direction: column;
+           height: 100vh; background: #0f172a; }
+
+    .header {
+      background: #1e3a8a;
+      color: white;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .split {
+      display: flex;
+      flex: 1;
+      gap: 4px;
+      padding: 4px;
+      overflow: hidden;
+    }
+
+    .panel {
+      flex: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #334155;
+    }
+
+    .panel-label {
+      background: #1e293b;
+      color: #94a3b8;
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      text-align: center;
+    }
+
+    iframe {
+      width: 100%;
+      height: calc(100% - 28px);
+      border: none;
+    }
+
+    .voice-tip {
+      background: #f59e0b;
+      color: #000;
+      font-size: 0.8rem;
+      padding: 6px 16px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <span>🎓 CEC EnglishCamp C — 영어 튜터 연습</span>
+    <span id="ep-label">EP 01</span>
+  </div>
+
+  <div class="voice-tip">
+    💡 ChatGPT에서 오른쪽 아래
+    <strong>음성 버튼 (헤드폰 모양)</strong>을 누르면
+    음성 대화가 시작돼요! 천천히 말해주세요 🎤
+  </div>
+
+  <div class="split">
+    <div class="panel">
+      <div class="panel-label">📖 오늘 학습 내용</div>
+      <iframe id="lesson-frame" src="./ep01.html"></iframe>
+    </div>
+    <div class="panel">
+      <div class="panel-label">💬 영어 튜터와 대화하기</div>
+      <iframe id="gpt-frame"
+        src="https://chatgpt.com/g/g-69b48918e32c81919f5a6c6c6d187df3-yeongeo-tyuteo-cec-englishcamp-c"
+        allow="microphone">
+      </iframe>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const ep = params.get('ep') || '01';
+    const epNum = ep.padStart(2, '0');
+
+    document.getElementById('ep-label').textContent = 'EP ' + epNum;
+    document.getElementById('lesson-frame').src = './ep' + epNum + '.html';
+  </script>
+
+</body>
+</html>
