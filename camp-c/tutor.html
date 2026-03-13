@@ -18,6 +18,14 @@
       justify-content: space-between;
     }
 
+    .voice-tip {
+      background: #f59e0b;
+      color: #000;
+      font-size: 0.82rem;
+      padding: 6px 16px;
+      text-align: center;
+    }
+
     .split {
       display: flex;
       flex: 1;
@@ -26,11 +34,26 @@
       overflow: hidden;
     }
 
-    .panel {
+    .panel-left {
       flex: 1;
       border-radius: 8px;
       overflow: hidden;
       border: 1px solid #334155;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-right {
+      width: 320px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #1e293b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      gap: 20px;
     }
 
     .panel-label {
@@ -43,15 +66,82 @@
 
     iframe {
       width: 100%;
-      height: calc(100% - 28px);
+      flex: 1;
       border: none;
     }
 
-    .voice-tip {
-      background: #f59e0b;
-      color: #000;
+    .tutor-icon {
+      font-size: 3rem;
+    }
+
+    .tutor-title {
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .tutor-desc {
+      color: #94a3b8;
+      font-size: 0.85rem;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .steps {
+      background: #0f172a;
+      border-radius: 10px;
+      padding: 16px;
+      width: 100%;
+    }
+
+    .step {
+      color: #cbd5e1;
+      font-size: 0.82rem;
+      padding: 6px 0;
+      border-bottom: 1px solid #1e293b;
+      line-height: 1.5;
+    }
+
+    .step:last-child { border-bottom: none; }
+
+    .step span {
+      color: #f59e0b;
+      font-weight: bold;
+      margin-right: 6px;
+    }
+
+    .btn-start {
+      background: #10a37f;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-start:hover { background: #0d8a6b; }
+
+    .btn-copy {
+      background: transparent;
+      color: #94a3b8;
+      border: 1px solid #334155;
+      padding: 8px 16px;
+      border-radius: 8px;
       font-size: 0.8rem;
-      padding: 6px 16px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-copy:hover { color: white; border-color: #94a3b8; }
+
+    #copy-msg {
+      color: #10a37f;
+      font-size: 0.78rem;
+      display: none;
       text-align: center;
     }
   </style>
@@ -64,23 +154,40 @@
   </div>
 
   <div class="voice-tip">
-    💡 ChatGPT에서 오른쪽 아래
-    <strong>음성 버튼 (헤드폰 모양)</strong>을 누르면
-    음성 대화가 시작돼요! 천천히 말해주세요 🎤
+    💡 ChatGPT에서 <strong>음성 대화 버튼 (헤드폰 모양)</strong>을 누르면 음성 대화가 시작돼요! 천천히 말해주세요 🎤
   </div>
 
   <div class="split">
-    <div class="panel">
+
+    <div class="panel-left">
       <div class="panel-label">📖 오늘 학습 내용</div>
       <iframe id="lesson-frame" src="./ep01.html"></iframe>
     </div>
-    <div class="panel">
-      <div class="panel-label">💬 영어 튜터와 대화하기</div>
-      <iframe id="gpt-frame"
-        src="https://chatgpt.com/g/g-69b48918e32c81919f5a6c6c6d187df3-yeongeo-tyuteo-cec-englishcamp-c"
-        allow="microphone">
-      </iframe>
+
+    <div class="panel-right">
+      <div class="tutor-icon">💬</div>
+      <div class="tutor-title">영어 튜터와 대화하기</div>
+      <div class="tutor-desc">
+        오늘 배운 표현으로<br>바로 영어 회화 연습해봐요!
+      </div>
+
+      <div class="steps">
+        <div class="step"><span>1</span>아래 버튼으로 학습 내용 복사</div>
+        <div class="step"><span>2</span>ChatGPT 창이 열리면 Ctrl+V 붙여넣기</div>
+        <div class="step"><span>3</span>헤드폰 버튼 눌러서 음성 대화 시작</div>
+        <div class="step"><span>4</span>천천히 영어로 말해보세요!</div>
+      </div>
+
+      <button class="btn-copy" onclick="copyLesson()">
+        📋 학습 내용 복사하기
+      </button>
+      <div id="copy-msg">✅ 복사됐어요! 이제 ChatGPT에 붙여넣으세요</div>
+
+      <button class="btn-start" onclick="openTutor()">
+        💬 영어 튜터 시작하기
+      </button>
     </div>
+
   </div>
 
   <script>
@@ -90,6 +197,45 @@
 
     document.getElementById('ep-label').textContent = 'EP ' + epNum;
     document.getElementById('lesson-frame').src = './ep' + epNum + '.html';
+
+    const lessonData = {
+      '01': `안녕하세요! 저는 오늘 CEC Camp C Episode 01 - 공항에 도착하기를 공부했어요.
+오늘 배운 핵심 표현: "Excuse me. Can you help me?"
+상황: 공항, 수하물 찾기, 세관
+지금 이 표현을 사용해서 공항 상황 롤플레이 연습을 도와주세요.
+천천히, 쉬운 영어로 부탁드려요!`,
+      '02': `안녕하세요! 저는 오늘 CEC Camp C Episode 02 - 호텔 체크인을 공부했어요.
+오늘 배운 핵심 표현: "I have a reservation."
+상황: 호텔 프런트, 체크인, 객실 요청
+지금 이 표현을 사용해서 호텔 상황 롤플레이 연습을 도와주세요.
+천천히, 쉬운 영어로 부탁드려요!`,
+      '03': `안녕하세요! 저는 오늘 CEC Camp C Episode 03 - 레스토랑 주문을 공부했어요.
+오늘 배운 핵심 표현: "Can I see the menu, please?"
+상황: 레스토랑, 메뉴 주문, 직원과 대화
+지금 이 표현을 사용해서 레스토랑 상황 롤플레이 연습을 도와주세요.
+천천히, 쉬운 영어로 부탁드려요!`,
+      '04': `안녕하세요! 저는 오늘 CEC Camp C Episode 04 - 쇼핑을 공부했어요.
+오늘 배운 핵심 표현: "How much is this?"
+상황: 쇼핑, 가격 묻기, 직원과 대화
+지금 이 표현을 사용해서 쇼핑 상황 롤플레이 연습을 도와주세요.
+천천히, 쉬운 영어로 부탁드려요!`
+    };
+
+    const GPT_URL = "https://chatgpt.com/g/g-69b48918e32c81919f5a6c6c6d187df3-yeongeo-tyuteo-cec-englishcamp-c";
+
+    function copyLesson() {
+      const text = lessonData[epNum] || lessonData['01'];
+      navigator.clipboard.writeText(text).then(() => {
+        document.getElementById('copy-msg').style.display = 'block';
+      });
+    }
+
+    function openTutor() {
+      copyLesson();
+      setTimeout(() => {
+        window.open(GPT_URL, '_blank');
+      }, 500);
+    }
   </script>
 
 </body>
