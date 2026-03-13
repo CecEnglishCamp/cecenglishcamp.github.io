@@ -236,10 +236,10 @@ body::before{
         <div class="logo-campc">AI POWERED · SINCE 2024</div>
       </div>
     </div>
-    <div class="banner-mid">
+    <a href="index.html" class="banner-mid" style="text-decoration:none;color:inherit;">
       <div class="banner-mid-t">Camp C · 한국주부 영어교실</div>
       <div class="banner-mid-s">100 EPISODES · A2~B1 LEVEL</div>
-    </div>
+    </a>
     <div class="banner-right">
       <div class="ep-chip">EP 02 / 100</div>
       <div style="display:flex;align-items:center;gap:5px;background:rgba(251,191,36,0.18);border-radius:16px;padding:4px 12px;font-size:10px;font-weight:900;color:#fbbf24;font-family:'Space Mono',monospace;">⭐ <span id="xpBadge">0</span> XP</div>
@@ -771,10 +771,19 @@ function pickOpt(el,correct){
 // 100 dots: ep1=done, ep2=done, ep3=active, rest=locked
 const labels=['공항에 도착','딸의 아파트에서','동네 산책','슈퍼마켓 문화충격','첫 외출','첫 전화','이웃 인사','미국식 식사','세탁기 대참사','병원 예약','셀프계산기','엘리베이터','감기약','카페 이름','택시 도전','병원 진료','Potluck 파티','아울렛 쇼핑','약국 실수','인터넷 반품','패스트푸드','세탁소 분실','음료 실수','택배 해프닝','쿠폰 전쟁','병원 해프닝','우버 대화','은행 개설','셀프 주유','도서관','헬스장','우체국','스테이크','학부모 회의','BBQ 초대','드라이브스루','치과','마트 도움','관리실 신고','피자 주문','팁 계산','길 묻기','마트 환불','자동응답','이웃 대화','버스 타기','알레르기','헤어살롱','학교 봉사','ATM','이름 발음','약 복용법','음성 메일','주차 벌금','운전면허','포장 요청','불평하기','꽃 주문','생일 파티','50일 점검','드라이클리닝','입국심사','책 추천','처방전','손녀에게 배우기','야드세일','쿠폰 기한','개 짖음','바자회','영어 일기','학교 운동회','생일 축하','유기농 비교','셀프계산대','직장 파티','날씨 대화','스타벅스','Paper or plastic','How are you?','커피 약속','무게 달기','설탕 빌리기','영어 농담','키즈 메뉴','공원 대화','인터넷 쇼핑','애플파이','처방전 받기','홈파티','100일 점검','수업 등록','수업 첫날','반 친구','칭찬','수업 발표','Maria와 커피','이야기 읽어주기','영어 문자','추수감사절','영자의 편지'];
 const grid=document.getElementById('dotGrid');
+const EP_EXISTS=[1,2,3,4,5,6];
 labels.forEach((tip,i)=>{
+  const n=i+1, num=String(n).padStart(2,'0');
+  const cls=i<2?'done':i===2?'active':'locked';
   const d=document.createElement('div');
-  d.className='ep-dot '+(i<2?'done':i===2?'active':'locked');
-  d.dataset.tip=`Ep ${String(i+1).padStart(2,'0')} · ${tip}`;
+  d.className='ep-dot '+cls;
+  d.dataset.tip=`Ep ${num} · ${tip}`;
+  if(cls!=='active' && EP_EXISTS.includes(n)){
+    d.style.cursor='pointer';
+    d.onclick=()=>location.href='ep'+num+'.html';
+  } else if(cls==='locked' && !EP_EXISTS.includes(n)){
+    d.title='준비 중';
+  }
   grid.appendChild(d);
 });
 
