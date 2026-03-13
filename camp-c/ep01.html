@@ -595,7 +595,7 @@ body::before{
     <div class="sec-body">
       <p style="font-size:0.88rem;color:var(--text2);margin-bottom:16px;font-weight:500;">오늘의 핵심 표현을 완성해 보세요!</p>
       <div style="font-size:1.15rem;font-weight:700;text-align:center;margin-bottom:20px;color:var(--navy);line-height:2.2;">
-        "Excuse me. Can you <span id="wfBlank1" style="display:inline-block;min-width:80px;border-bottom:3px solid var(--blue);text-align:center;font-weight:900;color:var(--blue);padding:0 8px;transition:all 0.3s;">_____</span> me?"
+        "Excuse me. Can you <span id="wfBlank1" style="display:inline-block;min-width:80px;border-bottom:3px solid var(--blue);text-align:center;font-weight:900;color:var(--blue);padding:0 8px;transition:all 0.3s;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> me?"
       </div>
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;" id="wfOpts1">
         <button onclick="checkWF1(this,'follow','"follow"는 "따라가다"예요. 도움을 부탁할 땐 "help"를 써요!')" style="background:#f1f5f9;border:2px solid #e2e8f0;border-radius:30px;padding:9px 24px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit;color:var(--navy);transition:all 0.2s;">follow</button>
@@ -1100,6 +1100,8 @@ labels.forEach((tip,i)=>{
     d.onclick=()=>location.href='ep'+num+'.html';
   } else if(cls==='locked' && !EP_EXISTS.includes(n)){
     d.title='준비 중';
+    d.style.pointerEvents='none';
+    d.style.opacity='0.5';
   }
   grid.appendChild(d);
 });
@@ -1113,7 +1115,9 @@ setTimeout(()=>{
 window.addEventListener('load',()=>{ if('speechSynthesis' in window) window.speechSynthesis.getVoices(); });
 
 /* ── DUOLINGO SYSTEM ─────────────────────────────────── */
-let xp=0,wfDone=false,woDone=false,quizXPDone=false,woAnswer=[];
+let xp=0,wfDone=false,woDone=false,quizXPDone=false,woAnswer=[],episodeCompleted=false;
+let quizCorrectCount=0;
+const TOTAL_QUIZ_QUESTIONS=3;
 const WO_CORRECT=['Excuse','me.','Can','you','help','me?'];
 const WO_SHUFFLE=['Can','me?','Excuse','help','me.','you'];
 
@@ -1141,12 +1145,12 @@ function checkWF1(btn,word,hint){
     blank.style.borderColor='#ef4444';blank.style.color='#ef4444';
     fb.style.cssText='display:block;background:#fef2f2;border:2px solid #fca5a5;color:#991b1b;border-radius:12px;padding:13px 17px;font-size:0.9rem;font-weight:600;line-height:1.6;';
     fb.innerHTML='❌ 아쉬워요! '+hint+' <button onclick="resetWF1()" style="background:#1e3a8a;color:#fff;border:none;border-radius:20px;padding:4px 14px;font-weight:800;font-size:0.8rem;cursor:pointer;margin-top:6px;">다시 해볼게요 ↩</button>';
-    setTimeout(()=>{blank.textContent='_____';blank.style.borderColor='var(--blue)';blank.style.color='var(--blue)';},450);
+    setTimeout(()=>{blank.innerHTML='\u00a0\u00a0\u00a0\u00a0\u00a0';blank.style.borderColor='var(--blue)';blank.style.color='var(--blue)';},450);
   }
 }
 function resetWF1(){
   document.querySelectorAll('#wfOpts1 button').forEach(b=>{b.disabled=false;b.style.opacity='1';});
-  const blank=document.getElementById('wfBlank1');blank.textContent='_____';blank.style.borderColor='var(--blue)';blank.style.color='var(--blue)';
+  const blank=document.getElementById('wfBlank1');blank.innerHTML='\u00a0\u00a0\u00a0\u00a0\u00a0';blank.style.borderColor='var(--blue)';blank.style.color='var(--blue)';
   document.getElementById('wfFb1').style.display='none';document.getElementById('wfYJ1').style.display='none';
 }
 
@@ -1212,15 +1216,22 @@ function resetWO1(){
 /* Quiz XP patch */
 function pickOpt(el,correct){
   const group=el.closest('.quiz-options');
+  if(group.dataset.answered==='1')return;
   group.querySelectorAll('.quiz-opt').forEach(o=>{o.classList.remove('correct','wrong');o.querySelector('.quiz-mark').textContent=o.dataset.letter||'';});
   el.classList.add(correct?'correct':'wrong');
   el.querySelector('.quiz-mark').textContent=correct?'✓':'✗';
-  if(correct&&!quizXPDone){quizXPDone=true;addXP(10);}
+  if(correct){
+    group.dataset.answered='1';
+    quizCorrectCount++;
+    if(quizCorrectCount>=TOTAL_QUIZ_QUESTIONS&&!quizXPDone){quizXPDone=true;addXP(10);}
+  }
 }
 
 /* Completion */
-function checkCompletion(){if(wfDone&&woDone&&quizXPDone)setTimeout(showCompletion,600);}
+function checkCompletion(){if(wfDone&&woDone&&quizXPDone&&!episodeCompleted)setTimeout(showCompletion,600);}
 function showCompletion(){
+  if(episodeCompleted)return;
+  episodeCompleted=true;
   addXP(10);
   const card=document.getElementById('completionCard');if(!card)return;
   card.style.display='block';
