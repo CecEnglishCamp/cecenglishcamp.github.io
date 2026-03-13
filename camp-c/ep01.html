@@ -1201,8 +1201,13 @@ function resetWO1(){
 }
 
 /* Quiz XP patch */
-const _origPickOpt=pickOpt;
-function pickOpt(el,correct){_origPickOpt(el,correct);if(correct&&!quizXPDone){quizXPDone=true;addXP(10);}}
+function pickOpt(el,correct){
+  const group=el.closest('.quiz-options');
+  group.querySelectorAll('.quiz-opt').forEach(o=>{o.classList.remove('correct','wrong');o.querySelector('.quiz-mark').textContent=o.dataset.letter||'';});
+  el.classList.add(correct?'correct':'wrong');
+  el.querySelector('.quiz-mark').textContent=correct?'✓':'✗';
+  if(correct&&!quizXPDone){quizXPDone=true;addXP(10);}
+}
 
 /* Completion */
 function checkCompletion(){if(wfDone&&woDone&&quizXPDone)setTimeout(showCompletion,600);}
