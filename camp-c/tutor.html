@@ -93,8 +93,11 @@
     }
 
     .plane {
-      font-size: 4rem;
       animation: takeoff 2.5s ease-in-out forwards;
+    }
+
+    .plane svg {
+      filter: drop-shadow(0 0 20px rgba(255,255,255,0.4));
     }
 
     @keyframes takeoff {
@@ -218,7 +221,12 @@
 <body>
 
 <div id="intro-overlay">
-  <div class="plane">✈️</div>
+  <div class="plane">
+  <svg width="120" height="60" viewBox="0 0 120 60" fill="white" xmlns="http://www.w3.org/2000/svg">
+    <path d="M115 25 L70 22 L48 5 L38 5 L52 22 L20 22 L12 16 L5 16 L10 25 L5 34 L12 34 L20 28 L52 28 L38 45 L48 45 L70 28 L115 25Z"/>
+    <path d="M80 28 L80 38 L65 35 L65 28Z"/>
+  </svg>
+</div>
   <div class="intro-text">영어 여행을 떠나볼까요?</div>
   <div class="intro-sub">잠시 후 학습 화면이 열립니다...</div>
 </div>
@@ -308,13 +316,15 @@
     function openTutor() {
       copyLesson();
       setTimeout(() => {
-        window.open(
+        const popup = window.open(
           GPT_URL,
           'tutor',
-          'width=650,height=900,left=' +
-          (window.screen.width - 680) + ',top=50'
+          'width=650,height=900,left=' + (screen.width - 680) + ',top=50'
         );
-      }, 500);
+        if (!popup) {
+          alert('팝업이 차단됐어요!\n브라우저 주소창 오른쪽 팝업 허용 버튼을 눌러주세요.');
+        }
+      }, 300);
     }
 
     // 비행기 이륙 후 두 패널 서서히 열기
