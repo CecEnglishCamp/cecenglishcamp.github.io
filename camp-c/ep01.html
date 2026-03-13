@@ -952,38 +952,40 @@ body::before{
       <div><div style="font-weight:900;color:var(--navy);font-size:0.73rem;margin-bottom:3px;">박영자</div><span style="font-size:0.87rem;line-height:1.6;font-weight:600;color:var(--text);">저도 공항에서 얼마나 떨렸는지 몰라요! 그런데 용기 내서 한 마디 했더니 다 해결됐어요. 여러분도 꼭 할 수 있어요! 💪</span></div>
     </div>
 
-    <!-- AI TUTOR CHAT WIDGET -->
-    <div id="chatWidget" style="margin-top:20px;background:var(--white);border-radius:20px;border:1px solid var(--border);box-shadow:0 8px 32px rgba(30,43,94,0.10);overflow:hidden;">
-      <!-- Chat Header -->
-      <div style="padding:18px 20px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,#eff6ff,#f0fdf4);">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">👩</div>
-          <div>
-            <div style="font-size:1rem;font-weight:900;color:var(--navy);">박영자 선생님과 영어 연습하기 💬</div>
-            <div style="font-size:0.8rem;color:var(--text2);margin-top:2px;">오늘 배운 표현으로 바로 대화해봐요!</div>
-          </div>
-        </div>
-        <div id="chatTimerRow" style="display:none;text-align:center;margin-top:8px;">
-          <span style="font-family:'Space Mono',monospace;font-size:0.85rem;font-weight:700;color:var(--blue);background:rgba(37,99,235,0.08);padding:4px 14px;border-radius:12px;" id="chatTimer">10:00</span>
-        </div>
-      </div>
-      <!-- Start Button -->
-      <div id="chatStartWrap" style="padding:24px 20px;text-align:center;">
-        <button id="chatStartBtn" onclick="startChat()" style="background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;border:none;border-radius:30px;padding:12px 32px;font-weight:800;font-size:0.95rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(30,58,138,0.3);transition:transform 0.2s;">대화 시작하기 🎤</button>
-      </div>
-      <!-- Chat Messages -->
-      <div id="chatMessages" style="display:none;height:320px;overflow-y:auto;padding:16px 18px;display:none;flex-direction:column;gap:10px;">
-      </div>
-      <!-- Chat Input -->
-      <div id="chatInputRow" style="display:none;padding:12px 16px;border-top:1px solid var(--border);background:#f8faff;">
-        <div style="display:flex;gap:8px;">
-          <input id="chatInput" type="text" placeholder="영어로 대화해보세요..." style="flex:1;border:2px solid #e2e8f0;border-radius:14px;padding:10px 16px;font-size:0.9rem;font-family:inherit;outline:none;transition:border-color 0.2s;" onkeydown="if(event.key==='Enter')sendChatMsg()">
-          <button onclick="sendChatMsg()" style="background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;border:none;border-radius:14px;padding:10px 18px;font-weight:800;font-size:0.9rem;cursor:pointer;font-family:inherit;white-space:nowrap;">전송</button>
-        </div>
-      </div>
+  </div>
+
+<!-- AI 튜터 채팅 위젯 — 퀴즈 완료 전까지 숨김 -->
+<div id="ai-tutor-widget" style="display:none; margin-top: 24px;">
+  <div style="background:#fff;border-radius:24px;box-shadow:0 8px 40px rgba(30,43,94,0.13);padding:24px;overflow:hidden;">
+    <div style="font-size:1.1rem;font-weight:900;color:var(--navy);margin-bottom:4px;">박영자 선생님과 영어 연습하기 💬</div>
+    <div style="font-size:0.85rem;color:var(--text2);margin-bottom:16px;">오늘 배운 표현으로 바로 대화해봐요!</div>
+
+    <!-- 시작 버튼 -->
+    <div id="tutor-start-area" style="text-align:center;margin-bottom:16px;">
+      <button id="tutor-start-btn" onclick="startTutorSession()" style="background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;border:none;border-radius:30px;padding:12px 32px;font-weight:800;font-size:0.95rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(30,58,138,0.3);transition:transform 0.2s;">▶ 연습 시작하기</button>
     </div>
 
+    <!-- 타이머 -->
+    <div id="tutor-timer" style="display:none;text-align:right;font-size:0.85rem;color:#ef4444;font-weight:700;margin-bottom:8px;">
+      남은 시간: <span id="timer-display" style="font-family:'Space Mono',monospace;">10:00</span>
+    </div>
+
+    <!-- 채팅 영역 -->
+    <div id="chat-messages" style="display:none;height:300px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-bottom:12px;background:#f8fafc;">
+    </div>
+
+    <!-- 입력창 -->
+    <div id="chat-input-area" style="display:none;gap:8px;">
+      <input id="chat-input" type="text" placeholder="영어로 입력해보세요..." style="flex:1;padding:10px 14px;border:2px solid #e2e8f0;border-radius:14px;font-size:0.9rem;font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter') submitChat()">
+      <button onclick="submitChat()" style="background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;border:none;border-radius:14px;padding:10px 18px;font-weight:800;font-size:0.9rem;cursor:pointer;font-family:inherit;white-space:nowrap;">전송</button>
+    </div>
+
+    <!-- 완료 메시지 -->
+    <div id="tutor-done-msg" style="display:none;text-align:center;padding:16px;color:#16a34a;font-weight:bold;font-size:0.95rem;">
+      오늘 연습 완료! 내일 또 만나요 👋
+    </div>
   </div>
+</div>
 <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:9999;"></canvas>
 <div id="xpToast" style="position:fixed;top:70px;right:16px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a2b5e;font-weight:900;font-size:1.05rem;border-radius:30px;padding:8px 20px;box-shadow:0 4px 20px rgba(251,191,36,0.5);z-index:9999;transform:translateY(-20px);opacity:0;transition:all 0.4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;">⭐ +0 XP</div>
 
@@ -1269,6 +1271,7 @@ function showCompletion(){
   card.style.display='block';
   document.getElementById('finalXPBadge').textContent='⭐ 총 '+xp+' XP 획득!';
   card.scrollIntoView({behavior:'smooth',block:'center'});
+  document.getElementById('ai-tutor-widget').style.display='block';
   launchConfetti();try{localStorage.setItem('cec_ep01_done','1');}catch(e){}
 }
 function launchConfetti(){
@@ -1286,110 +1289,92 @@ const SYSTEM_PROMPT = `You are a friendly English conversation coach for Korean 
 Today's episode: EP01 - Arriving at the Airport.
 Key expression learned: "Excuse me. Can you help me?"
 Situation: airport, customs, baggage claim.
-Your role: Start with a short role-play scenario in English, guide the student naturally, correct mistakes gently in Korean, keep responses short (2-3 sentences max).
-Always encourage. Session is 10 minutes.`;
+Your role: Start by setting a short role-play scenario in English. Guide the student naturally, correct mistakes gently in Korean, keep responses short (2-3 sentences max). Always encourage.`;
 
 const NGROK_URL = "PLACEHOLDER_NGROK_URL";
 
 let conversationHistory = [];
-let chatTimerInterval = null;
-let chatTimeLeft = 600;
+let timerInterval = null;
+let secondsLeft = 600;
 
-async function sendMessage(userText) {
-  conversationHistory.push({ role: "user", content: userText });
-  const res = await fetch(NGROK_URL + "/camp-c/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      system_prompt: SYSTEM_PROMPT,
-      messages: conversationHistory
-    })
-  });
-  const data = await res.json();
-  conversationHistory.push({ role: "assistant", content: data.reply });
-  return data.reply;
-}
+function startTutorSession() {
+  document.getElementById('tutor-start-area').style.display = 'none';
+  document.getElementById('tutor-timer').style.display = 'block';
+  document.getElementById('chat-messages').style.display = 'block';
+  document.getElementById('chat-input-area').style.display = 'flex';
 
-function startChat() {
-  document.getElementById('chatStartWrap').style.display = 'none';
-  document.getElementById('chatTimerRow').style.display = 'block';
-  const msgArea = document.getElementById('chatMessages');
-  msgArea.style.display = 'flex';
-  document.getElementById('chatInputRow').style.display = 'block';
-  chatTimeLeft = 600;
-  updateTimerDisplay();
-  chatTimerInterval = setInterval(() => {
-    chatTimeLeft--;
-    updateTimerDisplay();
-    if (chatTimeLeft <= 0) {
-      clearInterval(chatTimerInterval);
-      endChat();
-    }
+  timerInterval = setInterval(() => {
+    secondsLeft--;
+    const m = String(Math.floor(secondsLeft / 60)).padStart(2, '0');
+    const s = String(secondsLeft % 60).padStart(2, '0');
+    document.getElementById('timer-display').textContent = m + ':' + s;
+    if (secondsLeft <= 0) endTutorSession();
   }, 1000);
-  // AI sends first message
-  appendBubble('assistant', '...');
-  sendMessage('(학생이 대화를 시작했습니다. 역할극 시나리오로 먼저 말을 걸어주세요.)').then(reply => {
-    removeLast('...');
-    appendBubble('assistant', reply);
-  }).catch(() => { removeLast('...'); appendBubble('assistant', '연결에 문제가 있어요. 잠시 후 다시 시도해주세요.'); });
-  document.getElementById('chatInput').focus();
+
+  // AI가 먼저 말 걸기
+  addBubble('assistant', '...');
+  fetchReply('안녕하세요! 오늘 공항 상황을 연습해봐요. 준비되셨나요?').then(reply => {
+    updateLastBubble(reply);
+  });
 }
 
-function updateTimerDisplay() {
-  const m = Math.floor(chatTimeLeft / 60);
-  const s = chatTimeLeft % 60;
-  document.getElementById('chatTimer').textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-  if (chatTimeLeft <= 60) document.getElementById('chatTimer').style.color = '#ef4444';
+async function submitChat() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addBubble('user', text);
+  addBubble('assistant', '...');
+  const reply = await fetchReply(text);
+  updateLastBubble(reply);
 }
 
-function endChat() {
-  document.getElementById('chatInput').disabled = true;
-  document.getElementById('chatInputRow').querySelector('button').disabled = true;
-  appendBubble('system', '오늘 연습 완료! 내일 또 만나요 👋');
-}
-
-function appendBubble(role, text) {
-  const area = document.getElementById('chatMessages');
-  const wrap = document.createElement('div');
-  if (role === 'user') {
-    wrap.style.cssText = 'display:flex;justify-content:flex-end;';
-    wrap.innerHTML = '<div style="max-width:75%;background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;border-radius:16px 16px 4px 16px;padding:10px 14px;font-size:0.88rem;line-height:1.6;font-weight:500;word-break:break-word;">' + escapeHtml(text) + '</div>';
-  } else if (role === 'assistant') {
-    wrap.style.cssText = 'display:flex;justify-content:flex-start;gap:8px;';
-    wrap.innerHTML = '<div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0;">👩</div><div style="max-width:75%;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:16px 16px 16px 4px;padding:10px 14px;font-size:0.88rem;line-height:1.6;color:var(--text);font-weight:500;word-break:break-word;">' + escapeHtml(text) + '</div>';
-  } else {
-    wrap.style.cssText = 'text-align:center;';
-    wrap.innerHTML = '<div style="display:inline-block;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a2b5e;font-weight:800;font-size:0.85rem;border-radius:20px;padding:8px 20px;">' + escapeHtml(text) + '</div>';
+async function fetchReply(userText) {
+  conversationHistory.push({ role: 'user', content: userText });
+  try {
+    const res = await fetch(NGROK_URL + '/camp-c/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_prompt: SYSTEM_PROMPT,
+        messages: conversationHistory
+      })
+    });
+    const data = await res.json();
+    conversationHistory.push({ role: 'assistant', content: data.reply });
+    return data.reply;
+  } catch(e) {
+    return '연결 오류가 발생했어요. 잠시 후 다시 시도해주세요.';
   }
-  area.appendChild(wrap);
+}
+
+function addBubble(role, text) {
+  const area = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.style.cssText = role === 'user'
+    ? 'text-align:right; margin:8px 0;'
+    : 'text-align:left; margin:8px 0;';
+  const escaped = document.createElement('span');
+  escaped.textContent = text;
+  const bg = role === 'user' ? '#3b82f6' : '#e2e8f0';
+  const fg = role === 'user' ? '#fff' : '#1e293b';
+  escaped.style.cssText = 'display:inline-block;padding:8px 14px;border-radius:16px;max-width:75%;font-size:0.9rem;line-height:1.6;word-break:break-word;background:'+bg+';color:'+fg+';';
+  div.appendChild(escaped);
+  area.appendChild(div);
   area.scrollTop = area.scrollHeight;
 }
 
-function removeLast(matchText) {
-  const area = document.getElementById('chatMessages');
-  const last = area.lastElementChild;
-  if (last && last.textContent.trim() === matchText) last.remove();
+function updateLastBubble(text) {
+  const area = document.getElementById('chat-messages');
+  const bubbles = area.querySelectorAll('span');
+  if (bubbles.length > 0) bubbles[bubbles.length - 1].textContent = text;
 }
 
-function escapeHtml(t) {
-  const d = document.createElement('div'); d.textContent = t; return d.innerHTML;
-}
-
-function sendChatMsg() {
-  const input = document.getElementById('chatInput');
-  const text = input.value.trim();
-  if (!text || input.disabled) return;
-  input.value = '';
-  appendBubble('user', text);
-  appendBubble('assistant', '...');
-  sendMessage(text).then(reply => {
-    removeLast('...');
-    appendBubble('assistant', reply);
-  }).catch(() => {
-    removeLast('...');
-    appendBubble('assistant', '연결에 문제가 있어요. 다시 시도해주세요.');
-  });
-  input.focus();
+function endTutorSession() {
+  clearInterval(timerInterval);
+  document.getElementById('chat-input-area').style.display = 'none';
+  document.getElementById('tutor-timer').style.display = 'none';
+  document.getElementById('tutor-done-msg').style.display = 'block';
 }
 
 </script>
