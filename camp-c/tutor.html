@@ -332,14 +332,16 @@
     function openTutor() {
       copyLesson();
       setTimeout(() => {
+        const timestamp = Date.now();
+        const newChatUrl = GPT_URL + '?t=' + timestamp;
         const popupWidth = Math.floor(screen.width * 0.4);
         const popupHeight = screen.height - 100;
         const popupLeft = window.screenX + window.outerWidth - popupWidth;
         const popupTop = 0;
 
         const popup = window.open(
-          GPT_URL,
-          'tutor',
+          newChatUrl,
+          'tutor_' + timestamp,
           `width=${popupWidth},height=${popupHeight},left=${popupLeft},top=${popupTop}`
         );
         if (!popup) {
