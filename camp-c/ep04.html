@@ -725,6 +725,25 @@ body::before{
       <div><div style="font-weight:900;color:var(--navy);font-size:0.73rem;margin-bottom:3px;">박영자</div><span style="font-size:0.87rem;line-height:1.6;font-weight:600;color:var(--text);">슈퍼마켓 한 번 갔다 왔을 뿐인데 영어 표현까지 배웠네요! 다음엔 셀프 계산대도 도전해 봐요! 🛒</span></div>
     </div>
   </div>
+<div id="ai-tutor-widget" style="display:none; margin-top:24px;">
+  <div style="background:#fff;border-radius:24px;box-shadow:0 8px 40px rgba(30,43,94,0.13);padding:24px; text-align:center;">
+    <div style="font-size:1.1rem; font-weight:bold; margin-bottom:8px;">
+      🎓 영어 튜터와 연습하기
+    </div>
+    <div style="font-size:0.85rem; color:#64748b; margin-bottom:20px;">
+      오늘 배운 표현으로 바로 대화 연습해봐요!<br>
+      버튼을 누르면 학습 내용이 자동 복사되고 ChatGPT가 열려요.
+    </div>
+    <button onclick="startTutorSession()"
+      style="background:#10a37f; color:white; border:none; padding:14px 32px;
+             border-radius:10px; font-size:1rem; font-weight:bold; cursor:pointer;">
+      💬 영어 튜터 시작하기
+    </button>
+    <div style="font-size:0.75rem; color:#94a3b8; margin-top:12px;">
+      ChatGPT가 열리면 Ctrl+V 로 붙여넣기 후 시작하세요
+    </div>
+  </div>
+</div>
 <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:9999;"></canvas>
 <div id="xpToast" style="position:fixed;top:70px;right:16px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a2b5e;font-weight:900;font-size:1.05rem;border-radius:30px;padding:8px 20px;box-shadow:0 4px 20px rgba(251,191,36,0.5);z-index:9999;transform:translateY(-20px);opacity:0;transition:all 0.4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;">⭐ +0 XP</div>
 
@@ -972,6 +991,7 @@ function showCompletion(){
   document.getElementById('finalXPBadge').textContent='⭐ 총 '+xp+' XP 획득!';
   card.scrollIntoView({behavior:'smooth',block:'center'});
   launchConfetti();try{localStorage.setItem('cec_ep04_done','1');}catch(e){}
+  document.getElementById('ai-tutor-widget').style.display='block';
 }
 function launchConfetti(){
   const canvas=document.getElementById('confettiCanvas');if(!canvas)return;
@@ -983,6 +1003,20 @@ function launchConfetti(){
   draw();setTimeout(()=>cancelAnimationFrame(frame),4500);
 }
 
+</script>
+<script>
+function startTutorSession() {
+    const lessonContext = `안녕하세요! 저는 오늘 CEC Camp C Episode 04 - 쇼핑을 공부했어요.
+오늘 배운 핵심 표현: "How much is this?"
+상황: 쇼핑, 가격 묻기, 직원과 대화
+지금 이 표현을 사용해서 쇼핑 상황 롤플레이 연습을 도와주세요.
+천천히, 쉬운 영어로 부탁드려요!`;
+    navigator.clipboard.writeText(lessonContext).then(() => {
+        window.open('./tutor.html?ep=04', '_blank');
+    }).catch(() => {
+        window.open('./tutor.html?ep=04', '_blank');
+    });
+}
 </script>
 </body>
 </html>
