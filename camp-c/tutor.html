@@ -315,10 +315,17 @@
     function openTutor() {
       copyLesson();
       setTimeout(() => {
+        const panelRight = document.querySelector('.panel-right');
+        const rect = panelRight.getBoundingClientRect();
+        const screenLeft = window.screenX + rect.left;
+        const screenTop = window.screenY + rect.top + 80;
+        const popupWidth = Math.floor(rect.width);
+        const popupHeight = Math.floor(window.innerHeight - 120);
+
         const popup = window.open(
           GPT_URL,
           'tutor',
-          'width=650,height=900,left=' + (screen.width - 680) + ',top=50'
+          `width=${popupWidth},height=${popupHeight},left=${screenLeft},top=${screenTop}`
         );
         if (!popup) {
           alert('팝업이 차단됐어요!\n브라우저 주소창 오른쪽 팝업 허용 버튼을 눌러주세요.');
