@@ -330,24 +330,29 @@
     }
 
     function openTutor() {
-      copyLesson();
-      setTimeout(() => {
-        const timestamp = Date.now();
-        const newChatUrl = GPT_URL + '?t=' + timestamp;
-        const popupWidth = Math.floor(screen.width * 0.4);
-        const popupHeight = screen.height - 100;
-        const popupLeft = window.screenX + window.outerWidth - popupWidth;
-        const popupTop = 0;
+      const epNum = new URLSearchParams(window.location.search).get('ep') || '01';
+      const text = lessonData[epNum.padStart(2,'0')] || lessonData['01'];
 
-        const popup = window.open(
-          newChatUrl,
-          'tutor_' + timestamp,
-          `width=${popupWidth},height=${popupHeight},left=${popupLeft},top=${popupTop}`
-        );
-        if (!popup) {
-          alert('팝업이 차단됐어요!\n브라우저 주소창 오른쪽 팝업 허용 버튼을 눌러주세요.');
-        }
-      }, 300);
+      // 클립보드 초기화 후 새 내용 복사
+      navigator.clipboard.writeText('').then(() => {
+        navigator.clipboard.writeText(text).then(() => {
+          document.getElementById('copy-msg').style.display = 'block';
+          setTimeout(() => {
+            const timestamp = Date.now();
+            const popupWidth = Math.floor(screen.width * 0.4);
+            const popupHeight = screen.height - 100;
+            const popupLeft = window.screenX + window.outerWidth - popupWidth;
+            const popup = window.open(
+              GPT_URL + '?t=' + timestamp,
+              'tutor_' + timestamp,
+              `width=${popupWidth},height=${popupHeight},left=${popupLeft},top=0`
+            );
+            if (!popup) {
+              alert('팝업이 차단됐어요!\n브라우저 주소창 오른쪽 팝업 허용 버튼을 눌러주세요.');
+            }
+          }, 300);
+        });
+      });
     }
 
     // 비행기 이륙 후 두 패널 서서히 열기
