@@ -2,1359 +2,618 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CEC Camp A - Grade 5 Week 1</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G5 Week 1 — Treasure Island | CEC English Camp A</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #000000;
-    --panel: #0a0a0a;
-    --card: #111111;
-    --border: #1e1e1e;
-    --cyan: #ff8c00;
-    --cyan-dim: rgba(255,140,0,0.15);
-    --text: #ffffff;
-    --text-muted: #888888;
-    --gold: #ffd700;
-    --green: #00e676;
-    --red: #ff5252;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; overflow: hidden; }
-  body {
-    font-family: 'Noto Sans KR', 'Montserrat', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-  }
-
-  /* TOPBAR */
-  .topbar {
-    background: rgba(0,0,0,0.98);
-    border-bottom: 1px solid var(--border);
-    padding: 0 20px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-    z-index: 100;
-  }
-  .topbar-left { display: flex; align-items: center; gap: 12px; }
-  .topbar-logo { font-size: 1.1rem; font-weight: 900; color: var(--text); letter-spacing: -0.5px; }
-  .topbar-logo span { color: var(--cyan); }
-  .topbar-badge {
-    font-size: 0.7rem; font-weight: 700; color: var(--text-muted);
-    background: #1a1a1a; border: 1px solid #333;
-    padding: 2px 8px; border-radius: 4px; letter-spacing: 1px;
-  }
-  .topbar-week {
-    background: var(--cyan); color: #000;
-    font-size: 0.75rem; font-weight: 900;
-    padding: 3px 10px; border-radius: 20px; letter-spacing: 1px;
-  }
-  .topbar-right { display: flex; align-items: center; gap: 16px; }
-  .topbar-item { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
-  .topbar-item .icon { font-size: 0.9rem; }
-
-  /* MAIN */
-  .main {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    flex: 1;
-    overflow: hidden;
-  }
-
-  /* ROBO PANEL */
-  .robo-panel {
-    background: var(--panel);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .robo-header {
-    padding: 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .robo-avatar {
-    width: 48px; height: 48px;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 2px solid var(--cyan);
-    flex-shrink: 0;
-  }
-  .robo-avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .robo-name { font-weight: 900; font-size: 1rem; }
-  .robo-status { font-size: 0.75rem; color: var(--cyan); }
-
-  .robo-chat {
-    flex: 1;
-    overflow-y: auto;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .robo-chat::-webkit-scrollbar { width: 4px; }
-  .robo-chat::-webkit-scrollbar-track { background: transparent; }
-  .robo-chat::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
-
-  .bubble {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 10px 14px;
-    font-size: 0.88rem;
-    line-height: 1.6;
-    animation: fadeIn 0.3s ease;
-  }
-  .bubble b { color: var(--cyan); }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
-  .robo-input-area {
-    padding: 10px;
-    border-top: 1px solid var(--border);
-  }
-  .robo-input-row {
-    display: flex; gap: 6px;
-  }
-  .robo-input {
-    flex: 1;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 12px;
-    color: var(--text);
-    font-size: 0.82rem;
-    font-family: inherit;
-    outline: none;
-  }
-  .robo-input:focus { border-color: var(--cyan); }
-  .robo-input::placeholder { color: var(--text-muted); }
-  .robo-send {
-    background: var(--cyan);
-    border: none;
-    border-radius: 8px;
-    width: 36px; height: 36px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem;
-    color: #000;
-    font-weight: 900;
-  }
-
-  .robo-buttons {
-    padding: 8px 10px;
-    display: flex; flex-wrap: wrap; gap: 6px;
-  }
-  .robo-btn {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 5px 10px;
-    font-size: 0.75rem;
-    color: var(--text);
-    cursor: pointer;
-    font-family: inherit;
-    transition: border-color 0.2s;
-  }
-  .robo-btn:hover { border-color: var(--cyan); color: var(--cyan); }
-
-  /* CONTENT PANEL */
-  .content-panel {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  /* BOOK HEADER */
-  .book-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-shrink: 0;
-  }
-  .book-cover {
-    width: 64px; height: 80px;
-    border-radius: 6px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    flex-shrink: 0;
-    background: #1a1a1a;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2rem;
-  }
-  .book-cover img { width: 100%; height: 100%; object-fit: cover; }
-  .book-info h1 { font-size: 1.3rem; font-weight: 900; }
-  .book-info .author { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; }
-  .book-tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--card); border: 1px solid var(--border);
-    padding: 3px 10px; border-radius: 6px;
-    font-size: 0.75rem; font-weight: 700; color: var(--text-muted);
-    margin-top: 6px;
-  }
-  .book-tag span { color: var(--cyan); }
-  .pdf-link {
-    font-size: 0.75rem; color: var(--text-muted);
-    text-decoration: none; display: flex; align-items: center; gap: 4px;
-    margin-top: 4px; cursor: pointer;
-  }
-  .pdf-link:hover { color: var(--cyan); }
-
-  /* TABS */
-  .tabs {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  .tab {
-    padding: 10px;
-    text-align: center;
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
-  }
-  .tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
-  .tab.done { color: var(--green); }
-  .tab.locked { opacity: 0.4; cursor: not-allowed; }
-
-  /* TAB CONTENT */
-  .tab-content { flex: 1; overflow-y: auto; display: none; padding: 20px; }
-  .tab-content.active { display: block; }
-  .tab-content::-webkit-scrollbar { width: 4px; }
-  .tab-content::-webkit-scrollbar-track { background: transparent; }
-  .tab-content::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
-
-  /* LISTEN TAB */
-  .listen-hero {
-    display: flex; flex-direction: column; align-items: center;
-    padding: 30px 20px; text-align: center;
-  }
-  .headphone-icon { font-size: 5rem; margin-bottom: 16px; opacity: 0.8; }
-  .listen-title { font-size: 1.6rem; font-weight: 900; margin-bottom: 6px; }
-  .listen-sub { font-size: 0.9rem; color: var(--text-muted); }
-
-  .audio-section { margin-bottom: 20px; }
-  .audio-label {
-    font-size: 0.8rem; font-weight: 700; color: var(--text-muted);
-    margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
-  }
-  .audio-player {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 16px;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .play-btn {
-    width: 40px; height: 40px;
-    background: var(--cyan);
-    border: none; border-radius: 50%;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem; color: #000;
-    flex-shrink: 0;
-  }
-  .audio-info { flex: 1; }
-  .audio-title { font-size: 0.85rem; font-weight: 700; }
-  .audio-time { font-size: 0.75rem; color: var(--text-muted); }
-  .audio-progress {
-    width: 100%; height: 3px;
-    background: var(--border);
-    border-radius: 2px; margin-top: 6px;
-    cursor: pointer;
-  }
-  .audio-progress-fill { height: 100%; background: var(--cyan); border-radius: 2px; width: 0%; transition: width 0.1s; }
-  .audio-duration { font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; }
-
-  /* READ TAB */
-  .story-text {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 24px;
-    line-height: 1.9;
-    font-size: 0.92rem;
-  }
-  .story-text p { margin-bottom: 14px; }
-  .story-text p:last-child { margin-bottom: 0; }
-  .vocab-word {
-    color: var(--cyan);
-    font-weight: 700;
-    cursor: pointer;
-    border-bottom: 1px dotted var(--cyan);
-  }
-  .vocab-tooltip {
-    display: none;
-    position: fixed;
-    background: #1a1a1a;
-    border: 1px solid var(--cyan);
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 0.8rem;
-    z-index: 1000;
-    max-width: 220px;
-    pointer-events: none;
-  }
-
-  /* TRANSLATE TAB */
-  .translate-section { margin-bottom: 16px; }
-  .translate-section h3 {
-    font-size: 0.8rem; font-weight: 700; color: var(--text-muted);
-    margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;
-  }
-  .translate-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    font-size: 0.88rem;
-    line-height: 1.7;
-  }
-  .translate-card.korean { border-left: 3px solid var(--cyan); }
-  .translate-card.english { border-left: 3px solid var(--gold); color: #e0e0e0; }
-
-  /* FILL TAB */
-  .fill-intro {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 20px;
-    font-size: 0.88rem;
-    line-height: 1.6;
-  }
-  .fill-intro b { color: var(--cyan); }
-
-  .vocab-chips {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin-bottom: 20px;
-  }
-  .vocab-chip {
-    background: var(--cyan-dim);
-    border: 1px solid var(--cyan);
-    border-radius: 6px;
-    padding: 4px 12px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: var(--cyan);
-  }
-
-  .fill-questions { display: flex; flex-direction: column; gap: 14px; }
-  .fill-q {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-  }
-  .fill-q-text { font-size: 0.88rem; line-height: 1.7; margin-bottom: 10px; }
-  .fill-input-row { display: flex; gap: 8px; align-items: center; }
-  .fill-input {
-    flex: 1;
-    background: #0d0d0d;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 7px 12px;
-    color: var(--text);
-    font-size: 0.88rem;
-    font-family: inherit;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .fill-input:focus { border-color: var(--cyan); }
-  .fill-input.correct { border-color: var(--green); background: rgba(0,230,118,0.05); }
-  .fill-input.wrong { border-color: var(--red); background: rgba(255,82,82,0.05); }
-  .check-btn {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 7px 14px;
-    color: var(--text);
-    font-size: 0.82rem;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.2s;
-  }
-  .check-btn:hover { border-color: var(--cyan); color: var(--cyan); }
-  .fill-result { font-size: 0.8rem; margin-top: 6px; min-height: 18px; }
-  .fill-result.ok { color: var(--green); }
-  .fill-result.no { color: var(--red); }
-
-  .submit-all-btn {
-    margin-top: 20px;
-    width: 100%;
-    background: var(--cyan);
-    border: none;
-    border-radius: 10px;
-    padding: 13px;
-    font-size: 1rem;
-    font-weight: 900;
-    color: #000;
-    cursor: pointer;
-    font-family: inherit;
-    display: none;
-  }
-  .submit-all-btn:hover { opacity: 0.9; }
-
-  /* COMPLETE SCREEN */
-  .complete-screen {
-    display: none;
-    text-align: center;
-    padding: 20px;
-  }
-  .complete-stars { font-size: 2rem; margin-bottom: 12px; }
-  .complete-title { font-size: 1.4rem; font-weight: 900; margin-bottom: 6px; }
-  .complete-sub { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 20px; }
-
-  .summary-box {
-    background: #000;
-    border: 1px solid var(--cyan);
-    border-radius: 12px;
-    padding: 16px 20px;
-    text-align: left;
-    margin-bottom: 16px;
-  }
-  .summary-box h3 {
-    font-size: 0.8rem; font-weight: 700; color: var(--cyan);
-    margin-bottom: 10px; letter-spacing: 1px;
-  }
-  .summary-row {
-    font-size: 0.85rem; margin-bottom: 6px; line-height: 1.5;
-  }
-  .summary-row b { color: var(--cyan); }
-
-  .copy-btn {
-    width: 100%;
-    background: var(--card);
-    border: 1px solid var(--cyan);
-    border-radius: 10px;
-    padding: 11px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--cyan);
-    cursor: pointer;
-    font-family: inherit;
-    margin-bottom: 10px;
-    transition: background 0.2s;
-  }
-  .copy-btn:hover { background: var(--cyan-dim); }
-
-  .goto-robo-btn {
-    width: 100%;
-    background: var(--cyan);
-    border: none;
-    border-radius: 10px;
-    padding: 14px;
-    font-size: 1.05rem;
-    font-weight: 900;
-    color: #000;
-    cursor: pointer;
-    font-family: inherit;
-    animation: pulse 1.5s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(255,140,0,0.4); }
-    50% { box-shadow: 0 0 0 10px rgba(255,140,0,0); }
-  }
-
-  .bottom-links {
-    display: flex; gap: 10px; margin-top: 14px;
-  }
-  .bottom-link {
-    flex: 1;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 9px;
-    text-align: center;
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .bottom-link:hover { border-color: var(--cyan); color: var(--cyan); }
-
-  /* SCORE BAR */
-  .score-bar {
-    position: fixed;
-    bottom: 0; left: 320px; right: 0;
-    background: rgba(0,0,0,0.95);
-    border-top: 1px solid var(--border);
-    padding: 8px 20px;
-    display: flex; align-items: center; gap: 12px;
-    font-size: 0.8rem;
-    z-index: 50;
-  }
-  .score-label { color: var(--text-muted); }
-  .score-dots { display: flex; gap: 6px; }
-  .score-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: var(--border);
-    transition: background 0.3s;
-  }
-  .score-dot.filled { background: var(--green); }
-
-  .mobile-chat-btn { display: none; }
-  .mobile-chat-close { display: none; }
-
-  /* ===== MOBILE RESPONSIVE ===== */
-  @media (max-width: 768px) {
-    html, body { overflow-x: hidden; }
-    body { height: auto; min-height: 100vh; }
-    .main { display: block; overflow-y: auto; flex: none; }
-    .content-panel { display: block; overflow-y: visible; }
-    .tab-content { display: none; overflow-y: visible; padding: 12px; }
-    .tab-content.active { display: block; }
-    .main { grid-template-columns: 1fr; }
-    .robo-panel {
-      display: none;
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      z-index: 200; background: var(--panel);
-    }
-    .robo-panel.mobile-open { display: flex; }
-    .mobile-chat-btn {
-      display: flex; position: fixed; bottom: 16px; right: 16px;
-      width: 52px; height: 52px; border-radius: 50%;
-      background: var(--cyan); border: none; color: #000;
-      font-size: 1.4rem; align-items: center; justify-content: center;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.4); z-index: 199; cursor: pointer;
-    }
-    .mobile-chat-close {
-      display: block; position: absolute; top: 10px; right: 10px;
-      width: 36px; height: 36px; border-radius: 50%;
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-      color: #fff; font-size: 1.2rem; cursor: pointer; z-index: 201;
-    }
-    .topbar { padding: 0 12px; height: 42px; flex-wrap: nowrap; overflow: hidden; }
-    .topbar-right { display: none; }
-    .topbar-left { gap: 8px; }
-    .topbar-logo { font-size: 0.9rem; }
-    .topbar-badge { font-size: 0.6rem; padding: 2px 6px; }
-    .topbar-week { font-size: 0.65rem; padding: 2px 8px; }
-    .topbar-right { gap: 8px; }
-    .topbar-item { font-size: 0.7rem; }
-    .book-header { padding: 10px 12px; gap: 10px; }
-    .book-cover { width: 48px; height: 60px; }
-    .book-info h1 { font-size: 1rem; }
-    .book-info .author { font-size: 0.75rem; }
-    .book-tag { font-size: 0.7rem; padding: 2px 8px; }
-    .tab { padding: 8px 4px; font-size: 0.7rem; }
-    .tab-content { padding: 12px; }
-    .listen-hero { padding: 20px 12px; }
-    .headphone-icon { font-size: 3rem; }
-    .listen-title { font-size: 1.2rem; }
-    .listen-sub { font-size: 0.8rem; }
-    .audio-player { padding: 10px 12px; gap: 8px; }
-    .play-btn { width: 44px; height: 44px; min-width: 44px; min-height: 44px; font-size: 1rem; }
-    .story-text { padding: 14px; font-size: 0.85rem; }
-    .translate-card { padding: 10px 12px; font-size: 0.82rem; }
-    .fill-intro { padding: 10px 12px; font-size: 0.82rem; }
-    .fill-q { padding: 10px 12px; }
-    .fill-q-text { font-size: 0.82rem; }
-    .fill-input { font-size: 0.82rem; padding: 6px 10px; }
-    .fill-input-row { flex-wrap: wrap; }
-    .vocab-chips { gap: 6px; }
-    .vocab-chip { padding: 3px 8px; font-size: 0.75rem; }
-    .score-bar { left: 0; padding: 6px 12px; }
-    .complete-screen { padding: 12px; }
-    .complete-title { font-size: 1.1rem; }
-    .summary-box { padding: 12px 14px; }
-    .bottom-links { flex-direction: column; }
-    .pdf-link { font-size: 0.7rem; }
-  }
-  @media (max-width: 900px) and (orientation: landscape) {
-    html, body { overflow-x: hidden; }
-    body { height: auto; min-height: 100vh; }
-    .main { display: block; overflow-y: auto; flex: none; }
-    .content-panel { display: block; overflow-y: visible; }
-    .main { grid-template-columns: 1fr; }
-    .robo-panel {
-      display: none;
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      z-index: 200; background: var(--panel);
-    }
-    .robo-panel.mobile-open { display: flex; }
-    .mobile-chat-btn {
-      display: flex; position: fixed; bottom: 16px; right: 16px;
-      width: 52px; height: 52px; border-radius: 50%;
-      background: var(--cyan); border: none; color: #000;
-      font-size: 1.4rem; align-items: center; justify-content: center;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.4); z-index: 199; cursor: pointer;
-    }
-    .mobile-chat-close {
-      display: block; position: absolute; top: 10px; right: 10px;
-      width: 36px; height: 36px; border-radius: 50%;
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-      color: #fff; font-size: 1.2rem; cursor: pointer; z-index: 201;
-    }
-    .topbar { height: 36px; padding: 0 12px; }
-    .book-header { padding: 8px 12px; }
-    .book-cover { width: 40px; height: 50px; }
-    .book-info h1 { font-size: 0.95rem; }
-    .tab { padding: 6px 4px; font-size: 0.68rem; }
-    .tab-content { padding: 10px; }
-    .listen-hero { padding: 12px; }
-    .headphone-icon { font-size: 2.5rem; }
-    .listen-title { font-size: 1rem; }
-    .score-bar { left: 0; }
-    .story-text { font-size: 0.82rem; padding: 12px; }
-    .fill-q { padding: 8px 10px; }
-  }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:#fff8f0;min-height:100vh;}
+.topbar{background:linear-gradient(90deg,#5a3a1a,#8a5a2a);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-logo{color:white;font-weight:900;font-size:1rem;}
+.topbar-sub{color:#f0c87a;font-size:0.75rem;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.ep-badge{background:rgba(255,255,255,0.15);color:white;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;}
+.xp-badge{background:#f97316;color:white;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;}
+.xp-bar-wrap{height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin-top:4px;width:80px;}
+.xp-fill{height:100%;background:#ffd60a;border-radius:2px;width:0%;transition:width 0.6s ease;}
+.container{max-width:780px;margin:0 auto;padding:24px 16px;}
+.card{background:white;border-radius:20px;overflow:hidden;margin-bottom:20px;box-shadow:0 4px 24px rgba(0,0,0,0.07);}
+.hero-card{background:linear-gradient(135deg,#5a3a1a,#8a5a2a);}
+.hero-img{width:100%;height:220px;background:linear-gradient(135deg,#8a5a2a,#5a3a1a);display:flex;align-items:center;justify-content:center;font-size:7rem;}
+.hero-badges{padding:12px 20px;display:flex;gap:8px;}
+.hb{padding:3px 12px;border-radius:10px;font-size:0.75rem;font-weight:700;}
+.hb-g{background:rgba(255,255,255,0.15);color:white;}
+.hb-o{background:#f97316;color:white;}
+.hero-title-area{padding:0 20px 16px;}
+.hero-title{color:white;font-size:1.3rem;font-weight:900;}
+.hero-sub{color:#f0c87a;font-size:0.85rem;margin-top:4px;}
+.key-box{background:linear-gradient(135deg,#5a3a1a,#a06020);border-radius:16px;padding:20px;margin:0 16px 16px;border:1px solid rgba(255,255,255,0.2);}
+.kb-label{font-size:0.7rem;font-weight:800;color:rgba(255,255,255,0.5);letter-spacing:2px;margin-bottom:8px;}
+.kb-text{font-size:1.4rem;font-weight:900;color:white;margin-bottom:4px;}
+.kb-kr{font-size:0.9rem;color:rgba(255,255,255,0.65);}
+.audio-row{background:rgba(255,255,255,0.1);border-radius:12px;padding:12px 16px;margin-top:12px;display:flex;align-items:center;gap:12px;}
+.play-btn{width:42px;height:42px;background:#f97316;border-radius:50%;border:none;cursor:pointer;color:white;font-size:1rem;flex-shrink:0;font-family:'Nunito',sans-serif;transition:transform 0.15s;}
+.play-btn:hover{transform:scale(1.1);}
+.audio-info{flex:1;color:rgba(255,255,255,0.85);font-size:0.8rem;}
+.audio-title-text{font-weight:800;color:white;}
+.wave{color:rgba(255,255,255,0.35);font-size:1rem;letter-spacing:2px;}
+.sh{display:flex;align-items:center;gap:10px;padding:18px 20px 0;}
+.sh-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.sh-title{font-size:0.95rem;font-weight:800;color:#1a1a1a;}
+.sh-sub{font-size:0.72rem;color:#999;font-weight:700;letter-spacing:1px;}
+.sb{padding:14px 20px 20px;}
+.listen-guide{background:#fdf3e0;border-radius:10px;padding:10px 14px;font-size:0.82rem;color:#5a3a1a;font-weight:700;margin-top:10px;display:flex;align-items:center;gap:8px;}
+.audio-brown{background:#5a3a1a;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;}
+.ltabs{display:flex;gap:8px;margin-bottom:14px;}
+.lt{padding:6px 16px;border-radius:20px;font-size:0.8rem;font-weight:800;cursor:pointer;border:2px solid #eee;color:#aaa;background:white;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.lt.lt-b{border-color:#5a3a1a;color:#5a3a1a;background:#fdf3e0;}
+.lt.lt-e{border-color:#2563eb;color:#2563eb;background:#eff6ff;}
+.lt.lt-i{border-color:#7c3aed;color:#7c3aed;background:#f5f3ff;}
+.story-box{background:#fdf8f0;border-left:4px solid #8a5a2a;border-radius:0 12px 12px 0;padding:16px;font-size:0.92rem;line-height:2;color:#1a1a1a;}
+.story-kr{background:#fffbf0;border-left:4px solid #f97316;border-radius:0 12px 12px 0;padding:14px;font-size:0.87rem;line-height:1.9;color:#666;margin-top:10px;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.vc{background:#fdf8f0;border-radius:12px;padding:12px 14px;border:1.5px solid #e8d8c0;}
+.vc-w{font-size:1rem;font-weight:900;color:#5a3a1a;}
+.vc-m{font-size:0.8rem;color:#666;margin-top:2px;}
+.vc-e{font-size:0.75rem;color:#aaa;margin-top:4px;font-style:italic;}
+.fill-wrap{background:#fdf8f0;border-radius:14px;padding:18px;}
+.fill-sent{font-size:1.05rem;font-weight:700;color:#1a1a1a;margin-bottom:14px;line-height:2;text-align:center;}
+.blank-span{display:inline-block;min-width:90px;border-bottom:3px solid #8a5a2a;text-align:center;padding:0 8px;color:#8a5a2a;font-weight:900;}
+.choices{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.cbtn{padding:8px 20px;border-radius:25px;border:2px solid #ddd;background:white;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.cbtn:hover{border-color:#5a3a1a;color:#5a3a1a;}
+.cbtn.ok{background:#dcfce7;border-color:#16a34a;color:#15803d;}
+.cbtn.no{background:#fee2e2;border-color:#dc2626;color:#b91c1c;}
+.fill-res{margin-top:10px;text-align:center;font-size:0.9rem;font-weight:700;min-height:22px;}
+.dict-item{background:#fdf8f0;border-radius:14px;padding:16px;margin-bottom:12px;}
+.dict-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.dict-play{width:38px;height:38px;background:#5a3a1a;border-radius:50%;border:none;cursor:pointer;color:white;font-size:0.9rem;flex-shrink:0;font-family:'Nunito',sans-serif;}
+.dict-label{font-size:0.85rem;font-weight:700;color:#444;}
+.dict-hint{font-size:0.75rem;color:#aaa;}
+.dict-input-row{display:flex;gap:8px;align-items:center;}
+.dict-input{flex:1;padding:10px 14px;border-radius:10px;border:1.5px solid #ddd;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:700;}
+.dict-input:focus{outline:none;border-color:#5a3a1a;}
+.dict-btn{padding:10px 16px;border-radius:10px;background:#5a3a1a;color:white;border:none;font-size:0.85rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+.dict-result{margin-top:8px;font-size:0.85rem;font-weight:700;min-height:20px;}
+.wo-wrap{background:#fdf8f0;border-radius:14px;padding:18px;margin-bottom:14px;}
+.wo-q{font-size:0.85rem;color:#555;margin-bottom:10px;font-weight:700;}
+.wo-box{min-height:48px;background:white;border-radius:10px;border:2px dashed #8a5a2a;padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px;}
+.wo-pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.wo-chip{padding:7px 14px;background:#5a3a1a;color:white;border-radius:20px;font-size:0.85rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-chip.used{background:#ccc;cursor:default;}
+.wo-placed{padding:7px 14px;background:#f97316;color:white;border-radius:20px;font-size:0.85rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-btns{display:flex;gap:8px;}
+.wo-check{background:#5a3a1a;color:white;border:none;padding:10px 22px;border-radius:25px;font-size:0.85rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-reset{background:white;color:#666;border:1.5px solid #ccc;padding:10px 16px;border-radius:25px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-result{font-size:0.85rem;font-weight:700;margin-top:8px;min-height:20px;}
+.match-wrap{background:#fdf8f0;border-radius:14px;padding:18px;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.match-col{display:flex;flex-direction:column;gap:8px;}
+.match-item{padding:10px 14px;border-radius:10px;border:2px solid #ddd;background:white;font-size:0.85rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s;font-family:'Nunito',sans-serif;}
+.match-item:hover{border-color:#8a5a2a;}
+.match-item.selected{border-color:#f97316;background:#fff8f0;color:#c05200;}
+.match-item.matched{border-color:#16a34a;background:#dcfce7;color:#15803d;cursor:default;}
+.match-item.wrong-flash{border-color:#dc2626;background:#fee2e2;}
+.match-result{text-align:center;font-size:0.9rem;font-weight:700;min-height:22px;}
+.quiz-item{background:#fdf8f0;border-radius:14px;padding:16px;margin-bottom:12px;}
+.quiz-q{font-size:0.9rem;font-weight:700;color:#1a1a1a;margin-bottom:10px;}
+.quiz-opts{display:flex;flex-direction:column;gap:8px;}
+.qopt{padding:10px 14px;border-radius:10px;border:1.5px solid #e0e0e0;background:white;font-size:0.85rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.qopt:hover{border-color:#5a3a1a;background:#fdf8f0;}
+.qopt.ok{background:#dcfce7;border-color:#16a34a;color:#15803d;}
+.qopt.no{background:#fee2e2;border-color:#dc2626;color:#b91c1c;}
+.prog-row{display:flex;align-items:center;gap:10px;padding:0 20px 16px;}
+.prog-track{flex:1;background:#eee;border-radius:10px;height:8px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,#5a3a1a,#f97316);border-radius:10px;transition:width 0.5s;}
+.prog-label{font-size:0.8rem;color:#aaa;font-weight:700;white-space:nowrap;}
+.complete-card{background:white;border-radius:20px;padding:32px;text-align:center;display:none;box-shadow:0 4px 24px rgba(0,0,0,0.07);margin-bottom:20px;}
+.complete-emoji{font-size:3rem;margin-bottom:12px;}
+.complete-title{font-size:1.4rem;font-weight:900;color:#5a3a1a;margin-bottom:8px;}
+.complete-sub{font-size:0.9rem;color:#666;margin-bottom:20px;line-height:1.7;}
+.xp-big{background:linear-gradient(135deg,#f97316,#fbbf24);color:white;border-radius:14px;padding:16px 32px;font-size:1.2rem;font-weight:900;display:inline-block;margin-bottom:20px;}
+.robo-box{background:#fdf3e0;border-radius:14px;padding:14px 16px;display:flex;gap:12px;text-align:left;margin-bottom:20px;}
+.robo-av{width:40px;height:40px;background:#8a5a2a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.robo-name{font-weight:900;color:#8a5a2a;font-size:0.85rem;margin-bottom:4px;}
+.robo-text{font-size:0.85rem;color:#555;line-height:1.6;}
+.tutor-btn{background:#10a37f;color:white;border:none;padding:14px 32px;border-radius:14px;font-size:1rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-bottom:12px;}
+.next-row{background:#fdf8f0;border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.next-lbl{font-size:0.75rem;color:#aaa;font-weight:700;}
+.next-title{font-size:0.9rem;font-weight:800;color:#1a1a1a;margin-top:2px;}
+.next-btn{background:#5a3a1a;color:white;border:none;padding:10px 18px;border-radius:10px;font-size:0.85rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
 <div class="topbar">
-  <div class="topbar-left">
-    <div class="topbar-logo">CEC <span>English</span> Camp</div>
-    <div class="topbar-badge">CAMP A · 5학년</div>
-    <div class="topbar-week">WEEK 1</div>
+  <div>
+    <div class="topbar-logo">🤖 CEC English Camp A</div>
+    <div class="topbar-sub">Grade 5 · Treasure Island · Week 1 of 36</div>
   </div>
   <div class="topbar-right">
-    <div class="topbar-item"><span class="icon">👤</span> <span id="topbar-name">친구</span></div>
-    <div class="topbar-item"><span class="icon">📖</span> Treasure Island</div>
-    <div class="topbar-item"><span class="icon">⭐</span> ★★★</div>
+    <div class="ep-badge">W1 / 36</div>
+    <div>
+      <div class="xp-badge">⭐ <span id="xp-num">0</span> XP</div>
+      <div class="xp-bar-wrap"><div class="xp-fill" id="xp-bar"></div></div>
+    </div>
   </div>
 </div>
 
-<!-- MAIN -->
-<div class="main">
+<div class="container">
 
-  <!-- ROBO PANEL -->
-  <div class="robo-panel">
-    <button class="mobile-chat-close" onclick="this.parentElement.classList.remove('mobile-open')">✕</button>
-    <div class="robo-header">
-      <div class="robo-avatar">
-        <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif">
-      </div>
-      <div>
-        <div class="robo-name">Robo</div>
-        <div class="robo-status">● 수업 중</div>
-      </div>
+  <div class="card hero-card">
+    <div class="hero-img">🗺️</div>
+    <div class="hero-badges">
+      <div class="hb hb-g">W1 · UNIT 1</div>
+      <div class="hb hb-o">B1 INTERMEDIATE</div>
     </div>
-
-    <div class="robo-chat" id="roboChatBox">
-      <div class="bubble" id="bubble-intro">
-        안녕 <b id="robo-name-span">친구</b>야! 😊<br><br>
-        오늘부터 <b>Treasure Island</b> 이야기를 시작할 거야! 🏴‍☠️<br><br>
-        1883년에 Robert Louis Stevenson이 쓴 건데, 소년 Jim Hawkins가 해적의 보물 지도를 발견하는 이야기야!<br><br>
-        먼저 오른쪽 ▶ 버튼 눌러서 들어봐. 눈 감고 상상하면서 😊
-      </div>
+    <div class="hero-title-area">
+      <div class="hero-title">Treasure Island</div>
+      <div class="hero-sub">보물섬 · 짐 호킨스, 비밀 지도를 발견하다!</div>
     </div>
-
-    <div class="robo-buttons" id="roboButtons">
-      <button class="robo-btn" onclick="roboBtnClick('다 들었어!')">🎧 다 들었어!</button>
-      <button class="robo-btn" onclick="roboBtnClick('어려워..')">😅 어려워..</button>
-      <button class="robo-btn" onclick="roboBtnClick('재미있어!')">😄 재미있어!</button>
-      <button class="robo-btn" onclick="roboBtnClick('다음!')">▶ 다음!</button>
-      <button class="robo-btn" onclick="roboBtnClick('모르겠어')">🤔 모르겠어</button>
-    </div>
-
-    <div class="robo-input-area">
-      <div class="robo-input-row">
-        <input class="robo-input" id="roboInput" placeholder="Robo에게 말해봐... 😊" onkeydown="if(event.key==='Enter')sendRobo()">
-        <button class="robo-send" onclick="sendRobo()">▶</button>
+    <div style="padding:0 16px 16px;">
+      <div class="key-box">
+        <div class="kb-label">KEY SENTENCE · 이번 주 핵심 표현</div>
+        <div class="kb-text">"X marks the spot."</div>
+        <div class="kb-kr">X 표시가 바로 그 장소야.</div>
+        <div class="audio-row">
+          <button class="play-btn" onclick="speak('X marks the spot.')">▶</button>
+          <div class="audio-info">
+            <div class="audio-title-text">발음 듣기 — 원어민 음성 재생</div>
+            <div style="opacity:0.6;font-size:0.75rem;">CLICK · EN-US · NATURAL SPEED</div>
+          </div>
+          <div class="wave">▁▃▅▃▁</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- CONTENT PANEL -->
-  <div class="content-panel">
-
-    <!-- BOOK HEADER -->
-    <div class="book-header">
-      <div class="book-cover">
-        <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/covers/treasure_island.jpg"
-             onerror="this.style.display='none';this.parentElement.innerHTML='🏴‍☠️'">
-      </div>
-      <div class="book-info">
-        <h1>Treasure Island</h1>
-        <div class="author">by Robert Louis Stevenson · 1883</div>
-        <div class="book-tag"><span>📖</span> Week 1 of 36 · <span>Part 1</span></div>
-        <div class="pdf-link" onclick="openPDF()">📄 클릭 → PDF</div>
-        <div style="font-size:0.75rem;color:#aaa;margin-top:4px;">PDF와 MP3는 소설의 원문입니다. 수업은 교육용으로 수준에 맞게 조절하였습니다.</div>
-      </div>
-    </div>
-
-    <!-- AUDIO -->
-    <div style="padding: 12px 20px; border-bottom: 1px solid var(--border); flex-shrink:0;">
-      <div class="audio-label">🎵 오늘의 MP3 듣기</div>
-      <div class="audio-player">
-        <button class="play-btn" onclick="toggleAudio()">▶</button>
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#fdf3e0;">🎧</div><div><div class="sh-title">발음 듣기 — 원어민 음성 재생</div><div class="sh-sub">LISTENING · 눈을 감고 상상하며 들어보세요</div></div></div>
+    <div class="sb">
+      <div class="audio-brown">
+        <button class="play-btn" id="main-play-btn" onclick="toggleFull()">▶</button>
         <div class="audio-info">
-          <div class="audio-title">Treasure Island — Ch.1 The Old Sea-Dog</div>
-          <div class="audio-progress" onclick="seekAudio(event)">
-            <div class="audio-progress-fill" id="audioFill"></div>
+          <div class="audio-title-text">Treasure Island — Week 1 Full Story</div>
+          <div style="opacity:0.6;font-size:0.75rem;">CLICK · EN-US · SLOW SPEED · 여선생님 목소리</div>
+        </div>
+        <div class="wave" style="color:rgba(255,255,255,0.3);">▁▃▅▇▅▃▁</div>
+      </div>
+      <div class="listen-guide">💡 소리를 들으면서 본문을 함께 보려면 — 아래 <strong>이야기 읽기</strong> 카드에서 <strong>초급 A2</strong> 버튼을 눌러보세요!</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#fdf3e0;">📖</div><div><div class="sh-title">이야기 읽기</div><div class="sh-sub">READING · 수준을 골라 읽어보세요</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="lt-b" onclick="showStory('b')">입문 A1</button>
+        <button class="lt" id="lt-e" onclick="showStory('e')">초급 A2</button>
+        <button class="lt" id="lt-i" onclick="showStory('i')">중급 B1</button>
+      </div>
+      <div id="sb-b">
+        <div class="story-box">
+          Jim Hawkins lived at an inn.<br>
+          One day, an old sailor came to stay.<br>
+          His name was Billy Bones.<br><br>
+          Billy Bones was scared of something.<br>
+          He always watched the sea.<br>
+          When Billy died, Jim found a map.<br>
+          It was a treasure map!
+        </div>
+      </div>
+      <div id="sb-e" style="display:none;">
+        <div class="story-box">
+          Jim Hawkins lived with his parents at the Admiral Benbow Inn.<br>
+          One winter, a rough old sailor named Billy Bones arrived.<br>
+          He paid for a room and spent his days watching the sea nervously.<br><br>
+          Billy was always afraid of a one-legged man.<br>
+          When Billy died suddenly, Jim found an oilskin packet in his sea chest.<br>
+          Inside was a treasure map of a mysterious island.<br>
+          Three red crosses marked the location of the buried treasure.
+        </div>
+      </div>
+      <div id="sb-i" style="display:none;">
+        <div class="story-box">
+          Jim Hawkins narrates his own story — the tale of Treasure Island.<br>
+          He lived at the Admiral Benbow Inn, run by his parents on the English coast.<br>
+          A weather-beaten old sailor called Billy Bones took a room there one winter day.<br><br>
+          Billy was secretive and fearful, always scanning the horizon for a one-legged man.<br>
+          When Billy died of a stroke, Jim and his mother opened his sea chest.<br>
+          Wrapped in oilskin was a map of an unknown island, with three crosses marking buried treasure.<br>
+          The adventure of a lifetime was about to begin.
+        </div>
+      </div>
+      <div class="story-kr">
+        짐 호킨스(Jim Hawkins)는 부모님이 운영하는 여관에서 살았어요. 어느 겨울, 빌리 본즈라는 거친 늙은 선원이 찾아왔어요. 그는 항상 바다를 긴장하며 바라보았어요.<br><br>
+        빌리는 외다리 사나이를 두려워했어요. 빌리가 갑자기 죽자, 짐은 그의 가방에서 기름종이에 싸인 지도를 발견했어요. 정체불명의 섬 지도에는 빨간 십자 표시 세 개가 숨겨진 보물의 위치를 가리키고 있었어요.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#fdf3e0;">📝</div><div><div class="sh-title">핵심 단어</div><div class="sh-sub">VOCABULARY · 이번 주 꼭 알아야 할 단어</div></div></div>
+    <div class="sb">
+      <div class="vocab-grid">
+        <div class="vc"><div class="vc-w">inn 🏠</div><div class="vc-m">여관, 숙박집</div><div class="vc-e">"Jim lived at the inn."</div></div>
+        <div class="vc"><div class="vc-w">sailor ⚓</div><div class="vc-m">선원, 뱃사람</div><div class="vc-e">"An old sailor arrived."</div></div>
+        <div class="vc"><div class="vc-w">chest 📦</div><div class="vc-m">상자, 보물 궤</div><div class="vc-e">"Jim opened the sea chest."</div></div>
+        <div class="vc"><div class="vc-w">map 🗺️</div><div class="vc-m">지도</div><div class="vc-e">"Inside was a treasure map."</div></div>
+        <div class="vc"><div class="vc-w">buried 💰</div><div class="vc-m">묻힌, 매장된</div><div class="vc-e">"The treasure was buried."</div></div>
+        <div class="vc"><div class="vc-w">mysterious 🔍</div><div class="vc-m">신비로운, 불가사의한</div><div class="vc-e">"A mysterious island appeared."</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#fff0f8;">✏️</div><div><div class="sh-title">빈칸 채우기 연습</div><div class="sh-sub">WORD FILL · 핵심 단어를 골라보세요</div></div></div>
+    <div class="sb">
+      <div class="fill-wrap">
+        <div class="fill-sent">"Jim found a treasure <span class="blank-span" id="bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span> in the chest!"</div>
+        <div class="choices">
+          <button class="cbtn" onclick="chkFill(this,'coin','map','bl1','fr1')">coin</button>
+          <button class="cbtn" onclick="chkFill(this,'map','map','bl1','fr1')">map</button>
+          <button class="cbtn" onclick="chkFill(this,'sword','map','bl1','fr1')">sword</button>
+        </div>
+        <div class="fill-res" id="fr1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#e6f0ff;">🎧</div><div><div class="sh-title">소리 듣고 빈칸 채우기</div><div class="sh-sub">DICTATION · 들리는 단어를 직접 입력하세요</div></div></div>
+    <div class="sb">
+      <div class="dict-item">
+        <div class="dict-row">
+          <button class="dict-play" onclick="speak('Jim lived at the inn.')">▶</button>
+          <div><div class="dict-label">문장 1 — 들어보고 빈칸을 채워요</div><div class="dict-hint">"Jim lived at the ______."</div></div>
+        </div>
+        <div class="dict-input-row">
+          <input class="dict-input" id="di1" placeholder="들리는 단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','inn','dr1')" />
+          <button class="dict-btn" onclick="chkDict('di1','inn','dr1')">확인 ✓</button>
+        </div>
+        <div class="dict-result" id="dr1"></div>
+      </div>
+      <div class="dict-item">
+        <div class="dict-row">
+          <button class="dict-play" onclick="speak('He found a treasure map.')">▶</button>
+          <div><div class="dict-label">문장 2 — 들어보고 빈칸을 채워요</div><div class="dict-hint">"He found a treasure ______."</div></div>
+        </div>
+        <div class="dict-input-row">
+          <input class="dict-input" id="di2" placeholder="들리는 단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','map','dr2')" />
+          <button class="dict-btn" onclick="chkDict('di2','map','dr2')">확인 ✓</button>
+        </div>
+        <div class="dict-result" id="dr2"></div>
+      </div>
+      <div class="dict-item">
+        <div class="dict-row">
+          <button class="dict-play" onclick="speak('The treasure was buried on the island.')">▶</button>
+          <div><div class="dict-label">문장 3 — 들어보고 빈칸을 채워요</div><div class="dict-hint">"The treasure was ______ on the island."</div></div>
+        </div>
+        <div class="dict-input-row">
+          <input class="dict-input" id="di3" placeholder="들리는 단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','buried','dr3')" />
+          <button class="dict-btn" onclick="chkDict('di3','buried','dr3')">확인 ✓</button>
+        </div>
+        <div class="dict-result" id="dr3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#f5f0ff;">🧩</div><div><div class="sh-title">단어 배열하기 1</div><div class="sh-sub">WORD ORDER · 수준을 골라 문장을 완성해봐요</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="wlt-b" onclick="showWO('b')">입문 A1</button>
+        <button class="lt" id="wlt-e" onclick="showWO('e')">초급 A2</button>
+        <button class="lt" id="wlt-i" onclick="showWO('i')">중급 B1</button>
+      </div>
+      <div id="wo-b">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 빈칸에 알맞은 단어를 골라봐요!</div>
+          <div class="fill-sent" style="margin-bottom:14px;">"Jim found a treasure <span class="blank-span" id="wo-bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span>."</div>
+          <div class="choices">
+            <button class="cbtn" onclick="chkFill(this,'ship','map','wo-bl1','wo-br1')">ship</button>
+            <button class="cbtn" onclick="chkFill(this,'map','map','wo-bl1','wo-br1')">map</button>
+            <button class="cbtn" onclick="chkFill(this,'chest','map','wo-bl1','wo-br1')">chest</button>
+          </div>
+          <div class="fill-res" id="wo-br1"></div>
+        </div>
+      </div>
+      <div id="wo-e" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 두 단어의 순서가 바뀌었어요! 올바른 순서로 완성해봐요!</div>
+          <div style="background:white;border-radius:10px;border:1.5px solid #e0e0e0;padding:12px 16px;font-size:0.95rem;font-weight:700;color:#555;margin-bottom:10px;line-height:1.8;">Billy was <span style="color:#dc2626;text-decoration:line-through;">man afraid</span> of a one-legged.<span style="font-size:0.75rem;color:#aaa;display:block;margin-top:4px;">밑줄 친 두 단어의 순서를 바꿔봐요</span></div>
+          <div class="wo-box" id="wo2e-ans"></div>
+          <div class="wo-pool" id="wo2e-pool">
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'Billy')">Billy</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'was')">was</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'afraid')">afraid</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'of')">of</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'a')">a</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'one-legged')">one-legged</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'man')">man</button>
+          </div>
+          <div class="wo-btns">
+            <button class="wo-check" onclick="woCheck('wo2e','Billy was afraid of a one-legged man','wr2e')">확인하기 ✓</button>
+            <button class="wo-reset" onclick="woReset('wo2e')">다시하기</button>
+          </div>
+          <div class="wo-result" id="wr2e"></div>
+        </div>
+      </div>
+      <div id="wo-i" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 모두 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo1-ans"></div>
+          <div class="wo-pool" id="wo1-pool">
+            <button class="wo-chip" onclick="woAdd('wo1',this,'X')">X</button>
+            <button class="wo-chip" onclick="woAdd('wo1',this,'marks')">marks</button>
+            <button class="wo-chip" onclick="woAdd('wo1',this,'the')">the</button>
+            <button class="wo-chip" onclick="woAdd('wo1',this,'spot')">spot</button>
+          </div>
+          <div class="wo-btns">
+            <button class="wo-check" onclick="woCheck('wo1','X marks the spot','wr1')">확인하기 ✓</button>
+            <button class="wo-reset" onclick="woReset('wo1')">다시하기</button>
+          </div>
+          <div class="wo-result" id="wr1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#fef0e6;">🃏</div><div><div class="sh-title">짝 맞추기</div><div class="sh-sub">MATCHING · 단어와 뜻을 연결해봐요</div></div></div>
+    <div class="sb">
+      <div class="match-wrap">
+        <div style="font-size:0.85rem;color:#666;font-weight:700;margin-bottom:12px;">단어를 클릭하고 맞는 뜻을 클릭해서 연결해봐요!</div>
+        <div class="match-grid">
+          <div class="match-col">
+            <button class="match-item" onclick="matchClick(this,'inn')">inn</button>
+            <button class="match-item" onclick="matchClick(this,'sailor')">sailor</button>
+            <button class="match-item" onclick="matchClick(this,'chest')">chest</button>
+            <button class="match-item" onclick="matchClick(this,'buried')">buried</button>
+          </div>
+          <div class="match-col">
+            <button class="match-item" onclick="matchClick(this,'buried')">묻힌</button>
+            <button class="match-item" onclick="matchClick(this,'inn')">여관</button>
+            <button class="match-item" onclick="matchClick(this,'chest')">상자</button>
+            <button class="match-item" onclick="matchClick(this,'sailor')">선원</button>
           </div>
         </div>
-        <div class="audio-duration" id="audioDuration">0:00 / --:--</div>
-      </div>
-      <audio id="mainAudio" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/audio/grade5/007_treasure_island_ch01.mp3"
-             onended="audioEnded()" ontimeupdate="updateAudioProgress()"></audio>
-    </div>
-
-    <!-- TABS -->
-    <div class="tabs">
-      <div class="tab active" id="tab1" onclick="showTab(1)">① 듣기</div>
-      <div class="tab locked" id="tab2" onclick="showTab(2)">② 영어 읽기</div>
-      <div class="tab locked" id="tab3" onclick="showTab(3)">③ 해석 보기</div>
-      <div class="tab locked" id="tab4" onclick="showTab(4)">④ 빈칸 채우기</div>
-    </div>
-
-    <!-- TAB 1: LISTEN -->
-    <div class="tab-content active" id="content1">
-      <div class="listen-hero">
-        <div class="headphone-icon">🎧</div>
-        <div class="listen-title">눈 감고 들어봐</div>
-        <div class="listen-sub">위의 ▶ 버튼을 눌러서<br>오늘 이야기를 먼저 들어봐 😊<br><br>낡은 여관에 누가 찾아올까?</div>
+        <div class="match-result" id="match-result"></div>
       </div>
     </div>
+  </div>
 
-    <!-- TAB 2: READ -->
-    <div class="tab-content" id="content2">
-      <div class="story-text">
-        <p><b>Day 1 — Jim finds the map</b></p>
-        <p>Jim Hawkins found a <span class="vocab-word" data-meaning="보물">treasure</span> map in his father's inn.</p>
-        <p>He was <span class="vocab-word" data-meaning="궁금한">curious</span> and excited.</p>
-        <p>Jim wanted to know where the treasure was <span class="vocab-word" data-meaning="숨겨진">hidden</span>.</p>
-        <p><b>Day 2 — Discussing the plan</b></p>
-        <p>Jim told his mother about the map.</p>
-        <p>They decided to keep it safe.</p>
-        <p>Jim wanted to prepare for an <span class="vocab-word" data-meaning="모험">adventure</span>.</p>
-        <p><b>Day 3 — Preparing for the journey</b></p>
-        <p>Jim packed food and clothes.</p>
-        <p>He hid the map <span class="vocab-word" data-meaning="조심스럽게">carefully</span>.</p>
-        <p>Jim was <span class="vocab-word" data-meaning="신난">excited</span> but a little nervous.</p>
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#fdf3e0;">🧩</div><div><div class="sh-title">단어 배열하기 2</div><div class="sh-sub">WORD ORDER · 더 긴 문장에 도전!</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="wlt2-b" onclick="showWO2('b')">입문 A1</button>
+        <button class="lt" id="wlt2-e" onclick="showWO2('e')">초급 A2</button>
+        <button class="lt" id="wlt2-i" onclick="showWO2('i')">중급 B1</button>
+      </div>
+      <div id="wo2-b">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 빈칸에 알맞은 단어를 골라봐요!</div>
+          <div class="fill-sent" style="margin-bottom:14px;">"An old <span class="blank-span" id="wo2-bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span> came to the inn."</div>
+          <div class="choices">
+            <button class="cbtn" onclick="chkFill(this,'king','sailor','wo2-bl1','wo2-br1')">king</button>
+            <button class="cbtn" onclick="chkFill(this,'sailor','sailor','wo2-bl1','wo2-br1')">sailor</button>
+            <button class="cbtn" onclick="chkFill(this,'doctor','sailor','wo2-bl1','wo2-br1')">doctor</button>
+          </div>
+          <div class="fill-res" id="wo2-br1"></div>
+        </div>
+      </div>
+      <div id="wo2-e" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 두 단어의 순서가 바뀌었어요!</div>
+          <div style="background:white;border-radius:10px;border:1.5px solid #e0e0e0;padding:12px 16px;font-size:0.95rem;font-weight:700;color:#555;margin-bottom:10px;line-height:1.8;">Three red <span style="color:#dc2626;text-decoration:line-through;">marked crosses</span> the treasure.<span style="font-size:0.75rem;color:#aaa;display:block;margin-top:4px;">밑줄 친 두 단어의 순서를 바꿔봐요</span></div>
+          <div class="wo-box" id="wo3e-ans"></div>
+          <div class="wo-pool" id="wo3e-pool">
+            <button class="wo-chip" onclick="woAdd('wo3e',this,'Three')">Three</button>
+            <button class="wo-chip" onclick="woAdd('wo3e',this,'red')">red</button>
+            <button class="wo-chip" onclick="woAdd('wo3e',this,'crosses')">crosses</button>
+            <button class="wo-chip" onclick="woAdd('wo3e',this,'marked')">marked</button>
+            <button class="wo-chip" onclick="woAdd('wo3e',this,'the')">the</button>
+            <button class="wo-chip" onclick="woAdd('wo3e',this,'treasure')">treasure</button>
+          </div>
+          <div class="wo-btns">
+            <button class="wo-check" onclick="woCheck('wo3e','Three red crosses marked the treasure','wr3e')">확인하기 ✓</button>
+            <button class="wo-reset" onclick="woReset('wo3e')">다시하기</button>
+          </div>
+          <div class="wo-result" id="wr3e"></div>
+        </div>
+      </div>
+      <div id="wo2-i" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 모두 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo2-ans"></div>
+          <div class="wo-pool" id="wo2-pool">
+            <button class="wo-chip" onclick="woAdd('wo2',this,'Jim')">Jim</button>
+            <button class="wo-chip" onclick="woAdd('wo2',this,'opened')">opened</button>
+            <button class="wo-chip" onclick="woAdd('wo2',this,'the')">the</button>
+            <button class="wo-chip" onclick="woAdd('wo2',this,'old')">old</button>
+            <button class="wo-chip" onclick="woAdd('wo2',this,'sea')">sea</button>
+            <button class="wo-chip" onclick="woAdd('wo2',this,'chest')">chest</button>
+          </div>
+          <div class="wo-btns">
+            <button class="wo-check" onclick="woCheck('wo2','Jim opened the old sea chest','wr2')">확인하기 ✓</button>
+            <button class="wo-reset" onclick="woReset('wo2')">다시하기</button>
+          </div>
+          <div class="wo-result" id="wr2"></div>
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- TAB 3: TRANSLATE -->
-    <div class="tab-content" id="content3">
-      <div class="translate-section">
-        <h3>📖 오늘의 이야기 — 해석</h3>
-        <div class="translate-card korean" style="display:flex;flex-direction:column;gap:16px;">
-  <div><b>Day 1</b></div>
-  <div>
-    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim Hawkins found a treasure map in his father's inn.</div>
-    <div>짐 호킨스는 아버지의 여관에서 보물지도를 발견했어.</div>
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#fdf3e0;">❓</div><div><div class="sh-title">레벨별 이해 문제</div><div class="sh-sub">COMPREHENSION CHECK · A1 · A2 · B1</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="ql-b" onclick="showQuiz('b')">A1 문제</button>
+        <button class="lt" id="ql-e" onclick="showQuiz('e')">A2 문제</button>
+        <button class="lt" id="ql-i" onclick="showQuiz('i')">B1 문제</button>
+      </div>
+      <div id="qb-b">
+        <div class="quiz-item"><div class="quiz-q">Q1. Where did Jim Hawkins live?</div><div class="quiz-opts"><button class="qopt" onclick="qChk(this,'no')">a) On a ship</button><button class="qopt" onclick="qChk(this,'ok')">b) At an inn</button><button class="qopt" onclick="qChk(this,'no')">c) On an island</button></div></div>
+        <div class="quiz-item"><div class="quiz-q">Q2. What did Jim find in Billy's chest?</div><div class="quiz-opts"><button class="qopt" onclick="qChk(this,'no')">a) A lot of gold coins</button><button class="qopt" onclick="qChk(this,'ok')">b) A treasure map</button><button class="qopt" onclick="qChk(this,'no')">c) An old sword</button></div></div>
+        <div class="quiz-item"><div class="quiz-q">Q3. What did Billy Bones always watch?</div><div class="quiz-opts"><button class="qopt" onclick="qChk(this,'no')">a) The road to the inn</button><button class="qopt" onclick="qChk(this,'ok')">b) The sea</button><button class="qopt" onclick="qChk(this,'no')">c) The other guests</button></div></div>
+      </div>
+      <div id="qb-e" style="display:none;">
+        <div class="quiz-item"><div class="quiz-q">Q1. Why was Billy Bones always nervous?</div><div class="quiz-opts"><button class="qopt" onclick="qChk(this,'no')">a) He owed money to Jim's father</button><button class="qopt" onclick="qChk(this,'ok')">b) He was afraid of a one-legged man finding him</button><button class="qopt" onclick="qChk(this,'no')">c) He did not like the food at the inn</button></div></div>
+        <div class="quiz-item"><div class="quiz-q">Q2. What was special about the map Jim found?</div><div class="quiz-opts"><button class="qopt" onclick="qChk(this,'no')">a) It showed the way to a famous city</button><button class="qopt" onclick="qChk(this,'ok')">b) It had three red crosses marking buried treasure</button><button class="qopt" onclick="qChk(this,'no')">c) It was drawn by a famous explorer</button></div></div>
+        <div class="quiz-item"><div class="quiz-q">Q3. How did Billy Bones die?</div><div class="quiz-opts"><button class="qopt" onclick="qChk(this,'no')">a) He was killed by the one-legged man</button><button class="qopt" onclick="qChk(this,'ok')">b) He died of a stroke</button><button class="qopt" onclick="qChk(this,'no')">c) He drowned in a storm at sea</button></div></div>
+      </div>
+      <div id="qb-i" style="display:none;">
+        <div class="quiz-item"><div class="quiz-q">Q1. Why does Jim narrate the story himself? What effect does this create?</div><div class="quiz-opts"><button class="qopt" onclick="qChk(this,'no')">a) It makes the story seem less believable</button><button class="qopt" onclick="qChk(this,'ok')">b) It creates intimacy and makes readers feel they are living the adventure with Jim</button><button class="qopt" onclick="qChk(this,'no')">c) It allows other characters to share their own stories equally</button></div></div>
+        <div class="quiz-item"><div class="quiz-q">Q2. What does Billy's secretive behaviour suggest about his past?</div><div class="quiz-opts"><button class="qopt" onclick="qChk(this,'no')">a) He was a retired naval officer hiding from the government</button><button class="qopt" onclick="qChk(this,'ok')">b) He had been involved in piracy and feared those who knew his secrets</button><button class="qopt" onclick="qChk(this,'no')">c) He had stolen the map from a museum and was hiding from the police</button></div></div>
+        <div class="quiz-item"><div class="quiz-q">Q3. What does the treasure map symbolise at the start of the novel?</div><div class="quiz-opts"><button class="qopt" onclick="qChk(this,'no')">a) The danger of greed and how it corrupts honest people</button><button class="qopt" onclick="qChk(this,'ok')">b) The call to adventure and the beginning of Jim's journey from boyhood to experience</button><button class="qopt" onclick="qChk(this,'no')">c) The importance of education and learning to read maps</button></div></div>
+      </div>
+    </div>
+    <div class="prog-row">
+      <span class="prog-label">진행도</span>
+      <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:0%;"></div></div>
+      <span class="prog-label" id="prog-cnt">0 / 3</span>
+    </div>
   </div>
-  <div>
-    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">He was curious and excited.</div>
-    <div>그는 궁금하고 신났어.</div>
+
+  <div class="complete-card" id="complete-card">
+    <div class="complete-emoji">🗺️</div>
+    <div class="complete-title">Week 1 완료!</div>
+    <div class="complete-sub">짐이 보물 지도를 발견했어요!<br>다음 주에는 보물을 찾아 항해를 떠나요!</div>
+    <div class="xp-big">⭐ 총 <span id="final-xp">0</span> XP 획득!</div>
+    <div class="robo-box">
+      <div class="robo-av">🤖</div>
+      <div class="robo-text"><div class="robo-name">Robo</div>X 표시가 바로 그 장소! 짐은 과연 보물을 찾을 수 있을까요? 다음 주에 항해를 시작해봐요! ⚓</div>
+    </div>
+    <button class="tutor-btn" onclick="startTutor()">💬 AI 튜터와 영어 회화 연습하기</button>
+    <div class="next-row">
+      <div><div class="next-lbl">다음 주</div><div class="next-title">Week 2 — 항해 준비</div><div style="font-size:0.75rem;color:#aaa;margin-top:2px;">다음: 짐과 선원들이 보물섬으로 출발!</div></div>
+      <button class="next-btn" onclick="location.href='week02.html'">다음 주 →</button>
+    </div>
   </div>
-  <div>
-    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim wanted to know where the treasure was hidden.</div>
-    <div>짐은 보물이 어디 숨겨져 있는지 알고 싶었어.</div>
-  </div>
-  <div><b>Day 2</b></div>
-  <div>
-    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim told his mother about the map.</div>
-    <div>짐은 어머니에게 지도에 대해 말했어.</div>
-  </div>
-  <div>
-    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">They decided to keep it safe.</div>
-    <div>둘은 지도를 안전하게 보관하기로 했어.</div>
-  </div>
-  <div>
-    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim wanted to prepare for an adventure.</div>
-    <div>짐은 모험을 준비하고 싶었어.</div>
-  </div>
-  <div><b>Day 3</b></div>
-  <div>
-    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim packed food and clothes.</div>
-    <div>짐은 음식과 옷을 챙겼어.</div>
-  </div>
-  <div>
-    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">He hid the map carefully.</div>
-    <div>지도를 조심스럽게 숨겼어.</div>
-  </div>
-  <div>
-    <div style="color:#aaa;margin-bottom:2px;font-size:0.85rem;">Jim was excited but a little nervous.</div>
-    <div>짐은 신났지만 약간 긴장됐어.</div>
-  </div>
+
 </div>
-      </div>
-
-      <div class="translate-section" style="margin-top: 16px;">
-        <h3>📝 오늘의 단어</h3>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-          <div class="translate-card" style="border-left: 3px solid var(--gold);">
-            <b style="color:var(--gold)">inn</b><br>
-            <span style="color:var(--text-muted); font-size:0.82rem">여관, 작은 숙박집</span>
-          </div>
-          <div class="translate-card" style="border-left: 3px solid var(--gold);">
-            <b style="color:var(--gold)">seafaring</b><br>
-            <span style="color:var(--text-muted); font-size:0.82rem">바다에서 일하는, 항해하는</span>
-          </div>
-          <div class="translate-card" style="border-left: 3px solid var(--gold);">
-            <b style="color:var(--gold)">rum</b><br>
-            <span style="color:var(--text-muted); font-size:0.82rem">럼주 (독한 술)</span>
-          </div>
-          <div class="translate-card" style="border-left: 3px solid var(--gold);">
-            <b style="color:var(--gold)">trembling</b><br>
-            <span style="color:var(--text-muted); font-size:0.82rem">무서워서 떠는</span>
-          </div>
-          <div class="translate-card" style="border-left: 3px solid var(--gold);">
-            <b style="color:var(--gold)">chart</b><br>
-            <span style="color:var(--text-muted); font-size:0.82rem">해도, 바다 지도</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 4: FILL -->
-    <div class="tab-content" id="content4">
-
-      <div class="fill-intro">
-        읽기 텍스트에서 빈칸을 채워봐! 🎮<br><br>
-        Robo가 힌트 줄게. 할 수 있지? 💪
-      </div>
-
-      <div class="vocab-chips">
-        <div class="vocab-chip">map</div>
-        <div class="vocab-chip">curious</div>
-        <div class="vocab-chip">treasure</div>
-        <div class="vocab-chip">mother</div>
-        <div class="vocab-chip">keep</div>
-        <div class="vocab-chip">adventure</div>
-        <div class="vocab-chip">food</div>
-        <div class="vocab-chip">excited</div>
-      </div>
-
-      <div class="fill-questions">
-
-        <div class="fill-q" id="q1">
-          <div class="fill-q-text">
-            1. Jim Hawkins found a treasure ___.
-            <br><span style="color:var(--text-muted); font-size:0.8rem">(map / book)</span>
-          </div>
-          <div class="fill-input-row">
-            <input class="fill-input" id="ans1" placeholder="답을 써봐..." onkeydown="if(event.key==='Enter')checkAnswer(1)">
-            <button class="check-btn" onclick="checkAnswer(1)">확인</button>
-          </div>
-          <div class="fill-result" id="result1"></div>
-        </div>
-
-        <div class="fill-q" id="q2">
-          <div class="fill-q-text">
-            2. He was ___ and excited.
-            <br><span style="color:var(--text-muted); font-size:0.8rem">(curious / bored)</span>
-          </div>
-          <div class="fill-input-row">
-            <input class="fill-input" id="ans2" placeholder="답을 써봐..." onkeydown="if(event.key==='Enter')checkAnswer(2)">
-            <button class="check-btn" onclick="checkAnswer(2)">확인</button>
-          </div>
-          <div class="fill-result" id="result2"></div>
-        </div>
-
-        <div class="fill-q" id="q3">
-          <div class="fill-q-text">
-            3. He wanted to know where the ___ was hidden.
-            <br><span style="color:var(--text-muted); font-size:0.8rem">(treasure / house)</span>
-          </div>
-          <div class="fill-input-row">
-            <input class="fill-input" id="ans3" placeholder="답을 써봐..." onkeydown="if(event.key==='Enter')checkAnswer(3)">
-            <button class="check-btn" onclick="checkAnswer(3)">확인</button>
-          </div>
-          <div class="fill-result" id="result3"></div>
-        </div>
-
-        <div class="fill-q" id="q4">
-          <div class="fill-q-text">
-            4. Jim told his ___.
-            <br><span style="color:var(--text-muted); font-size:0.8rem">(mother / friend)</span>
-          </div>
-          <div class="fill-input-row">
-            <input class="fill-input" id="ans4" placeholder="답을 써봐..." onkeydown="if(event.key==='Enter')checkAnswer(4)">
-            <button class="check-btn" onclick="checkAnswer(4)">확인</button>
-          </div>
-          <div class="fill-result" id="result4"></div>
-        </div>
-
-        <div class="fill-q" id="q5">
-          <div class="fill-q-text">
-            5. They decided to ___ it safe.
-            <br><span style="color:var(--text-muted); font-size:0.8rem">(keep / throw)</span>
-          </div>
-          <div class="fill-input-row">
-            <input class="fill-input" id="ans5" placeholder="답을 써봐..." onkeydown="if(event.key==='Enter')checkAnswer(5)">
-            <button class="check-btn" onclick="checkAnswer(5)">확인</button>
-          </div>
-          <div class="fill-result" id="result5"></div>
-        </div>
-
-        <div class="fill-q" id="q6">
-          <div class="fill-q-text">
-            6. Jim wanted to prepare for an ___.
-            <br><span style="color:var(--text-muted); font-size:0.8rem">(adventure / movie)</span>
-          </div>
-          <div class="fill-input-row">
-            <input class="fill-input" id="ans6" placeholder="답을 써봐..." onkeydown="if(event.key==='Enter')checkAnswer(6)">
-            <button class="check-btn" onclick="checkAnswer(6)">확인</button>
-          </div>
-          <div class="fill-result" id="result6"></div>
-        </div>
-
-        <div class="fill-q" id="q7">
-          <div class="fill-q-text">
-            7. Jim packed ___ and clothes.
-            <br><span style="color:var(--text-muted); font-size:0.8rem">(food / books)</span>
-          </div>
-          <div class="fill-input-row">
-            <input class="fill-input" id="ans7" placeholder="답을 써봐..." onkeydown="if(event.key==='Enter')checkAnswer(7)">
-            <button class="check-btn" onclick="checkAnswer(7)">확인</button>
-          </div>
-          <div class="fill-result" id="result7"></div>
-        </div>
-
-        <div class="fill-q" id="q8">
-          <div class="fill-q-text">
-            8. He hid the ___ carefully.
-            <br><span style="color:var(--text-muted); font-size:0.8rem">(map / book)</span>
-          </div>
-          <div class="fill-input-row">
-            <input class="fill-input" id="ans8" placeholder="답을 써봐..." onkeydown="if(event.key==='Enter')checkAnswer(8)">
-            <button class="check-btn" onclick="checkAnswer(8)">확인</button>
-          </div>
-          <div class="fill-result" id="result8"></div>
-        </div>
-
-        <div class="fill-q" id="q9">
-          <div class="fill-q-text">
-            9. Jim was ___ but a little nervous.
-            <br><span style="color:var(--text-muted); font-size:0.8rem">(excited / bored)</span>
-          </div>
-          <div class="fill-input-row">
-            <input class="fill-input" id="ans9" placeholder="답을 써봐..." onkeydown="if(event.key==='Enter')checkAnswer(9)">
-            <button class="check-btn" onclick="checkAnswer(9)">확인</button>
-          </div>
-          <div class="fill-result" id="result9"></div>
-        </div>
-
-      </div>
-
-      <button class="submit-all-btn" id="submitAllBtn" onclick="submitAll()">
-        🎉 완료! 결과 확인하기
-      </button>
-
-      <!-- COMPLETE SCREEN -->
-      <div class="complete-screen" id="completeScreen">
-        <div class="complete-stars">⭐⭐⭐</div>
-        <div class="complete-title">완벽해! 오늘 수업 끝!</div>
-        <div class="complete-sub">Robo가 기다리고 있어!</div>
-
-        <div class="summary-box">
-          <h3>📚 오늘 공부 요약</h3>
-          <div class="summary-row"><b>Story:</b> Treasure Island (Week 1)</div>
-          <div class="summary-row"><b>Vocabulary:</b> inn, seafaring, rum, trembling, chart</div>
-          <div class="summary-row"><b>Grammar:</b> past tense narration (began, came, looked, said, sat)</div>
-          <div class="summary-row"><b>Score:</b> <span id="finalScore">9/9</span> ✅</div>
-        </div>
-
-        <button class="copy-btn" onclick="copyContext()">
-          📋 Step 12 준비 - 내용 복사하기
-        </button>
-
-        <button class="goto-robo-btn" onclick="goToRobo()">
-          🚀 수업 완료! Camp A 튜터에게 가기 →
-        </button>
-
-        <div class="bottom-links">
-          <div class="bottom-link" onclick="playFullAudio()">🎧 MP3 전체 듣기</div>
-          <div class="bottom-link" onclick="openPDF()">📄 PDF 전체 보기</div>
-        </div>
-        <div style="text-align:center; font-size:0.75rem; color:var(--text-muted); margin-top:10px;">
-          🏠 집에서도 계속 공부할 수 있어!
-        </div>
-      </div>
-
-    </div><!-- end tab4 -->
-
-  </div><!-- end content-panel -->
-</div><!-- end main -->
-<button class="mobile-chat-btn" onclick="document.querySelector('.robo-panel').classList.add('mobile-open')">💬</button>
-
-<!-- SCORE BAR -->
-<div class="score-bar">
-  <span class="score-label">점수:</span>
-  <div class="score-dots">
-    <div class="score-dot" id="dot1"></div>
-    <div class="score-dot" id="dot2"></div>
-    <div class="score-dot" id="dot3"></div>
-    <div class="score-dot" id="dot4"></div>
-    <div class="score-dot" id="dot5"></div>
-    <div class="score-dot" id="dot6"></div>
-    <div class="score-dot" id="dot7"></div>
-    <div class="score-dot" id="dot8"></div>
-    <div class="score-dot" id="dot9"></div>
-  </div>
-  <span id="scoreText" style="color:var(--text-muted)">0 / 9</span>
-</div>
-
-<!-- VOCAB TOOLTIP -->
-<div class="vocab-tooltip" id="vocabTip"></div>
 
 <script>
-// ===================== INIT =====================
-const _urlP = new URLSearchParams(window.location.search);
-const STUDENT_NAME = _urlP.get('name') || sessionStorage.getItem('student_name') || '친구';
-const STUDENT_GRADE = _urlP.get('grade') || sessionStorage.getItem('student_grade') || '5';
-const STUDENT_UID = _urlP.get('uid') || sessionStorage.getItem('student_uid') || '';
+var xp=0,correct=0,total=3;
+var wo1placed=[],wo2placed=[],wo2eplaced=[],wo3eplaced=[];
+var matchSel=null,matchPairs={};
+var isPlaying=false;
 
-document.getElementById('topbar-name').textContent = STUDENT_NAME;
-document.getElementById('robo-name-span').textContent = STUDENT_NAME;
-
-const ANSWERS = { 1: 'map', 2: 'curious', 3: 'treasure', 4: 'mother', 5: 'keep', 6: 'adventure', 7: 'food', 8: 'map', 9: 'excited' };
-const TOTAL = 9;
-let correct = [false, false, false, false, false, false, false, false, false];
-let tabUnlocked = [true, false, false, false];
-let score = 0;
-let audioPlaying = false;
-
-// Track which transitions already fired (prevent duplicate bubbles)
-const _transitioned = { 2: false, 3: false, 4: false };
-
-// Admin bypass: ?admin=true unlocks all tabs immediately
-if (_urlP.get('admin') === 'true') {
-  tabUnlocked = [true, true, true, true];
-  _transitioned[2] = _transitioned[3] = _transitioned[4] = true;
-  setTimeout(() => {
-    [1,2,3,4].forEach(n => document.getElementById('tab' + n).classList.remove('locked'));
-  }, 100);
+function getFemaleVoice(){
+  var voices=window.speechSynthesis.getVoices();
+  var names=['Microsoft Zira Desktop - English (United States)','Microsoft Zira','Microsoft Jenny Online (Natural) - English (United States)','Microsoft Jenny','Microsoft Aria Online (Natural) - English (United States)','Microsoft Aria','Samantha','Karen','Google US English'];
+  for(var n of names){var v=voices.find(function(v){return v.name===n;});if(v)return v;}
+  return voices.find(function(v){return v.lang==='en-US';})||voices[0];
 }
-
-// ===================== TABS =====================
-function showTab(n) {
-  if (!tabUnlocked[n-1]) return;
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('content' + n).classList.add('active');
-  document.getElementById('tab' + n).classList.add('active');
+function speak(text){
+  window.speechSynthesis.cancel();
+  setTimeout(function(){
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US';u.rate=0.82;u.pitch=1.1;
+    var f=getFemaleVoice();if(f)u.voice=f;
+    window.speechSynthesis.speak(u);
+  },200);
 }
-
-function unlockTab(n) {
-  if (tabUnlocked[n-1]) return;
-  tabUnlocked[n-1] = true;
-  document.getElementById('tab' + n).classList.remove('locked');
-}
-
-function transitionTo(n, roboMsg) {
-  if (_transitioned[n]) return;
-  _transitioned[n] = true;
-  document.getElementById('tab' + (n-1)).classList.add('done');
-  unlockTab(n);
-  addRoboBubble(roboMsg);
-  setTimeout(() => showTab(n), 600);
-}
-
-// ===================== AUDIO =====================
-const audio = document.getElementById('mainAudio');
-
-function toggleAudio() {
-  const btn = document.querySelector('.play-btn');
-  if (audioPlaying) {
-    audio.pause();
-    audioPlaying = false;
-    if (btn) btn.textContent = '▶';
-  } else {
-    audio.play().catch(() => {});
-    audioPlaying = true;
-    if (btn) btn.textContent = '⏸';
+function toggleFull(){
+  var btn=document.getElementById('main-play-btn');
+  if(isPlaying){window.speechSynthesis.cancel();isPlaying=false;btn.textContent='▶';}
+  else{
+    isPlaying=true;btn.textContent='⏸';
+    var text="Jim Hawkins lived with his parents at the Admiral Benbow Inn. One winter, a rough old sailor named Billy Bones arrived. He paid for a room and spent his days watching the sea nervously. Billy was always afraid of a one-legged man. When Billy died suddenly, Jim found an oilskin packet in his sea chest. Inside was a treasure map of a mysterious island. Three red crosses marked the location of the buried treasure.";
+    window.speechSynthesis.cancel();
+    setTimeout(function(){
+      var u=new SpeechSynthesisUtterance(text);
+      u.lang='en-US';u.rate=0.82;u.pitch=1.1;
+      var f=getFemaleVoice();if(f)u.voice=f;
+      u.onend=function(){isPlaying=false;btn.textContent='▶';};
+      window.speechSynthesis.speak(u);
+    },200);
   }
 }
-
-function updateAudioProgress() {
-  if (!audio.duration) return;
-  const pct = (audio.currentTime / audio.duration) * 100;
-  document.getElementById('audioFill').style.width = pct + '%';
-  document.getElementById('audioDuration').textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
+function addXP(n){xp+=n;document.getElementById('xp-num').textContent=xp;document.getElementById('xp-bar').style.width=Math.min(xp/5,100)+'%';}
+function showStory(l){['b','e','i'].forEach(x=>{document.getElementById('sb-'+x).style.display=x===l?'block':'none';var t=document.getElementById('lt-'+x);t.className='lt'+(x===l?' lt-'+x:'');});}
+function showWO(l){['b','e','i'].forEach(x=>{document.getElementById('wo-'+x).style.display=x===l?'block':'none';var t=document.getElementById('wlt-'+x);t.className='lt'+(x===l?' lt-'+x:'');});}
+function showWO2(l){['b','e','i'].forEach(x=>{document.getElementById('wo2-'+x).style.display=x===l?'block':'none';var t=document.getElementById('wlt2-'+x);t.className='lt'+(x===l?' lt-'+x:'');});}
+function showQuiz(l){['b','e','i'].forEach(x=>{document.getElementById('qb-'+x).style.display=x===l?'block':'none';var t=document.getElementById('ql-'+x);t.className='lt'+(x===l?' lt-'+x:'');});correct=0;total=3;updateProg();}
+function chkFill(btn,val,ans,blankId,resId){
+  btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.disabled=true);
+  var r=document.getElementById(resId);var bl=document.getElementById(blankId);
+  if(val===ans){btn.className='cbtn ok';bl.textContent=val;r.style.color='#16a34a';r.textContent='정답이에요! +30 XP';addXP(30);}
+  else{btn.className='cbtn no';r.style.color='#dc2626';r.textContent='다시 해봐요!';}
 }
-
-function seekAudio(e) {
-  if (!audio.duration) return;
-  const rect = e.currentTarget.getBoundingClientRect();
-  audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+function chkDict(inputId,ans,resId){
+  var val=document.getElementById(inputId).value.trim().toLowerCase();
+  var r=document.getElementById(resId);
+  if(val===ans.toLowerCase()){r.style.color='#16a34a';r.textContent='정답이에요! +20 XP ✓';addXP(20);document.getElementById(inputId).style.borderColor='#16a34a';}
+  else{r.style.color='#dc2626';r.textContent='다시 들어보세요! (힌트: '+ans[0]+'...)';}
 }
-
-function formatTime(s) {
-  const m = Math.floor(s / 60);
-  const sec = Math.floor(s % 60);
-  return m + ':' + (sec < 10 ? '0' : '') + sec;
+function woAdd(id,btn,word){
+  if(btn.classList.contains('used'))return;btn.classList.add('used');
+  var map={wo1:wo1placed,wo2:wo2placed,wo2e:wo2eplaced,wo3e:wo3eplaced};
+  var arr=map[id]||[];arr.push(word);
+  var box=document.getElementById(id+'-ans');
+  var chip=document.createElement('button');chip.className='wo-placed';chip.textContent=word;
+  chip.onclick=function(){woRemove(id,btn,word,chip);};box.appendChild(chip);
 }
-
-function audioEnded() {
-  audioPlaying = false;
-  transitionTo(2, '잘 들었어? 이제 영어로 읽어볼 차례야! ② 영어 읽기 탭을 눌러봐 📖');
+function woRemove(id,origBtn,word,chip){
+  var map={wo1:wo1placed,wo2:wo2placed,wo2e:wo2eplaced,wo3e:wo3eplaced};
+  var arr=map[id]||[];var idx=arr.indexOf(word);if(idx>-1)arr.splice(idx,1);
+  origBtn.classList.remove('used');chip.remove();
 }
-
-function playFullAudio() { audio.currentTime = 0; audio.play(); }
-
-// ===================== ROBO CHAT =====================
-function addRoboBubble(html) {
-  const box = document.getElementById('roboChatBox');
-  const b = document.createElement('div');
-  b.className = 'bubble';
-  b.innerHTML = html;
-  box.appendChild(b);
-  box.scrollTop = box.scrollHeight;
+function woCheck(id,ans,resId){
+  var map={wo1:wo1placed,wo2:wo2placed,wo2e:wo2eplaced,wo3e:wo3eplaced};
+  var arr=map[id]||[];var given=arr.join(' ');var r=document.getElementById(resId);
+  if(given===ans){r.style.color='#16a34a';r.textContent='완벽해요! 정답입니다! +50 XP';addXP(50);}
+  else{r.style.color='#dc2626';r.textContent='아쉬워요! 다시 해봐요!';setTimeout(function(){r.textContent='';},2000);}
 }
-
-function addUserBubble(text) {
-  const box = document.getElementById('roboChatBox');
-  const ub = document.createElement('div');
-  ub.className = 'bubble';
-  ub.style.background = 'rgba(255,140,0,0.08)';
-  ub.style.borderColor = 'rgba(255,140,0,0.3)';
-  ub.textContent = text;
-  box.appendChild(ub);
-  box.scrollTop = box.scrollHeight;
+function woReset(id){
+  var map={wo1:wo1placed,wo2:wo2placed,wo2e:wo2eplaced,wo3e:wo3eplaced};
+  if(map[id])map[id].length=0;
+  var box=document.getElementById(id+'-ans');if(box)box.innerHTML='';
+  document.querySelectorAll('#'+id+'-pool .wo-chip').forEach(w=>w.classList.remove('used'));
 }
-
-function roboBtnClick(text) {
-  addUserBubble(text);
-
-  const responses = {
-    '다 들었어!': '잘했어! 이제 ② 영어 읽기 탭을 눌러봐! 📖',
-    '어려워..': '괜찮아! 처음엔 다 어려워. 주황색 단어를 클릭하면 뜻이 나와 😊',
-    '재미있어!': '그렇지?! 해적의 보물 지도라니, 완전 신나지? 🏴‍☠️',
-    '다음!': '오케이! 다음 단계로 가자! ▶',
-    '모르겠어': '괜찮아! Robo가 도와줄게. 주황색 단어 클릭해봐 😊'
-  };
-  setTimeout(() => addRoboBubble(responses[text] || '잘 하고 있어! 계속해봐 💪'), 400);
-
-  if (text === '다 들었어!' || text === '다음!') {
-    transitionTo(2, '');
-    if (_transitioned[2]) { unlockTab(2); setTimeout(() => showTab(2), 500); }
+function matchClick(el,key){
+  if(el.classList.contains('matched'))return;
+  if(!matchSel){matchSel=el;el.classList.add('selected');return;}
+  if(matchSel===el){el.classList.remove('selected');matchSel=null;return;}
+  var aKey=matchSel.getAttribute('onclick').match(/'([^']+)'/)[1];
+  var bKey=el.getAttribute('onclick').match(/'([^']+)'/)[1];
+  if(aKey===bKey){
+    matchSel.classList.remove('selected');matchSel.classList.add('matched');el.classList.add('matched');
+    matchPairs[aKey]=true;matchSel=null;addXP(15);
+    var done=Object.keys(matchPairs).length;var mr=document.getElementById('match-result');
+    mr.style.color='#16a34a';mr.textContent=done>=4?'모두 맞췄어요! 훌륭해요! 🎉':done+'개 맞췄어요! 계속해봐요!';
+  }else{
+    matchSel.classList.remove('selected');el.classList.remove('selected');
+    matchSel.classList.add('wrong-flash');el.classList.add('wrong-flash');
+    setTimeout(()=>{matchSel&&matchSel.classList.remove('wrong-flash');el.classList.remove('wrong-flash');},600);
+    matchSel=null;
   }
 }
-
-function sendRobo() {
-  const inp = document.getElementById('roboInput');
-  const txt = inp.value.trim();
-  if (!txt) return;
-  inp.value = '';
-  addUserBubble(txt);
-  setTimeout(() => addRoboBubble('잘 했어! 계속 공부해봐 💪 모르는 게 있으면 또 물어봐!'), 600);
+function qChk(el,type){
+  if(type==='ok'){el.parentElement.querySelectorAll('.qopt').forEach(o=>o.disabled=true);el.className='qopt ok';correct++;addXP(20);updateProg();}
+  else{el.className='qopt no';setTimeout(function(){el.className='qopt';},1000);}
 }
-
-// ===================== VOCAB TOOLTIP =====================
-document.querySelectorAll('.vocab-word').forEach(w => {
-  w.addEventListener('mouseenter', e => {
-    const tip = document.getElementById('vocabTip');
-    tip.textContent = w.dataset.meaning;
-    tip.style.display = 'block';
-    tip.style.left = (e.clientX + 10) + 'px';
-    tip.style.top = (e.clientY - 30) + 'px';
-  });
-  w.addEventListener('mouseleave', () => {
-    document.getElementById('vocabTip').style.display = 'none';
-  });
-  w.addEventListener('click', (e) => {
-    const tip = document.getElementById('vocabTip');
-    tip.textContent = w.dataset.meaning;
-    const r = w.getBoundingClientRect();
-    tip.style.display = 'block';
-    tip.style.left = r.left + 'px';
-    tip.style.top = (r.top - 30) + 'px';
-    setTimeout(() => { tip.style.display = 'none'; }, 2000);
-    addRoboBubble('<b>' + w.textContent + '</b>: ' + w.dataset.meaning);
-  });
-});
-
-// ===================== TAB AUTO-ADVANCE =====================
-
-// ② → ③
-(function() {
-  const el = document.getElementById('content2');
-  function checkContent2() {
-    if (el.scrollHeight <= el.clientHeight + 60) {
-      let _timer = null;
-      const obs = new MutationObserver(() => {
-        if (el.classList.contains('active') && !_timer) {
-          _timer = setTimeout(() => {
-            transitionTo(3, '다 읽었어? 이제 ③ 해석 보기 탭에서 한국어 해석을 확인해봐! 🇰🇷');
-          }, 5000);
-        }
-      });
-      obs.observe(el, { attributes: true, attributeFilter: ['class'] });
-      if (el.classList.contains('active')) {
-        _timer = setTimeout(() => {
-          transitionTo(3, '다 읽었어? 이제 ③ 해석 보기 탭에서 한국어 해석을 확인해봐! 🇰🇷');
-        }, 5000);
-      }
-    } else {
-      el.addEventListener('scroll', function() {
-        if (this.scrollTop + this.clientHeight >= this.scrollHeight - 50) {
-          transitionTo(3, '다 읽었어? 이제 ③ 해석 보기 탭에서 한국어 해석을 확인해봐! 🇰🇷');
-        }
-      });
-    }
-  }
-  setTimeout(checkContent2, 1000);
-})();
-
-// ③ → ④
-(function() {
-  const el = document.getElementById('content3');
-  function checkContent3() {
-    if (el.scrollHeight <= el.clientHeight + 60) {
-      let _timer = null;
-      const obs = new MutationObserver(() => {
-        if (el.classList.contains('active') && !_timer) {
-          _timer = setTimeout(() => {
-            transitionTo(4, '이제 마지막 단계야! ④ 빈칸 채우기 탭에서 오늘 배운 단어를 써봐! 💪');
-          }, 5000);
-        }
-      });
-      obs.observe(el, { attributes: true, attributeFilter: ['class'] });
-      if (el.classList.contains('active')) {
-        _timer = setTimeout(() => {
-          transitionTo(4, '이제 마지막 단계야! ④ 빈칸 채우기 탭에서 오늘 배운 단어를 써봐! 💪');
-        }, 5000);
-      }
-    } else {
-      el.addEventListener('scroll', function() {
-        if (this.scrollTop + this.clientHeight >= this.scrollHeight - 50) {
-          transitionTo(4, '이제 마지막 단계야! ④ 빈칸 채우기 탭에서 오늘 배운 단어를 써봐! 💪');
-        }
-      });
-    }
-  }
-  setTimeout(checkContent3, 1000);
-})();
-
-// ===================== FILL ANSWERS =====================
-function checkAnswer(n) {
-  const inp = document.getElementById('ans' + n);
-  const result = document.getElementById('result' + n);
-  const val = inp.value.trim().toLowerCase();
-  const ans = ANSWERS[n].toLowerCase();
-
-  if (val === ans) {
-    inp.classList.add('correct');
-    inp.classList.remove('wrong');
-    result.textContent = '✅ 정답!';
-    result.className = 'fill-result ok';
-    inp.disabled = true;
-    if (!correct[n-1]) {
-      correct[n-1] = true;
-      score++;
-      document.getElementById('dot' + n).classList.add('filled');
-      document.getElementById('scoreText').textContent = score + ' / ' + TOTAL;
-    }
-    addRoboBubble('맞아! <b>' + ANSWERS[n] + '</b> 정답이야! 💪');
-
-    if (n < TOTAL) setTimeout(() => document.getElementById('ans' + (n+1)).focus(), 300);
-
-    if (correct.every(c => c)) {
-      setTimeout(() => {
-        document.getElementById('submitAllBtn').style.display = 'block';
-        addRoboBubble('와!!! 😄 ' + TOTAL + '개 다 맞았어?! 정말 대단해!<br>⭐⭐⭐<br>Jim Hawkins도 놀랐을 거야! 🏴‍☠️');
-      }, 400);
-    }
-  } else if (val) {
-    inp.classList.add('wrong');
-    inp.classList.remove('correct');
-    const hints = {
-      1: '힌트: Jim이 발견한 보물의 것이야! m으로 시작해! 🗺️',
-      2: '힌트: 궁금한 마음이야! c로 시작해! 🤔',
-      3: '힌트: 숨겨진 것이야! t로 시작해! 💎',
-      4: '힌트: Jim이 누구에게 말했을까? m으로 시작해! 👩',
-      5: '힌트: 안전하게 하기로 한 것이야! k로 시작해! 🔒',
-      6: '힌트: 준비하고 싶은 것이야! a로 시작해! ⚓',
-      7: '힌트: Jim이 챙긴 것이야! f로 시작해! 🍞',
-      8: '힌트: 조심스럽게 숨긴 것이야! m으로 시작해! 🗺️',
-      9: '힌트: Jim의 기분이야! e로 시작해! 😊'
-    };
-    result.textContent = '❌ 다시 해봐!';
-    result.className = 'fill-result no';
-    addRoboBubble(hints[n]);
-  }
+function updateProg(){
+  document.getElementById('prog-bar').style.width=Math.round(correct/total*100)+'%';
+  document.getElementById('prog-cnt').textContent=correct+' / '+total;
+  if(correct>=total){setTimeout(()=>{document.getElementById('final-xp').textContent=xp;var cc=document.getElementById('complete-card');cc.style.display='block';cc.scrollIntoView({behavior:'smooth'});},800);}
 }
-
-function submitAll() {
-  document.getElementById('finalScore').textContent = score + '/' + TOTAL;
-  document.getElementById('submitAllBtn').style.display = 'none';
-  document.querySelectorAll('.fill-q').forEach(q => q.style.display = 'none');
-  document.querySelector('.fill-intro').style.display = 'none';
-  document.querySelector('.vocab-chips').style.display = 'none';
-  document.getElementById('completeScreen').style.display = 'block';
-  document.getElementById('tab4').classList.add('done');
+function startTutor(){
+  var name=encodeURIComponent('학생');
+  window.open('https://journey-bronzy-fruitily.ngrok-free.dev/static/step12.html?name='+name+'&grade=5&camp=a&week=1','_blank');
 }
-
-// ===================== COMPLETE ACTIONS =====================
-function copyContext() {
-  const ctx = `[CEC English Camp - 오늘 수업 완료]
-학생: ${STUDENT_NAME} (${STUDENT_GRADE}학년)
-Story: Treasure Island - Week 1, Part 1 (by Robert Louis Stevenson)
-Vocabulary: inn, seafaring, rum, trembling, chart
-Grammar: past tense narration (began, came, looked, said, sat)
-Score: ${score}/${TOTAL}
-
-오늘 내용 요약:
-- Jim Hawkins가 아버지의 여관 Admiral Benbow에서 이야기 시작
-- 흉터가 있는 늙은 뱃사람(Captain)이 여관에 찾아옴
-- Captain은 다리 하나인 뱃사람을 경계하라고 시킴
-- 아버지 사망 후 Captain의 상자에서 보물 지도 발견`;
-  navigator.clipboard.writeText(ctx).then(() => {
-    addRoboBubble('복사 완료! 이제 오른쪽 ChatGPT에 붙여넣기(Ctrl+V) 해봐! 📋');
+function shufflePools(){
+  document.querySelectorAll('.wo-pool').forEach(function(pool){
+    var chips=Array.from(pool.children);
+    chips.sort(function(){return Math.random()-0.5;});
+    chips.forEach(function(chip){pool.appendChild(chip);});
   });
 }
-
-function goToRobo() {
-  const uid = STUDENT_UID || new URLSearchParams(window.location.search).get('uid') || '';
-  window.location.href = '/static/auth-relay.html?name=' + encodeURIComponent(STUDENT_NAME)
-    + '&uid=' + uid + '&grade=' + STUDENT_GRADE + '&camp=a&week=1';
-}
-
-function openPDF() {
-  alert('📄 PDF를 준비 중입니다. 조금만 기다려주세요!');
-}
-
-// ===================== VIEW=SUMMARY =====================
-if (_urlP.get('view') === 'summary') {
-  setTimeout(() => {
-    _transitioned[2] = _transitioned[3] = _transitioned[4] = true;
-    tabUnlocked = [true, true, true, true];
-    [1,2,3,4].forEach(n => document.getElementById('tab' + n).classList.remove('locked'));
-    showTab(4);
-    for (let i = 1; i <= TOTAL; i++) {
-      const inp = document.getElementById('ans' + i);
-      inp.value = ANSWERS[i];
-      inp.classList.add('correct');
-      document.getElementById('result' + i).textContent = '✅ 정답!';
-      document.getElementById('result' + i).className = 'fill-result ok';
-      document.getElementById('dot' + i).classList.add('filled');
-    }
-    correct = correct.map(() => true);
-    score = TOTAL;
-    document.getElementById('scoreText').textContent = TOTAL + ' / ' + TOTAL;
-    document.getElementById('finalScore').textContent = TOTAL + '/' + TOTAL;
-    document.getElementById('completeScreen').style.display = 'block';
-    document.getElementById('submitAllBtn').style.display = 'none';
-    document.querySelectorAll('.fill-q').forEach(q => q.style.display = 'none');
-    document.querySelector('.fill-intro').style.display = 'none';
-    document.querySelector('.vocab-chips').style.display = 'none';
-  }, 300);
-}
+window.addEventListener('load',shufflePools);
+var urlParams=new URLSearchParams(window.location.search);
+if(urlParams.get('admin')==='true'){setTimeout(function(){document.getElementById('final-xp').textContent='999';document.getElementById('complete-card').style.display='block';},300);}
 </script>
 </body>
 </html>
