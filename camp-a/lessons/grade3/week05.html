@@ -133,10 +133,7 @@ body{font-family:'Nunito',sans-serif;background:#f0fff4;min-height:100vh;}
 </head>
 <body>
 <div class="topbar">
-  <div><a href="https://cecenglishcamp.github.io/camp-a/" style="text-decoration:none;display:flex;align-items:center;gap:8px;">
-          <video src="../../robo.mp4" autoplay loop muted playsinline style="width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;"></video>
-          <div class="topbar-logo">CEC English Camp A</div>
-        </a><div class="topbar-sub">Grade 3 · Peter Rabbit · Week 5 of 36</div></div>
+  <div><div class="topbar-logo">🤖 CEC English Camp A</div><div class="topbar-sub">Grade 3 · Peter Rabbit · Week 5 of 36</div></div>
   <div class="topbar-right">
     <div class="ep-badge">W5 / 36</div>
     <div><div class="xp-badge">⭐ <span id="xp-num">0</span> XP</div><div class="xp-bar-wrap"><div class="xp-fill" id="xp-bar"></div></div></div>
@@ -425,7 +422,7 @@ body{font-family:'Nunito',sans-serif;background:#f0fff4;min-height:100vh;}
     <div class="xp-big">⭐ 총 <span id="final-xp">0</span> XP 획득!</div>
     <div class="robo-box"><div class="robo-av">🤖</div><div class="robo-text"><div class="robo-name">Robo</div>피터가 드디어 문을 찾아서 탈출했어요! 다음 주에 집에서 어떤 일이 일어나는지 봐요! 🥕</div></div>
     <button class="tutor-btn" onclick="startTutor()">💬 AI 튜터와 영어 회화 연습하기</button>
-    <div class="next-row" style="flex-wrap:wrap;"><button class="next-btn" onclick="location.href='week04.html'" style="background:#666;">← W4</button>
+    <div class="next-row">
       <div><div class="next-lbl">다음 주</div><div class="next-title">Week 6 — Safe at Home</div><div style="font-size:0.72rem;color:#aaa;margin-top:2px;">다음: 피터, 집으로 돌아오다!</div></div>
       <button class="next-btn" onclick="location.href='week06.html'">다음 주 →</button>
     </div>
@@ -439,8 +436,7 @@ var matchSel=null,matchPairs={};
 var isPlaying=false;
 function getFemaleVoice(){var voices=window.speechSynthesis.getVoices();var names=['Microsoft Zira Desktop - English (United States)','Microsoft Zira','Microsoft Jenny Online (Natural) - English (United States)','Microsoft Jenny','Microsoft Aria Online (Natural) - English (United States)','Microsoft Aria','Samantha','Karen','Google US English'];for(var n of names){var v=voices.find(function(v){return v.name===n;});if(v)return v;}return voices.find(function(v){return v.lang==='en-US';})||voices[0];}
 function speak(text){window.speechSynthesis.cancel();setTimeout(function(){var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.82;u.pitch=1.1;var f=getFemaleVoice();if(f)u.voice=f;window.speechSynthesis.speak(u);},200);}
-function toggleFull(){var btn=document.getElementById('main-play-btn');if(isPlaying){window.speechSynthesis.cancel();isPlaying=false;btn.textContent='▶';}else{isPlaying=true;btn.textContent='⏸';var text=document.getElementById('sb-e').innerText.replace(/
-/g,' ');window.speechSynthesis.cancel();setTimeout(function(){var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.82;u.pitch=1.1;var f=getFemaleVoice();if(f)u.voice=f;u.onend=function(){isPlaying=false;btn.textContent='▶';};window.speechSynthesis.speak(u);},200);}}
+function toggleFull(){var btn=document.getElementById('main-play-btn');if(isPlaying){window.speechSynthesis.cancel();isPlaying=false;btn.textContent='▶';}else{isPlaying=true;btn.textContent='⏸';var text="Peter was lost inside Mr. McGregor's big garden. He was tired and scared. He had run so much that his heart was beating very fast. Peter tried to find the gate, but he could not remember which way to go. He ran past the vegetables and looked behind every big flower pot. I must find the gate! Peter said to himself. Then he saw a sparrow nearby. The little bird showed him the right way. Peter ran fast — and there was the gate at last!";window.speechSynthesis.cancel();setTimeout(function(){var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.82;u.pitch=1.1;var f=getFemaleVoice();if(f)u.voice=f;u.onend=function(){isPlaying=false;btn.textContent='▶';};window.speechSynthesis.speak(u);},200);}}
 function lcCheck(btn,type){var opts=btn.parentElement.querySelectorAll('.lc-opt');var res=document.getElementById('lc-res');if(type==='ok'){btn.classList.add('ok');opts.forEach(function(o){if(o!==btn)o.style.opacity='0.4';o.style.pointerEvents='none';});res.style.color='#16a34a';res.textContent='정답이에요! +20 XP';addXP(20);}else{btn.classList.add('no');res.style.color='#dc2626';res.textContent='다시 들어봐요!';setTimeout(function(){btn.classList.remove('no');res.textContent='';},1000);}}
 function addXP(n){xp+=n;document.getElementById('xp-num').textContent=xp;document.getElementById('xp-bar').style.width=Math.min(xp/5,100)+'%';}
 function showStory(l){['b','e','i'].forEach(x=>{document.getElementById('sb-'+x).style.display=x===l?'block':'none';var t=document.getElementById('lt-'+x);t.className='lt'+(x===l?' lt-'+x:'');});}
