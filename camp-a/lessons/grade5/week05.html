@@ -475,8 +475,23 @@ function matchClick(el,key){if(el.classList.contains('matched'))return;if(!match
 function qChk(el,type){if(type==='ok'){el.parentElement.querySelectorAll('.qopt').forEach(o=>o.disabled=true);el.className='qopt ok';correct++;addXP(20);updateProg();}else{el.className='qopt no';setTimeout(function(){el.className='qopt';},1000);}}
 function updateProg(){document.getElementById('prog-bar').style.width=Math.round(correct/total*100)+'%';document.getElementById('prog-cnt').textContent=correct+' / '+total;if(correct>=total){setTimeout(()=>{document.getElementById('final-xp').textContent=xp;var cc=document.getElementById('complete-card');cc.style.display='block';cc.scrollIntoView({behavior:'smooth'});},800);}}
 function startTutor(){var name=encodeURIComponent('학생');window.open('https://journey-bronzy-fruitily.ngrok-free.dev/static/step12.html?name='+name+'&grade=5&camp=a&week=5','_blank');}
+
+function shuffleLcOpts(){
+  var wrap=document.querySelector('.lc-opts');
+  if(!wrap)return;
+  var opts=Array.from(wrap.children);
+  opts.sort(function(){return Math.random()-0.5;});
+  opts.forEach(function(o){wrap.appendChild(o);});
+  // renumber
+  opts=Array.from(wrap.children);
+  var nums=['①','②','③'];
+  opts.forEach(function(o,i){
+    o.textContent=o.textContent.replace(/^[①②③]\s*/,nums[i]+' ');
+  });
+}
+
 function shufflePools(){document.querySelectorAll('.wo-pool').forEach(function(pool){var chips=Array.from(pool.children);chips.sort(function(){return Math.random()-0.5;});chips.forEach(function(chip){pool.appendChild(chip);});});}
-window.addEventListener('load',shufflePools);
+window.addEventListener('load',function(){shufflePools();shuffleLcOpts();});
 var urlParams=new URLSearchParams(window.location.search);
 if(urlParams.get('admin')==='true'){setTimeout(function(){document.getElementById('final-xp').textContent='999';document.getElementById('complete-card').style.display='block';},300);}
 </script>
