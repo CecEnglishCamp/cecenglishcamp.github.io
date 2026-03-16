@@ -161,10 +161,7 @@ body{font-family:'Nunito',sans-serif;background:#fff8f0;min-height:100vh;}
 
 <div class="topbar">
   <div>
-    <a href="../../index.html" style="text-decoration:none;"><a href="https://cecenglishcamp.github.io/camp-a/" style="text-decoration:none;display:flex;align-items:center;gap:8px;">
-          <video src="../../robo.mp4" autoplay loop muted playsinline style="width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;"></video>
-          <div class="topbar-logo">CEC English Camp A</div>
-        </a></a>
+    <div class="topbar-logo">🤖 CEC English Camp A</div>
     <div class="topbar-sub">Grade 3 · Peter Rabbit · Week 1 of 36</div>
   </div>
   <div class="topbar-right">
@@ -651,6 +648,8 @@ body{font-family:'Nunito',sans-serif;background:#fff8f0;min-height:100vh;}
 var xp = 0, correct = 0, total = 3;
 var wo1placed = [], wo2placed = [], wo2eplaced = [], wo3eplaced = [];
 var matchSel = null, matchPairs = {};
+var isPlaying = false;
+
 function getFemaleVoice() {
   var voices = window.speechSynthesis.getVoices();
   var names = [
@@ -680,9 +679,16 @@ function speak(text) {
   }, 200);
 }
 
-var isPlaying = false;
-function toggleFull(){var btn=document.getElementById('main-play-btn');if(isPlaying){window.speechSynthesis.cancel();isPlaying=false;btn.textContent='▶';}else{isPlaying=true;btn.textContent='⏸';var text=document.getElementById('sb-e').innerText.replace(/
-/g,' ');
+function toggleFull() {
+  var btn = document.getElementById('main-play-btn');
+  if (isPlaying) {
+    window.speechSynthesis.cancel();
+    isPlaying = false;
+    btn.textContent = '▶';
+  } else {
+    isPlaying = true;
+    btn.textContent = '⏸';
+    var text = "Once there were four little rabbits. Their names were Flopsy, Mopsy, Cotton-tail, and Peter. They lived with their mother under a big fir tree. One morning, their mother said to them. You can play in the fields or walk down the lane. But never go into Mr McGregor's garden. Your father had a very bad accident there. Mrs McGregor made him into a pie.";
     window.speechSynthesis.cancel();
     setTimeout(function() {
       var u = new SpeechSynthesisUtterance(text);
@@ -862,17 +868,6 @@ function qChk(el, type) {
     el.className = 'qopt no';
     setTimeout(function() { el.className = 'qopt'; }, 1000);
   }
-}
-
-// 어드민 바이패스 — URL에 ?admin=true 이면 완료화면 바로 표시
-var urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get('admin') === 'true') {
-  setTimeout(function() {
-    document.getElementById('final-xp').textContent = '999';
-    var cc = document.getElementById('complete-card');
-    cc.style.display = 'block';
-    cc.scrollIntoView({ behavior: 'smooth' });
-  }, 500);
 }
 
 function updateProg() {
