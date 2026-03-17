@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp B — 중학교 3학년 W1 · Sherlock Holmes: Adventures</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Black+Han+Sans&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #1c1c3a;
+  --card: #252550;
+  --card2: #202248;
+  --accent: #10b981;
+  --accent2: #065f46;
+  --green: #16a34a;
+  --gold: #f59e0b;
+  --red: #dc2626;
+  --text: #e8e8f0;
+  --sub: #9090aa;
+  --border: #2a2a4a;
+  --a1c: #16a34a; --a1b: #0d3320;
+  --a2c: #2563eb; --a2b: #0d1f4a;
+  --b1c: #7c3aed; --b1b: #1e0d4a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+
+/* 헤더 */
+.hd { background: linear-gradient(135deg, #1a1a40 0%, #242460 100%); padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.hd-left { display: flex; align-items: center; gap: 10px; }
+.hd-logo { font-family: 'Black Han Sans'; font-size: 1rem; color: var(--accent); }
+.hd-sub { font-size: 0.72rem; color: var(--sub); }
+.hd-badge { background: var(--accent2); color: white; font-size: 0.7rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; }
+.xp-btn { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; border: none; border-radius: 20px; padding: 5px 14px; font-size: 0.8rem; font-weight: 900; cursor: pointer; font-family: 'Nunito', sans-serif; }
+
+/* 히어로 */
+.hero { background: linear-gradient(135deg, #0d1b4a 0%, #1a0d4a 50%, #0d3a2e 100%); padding: 20px 16px; text-align: center; border-bottom: 1px solid var(--border); }
+.hero-week { font-size: 0.72rem; color: var(--sub); font-weight: 700; letter-spacing: 2px; margin-bottom: 6px; }
+.hero-title { font-family: 'Black Han Sans'; font-size: 1.6rem; color: white; margin-bottom: 4px; }
+.hero-author { font-size: 0.8rem; color: var(--sub); margin-bottom: 14px; }
+.hero-badges { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.hb { padding: 4px 12px; border-radius: 20px; font-size: 0.68rem; font-weight: 800; }
+.hb-novel { background: #1a3a6e; color: #7ab3ff; border: 1px solid #2a4a8e; }
+.hb-level { background: #2d1a4a; color: #b48aff; border: 1px solid #4a2a8e; }
+.hb-weeks { background: #1a4a2e; color: #5aff9a; border: 1px solid #2a6a3e; }
+
+/* KEY SENTENCE */
+.key-card { background: linear-gradient(135deg, #1a1a3e 0%, #2a1a4e 100%); border: 1px solid #3a2a6e; border-radius: 16px; padding: 16px; margin: 0 16px 8px; }
+.key-label { font-size: 0.65rem; color: var(--sub); font-weight: 700; letter-spacing: 2px; margin-bottom: 8px; }
+.key-en { font-size: 1.05rem; font-weight: 900; color: white; margin-bottom: 4px; line-height: 1.4; }
+.key-kr { font-size: 0.82rem; color: #b48aff; margin-bottom: 12px; }
+.key-play { background: var(--accent2); color: white; border: none; border-radius: 25px; padding: 8px 20px; font-size: 0.82rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
+
+/* 컨테이너 */
+.container { max-width: 680px; margin: 0 auto; padding: 0 12px 60px; }
+
+/* 카드 */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+.sh { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.sh-icon { font-size: 1.1rem; }
+.sh-title { font-size: 0.88rem; font-weight: 900; color: white; }
+
+/* 이야기 탭 */
+.tab-row { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.tab-btn { padding: 5px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: transparent; color: var(--sub); font-size: 0.75rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.15s; }
+.tab-btn.active-a1 { background: var(--a1b); border-color: var(--a1c); color: #5aff9a; }
+.tab-btn.active-a2 { background: var(--a2b); border-color: var(--a2c); color: #7ab3ff; }
+.tab-btn.active-b1 { background: var(--b1b); border-color: var(--b1c); color: #b48aff; }
+.story-box { background: var(--card2); border-radius: 10px; padding: 14px; font-size: 0.88rem; line-height: 1.85; color: var(--text); display: none; }
+.story-box.active { display: block; }
+.story-box p { margin-bottom: 10px; }
+.story-kr { background: #0d0d1a; border-left: 3px solid var(--accent2); border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 10px; font-size: 0.8rem; color: var(--sub); line-height: 1.8; display: none; }
+.kr-toggle { background: transparent; border: 1px solid var(--border); color: var(--sub); border-radius: 20px; padding: 4px 12px; font-size: 0.72rem; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; margin-top: 8px; }
+
+/* 문법 툴팁 */
+.gram { border-bottom: 2px dashed var(--gold); cursor: pointer; color: #fde68a; font-weight: 700; position: relative; }
+.gram:hover { background: rgba(245,158,11,0.1); border-radius: 3px; }
+.tooltip-wrap { position: fixed; z-index: 1000; display: none; }
+.tooltip-box { background: #1a1a2e; border: 1.5px solid var(--gold); border-radius: 12px; padding: 14px 16px; max-width: 280px; box-shadow: 0 8px 32px rgba(0,0,0,0.6); }
+.tt-tag { background: var(--gold); color: #1a1a00; font-size: 0.65rem; font-weight: 900; padding: 2px 8px; border-radius: 10px; margin-bottom: 8px; display: inline-block; }
+.tt-title { font-size: 0.88rem; font-weight: 900; color: white; margin-bottom: 6px; }
+.tt-desc { font-size: 0.78rem; color: var(--sub); line-height: 1.6; margin-bottom: 8px; }
+.tt-ex { background: var(--bg); border-radius: 6px; padding: 6px 10px; font-size: 0.78rem; color: #7ab3ff; margin-bottom: 10px; font-style: italic; }
+.tt-links { display: flex; gap: 8px; flex-wrap: wrap; }
+.tt-gram-link { background: #1a3a1a; border: 1px solid var(--green); color: #5aff9a; border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; text-decoration: none; }
+.tt-gpt-link { background: #3a1a1a; border: 1px solid var(--red); color: #ff9a9a; border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; }
+.tt-close { position: absolute; top: 8px; right: 10px; background: transparent; border: none; color: var(--sub); font-size: 1rem; cursor: pointer; }
+
+/* 단어 카드 */
+.vocab-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.vc { background: var(--card2); border-radius: 10px; padding: 10px 12px; border-left: 3px solid var(--accent); }
+.vc-w { font-size: 0.88rem; font-weight: 900; color: white; margin-bottom: 2px; }
+.vc-m { font-size: 0.75rem; color: var(--sub); margin-bottom: 4px; }
+.vc-e { font-size: 0.72rem; color: var(--accent); font-style: italic; }
+
+/* 빈칸 채우기 */
+.fill-sent { font-size: 0.9rem; font-weight: 700; line-height: 1.7; margin-bottom: 12px; color: white; }
+.blank-span { display: inline-block; min-width: 60px; border-bottom: 2px solid var(--accent); color: var(--accent); text-align: center; font-weight: 900; }
+.choices { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.cbtn { padding: 7px 16px; background: var(--card2); border: 1.5px solid var(--border); border-radius: 20px; color: var(--text); font-size: 0.82rem; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.15s; }
+.cbtn:hover { border-color: var(--accent); color: var(--accent); }
+.cbtn.ok { border-color: var(--green); background: #0d3320; color: #5aff9a; }
+.cbtn.no { border-color: var(--red); background: #3a0d0d; color: #ff9a9a; }
+.fill-res { font-size: 0.82rem; font-weight: 700; min-height: 18px; }
+
+/* 딕테이션 */
+.dict-item { background: var(--card2); border-radius: 10px; padding: 12px; margin-bottom: 8px; }
+.dict-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.dict-play { background: var(--accent); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 0.82rem; cursor: pointer; flex-shrink: 0; }
+.dict-label { font-size: 0.75rem; color: var(--sub); font-weight: 700; }
+.dict-hint { font-size: 0.78rem; color: var(--accent); font-style: italic; }
+.dict-input-row { display: flex; gap: 8px; }
+.dict-input { flex: 1; background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 12px; color: white; font-size: 0.82rem; font-family: 'Nunito', sans-serif; }
+.dict-input:focus { outline: none; border-color: var(--accent); }
+.dict-btn { background: var(--accent); color: white; border: none; border-radius: 8px; padding: 8px 14px; font-size: 0.78rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
+.dict-result { font-size: 0.78rem; font-weight: 700; min-height: 16px; margin-top: 4px; }
+
+/* LC */
+.lc-play-btn { background: var(--accent2); color: white; border: none; border-radius: 25px; padding: 9px 22px; font-size: 0.88rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; margin-bottom: 14px; }
+.lc-opts { display: flex; flex-direction: column; gap: 8px; min-height: 140px; }
+.lc-opt { background: var(--card2); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: 0.84rem; font-weight: 700; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; color: var(--text); transition: all 0.15s; }
+.lc-opt:hover { border-color: var(--accent2); }
+.lc-opt.ok { border-color: var(--green); background: #0d3320; color: #5aff9a; }
+.lc-opt.no { border-color: var(--red); background: #3a0d0d; color: #ff9a9a; }
+.lc-result { margin-top: 8px; font-size: 0.84rem; font-weight: 700; min-height: 18px; }
+
+/* 단어 배열 */
+.wo-wrap { background: var(--card2); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.wo-q { font-size: 0.8rem; color: var(--sub); margin-bottom: 8px; font-weight: 700; }
+.wo-box { min-height: 44px; background: var(--bg); border-radius: 8px; border: 1.5px dashed var(--accent); padding: 6px 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 8px; }
+.wo-pool { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; }
+.wo-chip { padding: 5px 12px; background: var(--accent2); color: white; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; font-family: 'Nunito', sans-serif; transition: all 0.15s; }
+.wo-chip:hover { opacity: 0.8; }
+.wo-chip.used { background: #2a2a4a; color: var(--sub); cursor: default; }
+.wo-placed { padding: 5px 12px; background: var(--accent); color: white; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; font-family: 'Nunito', sans-serif; }
+.wo-btns { display: flex; gap: 8px; }
+.wo-check { background: var(--accent2); color: white; border: none; padding: 8px 18px; border-radius: 20px; font-size: 0.8rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
+.wo-reset { background: transparent; color: var(--sub); border: 1px solid var(--border); padding: 8px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
+.wo-result { font-size: 0.8rem; font-weight: 700; margin-top: 6px; min-height: 16px; }
+
+/* 짝맞추기 */
+.match-wrap { background: var(--card2); border-radius: 12px; padding: 14px; }
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.match-col { display: flex; flex-direction: column; gap: 6px; }
+.match-item { padding: 8px 12px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--bg); font-size: 0.8rem; font-weight: 700; cursor: pointer; text-align: center; transition: all 0.15s; font-family: 'Nunito', sans-serif; color: var(--text); }
+.match-item:hover { border-color: var(--accent); }
+.match-item.selected { border-color: var(--gold); background: #2a2a00; color: #fde68a; }
+.match-item.matched { border-color: var(--green); background: #0d3320; color: #5aff9a; cursor: default; }
+.match-item.wrong-flash { border-color: var(--red); background: #3a0d0d; }
+.match-result { text-align: center; font-size: 0.86rem; font-weight: 700; min-height: 18px; }
+
+/* 받아쓰기 도전 (전체 문장) */
+.fd-item { background: var(--card2); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.fd-level { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.fd-lv-badge { font-size: 0.65rem; font-weight: 900; padding: 2px 8px; border-radius: 20px; color: white; }
+.fd-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.fd-play { border: none; border-radius: 9px; padding: 7px 14px; font-size: 0.82rem; font-weight: 800; cursor: pointer; color: white; }
+.fd-replay { background: transparent; border-radius: 9px; padding: 7px 10px; font-size: 0.82rem; font-weight: 700; cursor: pointer; }
+.fd-hints { background: var(--bg); border-radius: 9px; padding: 6px 12px; flex: 1; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 120px; }
+.fd-hint-label { font-size: 0.68rem; color: var(--sub); }
+.fd-hint-tag { border-radius: 6px; padding: 2px 8px; font-weight: 700; font-size: 0.78rem; border: 1.5px solid; }
+.fd-input-row { display: flex; gap: 8px; }
+.fd-input { flex: 1; background: var(--bg); border: 1.5px solid var(--border); border-radius: 9px; padding: 9px 12px; color: white; font-size: 0.82rem; font-family: 'Nunito', sans-serif; }
+.fd-input:focus { outline: none; border-color: var(--accent); }
+.fd-check { border: none; border-radius: 9px; padding: 9px 16px; font-size: 0.82rem; font-weight: 800; cursor: pointer; color: white; flex-shrink: 0; }
+.fd-result { margin-top: 8px; font-size: 0.8rem; font-weight: 700; min-height: 18px; }
+
+/* 이해문제 */
+.quiz-tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+.qtab { padding: 5px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: transparent; color: var(--sub); font-size: 0.75rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
+.qtab.qa1 { background: var(--a1b); border-color: var(--a1c); color: #5aff9a; }
+.qtab.qa2 { background: var(--a2b); border-color: var(--a2c); color: #7ab3ff; }
+.qtab.qb1 { background: var(--b1b); border-color: var(--b1c); color: #b48aff; }
+.quiz-set { display: none; }
+.quiz-set.active { display: block; }
+.quiz-item { background: var(--card2); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.quiz-q { font-size: 0.86rem; font-weight: 700; color: white; margin-bottom: 10px; line-height: 1.5; }
+.quiz-opts { display: flex; flex-direction: column; gap: 7px; }
+.qopt { padding: 9px 14px; border-radius: 9px; border: 1.5px solid var(--border); background: var(--bg); font-size: 0.82rem; font-weight: 700; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; color: var(--text); transition: all 0.15s; }
+.qopt:hover { border-color: var(--accent2); }
+.qopt.ok { background: #0d3320; border-color: var(--green); color: #5aff9a; }
+.qopt.no { background: #3a0d0d; border-color: var(--red); color: #ff9a9a; }
+
+/* 에세이 */
+.essay-wrap { background: var(--card2); border-radius: 12px; padding: 14px; }
+.essay-prompt { font-size: 0.84rem; color: white; font-weight: 700; margin-bottom: 8px; line-height: 1.5; }
+.essay-tip { font-size: 0.75rem; color: var(--sub); margin-bottom: 12px; padding: 8px 12px; background: var(--bg); border-radius: 8px; border-left: 3px solid var(--gold); }
+.essay-line { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.essay-num { font-size: 0.75rem; font-weight: 900; color: var(--gold); width: 20px; flex-shrink: 0; }
+.essay-input { flex: 1; background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 12px; color: white; font-size: 0.82rem; font-family: 'Nunito', sans-serif; }
+.essay-input:focus { outline: none; border-color: var(--gold); }
+.essay-submit { background: var(--gold); color: #1a1a00; border: none; border-radius: 20px; padding: 10px 24px; font-size: 0.86rem; font-weight: 900; cursor: pointer; font-family: 'Nunito', sans-serif; width: 100%; margin-top: 4px; }
+.essay-result { font-size: 0.8rem; color: var(--sub); margin-top: 8px; min-height: 16px; }
+
+/* ChatGPT 섹션 */
+.gpt-card { background: linear-gradient(135deg, #0d2a1a 0%, #1a0d2a 100%); border: 1px solid #2a4a3a; border-radius: 14px; padding: 16px; }
+.gpt-title { font-size: 0.9rem; font-weight: 900; color: white; margin-bottom: 6px; }
+.gpt-sub { font-size: 0.75rem; color: var(--sub); margin-bottom: 14px; }
+.gpt-prompt { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 0.78rem; color: #9090aa; line-height: 1.7; margin-bottom: 12px; white-space: pre-wrap; }
+.gpt-copy { background: #10a37f; color: white; border: none; border-radius: 20px; padding: 10px 24px; font-size: 0.86rem; font-weight: 900; cursor: pointer; font-family: 'Nunito', sans-serif; width: 100%; margin-bottom: 8px; }
+.gpt-open { background: transparent; border: 1.5px solid #10a37f; color: #10a37f; border-radius: 20px; padding: 9px 24px; font-size: 0.82rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; width: 100%; }
+.gpt-timer { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.75rem; color: var(--sub); margin-top: 8px; }
+
+/* 진행 바 */
+.prog-row { display: flex; align-items: center; gap: 8px; padding: 0 16px 16px; }
+.prog-track { flex: 1; background: #2a2a4a; border-radius: 8px; height: 6px; overflow: hidden; }
+.prog-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 8px; transition: width 0.5s; }
+.prog-label { font-size: 0.72rem; color: var(--sub); font-weight: 700; white-space: nowrap; }
+
+/* 완료 */
+.complete-card { background: var(--card); border-radius: 20px; padding: 28px; text-align: center; display: none; margin-bottom: 16px; border: 1px solid var(--accent2); }
+.complete-emoji { font-size: 2.8rem; margin-bottom: 10px; }
+.complete-title { font-size: 1.2rem; font-weight: 900; color: var(--accent); margin-bottom: 6px; }
+.complete-sub { font-size: 0.86rem; color: var(--sub); margin-bottom: 16px; line-height: 1.7; }
+.xp-big { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; border-radius: 12px; padding: 12px 24px; font-size: 1.1rem; font-weight: 900; display: inline-block; margin-bottom: 16px; }
+.next-row { background: var(--card2); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.next-lbl { font-size: 0.7rem; color: var(--sub); font-weight: 700; }
+.next-title { font-size: 0.86rem; font-weight: 800; color: white; }
+.next-btn { background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; white-space: nowrap; }
+
+/* 네비 */
+.nav-row { display: flex; justify-content: space-between; padding: 0 16px; margin-bottom: 12px; gap: 10px; }
+.nav-btn { padding: 9px 20px; border-radius: 10px; font-size: 0.8rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; border: none; flex: 1; max-width: 140px; }
+
+/* 툴팁 오버레이 */
+#tt-overlay { position: fixed; inset: 0; z-index: 999; display: none; }
+</style>
+</head>
+<body>
+
+<!-- 툴팁 오버레이 -->
+<div id="tt-overlay" onclick="closeTooltip()"></div>
+<div class="tooltip-wrap" id="tooltip-wrap">
+  <div class="tooltip-box" id="tooltip-box">
+    <button class="tt-close" onclick="closeTooltip()">✕</button>
+    <div class="tt-tag" id="tt-tag"></div>
+    <div class="tt-title" id="tt-title"></div>
+    <div class="tt-desc" id="tt-desc"></div>
+    <div class="tt-ex" id="tt-ex"></div>
+    <div class="tt-links">
+      <a class="tt-gram-link" id="tt-gram-link" href="#" target="_blank"></a>
+      <button class="tt-gpt-link" onclick="openGPTTooltip()">💬 ChatGPT에 물어보기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 헤더 -->
+<div class="hd">
+  <div class="hd-left">
+    <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif" 
+         alt="Robo" style="width:38px;height:38px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+    <div>
+      <div class="hd-logo">CEC English Camp B</div>
+      <div class="hd-sub">중학교 3학년 · Week 1 of 36</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="hd-badge">W1 / 36</div>
+    <button class="xp-btn" id="xp-btn">⭐ 0 XP</button>
+  </div>
+</div>
+
+<!-- 히어로 -->
+<div class="hero">
+  <div class="hero-week">CAMP B · 중학교 3학년 · UNIT 1</div>
+  <div class="hero-title">Sherlock Holmes: Adventures</div>
+  <div class="hero-author">Arthur Conan Doyle · 1892</div>
+  <div class="hero-badges">
+    <span class="hb hb-novel">📖 American Classic</span>
+    <span class="hb hb-level">🎯 A2~B1</span>
+    <span class="hb hb-weeks">⏱ W1~W6</span>
+  </div>
+</div>
+
+<!-- KEY SENTENCE -->
+<div class="key-card">
+  <div class="key-label">KEY SENTENCE · 이번 주 핵심 표현</div>
+  <div class="key-en">"Elementary, my dear Watson."</div>
+  <div class="key-kr">기초적인 일이죠, 왓슨.</div>
+  <button class="key-play" onclick="speak('Elementary, my dear Watson.')">▶ 발음 듣기</button>
+</div>
+
+<!-- 진행 바 -->
+<div class="prog-row">
+  <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:3%"></div></div>
+  <div class="prog-label" id="prog-label">W1 / 36</div>
+</div>
+
+<div class="container">
+
+<!-- ① 이야기 읽기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📖</div><div class="sh-title">이야기 읽기</div></div>
+  <div class="tab-row">
+    <button class="tab-btn" onclick="showStory('a1',this)">🟡 입문 (A2)</button>
+    <button class="tab-btn active-a2" onclick="showStory('a2',this)">🔵 초급 B1 ★ 기준</button>
+    <button class="tab-btn" onclick="showStory('b1',this)">🟣 중급 (B2)</button>
+  </div>
+  <div style="background:#1a2a3a;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:9px 14px;margin-bottom:10px;font-size:0.78rem;color:var(--sub);line-height:1.6;">
+    🔊 <strong style="color:var(--accent);">듣기는 초급 B1 기준</strong>으로 읽어드려요.<br>
+    <span style="font-size:0.72rem;">📌 초급(B1) = 이 학년의 평균 영어 수준. 입문(A2)은 더 쉽게, 중급(B2)은 더 어렵게 조정된 버전이에요.</span>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+    <button class="lc-play-btn" style="padding:7px 16px;font-size:0.82rem;margin-bottom:0;" onclick="readStory()">🔊 전체 듣기</button>
+    <button class="lc-play-btn" style="padding:7px 14px;font-size:0.82rem;margin-bottom:0;background:var(--card2);border:1.5px solid var(--border);" onclick="speechSynthesis.cancel()">⏹ 정지</button>
+  </div>
+
+  <div id="sb-a1" class="story-box">
+    <p>Sherlock Holmes was a very smart detective.<br>
+    He lived in London at 221B Baker Street.<br>
+    His friend was Dr. Watson.<br>
+    Holmes could solve any mystery.<br>
+    One day a woman came to visit.<br>
+    She had a strange problem.<br>
+    "Please help me," she said.<br>
+    Holmes smiled. "Tell me everything."</p>
+  </div>
+
+  <div id="sb-a2" class="story-box active">
+    <p>Sherlock Holmes <span class="gram" data-id="g1">sat</span> in his armchair at 221B Baker Street, his long fingers pressed together. Opposite him, Dr. Watson <span class="gram" data-id="g2">was reading</span> the morning paper.</p>
+    <p>A young woman entered. She <span class="gram" data-id="g3">looked</span> frightened, her hands trembling. Holmes <span class="gram" data-id="g4">had already observed</span> three things about her before she spoke a word.</p>
+    <p>"You have come from the country," he said. "You travelled by train this morning. And you are in some kind of danger."</p>
+    <p>The woman stared. "How could you possibly know that?"</p>
+    <p>"Elementary," Holmes replied. "The mud on your boots, the return ticket in your pocket, and the fear <span class="gram" data-id="g5">in your eyes</span>."</p>
+  </div>
+
+  <div id="sb-b1" class="story-box">
+    <p>"Elementary, my dear Watson." Holmes delivered the words with the calm certainty of a man who has already solved the puzzle while others are still reading the question.</p>
+    <p>The young woman, Irene Adler, sat across from him in the Baker Street flat, her composure admirable given the circumstances. She had come on a matter she could trust to no one else — which was, Holmes reflected, precisely the kind of case worth taking.</p>
+    <p>Watson watched his friend with familiar amazement. Holmes had <span class="gram" data-id="g6">deduced</span> her profession, her recent travel, and her current financial difficulty within thirty seconds of her entering the room — and all without asking a single question.</p>
+    <p>"How do you do it?" Watson asked later.</p>
+    <p>"I observe," said Holmes. "You see, Watson, but you do not observe. The difference is everything."</p>
+  </div>
+
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+    <button class="kr-toggle" onclick="toggleKr()" id="kr-btn">🇰🇷 한국어 번역 보기</button>
+    <span style="font-size:0.7rem;color:var(--sub);">※ 번역은 초급 B1 기준</span>
+  </div>
+  <div class="story-kr" id="story-kr">
+    "기초적인 일이죠, 왓슨." 홈즈는 다른 사람들이 아직 문제를 읽고 있는 동안 이미 퍼즐을 풀어버린 사람의 침착한 확신으로 그 말을 했어요.<br><br>
+    젊은 여성 아이린 애들러가 그의 맞은편 베이커 스트리트 아파트에 앉아 있었어요. 그녀는 상황을 고려하면 놀라울 정도로 침착했어요. 다른 누구에게도 믿길 수 없는 문제로 왔어요.<br><br>
+    왓슨은 익숙한 놀라움으로 친구를 지켜봤어요. 홈즈는 그녀가 방에 들어온 지 30초 만에 직업, 최근 여행, 현재 재정적 어려움을 추론했어요 — 그것도 단 하나의 질문도 없이.<br>
+    "어떻게 하시는 거죠?" 왓슨이 나중에 물었어요.<br>
+    "관찰하는 거요," 홈즈가 말했어요. "왓슨, 당신은 보지만 관찰하지 않아요. 그 차이가 전부예요.
+  </div>
+</div>
+
+<!-- 문법 툴팁 데이터 -->
+<script>
+const gramData = {"g1": {"tag": "G05 단순과거", "title": "sit → sat (불규칙)", "desc": "불규칙 과거형: sit → sat\n홈즈가 앉아 있었다", "ex": "Holmes sat in his armchair.", "gnum": "G05", "glink": "https://cecenglishcamp.github.io/GrammarBaseCamp/index.html"}, "g2": {"tag": "G04 과거진행", "title": "was/were + -ing", "desc": "과거에 진행 중이던 동작\n왓슨이 신문을 읽고 있었다", "ex": "Watson was reading the paper.", "gnum": "G04", "glink": "https://cecenglishcamp.github.io/GrammarBaseCamp/index.html"}, "g3": {"tag": "G05 단순과거", "title": "look → looked", "desc": "규칙 동사 과거형 +ed\n그녀는 무서워 보였다", "ex": "She looked frightened.", "gnum": "G05", "glink": "https://cecenglishcamp.github.io/GrammarBaseCamp/index.html"}, "g4": {"tag": "G22 과거완료", "title": "had + p.p. (already)", "desc": "이미 ~했었다\nhad already observed = 이미 관찰했었다", "ex": "He had already solved the case.", "gnum": "G22", "glink": "https://cecenglishcamp.github.io/GrammarBaseCamp/index.html"}, "g5": {"tag": "G47 관계부사", "title": "명사 + in + 명사구", "desc": "전치사구가 명사를 수식\nthe fear in your eyes = 눈 속의 공포", "ex": "The light in the window was gone.", "gnum": "G47", "glink": "https://cecenglishcamp.github.io/GrammarBaseCamp/index.html"}, "g6": {"tag": "G22 과거완료", "title": "had deduced", "desc": "과거보다 앞선 시점의 일\n방에 들어오기 전에 이미 추론했다", "ex": "Holmes had deduced everything already.", "gnum": "G22", "glink": "https://cecenglishcamp.github.io/GrammarBaseCamp/index.html"}};
+let currentGramId = '';
+
+// ── 전체 이야기 읽기 ──
+function readStory() {
+  // 항상 초급 B1 (a2) 텍스트를 기준으로 읽기
+  const baseStory = document.getElementById('sb-a2');
+  if (!baseStory) return;
+  const text = baseStory.innerText || baseStory.textContent;
+  const clean = text.replace(/\s+/g,' ').trim();
+  speak(clean);
+}
+</script>
+
+<!-- ② 단어 카드 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📝</div><div class="sh-title">이번 주 단어</div></div>
+  <div class="vocab-grid">
+    <div class="vc"><div class="vc-w">deduce 🧠</div><div class="vc-m">추론하다</div><div class="vc-e">"Holmes deduced her profession."</div></div>
+    <div class="vc"><div class="vc-w">observe 👁️</div><div class="vc-m">관찰하다</div><div class="vc-e">"You see but do not observe."</div></div>
+    <div class="vc"><div class="vc-w">composure 😌</div><div class="vc-m">침착함</div><div class="vc-e">"Her composure was admirable."</div></div>
+    <div class="vc"><div class="vc-w">trembling 😰</div><div class="vc-m">떨고 있는</div><div class="vc-e">"Her hands were trembling."</div></div>
+    <div class="vc"><div class="vc-w">elementary 📚</div><div class="vc-m">기초적인</div><div class="vc-e">"Elementary, my dear Watson."</div></div>
+    <div class="vc"><div class="vc-w">evidence 🔍</div><div class="vc-m">증거</div><div class="vc-e">"He found evidence everywhere."</div></div>
+  </div>
+</div>
+
+<!-- ③ 빈칸 채우기 (Duolingo ①) -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">빈칸 채우기</div></div>
+  <div class="fill-sent">Holmes had already <span class="blank-span" id="bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span> three things before she spoke.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'observed','observed','bl1','fr1')">observed</button>
+    <button class="cbtn" onclick="chkFill(this,'heard','observed','bl1','fr1')">heard</button>
+    <button class="cbtn" onclick="chkFill(this,'asked','observed','bl1','fr1')">asked</button>
+  </div>
+  <div class="fill-res" id="fr1"></div>
+  <br>
+  <div class="fill-sent">"You see, Watson, but you do not <span class="blank-span" id="bl2">&nbsp;&nbsp;&nbsp;&nbsp;</span>."</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'think','observe','bl2','fr2')">think</button>
+    <button class="cbtn" onclick="chkFill(this,'observe','observe','bl2','fr2')">observe</button>
+    <button class="cbtn" onclick="chkFill(this,'listen','observe','bl2','fr2')">listen</button>
+  </div>
+  <div class="fill-res" id="fr2"></div>
+</div>
+
+<!-- ④ 딕테이션 (Duolingo ②) -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🎧</div><div class="sh-title">단어 받아쓰기</div></div>
+  <div class="sb">
+    <div class="dict-item">
+      <div class="dict-row">
+        <button class="dict-play" onclick="speak('Holmes had already observed three things about her.')">&#9654;</button>
+        <div><div class="dict-label">문장 1</div><div class="dict-hint">"Holmes had already ______ three things."</div></div>
+      </div>
+      <div class="dict-input-row">
+        <input class="dict-input" id="di1" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','observed','dr1')"/>
+        <button class="dict-btn" onclick="chkDict('di1','observed','dr1')">확인 ✓</button>
+      </div>
+      <div class="dict-result" id="dr1"></div>
+    </div>
+    <div class="dict-item">
+      <div class="dict-row">
+        <button class="dict-play" onclick="speak('You see but you do not observe.')">&#9654;</button>
+        <div><div class="dict-label">문장 2</div><div class="dict-hint">"You see but you do not ______."</div></div>
+      </div>
+      <div class="dict-input-row">
+        <input class="dict-input" id="di2" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','observe','dr2')"/>
+        <button class="dict-btn" onclick="chkDict('di2','observe','dr2')">확인 ✓</button>
+      </div>
+      <div class="dict-result" id="dr2"></div>
+    </div>
+    <div class="dict-item">
+      <div class="dict-row">
+        <button class="dict-play" onclick="speak('Her hands were trembling when she entered.')">&#9654;</button>
+        <div><div class="dict-label">문장 3</div><div class="dict-hint">"Her hands were ______ when she entered."</div></div>
+      </div>
+      <div class="dict-input-row">
+        <input class="dict-input" id="di3" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','trembling','dr3')"/>
+        <button class="dict-btn" onclick="chkDict('di3','trembling','dr3')">확인 ✓</button>
+      </div>
+      <div class="dict-result" id="dr3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑤ 듣고 고르기 (Duolingo ③) -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">👂</div><div class="sh-title">듣고 고르기</div></div>
+  <button class="lc-play-btn" onclick="speak('Holmes deduced everything about the woman before she even spoke a single word.')">🔊 듣기</button>
+  <div class="lc-opts">
+    <button class="lc-opt" onclick="lcCheck(this,'ok')">① Holmes deduced everything about the woman before she even spoke a single word.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">② Watson solved the case while Holmes was reading the newspaper.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">③ The woman refused to tell Holmes why she had come to Baker Street.</button>
+  </div>
+  <div class="lc-result" id="lc-result"></div>
+</div>
+
+<!-- ⑥ 단어 배열 (Duolingo ④) -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔤</div><div class="sh-title">단어 배열하기</div></div>
+  <div class="wo-wrap">
+    <div class="wo-q">🔵 초급 B1 — 다음 단어를 올바른 순서로 배열하세요.</div>
+    <div class="wo-box" id="wo1e-box"></div>
+    <div class="wo-pool" id="wo1e-pool">
+      <button class="wo-chip" onclick="woAdd('wo1e',this,'do')">do</button>
+      <button class="wo-chip" onclick="woAdd('wo1e',this,'see')">see</button>
+      <button class="wo-chip" onclick="woAdd('wo1e',this,'but')">but</button>
+      <button class="wo-chip" onclick="woAdd('wo1e',this,'not')">not</button>
+      <button class="wo-chip" onclick="woAdd('wo1e',this,'You')">You</button>
+      <button class="wo-chip" onclick="woAdd('wo1e',this,'observe')">observe</button>
+    </div>
+    <div class="wo-btns">
+      <button class="wo-check" onclick="woCheck('wo1e','You see but do not observe','wr1e')">확인 ✓</button>
+      <button class="wo-reset" onclick="woReset('wo1e')">↺ 다시</button>
+    </div>
+    <div class="wo-result" id="wr1e"></div>
+  </div>
+  <div class="wo-wrap">
+    <div class="wo-q">🟣 중급 B2 — 과거완료가 포함된 문장을 배열하세요.</div>
+    <div class="wo-box" id="wo1b-box"></div>
+    <div class="wo-pool" id="wo1b-pool">
+      <button class="wo-chip" onclick="woAdd('wo1b',this,'profession')">profession</button>
+      <button class="wo-chip" onclick="woAdd('wo1b',this,'already')">already</button>
+      <button class="wo-chip" onclick="woAdd('wo1b',this,'deduced')">deduced</button>
+      <button class="wo-chip" onclick="woAdd('wo1b',this,'her')">her</button>
+      <button class="wo-chip" onclick="woAdd('wo1b',this,'had')">had</button>
+      <button class="wo-chip" onclick="woAdd('wo1b',this,'Holmes')">Holmes</button>
+    </div>
+    <div class="wo-btns">
+      <button class="wo-check" onclick="woCheck('wo1b','Holmes had already deduced her profession','wr1b')">확인 ✓</button>
+      <button class="wo-reset" onclick="woReset('wo1b')">↺ 다시</button>
+    </div>
+    <div class="wo-result" id="wr1b"></div>
+  </div>
+</div>
+
+<!-- ⑦ 짝맞추기 (Duolingo ⑤) -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🃏</div><div class="sh-title">짝맞추기</div></div>
+  <div class="match-wrap">
+    <div class="match-grid">
+      <div class="match-col">
+        <button class="match-item" onclick="matchClick(this,'deduce')">deduce</button>
+        <button class="match-item" onclick="matchClick(this,'observe')">observe</button>
+        <button class="match-item" onclick="matchClick(this,'composure')">composure</button>
+        <button class="match-item" onclick="matchClick(this,'evidence')">evidence</button>
+      </div>
+      <div class="match-col">
+        <button class="match-item" onclick="matchClick(this,'observe')">관찰하다</button>
+        <button class="match-item" onclick="matchClick(this,'evidence')">증거</button>
+        <button class="match-item" onclick="matchClick(this,'deduce')">추론하다</button>
+        <button class="match-item" onclick="matchClick(this,'composure')">침착함</button>
+      </div>
+    </div>
+    <div class="match-result" id="match-result"></div>
+  </div>
+</div>
+
+<!-- ⑧ 받아쓰기 도전 - 전체 문장 (Duolingo ⑥) -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">받아쓰기 도전!</div></div>
+  <div style="font-size:0.75rem;color:var(--sub);margin-bottom:14px;">🎙️ 듣기 버튼을 누르고 힌트 단어를 참고해서 전체 문장을 입력하세요.</div>
+
+  <div class="fd-item">
+    <div class="fd-level">
+      <span class="fd-lv-badge" style="background:var(--a1c);">A1</span>
+      <span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 1</span>
+    </div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:var(--a1c);" onclick="speak('Elementary, my dear Watson.')">▶ 듣기</button>
+      <button class="fd-replay" style="color:var(--a1c);border:2px solid var(--a1c);" onclick="speak('Elementary, my dear Watson.')">↺</button>
+      <div class="fd-hints">
+        <span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:var(--a1c);border-color:var(--a1c);background:#0d3320;">"Elementary"</span>
+        <span class="fd-hint-tag" style="color:var(--a1c);border-color:var(--a1c);background:#0d3320;">"Watson"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd1" type="text" class="fd-input" placeholder="전체 문장을 영어로 입력하세요..."
+        onkeydown="if(event.key==='Enter')chkFullDict('fd1','Elementary, my dear Watson.','fdr1')"/>
+      <button class="fd-check" style="background:var(--a1c);" onclick="chkFullDict('fd1','Elementary, my dear Watson.','fdr1')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr1"></div>
+  </div>
+
+  <div class="fd-item">
+    <div class="fd-level">
+      <span class="fd-lv-badge" style="background:var(--a2c);">A2</span>
+      <span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 2</span>
+    </div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:var(--a2c);" onclick="speak('Holmes had already deduced her profession before she spoke.')">▶ 듣기</button>
+      <button class="fd-replay" style="color:var(--a2c);border:2px solid var(--a2c);" onclick="speak('Holmes had already deduced her profession before she spoke.')">↺</button>
+      <div class="fd-hints">
+        <span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:var(--a2c);border-color:var(--a2c);background:#0d1f4a;">"deduced"</span>
+        <span class="fd-hint-tag" style="color:var(--a2c);border-color:var(--a2c);background:#0d1f4a;">"profession"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd2" type="text" class="fd-input" placeholder="전체 문장을 영어로 입력하세요..."
+        onkeydown="if(event.key==='Enter')chkFullDict('fd2','Holmes had already deduced her profession before she spoke.','fdr2')"/>
+      <button class="fd-check" style="background:var(--a2c);" onclick="chkFullDict('fd2','Holmes had already deduced her profession before she spoke.','fdr2')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr2"></div>
+  </div>
+
+  <div class="fd-item">
+    <div class="fd-level">
+      <span class="fd-lv-badge" style="background:var(--b1c);">B1</span>
+      <span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 3</span>
+    </div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:var(--b1c);" onclick="speak('You see, Watson, but you do not observe. The difference is everything.')">▶ 듣기</button>
+      <button class="fd-replay" style="color:var(--b1c);border:2px solid var(--b1c);" onclick="speak('You see, Watson, but you do not observe. The difference is everything.')">↺</button>
+      <div class="fd-hints">
+        <span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:var(--b1c);border-color:var(--b1c);background:#1e0d4a;">"observe"</span>
+        <span class="fd-hint-tag" style="color:var(--b1c);border-color:var(--b1c);background:#1e0d4a;">"difference"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd3" type="text" class="fd-input" placeholder="전체 문장을 영어로 입력하세요..."
+        onkeydown="if(event.key==='Enter')chkFullDict('fd3','You see, Watson, but you do not observe. The difference is everything.','fdr3')"/>
+      <button class="fd-check" style="background:var(--b1c);" onclick="chkFullDict('fd3','You see, Watson, but you do not observe. The difference is everything.','fdr3')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr3"></div>
+  </div>
+</div>
+
+<!-- ⑨ 이해 문제 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">이해 문제</div></div>
+  <div class="quiz-tabs">
+    <button class="qtab qa1" onclick="showQuiz('q-a1',this)">🟡 입문</button>
+    <button class="qtab" onclick="showQuiz('q-a2',this)">🔵 초급 B1</button>
+    <button class="qtab" onclick="showQuiz('q-b1',this)">🟣 중급</button>
+  </div>
+
+  <div id="q-a1" class="quiz-set active">
+    <div class="quiz-item">
+      <div class="quiz-q">Q1. Where did Sherlock Holmes live?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) 10 Downing Street, London</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) 221B Baker Street, London</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) 42 Victoria Road, London</button>
+      </div>
+    </div>
+    <div class="quiz-item">
+      <div class="quiz-q">Q2. Who was Holmes's friend?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">a) Dr. Watson</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) Inspector Lestrade</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Mrs. Hudson</button>
+      </div>
+    </div>
+    <div class="quiz-item">
+      <div class="quiz-q">Q3. How did Holmes know the woman had come from the country?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) She told him directly</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) He saw mud on her boots and a return ticket</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Watson told him before she came in</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="q-a2" class="quiz-set">
+    <div class="quiz-item">
+      <div class="quiz-q">Q1. What is the difference between "seeing" and "observing" according to Holmes?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Seeing is with your eyes; observing is with a microscope</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Seeing is passive; observing means actively noticing and drawing conclusions from what you see</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) They mean the same thing; Holmes is just being theatrical</button>
+      </div>
+    </div>
+    <div class="quiz-item">
+      <div class="quiz-q">Q2. Holmes deduced three things before the woman spoke. What does this tell us about him?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) He had met the woman before</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) He constantly observes and processes information — his mind is always working, even in silence</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) He had read about her in the newspaper</button>
+      </div>
+    </div>
+    <div class="quiz-item">
+      <div class="quiz-q">Q3. Why did the woman trust only Holmes with her problem?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Holmes was the cheapest detective available</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) The problem was too sensitive for anyone else — Holmes's reputation for discretion and genius made him uniquely trustworthy</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) All other detectives had refused to help her</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="q-b1" class="quiz-set">
+    <div class="quiz-item">
+      <div class="quiz-q">Q1. "Elementary, my dear Watson." Why is this line so famous?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Because Holmes says it in every story</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) It perfectly captures Holmes's character — the gap between his effortless understanding and everyone else's confusion, delivered without arrogance but with devastating calm</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Because Watson says something stupid just before it</button>
+      </div>
+    </div>
+    <div class="quiz-item">
+      <div class="quiz-q">Q2. "You see but you do not observe." How does this apply to reading literature?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Good readers read faster than average readers</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Passive readers see the words; active readers observe — they notice patterns, word choices, what is left unsaid. Holmes is describing close reading without knowing it.</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) It only applies to detective work, not literature</button>
+      </div>
+    </div>
+    <div class="quiz-item">
+      <div class="quiz-q">Q3. Holmes solves the puzzle "while others are still reading the question." What does this say about intelligence?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Intelligence means being faster than everyone else</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) True intelligence is not speed but depth of observation — Holmes does not think faster, he sees more. The difference is qualitative, not quantitative.</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Intelligence is a gift you are born with</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑩ 에세이 3문장 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">에세이 쓰기 (3문장)</div></div>
+  <div class="essay-wrap">
+    <div class="essay-prompt">💬 다음 주제로 영어 문장 3개를 써보세요:<br>
+    <strong>"What makes a good detective? / 좋은 탐정의 조건은 무엇일까요?"</strong></div>
+    <div style="background:linear-gradient(135deg,#1a2a1a,#1a1a2e);border-radius:10px;padding:14px;margin-bottom:14px;border:1px solid #2a3a2a;">
+      <div style="font-size:0.8rem;font-weight:900;color:var(--gold);margin-bottom:10px;">📌 에세이 3단락 구조 (Paragraph Structure)</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:var(--bg);border-radius:8px;padding:10px 12px;border-left:3px solid var(--a1c);">
+          <div style="font-size:0.72rem;font-weight:900;color:var(--a1c);margin-bottom:4px;">① 주제문 (Topic Sentence)</div>
+          <div style="font-size:0.78rem;color:var(--text);">나의 의견을 명확하게 밝혀요.</div>
+          <div style="font-size:0.75rem;color:var(--sub);font-style:italic;margin-top:2px;">예) "I think freedom means being able to make my own choices."</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:10px 12px;border-left:3px solid var(--a2c);">
+          <div style="font-size:0.72rem;font-weight:900;color:var(--a2c);margin-bottom:4px;">② 근거/예시 (Supporting Sentence)</div>
+          <div style="font-size:0.78rem;color:var(--text);">왜 그렇게 생각하는지 예시로 설명해요.</div>
+          <div style="font-size:0.75rem;color:var(--sub);font-style:italic;margin-top:2px;">예) "For example, Jim wanted freedom so he could live without fear."</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:10px 12px;border-left:3px solid var(--b1c);">
+          <div style="font-size:0.72rem;font-weight:900;color:var(--b1c);margin-bottom:4px;">③ 마무리 (Concluding Sentence)</div>
+          <div style="font-size:0.78rem;color:var(--text);">결론을 한 문장으로 마무리해요.</div>
+          <div style="font-size:0.75rem;color:var(--sub);font-style:italic;margin-top:2px;">예) "That is why freedom is the most important thing in life."</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:var(--gold);">
+        💡 ChatGPT가 문법 오류, 더 좋은 표현, 자연스러운 영어를 피드백해줄 거예요!
+      </div>
+    </div>
+    <div class="essay-line">
+      <span class="essay-num">①</span>
+      <input class="essay-input" id="es1" placeholder="I think a good detective needs..."/>
+    </div>
+    <div class="essay-line">
+      <span class="essay-num">②</span>
+      <input class="essay-input" id="es2" placeholder="For example, Holmes always..."/>
+    </div>
+    <div class="essay-line">
+      <span class="essay-num">③</span>
+      <input class="essay-input" id="es3" placeholder="In conclusion, the most important quality..."/>
+    </div>
+    <button class="essay-submit" onclick="submitEssay()">📋 ChatGPT에서 교정받기</button>
+    <div class="essay-result" id="essay-result"></div>
+  </div>
+</div>
+
+
+<!-- 디베이트 (중3) -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">⚖️</div><div class="sh-title">디베이트 실전</div></div>
+  <div style="background:linear-gradient(135deg,#0a1e18,#102820);border-radius:12px;padding:14px;margin-bottom:12px;border:1px solid #1a3a2a;">
+    <div style="font-size:0.8rem;font-weight:900;color:#10b981;margin-bottom:6px;">📌 디베이트 구조</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+      <span style="background:#0a2a15;color:#5aff9a;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;border:1px solid #16a34a;">① Opening Statement</span>
+      <span style="color:var(--sub);font-size:0.72rem;padding:4px 0;">→</span>
+      <span style="background:#1a1a3a;color:#7ab3ff;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;border:1px solid #2a2a6e;">② Rebuttal</span>
+      <span style="color:var(--sub);font-size:0.72rem;padding:4px 0;">→</span>
+      <span style="background:#2a1a0a;color:#ffd090;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;border:1px solid #6e3a0a;">③ Closing</span>
+    </div>
+    <div style="font-size:0.75rem;color:var(--sub);line-height:1.6;">
+      오늘은 <strong style="color:white;">Opening Statement</strong>를 직접 써보고 ChatGPT와 Rebuttal 연습을 해요.
+    </div>
+  </div>
+
+  <div style="background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;">
+    <div style="font-size:0.82rem;font-weight:900;color:white;margin-bottom:10px;">🗣️ 이번 주 디베이트 주제</div>
+    <div style="background:linear-gradient(135deg,#0a1e18,#0a2a15);border-radius:10px;padding:12px;text-align:center;margin-bottom:14px;border:1px solid #10b981;">
+      <div style="font-size:0.95rem;font-weight:900;color:white;margin-bottom:4px;">"Deduction is a skill anyone can learn, not a natural talent."</div>
+      <div style="font-size:0.78rem;color:#5aff9a;">추론은 타고나는 재능이 아니라 누구나 배울 수 있는 기술이다.</div>
+    </div>
+
+    <!-- Opening Statement 작성 -->
+    <div style="background:#0a1e18;border:1.5px solid #10b981;border-radius:10px;padding:12px;margin-bottom:10px;">
+      <div style="font-size:0.75rem;font-weight:900;color:#10b981;margin-bottom:6px;">✍️ Opening Statement 작성</div>
+      <div style="font-size:0.72rem;color:var(--sub);margin-bottom:8px;padding:8px;background:var(--bg);border-radius:6px;line-height:1.7;">
+        📌 구조: <strong style="color:white;">주장(Claim)</strong> → <strong style="color:white;">근거(Evidence)</strong> → <strong style="color:white;">이유(Reasoning)</strong><br>
+        예) "I argue that... / This is supported by... / Therefore..."
+      </div>
+      <div style="font-size:0.72rem;color:var(--sub);margin-bottom:6px;">나의 입장: 
+        <button onclick="setPosition('for-m3')" id="pos-for-m3" style="background:transparent;border:1.5px solid #16a34a;color:#5aff9a;padding:3px 10px;border-radius:20px;font-size:0.72rem;cursor:pointer;font-family:Nunito,sans-serif;margin:0 4px;">✅ 찬성</button>
+        <button onclick="setPosition('against-m3')" id="pos-against-m3" style="background:transparent;border:1.5px solid #dc2626;color:#ff9a9a;padding:3px 10px;border-radius:20px;font-size:0.72rem;cursor:pointer;font-family:Nunito,sans-serif;">❌ 반대</button>
+      </div>
+      <textarea id="opening-m3" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:0.8rem;font-family:Nunito,sans-serif;padding:10px;resize:none;outline:none;line-height:1.7;" rows="5" placeholder="Opening Statement를 영어로 써보세요...&#10;&#10;I argue that deduction is a skill because...&#10;This is supported by Holmes himself, who said...&#10;Therefore, anyone who practices observation..."></textarea>
+    </div>
+
+    <!-- Rebuttal 준비 -->
+    <div style="background:#1a1a3a;border:1.5px solid #7c3aed;border-radius:10px;padding:12px;margin-bottom:10px;">
+      <div style="font-size:0.75rem;font-weight:900;color:#b48aff;margin-bottom:6px;">🔄 Rebuttal 준비</div>
+      <div style="font-size:0.72rem;color:var(--sub);margin-bottom:8px;line-height:1.6;">상대방이 이렇게 주장한다면 어떻게 반박할지 써보세요.</div>
+      <div style="background:var(--bg);border-radius:8px;padding:10px;margin-bottom:8px;border-left:3px solid #7c3aed;">
+        <div style="font-size:0.72rem;color:#b48aff;font-weight:700;margin-bottom:4px;">상대방 주장 (Counter Argument)</div>
+        <div style="font-size:0.78rem;color:var(--text);">"Some people are simply born smarter. Holmes is a genius — ordinary people cannot think like him no matter how hard they try."</div>
+      </div>
+      <textarea id="rebuttal-m3" style="width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:0.8rem;font-family:Nunito,sans-serif;padding:10px;resize:none;outline:none;line-height:1.7;" rows="4" placeholder="반박문을 영어로 써보세요...&#10;&#10;However, this argument overlooks...&#10;In fact, Holmes himself says that observation is a habit, not a gift..."></textarea>
+    </div>
+
+    <button onclick="sendDebateToGPT_m3()" style="background:#10b981;color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:Nunito,sans-serif;width:100%;">
+      💬 ChatGPT와 Rebuttal 실전 연습
+    </button>
+    <div id="debate-result-m3" style="margin-top:8px;font-size:0.78rem;color:var(--sub);min-height:16px;"></div>
+  </div>
+</div>
+
+<script>
+let debatePosition_m3 = 'for';
+function setPosition(pos) {
+  debatePosition_m3 = pos === 'for-m3' ? 'for' : 'against';
+  const forBtn = document.getElementById('pos-for-m3');
+  const againstBtn = document.getElementById('pos-against-m3');
+  if (debatePosition_m3 === 'for') {
+    forBtn.style.background = '#0a2a15';
+    againstBtn.style.background = 'transparent';
+  } else {
+    againstBtn.style.background = '#2a0a0a';
+    forBtn.style.background = 'transparent';
+  }
+}
+
+function sendDebateToGPT_m3() {
+  const opening = document.getElementById('opening-m3').value.trim();
+  const rebuttal = document.getElementById('rebuttal-m3').value.trim();
+  const posLabel = debatePosition_m3 === 'for' ? '찬성' : '반대';
+  
+  let prompt = `안녕! 나는 중학교 3학년이야. Sherlock Holmes를 읽고 디베이트를 연습하고 있어.
+
+🗣️ 주제: "Deduction is a skill anyone can learn, not a natural talent."
+나의 입장: ${posLabel}
+
+✍️ 내 Opening Statement:
+${opening || '(아직 못 썼어)'}
+
+🔄 내 Rebuttal:
+${rebuttal || '(아직 못 썼어)'}
+
+[할 것 1 - 8분] 내 Opening Statement를 CER 구조로 피드백해줘.
+(Claim이 명확한지, Evidence가 충분한지, Reasoning이 논리적인지)
+
+[할 것 2 - 10분] 너는 반대 입장으로 강하게 반박해줘.
+나는 Rebuttal로 맞서볼게. 실전처럼 해줘.
+
+[할 것 3 - 7분] 토론 끝나면 내 Closing Statement 쓰는 것을 도와줘.
+
+고급 영어 표현을 써줘. 틀린 부분은 정확하게 교정해줘!`;
+
+  navigator.clipboard.writeText(prompt).then(() => {
+    document.getElementById('debate-result-m3').innerHTML = '✅ 프롬프트 복사 완료! ChatGPT에 붙여넣기하세요.';
+    document.getElementById('debate-result-m3').style.color = 'var(--green)';
+    addXP(10);
+    setTimeout(() => window.open('https://chatgpt.com', '_blank'), 300);
+  }).catch(() => {
+    window.open('https://chatgpt.com', '_blank');
+  });
+}
+</script>
+
+<!-- ⑪ ChatGPT 20분 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">ChatGPT 영어 튜터 (20분)</div></div>
+  <div class="gpt-card">
+    <div class="gpt-title">🤖 AI 튜터와 영어 연습</div>
+    <div class="gpt-sub">버튼을 클릭하면 오늘 학습 내용이 클립보드에 복사돼요. ChatGPT를 열고 붙여넣기(Ctrl+V)하세요!</div>
+    <div class="gpt-prompt" id="gpt-prompt">안녕! 나는 중학교 3학년이야.
+오늘 Sherlock Holmes: Adventures W1을 공부했어.
+
+📚 오늘 배운 내용:
+- 단어: raft, current, slave, illegal, freedom, decision
+- 문법: 단순과거 (Simple Past Tense - G05)
+- 이야기: Huck and Jim traveling on the Mississippi at night
+
+[할 것 1 - 5분] 오늘 배운 단어 6개로
+짧은 문장 만드는 것을 도와줘.
+
+[할 것 2 - 10분] 단순과거 시제 연습.
+틀린 문장을 고치는 문제 5개 만들어줘.
+(예: He go to school yesterday. → He went...)
+
+[할 것 3 - 5분] 내가 쓴 에세이 교정해줘:
+{에세이}</div>
+    <button class="gpt-copy" onclick="copyGPT()">📋 프롬프트 복사하기</button>
+    <button class="gpt-open" onclick="openGPT()">💬 ChatGPT 열기</button>
+    <div class="gpt-timer">⏱ 목표 시간: 25분 | 에세이 8분 + 디베이트 8분 + 토론 9분</div>
+  </div>
+</div>
+
+<!-- 완료 카드 -->
+<div class="complete-card" id="complete-card">
+  <div class="complete-emoji">🎉</div>
+  <div class="complete-title">Week 1 완료!</div>
+  <div class="complete-sub">Sherlock Holmes: Adventures 첫 번째 이야기를 마쳤어요!<br>홈즈의 추리가 계속됩니다!</div>
+  <div class="xp-big" id="xp-final">⭐ +50 XP 획득!</div>
+  <div style="background:var(--card2);border-radius:12px;padding:12px;margin-bottom:14px;font-size:0.82rem;color:var(--sub);line-height:1.6;">
+    🤖 <strong style="color:var(--accent)">Robo 한마디:</strong><br>
+    자유를 위해 강을 건너는 관찰하라, 그리고 추론하라! 다음 주엔 더 복잡한 사건이 기다려요! 🔍
+  </div>
+  <div class="next-row">
+    <div>
+      <div class="next-lbl">다음 주</div>
+      <div class="next-title">Week 2 — The Scandal</div>
+      <div style="font-size:0.72rem;color:var(--sub);margin-top:2px;">아이린 애들러의 비밀!</div>
+    </div>
+    <button class="next-btn" onclick="location.href='campb_m3_w02.html'">W2 →</button>
+  </div>
+</div>
+
+<!-- 네비게이션 -->
+<div class="nav-row">
+  <button class="nav-btn" onclick="location.href='index.html'" style="background:#2a2a4a;color:var(--sub);">← 목록</button>
+  <button class="nav-btn" onclick="location.href='campb_m3_w02.html'" style="background:var(--accent);color:white;">W2 →</button>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ── TTS ──
+function getFemaleVoice() {
+  const voices = speechSynthesis.getVoices();
+  const preferred = ['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria'];
+  const excluded = ['Alex','Fred','Daniel','Google UK English Male'];
+  for (const name of preferred) {
+    const v = voices.find(v => v.name.includes(name));
+    if (v) return v;
+  }
+  return voices.find(v => v.lang.startsWith('en') && !excluded.some(e => v.name.includes(e))) || voices[0];
+}
+function speak(text) {
+  if (!text) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.voice = getFemaleVoice();
+  u.lang = 'en-US'; u.rate = 0.88; u.pitch = 1.0;
+  speechSynthesis.speak(u);
+}
+speechSynthesis.onvoiceschanged = () => {};
+
+// ── XP ──
+let xp = 0;
+function addXP(n) {
+  xp += n;
+  document.getElementById('xp-btn').textContent = '⭐ ' + xp + ' XP';
+  if (xp >= 50 && document.getElementById('complete-card').style.display === 'none') {
+    setTimeout(() => {
+      document.getElementById('complete-card').style.display = 'block';
+      document.getElementById('xp-final').textContent = '⭐ +' + xp + ' XP 획득!';
+      document.getElementById('complete-card').scrollIntoView({behavior:'smooth'});
+    }, 500);
+  }
+  document.getElementById('prog-bar').style.width = Math.min(100, xp * 2) + '%';
+}
+
+// ── 이야기 탭 ──
+function showStory(level, btn) {
+  ['a1','a2','b1'].forEach(l => {
+    const el = document.getElementById('sb-'+l);
+    if (el) el.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.className = 'tab-btn';
+  });
+  const el = document.getElementById('sb-'+level);
+  if (el) el.classList.add('active');
+  btn.classList.add('active-'+level);
+}
+function toggleKr() {
+  const kr = document.getElementById('story-kr');
+  const btn = document.getElementById('kr-btn');
+  if (kr.style.display === 'block') {
+    kr.style.display = 'none';
+    btn.textContent = '🇰🇷 한국어 번역 보기';
+  } else {
+    kr.style.display = 'block';
+    btn.textContent = '🇰🇷 한국어 번역 숨기기';
+  }
+}
+
+// ── 문법 툴팁 ──
+document.querySelectorAll('.gram').forEach(el => {
+  el.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const id = this.dataset.id;
+    const d = gramData[id];
+    if (!d) return;
+    currentGramId = id;
+    document.getElementById('tt-tag').textContent = d.tag;
+    document.getElementById('tt-title').textContent = d.title;
+    document.getElementById('tt-desc').textContent = d.desc;
+    document.getElementById('tt-ex').textContent = d.ex;
+    document.getElementById('tt-gram-link').textContent = '📚 Grammar Base ' + d.gnum + ' →';
+    document.getElementById('tt-gram-link').href = d.glink;
+    const wrap = document.getElementById('tooltip-wrap');
+    const rect = this.getBoundingClientRect();
+    wrap.style.display = 'block';
+    document.getElementById('tt-overlay').style.display = 'block';
+    const box = document.getElementById('tooltip-box');
+    let top = rect.bottom + 8;
+    let left = rect.left;
+    if (left + 290 > window.innerWidth) left = window.innerWidth - 295;
+    if (top + 200 > window.innerHeight) top = rect.top - 210;
+    wrap.style.top = top + 'px';
+    wrap.style.left = left + 'px';
+  });
+});
+function closeTooltip() {
+  document.getElementById('tooltip-wrap').style.display = 'none';
+  document.getElementById('tt-overlay').style.display = 'none';
+}
+function openGPTTooltip() {
+  const d = gramData[currentGramId];
+  if (!d) return;
+  const prompt = `안녕! 중학교 1학년인데 이 문법이 이해가 안 돼.\n문법: ${d.title} (${d.tag})\n예문: "${d.ex}"\n쉽고 재미있게 설명해줄 수 있어? 예문도 2개 더 만들어줘!`;
+  navigator.clipboard.writeText(prompt).then(() => {
+    window.open('https://chatgpt.com', '_blank');
+  });
+  closeTooltip();
+}
+
+// ── 빈칸 채우기 ──
+function chkFill(btn, val, ans, blankId, resId) {
+  const blank = document.getElementById(blankId);
+  const res = document.getElementById(resId);
+  const parent = btn.closest('.card') || btn.parentElement.parentElement;
+  parent.querySelectorAll('.cbtn').forEach(b => {
+    if (b.closest('[id]') && b.closest('[id]').id === resId.replace('fr','bl')) return;
+    // 같은 그룹만
+  });
+  btn.parentElement.querySelectorAll('.cbtn').forEach(b => b.classList.remove('ok','no'));
+  if (val === ans) {
+    blank.textContent = val;
+    blank.style.color = 'var(--a1c)';
+    btn.classList.add('ok');
+    res.innerHTML = '✅ 정답!';
+    res.style.color = 'var(--a1c)';
+    addXP(3);
+  } else {
+    btn.classList.add('no');
+    res.innerHTML = '❌ 다시 시도!';
+    res.style.color = 'var(--red)';
+  }
+}
+
+// ── 딕테이션 ──
+function chkDict(inputId, ans, resId) {
+  const val = document.getElementById(inputId).value.trim().toLowerCase();
+  const res = document.getElementById(resId);
+  if (val === ans.toLowerCase()) {
+    res.innerHTML = '✅ 정답!';
+    res.style.color = 'var(--a1c)';
+    document.getElementById(inputId).style.borderColor = 'var(--a1c)';
+    addXP(3);
+  } else {
+    res.innerHTML = '❌ 정답: <span style="color:var(--accent);font-weight:900">' + ans + '</span>';
+    res.style.color = 'var(--red)';
+    document.getElementById(inputId).style.borderColor = 'var(--red)';
+  }
+}
+
+// ── LC ──
+function lcCheck(btn, val) {
+  // 이미 정답 선택한 경우 무시
+  if (document.querySelector('.lc-opt.ok')) return;
+  document.querySelectorAll('.lc-opt').forEach(b => b.classList.remove('no'));
+  const res = document.getElementById('lc-result');
+  if (val === 'ok') {
+    btn.classList.add('ok');
+    res.innerHTML = '✅ 정답! 잘했어요!';
+    res.style.color = 'var(--green)';
+    addXP(4);
+  } else {
+    btn.classList.add('no');
+    res.innerHTML = '❌ 다시 들어보고 골라보세요!';
+    res.style.color = 'var(--red)';
+    setTimeout(() => btn.classList.remove('no'), 1000);
+  }
+}
+
+// ── 단어 배열 ──
+const woStates = {};
+function woAdd(id, btn, word) {
+  if (btn.classList.contains('used')) return;
+  if (!woStates[id]) woStates[id] = [];
+  woStates[id].push(word);
+  btn.classList.add('used');
+  renderWoBox(id);
+}
+function renderWoBox(id) {
+  const box = document.getElementById(id+'-box');
+  box.innerHTML = '';
+  (woStates[id] || []).forEach((w, i) => {
+    const b = document.createElement('button');
+    b.className = 'wo-placed';
+    b.textContent = w;
+    b.onclick = () => woRemove(id, i, w);
+    box.appendChild(b);
+  });
+}
+function woRemove(id, idx, word) {
+  woStates[id].splice(idx, 1);
+  renderWoBox(id);
+  const pool = document.getElementById(id+'-pool');
+  pool.querySelectorAll('.wo-chip').forEach(b => {
+    if (b.textContent === word && b.classList.contains('used')) {
+      b.classList.remove('used');
+    }
+  });
+}
+function woReset(id) {
+  woStates[id] = [];
+  renderWoBox(id);
+  const pool = document.getElementById(id+'-pool');
+  pool.querySelectorAll('.wo-chip').forEach(b => b.classList.remove('used'));
+  const res = document.getElementById('wr'+id.replace('wo',''));
+  if (res) res.innerHTML = '';
+}
+function woCheck(id, ans, resId) {
+  const res = document.getElementById(resId);
+  const userAns = (woStates[id] || []).join(' ');
+  if (userAns.trim() === ans.trim()) {
+    res.innerHTML = '✅ 정답! 완벽해요!';
+    res.style.color = 'var(--a1c)';
+    addXP(5);
+  } else {
+    res.innerHTML = '❌ 정답: <span style="color:var(--accent)">' + ans + '</span>';
+    res.style.color = 'var(--red)';
+  }
+}
+
+// ── 짝맞추기 ──
+let matchSelected = null;
+let matchDone = {};
+function matchClick(btn, key) {
+  if (btn.classList.contains('matched')) return;
+  btn.classList.remove('wrong-flash');
+  if (!matchSelected) {
+    matchSelected = {btn, key};
+    btn.classList.add('selected');
+  } else {
+    if (matchSelected.key === key && matchSelected.btn !== btn) {
+      matchSelected.btn.classList.remove('selected');
+      matchSelected.btn.classList.add('matched');
+      btn.classList.add('matched');
+      matchDone[key] = true;
+      matchSelected = null;
+      const total = document.querySelectorAll('.match-item').length / 2;
+      const done = Object.keys(matchDone).length;
+      if (done === total) {
+        document.getElementById('match-result').innerHTML = '🎉 모두 맞췄어요!';
+        document.getElementById('match-result').style.color = 'var(--a1c)';
+        addXP(8);
+      }
+    } else {
+      const prevBtn = matchSelected.btn;
+      prevBtn.classList.remove('selected');
+      prevBtn.classList.add('wrong-flash');
+      btn.classList.add('wrong-flash');
+      matchSelected = null;
+      setTimeout(() => { prevBtn.classList.remove('wrong-flash'); }, 500);
+      setTimeout(() => { btn.classList.remove('wrong-flash'); }, 500);
+    }
+  }
+}
+
+// ── 받아쓰기 도전 (전체 문장) ──
+function chkFullDict(inputId, answer, resultId) {
+  const input = document.getElementById(inputId);
+  const result = document.getElementById(resultId);
+  const clean = s => s.trim().toLowerCase().replace(/[.,!?;:—]/g,'').replace(/\s+/g,' ');
+  if (clean(input.value) === clean(answer)) {
+    result.innerHTML = '✅ 정답! 완벽해요!';
+    result.style.color = 'var(--a1c)';
+    input.style.borderColor = 'var(--a1c)';
+    input.style.background = '#0d1f0d';
+    addXP(5);
+  } else {
+    result.innerHTML = '❌ 다시 도전! 정답: <span style="color:var(--accent);font-weight:800">"' + answer + '"</span>';
+    result.style.color = 'var(--red)';
+    input.style.borderColor = 'var(--red)';
+  }
+}
+
+// ── 이해 문제 ──
+function showQuiz(id, btn) {
+  document.querySelectorAll('.quiz-set').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.qtab').forEach(b => b.className = 'qtab');
+  document.getElementById(id).classList.add('active');
+  const level = id.replace('q-','');
+  btn.classList.add('q'+level);
+}
+function qChk(btn, val) {
+  const opts = btn.closest('.quiz-opts').querySelectorAll('.qopt');
+  opts.forEach(b => b.classList.remove('ok','no'));
+  btn.classList.add(val === 'ok' ? 'ok' : 'no');
+  if (val === 'ok') addXP(4);
+}
+
+// ── 에세이 ──
+function submitEssay() {
+  const s1 = document.getElementById('es1').value.trim();
+  const s2 = document.getElementById('es2').value.trim();
+  const s3 = document.getElementById('es3').value.trim();
+  if (!s1 || !s2 || !s3) {
+    document.getElementById('essay-result').innerHTML = '❗ 3문장을 모두 작성해주세요!';
+    document.getElementById('essay-result').style.color = 'var(--gold)';
+    return;
+  }
+  const essay = `① ${s1}\n② ${s2}\n③ ${s3}`;
+  const prompt = document.getElementById('gpt-prompt').textContent.replace('{에세이}', essay);
+  const fullPrompt = prompt.replace('{에세이}', essay);
+  navigator.clipboard.writeText(fullPrompt).then(() => {
+    document.getElementById('essay-result').innerHTML = '✅ 에세이가 프롬프트에 포함됐어요! ChatGPT를 열어서 붙여넣기 하세요.';
+    document.getElementById('essay-result').style.color = 'var(--a1c)';
+    addXP(10);
+    window.open('https://chatgpt.com', '_blank');
+  }).catch(() => {
+    document.getElementById('essay-result').innerHTML = '📋 아래 ChatGPT 버튼을 눌러주세요!';
+    document.getElementById('essay-result').style.color = 'var(--sub)';
+  });
+}
+
+// ── ChatGPT ──
+function copyGPT() {
+  const prompt = document.getElementById('gpt-prompt').textContent;
+  navigator.clipboard.writeText(prompt).then(() => {
+    const btn = document.querySelector('.gpt-copy');
+    btn.textContent = '✅ 복사됐어요! ChatGPT를 열어주세요.';
+    btn.style.background = 'var(--green)';
+    setTimeout(() => {
+      btn.textContent = '📋 프롬프트 복사하기';
+      btn.style.background = '#10a37f';
+    }, 2000);
+  });
+}
+function openGPT() {
+  copyGPT();
+  setTimeout(() => window.open('https://chatgpt.com', '_blank'), 300);
+}
+</script>
+</body>
+</html>
