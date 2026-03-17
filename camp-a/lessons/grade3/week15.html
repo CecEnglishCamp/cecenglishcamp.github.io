@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G3 Week 7 — Peter Rabbit | CEC English Camp A</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:#f0fff4;min-height:100vh;}
+.topbar{background:linear-gradient(90deg,#1a4a2e,#2d6a4a);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-sub{color:#a8f0c8;font-size:0.75rem;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.ep-badge{background:rgba(255,255,255,0.15);color:white;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;}
+.xp-badge{background:#f97316;color:white;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;}
+.xp-bar-wrap{height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin-top:4px;width:80px;}
+.xp-fill{height:100%;background:#ffd60a;border-radius:2px;width:0%;transition:width 0.6s ease;}
+.container{max-width:780px;margin:0 auto;padding:24px 16px;}
+.card{background:white;border-radius:20px;overflow:hidden;margin-bottom:20px;box-shadow:0 4px 24px rgba(0,0,0,0.07);}
+.hero-card{background:linear-gradient(135deg,#1a4a2e,#2d6a4a);}
+.hero-img{width:100%;height:200px;background:linear-gradient(135deg,#2d6a4a,#1a4a2e);display:flex;align-items:center;justify-content:center;font-size:6rem;}
+.hero-badges{padding:12px 20px;display:flex;gap:8px;}
+.hb{padding:3px 12px;border-radius:10px;font-size:0.75rem;font-weight:700;}
+.hb-g{background:rgba(255,255,255,0.15);color:white;}
+.hb-o{background:#f97316;color:white;}
+.hero-title-area{padding:0 20px 14px;}
+.hero-title{color:white;font-size:1.3rem;font-weight:900;}
+.hero-sub{color:#a8f0c8;font-size:0.85rem;margin-top:4px;}
+.key-box{background:rgba(0,0,0,0.25);border-radius:16px;padding:18px;margin:0 16px 14px;border:1px solid rgba(255,255,255,0.2);}
+.kb-label{font-size:0.7rem;font-weight:800;color:rgba(255,255,255,0.5);letter-spacing:2px;margin-bottom:6px;}
+.kb-text{font-size:1.05rem;font-weight:900;color:white;margin-bottom:4px;}
+.kb-kr{font-size:0.87rem;color:rgba(255,255,255,0.65);}
+.audio-row{background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;margin-top:10px;display:flex;align-items:center;gap:10px;}
+.play-btn{width:40px;height:40px;background:#16a34a;border-radius:50%;border:none;cursor:pointer;color:white;font-size:1rem;flex-shrink:0;font-family:'Nunito',sans-serif;transition:transform 0.15s;}
+.play-btn:hover{transform:scale(1.1);}
+.audio-info{flex:1;color:rgba(255,255,255,0.85);font-size:0.78rem;}
+.audio-title-text{font-weight:800;color:white;}
+.wave{color:rgba(255,255,255,0.3);font-size:0.9rem;letter-spacing:2px;}
+.sh{display:flex;align-items:center;gap:10px;padding:16px 20px 0;}
+.sh-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.sh-title{font-size:0.92rem;font-weight:800;color:#1a1a1a;}
+.sh-sub{font-size:0.7rem;color:#999;font-weight:700;letter-spacing:1px;}
+.sb{padding:12px 20px 18px;}
+.listen-guide{background:#dcfce7;border-radius:10px;padding:9px 14px;font-size:0.8rem;color:#1a4a2e;font-weight:700;margin-top:10px;}
+.audio-green{background:#1a4a2e;border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.ltabs{display:flex;gap:8px;margin-bottom:12px;}
+.lt{padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:800;cursor:pointer;border:2px solid #eee;color:#aaa;background:white;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.lt.lt-b{border-color:#1a4a2e;color:#1a4a2e;background:#dcfce7;}
+.lt.lt-e{border-color:#16a34a;color:#16a34a;background:#dcfce7;}
+.lt.lt-i{border-color:#166534;color:#166534;background:#bbf7d0;}
+.story-box{background:#dcfce7;border-left:4px solid #16a34a;border-radius:0 12px 12px 0;padding:14px;font-size:0.9rem;line-height:2;color:#1a1a1a;}
+.story-kr{background:#fffbf0;border-left:4px solid #f97316;border-radius:0 12px 12px 0;padding:12px;font-size:0.85rem;line-height:1.9;color:#666;margin-top:10px;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
+.vc{background:#dcfce7;border-radius:12px;padding:11px 13px;border:1.5px solid #bbf7d0;}
+.vc-w{font-size:0.95rem;font-weight:900;color:#1a4a2e;}
+.vc-m{font-size:0.78rem;color:#666;margin-top:2px;}
+.vc-e{font-size:0.72rem;color:#aaa;margin-top:3px;font-style:italic;}
+.fill-wrap{background:#dcfce7;border-radius:14px;padding:16px;}
+.fill-sent{font-size:1rem;font-weight:700;color:#1a1a1a;margin-bottom:12px;line-height:2;text-align:center;}
+.blank-span{display:inline-block;min-width:80px;border-bottom:3px solid #16a34a;text-align:center;padding:0 6px;color:#16a34a;font-weight:900;}
+.choices{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.cbtn{padding:7px 18px;border-radius:25px;border:2px solid #ddd;background:white;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.cbtn:hover{border-color:#1a4a2e;color:#1a4a2e;}
+.cbtn.ok{background:#dcfce7;border-color:#16a34a;color:#15803d;}
+.cbtn.no{background:#fee2e2;border-color:#dc2626;color:#b91c1c;}
+.fill-res{margin-top:8px;text-align:center;font-size:0.88rem;font-weight:700;min-height:20px;}
+.dict-item{background:#dcfce7;border-radius:13px;padding:14px;margin-bottom:10px;}
+.dict-row{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.dict-play{width:36px;height:36px;background:#1a4a2e;border-radius:50%;border:none;cursor:pointer;color:white;font-size:0.88rem;flex-shrink:0;font-family:'Nunito',sans-serif;}
+.dict-label{font-size:0.82rem;font-weight:700;color:#444;}
+.dict-hint{font-size:0.72rem;color:#aaa;}
+.dict-input-row{display:flex;gap:8px;align-items:center;}
+.dict-input{flex:1;padding:9px 12px;border-radius:9px;border:1.5px solid #ddd;font-size:0.88rem;font-family:'Nunito',sans-serif;font-weight:700;}
+.dict-input:focus{outline:none;border-color:#1a4a2e;}
+.dict-btn{padding:9px 14px;border-radius:9px;background:#1a4a2e;color:white;border:none;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+.dict-result{margin-top:6px;font-size:0.82rem;font-weight:700;min-height:18px;}
+.lc-wrap{background:#dcfce7;border-radius:14px;padding:16px;}
+.lc-play-btn{background:#1a4a2e;color:white;border:none;border-radius:25px;padding:9px 22px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;}
+.lc-opts{display:flex;flex-direction:column;gap:9px;}
+.lc-opt{background:white;border:2px solid #bbf7d0;border-radius:11px;padding:11px 15px;font-size:0.86rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;transition:all 0.15s;color:#1a1a1a;}
+.lc-opt:hover{border-color:#16a34a;}
+.lc-opt.ok{border-color:#16a34a;background:#dcfce7;color:#15803d;}
+.lc-opt.no{border-color:#dc2626;background:#fee2e2;color:#b91c1c;}
+.lc-result{margin-top:9px;font-size:0.86rem;font-weight:700;min-height:20px;text-align:center;}
+.wo-wrap{background:#dcfce7;border-radius:13px;padding:16px;margin-bottom:12px;}
+.wo-q{font-size:0.82rem;color:#555;margin-bottom:9px;font-weight:700;}
+.wo-box{min-height:46px;background:white;border-radius:9px;border:2px dashed #16a34a;padding:7px 11px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:9px;}
+.wo-pool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px;}
+.wo-chip{padding:6px 13px;background:#1a4a2e;color:white;border-radius:20px;font-size:0.82rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-chip.used{background:#ccc;cursor:default;}
+.wo-placed{padding:6px 13px;background:#16a34a;color:white;border-radius:20px;font-size:0.82rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-btns{display:flex;gap:8px;}
+.wo-check{background:#1a4a2e;color:white;border:none;padding:9px 20px;border-radius:25px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-reset{background:white;color:#666;border:1.5px solid #ccc;padding:9px 14px;border-radius:25px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-result{font-size:0.82rem;font-weight:700;margin-top:7px;min-height:18px;}
+.match-wrap{background:#dcfce7;border-radius:13px;padding:16px;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px;}
+.match-col{display:flex;flex-direction:column;gap:7px;}
+.match-item{padding:9px 13px;border-radius:9px;border:2px solid #ddd;background:white;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s;font-family:'Nunito',sans-serif;}
+.match-item:hover{border-color:#16a34a;}
+.match-item.selected{border-color:#f97316;background:#fff8f0;color:#c05200;}
+.match-item.matched{border-color:#16a34a;background:#dcfce7;color:#15803d;cursor:default;}
+.match-item.wrong-flash{border-color:#dc2626;background:#fee2e2;}
+.match-result{text-align:center;font-size:0.88rem;font-weight:700;min-height:20px;}
+.quiz-item{background:#dcfce7;border-radius:13px;padding:14px;margin-bottom:11px;}
+.quiz-q{font-size:0.88rem;font-weight:700;color:#1a1a1a;margin-bottom:9px;}
+.quiz-opts{display:flex;flex-direction:column;gap:7px;}
+.qopt{padding:9px 13px;border-radius:9px;border:1.5px solid #e0e0e0;background:white;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.qopt:hover{border-color:#1a4a2e;background:#dcfce7;}
+.qopt.ok{background:#dcfce7;border-color:#16a34a;color:#15803d;}
+.qopt.no{background:#fee2e2;border-color:#dc2626;color:#b91c1c;}
+.prog-row{display:flex;align-items:center;gap:9px;padding:0 20px 14px;}
+.prog-track{flex:1;background:#eee;border-radius:9px;height:7px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,#1a4a2e,#16a34a);border-radius:9px;transition:width 0.5s;}
+.prog-label{font-size:0.78rem;color:#aaa;font-weight:700;white-space:nowrap;}
+.complete-card{background:white;border-radius:20px;padding:28px;text-align:center;display:none;box-shadow:0 4px 24px rgba(0,0,0,0.07);margin-bottom:20px;}
+.complete-emoji{font-size:2.8rem;margin-bottom:10px;}
+.complete-title{font-size:1.3rem;font-weight:900;color:#1a4a2e;margin-bottom:7px;}
+.complete-sub{font-size:0.88rem;color:#666;margin-bottom:18px;line-height:1.7;}
+.xp-big{background:linear-gradient(135deg,#16a34a,#f97316);color:white;border-radius:13px;padding:14px 28px;font-size:1.15rem;font-weight:900;display:inline-block;margin-bottom:18px;}
+.robo-box{background:#dcfce7;border-radius:13px;padding:12px 15px;display:flex;gap:11px;text-align:left;margin-bottom:18px;}
+.robo-av{width:38px;height:38px;background:#16a34a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.robo-name{font-weight:900;color:#16a34a;font-size:0.82rem;margin-bottom:3px;}
+.robo-text{font-size:0.82rem;color:#555;line-height:1.6;}
+.tutor-btn{background:#10a37f;color:white;border:none;padding:13px 28px;border-radius:13px;font-size:0.95rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-bottom:11px;}
+.next-row{background:#dcfce7;border-radius:13px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:11px;flex-wrap:wrap;}
+.next-lbl{font-size:0.72rem;color:#aaa;font-weight:700;}
+.next-title{font-size:0.88rem;font-weight:800;color:#1a1a1a;margin-top:2px;}
+.next-btn{background:#1a4a2e;color:white;border:none;padding:9px 16px;border-radius:9px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div>
+    <a href="https://cecenglishcamp.github.io/camp-a/" style="text-decoration:none;display:flex;align-items:center;gap:8px;">
+      <video src="../../robo.mp4" autoplay loop muted playsinline style="width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;"></video>
+      <div style="color:white;font-weight:900;font-size:1rem;">CEC English Camp A</div>
+    </a>
+    <div class="topbar-sub">Grade 3 · Peter Rabbit · Week 15 of 36</div>
+  </div>
+  <div class="topbar-right">
+    <div class="ep-badge">W15 / 36</div>
+    <div><div class="xp-badge">⭐ <span id="xp-num">0</span> XP</div><div class="xp-bar-wrap"><div class="xp-fill" id="xp-bar"></div></div></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card hero-card">
+    <div class="hero-img">🐰🐰🐰</div>
+    <div class="hero-badges"><div class="hb hb-g">W15 · UNIT 15</div><div class="hb hb-o">A1 BEGINNER</div></div>
+    <div class="hero-title-area">
+      <div class="hero-title">The Golden Goose</div>
+      <div class="hero-sub">황금 알을 낳는 닭 · Jack이 두 번째 보물을 찾아요!</div>
+    </div>
+    <div style="padding:0 16px 14px;">
+      <div class="key-box">
+        <div class="kb-label">KEY SENTENCE · 이번 주 핵심 표현</div>
+        <div class="kb-text">"Lay, goose, lay!"</div>
+        <div class="kb-kr">낳아라, 거위야, 낳아라!</div>
+        <div class="audio-row">
+          <button class="play-btn" onclick="speak('Lay, goose, lay!')">▶</button>
+          <div class="audio-info"><div class="audio-title-text">발음 듣기</div><div style="opacity:0.6;font-size:0.72rem;">CLICK · EN-US</div></div>
+          <div class="wave">▁▃▅▃▁</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dcfce7;">🎧</div><div><div class="sh-title">발음 듣기</div><div class="sh-sub">LISTENING · 눈을 감고 들어보세요</div></div></div>
+    <div class="sb">
+      <div class="audio-green">
+        <button class="play-btn" id="main-play-btn" onclick="toggleFull()">▶</button>
+        <div class="audio-info"><div class="audio-title-text">Peter Rabbit — Week 7 Full Story</div><div style="opacity:0.6;font-size:0.72rem;">CLICK · EN-US · SLOW SPEED</div></div>
+        <div class="wave" style="color:rgba(255,255,255,0.3);">▁▃▅▇▅▃▁</div>
+      </div>
+      <div class="listen-guide">💡 아래 <strong>이야기 읽기</strong> 카드에서 <strong>초급 A2</strong> 버튼을 눌러 같이 읽어봐요!</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dcfce7;">📖</div><div><div class="sh-title">이야기 읽기</div><div class="sh-sub">READING · 수준을 골라 읽어보세요</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="lt-b" onclick="showStory('b')">입문 A1</button>
+        <button class="lt" id="lt-e" onclick="showStory('e')">초급 A2</button>
+        <button class="lt" id="lt-i" onclick="showStory('i')">중급 B1</button>
+      </div>
+      <div id="sb-b"><div class="story-box">Jack climbed the beanstalk again.<br>He went back to the giant's castle.<br>He found a magic goose.<br>The goose laid golden eggs.<br>Jack took the goose home.</div></div>
+      <div id="sb-e" style="display:none;"><div class="story-box">With the bag of gold spent, Jack climbed the beanstalk again. He crept back into the giant's castle and hid in the oven as before.<br>The giant came home. "Fee-fi-fo-fum!" he roared. But he did not find Jack.<br>After dinner, the giant called for his goose. "Lay!" he commanded -- and the goose laid a golden egg. Then another. Then another.<br>Jack watched through the iron door, his eyes wide. When the giant fell asleep, Jack crept out, grabbed the goose, and ran.<br>"Lay, goose, lay!" he whispered as he ran. The goose laid a golden egg right there in his arms. Jack brought the goose safely home.</div></div>
+      <div id="sb-i" style="display:none;"><div class="story-box">The gold was gone. His mother had thanked him and spent it on food and rent, and now the cupboard was bare again. Jack looked at the beanstalk.<br>He climbed it a second time, this time knowing what to expect. The giant's wife was more reluctant to help, but her kindness won out. Jack was back in the oven when the giant arrived.<br>"Fee-fi-fo-fum!" But tonight the giant's treasure was not coins. It was a goose -- a small, unremarkable-looking bird that responded to a single command by laying a perfect golden egg.<br>"Lay, goose, lay," the giant said, three times, then fell asleep satisfied.<br>Jack did not hesitate. He tucked the goose under his arm and ran. The goose, to its credit, laid another golden egg while being carried.</div></div>
+      <div class="story-kr">금이 없어졌어요. 엄마는 감사해하며 음식과 집세로 썼는데, 이제 찬장이 다시 텅 비었어요. 잭은 콩나무를 바라봤어요.<br>두 번째로 올라갔어요. 이번에는 무엇을 예상해야 할지 알면서. 거인의 아내는 도와주기를 더 꺼렸지만, 친절함이 이겼어요. 거인이 도착했을 때 잭은 다시 오븐 안에 있었어요.<br>"피이-파이-포-팜!" 하지만 오늘 밤 거인의 보물은 금화가 아니었어요. 거위였어요 -- 단 하나의 명령에 반응해서 완벽한 황금 알을 낳는 작고 평범해 보이는 새.<br>"낳아라, 거위야, 낳아라," 거인이 세 번 말하고 만족해서 잠들었어요.<br>잭은 망설이지 않았어요. 거위를 팔 아래 끼고 달렸어요. 거위는 이동하면서 또 다른 황금 알을 낳았어요.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dcfce7;">📝</div><div><div class="sh-title">핵심 단어</div><div class="sh-sub">VOCABULARY · 꼭 알아야 할 단어</div></div></div>
+    <div class="sb">
+      <div class="vocab-grid">
+<div class="vc"><div class="vc-w">goose 🪿</div><div class="vc-m">거위</div><div class="vc-e">"The giant had a magic goose."</div></div>
+<div class="vc"><div class="vc-w">lay 🥚</div><div class="vc-m">알을 낳다</div><div class="vc-e">"Lay, goose, lay!"</div></div>
+<div class="vc"><div class="vc-w">golden 💛</div><div class="vc-m">황금의</div><div class="vc-e">"It laid a perfect golden egg."</div></div>
+<div class="vc"><div class="vc-w">reluctant 😒</div><div class="vc-m">꺼리는, 내키지 않는</div><div class="vc-e">"The wife was reluctant to help again."</div></div>
+<div class="vc"><div class="vc-w">unremarkable 😐</div><div class="vc-m">평범한, 눈에 띄지 않는</div><div class="vc-e">"It was an unremarkable-looking bird."</div></div>
+<div class="vc"><div class="vc-w">tuck 🤗</div><div class="vc-m">끼워 넣다</div><div class="vc-e">"He tucked the goose under his arm."</div></div>
+      </div></div>
+      </div></div>
+      </div></div>
+      </div></div>
+      </div></div>
+      </div></div>
+      </div></div>
+      </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dcfce7;">✏️</div><div><div class="sh-title">빈칸 채우기 연습</div><div class="sh-sub">WORD FILL · 맞는 단어를 골라보세요</div></div></div>
+    <div class="sb">
+      <div class="fill-wrap">
+        <div class="fill-sent">The giant commanded the goose: "<span class='blank-span' id='bl1'>&nbsp;&nbsp;&nbsp;&nbsp;</span>, goose, lay!"</div>
+        <div class="choices">
+<button class="cbtn" onclick="chkFill(this,'Run','Lay','bl1','fr1')">Run</button>
+<button class="cbtn" onclick="chkFill(this,'Lay','Lay','bl1','fr1')">Lay</button>
+<button class="cbtn" onclick="chkFill(this,'Fly','Lay','bl1','fr1')">Fly</button>
+        
+        
+        
+        
+        
+        
+        
+        
+        </div>
+        <div class="fill-res" id="fr1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dcfce7;">🎧</div><div><div class="sh-title">소리 듣고 빈칸 채우기</div><div class="sh-sub">DICTATION · 들리는 단어를 입력하세요</div></div></div>
+    <div class="sb">
+      <div class="dict-item"><div class="dict-row"><button class="dict-play" onclick="speak('The goose laid a golden egg.')">&#9654;</button><div><div class="dict-label">문장 1</div><div class="dict-hint">"The goose ______ a golden egg."</div></div></div><div class="dict-input-row"><input class="dict-input" id="di1" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','laid','dr1')"/><button class="dict-btn" onclick="chkDict('di1','laid','dr1')">확인 ✓</button></div><div class="dict-result" id="dr1"></div></div>
+<div class="dict-item"><div class="dict-row"><button class="dict-play" onclick="speak('Jack tucked the goose under his arm.')">&#9654;</button><div><div class="dict-label">문장 2</div><div class="dict-hint">"Jack ______ the goose under his arm."</div></div></div><div class="dict-input-row"><input class="dict-input" id="di2" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','tucked','dr2')"/><button class="dict-btn" onclick="chkDict('di2','tucked','dr2')">확인 ✓</button></div><div class="dict-result" id="dr2"></div></div>
+<div class="dict-item"><div class="dict-row"><button class="dict-play" onclick="speak('He ran for the beanstalk with the goose.')">&#9654;</button><div><div class="dict-label">문장 3</div><div class="dict-hint">"He ran for the ______ with the goose."</div></div></div><div class="dict-input-row"><input class="dict-input" id="di3" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','beanstalk','dr3')"/><button class="dict-btn" onclick="chkDict('di3','beanstalk','dr3')">확인 ✓</button></div><div class="dict-result" id="dr3"></div></div>
+</div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dcfce7;">👂</div><div><div class="sh-title">들어보고 골라요</div><div class="sh-sub">LISTENING CHOICE · 잘 듣고 맞는 문장을 골라봐요</div></div></div>
+    <div class="sb">
+      <div class="lc-wrap">
+        <button class="lc-play-btn" onclick="speak('The giant smelled Jack but the giant\'s wife hid him in the oven until the giant fell asleep.')">🔊 듣기</button>
+        <div class="lc-opts">
+<button class="lc-opt" onclick="lcCheck(this,'ok')">&#9312; Jack stole the giant's magic goose that could lay golden eggs and brought it home.</button>
+<button class="lc-opt" onclick="lcCheck(this,'no')">&#9312; Jack traded the bag of gold for the magic goose at the market.</button>
+<button class="lc-opt" onclick="lcCheck(this,'no')">&#9312; The giant gave Jack the goose as a reward for being brave.</button>
+        
+        
+        
+        
+        
+        
+        
+        
+        </div>
+        <div class="lc-result" id="lc-res"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dcfce7;">🧩</div><div><div class="sh-title">단어 배열하기 1</div><div class="sh-sub">WORD ORDER · 문장을 만들어봐요</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="wlt-b" onclick="showWO('b')">입문 A1</button>
+        <button class="lt" id="wlt-e" onclick="showWO('e')">초급 A2</button>
+        <button class="lt" id="wlt-i" onclick="showWO('i')">중급 B1</button>
+      </div>
+      <div id="wo-b">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 알맞은 단어를 골라봐요!</div>
+          <div class="fill-sent" style="margin-bottom:12px;">The giant's goose could lay <span class='blank-span' id='wo-bl1'>&nbsp;&nbsp;&nbsp;&nbsp;</span> eggs.</div>
+          <div class="choices">
+<button class="cbtn" onclick="chkFill(this,'big','golden','wo-bl1','wo-br1')">big</button>
+<button class="cbtn" onclick="chkFill(this,'golden','golden','wo-bl1','wo-br1')">golden</button>
+<button class="cbtn" onclick="chkFill(this,'silver','golden','wo-bl1','wo-br1')">silver</button>
+          
+          
+          
+          
+          
+          
+          
+          
+          </div>
+          <div class="fill-res" id="wo-br1"></div>
+        </div>
+      </div>
+      <div id="wo-e" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo1e-ans"></div>
+          <div class="wo-pool" id="wo1e-pool">
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'Jack')">Jack</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'grabbed')">grabbed</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'the')">the</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'goose')">goose</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'and')">and</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'ran')">ran</button>
+            
+            
+            
+            
+            
+            
+            
+            
+          </div>
+          <div class="wo-btns"><button class="wo-check" onclick="woCheck('wo1e','She forgot Mother's warning','wr1e')">확인하기 ✓</button><button class="wo-reset" onclick="woReset('wo1e')">다시하기</button></div>
+          <div class="wo-result" id="wr1e"></div>
+        </div>
+      </div>
+      <div id="wo-i" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo1i-ans"></div>
+          <div class="wo-pool" id="wo1i-pool">
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'Jack')">Jack</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'tucked')">tucked</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'the')">the</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'goose')">goose</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'under')">under</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'his')">his</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'arm')">arm</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'and')">and</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'ran')">ran</button>
+            
+            
+            
+            
+            
+            
+            
+            
+          </div>
+          <div class="wo-btns"><button class="wo-check" onclick="woCheck('wo1i','Jack tucked the goose under his arm and ran','wr1i')">확인하기 ✓</button><button class="wo-reset" onclick="woReset('wo1i')">다시하기</button></div>
+          <div class="wo-result" id="wr1i"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dcfce7;">🃏</div><div><div class="sh-title">짝 맞추기</div><div class="sh-sub">MATCHING · 단어와 뜻을 연결해봐요</div></div></div>
+    <div class="sb">
+      <div class="match-wrap">
+        <div style="font-size:0.82rem;color:#666;font-weight:700;margin-bottom:11px;">단어를 클릭하고 맞는 뜻을 클릭해서 연결해봐요!</div>
+        <div class="match-grid">
+          <div class="match-col">
+            <button class="match-item" onclick="matchClick(this,'goose')">goose</button>
+            <button class="match-item" onclick="matchClick(this,'lay')">lay</button>
+            <button class="match-item" onclick="matchClick(this,'golden')">golden</button>
+            <button class="match-item" onclick="matchClick(this,'tuck')">tuck</button>
+            
+            
+            
+            
+            
+            
+            
+            
+          </div>
+          <div class="match-col">
+            <button class="match-item" onclick="matchClick(this,'tuck')">끼워 넣다</button>
+            <button class="match-item" onclick="matchClick(this,'golden')">황금의</button>
+            <button class="match-item" onclick="matchClick(this,'lay')">알을 낳다</button>
+            <button class="match-item" onclick="matchClick(this,'goose')">거위</button>
+            
+            
+            
+            
+            
+            
+            
+            
+          </div>
+        </div>
+        <div class="match-result" id="match-result"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dcfce7;">🧩</div><div><div class="sh-title">단어 배열하기 2</div><div class="sh-sub">WORD ORDER · 더 도전해봐요!</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="wlt2-b" onclick="showWO2('b')">입문 A1</button>
+        <button class="lt" id="wlt2-e" onclick="showWO2('e')">초급 A2</button>
+        <button class="lt" id="wlt2-i" onclick="showWO2('i')">중급 B1</button>
+      </div>
+      <div id="wo2-b">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 알맞은 단어를 골라봐요!</div>
+          <div class="fill-sent" style="margin-bottom:12px;">Every time the giant said "Lay!" the goose laid a golden <span class='blank-span' id='wo2-bl1'>&nbsp;&nbsp;&nbsp;&nbsp;</span>.</div>
+          <div class="choices">
+<button class="cbtn" onclick="chkFill(this,'coin','egg','wo2-bl1','wo2-br1')">coin</button>
+<button class="cbtn" onclick="chkFill(this,'egg','egg','wo2-bl1','wo2-br1')">egg</button>
+<button class="cbtn" onclick="chkFill(this,'stone','egg','wo2-bl1','wo2-br1')">stone</button>
+          
+          
+          
+          
+          
+          
+          
+          
+          </div>
+          <div class="fill-res" id="wo2-br1"></div>
+        </div>
+      </div>
+      <div id="wo2-e" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo2e-ans"></div>
+          <div class="wo-pool" id="wo2e-pool">
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'Lay')">Lay</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'goose')">goose</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'lay')">lay</button>
+            
+            
+            
+            
+            
+            
+            
+            
+          </div>
+          <div class="wo-btns"><button class="wo-check" onclick="woCheck('wo2e','Lay goose lay','wr2e')">확인하기 ✓</button><button class="wo-reset" onclick="woReset('wo2e')">다시하기</button></div>
+          <div class="wo-result" id="wr2e"></div>
+        </div>
+      </div>
+      <div id="wo2-i" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo2i-ans"></div>
+          <div class="wo-pool" id="wo2i-pool">
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'The')">The</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'goose')">goose</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'was')">was</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'small')">small</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'and')">and</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'unremarkable')">unremarkable</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'looking')">looking</button>
+            
+            
+            
+            
+            
+            
+            
+            
+          </div>
+          <div class="wo-btns"><button class="wo-check" onclick="woCheck('wo2i','He had gone into the garden against his mother's wishes','wr2i')">확인하기 ✓</button><button class="wo-reset" onclick="woReset('wo2i')">다시하기</button></div>
+          <div class="wo-result" id="wr2i"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">받아쓰기 도전!</div></div>
+    <div style="font-size:0.75rem;color:#666;margin-bottom:14px;">??️ 듣기 버튼을 누르고 히는트 단어를 참고해서 전체 문장을 입력하세요.</div>
+    <div style="background:#dcfce7;border-radius:12px;padding:14px 16px;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="background:#16a34a;color:white;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;">A1</span>
+        <span style="font-size:0.75rem;color:#666;font-weight:600;">문장 1</span></div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+        <button onclick="speak('Lay, goose, lay!')" style="background:#1a4a2e;color:white;border:none;border-radius:9px;padding:8px 14px;font-size:0.82rem;font-weight:800;cursor:pointer;">▶ 듣기</button>
+        <button onclick="speak('Lay, goose, lay!')" style="background:white;color:#1a4a2e;border:2px solid #1a4a2e;border-radius:9px;padding:8px 12px;cursor:pointer;">↺</button>
+        <div style="background:white;border-radius:9px;padding:7px 12px;flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:120px;">
+          <span style="font-size:0.7rem;color:#888;">히는트:</span>
+          <span style="background:#dcfce7;border:1.5px solid #16a34a;border-radius:6px;padding:2px 8px;font-weight:700;color:#16a34a;font-size:0.78rem;">&quot;goose&quot;</span>
+          <span style="background:#dcfce7;border:1.5px solid #16a34a;border-radius:6px;padding:2px 8px;font-weight:700;color:#16a34a;font-size:0.78rem;">&quot;lay&quot;</span>
+        </div></div>
+      <div style="display:flex;gap:8px;">
+        <input id="fd1" type="text" placeholder="전체 문장을 영어로 입력하세요..."
+          style="flex:1;border:2px solid #ddd;border-radius:9px;padding:9px 12px;font-size:0.82rem;font-family:inherit;"
+          onkeydown="if(event.key==='Enter')chkFullDict('fd1','Lay, goose, lay!','fdr1')"/>
+        <button onclick="chkFullDict('fd1','Lay, goose, lay!','fdr1')"
+          style="background:#1a4a2e;color:white;border:none;border-radius:9px;padding:9px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;flex-shrink:0;">확인 ✓</button></div>
+      <div id="fdr1" style="margin-top:8px;font-size:0.8rem;font-weight:700;min-height:20px;"></div></div>
+    <div style="background:#dbeafe;border-radius:12px;padding:14px 16px;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="background:#2563eb;color:white;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;">A2</span>
+        <span style="font-size:0.75rem;color:#666;font-weight:600;">문장 2</span></div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+        <button onclick="speak('The goose laid a perfect golden egg.')" style="background:#1a4a2e;color:white;border:none;border-radius:9px;padding:8px 14px;font-size:0.82rem;font-weight:800;cursor:pointer;">▶ 듣기</button>
+        <button onclick="speak('The goose laid a perfect golden egg.')" style="background:white;color:#1a4a2e;border:2px solid #1a4a2e;border-radius:9px;padding:8px 12px;cursor:pointer;">↺</button>
+        <div style="background:white;border-radius:9px;padding:7px 12px;flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:120px;">
+          <span style="font-size:0.7rem;color:#888;">히는트:</span>
+          <span style="background:#dbeafe;border:1.5px solid #2563eb;border-radius:6px;padding:2px 8px;font-weight:700;color:#2563eb;font-size:0.78rem;">&quot;golden&quot;</span>
+          <span style="background:#dbeafe;border:1.5px solid #2563eb;border-radius:6px;padding:2px 8px;font-weight:700;color:#2563eb;font-size:0.78rem;">&quot;perfect&quot;</span>
+        </div></div>
+      <div style="display:flex;gap:8px;">
+        <input id="fd2" type="text" placeholder="전체 문장을 영어로 입력하세요..."
+          style="flex:1;border:2px solid #ddd;border-radius:9px;padding:9px 12px;font-size:0.82rem;font-family:inherit;"
+          onkeydown="if(event.key==='Enter')chkFullDict('fd2','The goose laid a perfect golden egg.','fdr2')"/>
+        <button onclick="chkFullDict('fd2','The goose laid a perfect golden egg.','fdr2')"
+          style="background:#1a4a2e;color:white;border:none;border-radius:9px;padding:9px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;flex-shrink:0;">확인 ✓</button></div>
+      <div id="fdr2" style="margin-top:8px;font-size:0.8rem;font-weight:700;min-height:20px;"></div></div>
+    <div style="background:#f5f0ff;border-radius:12px;padding:14px 16px;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="background:#7c3aed;color:white;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;">B1</span>
+        <span style="font-size:0.75rem;color:#666;font-weight:600;">문장 3</span></div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+        <button onclick="speak('The goose laid another golden egg while being carried.')" style="background:#1a4a2e;color:white;border:none;border-radius:9px;padding:8px 14px;font-size:0.82rem;font-weight:800;cursor:pointer;">▶ 듣기</button>
+        <button onclick="speak('The goose laid another golden egg while being carried.')" style="background:white;color:#1a4a2e;border:2px solid #1a4a2e;border-radius:9px;padding:8px 12px;cursor:pointer;">↺</button>
+        <div style="background:white;border-radius:9px;padding:7px 12px;flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:120px;">
+          <span style="font-size:0.7rem;color:#888;">히는트:</span>
+          <span style="background:#f5f0ff;border:1.5px solid #7c3aed;border-radius:6px;padding:2px 8px;font-weight:700;color:#7c3aed;font-size:0.78rem;">&quot;golden&quot;</span>
+          <span style="background:#f5f0ff;border:1.5px solid #7c3aed;border-radius:6px;padding:2px 8px;font-weight:700;color:#7c3aed;font-size:0.78rem;">&quot;carried&quot;</span>
+        </div></div>
+      <div style="display:flex;gap:8px;">
+        <input id="fd3" type="text" placeholder="전체 문장을 영어로 입력하세요..."
+          style="flex:1;border:2px solid #ddd;border-radius:9px;padding:9px 12px;font-size:0.82rem;font-family:inherit;"
+          onkeydown="if(event.key==='Enter')chkFullDict('fd3','The goose laid another golden egg while being carried.','fdr3')"/>
+        <button onclick="chkFullDict('fd3','The goose laid another golden egg while being carried.','fdr3')"
+          style="background:#1a4a2e;color:white;border:none;border-radius:9px;padding:9px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;flex-shrink:0;">확인 ✓</button></div>
+      <div id="fdr3" style="margin-top:8px;font-size:0.8rem;font-weight:700;min-height:20px;"></div></div>
+  </div>
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dcfce7;">❓</div><div><div class="sh-title">이해 문제</div><div class="sh-sub">COMPREHENSION · 수준을 골라 도전해봐요</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="ql-b" onclick="showQuiz('b')">A1 문제</button>
+        <button class="lt" id="ql-e" onclick="showQuiz('e')">A2 문제</button>
+        <button class="lt" id="ql-i" onclick="showQuiz('i')">B1 문제</button>
+      </div>
+      <div id="qb-b">
+<div class="quiz-item"><div class="quiz-q">Q1. Why did Jack climb the beanstalk a second time?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) He wanted adventure</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) The gold was spent and they needed more</button>
+<button class="qopt" onclick="qChk(this,'no')">c) He forgot something at the castle</button>
+</div></div>
+<div class="quiz-item"><div class="quiz-q">Q2. What could the magic goose do?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) Fly very fast</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) Lay golden eggs on command</button>
+<button class="qopt" onclick="qChk(this,'no')">c) Talk like a human</button>
+</div></div>
+<div class="quiz-item"><div class="quiz-q">Q3. What did Jack do when the giant fell asleep?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) He looked for more gold coins</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) He grabbed the goose and ran</button>
+<button class="qopt" onclick="qChk(this,'no')">c) He explored the rest of the castle</button>
+</div></div>
+
+
+
+
+
+
+
+
+      </div>
+      <div id="qb-e" style="display:none;">
+<div class="quiz-item"><div class="quiz-q">Q1. Jack climbs the beanstalk a second time knowing the danger. What does this show?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) Jack is careless and does not learn</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) Necessity and courage combine -- Jack knows the risk but the family's need is greater than his fear</button>
+<button class="qopt" onclick="qChk(this,'no')">c) Jack is greedy and only wants more treasure</button>
+</div></div>
+<div class="quiz-item"><div class="quiz-q">Q2. The goose looks unremarkable. Why does the story make it look ordinary?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) Magic objects are always disguised as ordinary things</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) Value is often invisible from the outside -- the most precious things do not always announce themselves. The goose's plainness is the story's way of showing that appearances are deceiving</button>
+<button class="qopt" onclick="qChk(this,'no')">c) The giant wanted a plain goose</button>
+</div></div>
+<div class="quiz-item"><div class="quiz-q">Q3. The goose lays an egg while Jack is running away. What effect does this detail create?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) It shows the goose is very productive</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) It is both comic and wonderful -- even in the chaos of escape, magic keeps working. It makes the goose feel real and alive rather than just a plot device</button>
+<button class="qopt" onclick="qChk(this,'no')">c) It slows Jack down and creates danger</button>
+</div></div>
+
+
+
+
+
+
+
+
+      </div>
+      <div id="qb-i" style="display:none;">
+<div class="quiz-item"><div class="quiz-q">Q1. Jack returns to the giant twice. The story follows a pattern of three visits. Why do folk tales often use the number three?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) Three is a lucky number in most cultures</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) Three creates a satisfying narrative rhythm -- it allows escalation, expectation, and then either fulfilment or surprise. Two visits feel incomplete; four feel repetitive</button>
+<button class="qopt" onclick="qChk(this,'no')">c) Three visits is the most a hero can make safely</button>
+</div></div>
+<div class="quiz-item"><div class="quiz-q">Q2. Each visit yields a different treasure. What does the progression from gold coins to a golden goose suggest?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) The giant has many different types of treasure</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) The progression moves from finite to infinite -- coins run out, but a goose that lays golden eggs is an endless source. Jack is learning to seek lasting value rather than immediate wealth</button>
+<button class="qopt" onclick="qChk(this,'no')">c) Jack is getting greedier with each visit</button>
+</div></div>
+<div class="quiz-item"><div class="quiz-q">Q3. Jack takes from the giant without guilt or hesitation. The story does not question this. What does this tell us about how fairy tales handle morality?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) Fairy tales have no morality</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) Fairy tales often operate within a clear but unspoken moral framework: the giant is an oppressor, Jack represents the underdog, and taking from power is coded as heroic rather than wrong. The story trusts its audience to feel this instinctively</button>
+<button class="qopt" onclick="qChk(this,'no')">c) Jack is meant to be seen as a thief</button>
+</div></div>
+
+
+
+
+
+
+
+
+      </div>
+    </div>
+    <div class="prog-row">
+      <span class="prog-label">진행도</span>
+      <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:0%;"></div></div>
+      <span class="prog-label" id="prog-cnt">0 / 3</span>
+    </div>
+  </div>
+
+  <div class="complete-card" id="complete-card">
+    <div class="complete-emoji">🪿</div>
+    <div class="complete-title">Week 15 완료!</div>
+    <div class="complete-sub">황금 알을 낳는 거위를 가져왔어요!<br>다음 주엔 거인을 무찌르고 마지막 보물을 찾아요!</div>
+    <div class="xp-big">⭐ 총 <span id="final-xp">0</span> XP 획득!</div>
+    <div class="robo-box"><div class="robo-av">🤖</div><div class="robo-text"><div class="robo-name">Robo</div>황금 알! 매일 하나씩! 다음엔 마법 하프와 마지막 대결이에요! 🎵</div></div>
+    <button class="tutor-btn" onclick="startTutor()">💬 AI 튜터와 영어 회화 연습하기</button>
+    <div class="next-row">
+      <button class="next-btn" onclick="location.href='week14.html'" style="background:#666;">← W14</button>
+      <div><div class="next-lbl">다음 주</div><div class="next-title">Week 16 — Jack is Caught</div><div style="font-size:0.72rem;color:#aaa;margin-top:2px;">거인에게 잡히다!</div></div>
+      <button class="next-btn" onclick="location.href='week16.html'">W16 →</button>
+    </div>
+  </div>
+</div>
+<script>
+var xp=0,correct=0,total=3;
+var wo1eplaced=[],wo1iplaced=[],wo2eplaced=[],wo2iplaced=[];
+var matchSel=null,matchPairs={};
+var isPlaying=false;
+function getFemaleVoice(){var voices=window.speechSynthesis.getVoices();var names=['Microsoft Zira Desktop - English (United States)','Microsoft Zira','Microsoft Jenny Online (Natural) - English (United States)','Microsoft Jenny','Microsoft Aria Online (Natural) - English (United States)','Microsoft Aria','Samantha','Karen','Google US English'];for(var n of names){var v=voices.find(function(v){return v.name===n;});if(v)return v;}return voices.find(function(v){return v.lang==='en-US';})||voices[0];}
+function speak(text){window.speechSynthesis.cancel();setTimeout(function(){var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.82;u.pitch=1.1;var f=getFemaleVoice();if(f)u.voice=f;window.speechSynthesis.speak(u);},200);}
+function toggleFull(){var btn=document.getElementById('main-play-btn');if(isPlaying){window.speechSynthesis.cancel();isPlaying=false;btn.textContent='▶';}else{isPlaying=true;btn.textContent='⏸';var text=document.getElementById('sb-e').innerText.replace(/\n/g,' ');window.speechSynthesis.cancel();setTimeout(function(){var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.82;u.pitch=1.1;var f=getFemaleVoice();if(f)u.voice=f;u.onend=function(){isPlaying=false;btn.textContent='▶';};window.speechSynthesis.speak(u);},200);}}
+function lcCheck(btn,type){var opts=btn.parentElement.querySelectorAll('.lc-opt');var res=document.getElementById('lc-res');if(type==='ok'){btn.classList.add('ok');opts.forEach(function(o){if(o!==btn)o.style.opacity='0.4';o.style.pointerEvents='none';});res.style.color='#16a34a';res.textContent='정답이에요! +20 XP';addXP(20);}else{btn.classList.add('no');res.style.color='#dc2626';res.textContent='다시 들어봐요!';setTimeout(function(){btn.classList.remove('no');res.textContent='';},1000);}}
+function addXP(n){xp+=n;document.getElementById('xp-num').textContent=xp;document.getElementById('xp-bar').style.width=Math.min(xp/5,100)+'%';}
+function showStory(l){['b','e','i'].forEach(x=>{document.getElementById('sb-'+x).style.display=x===l?'block':'none';var t=document.getElementById('lt-'+x);t.className='lt'+(x===l?' lt-'+x:'');});}
+function showWO(l){['b','e','i'].forEach(x=>{document.getElementById('wo-'+x).style.display=x===l?'block':'none';var t=document.getElementById('wlt-'+x);t.className='lt'+(x===l?' lt-'+x:'');});}
+function showWO2(l){['b','e','i'].forEach(x=>{document.getElementById('wo2-'+x).style.display=x===l?'block':'none';var t=document.getElementById('wlt2-'+x);t.className='lt'+(x===l?' lt-'+x:'');});}
+function showQuiz(l){['b','e','i'].forEach(x=>{document.getElementById('qb-'+x).style.display=x===l?'block':'none';var t=document.getElementById('ql-'+x);t.className='lt'+(x===l?' lt-'+x:'');});correct=0;total=3;updateProg();}
+function chkFill(btn,val,ans,blankId,resId){var r=document.getElementById(resId);var bl=document.getElementById(blankId);if(val===ans){btn.className='cbtn ok';bl.textContent=val;r.style.color='#16a34a';r.textContent='정답이에요! +30 XP';addXP(30);btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.disabled=true);}else{btn.className='cbtn no';r.style.color='#dc2626';r.textContent='다시 해봐요!';setTimeout(function(){btn.className='cbtn';r.textContent='';},1000);}}
+function chkDict(inputId,ans,resId){var val=document.getElementById(inputId).value.trim().toLowerCase();var r=document.getElementById(resId);if(val===ans.toLowerCase()){r.style.color='#16a34a';r.textContent='정답이에요! +20 XP ✓';addXP(20);document.getElementById(inputId).style.borderColor='#1a4a2e';}else{r.style.color='#dc2626';r.textContent='다시 들어보세요! (힌트: '+ans[0]+'...)';}}
+var woPools={wo1e:wo1eplaced,wo1i:wo1iplaced,wo2e:wo2eplaced,wo2i:wo2iplaced};
+function woAdd(id,btn,word){if(btn.classList.contains('used'))return;btn.classList.add('used');woPools[id].push(word);var box=document.getElementById(id+'-ans');var chip=document.createElement('button');chip.className='wo-placed';chip.textContent=word;chip.onclick=function(){woRemove(id,btn,word,chip);};box.appendChild(chip);}
+function woRemove(id,origBtn,word,chip){var arr=woPools[id];var idx=arr.indexOf(word);if(idx>-1)arr.splice(idx,1);origBtn.classList.remove('used');chip.remove();}
+function woCheck(id,ans,resId){var arr=woPools[id];var given=arr.join(' ');var r=document.getElementById(resId);if(given===ans){r.style.color='#16a34a';r.textContent='완벽해요! +50 XP';addXP(50);}else{r.style.color='#dc2626';r.textContent='아쉬워요! 다시 해봐요!';setTimeout(function(){r.textContent='';},2000);}}
+function woReset(id){woPools[id].length=0;var box=document.getElementById(id+'-ans');if(box)box.innerHTML='';document.querySelectorAll('#'+id+'-pool .wo-chip').forEach(w=>w.classList.remove('used'));}
+function matchClick(el,key){if(el.classList.contains('matched'))return;if(!matchSel){matchSel=el;el.classList.add('selected');return;}if(matchSel===el){el.classList.remove('selected');matchSel=null;return;}var aKey=matchSel.getAttribute('onclick').match(/'([^']+)'/)[1];var bKey=el.getAttribute('onclick').match(/'([^']+)'/)[1];if(aKey===bKey){matchSel.classList.remove('selected');matchSel.classList.add('matched');el.classList.add('matched');matchPairs[aKey]=true;matchSel=null;addXP(15);var done=Object.keys(matchPairs).length;var mr=document.getElementById('match-result');mr.style.color='#16a34a';mr.textContent=done>=4?'모두 맞췄어요! 훌륭해요! 🎉':done+'개 맞췄어요!';}else{matchSel.classList.remove('selected');el.classList.remove('selected');matchSel.classList.add('wrong-flash');el.classList.add('wrong-flash');setTimeout(()=>{matchSel&&matchSel.classList.remove('wrong-flash');el.classList.remove('wrong-flash');},600);matchSel=null;}}
+function qChk(el,type){if(type==='ok'){el.parentElement.querySelectorAll('.qopt').forEach(o=>o.disabled=true);el.className='qopt ok';correct++;addXP(20);updateProg();}else{el.className='qopt no';setTimeout(function(){el.className='qopt';},1000);}}
+function updateProg(){document.getElementById('prog-bar').style.width=Math.round(correct/total*100)+'%';document.getElementById('prog-cnt').textContent=correct+' / '+total;if(correct>=total){setTimeout(()=>{document.getElementById('final-xp').textContent=xp;var cc=document.getElementById('complete-card');cc.style.display='block';cc.scrollIntoView({behavior:'smooth'});},800);}}
+function startTutor(){window.open('https://journey-bronzy-fruitily.ngrok-free.dev/static/step12.html?grade=3&camp=a&week=15','_blank');}
+function shuffleLcOpts(){var wrap=document.querySelector('.lc-opts');if(!wrap)return;var opts=Array.from(wrap.children);opts.sort(function(){return Math.random()-0.5;});opts.forEach(function(o){wrap.appendChild(o);});opts=Array.from(wrap.children);var nums=['①','②','③'];opts.forEach(function(o,i){o.textContent=o.textContent.replace(/^[①②③]\s*/,nums[i]+' ');});}
+function shufflePools(){document.querySelectorAll('.wo-pool').forEach(function(pool){var chips=Array.from(pool.children);chips.sort(function(){return Math.random()-0.5;});chips.forEach(function(chip){pool.appendChild(chip);});});}
+window.addEventListener('load',function(){shufflePools();shuffleLcOpts();});
+var urlParams=new URLSearchParams(window.location.search);
+if(urlParams.get('admin')==='true'){setTimeout(function(){document.getElementById('final-xp').textContent='999';document.getElementById('complete-card').style.display='block';},300);}
+</script>
+</body>
+</html>

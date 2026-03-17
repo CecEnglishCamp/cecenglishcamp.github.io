@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G4 Week 7 — Wind in the Willows | CEC English Camp A</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:#eff6ff;min-height:100vh;}
+.topbar{background:linear-gradient(90deg,#1a3a6e,#2d5aae);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-sub{color:#a8c8f8;font-size:0.75rem;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.ep-badge{background:rgba(255,255,255,0.15);color:white;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;}
+.xp-badge{background:#f97316;color:white;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;}
+.xp-bar-wrap{height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin-top:4px;width:80px;}
+.xp-fill{height:100%;background:#ffd60a;border-radius:2px;width:0%;transition:width 0.6s ease;}
+.container{max-width:780px;margin:0 auto;padding:24px 16px;}
+.card{background:white;border-radius:20px;overflow:hidden;margin-bottom:20px;box-shadow:0 4px 24px rgba(0,0,0,0.07);}
+.hero-card{background:linear-gradient(135deg,#1a3a6e,#2d5aae);}
+.hero-img{width:100%;height:200px;background:linear-gradient(135deg,#0d2040,#1a3a6e);display:flex;align-items:center;justify-content:center;font-size:6rem;}
+.hero-badges{padding:12px 20px;display:flex;gap:8px;}
+.hb{padding:3px 12px;border-radius:10px;font-size:0.75rem;font-weight:700;}
+.hb-g{background:rgba(255,255,255,0.15);color:white;}
+.hb-o{background:#f97316;color:white;}
+.hero-title-area{padding:0 20px 14px;}
+.hero-title{color:white;font-size:1.3rem;font-weight:900;}
+.hero-sub{color:#a8c8f8;font-size:0.85rem;margin-top:4px;}
+.key-box{background:rgba(0,0,0,0.25);border-radius:16px;padding:18px;margin:0 16px 14px;border:1px solid rgba(255,255,255,0.2);}
+.kb-label{font-size:0.7rem;font-weight:800;color:rgba(255,255,255,0.5);letter-spacing:2px;margin-bottom:6px;}
+.kb-text{font-size:1.05rem;font-weight:900;color:white;margin-bottom:4px;}
+.kb-kr{font-size:0.87rem;color:rgba(255,255,255,0.65);}
+.audio-row{background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;margin-top:10px;display:flex;align-items:center;gap:10px;}
+.play-btn{width:40px;height:40px;background:#2563eb;border-radius:50%;border:none;cursor:pointer;color:white;font-size:1rem;flex-shrink:0;font-family:'Nunito',sans-serif;transition:transform 0.15s;}
+.play-btn:hover{transform:scale(1.1);}
+.audio-info{flex:1;color:rgba(255,255,255,0.85);font-size:0.78rem;}
+.audio-title-text{font-weight:800;color:white;}
+.wave{color:rgba(255,255,255,0.3);font-size:0.9rem;letter-spacing:2px;}
+.sh{display:flex;align-items:center;gap:10px;padding:16px 20px 0;}
+.sh-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.sh-title{font-size:0.92rem;font-weight:800;color:#1a1a1a;}
+.sh-sub{font-size:0.7rem;color:#999;font-weight:700;letter-spacing:1px;}
+.sb{padding:12px 20px 18px;}
+.listen-guide{background:#dbeafe;border-radius:10px;padding:9px 14px;font-size:0.8rem;color:#1a3a6e;font-weight:700;margin-top:10px;}
+.audio-blue{background:#1a3a6e;border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.ltabs{display:flex;gap:8px;margin-bottom:12px;}
+.lt{padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:800;cursor:pointer;border:2px solid #eee;color:#aaa;background:white;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.lt.lt-b{border-color:#1a3a6e;color:#1a3a6e;background:#dbeafe;}
+.lt.lt-e{border-color:#2563eb;color:#2563eb;background:#dbeafe;}
+.lt.lt-i{border-color:#1d4ed8;color:#1d4ed8;background:#bfdbfe;}
+.story-box{background:#dbeafe;border-left:4px solid #2563eb;border-radius:0 12px 12px 0;padding:14px;font-size:0.9rem;line-height:2;color:#1a1a1a;}
+.story-kr{background:#fffbf0;border-left:4px solid #f97316;border-radius:0 12px 12px 0;padding:12px;font-size:0.85rem;line-height:1.9;color:#666;margin-top:10px;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
+.vc{background:#dbeafe;border-radius:12px;padding:11px 13px;border:1.5px solid #bfdbfe;}
+.vc-w{font-size:0.95rem;font-weight:900;color:#1a3a6e;}
+.vc-m{font-size:0.78rem;color:#666;margin-top:2px;}
+.vc-e{font-size:0.72rem;color:#aaa;margin-top:3px;font-style:italic;}
+.fill-wrap{background:#dbeafe;border-radius:14px;padding:16px;}
+.fill-sent{font-size:1rem;font-weight:700;color:#1a1a1a;margin-bottom:12px;line-height:2;text-align:center;}
+.blank-span{display:inline-block;min-width:80px;border-bottom:3px solid #2563eb;text-align:center;padding:0 6px;color:#2563eb;font-weight:900;}
+.choices{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.cbtn{padding:7px 18px;border-radius:25px;border:2px solid #ddd;background:white;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.cbtn:hover{border-color:#1a3a6e;color:#1a3a6e;}
+.cbtn.ok{background:#dcfce7;border-color:#16a34a;color:#15803d;}
+.cbtn.no{background:#fee2e2;border-color:#dc2626;color:#b91c1c;}
+.fill-res{margin-top:8px;text-align:center;font-size:0.88rem;font-weight:700;min-height:20px;}
+.dict-item{background:#dbeafe;border-radius:13px;padding:14px;margin-bottom:10px;}
+.dict-row{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.dict-play{width:36px;height:36px;background:#1a3a6e;border-radius:50%;border:none;cursor:pointer;color:white;font-size:0.88rem;flex-shrink:0;font-family:'Nunito',sans-serif;}
+.dict-label{font-size:0.82rem;font-weight:700;color:#444;}
+.dict-hint{font-size:0.72rem;color:#aaa;}
+.dict-input-row{display:flex;gap:8px;align-items:center;}
+.dict-input{flex:1;padding:9px 12px;border-radius:9px;border:1.5px solid #ddd;font-size:0.88rem;font-family:'Nunito',sans-serif;font-weight:700;}
+.dict-input:focus{outline:none;border-color:#1a3a6e;}
+.dict-btn{padding:9px 14px;border-radius:9px;background:#1a3a6e;color:white;border:none;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+.dict-result{margin-top:6px;font-size:0.82rem;font-weight:700;min-height:18px;}
+.lc-wrap{background:#dbeafe;border-radius:14px;padding:16px;}
+.lc-play-btn{background:#1a3a6e;color:white;border:none;border-radius:25px;padding:9px 22px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;}
+.lc-opts{display:flex;flex-direction:column;gap:9px;}
+.lc-opt{background:white;border:2px solid #bfdbfe;border-radius:11px;padding:11px 15px;font-size:0.86rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;transition:all 0.15s;color:#1a1a1a;}
+.lc-opt:hover{border-color:#2563eb;}
+.lc-opt.ok{border-color:#16a34a;background:#dcfce7;color:#15803d;}
+.lc-opt.no{border-color:#dc2626;background:#fee2e2;color:#b91c1c;}
+.lc-result{margin-top:9px;font-size:0.86rem;font-weight:700;min-height:20px;text-align:center;}
+.wo-wrap{background:#dbeafe;border-radius:13px;padding:16px;margin-bottom:12px;}
+.wo-q{font-size:0.82rem;color:#555;margin-bottom:9px;font-weight:700;}
+.wo-box{min-height:46px;background:white;border-radius:9px;border:2px dashed #2563eb;padding:7px 11px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:9px;}
+.wo-pool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px;}
+.wo-chip{padding:6px 13px;background:#1a3a6e;color:white;border-radius:20px;font-size:0.82rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-chip.used{background:#ccc;cursor:default;}
+.wo-placed{padding:6px 13px;background:#2563eb;color:white;border-radius:20px;font-size:0.82rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-btns{display:flex;gap:8px;}
+.wo-check{background:#1a3a6e;color:white;border:none;padding:9px 20px;border-radius:25px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-reset{background:white;color:#666;border:1.5px solid #ccc;padding:9px 14px;border-radius:25px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-result{font-size:0.82rem;font-weight:700;margin-top:7px;min-height:18px;}
+.match-wrap{background:#dbeafe;border-radius:13px;padding:16px;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px;}
+.match-col{display:flex;flex-direction:column;gap:7px;}
+.match-item{padding:9px 13px;border-radius:9px;border:2px solid #ddd;background:white;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s;font-family:'Nunito',sans-serif;}
+.match-item:hover{border-color:#2563eb;}
+.match-item.selected{border-color:#f97316;background:#fff8f0;color:#c05200;}
+.match-item.matched{border-color:#16a34a;background:#dcfce7;color:#15803d;cursor:default;}
+.match-item.wrong-flash{border-color:#dc2626;background:#fee2e2;}
+.match-result{text-align:center;font-size:0.88rem;font-weight:700;min-height:20px;}
+.quiz-item{background:#dbeafe;border-radius:13px;padding:14px;margin-bottom:11px;}
+.quiz-q{font-size:0.88rem;font-weight:700;color:#1a1a1a;margin-bottom:9px;}
+.quiz-opts{display:flex;flex-direction:column;gap:7px;}
+.qopt{padding:9px 13px;border-radius:9px;border:1.5px solid #e0e0e0;background:white;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.qopt:hover{border-color:#1a3a6e;background:#dbeafe;}
+.qopt.ok{background:#dcfce7;border-color:#16a34a;color:#15803d;}
+.qopt.no{background:#fee2e2;border-color:#dc2626;color:#b91c1c;}
+.prog-row{display:flex;align-items:center;gap:9px;padding:0 20px 14px;}
+.prog-track{flex:1;background:#eee;border-radius:9px;height:7px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,#1a3a6e,#2563eb);border-radius:9px;transition:width 0.5s;}
+.prog-label{font-size:0.78rem;color:#aaa;font-weight:700;white-space:nowrap;}
+.complete-card{background:white;border-radius:20px;padding:28px;text-align:center;display:none;box-shadow:0 4px 24px rgba(0,0,0,0.07);margin-bottom:20px;}
+.complete-emoji{font-size:2.8rem;margin-bottom:10px;}
+.complete-title{font-size:1.3rem;font-weight:900;color:#1a3a6e;margin-bottom:7px;}
+.complete-sub{font-size:0.88rem;color:#666;margin-bottom:18px;line-height:1.7;}
+.xp-big{background:linear-gradient(135deg,#2563eb,#f97316);color:white;border-radius:13px;padding:14px 28px;font-size:1.15rem;font-weight:900;display:inline-block;margin-bottom:18px;}
+.robo-box{background:#dbeafe;border-radius:13px;padding:12px 15px;display:flex;gap:11px;text-align:left;margin-bottom:18px;}
+.robo-av{width:38px;height:38px;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.robo-name{font-weight:900;color:#2563eb;font-size:0.82rem;margin-bottom:3px;}
+.robo-text{font-size:0.82rem;color:#555;line-height:1.6;}
+.tutor-btn{background:#10a37f;color:white;border:none;padding:13px 28px;border-radius:13px;font-size:0.95rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-bottom:11px;}
+.next-row{background:#dbeafe;border-radius:13px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:11px;flex-wrap:wrap;}
+.next-lbl{font-size:0.72rem;color:#aaa;font-weight:700;}
+.next-title{font-size:0.88rem;font-weight:800;color:#1a1a1a;margin-top:2px;}
+.next-btn{background:#1a3a6e;color:white;border:none;padding:9px 16px;border-radius:9px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div>
+    <a href="https://cecenglishcamp.github.io/camp-a/" style="text-decoration:none;display:flex;align-items:center;gap:8px;">
+      <video src="../../robo.mp4" autoplay loop muted playsinline style="width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;"></video>
+      <div style="color:white;font-weight:900;font-size:1rem;">CEC English Camp A</div>
+    </a>
+    <div class="topbar-sub">Grade 4 · Wind in the Willows · Week 14 of 36</div>
+  </div>
+  <div class="topbar-right">
+    <div class="ep-badge">W14 / 36</div>
+    <div><div class="xp-badge">⭐ <span id="xp-num">0</span> XP</div><div class="xp-bar-wrap"><div class="xp-fill" id="xp-bar"></div></div></div>
+  </div>
+</div>
+<div class="container">
+  <div class="card hero-card">
+    <div class="hero-img">🐸🚔</div>
+    <div class="hero-badges"><div class="hb hb-g">W14 · UNIT 14</div><div class="hb hb-o">A2 ELEMENTARY</div></div>
+    <div class="hero-title-area">
+      <div class="hero-title">Dorothy's Courage</div>
+      <div class="hero-sub">도로시의 용기 · 마법사의 정체가 밝혀져요!</div>
+    </div>
+    <div style="padding:0 16px 14px;">
+      <div class="key-box">
+        <div class="kb-label">KEY SENTENCE · 이번 주 핵심 표현</div>
+        <div class="kb-text">"Pay no attention to that man behind the curtain."</div>
+        <div class="kb-kr">커튼 뒤의 그 남자는 신경 쓰지 마세요.</div>
+        <div class="audio-row">
+          <button class="play-btn" onclick="speak('Pay no attention to that man behind the curtain.')">▶</button>
+          <div class="audio-info"><div class="audio-title-text">발음 듣기</div><div style="opacity:0.6;font-size:0.72rem;">CLICK · EN-US</div></div>
+          <div class="wave">▁▃▅▃▁</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dbeafe;">🎧</div><div><div class="sh-title">발음 듣기</div><div class="sh-sub">LISTENING · 눈을 감고 들어보세요</div></div></div>
+    <div class="sb">
+      <div class="audio-blue">
+        <button class="play-btn" id="main-play-btn" onclick="toggleFull()">▶</button>
+        <div class="audio-info"><div class="audio-title-text">Wind in the Willows — Week 7 Full Story</div><div style="opacity:0.6;font-size:0.72rem;">CLICK · EN-US · SLOW SPEED</div></div>
+        <div class="wave" style="color:rgba(255,255,255,0.3);">▁▃▅▇▅▃▁</div>
+      </div>
+      <div class="listen-guide">💡 아래 <strong>이야기 읽기</strong> 카드에서 <strong>초급 A2</strong> 버튼을 눌러 같이 읽어봐요!</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dbeafe;">📖</div><div><div class="sh-title">이야기 읽기</div><div class="sh-sub">READING · 수준을 골라 읽어보세요</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="lt-b" onclick="showStory('b')">입문 A1</button>
+        <button class="lt" id="lt-e" onclick="showStory('e')">초급 A2</button>
+        <button class="lt" id="lt-i" onclick="showStory('i')">중급 B1</button>
+      </div>
+      <div id="sb-b"><div class="story-box">Dorothy brought the broomstick to the Wizard.<br>But the Wizard was not real magic.<br>Toto pulled back a curtain.<br>A small man was hiding there.<br>The Wizard was just an ordinary man.</div></div>
+      <div id="sb-e" style="display:none;"><div class="story-box">Dorothy and her friends returned to the Emerald City with the witch's broomstick. They demanded to see the Wizard. He appeared again as a great booming voice and refused to help them straight away.<br>Then Toto the dog ran to a curtain in the corner and pulled it aside. Behind it stood a small, ordinary-looking man pulling levers and speaking into a machine.<br>"Pay no attention to that man behind the curtain!" the great voice boomed -- but it was too late.<br>The Wizard had been a fake all along. Dorothy was furious. But the Wizard turned out to be kind and wise in his own way, and he found a way to give each friend what they needed.</div></div>
+      <div id="sb-i" style="display:none;"><div class="story-box">They had earned the broomstick at great cost. Dorothy placed it before the projected image of the Wizard and waited. The Wizard blustered and delayed, promising help while clearly intending to give none.<br>Then Toto, oblivious to the drama, trotted over to the curtain in the corner and nosed it aside.<br>A small bald man with a kind face was working frantically at a panel of switches and levers. The great booming voice was a machine. The giant floating head was a projection.<br>"Pay no attention to that man behind the curtain!" the machine thundered -- but everyone was already looking.<br>The Wizard of Oz was a fraud. But as Dorothy's fury subsided, she realised he was also the most human character she had met in the whole strange land: someone who had built a kingdom out of nothing but cleverness and nerve.</div></div>
+      <div class="story-kr">그들은 큰 대가를 치르고 빗자루를 얻었어요. 도로시는 마법사의 투영된 이미지 앞에 빗자루를 놓고 기다렸어요. 마법사는 도움을 약속하면서도 분명히 아무것도 줄 생각이 없었어요.<br>그때 토토가 구석의 커튼으로 다가가 코로 밀어냈어요.<br>친절한 얼굴을 가진 작은 대머리 남자가 스위치와 레버 패널 앞에서 열심히 작동하고 있었어요. 큰 울리는 목소리는 기계였어요. 거대한 떠다니는 머리는 투영이었어요.<br>"커튼 뒤의 그 남자는 신경 쓰지 마세요!" 기계가 울렸어요 -- 하지만 모두가 이미 보고 있었어요.<br>오즈의 마법사는 사기꾼이었어요. 하지만 도로시의 분노가 가라앉으면서, 그가 이상한 나라에서 만난 가장 인간적인 인물이라는 것을 깨달았어요: 영리함과 배짱만으로 왕국을 만든 사람.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dbeafe;">📝</div><div><div class="sh-title">핵심 단어</div><div class="sh-sub">VOCABULARY · 꼭 알아야 할 단어</div></div></div>
+    <div class="sb">
+      <div class="vocab-grid">
+<div class="vc"><div class="vc-w">blustered 💨</div><div class="vc-m">허풍 떨다</div><div class="vc-e">"The Wizard blustered and delayed."</div></div>
+<div class="vc"><div class="vc-w">frantically 😰</div><div class="vc-m">정신없이</div><div class="vc-e">"He worked frantically at the levers."</div></div>
+<div class="vc"><div class="vc-w">projection 💡</div><div class="vc-m">투영, 영사</div><div class="vc-e">"The giant head was just a projection."</div></div>
+<div class="vc"><div class="vc-w">fraud 🎭</div><div class="vc-m">사기꾼</div><div class="vc-e">"The Wizard was a fraud."</div></div>
+<div class="vc"><div class="vc-w">subside 😌</div><div class="vc-m">가라앉다</div><div class="vc-e">"Dorothy's fury subsided slowly."</div></div>
+<div class="vc"><div class="vc-w">nerve 💪</div><div class="vc-m">배짱, 담력</div><div class="vc-e">"He built his kingdom out of nerve."</div></div>
+      </div></div>
+      </div></div>
+      </div></div>
+      </div></div>
+      </div></div>
+      </div></div>
+      </div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dbeafe;">✏️</div><div><div class="sh-title">빈칸 채우기 연습</div><div class="sh-sub">WORD FILL · 맞는 단어를 골라보세요</div></div></div>
+    <div class="sb">
+      <div class="fill-wrap">
+        <div class="fill-sent">Toto pulled aside the <span class='blank-span' id='bl1'>&nbsp;&nbsp;&nbsp;&nbsp;</span> and revealed the real Wizard.</div>
+        <div class="choices">
+<button class="cbtn" onclick="chkFill(this,'door','curtain','bl1','fr1')">door</button>
+<button class="cbtn" onclick="chkFill(this,'curtain','curtain','bl1','fr1')">curtain</button>
+<button class="cbtn" onclick="chkFill(this,'wall','curtain','bl1','fr1')">wall</button>
+        
+        
+        
+        
+        
+        
+        
+        </div>
+        <div class="fill-res" id="fr1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dbeafe;">🎧</div><div><div class="sh-title">소리 듣고 빈칸 채우기</div><div class="sh-sub">DICTATION · 들리는 단어를 입력하세요</div></div></div>
+    <div class="sb">
+      <div class="dict-item"><div class="dict-row"><button class="dict-play" onclick="speak('Toto pulled the curtain aside.')">&#9654;</button><div><div class="dict-label">문장 1</div><div class="dict-hint">"Toto pulled the ______ aside."</div></div></div><div class="dict-input-row"><input class="dict-input" id="di1" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','curtain','dr1')"/><button class="dict-btn" onclick="chkDict('di1','curtain','dr1')">확인 ✓</button></div><div class="dict-result" id="dr1"></div></div>
+<div class="dict-item"><div class="dict-row"><button class="dict-play" onclick="speak('The great voice was a machine.')">&#9654;</button><div><div class="dict-label">문장 2</div><div class="dict-hint">"The great ______ was a machine."</div></div></div><div class="dict-input-row"><input class="dict-input" id="di2" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','voice','dr2')"/><button class="dict-btn" onclick="chkDict('di2','voice','dr2')">확인 ✓</button></div><div class="dict-result" id="dr2"></div></div>
+<div class="dict-item"><div class="dict-row"><button class="dict-play" onclick="speak('The Wizard of Oz was a fraud.')">&#9654;</button><div><div class="dict-label">문장 3</div><div class="dict-hint">"The Wizard of Oz was a ______."</div></div></div><div class="dict-input-row"><input class="dict-input" id="di3" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','fraud','dr3')"/><button class="dict-btn" onclick="chkDict('di3','fraud','dr3')">확인 ✓</button></div><div class="dict-result" id="dr3"></div></div>
+</div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dbeafe;">👂</div><div><div class="sh-title">들어보고 골라요</div><div class="sh-sub">LISTENING CHOICE · 잘 듣고 맞는 문장을 골라봐요</div></div></div>
+    <div class="sb">
+      <div class="lc-wrap">
+        <button class="lc-play-btn" onclick="speak('The Wizard agreed to help them but only if they brought him the Wicked Witch\'s broomstick.')">🔊 듣기</button>
+        <div class="lc-opts">
+<button class="lc-opt" onclick="lcCheck(this,'ok')">&#9312; Toto pulled back the curtain and revealed that the great Wizard was just an ordinary man with a machine.</button>
+<button class="lc-opt" onclick="lcCheck(this,'no')">&#9312; Dorothy used the ruby slippers to see through the Wizard's disguise.</button>
+<button class="lc-opt" onclick="lcCheck(this,'no')">&#9312; The Scarecrow figured out the Wizard was a fake by using his new brain.</button>
+        
+        
+        
+        
+        
+        
+        
+        </div>
+        <div class="lc-result" id="lc-res"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dbeafe;">🧩</div><div><div class="sh-title">단어 배열하기 1</div><div class="sh-sub">WORD ORDER · 문장을 만들어봐요</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="wlt-b" onclick="showWO('b')">입문 A1</button>
+        <button class="lt" id="wlt-e" onclick="showWO('e')">초급 A2</button>
+        <button class="lt" id="wlt-i" onclick="showWO('i')">중급 B1</button>
+      </div>
+      <div id="wo-b">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 알맞은 단어를 골라봐요!</div>
+          <div class="fill-sent" style="margin-bottom:12px;">Behind the curtain was a small, ordinary <span class='blank-span' id='wo-bl1'>&nbsp;&nbsp;&nbsp;&nbsp;</span>.</div>
+          <div class="choices">
+<button class="cbtn" onclick="chkFill(this,'witch','man','wo-bl1','wo-br1')">witch</button>
+<button class="cbtn" onclick="chkFill(this,'man','man','wo-bl1','wo-br1')">man</button>
+<button class="cbtn" onclick="chkFill(this,'robot','man','wo-bl1','wo-br1')">robot</button>
+          
+          
+          
+          
+          
+          
+          
+          </div>
+          <div class="fill-res" id="wo-br1"></div>
+        </div>
+      </div>
+      <div id="wo-e" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo1e-ans"></div>
+          <div class="wo-pool" id="wo1e-pool">
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'The')">The</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'Wizard')">Wizard</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'had')">had</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'been')">been</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'a')">a</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'fake')">fake</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'all')">all</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'along')">along</button>
+            
+            
+            
+            
+            
+            
+            
+          </div>
+          <div class="wo-btns"><button class="wo-check" onclick="woCheck('wo1e','The Wizard had been a fake all along','wr1e')">확인하기 ✓</button><button class="wo-reset" onclick="woReset('wo1e')">다시하기</button></div>
+          <div class="wo-result" id="wr1e"></div>
+        </div>
+      </div>
+      <div id="wo-i" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo1i-ans"></div>
+          <div class="wo-pool" id="wo1i-pool">
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'He')">He</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'built')">built</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'a')">a</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'kingdom')">kingdom</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'out')">out</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'of')">of</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'cleverness')">cleverness</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'and')">and</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'nerve')">nerve</button>
+            
+            
+            
+            
+            
+            
+            
+          </div>
+          <div class="wo-btns"><button class="wo-check" onclick="woCheck('wo1i','The slippers would not come off Dorothy's feet','wr1i')">확인하기 ✓</button><button class="wo-reset" onclick="woReset('wo1i')">다시하기</button></div>
+          <div class="wo-result" id="wr1i"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dbeafe;">🃏</div><div><div class="sh-title">짝 맞추기</div><div class="sh-sub">MATCHING · 단어와 뜻을 연결해봐요</div></div></div>
+    <div class="sb">
+      <div class="match-wrap">
+        <div style="font-size:0.82rem;color:#666;font-weight:700;margin-bottom:11px;">단어를 클릭하고 맞는 뜻을 클릭해서 연결해봐요!</div>
+        <div class="match-grid">
+          <div class="match-col">
+            <button class="match-item" onclick="matchClick(this,'fraud')">fraud</button>
+            <button class="match-item" onclick="matchClick(this,'projection')">projection</button>
+            <button class="match-item" onclick="matchClick(this,'subside')">subside</button>
+            <button class="match-item" onclick="matchClick(this,'nerve')">nerve</button>
+            
+            
+            
+            
+            
+            
+            
+          </div>
+          <div class="match-col">
+            <button class="match-item" onclick="matchClick(this,'subside')">가라앉다</button>
+            <button class="match-item" onclick="matchClick(this,'projection')">투영</button>
+            <button class="match-item" onclick="matchClick(this,'nerve')">배짱</button>
+            <button class="match-item" onclick="matchClick(this,'fraud')">사기꾼</button>
+            
+            
+            
+            
+            
+            
+            
+          </div>
+        </div>
+        <div class="match-result" id="match-result"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dbeafe;">🧩</div><div><div class="sh-title">단어 배열하기 2</div><div class="sh-sub">WORD ORDER · 더 도전해봐요!</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="wlt2-b" onclick="showWO2('b')">입문 A1</button>
+        <button class="lt" id="wlt2-e" onclick="showWO2('e')">초급 A2</button>
+        <button class="lt" id="wlt2-i" onclick="showWO2('i')">중급 B1</button>
+      </div>
+      <div id="wo2-b">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 알맞은 단어를 골라봐요!</div>
+          <div class="fill-sent" style="margin-bottom:12px;">Dorothy was furious but her anger slowly <span class='blank-span' id='wo2-bl1'>&nbsp;&nbsp;&nbsp;&nbsp;</span>.</div>
+          <div class="choices">
+<button class="cbtn" onclick="chkFill(this,'grew','subsided','wo2-bl1','wo2-br1')">grew</button>
+<button class="cbtn" onclick="chkFill(this,'subsided','subsided','wo2-bl1','wo2-br1')">subsided</button>
+<button class="cbtn" onclick="chkFill(this,'returned','subsided','wo2-bl1','wo2-br1')">returned</button>
+          
+          
+          
+          
+          
+          
+          
+          </div>
+          <div class="fill-res" id="wo2-br1"></div>
+        </div>
+      </div>
+      <div id="wo2-e" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo2e-ans"></div>
+          <div class="wo-pool" id="wo2e-pool">
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'Pay')">Pay</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'no')">no</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'attention')">attention</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'to')">to</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'that')">that</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'man')">man</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'behind')">behind</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'the')">the</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'curtain')">curtain</button>
+            
+            
+            
+            
+            
+            
+            
+          </div>
+          <div class="wo-btns"><button class="wo-check" onclick="woCheck('wo2e','Pay no attention to that man behind the curtain','wr2e')">확인하기 ✓</button><button class="wo-reset" onclick="woReset('wo2e')">다시하기</button></div>
+          <div class="wo-result" id="wr2e"></div>
+        </div>
+      </div>
+      <div id="wo2-i" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo2i-ans"></div>
+          <div class="wo-pool" id="wo2i-pool">
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'He')">He</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'was')">was</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'the')">the</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'most')">most</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'human')">human</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'character')">character</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'she')">she</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'had')">had</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'met')">met</button>
+            
+            
+            
+            
+            
+            
+            
+          </div>
+          <div class="wo-btns"><button class="wo-check" onclick="woCheck('wo2i','He was the most human character she had met','wr2i')">확인하기 ✓</button><button class="wo-reset" onclick="woReset('wo2i')">다시하기</button></div>
+          <div class="wo-result" id="wr2i"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">받아쓰기 도전!</div></div>
+    <div style="font-size:0.75rem;color:#666;margin-bottom:14px;">??️ 듣기 버튼을 누르고 히는트 단어를 참고해서 전체 문장을 입력하세요.</div>
+    <div style="background:#dcfce7;border-radius:12px;padding:14px 16px;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="background:#16a34a;color:white;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;">A1</span>
+        <span style="font-size:0.75rem;color:#666;font-weight:600;">문장 1</span></div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+        <button onclick="speak('Pay no attention to that man behind the curtain.')" style="background:#1a3a6e;color:white;border:none;border-radius:9px;padding:8px 14px;font-size:0.82rem;font-weight:800;cursor:pointer;">▶ 듣기</button>
+        <button onclick="speak('Pay no attention to that man behind the curtain.')" style="background:white;color:#1a3a6e;border:2px solid #1a3a6e;border-radius:9px;padding:8px 12px;cursor:pointer;">↺</button>
+        <div style="background:white;border-radius:9px;padding:7px 12px;flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:120px;">
+          <span style="font-size:0.7rem;color:#888;">히는트:</span>
+          <span style="background:#dcfce7;border:1.5px solid #16a34a;border-radius:6px;padding:2px 8px;font-weight:700;color:#16a34a;font-size:0.78rem;">&quot;curtain&quot;</span>
+          <span style="background:#dcfce7;border:1.5px solid #16a34a;border-radius:6px;padding:2px 8px;font-weight:700;color:#16a34a;font-size:0.78rem;">&quot;attention&quot;</span>
+        </div></div>
+      <div style="display:flex;gap:8px;">
+        <input id="fd1" type="text" placeholder="전체 문장을 영어로 입력하세요..."
+          style="flex:1;border:2px solid #ddd;border-radius:9px;padding:9px 12px;font-size:0.82rem;font-family:inherit;"
+          onkeydown="if(event.key==='Enter')chkFullDict('fd1','Pay no attention to that man behind the curtain.','fdr1')"/>
+        <button onclick="chkFullDict('fd1','Pay no attention to that man behind the curtain.','fdr1')"
+          style="background:#1a3a6e;color:white;border:none;border-radius:9px;padding:9px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;flex-shrink:0;">확인 ✓</button></div>
+      <div id="fdr1" style="margin-top:8px;font-size:0.8rem;font-weight:700;min-height:20px;"></div></div>
+    <div style="background:#dbeafe;border-radius:12px;padding:14px 16px;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="background:#2563eb;color:white;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;">A2</span>
+        <span style="font-size:0.75rem;color:#666;font-weight:600;">문장 2</span></div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+        <button onclick="speak('The giant floating head was just a projection.')" style="background:#1a3a6e;color:white;border:none;border-radius:9px;padding:8px 14px;font-size:0.82rem;font-weight:800;cursor:pointer;">▶ 듣기</button>
+        <button onclick="speak('The giant floating head was just a projection.')" style="background:white;color:#1a3a6e;border:2px solid #1a3a6e;border-radius:9px;padding:8px 12px;cursor:pointer;">↺</button>
+        <div style="background:white;border-radius:9px;padding:7px 12px;flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:120px;">
+          <span style="font-size:0.7rem;color:#888;">히는트:</span>
+          <span style="background:#dbeafe;border:1.5px solid #2563eb;border-radius:6px;padding:2px 8px;font-weight:700;color:#2563eb;font-size:0.78rem;">&quot;projection&quot;</span>
+          <span style="background:#dbeafe;border:1.5px solid #2563eb;border-radius:6px;padding:2px 8px;font-weight:700;color:#2563eb;font-size:0.78rem;">&quot;floating&quot;</span>
+        </div></div>
+      <div style="display:flex;gap:8px;">
+        <input id="fd2" type="text" placeholder="전체 문장을 영어로 입력하세요..."
+          style="flex:1;border:2px solid #ddd;border-radius:9px;padding:9px 12px;font-size:0.82rem;font-family:inherit;"
+          onkeydown="if(event.key==='Enter')chkFullDict('fd2','The giant floating head was just a projection.','fdr2')"/>
+        <button onclick="chkFullDict('fd2','The giant floating head was just a projection.','fdr2')"
+          style="background:#1a3a6e;color:white;border:none;border-radius:9px;padding:9px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;flex-shrink:0;">확인 ✓</button></div>
+      <div id="fdr2" style="margin-top:8px;font-size:0.8rem;font-weight:700;min-height:20px;"></div></div>
+    <div style="background:#f5f0ff;border-radius:12px;padding:14px 16px;margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <span style="background:#7c3aed;color:white;font-size:0.65rem;font-weight:800;padding:2px 8px;border-radius:20px;">B1</span>
+        <span style="font-size:0.75rem;color:#666;font-weight:600;">문장 3</span></div>
+      <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+        <button onclick="speak('He had built a kingdom out of nothing but cleverness and nerve.')" style="background:#1a3a6e;color:white;border:none;border-radius:9px;padding:8px 14px;font-size:0.82rem;font-weight:800;cursor:pointer;">▶ 듣기</button>
+        <button onclick="speak('He had built a kingdom out of nothing but cleverness and nerve.')" style="background:white;color:#1a3a6e;border:2px solid #1a3a6e;border-radius:9px;padding:8px 12px;cursor:pointer;">↺</button>
+        <div style="background:white;border-radius:9px;padding:7px 12px;flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:120px;">
+          <span style="font-size:0.7rem;color:#888;">히는트:</span>
+          <span style="background:#f5f0ff;border:1.5px solid #7c3aed;border-radius:6px;padding:2px 8px;font-weight:700;color:#7c3aed;font-size:0.78rem;">&quot;cleverness&quot;</span>
+          <span style="background:#f5f0ff;border:1.5px solid #7c3aed;border-radius:6px;padding:2px 8px;font-weight:700;color:#7c3aed;font-size:0.78rem;">&quot;kingdom&quot;</span>
+        </div></div>
+      <div style="display:flex;gap:8px;">
+        <input id="fd3" type="text" placeholder="전체 문장을 영어로 입력하세요..."
+          style="flex:1;border:2px solid #ddd;border-radius:9px;padding:9px 12px;font-size:0.82rem;font-family:inherit;"
+          onkeydown="if(event.key==='Enter')chkFullDict('fd3','He had built a kingdom out of nothing but cleverness and nerve.','fdr3')"/>
+        <button onclick="chkFullDict('fd3','He had built a kingdom out of nothing but cleverness and nerve.','fdr3')"
+          style="background:#1a3a6e;color:white;border:none;border-radius:9px;padding:9px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;flex-shrink:0;">확인 ✓</button></div>
+      <div id="fdr3" style="margin-top:8px;font-size:0.8rem;font-weight:700;min-height:20px;"></div></div>
+  </div>
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#dbeafe;">❓</div><div><div class="sh-title">이해 문제</div><div class="sh-sub">COMPREHENSION · 수준을 골라 도전해봐요</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="ql-b" onclick="showQuiz('b')">A1 문제</button>
+        <button class="lt" id="ql-e" onclick="showQuiz('e')">A2 문제</button>
+        <button class="lt" id="ql-i" onclick="showQuiz('i')">B1 문제</button>
+      </div>
+      <div id="qb-b">
+<div class="quiz-item"><div class="quiz-q">Q1. Who pulled back the curtain?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) Dorothy</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) Toto the dog</button>
+<button class="qopt" onclick="qChk(this,'no')">c) The Scarecrow</button>
+</div></div>
+<div class="quiz-item"><div class="quiz-q">Q2. What was the Wizard really?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) A powerful sorcerer</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) An ordinary man using machines</button>
+<button class="qopt" onclick="qChk(this,'no')">c) A disguised witch</button>
+</div></div>
+<div class="quiz-item"><div class="quiz-q">Q3. How did Dorothy feel when she found out the truth?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) She was very happy</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) She was furious at first</button>
+<button class="qopt" onclick="qChk(this,'no')">c) She did not care at all</button>
+</div></div>
+
+
+
+
+
+
+
+      </div>
+      <div id="qb-e" style="display:none;">
+<div class="quiz-item"><div class="quiz-q">Q1. The great Wizard is revealed to be an ordinary man. What does this say about the nature of power?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) Power always comes from magic</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) Power is often constructed from appearance and confidence rather than real ability -- the Wizard convinced an entire land to fear him without any magic at all</button>
+<button class="qopt" onclick="qChk(this,'no')">c) The Wizard deserves to be punished for his deception</button>
+</div></div>
+<div class="quiz-item"><div class="quiz-q">Q2. Toto, not Dorothy, reveals the Wizard. Why is it important that a dog makes this discovery?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) Dogs have magical powers in Oz</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) Toto has no expectations or assumptions about Wizards -- he simply follows his nose. Truth is sometimes found by those who are not looking for it</button>
+<button class="qopt" onclick="qChk(this,'no')">c) Toto was the smartest character all along</button>
+</div></div>
+<div class="quiz-item"><div class="quiz-q">Q3. Dorothy realises the Wizard is the most human character she has met. What does she mean?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) He is the only human in Oz</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) His flaws, his cleverness, and his courage in building something from nothing make him recognisably human -- imperfect but remarkable</button>
+<button class="qopt" onclick="qChk(this,'no')">c) She means he is kind and friendly</button>
+</div></div>
+
+
+
+
+
+
+
+      </div>
+      <div id="qb-i" style="display:none;">
+<div class="quiz-item"><div class="quiz-q">Q1. Pay no attention to that man behind the curtain has become a famous phrase beyond the story. Why?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) It is a catchy line that is easy to remember</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) It perfectly describes how power works in the real world -- authority figures often want us not to look too closely at the mechanisms behind their power</button>
+<button class="qopt" onclick="qChk(this,'no')">c) It is funny because the Wizard is caught</button>
+</div></div>
+<div class="quiz-item"><div class="quiz-q">Q2. The Wizard built a kingdom out of cleverness and nerve. Is he admirable, despicable, or both?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) He is purely despicable because he lied to everyone</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) Both -- his deception is wrong but his achievement is remarkable. He created hope, order, and meaning for an entire population using only human intelligence and courage</button>
+<button class="qopt" onclick="qChk(this,'no')">c) He is admirable because he helped people feel safe</button>
+</div></div>
+<div class="quiz-item"><div class="quiz-q">Q3. Each companion gets what they needed without real magic in the end. What is Baum saying about the gifts the Wizard gives?</div><div class="quiz-opts">
+<button class="qopt" onclick="qChk(this,'no')">a) The Wizard really did have magic after all</button>
+<button class="qopt" onclick="qChk(this,'ok')">b) What the companions needed was recognition, not transformation -- the Wizard gives them certificates and symbols that confirm what they already were. The magic was always inside them</button>
+<button class="qopt" onclick="qChk(this,'no')">c) The companions were tricked and never got what they wanted</button>
+</div></div>
+
+
+
+
+
+
+
+      </div>
+    </div>
+    <div class="prog-row">
+      <span class="prog-label">진행도</span>
+      <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:0%;"></div></div>
+      <span class="prog-label" id="prog-cnt">0 / 3</span>
+    </div>
+  </div>
+
+  <div class="complete-card" id="complete-card">
+    <div class="complete-emoji">🎭</div>
+    <div class="complete-title">Week 14 완료!</div>
+    <div class="complete-sub">마법사의 정체가 밝혀졌어요!<br>다음 주엔 드디어 집으로 돌아가요!</div>
+    <div class="xp-big">⭐ 총 <span id="final-xp">0</span> XP 획득!</div>
+    <div class="robo-box"><div class="robo-av">🤖</div><div class="robo-text"><div class="robo-name">Robo</div>마법사는 사기꾼이었어요! 하지만 루비 구두로 집에 갈 수 있어요! 다음이 마지막이에요! 👠</div></div>
+    <button class="tutor-btn" onclick="startTutor()">💬 AI 튜터와 영어 회화 연습하기</button>
+    <div class="next-row">
+      <button class="next-btn" onclick="location.href='week13.html'" style="background:#666;">← W13</button>
+      <div><div class="next-lbl">다음 주</div><div class="next-title">Week 16 — There's No Place Like Home</div><div style="font-size:0.72rem;color:#aaa;margin-top:2px;">루비 구두로 집으로!</div></div>
+      <button class="next-btn" onclick="location.href='week15.html'">W15 →</button>
+    </div>
+  </div>
+</div>
+<script>
+var xp=0,correct=0,total=3;
+var wo1eplaced=[],wo1iplaced=[],wo2eplaced=[],wo2iplaced=[];
+var matchSel=null,matchPairs={};
+var isPlaying=false;
+function getFemaleVoice(){var voices=window.speechSynthesis.getVoices();var names=['Microsoft Zira Desktop - English (United States)','Microsoft Zira','Microsoft Jenny Online (Natural) - English (United States)','Microsoft Jenny','Microsoft Aria Online (Natural) - English (United States)','Microsoft Aria','Samantha','Karen','Google US English'];for(var n of names){var v=voices.find(function(v){return v.name===n;});if(v)return v;}return voices.find(function(v){return v.lang==='en-US';})||voices[0];}
+function speak(text){window.speechSynthesis.cancel();setTimeout(function(){var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.82;u.pitch=1.1;var f=getFemaleVoice();if(f)u.voice=f;window.speechSynthesis.speak(u);},200);}
+function toggleFull(){var btn=document.getElementById('main-play-btn');if(isPlaying){window.speechSynthesis.cancel();isPlaying=false;btn.textContent='▶';}else{isPlaying=true;btn.textContent='⏸';var text=document.getElementById('sb-e').innerText.replace(/\n/g,' ');window.speechSynthesis.cancel();setTimeout(function(){var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.82;u.pitch=1.1;var f=getFemaleVoice();if(f)u.voice=f;u.onend=function(){isPlaying=false;btn.textContent='▶';};window.speechSynthesis.speak(u);},200);}}
+function lcCheck(btn,type){var opts=btn.parentElement.querySelectorAll('.lc-opt');var res=document.getElementById('lc-res');if(type==='ok'){btn.classList.add('ok');opts.forEach(function(o){if(o!==btn)o.style.opacity='0.4';o.style.pointerEvents='none';});res.style.color='#16a34a';res.textContent='정답이에요! +20 XP';addXP(20);}else{btn.classList.add('no');res.style.color='#dc2626';res.textContent='다시 들어봐요!';setTimeout(function(){btn.classList.remove('no');res.textContent='';},1000);}}
+function addXP(n){xp+=n;document.getElementById('xp-num').textContent=xp;document.getElementById('xp-bar').style.width=Math.min(xp/5,100)+'%';}
+function showStory(l){['b','e','i'].forEach(x=>{document.getElementById('sb-'+x).style.display=x===l?'block':'none';var t=document.getElementById('lt-'+x);t.className='lt'+(x===l?' lt-'+x:'');});}
+function showWO(l){['b','e','i'].forEach(x=>{document.getElementById('wo-'+x).style.display=x===l?'block':'none';var t=document.getElementById('wlt-'+x);t.className='lt'+(x===l?' lt-'+x:'');});}
+function showWO2(l){['b','e','i'].forEach(x=>{document.getElementById('wo2-'+x).style.display=x===l?'block':'none';var t=document.getElementById('wlt2-'+x);t.className='lt'+(x===l?' lt-'+x:'');});}
+function showQuiz(l){['b','e','i'].forEach(x=>{document.getElementById('qb-'+x).style.display=x===l?'block':'none';var t=document.getElementById('ql-'+x);t.className='lt'+(x===l?' lt-'+x:'');});correct=0;total=3;updateProg();}
+function chkFill(btn,val,ans,blankId,resId){var r=document.getElementById(resId);var bl=document.getElementById(blankId);if(val===ans){btn.className='cbtn ok';bl.textContent=val;r.style.color='#16a34a';r.textContent='정답이에요! +30 XP';addXP(30);btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.disabled=true);}else{btn.className='cbtn no';r.style.color='#dc2626';r.textContent='다시 해봐요!';setTimeout(function(){btn.className='cbtn';r.textContent='';},1000);}}
+function chkDict(inputId,ans,resId){var val=document.getElementById(inputId).value.trim().toLowerCase();var r=document.getElementById(resId);if(val===ans.toLowerCase()){r.style.color='#16a34a';r.textContent='정답이에요! +20 XP ✓';addXP(20);document.getElementById(inputId).style.borderColor='#1a3a6e';}else{r.style.color='#dc2626';r.textContent='다시 들어보세요! (힌트: '+ans[0]+'...)';}}
+var woPools={wo1e:wo1eplaced,wo1i:wo1iplaced,wo2e:wo2eplaced,wo2i:wo2iplaced};
+function woAdd(id,btn,word){if(btn.classList.contains('used'))return;btn.classList.add('used');woPools[id].push(word);var box=document.getElementById(id+'-ans');var chip=document.createElement('button');chip.className='wo-placed';chip.textContent=word;chip.onclick=function(){woRemove(id,btn,word,chip);};box.appendChild(chip);}
+function woRemove(id,origBtn,word,chip){var arr=woPools[id];var idx=arr.indexOf(word);if(idx>-1)arr.splice(idx,1);origBtn.classList.remove('used');chip.remove();}
+function woCheck(id,ans,resId){var arr=woPools[id];var given=arr.join(' ');var r=document.getElementById(resId);if(given===ans){r.style.color='#16a34a';r.textContent='완벽해요! +50 XP';addXP(50);}else{r.style.color='#dc2626';r.textContent='아쉬워요! 다시 해봐요!';setTimeout(function(){r.textContent='';},2000);}}
+function woReset(id){woPools[id].length=0;var box=document.getElementById(id+'-ans');if(box)box.innerHTML='';document.querySelectorAll('#'+id+'-pool .wo-chip').forEach(w=>w.classList.remove('used'));}
+function matchClick(el,key){if(el.classList.contains('matched'))return;if(!matchSel){matchSel=el;el.classList.add('selected');return;}if(matchSel===el){el.classList.remove('selected');matchSel=null;return;}var aKey=matchSel.getAttribute('onclick').match(/'([^']+)'/)[1];var bKey=el.getAttribute('onclick').match(/'([^']+)'/)[1];if(aKey===bKey){matchSel.classList.remove('selected');matchSel.classList.add('matched');el.classList.add('matched');matchPairs[aKey]=true;matchSel=null;addXP(15);var done=Object.keys(matchPairs).length;var mr=document.getElementById('match-result');mr.style.color='#16a34a';mr.textContent=done>=4?'모두 맞췄어요! 훌륭해요! 🎉':done+'개 맞췄어요!';}else{matchSel.classList.remove('selected');el.classList.remove('selected');matchSel.classList.add('wrong-flash');el.classList.add('wrong-flash');setTimeout(()=>{matchSel&&matchSel.classList.remove('wrong-flash');el.classList.remove('wrong-flash');},600);matchSel=null;}}
+function qChk(el,type){if(type==='ok'){el.parentElement.querySelectorAll('.qopt').forEach(o=>o.disabled=true);el.className='qopt ok';correct++;addXP(20);updateProg();}else{el.className='qopt no';setTimeout(function(){el.className='qopt';},1000);}}
+function updateProg(){document.getElementById('prog-bar').style.width=Math.round(correct/total*100)+'%';document.getElementById('prog-cnt').textContent=correct+' / '+total;if(correct>=total){setTimeout(()=>{document.getElementById('final-xp').textContent=xp;var cc=document.getElementById('complete-card');cc.style.display='block';cc.scrollIntoView({behavior:'smooth'});},800);}}
+function startTutor(){window.open('https://journey-bronzy-fruitily.ngrok-free.dev/static/step12.html?grade=4&camp=a&week=14','_blank');}
+function shuffleLcOpts(){var wrap=document.querySelector('.lc-opts');if(!wrap)return;var opts=Array.from(wrap.children);opts.sort(function(){return Math.random()-0.5;});opts.forEach(function(o){wrap.appendChild(o);});opts=Array.from(wrap.children);var nums=['①','②','③'];opts.forEach(function(o,i){o.textContent=o.textContent.replace(/^[①②③]\s*/,nums[i]+' ');});}
+function shufflePools(){document.querySelectorAll('.wo-pool').forEach(function(pool){var chips=Array.from(pool.children);chips.sort(function(){return Math.random()-0.5;});chips.forEach(function(chip){pool.appendChild(chip);});});}
+window.addEventListener('load',function(){shufflePools();shuffleLcOpts();});
+var urlParams=new URLSearchParams(window.location.search);
+if(urlParams.get('admin')==='true'){setTimeout(function(){document.getElementById('final-xp').textContent='999';document.getElementById('complete-card').style.display='block';},300);}
+</script>
+</body>
+</html>
