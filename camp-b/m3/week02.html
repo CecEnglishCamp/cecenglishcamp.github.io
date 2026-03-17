@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp B — 중3 W2 · Sherlock Holmes</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Black+Han+Sans&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1a2a1e;--card:#1e3226;--card2:#192e22;--border:#2a4a32;
+  --acc:#10b981;--acc2:#065f46;--green:#16a34a;--gold:#f59e0b;
+  --red:#dc2626;--text:#e8e8f0;--sub:#88aa95;
+  --a1c:#16a34a;--a1b:#0d2a1a;--a2c:#10b981;--a2b:#0a2a1a;--b1c:#7c3aed;--b1b:#1e0d4a;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+.hd{background:linear-gradient(135deg,#0a1e18,#102820);padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.hd-left{display:flex;align-items:center;gap:10px;}
+.hd-logo{font-family:'Black Han Sans';font-size:1rem;color:var(--acc);}
+.hd-sub{font-size:0.72rem;color:var(--sub);}
+.hd-badge{background:var(--acc2);color:white;font-size:0.7rem;font-weight:800;padding:3px 10px;border-radius:20px;}
+.xp-btn{background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;border:none;border-radius:20px;padding:5px 14px;font-size:0.8rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;}
+.hero{background:linear-gradient(135deg,#0a1e18,#0f2e24,#0a1a30);padding:20px 16px;text-align:center;border-bottom:1px solid var(--border);}
+.hero-week{font-size:0.72rem;color:var(--sub);font-weight:700;letter-spacing:2px;margin-bottom:6px;}
+.hero-title{font-family:'Black Han Sans';font-size:1.6rem;color:white;margin-bottom:4px;}
+.hero-author{font-size:0.8rem;color:var(--sub);margin-bottom:14px;}
+.hero-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.hb{padding:4px 12px;border-radius:20px;font-size:0.68rem;font-weight:800;}
+.key-card{background:linear-gradient(135deg,#0a1e18,#102e20);border:1px solid #1a4a2a;border-radius:16px;padding:16px;margin:12px 16px 8px;}
+.key-label{font-size:0.65rem;color:var(--sub);font-weight:700;letter-spacing:2px;margin-bottom:8px;}
+.key-en{font-size:1.05rem;font-weight:900;color:white;margin-bottom:4px;}
+.key-kr{font-size:0.82rem;color:#5aff9a;margin-bottom:12px;}
+.key-play{background:var(--acc2);color:white;border:none;border-radius:25px;padding:8px 20px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.prog-row{display:flex;align-items:center;gap:8px;padding:8px 16px;}
+.prog-track{flex:1;background:#1a2a1e;border-radius:8px;height:6px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:8px;transition:width 0.5s;}
+.prog-label{font-size:0.72rem;color:var(--sub);font-weight:700;white-space:nowrap;}
+.container{max-width:680px;margin:0 auto;padding:0 12px 60px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;}
+.sh{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sh-icon{font-size:1.1rem;}.sh-title{font-size:0.88rem;font-weight:900;color:white;}
+.tab-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.tab-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.tab-btn.act-a1{background:var(--a1b);border-color:var(--a1c);color:#5aff9a;}
+.tab-btn.act-a2{background:var(--a2b);border-color:var(--a2c);color:#5aff9a;}
+.tab-btn.act-b1{background:var(--b1b);border-color:var(--b1c);color:#b48aff;}
+.listen-row{display:flex;gap:8px;margin-bottom:10px;}
+.listen-btn{background:var(--acc2);color:white;border:none;border-radius:20px;padding:7px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.stop-btn{background:var(--card2);border:1.5px solid var(--border);color:var(--sub);border-radius:20px;padding:7px 12px;font-size:0.82rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.notice-box{background:#0a1e18;border-left:3px solid var(--acc);border-radius:0 8px 8px 0;padding:9px 14px;margin-bottom:10px;font-size:0.78rem;color:var(--sub);line-height:1.6;}
+.story-box{background:var(--card2);border-radius:10px;padding:14px;font-size:0.88rem;line-height:1.85;color:var(--text);display:none;}
+.story-box.active{display:block;}
+.story-box p{margin-bottom:10px;}
+.gram{border-bottom:2px dashed var(--gold);cursor:pointer;color:#fde68a;font-weight:700;}
+.story-kr{background:#0a1a0a;border-left:3px solid var(--acc2);border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.8;display:none;}
+.kr-toggle{background:transparent;border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:4px 12px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+#tt-overlay{position:fixed;inset:0;z-index:999;display:none;}
+.tt-wrap{position:fixed;z-index:1000;display:none;}
+.tt-box{background:#1a1a2e;border:1.5px solid var(--gold);border-radius:12px;padding:14px 16px;max-width:280px;box-shadow:0 8px 32px rgba(0,0,0,0.6);}
+.tt-tag{background:var(--gold);color:#1a1a00;font-size:0.65rem;font-weight:900;padding:2px 8px;border-radius:10px;margin-bottom:8px;display:inline-block;}
+.tt-title{font-size:0.88rem;font-weight:900;color:white;margin-bottom:6px;}
+.tt-desc{font-size:0.78rem;color:var(--sub);line-height:1.6;margin-bottom:8px;white-space:pre-line;}
+.tt-ex{background:var(--bg);border-radius:6px;padding:6px 10px;font-size:0.78rem;color:#5aff9a;margin-bottom:10px;font-style:italic;}
+.tt-links{display:flex;gap:8px;flex-wrap:wrap;}
+.tt-gram-link{background:#1a3a1a;border:1px solid var(--green);color:#5aff9a;border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;text-decoration:none;}
+.tt-gpt-link{background:#3a1a1a;border:1px solid var(--red);color:#ff9a9a;border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;cursor:pointer;}
+.tt-close{position:absolute;top:8px;right:10px;background:transparent;border:none;color:var(--sub);font-size:1rem;cursor:pointer;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.vc{background:var(--card2);border-radius:10px;padding:10px 12px;border-left:3px solid var(--acc);}
+.vc-w{font-size:0.88rem;font-weight:900;color:white;margin-bottom:2px;}
+.vc-m{font-size:0.75rem;color:var(--sub);margin-bottom:4px;}
+.vc-e{font-size:0.72rem;color:var(--acc);font-style:italic;}
+.fill-sent{font-size:0.9rem;font-weight:700;line-height:1.7;margin-bottom:12px;color:white;}
+.blank-span{display:inline-block;min-width:60px;border-bottom:2px solid var(--acc);color:var(--acc);text-align:center;font-weight:900;}
+.choices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.cbtn{padding:7px 16px;background:var(--card2);border:1.5px solid var(--border);border-radius:20px;color:var(--text);font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.cbtn.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.cbtn.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.fill-res{font-size:0.82rem;font-weight:700;min-height:18px;}
+.dict-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:8px;}
+.dict-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.dict-play{background:var(--acc);color:white;border:none;border-radius:50%;width:36px;height:36px;font-size:0.9rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.dict-label{font-size:0.75rem;color:var(--sub);font-weight:700;}
+.dict-hint{font-size:0.78rem;color:var(--acc);font-style:italic;}
+.dict-input-row{display:flex;gap:8px;}
+.dict-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.dict-input:focus{outline:none;border-color:var(--acc);}
+.dict-btn{background:var(--acc);color:white;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.dict-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.lc-play-btn{background:var(--acc2);color:white;border:none;border-radius:25px;padding:9px 22px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;}
+.lc-stop-btn{background:var(--card2);border:1.5px solid var(--border);color:var(--sub);border-radius:25px;padding:9px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;margin-left:8px;}
+.lc-opts{display:flex;flex-direction:column;gap:8px;}
+.lc-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.lc-opt.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.lc-opt.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.lc-result{margin-top:8px;font-size:0.84rem;font-weight:700;min-height:18px;}
+.wo-wrap{background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;}
+.wo-q{font-size:0.8rem;color:var(--sub);margin-bottom:8px;font-weight:700;}
+.wo-box{min-height:44px;background:var(--bg);border-radius:8px;border:1.5px dashed var(--acc);padding:6px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px;}
+.wo-pool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;}
+.wo-chip{padding:6px 13px;background:var(--acc2);color:white;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-chip.used{background:#2a3a2a;color:var(--sub);cursor:default;}
+.wo-placed{padding:6px 13px;background:var(--acc);color:white;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-btns{display:flex;gap:8px;}
+.wo-check{background:var(--acc2);color:white;border:none;padding:8px 18px;border-radius:20px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-reset{background:transparent;color:var(--sub);border:1px solid var(--border);padding:8px 12px;border-radius:20px;font-size:0.8rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-result{font-size:0.8rem;font-weight:700;margin-top:6px;min-height:16px;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.match-col{display:flex;flex-direction:column;gap:6px;}
+.match-item{padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg);font-size:0.8rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s;font-family:'Nunito',sans-serif;color:var(--text);}
+.match-item.selected{border-color:var(--gold);background:#2a2a00;color:#fde68a;}
+.match-item.matched{border-color:var(--green);background:#0d3320;color:#5aff9a;cursor:default;}
+.match-item.wrong-flash{border-color:var(--red);background:#3a0d0d;}
+.match-result{text-align:center;font-size:0.86rem;font-weight:700;min-height:18px;}
+.fd-item{background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;}
+.fd-level-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.fd-badge{font-size:0.65rem;font-weight:900;padding:2px 8px;border-radius:20px;color:white;}
+.fd-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center;}
+.fd-play{border:none;border-radius:9px;padding:7px 14px;font-size:0.82rem;font-weight:800;cursor:pointer;color:white;}
+.fd-hints{background:var(--bg);border-radius:9px;padding:6px 12px;flex:1;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.fd-hint-label{font-size:0.68rem;color:var(--sub);}
+.fd-hint-tag{border-radius:6px;padding:2px 8px;font-weight:700;font-size:0.78rem;border:1.5px solid;}
+.fd-input-row{display:flex;gap:8px;}
+.fd-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.fd-input:focus{outline:none;border-color:var(--acc);}
+.fd-check{border:none;border-radius:9px;padding:9px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;color:white;flex-shrink:0;}
+.fd-result{margin-top:8px;font-size:0.8rem;font-weight:700;min-height:18px;}
+.quiz-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.qtab{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.qtab.qa1{background:var(--a1b);border-color:var(--a1c);color:#5aff9a;}
+.qtab.qa2{background:var(--a2b);border-color:var(--a2c);color:#5aff9a;}
+.qtab.qb1{background:var(--b1b);border-color:var(--b1c);color:#b48aff;}
+.quiz-set{display:none;}.quiz-set.active{display:block;}
+.quiz-item{background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;}
+.quiz-q{font-size:0.86rem;font-weight:700;color:white;margin-bottom:10px;line-height:1.5;}
+.quiz-opts{display:flex;flex-direction:column;gap:7px;}
+.qopt{padding:9px 14px;border-radius:9px;border:1.5px solid var(--border);background:var(--bg);font-size:0.82rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.qopt.ok{background:#0d3320;border-color:var(--green);color:#5aff9a;}
+.qopt.no{background:#3a0d0d;border-color:var(--red);color:#ff9a9a;}
+.debate-box{background:linear-gradient(135deg,#0a1e18,#102820);border-radius:12px;padding:14px;border:1px solid #1a4a2a;}
+.debate-textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-size:0.8rem;font-family:'Nunito',sans-serif;padding:10px;resize:none;outline:none;line-height:1.7;}
+.debate-textarea:focus{border-color:var(--acc);}
+.essay-line{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.essay-num{font-size:0.72rem;font-weight:900;color:var(--gold);width:20px;flex-shrink:0;}
+.essay-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.essay-input:focus{outline:none;border-color:var(--gold);}
+.essay-submit{background:var(--gold);color:#1a1a00;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:4px;}
+.gpt-card{background:linear-gradient(135deg,#0d2a1a,#1a0d2a);border:1px solid #2a4a3a;border-radius:14px;padding:16px;}
+.gpt-copy{background:#10a37f;color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-bottom:8px;}
+.gpt-open{background:transparent;border:1.5px solid #10a37f;color:#10a37f;border-radius:20px;padding:9px 24px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;}
+.complete-card{background:var(--card);border-radius:20px;padding:28px;text-align:center;display:none;margin-bottom:16px;border:1px solid var(--acc2);}
+.nav-row{display:flex;justify-content:space-between;padding:0 16px;margin-bottom:12px;gap:10px;}
+.nav-btn{padding:9px 20px;border-radius:10px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;border:none;flex:1;max-width:140px;}
+</style>
+</head>
+<body>
+<div id="tt-overlay" onclick="closeTooltip()"></div>
+<div class="tt-wrap" id="tt-wrap">
+  <div class="tt-box" id="tt-box">
+    <button class="tt-close" onclick="closeTooltip()">✕</button>
+    <div class="tt-tag" id="tt-tag"></div>
+    <div class="tt-title" id="tt-title"></div>
+    <div class="tt-desc" id="tt-desc"></div>
+    <div class="tt-ex" id="tt-ex"></div>
+    <div class="tt-links">
+      <a class="tt-gram-link" id="tt-gram-link" href="https://cecenglishcamp.github.io/GrammarBaseCamp/index.html" target="_blank"></a>
+      <button class="tt-gpt-link" onclick="gramToGPT()">💬 ChatGPT</button>
+    </div>
+  </div>
+</div>
+
+<div class="hd">
+  <div class="hd-left">
+    <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif" alt="Robo" style="width:38px;height:38px;border-radius:50%;object-fit:cover;flex-shrink:0;">
+    <div><div class="hd-logo">CEC English Camp B</div><div class="hd-sub">중학교 3학년 · Week 2 of 36</div></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="hd-badge">W2 / 36</div>
+    <button class="xp-btn" id="xp-btn">⭐ 0 XP</button>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-week">CAMP B · 중3 · UNIT 2</div>
+  <div class="hero-title">Sherlock Holmes: Adventures</div>
+  <div class="hero-author">Arthur Conan Doyle · 1892</div>
+  <div class="hero-badges">
+    <span class="hb" style="background:#0a2a18;color:#5aff9a;border:1px solid #1a4a2a;">🔍 Mystery Classic</span>
+    <span class="hb" style="background:#1a2a3a;color:#7ab3ff;border:1px solid #2a3a5a;">🎯 B1~B2</span>
+    <span class="hb" style="background:#2d1a4a;color:#b48aff;border:1px solid #4a2a8e;">⏱ W1~W6</span>
+  </div>
+</div>
+
+<div class="key-card">
+  <div class="key-label">KEY SENTENCE · 이번 주 핵심 표현</div>
+  <div class="key-en">"To Sherlock Holmes, she is always the woman."</div>
+  <div class="key-kr">홈즈에게 그녀는 언제나 그 여인이에요.</div>
+  <button class="key-play" onclick="speak('To Sherlock Holmes, she is always the woman.')">▶ 발음 듣기</button>
+</div>
+
+<div class="prog-row">
+  <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:5%;"></div></div>
+  <div class="prog-label">W2 / 36</div>
+</div>
+
+<div class="container">
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">📖</div><div class="sh-title">이야기 읽기</div></div>
+  <div class="tab-row">
+    <button class="tab-btn" onclick="showStory('a1',this)">🟡 입문 (A2)</button>
+    <button class="tab-btn act-a2" onclick="showStory('a2',this)">🔵 초급 B1 ★ 기준</button>
+    <button class="tab-btn" onclick="showStory('b1',this)">🟣 중급 (B2)</button>
+  </div>
+  <div class="listen-row">
+    <button class="listen-btn" onclick="readStory()">🔊 전체 듣기</button>
+    <button class="stop-btn" onclick="speechSynthesis.cancel()">⏹ 정지</button>
+  </div>
+  <div class="notice-box">🔊 <strong style="color:var(--acc)">듣기는 초급 B1 기준</strong>으로 읽어드려요.<br><span style="font-size:0.72rem;">📌 초급(B1) = 이 학년의 평균 수준. 입문(A2)은 더 쉽게, 중급(B2)은 더 어렵게 조정된 버전이에요.</span></div>
+
+  <div id="sb-a1" class="story-box">
+    <p>A man came to Holmes with a problem.<br>
+    He was the King of Bohemia.<br>
+    He had a secret photograph.<br>
+    A woman named Irene Adler had it.<br>
+    If people saw it, he would be in trouble.<br>
+    He needed Holmes to get it back.<br>
+    "She is clever," said the King.<br>
+    Holmes accepted the case.</p>
+  </div>
+
+  <div id="sb-a2" class="story-box active">
+    <p>The client <span class="gram" data-id="g1">arrived</span> in disguise — a tall man in a dark cloak. But Holmes <span class="gram" data-id="g2">had already guessed</span> who he was before he spoke a word.</p>
+    <p>"You are the King of Bohemia," Holmes said. The man <span class="gram" data-id="g3">was shocked</span> but confirmed it.</p>
+    <p>The problem was a photograph. Irene Adler, an opera singer, <span class="gram" data-id="g4">possessed</span> a photograph of herself with the King. If it was shown to the wrong people, his planned royal marriage would be ruined.</p>
+    <p>"She is clever," said the King. "More clever than any woman I have known."</p>
+    <p>Holmes <span class="gram" data-id="g5">took</span> the case. He had already noticed something — the King spoke of Irene Adler with admiration, not hatred.</p>
+  </div>
+
+  <div id="sb-b1" class="story-box">
+    <p>Holmes did not take cases for money. He took them for interest, and this one had plenty. A reigning monarch, a compromising photograph, a woman described as the most clever in Europe.</p>
+    <p>He listened to the King with careful neutrality. The photograph existed. Irene Adler had it. She had refused all offers. She would use it if the marriage proceeded.</p>
+    <p>"To Sherlock Holmes, she is always the woman," Watson later wrote — meaning not that Holmes loved her, but that she was the only person who had ever <span class="gram" data-id="g6">beaten</span> him. That distinction was worth more than admiration.</p>
+    <p>Holmes stood. "I will have a solution within three days," he said. And for the first time, he was genuinely uncertain.</p>
+  </div>
+
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+    <button class="kr-toggle" onclick="toggleKr()" id="kr-btn">🇰🇷 한국어 번역 보기</button>
+    <span style="font-size:0.7rem;color:var(--sub);">※ 번역은 초급 B1 기준</span>
+  </div>
+  <div class="story-kr" id="story-kr">
+    홈즈는 돈을 위해 사건을 맡지 않았어요. 흥미를 위해 맡았고, 이 사건에는 충분했어요. 재위 중인 군주, 위험한 사진, 유럽에서 가장 영리한 여인.<br><br>
+    사진은 존재했어요. 아이린 애들러가 가지고 있었어요. 모든 제안을 거절했어요.<br><br>
+    "홈즈에게 그녀는 언제나 그 여인이에요," 왓슨이 나중에 썼어요 — 홈즈가 그녀를 사랑했다는 뜻이 아니라, 그녀가 그를 이긴 유일한 사람이었다는 뜻이에요.<br>
+    홈즈는 일어섰어요. "3일 안에 해결책을 찾겠습니다." 처음으로 진심으로 불확실했어요.
+  </div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">📝</div><div class="sh-title">이번 주 단어</div></div>
+  <div class="vocab-grid">
+    <div class="vc"><div class="vc-w">disguise 🎭</div><div class="vc-m">변장</div><div class="vc-e">"He arrived in disguise."</div></div>
+    <div class="vc"><div class="vc-w">possess 🗝️</div><div class="vc-m">소유하다</div><div class="vc-e">"Irene possessed the photograph."</div></div>
+    <div class="vc"><div class="vc-w">monarch 👑</div><div class="vc-m">군주</div><div class="vc-e">"A reigning monarch came to Baker Street."</div></div>
+    <div class="vc"><div class="vc-w">neutrality 😐</div><div class="vc-m">중립성</div><div class="vc-e">"Holmes listened with neutrality."</div></div>
+    <div class="vc"><div class="vc-w">distinction 🏆</div><div class="vc-m">구별, 특별함</div><div class="vc-e">"That distinction was worth more."</div></div>
+    <div class="vc"><div class="vc-w">compromise 😰</div><div class="vc-m">위태롭게 하다</div><div class="vc-e">"A compromising photograph."</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">빈칸 채우기</div></div>
+  <div class="fill-sent">Holmes had already <span class="blank-span" id="bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span> who the client was before he spoke.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'guessed','guessed','bl1','fr1')">guessed</button>
+    <button class="cbtn" onclick="chkFill(this,'asked','guessed','bl1','fr1')">asked</button>
+    <button class="cbtn" onclick="chkFill(this,'forgotten','guessed','bl1','fr1')">forgotten</button>
+  </div>
+  <div class="fill-res" id="fr1"></div>
+  <br>
+  <div class="fill-sent">Irene Adler was the only person who had ever <span class="blank-span" id="bl2">&nbsp;&nbsp;&nbsp;&nbsp;</span> Holmes.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'beaten','beaten','bl2','fr2')">beaten</button>
+    <button class="cbtn" onclick="chkFill(this,'helped','beaten','bl2','fr2')">helped</button>
+    <button class="cbtn" onclick="chkFill(this,'trusted','beaten','bl2','fr2')">trusted</button>
+  </div>
+  <div class="fill-res" id="fr2"></div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">🎧</div><div class="sh-title">단어 받아쓰기</div></div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" onclick="speak('The client arrived in disguise.')">▶</button>
+      <div><div class="dict-label">문장 1</div><div class="dict-hint">"The client arrived in ______."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di1" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','disguise','dr1')">
+      <button class="dict-btn" onclick="chkDict('di1','disguise','dr1')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr1"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" onclick="speak('Irene possessed the photograph.')">▶</button>
+      <div><div class="dict-label">문장 2</div><div class="dict-hint">"Irene ______ the photograph."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di2" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','possessed','dr2')">
+      <button class="dict-btn" onclick="chkDict('di2','possessed','dr2')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr2"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" onclick="speak('Holmes listened with careful neutrality.')">▶</button>
+      <div><div class="dict-label">문장 3</div><div class="dict-hint">"Holmes listened with careful ______."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di3" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','neutrality','dr3')">
+      <button class="dict-btn" onclick="chkDict('di3','neutrality','dr3')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr3"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">👂</div><div class="sh-title">듣고 고르기</div></div>
+  <button class="lc-play-btn" onclick="speak('The King came to Holmes because Irene Adler had a photograph that could ruin his marriage.')">🔊 듣기</button>
+  <button class="lc-stop-btn" onclick="speechSynthesis.cancel()">⏹ 정지</button>
+  <div class="lc-opts">
+    <button class="lc-opt" onclick="lcCheck(this,'ok')">① The King came to Holmes because Irene Adler had a photograph that could ruin his marriage.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">② Holmes refused the case because he admired Irene Adler too much.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">③ Watson recognised the King and told Holmes who the client was.</button>
+  </div>
+  <div class="lc-result" id="lc-result"></div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔤</div><div class="sh-title">단어 배열하기</div></div>
+  <div class="wo-wrap">
+    <div class="wo-q">🔵 초급 B1 — 올바른 순서로 배열하세요.</div>
+    <div class="wo-box" id="wo1-box"></div>
+    <div class="wo-pool" id="wo1-pool"></div>
+    <div class="wo-btns">
+      <button class="wo-check" onclick="woCheck('wo1','To Holmes she is always the woman','wr1')">확인 ✓</button>
+      <button class="wo-reset" onclick="woReset('wo1')">↺ 다시</button>
+    </div>
+    <div class="wo-result" id="wr1"></div>
+  </div>
+  <div class="wo-wrap">
+    <div class="wo-q">🟣 중급 B2 — 과거완료 문장을 배열하세요.</div>
+    <div class="wo-box" id="wo2-box"></div>
+    <div class="wo-pool" id="wo2-pool"></div>
+    <div class="wo-btns">
+      <button class="wo-check" onclick="woCheck('wo2','Holmes had already guessed who the client was','wr2')">확인 ✓</button>
+      <button class="wo-reset" onclick="woReset('wo2')">↺ 다시</button>
+    </div>
+    <div class="wo-result" id="wr2"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">🃏</div><div class="sh-title">짝맞추기</div></div>
+  <div class="match-grid">
+    <div class="match-col" id="match-left"></div>
+    <div class="match-col" id="match-right"></div>
+  </div>
+  <div class="match-result" id="match-result"></div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">받아쓰기 도전!</div></div>
+  <div style="font-size:0.75rem;color:var(--sub);margin-bottom:14px;">🎙️ 듣고 전체 문장을 입력하세요.</div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#16a34a;">A2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 1</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#16a34a;" onclick="speak('Holmes took the case.')">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#16a34a;border-color:#16a34a;background:#0d2a1a;">"Holmes"</span>
+        <span class="fd-hint-tag" style="color:#16a34a;border-color:#16a34a;background:#0d2a1a;">"case"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd1" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd1','Holmes took the case.','fdr1')">
+      <button class="fd-check" style="background:#16a34a;" onclick="chkFD('fd1','Holmes took the case.','fdr1')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr1"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#10b981;">B1</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 2</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#10b981;" onclick="speak('She is always the woman to Holmes.')">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#10b981;border-color:#10b981;background:#0a2a1a;">"always"</span>
+        <span class="fd-hint-tag" style="color:#10b981;border-color:#10b981;background:#0a2a1a;">"woman"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd2" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd2','She is always the woman to Holmes.','fdr2')">
+      <button class="fd-check" style="background:#10b981;" onclick="chkFD('fd2','She is always the woman to Holmes.','fdr2')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr2"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#7c3aed;">B2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 3</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#7c3aed;" onclick="speak('Holmes had already guessed who the client was.')">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#7c3aed;border-color:#7c3aed;background:#1e0d4a;">"guessed"</span>
+        <span class="fd-hint-tag" style="color:#7c3aed;border-color:#7c3aed;background:#1e0d4a;">"client"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd3" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd3','Holmes had already guessed who the client was.','fdr3')">
+      <button class="fd-check" style="background:#7c3aed;" onclick="chkFD('fd3','Holmes had already guessed who the client was.','fdr3')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr3"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">이해 문제</div></div>
+  <div class="quiz-tabs">
+    <button class="qtab qa1" onclick="showQuiz('qa1',this)">🟡 입문</button>
+    <button class="qtab" onclick="showQuiz('qa2',this)">🔵 초급 B1</button>
+    <button class="qtab" onclick="showQuiz('qb1',this)">🟣 중급</button>
+  </div>
+  <div id="qa1" class="quiz-set active">
+    <div class="quiz-item"><div class="quiz-q">Q1. Who came to see Holmes?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Irene Adler herself</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) The King of Bohemia</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Inspector Lestrade</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. What was the problem with the photograph?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) It showed Irene stealing something</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) It showed the King with Irene and could ruin his marriage</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) It proved the King had broken the law</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. How did the King describe Irene Adler?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) As a criminal</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) As the cleverest woman he had known</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) As someone easy to trick</button>
+      </div>
+    </div>
+  </div>
+  <div id="qa2" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">Q1. The King spoke of Irene "with admiration, not hatred." Why does Holmes notice this?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) It means the King still loves her</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) It tells Holmes that Irene is genuinely exceptional — even her opponent respects her, signalling a harder case</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) It suggests the King is lying</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. Why did Watson call Irene Adler "the woman"?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Because Holmes was in love with her</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Because she is the only person who ever beat Holmes — making her uniquely significant in his world</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Because she was the most famous woman in Europe</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. Holmes said he would solve the case in three days but was "genuinely uncertain." What does this suggest?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Holmes was tired from his previous case</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Irene Adler has already disrupted his system — he cannot explain her yet, which is rare and unsettling for him</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) He was planning to refuse the case later</button>
+      </div>
+    </div>
+  </div>
+  <div id="qb1" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">Q1. "That distinction was worth more than admiration." What is Doyle saying about how Holmes values people?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Holmes values people who admire him</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) For Holmes, intellectual equality is the highest respect. Beating him is the only credential that matters — rarer and more valuable than beauty or charm.</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Holmes does not value anyone</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. Holmes listened "with careful neutrality." What does this reveal about his method?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Holmes was bored by the King</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Emotional distance is a professional tool — showing reaction would compromise his analysis. Neutrality helps him observe clearly.</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Holmes had heard the story before</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. This story features a King needing help from a private detective. What does this say about power?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Kings are always weak people</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Political power cannot solve every problem — sometimes intelligence and capability matter more than rank or status.</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Detectives are more powerful than kings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">에세이 쓰기 (CER 논증)</div></div>
+  <div style="font-size:0.84rem;font-weight:700;color:white;margin-bottom:12px;">💬 주제: <strong>"What makes someone truly clever?"</strong></div>
+  <div style="background:var(--bg);border-radius:10px;padding:12px;margin-bottom:12px;">
+    <div style="font-size:0.75rem;color:var(--gold);font-weight:900;margin-bottom:6px;">📌 CER 구조</div>
+    <div style="font-size:0.75rem;color:var(--sub);line-height:1.8;">C (Claim): 나의 주장<br>E (Evidence): 텍스트 근거<br>R (Reasoning): 왜 그 근거가 주장을 뒷받침하는지</div>
+  </div>
+  <div class="essay-line"><span class="essay-num">C</span><input class="essay-input" id="es1" placeholder="I argue that..."></div>
+  <div class="essay-line"><span class="essay-num">E</span><input class="essay-input" id="es2" placeholder="As Holmes demonstrates / According to the story,..."></div>
+  <div class="essay-line"><span class="essay-num">R</span><input class="essay-input" id="es3" placeholder="This shows that..."></div>
+  <button class="essay-submit" onclick="submitEssay()">📋 ChatGPT에서 교정받기</button>
+  <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">⚖️</div><div class="sh-title">디베이트 — Rebuttal 실전</div></div>
+  <div class="debate-box">
+    <div style="font-size:0.8rem;font-weight:900;color:#10b981;margin-bottom:10px;">📌 W2 디베이트 주제</div>
+    <div style="background:#0a1e18;border-radius:10px;padding:12px;text-align:center;margin-bottom:12px;border:1px solid #10b981;">
+      <div style="font-size:0.95rem;font-weight:900;color:white;margin-bottom:4px;">"Irene Adler is smarter than Sherlock Holmes."</div>
+      <div style="font-size:0.78rem;color:#5aff9a;">아이린 애들러는 셜록 홈즈보다 더 영리하다.</div>
+    </div>
+    <div style="background:#1a1a3a;border:1.5px solid #7c3aed;border-radius:10px;padding:12px;margin-bottom:10px;">
+      <div style="font-size:0.72rem;font-weight:900;color:#b48aff;margin-bottom:6px;">상대방 Rebuttal — 다시 반박하세요</div>
+      <div style="font-size:0.78rem;color:var(--text);margin-bottom:8px;line-height:1.6;">"Irene succeeded once by chance. Holmes solves hundreds of cases. Consistency proves superiority."</div>
+      <textarea id="rebuttal-m3" class="debate-textarea" rows="5" placeholder="재반박문을 영어로 써보세요...&#10;&#10;While it is true that Holmes has solved more cases...&#10;this ignores the fact that Irene defeated him on his own terms...&#10;As Watson himself wrote..."></textarea>
+    </div>
+    <button onclick="sendDebate_m3()" style="background:#10b981;color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;">💬 ChatGPT와 Closing Statement 준비</button>
+    <div style="font-size:0.78rem;color:var(--sub);margin-top:8px;min-height:16px;" id="debate-result"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">ChatGPT 영어 튜터 (25분)</div></div>
+  <div class="gpt-card">
+    <div style="font-size:0.9rem;font-weight:900;color:white;margin-bottom:6px;">🤖 AI 튜터와 영어 연습</div>
+    <div style="font-size:0.75rem;color:var(--sub);margin-bottom:14px;">버튼을 누르면 복사돼요. ChatGPT에 붙여넣기(Ctrl+V)!</div>
+    <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:0.78rem;color:#9090aa;line-height:1.7;margin-bottom:12px;white-space:pre-wrap;" id="gpt-prompt">안녕! 나는 중학교 3학년이야.
+오늘 Sherlock Holmes W2 (A Scandal in Bohemia)를 공부했어.
+
+📚 오늘 배운 내용:
+- 단어: disguise, possess, monarch, neutrality, distinction, compromise
+- 문법: 과거완료 had+p.p. (G43), 수동태 be+p.p. (G48)
+- 이야기: 보헤미아 왕이 아이린 애들러 사건을 의뢰하는 장면
+
+[할 것 1 - 8분] 내 CER 에세이 피드백:
+{에세이}
+Claim이 명확한지, Evidence가 텍스트 기반인지, Reasoning이 논리적인지.
+
+[할 것 2 - 10분] 디베이트 Rebuttal:
+{rebuttal}
+더 날카롭게 다듬어줘. Closing Statement도 함께 써줘.
+
+[할 것 3 - 7분] 실전 토론 — 너는 찬성 측으로 공격해줘.
+
+고급 영어로 피드백 줘!</div>
+    <button class="gpt-copy" onclick="copyGPT()">📋 프롬프트 복사하기</button>
+    <button class="gpt-open" onclick="openGPT()">💬 ChatGPT 열기</button>
+    <div style="text-align:center;font-size:0.75rem;color:var(--sub);margin-top:8px;">⏱ 목표: 25분 | 에세이 8분 + 디베이트 10분 + 교정 7분</div>
+  </div>
+</div>
+
+<div class="complete-card" id="complete-card">
+  <div style="font-size:2.8rem;margin-bottom:10px;">🔍</div>
+  <div style="font-size:1.2rem;font-weight:900;color:var(--acc);margin-bottom:6px;">Week 2 완료!</div>
+  <div style="font-size:0.86rem;color:var(--sub);margin-bottom:16px;line-height:1.7;">아이린 애들러 사건이 시작됐어요!<br>다음 주엔 홈즈의 반격이 시작돼요!</div>
+  <div style="background:linear-gradient(135deg,var(--acc),var(--acc2));color:white;border-radius:12px;padding:12px 24px;font-size:1.1rem;font-weight:900;display:inline-block;margin-bottom:16px;" id="xp-final">⭐ +50 XP 획득!</div>
+  <div style="background:var(--card2);border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+    <div>
+      <div style="font-size:0.7rem;color:var(--sub);font-weight:700;">다음 주</div>
+      <div style="font-size:0.86rem;font-weight:800;color:white;">Week 3 — Holmes Strikes Back</div>
+      <div style="font-size:0.72rem;color:var(--sub);margin-top:2px;">홈즈의 반격이 시작돼요!</div>
+    </div>
+    <button style="background:var(--acc);color:white;border:none;padding:8px 16px;border-radius:8px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;" onclick="location.href='campb_m3_w03.html'">W3 →</button>
+  </div>
+</div>
+
+<div class="nav-row">
+  <button class="nav-btn" onclick="location.href='campb_m3_w01.html'" style="background:#2a3a2a;color:var(--sub);">← W1</button>
+  <button class="nav-btn" onclick="location.href='campb_m3_w03.html'" style="background:var(--acc);color:white;">W3 →</button>
+</div>
+</div>
+
+<script>
+const gramData = {
+  g1:{tag:'G05 Simple Past Tense',title:'arrive → arrived',desc:'규칙 동사 과거형: +d\n의뢰인이 변장하고 도착했다',ex:'The client arrived in disguise.',gnum:'G05',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g2:{tag:'G43 Past Perfect Simple',title:'had already guessed',desc:'과거보다 더 이전에 완료된 일\nalready와 함께 자주 사용\nhad guessed = 이미 추측했었다',ex:'Holmes had already solved the case.',gnum:'G43',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g3:{tag:'G48 Passive Voice',title:'was shocked (수동태)',desc:'be동사 + p.p. = 수동태\n왕이 (홈즈의 말에) 충격을 받았다',ex:'The King was shocked by his words.',gnum:'G48',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g4:{tag:'G05 Simple Past Tense',title:'possess → possessed',desc:'규칙 동사 과거형: +ed\n아이린이 사진을 소유했다',ex:'Irene possessed the photograph.',gnum:'G05',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g5:{tag:'G05 Simple Past Tense',title:'take → took (불규칙)',desc:'불규칙 과거형: take → took\n홈즈가 사건을 맡았다',ex:'Holmes took the case immediately.',gnum:'G05',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g6:{tag:'G43 Past Perfect Simple',title:'had beaten (과거완료)',desc:'과거보다 더 이전에 완료된 일\nhad beaten = (이전에) 이긴 적이 있었다',ex:'No one had ever beaten him before.',gnum:'G43',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+};
+let currentGramId = '';
+
+let voiceCache = null;
+function getBestVoice() {
+  if (voiceCache) return voiceCache;
+  const voices = speechSynthesis.getVoices();
+  if (!voices.length) return null;
+  const prefer = ['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
+  const exclude = ['Alex','Fred','Daniel','Google UK English Male'];
+  for (const name of prefer) {
+    const v = voices.find(v => v.name.includes(name));
+    if (v) { voiceCache = v; return v; }
+  }
+  voiceCache = voices.find(v => v.lang==='en-US'&&!exclude.some(e=>v.name.includes(e)))||voices[0];
+  return voiceCache;
+}
+function speak(text) {
+  if (!text) return;
+  speechSynthesis.cancel();
+  setTimeout(() => {
+    const u = new SpeechSynthesisUtterance(text);
+    const v = getBestVoice(); if (v) u.voice = v;
+    u.lang='en-US'; u.rate=0.82; u.pitch=1.05; u.volume=1.0;
+    speechSynthesis.speak(u);
+  }, 50);
+}
+speechSynthesis.onvoiceschanged = () => { voiceCache = null; };
+
+let xp = 0;
+function addXP(n) {
+  xp += n;
+  document.getElementById('xp-btn').textContent = '⭐ ' + xp + ' XP';
+  document.getElementById('prog-bar').style.width = Math.min(100, xp*2) + '%';
+  if (xp >= 50 && document.getElementById('complete-card').style.display !== 'block') {
+    setTimeout(() => {
+      document.getElementById('complete-card').style.display = 'block';
+      document.getElementById('complete-card').scrollIntoView({behavior:'smooth'});
+    }, 500);
+  }
+}
+
+function showStory(lv,btn){['a1','a2','b1'].forEach(l=>{const el=document.getElementById('sb-'+l);if(el) el.classList.remove('active');});document.querySelectorAll('.tab-btn').forEach(b=>b.className='tab-btn');document.getElementById('sb-'+lv).classList.add('active');btn.classList.add('act-'+lv);}
+function readStory(){const s=document.getElementById('sb-a2');if(s) speak((s.innerText||s.textContent).replace(/\s+/g,' ').trim());}
+function toggleKr(){const kr=document.getElementById('story-kr');const btn=document.getElementById('kr-btn');const show=kr.style.display!=='block';kr.style.display=show?'block':'none';btn.textContent=show?'🇰🇷 번역 숨기기':'🇰🇷 한국어 번역 보기';}
+
+document.querySelectorAll('.gram').forEach(el=>{el.addEventListener('click',function(e){e.stopPropagation();const d=gramData[this.dataset.id];if(!d) return;currentGramId=this.dataset.id;document.getElementById('tt-tag').textContent=d.tag;document.getElementById('tt-title').textContent=d.title;document.getElementById('tt-desc').textContent=d.desc;document.getElementById('tt-ex').textContent=d.ex;document.getElementById('tt-gram-link').textContent='📚 Grammar Base '+d.gnum+' →';document.getElementById('tt-gram-link').href=d.glink;const wrap=document.getElementById('tt-wrap');const rect=this.getBoundingClientRect();let top=rect.bottom+8,left=rect.left;if(left+290>window.innerWidth) left=window.innerWidth-295;if(top+200>window.innerHeight) top=rect.top-210;wrap.style.top=top+'px';wrap.style.left=left+'px';wrap.style.display='block';document.getElementById('tt-overlay').style.display='block';});});
+function closeTooltip(){document.getElementById('tt-wrap').style.display='none';document.getElementById('tt-overlay').style.display='none';}
+function gramToGPT(){const d=gramData[currentGramId];if(!d) return;const p=`안녕! 중학교 3학년인데 이 문법이 이해 안 돼.\n문법: ${d.title} (${d.tag})\n예문: "${d.ex}"\n쉽게 설명해줘! 예문도 2개 더 만들어줘!`;navigator.clipboard.writeText(p).then(()=>window.open('https://chatgpt.com','_blank'));closeTooltip();}
+
+function chkFill(btn,val,ans,blId,resId){btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('ok','no'));const res=document.getElementById(resId);if(val===ans){document.getElementById(blId).textContent=val;document.getElementById(blId).style.color='var(--green)';btn.classList.add('ok');res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(3);}else{btn.classList.add('no');res.innerHTML='❌ 다시!';res.style.color='var(--red)';}}
+function chkDict(id,ans,resId){const v=document.getElementById(id).value.trim().toLowerCase();const res=document.getElementById(resId);if(v===ans.toLowerCase()){res.innerHTML='✅ 정답!';res.style.color='var(--green)';document.getElementById(id).style.borderColor='var(--green)';addXP(3);}else{res.innerHTML='❌ 정답: <span style="color:var(--acc);font-weight:900">'+ans+'</span>';res.style.color='var(--red)';document.getElementById(id).style.borderColor='var(--red)';}}
+function lcCheck(btn,val){if(document.querySelector('.lc-opt.ok')) return;document.querySelectorAll('.lc-opt').forEach(b=>b.classList.remove('no'));const res=document.getElementById('lc-result');if(val==='ok'){btn.classList.add('ok');res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(4);}else{btn.classList.add('no');res.innerHTML='❌ 다시 들어보세요!';res.style.color='var(--red)';setTimeout(()=>btn.classList.remove('no'),1000);}}
+
+const woState={};
+function woAdd(id,btn,word){if(btn.classList.contains('used')) return;if(!woState[id]) woState[id]=[];woState[id].push(word);btn.classList.add('used');renderWo(id);}
+function renderWo(id){const box=document.getElementById(id+'-box');box.innerHTML='';(woState[id]||[]).forEach((w,i)=>{const b=document.createElement('button');b.className='wo-placed';b.textContent=w;b.onclick=()=>{woState[id].splice(i,1);renderWo(id);document.getElementById(id+'-pool').querySelectorAll('.wo-chip').forEach(c=>{if(c.textContent===w&&c.classList.contains('used')){c.classList.remove('used');}});};box.appendChild(b);});}
+function woReset(id){woState[id]=[];renderWo(id);document.getElementById(id+'-pool').querySelectorAll('.wo-chip').forEach(c=>c.classList.remove('used'));const r=document.getElementById('wr'+id.replace('wo',''));if(r) r.innerHTML='';}
+function woCheck(id,ans,resId){const res=document.getElementById(resId);if((woState[id]||[]).join(' ').trim()===ans){res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(5);}else{res.innerHTML='❌ 정답: <span style="color:var(--acc)">'+ans+'</span>';res.style.color='var(--red)';}}
+function initWo(id,words){const pool=document.getElementById(id+'-pool');const sh=[...words].sort(()=>Math.random()-0.5);pool.innerHTML=sh.map(w=>`<button class="wo-chip" onclick="woAdd('${id}',this,'${w}')">${w}</button>`).join('');}
+initWo('wo1',['To','Holmes','she','is','always','the','woman']);
+initWo('wo2',['Holmes','had','already','guessed','who','the','client','was']);
+
+const matchPairs=[['disguise','변장'],['possess','소유하다'],['monarch','군주'],['distinction','구별']];
+let matchSel=null,matchDone={};
+function initMatch(){const left=document.getElementById('match-left');const right=document.getElementById('match-right');const sh=[...matchPairs].sort(()=>Math.random()-0.5);left.innerHTML=matchPairs.map(([en])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${en}</button>`).join('');right.innerHTML=sh.map(([en,kr])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${kr}</button>`).join('');}
+function matchClick(btn,key){if(btn.classList.contains('matched')) return;btn.classList.remove('wrong-flash');if(!matchSel){matchSel={btn,key};btn.classList.add('selected');}else{if(matchSel.key===key&&matchSel.btn!==btn){matchSel.btn.classList.remove('selected');matchSel.btn.classList.add('matched');btn.classList.add('matched');matchDone[key]=true;matchSel=null;if(Object.keys(matchDone).length===matchPairs.length){document.getElementById('match-result').innerHTML='🎉 모두 맞췄어요!';document.getElementById('match-result').style.color='var(--green)';addXP(8);}}else{const prev=matchSel.btn;prev.classList.remove('selected');prev.classList.add('wrong-flash');btn.classList.add('wrong-flash');matchSel=null;setTimeout(()=>{prev.classList.remove('wrong-flash');btn.classList.remove('wrong-flash');},500);}}}
+initMatch();
+
+function chkFD(id,ans,resId){const inp=document.getElementById(id);const res=document.getElementById(resId);const clean=s=>s.trim().toLowerCase().replace(/[.,!?;:—]/g,'').replace(/\s+/g,' ');if(clean(inp.value)===clean(ans)){res.innerHTML='✅ 정답!';res.style.color='var(--green)';inp.style.borderColor='var(--green)';inp.style.background='#0d1f0d';addXP(5);}else{res.innerHTML='❌ 정답: <span style="color:var(--acc);font-weight:800">"'+ans+'"</span>';res.style.color='var(--red)';inp.style.borderColor='var(--red)';}}
+
+function showQuiz(id,btn){document.querySelectorAll('.quiz-set').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.qtab').forEach(b=>b.className='qtab');document.getElementById(id).classList.add('active');btn.classList.add('q'+id.replace('q',''));}
+function qChk(btn,val){btn.closest('.quiz-opts').querySelectorAll('.qopt').forEach(b=>b.classList.remove('ok','no'));btn.classList.add(val==='ok'?'ok':'no');if(val==='ok') addXP(4);}
+
+function submitEssay(){
+  const c=document.getElementById('es1').value.trim();
+  const e=document.getElementById('es2').value.trim();
+  const r=document.getElementById('es3').value.trim();
+  const res=document.getElementById('essay-result');
+  if(!c||!e||!r){res.innerHTML='❗ C, E, R을 모두 작성해주세요!';res.style.color='var(--gold)';return;}
+  const essay=`C: ${c}\nE: ${e}\nR: ${r}`;
+  const rebuttal=document.getElementById('rebuttal-m3').value.trim();
+  let prompt=document.getElementById('gpt-prompt').textContent.replace('{에세이}',essay).replace('{rebuttal}',rebuttal||'(아직 못 썼어)');
+  navigator.clipboard.writeText(prompt).then(()=>{res.innerHTML='✅ 복사 완료!';res.style.color='var(--green)';addXP(10);window.open('https://chatgpt.com','_blank');});
+}
+
+function sendDebate_m3(){
+  const rebuttal=document.getElementById('rebuttal-m3').value.trim();
+  const prompt=`안녕! 중학교 3학년이야. Sherlock Holmes W2 디베이트 연습 중이야.\n\n주제: "Irene Adler is smarter than Sherlock Holmes."\n내 Rebuttal: ${rebuttal||'(아직 못 썼어)'}\n상대방: "Holmes solves hundreds of cases. Consistency proves superiority."\n\n[할 것 1 - 10분] 내 Rebuttal이 논리적인지 피드백해줘. Closing Statement도 함께 써줘.\n[할 것 2 - 8분] 찬성 측으로 공격해줘. 나는 재반박할게.\n[할 것 3 - 7분] 전체 디베이트 흐름 리뷰해줘.\n\n고급 영어로!`;
+  navigator.clipboard.writeText(prompt).then(()=>{document.getElementById('debate-result').innerHTML='✅ 복사 완료!';document.getElementById('debate-result').style.color='var(--green)';addXP(10);setTimeout(()=>window.open('https://chatgpt.com','_blank'),300);});
+}
+
+function copyGPT(){const p=document.getElementById('gpt-prompt').textContent;navigator.clipboard.writeText(p).then(()=>{const btn=document.querySelector('.gpt-copy');const orig=btn.textContent;btn.textContent='✅ 복사됐어요!';btn.style.background='var(--green)';setTimeout(()=>{btn.textContent=orig;btn.style.background='#10a37f';},2000);});}
+function openGPT(){copyGPT();setTimeout(()=>window.open('https://chatgpt.com','_blank'),300);}
+</script>
+</body>
+</html>
