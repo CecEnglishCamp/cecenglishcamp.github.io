@@ -178,7 +178,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
 .essay-submit{background:var(--gold);color:#1a1a00;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:4px;}
 .essay-result{font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;}
 
-/* ChatGPT */
+/* Open WebUI */
 .gpt-card{background:linear-gradient(135deg,#0d2a1a,#1a0d2a);border:1px solid #2a4a3a;border-radius:14px;padding:16px;}
 .gpt-title{font-size:0.9rem;font-weight:900;color:white;margin-bottom:6px;}
 .gpt-sub{font-size:0.75rem;color:var(--sub);margin-bottom:14px;}
@@ -212,7 +212,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
     <div class="tt-ex" id="tt-ex"></div>
     <div class="tt-links">
       <a class="tt-gram-link" id="tt-gram-link" href="https://cecenglishcamp.github.io/GrammarBaseCamp/index.html" target="_blank"></a>
-      <button class="tt-gpt-link" onclick="gramToGPT()">💬 ChatGPT</button>
+      <button class="tt-gpt-link" onclick="gramToGPT()">💬 Open WebUI</button>
     </div>
   </div>
 </div>
@@ -600,7 +600,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
       <div style="font-size:0.75rem;color:var(--sub);">예) "Therefore, sometimes the bravest choice..."</div>
     </div>
     <div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:var(--gold);">
-      💡 완성하면 아래 버튼으로 ChatGPT에게 교정받을 수 있어요!
+      💡 완성하면 아래 버튼으로 AI 튜터 벡스에게 피드백받을 수 있어요!
     </div>
   </div>
   <div class="essay-line">
@@ -615,16 +615,16 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
     <span class="essay-num">③</span>
     <input class="essay-input" id="es3" placeholder="Therefore, sometimes the bravest choice...">
   </div>
-  <button class="essay-submit" onclick="submitEssay()">📋 ChatGPT에서 교정받기</button>
+  <button class="essay-submit" onclick="submitEssay()">📝 Open WebUI에서 피드백받기</button>
   <div class="essay-result" id="essay-result"></div>
 </div>
 
-<!-- ⑪ ChatGPT -->
+<!-- ⑪ AI 튜터 벡스 -->
 <div class="card">
-  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">ChatGPT 영어 튜터 (20분)</div></div>
+  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">AI 영어 튜터 벡스 (20분)</div></div>
   <div class="gpt-card">
     <div class="gpt-title">🤖 AI 튜터와 영어 연습</div>
-    <div class="gpt-sub">버튼을 누르면 학습 내용이 복사돼요. ChatGPT에 붙여넣기(Ctrl+V)하세요!</div>
+    <div class="gpt-sub">버튼을 누르면 학습 내용이 복사돼요. Open WebUI에 붙여넣기(Ctrl+V)하세요!</div>
     <div class="gpt-prompt-box" id="gpt-prompt">안녕! 나는 중학교 1학년이야.
 오늘 Huckleberry Finn W2를 공부했어.
 주제: Huck이 탈출을 준비하고 짐과 만나는 장면
@@ -644,7 +644,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
 
 천천히 쉽게 설명해줘!</div>
     <button class="gpt-copy" onclick="copyGPT()">📋 프롬프트 복사하기</button>
-    <button class="gpt-open" onclick="openGPT()">💬 ChatGPT 열기</button>
+    <button class="gpt-open" onclick="openGPT()">💬 Open WebUI 열기</button>
     <div class="gpt-timer">⏱ 목표: 20분 | 문법 5분 + 단어 8분 + 에세이 7분</div>
   </div>
 </div>
@@ -796,7 +796,7 @@ function gramToGPT() {
   const d = gramData[currentGramId];
   if (!d) return;
   const p = `안녕! 중학교 1학년인데 이 문법이 이해 안 돼.\n문법: ${d.title} (${d.tag})\n예문: "${d.ex}"\n쉽고 재미있게 설명해줘! 예문도 2개 더 만들어줘!`;
-  navigator.clipboard.writeText(p).then(() => window.open('https://chatgpt.com','_blank'));
+  navigator.clipboard.writeText(p).then(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'));
   closeTooltip();
 }
 
@@ -962,6 +962,12 @@ function qChk(btn, val) {
 }
 
 // ── 에세이 ──
+function _getStudentName() {
+  try {
+    const auth = JSON.parse(sessionStorage.getItem('cecAuthB') || '{}');
+    return auth.name || '친구';
+  } catch(e) { return '친구'; }
+}
 function submitEssay() {
   const s1 = document.getElementById('es1').value.trim();
   const s2 = document.getElementById('es2').value.trim();
@@ -970,16 +976,16 @@ function submitEssay() {
   if (!s1 || !s2 || !s3) {
     res.innerHTML = '❗ 3문장을 모두 작성해주세요!'; res.style.color = 'var(--gold)'; return;
   }
-  const essay = `① ${s1}\n② ${s2}\n③ ${s3}`;
-  const prompt = document.getElementById('gpt-prompt').textContent.replace('{에세이}', essay);
+  const nm = _getStudentName();
+  const prompt = `[ESSAY] 안녕하세요! 저는 ${nm}, 중학교 1학년이에요.\nHuckleberry Finn W2 에세이를 썼는데 피드백 부탁드려요.\n① ${s1}\n② ${s2}\n③ ${s3}`;
   navigator.clipboard.writeText(prompt).then(() => {
-    res.innerHTML = '✅ 에세이 포함 프롬프트 복사 완료!'; res.style.color = 'var(--a1c)';
+    res.innerHTML = '✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.'; res.style.color = 'var(--green)';
     addXP(10);
-    window.open('https://chatgpt.com','_blank');
-  }).catch(() => { res.innerHTML = '📋 아래 ChatGPT 버튼을 눌러주세요!'; });
+    setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+  });
 }
 
-// ── ChatGPT ──
+// ── Open WebUI ──
 function copyGPT() {
   const prompt = document.getElementById('gpt-prompt').textContent;
   navigator.clipboard.writeText(prompt).then(() => {
@@ -989,7 +995,7 @@ function copyGPT() {
     setTimeout(() => { btn.textContent = orig; btn.style.background = '#10a37f'; }, 2000);
   });
 }
-function openGPT() { copyGPT(); setTimeout(() => window.open('https://chatgpt.com','_blank'), 300); }
+function openGPT() { copyGPT(); setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'), 300); }
 </script>
 </body>
 </html>
