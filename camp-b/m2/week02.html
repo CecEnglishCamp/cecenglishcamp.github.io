@@ -164,7 +164,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
     <div class="tt-ex" id="tt-ex"></div>
     <div class="tt-links">
       <a class="tt-gram-link" id="tt-gram-link" href="https://cecenglishcamp.github.io/GrammarBaseCamp/index.html" target="_blank"></a>
-      <button class="tt-gpt-link" onclick="gramToGPT()">💬 ChatGPT</button>
+      <button class="tt-gpt-link" onclick="gramToGPT()">💬 Open WebUI에 물어보기</button>
     </div>
   </div>
 </div>
@@ -508,7 +508,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
   <div class="essay-line"><span class="essay-num">③</span><input class="essay-input" id="es3" placeholder="Second,..."></div>
   <div class="essay-line"><span class="essay-num">④</span><input class="essay-input" id="es4" placeholder="Some people say... However,..."></div>
   <div class="essay-line"><span class="essay-num">⑤</span><input class="essay-input" id="es5" placeholder="In conclusion,..."></div>
-  <button class="essay-submit" onclick="submitEssay()">📋 ChatGPT에서 교정받기</button>
+  <button class="essay-submit" onclick="submitEssay()">📝 Open WebUI에서 피드백받기</button>
   <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
 </div>
 
@@ -530,16 +530,16 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
       <span style="background:#1a2a4a;color:#7ab3ff;padding:3px 10px;border-radius:20px;font-size:0.72rem;border:1px solid #2a3a6a;cursor:pointer;" onclick="addPhrase('rebuttal-m2','While it may be true that...')">While it may be true that...</span>
       <span style="background:#1a2a4a;color:#7ab3ff;padding:3px 10px;border-radius:20px;font-size:0.72rem;border:1px solid #2a3a6a;cursor:pointer;" onclick="addPhrase('rebuttal-m2','On the contrary,...')">On the contrary,...</span>
     </div>
-    <button onclick="sendDebate()" style="background:#0ea5e9;color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;">💬 ChatGPT와 반박 연습</button>
+    <button onclick="sendDebate()" style="background:#0ea5e9;color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;">💬 Open WebUI와 반박 연습</button>
     <div style="font-size:0.78rem;color:var(--sub);margin-top:8px;min-height:16px;" id="debate-result"></div>
   </div>
 </div>
 
 <div class="card">
-  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">ChatGPT 영어 튜터 (20분)</div></div>
+  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">AI 영어 튜터 벡스 (20분)</div></div>
   <div class="gpt-card">
     <div style="font-size:0.9rem;font-weight:900;color:white;margin-bottom:6px;">🤖 AI 튜터와 영어 연습</div>
-    <div style="font-size:0.75rem;color:var(--sub);margin-bottom:14px;">버튼을 누르면 복사돼요. ChatGPT에 붙여넣기(Ctrl+V)!</div>
+    <div style="font-size:0.75rem;color:var(--sub);margin-bottom:14px;">버튼을 누르면 복사돼요. Open WebUI에 붙여넣기(Ctrl+V)!</div>
     <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:0.78rem;color:#9090aa;line-height:1.7;margin-bottom:12px;white-space:pre-wrap;" id="gpt-prompt">안녕! 나는 중학교 2학년이야.
 오늘 War of the Worlds W2를 공부했어.
 
@@ -560,7 +560,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
 
 논리적으로 피드백 줘!</div>
     <button class="gpt-copy" onclick="copyGPT()">📋 프롬프트 복사하기</button>
-    <button class="gpt-open" onclick="openGPT()">💬 ChatGPT 열기</button>
+    <button class="gpt-open" onclick="openGPT()">💬 Open WebUI 열기</button>
     <div style="text-align:center;font-size:0.75rem;color:var(--sub);margin-top:8px;">⏱ 목표: 20분 | 문법 8분 + 에세이 5분 + 디베이트 7분</div>
   </div>
 </div>
@@ -587,6 +587,10 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
 </div>
 
 <script>
+function _getStudentName() {
+  try { const a = JSON.parse(sessionStorage.getItem('cecAuthB') || '{}'); return a.name || '친구'; } catch(e) { return '친구'; }
+}
+
 const gramData = {
   g1:{tag:'G43 Past Perfect Simple',title:'had assembled',desc:'과거보다 더 이전에 완료된 일\nhad assembled = 이미 조립해 놓았었다',ex:'By morning they had assembled the machines.',gnum:'G43',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
   g2:{tag:'G48 Passive Voice',title:'were protected (수동태)',desc:'be동사 + p.p. = 수동태\n삼각 기계가 (보이지 않는 힘에) 보호됐다',ex:'The tripods were protected by a force field.',gnum:'G48',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
@@ -679,7 +683,7 @@ function closeTooltip(){document.getElementById('tt-wrap').style.display='none';
 function gramToGPT(){
   const d=gramData[currentGramId]; if(!d) return;
   const p=`안녕! 중학교 2학년인데 이 문법이 이해 안 돼.\n문법: ${d.title} (${d.tag})\n예문: "${d.ex}"\n쉽게 설명해줘! 예문도 2개 더 만들어줘!`;
-  navigator.clipboard.writeText(p).then(()=>window.open('https://chatgpt.com','_blank'));
+  navigator.clipboard.writeText(p).then(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'));
   closeTooltip();
 }
 
@@ -754,20 +758,21 @@ function submitEssay(){
   const vals=[1,2,3,4,5].map(i=>document.getElementById('es'+i).value.trim());
   const res=document.getElementById('essay-result');
   if(vals.some(v=>!v)){res.innerHTML='❗ 5문장을 모두 작성해주세요!';res.style.color='var(--gold)';return;}
-  const essay=vals.map((v,i)=>`${['①','②','③','④','⑤'][i]} ${v}`).join('\n');
-  const rebuttal=document.getElementById('rebuttal-m2').value.trim();
-  let prompt=document.getElementById('gpt-prompt').textContent.replace('{에세이}',essay).replace('{rebuttal}',rebuttal||'(아직 못 썼어)');
-  navigator.clipboard.writeText(prompt).then(()=>{res.innerHTML='✅ 복사 완료!';res.style.color='var(--green)';addXP(10);window.open('https://chatgpt.com','_blank');});
+  const nm=_getStudentName();
+  const essayText=`[ESSAY] 안녕하세요! 저는 ${nm}, 중학교 2학년이에요.\nWar of the Worlds W2 에세이를 썼는데 피드백 부탁드려요.\n① ${vals[0]}\n② ${vals[1]}\n③ ${vals[2]}\n④ ${vals[3]}\n⑤ ${vals[4]}`;
+  navigator.clipboard.writeText(essayText).then(()=>{res.innerHTML='✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';addXP(10);window.open('http://localhost:3001/?models=cec_camp_b','_blank');});
 }
 
 function sendDebate(){
   const rebuttal=document.getElementById('rebuttal-m2').value.trim();
-  const prompt=`안녕! 중학교 2학년이야. War of the Worlds W2 디베이트 연습 중이야.\n\n주제: "Technology will save humanity from alien invasion."\n상대방 주장: "Alien technology will always be superior."\n내 Rebuttal: ${rebuttal||'(아직 못 썼어)'}\n\n[할 것 1 - 8분] 내 Rebuttal 피드백해줘. 논리를 더 강하게 만들어줘.\n[할 것 2 - 7분] 너는 찬성 측으로 나를 공격해줘.\n[할 것 3 - 5분] War of the Worlds에서 관련 근거 찾아줘.\n\n영어로 하되 모르는 표현은 한국어로 설명해줘!`;
-  navigator.clipboard.writeText(prompt).then(()=>{document.getElementById('debate-result').innerHTML='✅ 복사 완료!';document.getElementById('debate-result').style.color='var(--green)';addXP(8);setTimeout(()=>window.open('https://chatgpt.com','_blank'),300);});
+  const topic='Technology will save humanity from alien invasion.';
+  const nm=_getStudentName();
+  const prompt=`[DEBATE] 안녕하세요! 저는 ${nm}, 중학교 2학년이에요.\nWar of the Worlds W2 디베이트 주제: "${topic}"\n내 찬성 카드: ${rebuttal||'(아직 못 썼어요)'}\n내 반대 카드: (아직 못 썼어요)`;
+  navigator.clipboard.writeText(prompt).then(()=>{document.getElementById('debate-result').innerHTML='✅ 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';document.getElementById('debate-result').style.color='var(--green)';addXP(8);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);});
 }
 
-function copyGPT(){const p=document.getElementById('gpt-prompt').textContent;navigator.clipboard.writeText(p).then(()=>{const btn=document.querySelector('.gpt-copy');const orig=btn.textContent;btn.textContent='✅ 복사됐어요!';btn.style.background='var(--green)';setTimeout(()=>{btn.textContent=orig;btn.style.background='#10a37f';},2000);});}
-function openGPT(){copyGPT();setTimeout(()=>window.open('https://chatgpt.com','_blank'),300);}
+function copyGPT(){const p=document.getElementById('gpt-prompt').textContent;navigator.clipboard.writeText(p).then(()=>{const btn=document.querySelector('.gpt-copy');const orig=btn.textContent;btn.textContent='✅ 복사됐어요! Open WebUI를 열어주세요.';btn.style.background='var(--green)';setTimeout(()=>{btn.textContent=orig;btn.style.background='#10a37f';},2000);});}
+function openGPT(){copyGPT();setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);}
 </script>
 </body>
 </html>

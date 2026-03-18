@@ -239,7 +239,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-se
     <div class="tt-ex" id="tt-ex"></div>
     <div class="tt-links">
       <a class="tt-gram-link" id="tt-gram-link" href="#" target="_blank"></a>
-      <button class="tt-gpt-link" onclick="openGPTTooltip()">💬 ChatGPT에 물어보기</button>
+      <button class="tt-gpt-link" onclick="openGPTTooltip()">💬 Open WebUI에 물어보기</button>
     </div>
   </div>
 </div>
@@ -690,7 +690,7 @@ function readStory() {
         </div>
       </div>
       <div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:var(--gold);">
-        💡 ChatGPT가 문법 오류, 더 좋은 표현, 자연스러운 영어를 피드백해줄 거예요!
+        💡 AI 튜터 벡스가 문법 오류, 더 좋은 표현, 자연스러운 영어를 피드백해줄 거예요!
       </div>
     </div>
     <div class="essay-line">
@@ -785,7 +785,8 @@ function sendDebateToWebUI() {
   } catch(e) {}
   const gradeLabel = {1:'1',2:'2',3:'3'}[gradeNum] || '2';
 
-  const debateText = `안녕하세요! 저는 ${name}, 중학교 ${gradeLabel}학년이에요.\n디베이트 주제: ${topic}\n\n찬성: ${forCard || '(아직 못 썼어요)'}\n반대: ${againstCard || '(아직 못 썼어요)'}\n\n디베이트 피드백 부탁드려요.`;
+  const nm = _getStudentName();
+  const debateText = `[DEBATE] 안녕하세요! 저는 ${nm}, 중학교 2학년이에요.\nWar of the Worlds W1 디베이트 주제: "${topic}"\n내 찬성 카드: ${forCard || '(아직 못 썼어요)'}\n내 반대 카드: ${againstCard || '(아직 못 썼어요)'}`;
 
   navigator.clipboard.writeText(debateText).then(() => {
     document.getElementById('debate-result-m2').innerHTML = '✅ 토론 내용 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';
@@ -799,12 +800,12 @@ function sendDebateToWebUI() {
 }
 </script>
 
-<!-- ⑪ ChatGPT 20분 -->
+<!-- ⑪ AI 영어 튜터 벡스 20분 -->
 <div class="card">
-  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">ChatGPT 영어 튜터 (20분)</div></div>
+  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">AI 영어 튜터 벡스 (20분)</div></div>
   <div class="gpt-card">
     <div class="gpt-title">🤖 AI 튜터와 영어 연습</div>
-    <div class="gpt-sub">버튼을 클릭하면 오늘 학습 내용이 클립보드에 복사돼요. ChatGPT를 열고 붙여넣기(Ctrl+V)하세요!</div>
+    <div class="gpt-sub">버튼을 클릭하면 오늘 학습 내용이 클립보드에 복사돼요. Open WebUI를 열고 붙여넣기(Ctrl+V)하세요!</div>
     <div class="gpt-prompt" id="gpt-prompt">안녕! 나는 중학교 2학년이야.
 오늘 The War of the Worlds W1을 공부했어.
 
@@ -823,7 +824,7 @@ function sendDebateToWebUI() {
 [할 것 3 - 5분] 내가 쓴 에세이 교정해줘:
 {에세이}</div>
     <button class="gpt-copy" onclick="copyGPT()">📋 프롬프트 복사하기</button>
-    <button class="gpt-open" onclick="openGPT()">💬 ChatGPT 열기</button>
+    <button class="gpt-open" onclick="openGPT()">💬 Open WebUI 열기</button>
     <div class="gpt-timer">⏱ 목표 시간: 20분 | 문법 8분 + 에세이 7분 + 대화 5분</div>
   </div>
 </div>
@@ -857,6 +858,10 @@ function sendDebateToWebUI() {
 </div><!-- /container -->
 
 <script>
+function _getStudentName() {
+  try { const a = JSON.parse(sessionStorage.getItem('cecAuthB') || '{}'); return a.name || '친구'; } catch(e) { return '친구'; }
+}
+
 // ── TTS ──
 function getFemaleVoice() {
   const voices = speechSynthesis.getVoices();
@@ -954,7 +959,7 @@ function openGPTTooltip() {
   if (!d) return;
   const prompt = `안녕! 중학교 1학년인데 이 문법이 이해가 안 돼.\n문법: ${d.title} (${d.tag})\n예문: "${d.ex}"\n쉽고 재미있게 설명해줄 수 있어? 예문도 2개 더 만들어줘!`;
   navigator.clipboard.writeText(prompt).then(() => {
-    window.open('https://chatgpt.com', '_blank');
+    window.open('http://localhost:3001/?models=cec_camp_b','_blank');
   });
   closeTooltip();
 }
@@ -1160,7 +1165,8 @@ function sendEssayToWebUI() {
   } catch(e) {}
   const gradeLabel = {1:'1',2:'2',3:'3'}[gradeNum] || '2';
 
-  const essay = `안녕하세요! 저는 ${name}, 중학교 ${gradeLabel}학년이에요.\n오늘 War of the Worlds W1 에세이를 썼는데 피드백 부탁드려요.\n\n① ${s1}\n② ${s2}\n③ ${s3}`;
+  const nm = _getStudentName();
+  const essay = `[ESSAY] 안녕하세요! 저는 ${nm}, 중학교 2학년이에요.\nWar of the Worlds W1 에세이를 썼는데 피드백 부탁드려요.\n① ${s1}\n② ${s2}\n③ ${s3}`;
 
   navigator.clipboard.writeText(essay).then(() => {
     document.getElementById('essay-result').innerHTML = '✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';
@@ -1173,12 +1179,12 @@ function sendEssayToWebUI() {
   });
 }
 
-// ── ChatGPT ──
+// ── Open WebUI ──
 function copyGPT() {
   const prompt = document.getElementById('gpt-prompt').textContent;
   navigator.clipboard.writeText(prompt).then(() => {
     const btn = document.querySelector('.gpt-copy');
-    btn.textContent = '✅ 복사됐어요! ChatGPT를 열어주세요.';
+    btn.textContent = '✅ 복사됐어요! Open WebUI를 열어주세요.';
     btn.style.background = 'var(--green)';
     setTimeout(() => {
       btn.textContent = '📋 프롬프트 복사하기';
@@ -1188,7 +1194,7 @@ function copyGPT() {
 }
 function openGPT() {
   copyGPT();
-  setTimeout(() => window.open('https://chatgpt.com', '_blank'), 300);
+  setTimeout(() => window.open('http://localhost:3001/?models=cec_camp_b','_blank'), 300);
 }
 </script>
 </body>
