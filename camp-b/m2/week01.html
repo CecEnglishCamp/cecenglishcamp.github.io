@@ -705,7 +705,7 @@ function readStory() {
       <span class="essay-num">③</span>
       <input class="essay-input" id="es3" placeholder="Therefore, the best reaction..."/>
     </div>
-    <button class="essay-submit" onclick="submitEssay()">📋 ChatGPT에서 교정받기</button>
+    <button class="essay-submit" onclick="sendEssayToWebUI()">📝 Open WebUI에서 피드백받기</button>
     <div class="essay-result" id="essay-result"></div>
   </div>
 </div>
@@ -754,8 +754,8 @@ function readStory() {
       </div>
     </div>
 
-    <button onclick="sendDebateToGPT_m2()" style="background:#0ea5e9;color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:Nunito,sans-serif;width:100%;">
-      💬 ChatGPT와 1:1 토론 시작하기
+    <button onclick="sendDebateToWebUI()" style="background:#0ea5e9;color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:Nunito,sans-serif;width:100%;">
+      ⚔️ Open WebUI에서 토론하기
     </button>
     <div id="debate-result-m2" style="margin-top:8px;font-size:0.78rem;color:var(--sub);min-height:16px;"></div>
   </div>
@@ -763,31 +763,29 @@ function readStory() {
 
 <script>
 function sendDebateToGPT_m2() {
+  sendDebateToWebUI();
+}
+function sendDebateToWebUI() {
   const forCard = document.getElementById('for-card').value.trim();
   const againstCard = document.getElementById('against-card').value.trim();
   const topic = 'Humans should try to contact alien life.';
-  
-  let prompt = `안녕! 나는 중학교 2학년이야. 오늘 War of the Worlds를 읽고 디베이트를 연습하고 있어.
 
-🗣️ 디베이트 주제: "${topic}"
+  if (!forCard && !againstCard) {
+    document.getElementById('debate-result-m2').innerHTML = '❗ 찬성 또는 반대 이유를 써주세요!';
+    document.getElementById('debate-result-m2').style.color = 'var(--gold)';
+    return;
+  }
 
-내가 쓴 찬반 카드:
-✅ 찬성 이유: ${forCard || '(아직 못 썼어)'}
-❌ 반대 이유: ${againstCard || '(아직 못 썼어)'}
+  const debateText = `Debate Topic: "${topic}"\n\n✅ For (찬성): ${forCard || '(not written yet)'}\n❌ Against (반대): ${againstCard || '(not written yet)'}`;
 
-[할 것 1] 내 찬성/반대 카드에서 더 좋은 표현이나 논리를 제안해줘. (5분)
-[할 것 2] 나는 찬성 측을 맡을게. 너는 반대 측으로 강하게 반박해줘. (8분)
-[할 것 3] 토론이 끝나면 내 영어 표현에서 고칠 점을 알려줘. (7분)
-
-영어로 토론하되, 모르는 표현은 한국어로 설명해줘!`;
-
-  navigator.clipboard.writeText(prompt).then(() => {
-    document.getElementById('debate-result-m2').innerHTML = '✅ 프롬프트 복사 완료! ChatGPT를 열어서 붙여넣기하세요.';
+  navigator.clipboard.writeText(debateText).then(() => {
+    document.getElementById('debate-result-m2').innerHTML = '✅ 토론 내용 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';
     document.getElementById('debate-result-m2').style.color = 'var(--green)';
     addXP(8);
-    setTimeout(() => window.open('https://chatgpt.com', '_blank'), 300);
+    setTimeout(() => window.open('http://localhost:3001', '_blank'), 300);
   }).catch(() => {
-    window.open('https://chatgpt.com', '_blank');
+    document.getElementById('debate-result-m2').innerHTML = '📋 복사에 실패했어요. 직접 복사해주세요!';
+    document.getElementById('debate-result-m2').style.color = 'var(--sub)';
   });
 }
 </script>
@@ -1132,6 +1130,9 @@ function qChk(btn, val) {
 
 // ── 에세이 ──
 function submitEssay() {
+  sendEssayToWebUI();
+}
+function sendEssayToWebUI() {
   const s1 = document.getElementById('es1').value.trim();
   const s2 = document.getElementById('es2').value.trim();
   const s3 = document.getElementById('es3').value.trim();
@@ -1140,16 +1141,14 @@ function submitEssay() {
     document.getElementById('essay-result').style.color = 'var(--gold)';
     return;
   }
-  const essay = `① ${s1}\n② ${s2}\n③ ${s3}`;
-  const prompt = document.getElementById('gpt-prompt').textContent.replace('{에세이}', essay);
-  const fullPrompt = prompt.replace('{에세이}', essay);
-  navigator.clipboard.writeText(fullPrompt).then(() => {
-    document.getElementById('essay-result').innerHTML = '✅ 에세이가 프롬프트에 포함됐어요! ChatGPT를 열어서 붙여넣기 하세요.';
+  const essay = `My Essay:\n① ${s1}\n② ${s2}\n③ ${s3}`;
+  navigator.clipboard.writeText(essay).then(() => {
+    document.getElementById('essay-result').innerHTML = '✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';
     document.getElementById('essay-result').style.color = 'var(--a1c)';
     addXP(10);
-    window.open('https://chatgpt.com', '_blank');
+    setTimeout(() => window.open('http://localhost:3001', '_blank'), 300);
   }).catch(() => {
-    document.getElementById('essay-result').innerHTML = '📋 아래 ChatGPT 버튼을 눌러주세요!';
+    document.getElementById('essay-result').innerHTML = '📋 복사에 실패했어요. 에세이를 직접 복사해주세요!';
     document.getElementById('essay-result').style.color = 'var(--sub)';
   });
 }
