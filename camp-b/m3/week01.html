@@ -239,7 +239,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-se
     <div class="tt-ex" id="tt-ex"></div>
     <div class="tt-links">
       <a class="tt-gram-link" id="tt-gram-link" href="#" target="_blank"></a>
-      <button class="tt-gpt-link" onclick="openGPTTooltip()">💬 ChatGPT에 물어보기</button>
+      <button class="tt-gpt-link" onclick="openGPTTooltip()">💬 Open WebUI에 물어보기</button>
     </div>
   </div>
 </div>
@@ -696,7 +696,7 @@ function readStory() {
         </div>
       </div>
       <div style="margin-top:10px;padding:8px 12px;background:rgba(245,158,11,0.1);border-radius:8px;font-size:0.75rem;color:var(--gold);">
-        💡 ChatGPT가 문법 오류, 더 좋은 표현, 자연스러운 영어를 피드백해줄 거예요!
+        💡 AI 튜터 벡스가 문법 오류, 더 좋은 표현, 자연스러운 영어를 피드백해줄 거예요!
       </div>
     </div>
     <div class="essay-line">
@@ -711,7 +711,7 @@ function readStory() {
       <span class="essay-num">③</span>
       <input class="essay-input" id="es3" placeholder="In conclusion, the most important quality..."/>
     </div>
-    <button class="essay-submit" onclick="submitEssay()">📋 ChatGPT에서 교정받기</button>
+    <button class="essay-submit" onclick="submitEssay()">📝 Open WebUI에서 피드백받기</button>
     <div class="essay-result" id="essay-result"></div>
   </div>
 </div>
@@ -730,7 +730,7 @@ function readStory() {
       <span style="background:#2a1a0a;color:#ffd090;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;border:1px solid #6e3a0a;">③ Closing</span>
     </div>
     <div style="font-size:0.75rem;color:var(--sub);line-height:1.6;">
-      오늘은 <strong style="color:white;">Opening Statement</strong>를 직접 써보고 ChatGPT와 Rebuttal 연습을 해요.
+      오늘은 <strong style="color:white;">Opening Statement</strong>를 직접 써보고 AI 튜터 벡스와 Rebuttal 연습을 해요.
     </div>
   </div>
 
@@ -767,7 +767,7 @@ function readStory() {
     </div>
 
     <button onclick="sendDebateToGPT_m3()" style="background:#10b981;color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:Nunito,sans-serif;width:100%;">
-      💬 ChatGPT와 Rebuttal 실전 연습
+      💬 Open WebUI와 Rebuttal 실전 연습
     </button>
     <div id="debate-result-m3" style="margin-top:8px;font-size:0.78rem;color:var(--sub);min-height:16px;"></div>
   </div>
@@ -791,46 +791,27 @@ function setPosition(pos) {
 function sendDebateToGPT_m3() {
   const opening = document.getElementById('opening-m3').value.trim();
   const rebuttal = document.getElementById('rebuttal-m3').value.trim();
-  const posLabel = debatePosition_m3 === 'for' ? '찬성' : '반대';
-  
-  let prompt = `안녕! 나는 중학교 3학년이야. Sherlock Holmes를 읽고 디베이트를 연습하고 있어.
+  const nm = _getStudentName();
 
-🗣️ 주제: "Deduction is a skill anyone can learn, not a natural talent."
-나의 입장: ${posLabel}
-
-✍️ 내 Opening Statement:
-${opening || '(아직 못 썼어)'}
-
-🔄 내 Rebuttal:
-${rebuttal || '(아직 못 썼어)'}
-
-[할 것 1 - 8분] 내 Opening Statement를 CER 구조로 피드백해줘.
-(Claim이 명확한지, Evidence가 충분한지, Reasoning이 논리적인지)
-
-[할 것 2 - 10분] 너는 반대 입장으로 강하게 반박해줘.
-나는 Rebuttal로 맞서볼게. 실전처럼 해줘.
-
-[할 것 3 - 7분] 토론 끝나면 내 Closing Statement 쓰는 것을 도와줘.
-
-고급 영어 표현을 써줘. 틀린 부분은 정확하게 교정해줘!`;
+  const prompt = `[DEBATE] 안녕하세요! 저는 ${nm}, 중학교 3학년이에요.\nSherlock Holmes W1 디베이트 주제: "Deduction is a skill anyone can learn, not a natural talent."\n[Round 1 - Opening]: ${opening || '(아직 못 썼어)'}\n[Round 2 - Rebuttal]: ${rebuttal || '(아직 못 썼어)'}\n[Round 3 - Closing]: (아직 못 썼어)`;
 
   navigator.clipboard.writeText(prompt).then(() => {
-    document.getElementById('debate-result-m3').innerHTML = '✅ 프롬프트 복사 완료! ChatGPT에 붙여넣기하세요.';
+    document.getElementById('debate-result-m3').innerHTML = '✅ 프롬프트 복사 완료! Open WebUI에 붙여넣기하세요.';
     document.getElementById('debate-result-m3').style.color = 'var(--green)';
     addXP(10);
-    setTimeout(() => window.open('https://chatgpt.com', '_blank'), 300);
+    setTimeout(() => window.open('http://localhost:3001/?models=cec_camp_b','_blank'), 300);
   }).catch(() => {
-    window.open('https://chatgpt.com', '_blank');
+    window.open('http://localhost:3001/?models=cec_camp_b','_blank');
   });
 }
 </script>
 
-<!-- ⑪ ChatGPT 20분 -->
+<!-- ⑪ AI 튜터 벡스 20분 -->
 <div class="card">
-  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">ChatGPT 영어 튜터 (20분)</div></div>
+  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">AI 영어 튜터 벡스 (20분)</div></div>
   <div class="gpt-card">
     <div class="gpt-title">🤖 AI 튜터와 영어 연습</div>
-    <div class="gpt-sub">버튼을 클릭하면 오늘 학습 내용이 클립보드에 복사돼요. ChatGPT를 열고 붙여넣기(Ctrl+V)하세요!</div>
+    <div class="gpt-sub">버튼을 클릭하면 오늘 학습 내용이 클립보드에 복사돼요. Open WebUI를 열고 붙여넣기(Ctrl+V)하세요!</div>
     <div class="gpt-prompt" id="gpt-prompt">안녕! 나는 중학교 3학년이야.
 오늘 Sherlock Holmes: Adventures W1을 공부했어.
 
@@ -849,7 +830,7 @@ ${rebuttal || '(아직 못 썼어)'}
 [할 것 3 - 5분] 내가 쓴 에세이 교정해줘:
 {에세이}</div>
     <button class="gpt-copy" onclick="copyGPT()">📋 프롬프트 복사하기</button>
-    <button class="gpt-open" onclick="openGPT()">💬 ChatGPT 열기</button>
+    <button class="gpt-open" onclick="openGPT()">💬 Open WebUI 열기</button>
     <div class="gpt-timer">⏱ 목표 시간: 25분 | 에세이 8분 + 디베이트 8분 + 토론 9분</div>
   </div>
 </div>
@@ -883,6 +864,11 @@ ${rebuttal || '(아직 못 썼어)'}
 </div><!-- /container -->
 
 <script>
+// ── Student Name Helper ──
+function _getStudentName() {
+  try { const a = JSON.parse(sessionStorage.getItem('cecAuthB') || '{}'); return a.name || '친구'; } catch(e) { return '친구'; }
+}
+
 // ── TTS ──
 function getFemaleVoice() {
   const voices = speechSynthesis.getVoices();
@@ -980,7 +966,7 @@ function openGPTTooltip() {
   if (!d) return;
   const prompt = `안녕! 중학교 1학년인데 이 문법이 이해가 안 돼.\n문법: ${d.title} (${d.tag})\n예문: "${d.ex}"\n쉽고 재미있게 설명해줄 수 있어? 예문도 2개 더 만들어줘!`;
   navigator.clipboard.writeText(prompt).then(() => {
-    window.open('https://chatgpt.com', '_blank');
+    window.open('http://localhost:3001/?models=cec_camp_b','_blank');
   });
   closeTooltip();
 }
@@ -1165,34 +1151,33 @@ function qChk(btn, val) {
 
 // ── 에세이 ──
 function submitEssay() {
-  const s1 = document.getElementById('es1').value.trim();
-  const s2 = document.getElementById('es2').value.trim();
-  const s3 = document.getElementById('es3').value.trim();
-  if (!s1 || !s2 || !s3) {
+  const claim = document.getElementById('es1').value.trim();
+  const evidence = document.getElementById('es2').value.trim();
+  const reasoning = document.getElementById('es3').value.trim();
+  if (!claim || !evidence || !reasoning) {
     document.getElementById('essay-result').innerHTML = '❗ 3문장을 모두 작성해주세요!';
     document.getElementById('essay-result').style.color = 'var(--gold)';
     return;
   }
-  const essay = `① ${s1}\n② ${s2}\n③ ${s3}`;
-  const prompt = document.getElementById('gpt-prompt').textContent.replace('{에세이}', essay);
-  const fullPrompt = prompt.replace('{에세이}', essay);
+  const nm = _getStudentName();
+  const fullPrompt = `[ESSAY] 안녕하세요! 저는 ${nm}, 중학교 3학년이에요.\nSherlock Holmes W1 CER 에세이를 썼는데 피드백 부탁드려요.\n[C] ${claim}\n[E] ${evidence}\n[R] ${reasoning}`;
   navigator.clipboard.writeText(fullPrompt).then(() => {
-    document.getElementById('essay-result').innerHTML = '✅ 에세이가 프롬프트에 포함됐어요! ChatGPT를 열어서 붙여넣기 하세요.';
+    document.getElementById('essay-result').innerHTML = '✅ 에세이가 프롬프트에 포함됐어요! Open WebUI를 열어주세요.';
     document.getElementById('essay-result').style.color = 'var(--a1c)';
     addXP(10);
-    window.open('https://chatgpt.com', '_blank');
+    window.open('http://localhost:3001/?models=cec_camp_b','_blank');
   }).catch(() => {
-    document.getElementById('essay-result').innerHTML = '📋 아래 ChatGPT 버튼을 눌러주세요!';
+    document.getElementById('essay-result').innerHTML = '📋 아래 Open WebUI 버튼을 눌러주세요!';
     document.getElementById('essay-result').style.color = 'var(--sub)';
   });
 }
 
-// ── ChatGPT ──
+// ── Open WebUI ──
 function copyGPT() {
   const prompt = document.getElementById('gpt-prompt').textContent;
   navigator.clipboard.writeText(prompt).then(() => {
     const btn = document.querySelector('.gpt-copy');
-    btn.textContent = '✅ 복사됐어요! ChatGPT를 열어주세요.';
+    btn.textContent = '✅ 복사됐어요! Open WebUI를 열어주세요.';
     btn.style.background = 'var(--green)';
     setTimeout(() => {
       btn.textContent = '📋 프롬프트 복사하기';
@@ -1202,7 +1187,7 @@ function copyGPT() {
 }
 function openGPT() {
   copyGPT();
-  setTimeout(() => window.open('https://chatgpt.com', '_blank'), 300);
+  setTimeout(() => window.open('http://localhost:3001/?models=cec_camp_b','_blank'), 300);
 }
 </script>
 </body>
