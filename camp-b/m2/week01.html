@@ -776,13 +776,22 @@ function sendDebateToWebUI() {
     return;
   }
 
-  const debateText = `Debate Topic: "${topic}"\n\n✅ For (찬성): ${forCard || '(not written yet)'}\n❌ Against (반대): ${againstCard || '(not written yet)'}`;
+  let name = '학생';
+  let gradeNum = 2;
+  try {
+    const auth = JSON.parse(sessionStorage.getItem('cecAuthB') || '{}');
+    if (auth.name) name = auth.name;
+    if (auth.grade) gradeNum = auth.grade;
+  } catch(e) {}
+  const gradeLabel = {1:'1',2:'2',3:'3'}[gradeNum] || '2';
+
+  const debateText = `안녕하세요! 저는 ${name}, 중학교 ${gradeLabel}학년이에요.\n디베이트 주제: ${topic}\n\n찬성: ${forCard || '(아직 못 썼어요)'}\n반대: ${againstCard || '(아직 못 썼어요)'}\n\n디베이트 피드백 부탁드려요.`;
 
   navigator.clipboard.writeText(debateText).then(() => {
     document.getElementById('debate-result-m2').innerHTML = '✅ 토론 내용 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';
     document.getElementById('debate-result-m2').style.color = 'var(--green)';
     addXP(8);
-    setTimeout(() => window.open('http://localhost:3001', '_blank'), 300);
+    setTimeout(() => window.open('http://localhost:3001/?models=cec_camp_b', '_blank'), 300);
   }).catch(() => {
     document.getElementById('debate-result-m2').innerHTML = '📋 복사에 실패했어요. 직접 복사해주세요!';
     document.getElementById('debate-result-m2').style.color = 'var(--sub)';
@@ -1141,12 +1150,23 @@ function sendEssayToWebUI() {
     document.getElementById('essay-result').style.color = 'var(--gold)';
     return;
   }
-  const essay = `My Essay:\n① ${s1}\n② ${s2}\n③ ${s3}`;
+
+  let name = '학생';
+  let gradeNum = 2;
+  try {
+    const auth = JSON.parse(sessionStorage.getItem('cecAuthB') || '{}');
+    if (auth.name) name = auth.name;
+    if (auth.grade) gradeNum = auth.grade;
+  } catch(e) {}
+  const gradeLabel = {1:'1',2:'2',3:'3'}[gradeNum] || '2';
+
+  const essay = `안녕하세요! 저는 ${name}, 중학교 ${gradeLabel}학년이에요.\n오늘 War of the Worlds W1 에세이를 썼는데 피드백 부탁드려요.\n\n① ${s1}\n② ${s2}\n③ ${s3}`;
+
   navigator.clipboard.writeText(essay).then(() => {
     document.getElementById('essay-result').innerHTML = '✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';
     document.getElementById('essay-result').style.color = 'var(--a1c)';
     addXP(10);
-    setTimeout(() => window.open('http://localhost:3001', '_blank'), 300);
+    setTimeout(() => window.open('http://localhost:3001/?models=cec_camp_b', '_blank'), 300);
   }).catch(() => {
     document.getElementById('essay-result').innerHTML = '📋 복사에 실패했어요. 에세이를 직접 복사해주세요!';
     document.getElementById('essay-result').style.color = 'var(--sub)';
