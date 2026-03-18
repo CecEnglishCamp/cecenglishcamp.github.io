@@ -150,7 +150,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
     <div class="tt-ex" id="tt-ex"></div>
     <div class="tt-links">
       <a class="tt-gram-link" id="tt-gram-link" href="https://cecenglishcamp.github.io/GrammarBaseCamp/index.html" target="_blank"></a>
-      <button class="tt-gpt-link" onclick="gramToGPT()">💬 ChatGPT</button>
+      <button class="tt-gpt-link" onclick="gramToGPT()">💬 Open WebUI</button>
     </div>
   </div>
 </div>
@@ -618,7 +618,7 @@ function closeTooltip(){
 function gramToGPT(){
   const d=gramData[currentGramId];if(!d)return;
   const p='안녕! 중학교 1학년인데 이 문법이 이해 안 돼.\n문법: '+d.title+' ('+d.tag+')\n예문: "'+d.ex+'"\n쉽고 재미있게 설명해줘! 예문도 2개 더 만들어줘!';
-  navigator.clipboard.writeText(p).then(()=>window.open('https://chatgpt.com','_blank'));
+  navigator.clipboard.writeText(p).then(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'));
   closeTooltip();
 }
 
@@ -732,17 +732,17 @@ function qChk(btn,val){
   if(val==='ok')addXP(4);
 }
 
+function _getStudentName(){
+  try{const auth=JSON.parse(sessionStorage.getItem('cecAuthB')||'{}');return auth.name||'친구';}catch(e){return '친구';}
+}
 function submitEssay(){
   const s1=document.getElementById('es1').value.trim();
   const s2=document.getElementById('es2').value.trim();
   const s3=document.getElementById('es3').value.trim();
   const res=document.getElementById('essay-result');
   if(!s1||!s2||!s3){res.innerHTML='❗ 3문장을 모두 작성해주세요!';res.style.color='var(--gold)';return;}
-  const auth=sessionStorage.getItem('cecAuthB');
-  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
-  const grade=auth?(JSON.parse(auth).grade||'중1'):'중1';
-  const essay='① '+s1+'\n② '+s2+'\n③ '+s3;
-  const prompt='[ESSAY] 안녕하세요! 저는 '+name+', 중학교 '+grade+'학년이에요.\nHuckleberry Finn W05 에세이를 썼는데 피드백 부탁드려요.\n\n'+essay;
+  const nm=_getStudentName();
+  const prompt='[ESSAY] 안녕하세요! 저는 '+nm+', 중학교 1학년이에요.\nHuckleberry Finn W5 에세이를 썼는데 피드백 부탁드려요.\n① '+s1+'\n② '+s2+'\n③ '+s3;
   navigator.clipboard.writeText(prompt).then(()=>{
     res.innerHTML='✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
     addXP(10);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
