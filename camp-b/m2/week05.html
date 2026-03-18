@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp B — 중2 W1 · The War of the Worlds</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Black+Han+Sans&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1a2535;--card:#1e2e42;--card2:#192840;--border:#2a3a52;
+  --acc:#0ea5e9;--acc2:#0369a1;--green:#16a34a;--gold:#f59e0b;
+  --red:#dc2626;--text:#e8e8f0;--sub:#8899aa;
+  --a1c:#16a34a;--a1b:#0d2a1a;--a2c:#0ea5e9;--a2b:#0a1e30;--b1c:#7c3aed;--b1b:#1e0d4a;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+.hd{background:linear-gradient(135deg,#0a1a2e,#102030);padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.hd-left{display:flex;align-items:center;gap:10px;}
+.hd-logo{font-family:'Black Han Sans';font-size:1rem;color:var(--acc);}
+.hd-sub{font-size:0.72rem;color:var(--sub);}
+.hd-badge{background:var(--acc2);color:white;font-size:0.7rem;font-weight:800;padding:3px 10px;border-radius:20px;}
+.xp-btn{background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;border:none;border-radius:20px;padding:5px 14px;font-size:0.8rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;}
+.hero{background:linear-gradient(135deg,#0a1a30,#102040,#0a2a20);padding:20px 16px;text-align:center;border-bottom:1px solid var(--border);}
+.hero-week{font-size:0.72rem;color:var(--sub);font-weight:700;letter-spacing:2px;margin-bottom:6px;}
+.hero-title{font-family:'Black Han Sans';font-size:1.6rem;color:white;margin-bottom:4px;}
+.hero-author{font-size:0.8rem;color:var(--sub);margin-bottom:14px;}
+.hero-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.hb{padding:4px 12px;border-radius:20px;font-size:0.68rem;font-weight:800;}
+.key-card{background:linear-gradient(135deg,#0a1e30,#102a3a);border:1px solid #1a3a5a;border-radius:16px;padding:16px;margin:12px 16px 8px;}
+.key-label{font-size:0.65rem;color:var(--sub);font-weight:700;letter-spacing:2px;margin-bottom:8px;}
+.key-en{font-size:1.05rem;font-weight:900;color:white;margin-bottom:4px;}
+.key-kr{font-size:0.82rem;color:#7ab3ff;margin-bottom:12px;}
+.key-play{background:var(--acc2);color:white;border:none;border-radius:25px;padding:8px 20px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.prog-row{display:flex;align-items:center;gap:8px;padding:8px 16px;}
+.prog-track{flex:1;background:#1a2a3a;border-radius:8px;height:6px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:8px;transition:width 0.5s;}
+.prog-label{font-size:0.72rem;color:var(--sub);font-weight:700;white-space:nowrap;}
+.container{max-width:680px;margin:0 auto;padding:0 12px 60px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;}
+.sh{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sh-icon{font-size:1.1rem;}.sh-title{font-size:0.88rem;font-weight:900;color:white;}
+.tab-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.tab-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.tab-btn.act-a1{background:var(--a1b);border-color:var(--a1c);color:#5aff9a;}
+.tab-btn.act-a2{background:var(--a2b);border-color:var(--a2c);color:#7ab3ff;}
+.tab-btn.act-b1{background:var(--b1b);border-color:var(--b1c);color:#b48aff;}
+.listen-row{display:flex;gap:8px;margin-bottom:10px;}
+.listen-btn{background:var(--acc2);color:white;border:none;border-radius:20px;padding:7px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.stop-btn{background:var(--card2);border:1.5px solid var(--border);color:var(--sub);border-radius:20px;padding:7px 12px;font-size:0.82rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.notice-box{background:#0a1e30;border-left:3px solid var(--acc);border-radius:0 8px 8px 0;padding:9px 14px;margin-bottom:10px;font-size:0.78rem;color:var(--sub);line-height:1.6;}
+.story-box{background:var(--card2);border-radius:10px;padding:14px;font-size:0.88rem;line-height:1.85;color:var(--text);display:none;}
+.story-box.active{display:block;}
+.story-box p{margin-bottom:10px;}
+.gram{border-bottom:2px dashed var(--gold);cursor:pointer;color:#fde68a;font-weight:700;}
+.story-kr{background:#0a0d1a;border-left:3px solid var(--acc2);border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.8;display:none;}
+.kr-toggle{background:transparent;border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:4px 12px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+#tt-overlay{position:fixed;inset:0;z-index:999;display:none;}
+.tt-wrap{position:fixed;z-index:1000;display:none;}
+.tt-box{background:#1a1a2e;border:1.5px solid var(--gold);border-radius:12px;padding:14px 16px;max-width:280px;box-shadow:0 8px 32px rgba(0,0,0,0.6);}
+.tt-tag{background:var(--gold);color:#1a1a00;font-size:0.65rem;font-weight:900;padding:2px 8px;border-radius:10px;margin-bottom:8px;display:inline-block;}
+.tt-title{font-size:0.88rem;font-weight:900;color:white;margin-bottom:6px;}
+.tt-desc{font-size:0.78rem;color:var(--sub);line-height:1.6;margin-bottom:8px;white-space:pre-line;}
+.tt-ex{background:var(--bg);border-radius:6px;padding:6px 10px;font-size:0.78rem;color:#7ab3ff;margin-bottom:10px;font-style:italic;}
+.tt-links{display:flex;gap:8px;flex-wrap:wrap;}
+.tt-gram-link{background:#1a3a1a;border:1px solid var(--green);color:#5aff9a;border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;text-decoration:none;}
+.tt-close{position:absolute;top:8px;right:10px;background:transparent;border:none;color:var(--sub);font-size:1rem;cursor:pointer;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.vc{background:var(--card2);border-radius:10px;padding:10px 12px;border-left:3px solid var(--acc);}
+.vc-w{font-size:0.88rem;font-weight:900;color:white;margin-bottom:2px;}
+.vc-m{font-size:0.75rem;color:var(--sub);margin-bottom:4px;}
+.vc-e{font-size:0.72rem;color:var(--acc);font-style:italic;}
+.fill-sent{font-size:0.9rem;font-weight:700;line-height:1.7;margin-bottom:12px;color:white;}
+.blank-span{display:inline-block;min-width:60px;border-bottom:2px solid var(--acc);color:var(--acc);text-align:center;font-weight:900;}
+.choices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.cbtn{padding:7px 16px;background:var(--card2);border:1.5px solid var(--border);border-radius:20px;color:var(--text);font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.cbtn.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.cbtn.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.fill-res{font-size:0.82rem;font-weight:700;min-height:18px;}
+.dict-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:8px;}
+.dict-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.dict-play{background:var(--acc);color:white;border:none;border-radius:50%;width:36px;height:36px;font-size:0.9rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.dict-label{font-size:0.75rem;color:var(--sub);font-weight:700;}
+.dict-hint{font-size:0.78rem;color:var(--acc);font-style:italic;}
+.dict-input-row{display:flex;gap:8px;}
+.dict-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.dict-input:focus{outline:none;border-color:var(--acc);}
+.dict-btn{background:var(--acc);color:white;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.dict-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.lc-play-btn{background:var(--acc2);color:white;border:none;border-radius:25px;padding:9px 22px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;}
+.lc-opts{display:flex;flex-direction:column;gap:8px;}
+.lc-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.lc-opt.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.lc-opt.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.lc-result{margin-top:8px;font-size:0.84rem;font-weight:700;min-height:18px;}
+.wo-wrap{background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;}
+.wo-q{font-size:0.8rem;color:var(--sub);margin-bottom:8px;font-weight:700;}
+.wo-box{min-height:44px;background:var(--bg);border-radius:8px;border:1.5px dashed var(--acc);padding:6px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px;}
+.wo-pool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;}
+.wo-chip{padding:6px 13px;background:var(--acc2);color:white;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-chip.used{background:#2a2a4a;color:var(--sub);cursor:default;}
+.wo-placed{padding:6px 13px;background:var(--acc);color:white;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-btns{display:flex;gap:8px;}
+.wo-check{background:var(--acc2);color:white;border:none;padding:8px 18px;border-radius:20px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-reset{background:transparent;color:var(--sub);border:1px solid var(--border);padding:8px 12px;border-radius:20px;font-size:0.8rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-result{font-size:0.8rem;font-weight:700;margin-top:6px;min-height:16px;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.match-col{display:flex;flex-direction:column;gap:6px;}
+.match-item{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;color:var(--text);transition:all 0.15s;}
+.match-item.selected{border-color:var(--acc);background:#0a1e30;color:#7ab3ff;}
+.match-item.matched{border-color:var(--green);background:#0d2a1a;color:#5aff9a;cursor:default;}
+.match-item.wrong-flash{border-color:var(--red);background:#3a0d0d;}
+.match-result{font-size:0.84rem;font-weight:700;min-height:18px;text-align:center;}
+.fd-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;}
+.fd-level-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fd-badge{color:white;font-size:0.7rem;font-weight:900;padding:2px 10px;border-radius:20px;}
+.fd-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.fd-play{color:white;border:none;border-radius:20px;padding:6px 14px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-hints{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.fd-hint-label{font-size:0.7rem;color:var(--sub);font-weight:700;}
+.fd-hint-tag{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid;}
+.fd-input-row{display:flex;gap:8px;}
+.fd-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.fd-input:focus{outline:none;border-color:var(--acc);}
+.fd-check{color:white;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.quiz-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.qtab{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.qa1{background:var(--a1b);border-color:var(--a1c);color:#5aff9a;}
+.qa2{background:var(--a2b);border-color:var(--a2c);color:#7ab3ff;}
+.qb1{background:var(--b1b);border-color:var(--b1c);color:#b48aff;}
+.quiz-set{display:none;}.quiz-set.active{display:block;}
+.quiz-item{margin-bottom:14px;}
+.quiz-q{font-size:0.86rem;font-weight:800;color:white;margin-bottom:8px;}
+.quiz-opts{display:flex;flex-direction:column;gap:6px;}
+.qopt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.qopt.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.qopt.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.essay-line{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.essay-num{font-size:0.72rem;font-weight:900;color:var(--gold);width:20px;flex-shrink:0;}
+.essay-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.essay-input:focus{outline:none;border-color:var(--gold);}
+.essay-submit{background:var(--gold);color:#1a1a00;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:4px;}
+.debate-box{background:linear-gradient(135deg,#0a1e30,#102840);border-radius:12px;padding:14px;border:1px solid #1a3a5a;}
+.debate-topic{background:#0a1e30;border-radius:10px;padding:12px;text-align:center;margin-bottom:12px;border:1px solid var(--acc);}
+.debate-topic-en{font-size:0.95rem;font-weight:900;color:white;margin-bottom:4px;}
+.debate-topic-kr{font-size:0.78rem;color:#7ab3ff;}
+.debate-sides{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.debate-for{background:#0a2a15;border:1.5px solid #16a34a;border-radius:10px;padding:12px;}
+.debate-against{background:#2a0a0a;border:1.5px solid #dc2626;border-radius:10px;padding:12px;}
+.debate-label-for{font-size:0.72rem;font-weight:900;color:#5aff9a;margin-bottom:6px;}
+.debate-label-against{font-size:0.72rem;font-weight:900;color:#ff9a9a;margin-bottom:6px;}
+.debate-textarea{width:100%;background:transparent;border:none;color:var(--text);font-size:0.78rem;font-family:'Nunito',sans-serif;resize:none;outline:none;line-height:1.6;}
+.phrase-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.phrase{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:0.75rem;font-weight:700;cursor:pointer;color:var(--sub);}
+.owui-btn{background:linear-gradient(135deg,#0ea5e9,#0369a1);color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:8px;}
+.complete-card{background:linear-gradient(135deg,#0a2a3a,#0a1e30);border:2px solid var(--acc);border-radius:20px;padding:24px;text-align:center;margin-bottom:20px;display:none;}
+</style>
+</head>
+<body>
+
+<div id="tt-overlay" onclick="closeTT()"></div>
+<div class="tt-wrap" id="tt-wrap">
+  <div class="tt-box" id="tt-box">
+    <button class="tt-close" onclick="closeTT()">✕</button>
+    <div class="tt-tag" id="tt-tag"></div>
+    <div class="tt-title" id="tt-title"></div>
+    <div class="tt-desc" id="tt-desc"></div>
+    <div class="tt-ex" id="tt-ex"></div>
+    <div class="tt-links">
+      <a class="tt-gram-link" id="tt-gram-link" href="https://cecenglishcamp.github.io/GrammarBaseCamp/index.html" target="_blank"></a>
+    </div>
+  </div>
+</div>
+
+<div class="hd">
+  <div class="hd-left">
+    <div class="hd-logo">CEC Camp B</div>
+    <div class="hd-sub">중2 · W1 · War of the Worlds</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="hd-badge">중2</div>
+    <button class="xp-btn" id="xp-btn">⭐ 0 XP</button>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-week">WEEK 05 / 36 · MIDDLE SCHOOL 2</div>
+  <div class="hero-title">The War of the Worlds</div>
+  <div class="hero-author">H.G. Wells · The Curate and the Narrator</div>
+  <div class="hero-badges">
+    <span class="hb" style="background:#0a1e30;color:#7ab3ff;border:1px solid #1a3a5a;">G43 과거완료</span>
+    <span class="hb" style="background:#0a1e30;color:#7ab3ff;border:1px solid #1a3a5a;">G48 수동태</span>
+    <span class="hb" style="background:#0a1e30;color:#7ab3ff;border:1px solid #1a3a5a;">G31 관계대명사</span>
+    <span class="hb" style="background:#0a2a20;color:#5aff9a;border:1px solid #1a4a2a;">🎯 A2~B2</span>
+    <span class="hb" style="background:#2d1a4a;color:#b48aff;border:1px solid #4a2a8e;">⏱ W1~W6</span>
+  </div>
+</div>
+
+<div class="key-card">
+  <div class="key-label">KEY SENTENCE · 이번 주 핵심 표현</div>
+  <div class="key-en">"They were running out of time — and running out of hope."</div>
+  <div class="key-kr">그들은 시간도, 희망도 다 떨어져가고 있었어요.</div>
+  <button class="key-play" data-speak="They were running out of time — and running out of hope." onclick="speak(this.dataset.speak)">▶ 발음 듣기</button>
+</div>
+
+<div class="prog-row">
+  <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:15%;"></div></div>
+  <div class="prog-label">W5 / 36</div>
+</div>
+
+<div class="container">
+
+<!-- ① 이야기 읽기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📖</div><div class="sh-title">이야기 읽기</div></div>
+  <div class="tab-row">
+    <button class="tab-btn" onclick="showStory('a1',this)">🟡 입문 (A2)</button>
+    <button class="tab-btn act-a2" onclick="showStory('a2',this)">🔵 초급 B1 ★ 기준</button>
+    <button class="tab-btn" onclick="showStory('b1',this)">🟣 중급 (B2)</button>
+  </div>
+  <div class="listen-row">
+    <button class="listen-btn" onclick="readStory()">🔊 전체 듣기</button>
+    <button class="stop-btn" onclick="speechSynthesis.cancel()">⏹ 정지</button>
+  </div>
+  <div class="notice-box">🔊 <strong style="color:var(--acc)">듣기는 초급 B1 기준</strong>으로 읽어드려요.<br><span style="font-size:0.72rem;">📌 초급(B1) = 이 학년의 평균 수준. 입문(A2)은 더 쉽게, 중급(B2)은 더 어렵게 조정된 버전이에요.</span></div>
+
+  <div id="sb-a1" class="story-box">
+    <p>The narrator met a man called the curate.<br>
+    The curate was a kind of priest.<br>
+    He had lost all hope.<br>
+    They hid together in a ruined house.<br>
+    The house still had food and water.<br>
+    The curate became very afraid.<br>
+    He talked too loudly.<br>
+    This was very dangerous.</p>
+  </div>
+
+  <div id="sb-a2" class="story-box active">
+    <p>The narrator met a man who <span class="gram" data-id="g1">was sitting</span> alone in a ruined church. The man was a curate — a kind of priest — who <span class="gram" data-id="g2">had lost</span> all hope.</p>
+    <p>"God has abandoned us," the curate said, shaking his head. The narrator did not agree, but he sat down next to the man.</p>
+    <p>Together, they found a house that <span class="gram" data-id="g3">had not been destroyed</span>. The kitchen that they <span class="gram" data-id="g4">had entered</span> still had food and water. They decided to hide there and wait.</p>
+    <p>But the curate who <span class="gram" data-id="g5">had seemed</span> calm at first began to lose his mind. He talked too loudly and moved too quickly, which <span class="gram" data-id="g6">was</span> extremely dangerous. Their hiding place was at risk.</p>
+  </div>
+
+  <div id="sb-b1" class="story-box">
+    <p>The curate was not a bad man. That was the difficult part.</p>
+    <p>He was simply a man whose world had ended. Everything he had believed about God and goodness and the safety of the world — all of it had been proved wrong in three days. He had no framework left for what was happening.</p>
+    <p>The narrator understood this. He did not judge the curate. But he also understood that a man who could not control himself in the dark was a man who would get them both killed.</p>
+    <p>They argued in whispers. They ate in silence. They slept at different times so someone was always watching.</p>
+    <p>Outside, the Martians moved. Inside, two men watched each other across the growing dark, trying to decide who to trust.</p>
+  </div>
+
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+    <button class="kr-toggle" onclick="toggleKr()" id="kr-btn">🇰🇷 한국어 번역 보기</button>
+    <span style="font-size:0.7rem;color:var(--sub);">※ 번역은 초급 B1 기준</span>
+  </div>
+  <div class="story-kr" id="story-kr">
+    화자는 폐허가 된 교회에 혼자 앉아 있는 남자를 만났어요. 그 남자는 목사였는데, 모든 희망을 잃어버렸어요.<br><br>함께 파괴되지 않은 집을 발견했어요. 부엌에는 아직 음식과 물이 있었어요. 거기서 숨어서 기다리기로 결정했어요.<br><br>하지만 처음에 침착해 보이던 목사가 이성을 잃기 시작했어요. 너무 크게 말하고 너무 빨리 움직였어요. 이것은 매우 위험했어요.
+  </div>
+</div>
+
+<!-- ② 단어 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📝</div><div class="sh-title">이번 주 단어</div></div>
+  <div class="vocab-grid">
+    <div class="vc"><div class="vc-w">curate </div><div class="vc-m">목사 (보조 사제)</div><div class="vc-e">"The curate had lost all hope."</div></div>
+    <div class="vc"><div class="vc-w">abandon </div><div class="vc-m">버리다</div><div class="vc-e">"God has abandoned us."</div></div>
+    <div class="vc"><div class="vc-w">ruin </div><div class="vc-m">폐허, 망치다</div><div class="vc-e">"They hid in the ruined house."</div></div>
+    <div class="vc"><div class="vc-w">whisper </div><div class="vc-m">속삭이다</div><div class="vc-e">"They argued in whispers."</div></div>
+    <div class="vc"><div class="vc-w">framework </div><div class="vc-m">틀, 구조</div><div class="vc-e">"He had no framework left."</div></div>
+    <div class="vc"><div class="vc-w">risk </div><div class="vc-m">위험, 위험에 처하게 하다</div><div class="vc-e">"Their hiding place was at risk."</div></div>
+  </div>
+</div>
+
+<!-- ③ 빈칸 채우기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">빈칸 채우기</div></div>
+  <div class="fill-sent">The curate who <span class="blank-span" id="bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span> calm began to lose his mind.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'had seemed','had seemed','bl1','fr1')">had seemed</button>
+    <button class="cbtn" onclick="chkFill(this,'seemed','had seemed','bl1','fr1')">seemed</button>
+    <button class="cbtn" onclick="chkFill(this,'was seeming','had seemed','bl1','fr1')">was seeming</button>
+  </div>
+  <div class="fill-res" id="fr1"></div>
+  <br>
+  <div class="fill-sent">They found a house that <span class="blank-span" id="bl2">&nbsp;&nbsp;&nbsp;&nbsp;</span> destroyed.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'had not been','had not been','bl2','fr2')">had not been</button>
+    <button class="cbtn" onclick="chkFill(this,'was not','had not been','bl2','fr2')">was not</button>
+    <button class="cbtn" onclick="chkFill(this,'has not been','had not been','bl2','fr2')">has not been</button>
+  </div>
+  <div class="fill-res" id="fr2"></div>
+  <br>
+
+</div>
+
+<!-- ④ 단어 받아쓰기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🎧</div><div class="sh-title">단어 받아쓰기</div></div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="The curate had lost all hope after the attack." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"The curate had lost all ___ after the attack."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di1" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','hope','dr1')">
+      <button class="dict-btn" onclick="chkDict('di1','hope','dr1')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr1"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="They hid in the ruined house together." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"They hid in the ___ house together."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di2" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','ruined','dr2')">
+      <button class="dict-btn" onclick="chkDict('di2','ruined','dr2')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr2"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="Their hiding place was at risk." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"Their hiding place was at ___."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di3" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','risk','dr3')">
+      <button class="dict-btn" onclick="chkDict('di3','risk','dr3')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑤ 듣고 고르기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">👂</div><div class="sh-title">듣고 고르기</div></div>
+  <button class="lc-play-btn" data-speak="The curate who had seemed calm at first began to lose his mind and put them both in danger." onclick="speak(this.dataset.speak)">🔊 듣기</button>
+  <div class="lc-opts">
+    <button class="lc-opt" data-correct="true" onclick="lcCheck(this,'ok')">The curate who had seemed calm at first began to lose his mind and put them both in danger.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">The curate helped the narrator stay calm and make good decisions throughout their time hiding.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">The narrator and the curate escaped together safely when the Martians moved away.</button>
+  </div>
+  <div class="lc-result" id="lc-result"></div>
+</div>
+
+<!-- ⑥ 단어 배열 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔤</div><div class="sh-title">단어 배열하기</div></div>
+  <div class="wo-wrap">
+    <div class="wo-q">🔵 초급 B1 — 올바른 순서로 배열하세요.</div>
+    <div class="wo-box" id="wo1-box"></div>
+    <div class="wo-pool" id="wo1-pool"></div>
+    <div class="wo-btns">
+      <button class="wo-check" onclick="woCheck('wo1','The curate had lost all hope','wr1')">확인 ✓</button>
+      <button class="wo-reset" onclick="woReset('wo1')">↺ 다시</button>
+    </div>
+    <div class="wo-result" id="wr1"></div>
+  </div>
+  <div class="wo-wrap">
+    <div class="wo-q">🟣 중급 B2 — 과거완료가 포함된 문장을 배열하세요.</div>
+    <div class="wo-box" id="wo2-box"></div>
+    <div class="wo-pool" id="wo2-pool"></div>
+    <div class="wo-btns">
+      <button class="wo-check" onclick="woCheck('wo2','They found a house that had not been destroyed','wr2')">확인 ✓</button>
+      <button class="wo-reset" onclick="woReset('wo2')">↺ 다시</button>
+    </div>
+    <div class="wo-result" id="wr2"></div>
+  </div>
+</div>
+
+<!-- ⑦ 짝맞추기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🃏</div><div class="sh-title">짝맞추기</div></div>
+  <div class="match-grid">
+    <div class="match-col" id="match-left"></div>
+    <div class="match-col" id="match-right"></div>
+  </div>
+  <div class="match-result" id="match-result"></div>
+</div>
+
+<!-- ⑧ 받아쓰기 도전 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">받아쓰기 도전!</div></div>
+  <div style="font-size:0.75rem;color:var(--sub);margin-bottom:14px;">🎙️ 듣고 전체 문장을 입력하세요.</div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#16a34a;">A2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#16a34a;" data-speak="He had lost all hope." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#16a34a;border-color:#16a34a;background:#0d1a0d;">"lost"</span>
+        <span class="fd-hint-tag" style="color:#16a34a;border-color:#16a34a;background:#0d1a0d;">"hope"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd1" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd1','He had lost all hope.','fdr1')">
+      <button class="fd-check" style="background:#16a34a;" onclick="chkFD('fd1','He had lost all hope.','fdr1')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr1"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#0ea5e9;">B1</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#0ea5e9;" data-speak="The house they had entered still had food." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#0ea5e9;border-color:#0ea5e9;background:#0d1a0d;">"had entered"</span>
+        <span class="fd-hint-tag" style="color:#0ea5e9;border-color:#0ea5e9;background:#0d1a0d;">"food"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd2" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd2','The house they had entered still had food.','fdr2')">
+      <button class="fd-check" style="background:#0ea5e9;" onclick="chkFD('fd2','The house they had entered still had food.','fdr2')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr2"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#7c3aed;">B2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#7c3aed;" data-speak="The curate who had seemed calm began to lose his mind." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#7c3aed;border-color:#7c3aed;background:#0d1a0d;">"had seemed"</span>
+        <span class="fd-hint-tag" style="color:#7c3aed;border-color:#7c3aed;background:#0d1a0d;">"lose his mind"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd3" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd3','The curate who had seemed calm began to lose his mind.','fdr3')">
+      <button class="fd-check" style="background:#7c3aed;" onclick="chkFD('fd3','The curate who had seemed calm began to lose his mind.','fdr3')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑨ 이해 문제 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">이해 문제</div></div>
+  <div class="quiz-tabs">
+    <button class="qtab qa1" onclick="showQuiz('qa1',this)">🟡 입문</button>
+    <button class="qtab" onclick="showQuiz('qa2',this)">🔵 초급 B1</button>
+    <button class="qtab" onclick="showQuiz('qb1',this)">🟣 중급</button>
+  </div>
+  <div id="qa1" class="quiz-set active">
+    <div class="quiz-item"><div class="quiz-q">Q1. What fell from the sky?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) A meteor</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) A large cylinder</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) A spaceship</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. What did people do when the creature appeared?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) They tried to talk to it</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) They screamed and ran away</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) They took photographs</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. What had the newspapers reported before the cylinder landed?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">a) Strange lights on Mars</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) A new planet</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) A missing rocket</button>
+      </div>
+    </div>
+  </div>
+  <div id="qa2" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">Q1. Why did nobody worry about Mars at first?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Nobody had seen the lights on Mars</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Scientists said there was nothing to worry about</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) The news was kept secret</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. "The newspapers had reported strange lights." What tense is this and why?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">b) Past perfect — the reporting happened before the cylinder landed</button>
+        <button class="qopt" onclick="qChk(this,'no')">a) Simple past — it happened at the same time as the landing</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Present perfect — it is still happening now</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. "Unlike anything that had ever lived on Earth." What does this tell us?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) The creature was similar to animals on Earth</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) The creature was completely different from all known life on Earth</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) The creature had lived on Earth before</button>
+      </div>
+    </div>
+  </div>
+  <div id="qb1" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">Q1. "No one would have believed." Why does Wells open with this line?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) To tell us the story is probably untrue</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) To place the reader in the moment before catastrophe — we share humanity's dangerous overconfidence</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) To suggest the narrator is unreliable</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. "Minds immeasurably superior to ours." What effect does this create?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) It makes the Martians seem friendly and curious</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) It humbles humanity before we even see the enemy — we are not the most intelligent beings</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) It tells us the Martians will eventually fail</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. "Something — or someone." Why does Wells use a dash here?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) The character cannot see clearly in the dark</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) The shift from "something" to "someone" is the moment humanity stops being alone — the dash captures that realisation</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) It shows that the narrator is not sure if it is alive</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑩ 에세이 (중2: 5단락) -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">에세이 쓰기 (5단락 구조)</div></div>
+  <div style="background:var(--bg);border-radius:10px;padding:14px;margin-bottom:14px;">
+    <div style="font-size:0.8rem;font-weight:900;color:var(--gold);margin-bottom:10px;">📌 중2 에세이 구조 (4문장)</div>
+    <div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:6px;">
+      <div style="font-size:0.7rem;font-weight:900;color:#5aff9a;margin-bottom:3px;">① 주장 — 내 입장</div>
+      <div style="font-size:0.75rem;color:var(--sub);">예) "I believe that humans should (not) try to contact aliens because..."</div>
+    </div>
+    <div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:6px;">
+      <div style="font-size:0.7rem;font-weight:900;color:#7ab3ff;margin-bottom:3px;">② 근거 — 이유나 예시</div>
+      <div style="font-size:0.75rem;color:var(--sub);">예) "For example, in the story the Martians were far more powerful than humans..."</div>
+    </div>
+    <div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:6px;">
+      <div style="font-size:0.7rem;font-weight:900;color:#b48aff;margin-bottom:3px;">③ 반론 인정</div>
+      <div style="font-size:0.75rem;color:var(--sub);">예) "Some people say... However,..."</div>
+    </div>
+    <div style="background:var(--card);border-radius:8px;padding:10px;">
+      <div style="font-size:0.7rem;font-weight:900;color:var(--gold);margin-bottom:3px;">④ 결론</div>
+      <div style="font-size:0.75rem;color:var(--sub);">예) "Therefore, I believe..."</div>
+    </div>
+  </div>
+  <div style="font-size:0.84rem;font-weight:700;color:white;margin-bottom:12px;">💬 주제: <strong>"When someone panics and puts others at risk, what should you do?"</strong></div>
+  <div class="essay-line"><span class="essay-num">①</span><input class="essay-input" id="es1" placeholder="I believe that..."></div>
+  <div class="essay-line"><span class="essay-num">②</span><input class="essay-input" id="es2" placeholder="For example,..."></div>
+  <div class="essay-line"><span class="essay-num">③</span><input class="essay-input" id="es3" placeholder="Some people say... However,..."></div>
+  <div class="essay-line"><span class="essay-num">④</span><input class="essay-input" id="es4" placeholder="Therefore,..."></div>
+  <button class="essay-submit" onclick="submitEssay()">📝 Open WebUI에서 피드백받기</button>
+  <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
+</div>
+
+<!-- ⑪ 디베이트 (중2 이상) -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">⚖️</div><div class="sh-title">디베이트 — 찬반 카드 만들기</div></div>
+  <div class="debate-box">
+    <div class="debate-topic">
+      <div class="debate-topic-en">"In a crisis, it is acceptable to prioritise your own survival over others."</div>
+      <div class="debate-topic-kr">위기 상황에서 다른 사람보다 자신의 생존을 우선시하는 것은 허용된다.</div>
+    </div>
+    <div class="debate-sides">
+      <div class="debate-for">
+        <div class="debate-label-for">✅ 찬성 (For)</div>
+        <textarea class="debate-textarea" id="for-card" rows="5" placeholder="찬성 이유를 영어로&#10;예) We could learn new technology from them..."></textarea>
+      </div>
+      <div class="debate-against">
+        <div class="debate-label-against">❌ 반대 (Against)</div>
+        <textarea class="debate-textarea" id="against-card" rows="5" placeholder="반대 이유를 영어로&#10;예) It could be dangerous because..."></textarea>
+      </div>
+    </div>
+    <div style="font-size:0.75rem;font-weight:900;color:#7ab3ff;margin-bottom:6px;">💡 도움이 되는 표현</div>
+    <div class="phrase-row">
+      <span class="phrase" style="background:#0a2a15;color:#5aff9a;border-color:#16a34a;" onclick="addPhrase('for-card','I believe that...')">I believe that...</span>
+      <span class="phrase" style="background:#0a2a15;color:#5aff9a;border-color:#16a34a;" onclick="addPhrase('for-card','One reason is...')">One reason is...</span>
+      <span class="phrase" style="background:#0a2a15;color:#5aff9a;border-color:#16a34a;" onclick="addPhrase('for-card','Furthermore,...')">Furthermore,...</span>
+      <span class="phrase" style="background:#2a0a0a;color:#ff9a9a;border-color:#dc2626;" onclick="addPhrase('against-card','However,...')">However,...</span>
+      <span class="phrase" style="background:#2a0a0a;color:#ff9a9a;border-color:#dc2626;" onclick="addPhrase('against-card','This could be dangerous because...')">This could be dangerous...</span>
+      <span class="phrase" style="background:#1a1a3a;color:#7ab3ff;border-color:#2a2a6e;" onclick="addPhrase('against-card','I understand your point, but...')">I understand, but...</span>
+    </div>
+    <button class="owui-btn" onclick="sendDebate()">⚔️ Open WebUI에서 토론하기</button>
+    <div style="font-size:0.78rem;color:var(--sub);margin-top:8px;min-height:16px;" id="debate-result"></div>
+  </div>
+</div>
+
+<!-- 회화 안내 -->
+<div class="card" style="background:linear-gradient(135deg,#0a1e30,#102840);border:1px solid #1a3a5a;">
+  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">영어 회화 훈련</div></div>
+  <div style="font-size:0.84rem;color:var(--sub);line-height:1.8;text-align:center;padding:8px 0;">
+    디베이트가 끝나면<br>
+    <strong style="color:var(--acc)">Open WebUI에서 자동으로 연결</strong>됩니다.<br>
+    <span style="font-size:0.75rem;">AI 선생님과 20분 영어 회화 훈련</span>
+  </div>
+</div>
+
+<!-- 완료 -->
+<div class="complete-card" id="complete-card">
+  <div style="font-size:2.8rem;margin-bottom:10px;">🛸</div>
+  <div style="font-size:1.2rem;font-weight:900;color:var(--acc);margin-bottom:6px;">Week 1 완료!</div>
+  <div style="font-size:0.86rem;color:var(--sub);margin-bottom:16px;line-height:1.7;">War of the Worlds W5를 마쳤어요!<br>두 사람의 긴장감 넘치는 대기가 계속됩니다!</div>
+  <button onclick="location.href='week06.html'" style="background:var(--acc2);color:white;border:none;border-radius:20px;padding:10px 28px;font-size:0.9rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;">Week 6 시작하기 →</button>
+</div>
+
+</div><!-- /container -->
+
+<script>
+const gramData = {
+  g1:{tag:'G21',title:'Past Continuous — was sitting',desc:'was/were + 동사-ing\n"was sitting" = 앉아 있었다\n과거의 진행 중인 동작',ex:'The curate was sitting alone in a church.',gnum:'G21',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g2:{tag:'G43',title:'Past Perfect — had lost',desc:'lose → lost (불규칙)\nhad lost = (그 당시 이미) 잃어버린 상태\n"who had lost all hope" = 모든 희망을 잃어버린',ex:'A man who had lost all hope.',gnum:'G43',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g3:{tag:'G43',title:'Past Perfect Passive — had not been destroyed',desc:'had been + 과거분사\n부정: had not been destroyed\n= 파괴되지 않은 상태였다',ex:'A house that had not been destroyed.',gnum:'G43',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g4:{tag:'G43',title:'Past Perfect — had entered',desc:'enter → entered (규칙)\nhad entered = 이미 들어간 상태\n과거 시점 기준의 완료',ex:'The kitchen that they had entered.',gnum:'G43',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g5:{tag:'G43',title:'Past Perfect — had seemed',desc:'seem → seemed (규칙)\nhad seemed = (그 전에) ~처럼 보였었다\n외모/상태의 과거완료',ex:'The curate who had seemed calm.',gnum:'G43',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g6:{tag:'G31',title:'Relative Pronoun — which',desc:'which = 앞 문장 전체를 받음\n"he talked too loudly, which was dangerous"\n= 그리고 그것은 위험했다',ex:'He talked loudly, which was dangerous.',gnum:'G31',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'}
+};
+
+let currentGramId='';
+let xp=0;
+
+function addXP(n){
+  xp+=n;
+  document.getElementById('xp-btn').textContent='⭐ '+xp+' XP';
+  document.getElementById('prog-bar').style.width=Math.min(100,xp*2)+'%';
+  if(xp>=50&&document.getElementById('complete-card').style.display!=='block'){
+    setTimeout(()=>{
+      document.getElementById('complete-card').style.display='block';
+      document.getElementById('complete-card').scrollIntoView({behavior:'smooth'});
+    },500);
+  }
+}
+
+function speak(text){
+  if(!text)return;
+  speechSynthesis.cancel();
+  function doSpeak(){
+    const voices=speechSynthesis.getVoices();
+    const u=new SpeechSynthesisUtterance(text);
+    const prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
+    const exclude=['Alex','Fred','Daniel','Google UK English Male'];
+    const v=voices.find(v=>prefer.some(p=>v.name.includes(p))&&!exclude.some(e=>v.name.includes(e)));
+    if(v)u.voice=v;
+    u.lang='en-US';u.rate=0.85;u.pitch=1.0;u.volume=1.0;
+    speechSynthesis.speak(u);
+  }
+  if(speechSynthesis.getVoices().length>0){setTimeout(doSpeak,50);}
+  else{speechSynthesis.onvoiceschanged=()=>{setTimeout(doSpeak,50);};speechSynthesis.getVoices();}
+}
+
+function showStory(lv,btn){
+  ['a1','a2','b1'].forEach(l=>{const el=document.getElementById('sb-'+l);if(el)el.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(b=>b.className='tab-btn');
+  document.getElementById('sb-'+lv).classList.add('active');
+  btn.classList.add('act-'+lv);
+}
+function readStory(){
+  const s=document.getElementById('sb-a2');
+  if(s)speak((s.innerText||s.textContent).replace(/\s+/g,' ').trim());
+}
+function toggleKr(){
+  const kr=document.getElementById('story-kr');
+  const btn=document.getElementById('kr-btn');
+  const show=kr.style.display!=='block';
+  kr.style.display=show?'block':'none';
+  btn.textContent=show?'🇰🇷 번역 숨기기':'🇰🇷 한국어 번역 보기';
+}
+
+document.querySelectorAll('.gram').forEach(el=>{
+  el.addEventListener('click',function(e){
+    e.stopPropagation();
+    const d=gramData[this.dataset.id];if(!d)return;
+    currentGramId=this.dataset.id;
+    document.getElementById('tt-tag').textContent=d.tag;
+    document.getElementById('tt-title').textContent=d.title;
+    document.getElementById('tt-desc').textContent=d.desc;
+    document.getElementById('tt-ex').textContent=d.ex;
+    document.getElementById('tt-gram-link').textContent='📚 Grammar Base '+d.gnum+' →';
+    document.getElementById('tt-gram-link').href=d.glink;
+    const wrap=document.getElementById('tt-wrap');
+    const rect=this.getBoundingClientRect();
+    let top=rect.bottom+8,left=rect.left;
+    if(left+290>window.innerWidth)left=window.innerWidth-295;
+    if(top+200>window.innerHeight)top=rect.top-210;
+    wrap.style.top=top+'px';wrap.style.left=left+'px';
+    wrap.style.display='block';
+    document.getElementById('tt-overlay').style.display='block';
+  });
+});
+function closeTT(){
+  document.getElementById('tt-wrap').style.display='none';
+  document.getElementById('tt-overlay').style.display='none';
+}
+
+function chkFill(btn,val,ans,blId,resId){
+  btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('ok','no'));
+  const res=document.getElementById(resId);
+  if(val===ans){btn.classList.add('ok');document.getElementById(blId).textContent=val;res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(4);}
+  else{btn.classList.add('no');res.innerHTML='❌ 다시 해봐요!';res.style.color='var(--red)';}
+}
+
+function chkDict(inputId,ans,resId){
+  const val=document.getElementById(inputId).value.trim().toLowerCase();
+  const res=document.getElementById(resId);
+  if(val===ans.toLowerCase()){res.innerHTML='✅ 정답!';res.style.color='var(--green)';document.getElementById(inputId).style.borderColor='var(--green)';addXP(3);}
+  else{res.innerHTML='❌ 정답: <span style="color:var(--acc)">'+ans+'</span>';res.style.color='var(--red)';}
+}
+
+function lcCheck(btn,val){
+  btn.closest('.lc-opts').querySelectorAll('.lc-opt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  document.getElementById('lc-result').textContent=val==='ok'?'✅ 정답!':'❌ 다시 들어보세요!';
+  document.getElementById('lc-result').style.color=val==='ok'?'var(--green)':'var(--red)';
+  if(val==='ok')addXP(4);
+}
+
+function shuffleLcOpts(){
+  document.querySelectorAll('.lc-opts').forEach(container=>{
+    const btns=Array.from(container.querySelectorAll('.lc-opt'));
+    for(let i=btns.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[btns[i],btns[j]]=[btns[j],btns[i]];}
+    btns.forEach((btn,i)=>{
+      const labels=['①','②','③'];
+      const text=btn.textContent.replace(/^[①②③]\s*/,'').trim();
+      btn.textContent=labels[i]+' '+text;
+      container.appendChild(btn);
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded',shuffleLcOpts);
+
+const woState={};
+function woAdd(id,btn,word){
+  if(btn.classList.contains('used'))return;
+  btn.classList.add('used');
+  woState[id]=woState[id]||[];
+  woState[id].push(word);
+  const box=document.getElementById(id+'-box');
+  const chip=document.createElement('button');
+  chip.className='wo-placed';chip.textContent=word;
+  chip.onclick=()=>{woState[id]=woState[id].filter(w=>w!==word);chip.remove();btn.classList.remove('used');};
+  box.appendChild(chip);
+}
+function woCheck(id,ans,resId){
+  const res=document.getElementById(resId);
+  if((woState[id]||[]).join(' ').trim()===ans){res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(5);}
+  else{res.innerHTML='❌ 정답: <span style="color:var(--acc)">'+ans+'</span>';res.style.color='var(--red)';}
+}
+function woReset(id){
+  woState[id]=[];
+  document.getElementById(id+'-box').innerHTML='';
+  document.getElementById(id+'-pool').querySelectorAll('.wo-chip').forEach(c=>c.classList.remove('used'));
+  const r=document.getElementById('wr'+id.replace('wo',''));if(r)r.innerHTML='';
+}
+function initWo(id,words){
+  const pool=document.getElementById(id+'-pool');
+  const sh=[...words].sort(()=>Math.random()-0.5);
+  pool.innerHTML=sh.map(w=>`<button class="wo-chip" onclick="woAdd('${id}',this,'${w}')">${w}</button>`).join('');
+}
+initWo('wo1', ["The", "curate", "had", "lost", "all", "hope"]);
+initWo('wo2', ["They", "found", "a", "house", "that", "had", "not", "been", "destroyed"]);
+
+const matchPairs=[["curate", "목사"], ["abandon", "버리다"], ["whisper", "속삭이다"], ["risk", "위험"]];
+let matchSel=null,matchDone={};
+function initMatch(){
+  const left=document.getElementById('match-left');
+  const right=document.getElementById('match-right');
+  const rs=[...matchPairs].sort(()=>Math.random()-0.5);
+  left.innerHTML=matchPairs.map(([en])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${en}</button>`).join('');
+  right.innerHTML=rs.map(([en,kr])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${kr}</button>`).join('');
+}
+function matchClick(btn,key){
+  if(btn.classList.contains('matched'))return;
+  btn.classList.remove('wrong-flash');
+  if(!matchSel){matchSel={btn,key};btn.classList.add('selected');}
+  else{
+    if(matchSel.key===key&&matchSel.btn!==btn){
+      matchSel.btn.classList.remove('selected');matchSel.btn.classList.add('matched');
+      btn.classList.add('matched');matchDone[key]=true;matchSel=null;
+      if(Object.keys(matchDone).length===matchPairs.length){
+        document.getElementById('match-result').innerHTML='🎉 모두 맞췄어요!';
+        document.getElementById('match-result').style.color='var(--green)';addXP(8);
+      }
+    }else{
+      const prev=matchSel.btn;prev.classList.remove('selected');prev.classList.add('wrong-flash');
+      btn.classList.add('wrong-flash');matchSel=null;
+      setTimeout(()=>{prev.classList.remove('wrong-flash');btn.classList.remove('wrong-flash');},500);
+    }
+  }
+}
+initMatch();
+
+function chkFD(id,ans,resId){
+  const inp=document.getElementById(id);
+  const res=document.getElementById(resId);
+  const clean=s=>s.trim().toLowerCase().replace(/[.,!?;:—]/g,'').replace(/\s+/g,' ');
+  if(clean(inp.value)===clean(ans)){
+    res.innerHTML='✅ 정답!';res.style.color='var(--green)';
+    inp.style.borderColor='var(--green)';inp.style.background='#0d1f0d';addXP(5);
+  }else{
+    res.innerHTML='❌ 정답: <span style="color:var(--acc);font-weight:800">"'+ans+'"</span>';
+    res.style.color='var(--red)';inp.style.borderColor='var(--red)';
+  }
+}
+
+function showQuiz(id,btn){
+  document.querySelectorAll('.quiz-set').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.qtab').forEach(b=>b.className='qtab');
+  document.getElementById(id).classList.add('active');
+  if(id==='qa1')btn.classList.add('qa1');
+  else if(id==='qa2')btn.classList.add('qa2');
+  else btn.classList.add('qb1');
+}
+function qChk(btn,val){
+  btn.closest('.quiz-opts').querySelectorAll('.qopt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  if(val==='ok')addXP(4);
+}
+
+function addPhrase(id,text){
+  const ta=document.getElementById(id);
+  ta.value=ta.value?ta.value+' '+text:text;
+  ta.focus();
+}
+
+function submitEssay(){
+  const vals=[1,2,3,4].map(i=>document.getElementById('es'+i).value.trim());
+  const res=document.getElementById('essay-result');
+  if(vals.some(v=>!v)){res.innerHTML='❗ 4문장을 모두 작성해주세요!';res.style.color='var(--gold)';return;}
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'중2'):'중2';
+  const essay=vals.map((v,i)=>['①','②','③','④'][i]+' '+v).join('\n');
+  const prompt='[ESSAY] 안녕하세요! 저는 '+name+', 중학교 '+grade+'학년이에요.\nWar of the Worlds W05 에세이를 썼는데 피드백 부탁드려요.\n\n'+essay;
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.innerHTML='✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
+    addXP(10);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+  });
+}
+
+function sendDebate(){
+  const forCard=document.getElementById('for-card').value.trim();
+  const againstCard=document.getElementById('against-card').value.trim();
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'중2'):'중2';
+  const prompt='[DEBATE] 안녕하세요! 저는 '+name+', 중학교 '+grade+'학년이에요.\nWar of the Worlds W1 디베이트 주제: "In a crisis, it is acceptable to prioritise your own survival over others."\n\n내 찬성 카드:\n'+(forCard||'(아직 못 썼어요)')+'\n\n내 반대 카드:\n'+(againstCard||'(아직 못 썼어요)')+'\n\n피드백하고 토론 시작해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    document.getElementById('debate-result').innerHTML='✅ 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';
+    document.getElementById('debate-result').style.color='var(--green)';
+    addXP(8);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+  });
+}
+</script>
+</body>
+</html>
