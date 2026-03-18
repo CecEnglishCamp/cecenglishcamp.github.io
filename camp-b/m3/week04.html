@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp B — 중3 W1 · The Adventures of Sherlock Holmes</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Black+Han+Sans&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1a2535;--card:#1e2e42;--card2:#192840;--border:#2a3a52;
+  --acc:#0ea5e9;--acc2:#0369a1;--green:#16a34a;--gold:#f59e0b;
+  --red:#dc2626;--text:#e8e8f0;--sub:#8899aa;
+  --a1c:#16a34a;--a1b:#0d2a1a;--a2c:#0ea5e9;--a2b:#0a1e30;--b1c:#7c3aed;--b1b:#1e0d4a;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+.hd{background:linear-gradient(135deg,#0a1a2e,#102030);padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.hd-left{display:flex;align-items:center;gap:10px;}
+.hd-logo{font-family:'Black Han Sans';font-size:1rem;color:var(--acc);}
+.hd-sub{font-size:0.72rem;color:var(--sub);}
+.hd-badge{background:#4B1F79;color:white;font-size:0.7rem;font-weight:800;padding:3px 10px;border-radius:20px;}
+.xp-btn{background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;border:none;border-radius:20px;padding:5px 14px;font-size:0.8rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;}
+.hero{background:linear-gradient(135deg,#0d0a1e,#1a0d2e,#0a1020);padding:20px 16px;text-align:center;border-bottom:1px solid var(--border);}
+.hero-week{font-size:0.72rem;color:var(--sub);font-weight:700;letter-spacing:2px;margin-bottom:6px;}
+.hero-title{font-family:'Black Han Sans';font-size:1.6rem;color:white;margin-bottom:4px;}
+.hero-author{font-size:0.8rem;color:var(--sub);margin-bottom:14px;}
+.hero-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.hb{padding:4px 12px;border-radius:20px;font-size:0.68rem;font-weight:800;}
+.key-card{background:linear-gradient(135deg,#0d0a1e,#1a0d2e);border:1px solid #3a1a5a;border-radius:16px;padding:16px;margin:12px 16px 8px;}
+.key-label{font-size:0.65rem;color:var(--sub);font-weight:700;letter-spacing:2px;margin-bottom:8px;}
+.key-en{font-size:1.05rem;font-weight:900;color:white;margin-bottom:4px;}
+.key-kr{font-size:0.82rem;color:#b48aff;margin-bottom:12px;}
+.key-play{background:#4B1F79;color:white;border:none;border-radius:25px;padding:8px 20px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.prog-row{display:flex;align-items:center;gap:8px;padding:8px 16px;}
+.prog-track{flex:1;background:#1a2a3a;border-radius:8px;height:6px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,#7c3aed,#4B1F79);border-radius:8px;transition:width 0.5s;}
+.prog-label{font-size:0.72rem;color:var(--sub);font-weight:700;white-space:nowrap;}
+.container{max-width:680px;margin:0 auto;padding:0 12px 60px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;}
+.sh{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sh-icon{font-size:1.1rem;}.sh-title{font-size:0.88rem;font-weight:900;color:white;}
+.tab-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.tab-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.tab-btn.act-a1{background:var(--a1b);border-color:var(--a1c);color:#5aff9a;}
+.tab-btn.act-a2{background:var(--a2b);border-color:var(--a2c);color:#7ab3ff;}
+.tab-btn.act-b1{background:var(--b1b);border-color:var(--b1c);color:#b48aff;}
+.listen-row{display:flex;gap:8px;margin-bottom:10px;}
+.listen-btn{background:#4B1F79;color:white;border:none;border-radius:20px;padding:7px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.stop-btn{background:var(--card2);border:1.5px solid var(--border);color:var(--sub);border-radius:20px;padding:7px 12px;font-size:0.82rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.notice-box{background:#0d0a1e;border-left:3px solid #7c3aed;border-radius:0 8px 8px 0;padding:9px 14px;margin-bottom:10px;font-size:0.78rem;color:var(--sub);line-height:1.6;}
+.story-box{background:var(--card2);border-radius:10px;padding:14px;font-size:0.88rem;line-height:1.85;color:var(--text);display:none;}
+.story-box.active{display:block;}
+.story-box p{margin-bottom:10px;}
+.gram{border-bottom:2px dashed var(--gold);cursor:pointer;color:#fde68a;font-weight:700;}
+.story-kr{background:#0a0d1a;border-left:3px solid #7c3aed;border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.8;display:none;}
+.kr-toggle{background:transparent;border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:4px 12px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+#tt-overlay{position:fixed;inset:0;z-index:999;display:none;}
+.tt-wrap{position:fixed;z-index:1000;display:none;}
+.tt-box{background:#1a1a2e;border:1.5px solid var(--gold);border-radius:12px;padding:14px 16px;max-width:280px;box-shadow:0 8px 32px rgba(0,0,0,0.6);}
+.tt-tag{background:var(--gold);color:#1a1a00;font-size:0.65rem;font-weight:900;padding:2px 8px;border-radius:10px;margin-bottom:8px;display:inline-block;}
+.tt-title{font-size:0.88rem;font-weight:900;color:white;margin-bottom:6px;}
+.tt-desc{font-size:0.78rem;color:var(--sub);line-height:1.6;margin-bottom:8px;white-space:pre-line;}
+.tt-ex{background:var(--bg);border-radius:6px;padding:6px 10px;font-size:0.78rem;color:#b48aff;margin-bottom:10px;font-style:italic;}
+.tt-links{display:flex;gap:8px;flex-wrap:wrap;}
+.tt-gram-link{background:#1a0d3a;border:1px solid #7c3aed;color:#b48aff;border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;text-decoration:none;}
+.tt-close{position:absolute;top:8px;right:10px;background:transparent;border:none;color:var(--sub);font-size:1rem;cursor:pointer;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.vc{background:var(--card2);border-radius:10px;padding:10px 12px;border-left:3px solid #7c3aed;}
+.vc-w{font-size:0.88rem;font-weight:900;color:white;margin-bottom:2px;}
+.vc-m{font-size:0.75rem;color:var(--sub);margin-bottom:4px;}
+.vc-e{font-size:0.72rem;color:#b48aff;font-style:italic;}
+.fill-sent{font-size:0.9rem;font-weight:700;line-height:1.7;margin-bottom:12px;color:white;}
+.blank-span{display:inline-block;min-width:60px;border-bottom:2px solid #7c3aed;color:#b48aff;text-align:center;font-weight:900;}
+.choices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.cbtn{padding:7px 16px;background:var(--card2);border:1.5px solid var(--border);border-radius:20px;color:var(--text);font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.cbtn.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.cbtn.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.fill-res{font-size:0.82rem;font-weight:700;min-height:18px;}
+.dict-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:8px;}
+.dict-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.dict-play{background:#7c3aed;color:white;border:none;border-radius:50%;width:36px;height:36px;font-size:0.9rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.dict-label{font-size:0.75rem;color:var(--sub);font-weight:700;}
+.dict-hint{font-size:0.78rem;color:#b48aff;font-style:italic;}
+.dict-input-row{display:flex;gap:8px;}
+.dict-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.dict-input:focus{outline:none;border-color:#7c3aed;}
+.dict-btn{background:#7c3aed;color:white;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.dict-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.lc-play-btn{background:#4B1F79;color:white;border:none;border-radius:25px;padding:9px 22px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;}
+.lc-opts{display:flex;flex-direction:column;gap:8px;}
+.lc-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.lc-opt.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.lc-opt.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.lc-result{margin-top:8px;font-size:0.84rem;font-weight:700;min-height:18px;}
+.wo-wrap{background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;}
+.wo-q{font-size:0.8rem;color:var(--sub);margin-bottom:8px;font-weight:700;}
+.wo-box{min-height:44px;background:var(--bg);border-radius:8px;border:1.5px dashed #7c3aed;padding:6px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px;}
+.wo-pool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;}
+.wo-chip{padding:6px 13px;background:#4B1F79;color:white;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-chip.used{background:#2a2a4a;color:var(--sub);cursor:default;}
+.wo-placed{padding:6px 13px;background:#7c3aed;color:white;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-btns{display:flex;gap:8px;}
+.wo-check{background:#4B1F79;color:white;border:none;padding:8px 18px;border-radius:20px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-reset{background:transparent;color:var(--sub);border:1px solid var(--border);padding:8px 12px;border-radius:20px;font-size:0.8rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-result{font-size:0.8rem;font-weight:700;margin-top:6px;min-height:16px;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.match-col{display:flex;flex-direction:column;gap:6px;}
+.match-item{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;color:var(--text);transition:all 0.15s;}
+.match-item.selected{border-color:#7c3aed;background:#1e0d4a;color:#b48aff;}
+.match-item.matched{border-color:var(--green);background:#0d2a1a;color:#5aff9a;cursor:default;}
+.match-item.wrong-flash{border-color:var(--red);background:#3a0d0d;}
+.match-result{font-size:0.84rem;font-weight:700;min-height:18px;text-align:center;}
+.fd-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;}
+.fd-level-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fd-badge{color:white;font-size:0.7rem;font-weight:900;padding:2px 10px;border-radius:20px;}
+.fd-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.fd-play{color:white;border:none;border-radius:20px;padding:6px 14px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-hints{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.fd-hint-label{font-size:0.7rem;color:var(--sub);font-weight:700;}
+.fd-hint-tag{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid;}
+.fd-input-row{display:flex;gap:8px;}
+.fd-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.fd-input:focus{outline:none;border-color:#7c3aed;}
+.fd-check{color:white;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.quiz-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.qtab{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.qa1{background:var(--a1b);border-color:var(--a1c);color:#5aff9a;}
+.qa2{background:var(--a2b);border-color:var(--a2c);color:#7ab3ff;}
+.qb1{background:var(--b1b);border-color:var(--b1c);color:#b48aff;}
+.quiz-set{display:none;}.quiz-set.active{display:block;}
+.quiz-item{margin-bottom:14px;}
+.quiz-q{font-size:0.86rem;font-weight:800;color:white;margin-bottom:8px;}
+.quiz-opts{display:flex;flex-direction:column;gap:6px;}
+.qopt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.qopt.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.qopt.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.essay-line{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.essay-num{font-size:0.72rem;font-weight:900;color:#b48aff;width:24px;flex-shrink:0;padding-top:10px;}
+.essay-label{font-size:0.7rem;font-weight:900;color:#b48aff;margin-bottom:4px;}
+.essay-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.essay-input:focus{outline:none;border-color:#7c3aed;}
+.essay-submit{background:linear-gradient(135deg,#7c3aed,#4B1F79);color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:4px;}
+.debate-box{background:linear-gradient(135deg,#0d0a1e,#1a0d2e);border-radius:12px;padding:14px;border:1px solid #3a1a5a;}
+.debate-topic{background:#0d0a1e;border-radius:10px;padding:12px;text-align:center;margin-bottom:12px;border:1px solid #7c3aed;}
+.debate-topic-en{font-size:0.95rem;font-weight:900;color:white;margin-bottom:4px;}
+.debate-topic-kr{font-size:0.78rem;color:#b48aff;}
+.debate-round{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;border-left:3px solid #7c3aed;}
+.debate-round-label{font-size:0.72rem;font-weight:900;color:#b48aff;margin-bottom:6px;}
+.debate-textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;resize:none;outline:none;line-height:1.6;margin-top:4px;}
+.debate-textarea:focus{border-color:#7c3aed;}
+.phrase-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.phrase{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:0.75rem;font-weight:700;cursor:pointer;color:var(--sub);}
+.owui-btn{background:linear-gradient(135deg,#7c3aed,#4B1F79);color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:8px;}
+.complete-card{background:linear-gradient(135deg,#0d0a1e,#1a0d2e);border:2px solid #7c3aed;border-radius:20px;padding:24px;text-align:center;margin-bottom:20px;display:none;}
+</style>
+</head>
+<body>
+
+<div id="tt-overlay" onclick="closeTT()"></div>
+<div class="tt-wrap" id="tt-wrap">
+  <div class="tt-box" id="tt-box">
+    <button class="tt-close" onclick="closeTT()">✕</button>
+    <div class="tt-tag" id="tt-tag"></div>
+    <div class="tt-title" id="tt-title"></div>
+    <div class="tt-desc" id="tt-desc"></div>
+    <div class="tt-ex" id="tt-ex"></div>
+    <div class="tt-links">
+      <a class="tt-gram-link" id="tt-gram-link" href="https://cecenglishcamp.github.io/GrammarBaseCamp/index.html" target="_blank"></a>
+    </div>
+  </div>
+</div>
+
+<div class="hd">
+  <div class="hd-left">
+    <div class="hd-logo">CEC Camp B</div>
+    <div class="hd-sub">중3 · W1 · Sherlock Holmes</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="hd-badge">중3</div>
+    <button class="xp-btn" id="xp-btn">⭐ 0 XP</button>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-week">WEEK 04 / 36 · MIDDLE SCHOOL 3</div>
+  <div class="hero-title">Sherlock Holmes</div>
+  <div class="hero-author">Arthur Conan Doyle · The Speckled Band</div>
+  <div class="hero-badges">
+    <span class="hb" style="background:#1e0d4a;color:#b48aff;border:1px solid #4a2a8e;">G52 관계절</span>
+    <span class="hb" style="background:#1e0d4a;color:#b48aff;border:1px solid #4a2a8e;">G62 분사구문</span>
+    <span class="hb" style="background:#1e0d4a;color:#b48aff;border:1px solid #4a2a8e;">G67 추측 조동사</span>
+    <span class="hb" style="background:#0a2a20;color:#5aff9a;border:1px solid #1a4a2a;">🎯 A2~B2</span>
+    <span class="hb" style="background:#2d1a4a;color:#b48aff;border:1px solid #4a2a8e;">⏱ W1~W6</span>
+  </div>
+</div>
+
+<div class="key-card">
+  <div class="key-label">KEY SENTENCE · 이번 주 핵심 표현</div>
+  <div class="key-en">"The last words she spoke were: "The speckled band.""</div>
+  <div class="key-kr">그녀가 마지막으로 한 말은 "얼룩 밴드"였어요.</div>
+  <button class="key-play" data-speak="The last words she spoke were: "The speckled band."" onclick="speak(this.dataset.speak)">▶ 발음 듣기</button>
+</div>
+
+<div class="prog-row">
+  <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:12%;"></div></div>
+  <div class="prog-label">W4 / 36</div>
+</div>
+
+<div class="container">
+
+<!-- ① 이야기 읽기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📖</div><div class="sh-title">이야기 읽기</div></div>
+  <div class="tab-row">
+    <button class="tab-btn" onclick="showStory('a1',this)">🟡 입문 (A2)</button>
+    <button class="tab-btn act-a2" onclick="showStory('a2',this)">🔵 초급 B1 ★ 기준</button>
+    <button class="tab-btn" onclick="showStory('b1',this)">🟣 중급 (B2)</button>
+  </div>
+  <div class="listen-row">
+    <button class="listen-btn" onclick="readStory()">🔊 전체 듣기</button>
+    <button class="stop-btn" onclick="speechSynthesis.cancel()">⏹ 정지</button>
+  </div>
+  <div class="notice-box">🔊 <strong style="color:#b48aff">듣기는 초급 B1 기준</strong>으로 읽어드려요.<br><span style="font-size:0.72rem;">📌 초급(B1) = 이 학년의 평균 수준. 입문(A2)은 더 쉽게, 중급(B2)은 더 어렵게 조정된 버전이에요.</span></div>
+
+  <div id="sb-a1" class="story-box">
+    <p>A frightened woman came to Holmes.<br>
+    Her name was Helen Stoner.<br>
+    Her twin sister Julia had died.<br>
+    Julia died in a strange way.<br>
+    Before she died, she said something.<br>
+    "The speckled band," Julia whispered.<br>
+    Now Helen feared for her life.<br>
+    Holmes agreed to investigate.</p>
+  </div>
+
+  <div id="sb-a2" class="story-box active">
+    <p>A young woman arrived at Baker Street very early, <span class="gram" data-id="g1">trembling with cold and fear</span>. Her name was Helen Stoner, <span class="gram" data-id="g2">whose twin sister Julia</span> had died two years before under mysterious circumstances.</p>
+    <p><span class="gram" data-id="g3">Sitting across from Holmes</span>, she described the strange night on which Julia had died. Julia, who had been perfectly healthy, had screamed in the middle of the night.</p>
+    <p><span class="gram" data-id="g4">Running to her room</span>, Helen had found her sister dying on the floor. Julia's last words, spoken in a broken whisper, were: "The speckled band."</p>
+    <p>Holmes, <span class="gram" data-id="g5">whose expression became very serious</span>, leaned forward. "Your life is in danger," he said, "<span class="gram" data-id="g6">and I think I understand why</span>."</p>
+  </div>
+
+  <div id="sb-b1" class="story-box">
+    <p>Holmes asked about the room. About the bed — was it bolted to the floor? Yes. About the bell-rope — did it actually ring a bell? No, as it happened. About the ventilator — where did it lead? To the next room. Her stepfather's room.</p>
+    <p>Helen had not noticed these things. Or rather, she had noticed them, but she had not connected them. That was the difference between her and Holmes.</p>
+    <p>Holmes said nothing about what he had deduced. He asked one final question: had any animals been kept on the estate? Yes, her stepfather kept exotic animals — including a cheetah and a baboon. And, she added, she had sometimes heard a strange low whistle in the night.</p>
+    <p>Holmes stood. "Miss Stoner," he said, "do not return to your room tonight."</p>
+    <p>His voice was very quiet. That was how Watson knew it was serious.</p>
+  </div>
+
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+    <button class="kr-toggle" onclick="toggleKr()" id="kr-btn">🇰🇷 한국어 번역 보기</button>
+    <span style="font-size:0.7rem;color:var(--sub);">※ 번역은 초급 B1 기준</span>
+  </div>
+  <div class="story-kr" id="story-kr">
+    매우 이른 아침에 젊은 여성이 공포로 떨며 왔어요. 그녀의 이름은 헬렌 스토너였는데, 쌍둥이 언니 줄리아가 2년 전에 불가사의한 상황에서 죽었어요.<br><br>홈즈와 마주 앉아 그녀는 줄리아가 죽던 이상한 밤을 묘사했어요. 방으로 달려갔을 때, 언니가 바닥에서 죽어가고 있었어요.<br><br>"당신의 목숨이 위험해요," 홈즈가 말했어요. "그리고 왜 그런지 이해할 것 같아요."
+  </div>
+</div>
+
+<!-- ② 단어 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📝</div><div class="sh-title">이번 주 단어</div></div>
+  <div class="vocab-grid">
+    <div class="vc"><div class="vc-w">mysterious </div><div class="vc-m">불가사의한, 신비로운</div><div class="vc-e">"Julia died under mysterious circumstances."</div></div>
+    <div class="vc"><div class="vc-w">circumstance </div><div class="vc-m">상황, 사정</div><div class="vc-e">"Under mysterious circumstances."</div></div>
+    <div class="vc"><div class="vc-w">ventilator </div><div class="vc-m">환기구</div><div class="vc-e">"The ventilator led to the next room."</div></div>
+    <div class="vc"><div class="vc-w">deduce </div><div class="vc-m">추론하다</div><div class="vc-e">"Holmes deduced the truth."</div></div>
+    <div class="vc"><div class="vc-w">exotic </div><div class="vc-m">이국적인, 특이한</div><div class="vc-e">"Her stepfather kept exotic animals."</div></div>
+    <div class="vc"><div class="vc-w">tremble </div><div class="vc-m">떨다</div><div class="vc-e">"She arrived trembling with fear."</div></div>
+  </div>
+</div>
+
+<!-- ③ 빈칸 채우기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">빈칸 채우기</div></div>
+  <div class="fill-sent"><span class="blank-span" id="bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span> across from Holmes, she described what happened.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'Sitting','Sitting','bl1','fr1')">Sitting</button>
+    <button class="cbtn" onclick="chkFill(this,'Sat','Sitting','bl1','fr1')">Sat</button>
+    <button class="cbtn" onclick="chkFill(this,'To sit','Sitting','bl1','fr1')">To sit</button>
+  </div>
+  <div class="fill-res" id="fr1"></div>
+  <br>
+  <div class="fill-sent">Helen Stoner, <span class="blank-span" id="bl2">&nbsp;&nbsp;&nbsp;&nbsp;</span> sister had died, came to Holmes.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'whose','whose','bl2','fr2')">whose</button>
+    <button class="cbtn" onclick="chkFill(this,'which','whose','bl2','fr2')">which</button>
+    <button class="cbtn" onclick="chkFill(this,'who','whose','bl2','fr2')">who</button>
+  </div>
+  <div class="fill-res" id="fr2"></div>
+  <br>
+
+</div>
+
+<!-- ④ 단어 받아쓰기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🎧</div><div class="sh-title">단어 받아쓰기</div></div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="Julia died under mysterious circumstances two years ago." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장 1</div><div class="dict-hint">"Julia died under ___ circumstances."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di1" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','mysterious','dr1')">
+      <button class="dict-btn" onclick="chkDict('di1','mysterious','dr1')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr1"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="The ventilator led from one room to another." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장 2</div><div class="dict-hint">"The ___ led from one room to another."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di2" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','ventilator','dr2')">
+      <button class="dict-btn" onclick="chkDict('di2','ventilator','dr2')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr2"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="She arrived trembling with cold and fear." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장 3</div><div class="dict-hint">"She arrived ___ with cold and fear."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di3" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','trembling','dr3')">
+      <button class="dict-btn" onclick="chkDict('di3','trembling','dr3')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑤ 듣고 고르기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">👂</div><div class="sh-title">듣고 고르기</div></div>
+  <button class="lc-play-btn" data-speak="Helen Stoner whose twin sister had died came to Holmes because she feared the same fate." onclick="speak(this.dataset.speak)">🔊 듣기</button>
+  <div class="lc-opts">
+    <button class="lc-opt" data-correct="true" onclick="lcCheck(this,'ok')">Helen Stoner whose twin sister had died came to Holmes because she feared the same fate.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">Helen Stoner came to Holmes to find out who had stolen her inheritance from her stepfather.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">Holmes refused to help Helen Stoner because the case involved no actual crime.</button>
+  </div>
+  <div class="lc-result" id="lc-result"></div>
+</div>
+
+<!-- ⑥ 단어 배열 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔤</div><div class="sh-title">단어 배열하기</div></div>
+  <div class="wo-wrap">
+    <div class="wo-q">🔵 초급 B1 — 관계대명사 whose를 포함한 문장을 배열하세요.</div>
+    <div class="wo-box" id="wo1-box"></div>
+    <div class="wo-pool" id="wo1-pool"></div>
+    <div class="wo-btns">
+      <button class="wo-check" onclick="woCheck('wo1','Running to her room Helen found her sister','wr1')">확인 ✓</button>
+      <button class="wo-reset" onclick="woReset('wo1')">↺ 다시</button>
+    </div>
+    <div class="wo-result" id="wr1"></div>
+  </div>
+  <div class="wo-wrap">
+    <div class="wo-q">🟣 중급 B2 — 분사구문을 포함한 문장을 배열하세요.</div>
+    <div class="wo-box" id="wo2-box"></div>
+    <div class="wo-pool" id="wo2-pool"></div>
+    <div class="wo-btns">
+      <button class="wo-check" onclick="woCheck('wo2','Helen whose sister had died feared for her life','wr2')">확인 ✓</button>
+      <button class="wo-reset" onclick="woReset('wo2')">↺ 다시</button>
+    </div>
+    <div class="wo-result" id="wr2"></div>
+  </div>
+</div>
+
+<!-- ⑦ 짝맞추기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🃏</div><div class="sh-title">짝맞추기</div></div>
+  <div class="match-grid">
+    <div class="match-col" id="match-left"></div>
+    <div class="match-col" id="match-right"></div>
+  </div>
+  <div class="match-result" id="match-result"></div>
+</div>
+
+<!-- ⑧ 받아쓰기 도전 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">받아쓰기 도전!</div></div>
+  <div style="font-size:0.75rem;color:var(--sub);margin-bottom:14px;">🎙️ 듣고 전체 문장을 입력하세요.</div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#16a34a;">A2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 1</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#16a34a;" data-speak="She was trembling with fear." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#16a34a;border-color:#16a34a;background:#1e0d4a;">"trembling"</span>
+        <span class="fd-hint-tag" style="color:#16a34a;border-color:#16a34a;background:#1e0d4a;">"fear"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd1" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd1','She was trembling with fear.','fdr1')">
+      <button class="fd-check" style="background:#16a34a;" onclick="chkFD('fd1','She was trembling with fear.','fdr1')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr1"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#7c3aed;">B1</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 2</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#7c3aed;" data-speak="Sitting across from Holmes she described the night." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#7c3aed;border-color:#7c3aed;background:#1e0d4a;">"Sitting across"</span>
+        <span class="fd-hint-tag" style="color:#7c3aed;border-color:#7c3aed;background:#1e0d4a;">"described"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd2" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd2','Sitting across from Holmes she described the night.','fdr2')">
+      <button class="fd-check" style="background:#7c3aed;" onclick="chkFD('fd2','Sitting across from Holmes she described the night.','fdr2')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr2"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#4B1F79;">B2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 3</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#4B1F79;" data-speak="Helen whose sister had died feared for her life." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#b48aff;border-color:#7c3aed;background:#1e0d4a;">"whose twin sister"</span>
+        <span class="fd-hint-tag" style="color:#b48aff;border-color:#7c3aed;background:#1e0d4a;">"feared"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd3" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd3','Helen whose sister had died feared for her life.','fdr3')">
+      <button class="fd-check" style="background:#4B1F79;" onclick="chkFD('fd3','Helen whose sister had died feared for her life.','fdr3')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑨ 이해 문제 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">이해 문제</div></div>
+  <div class="quiz-tabs">
+    <button class="qtab qa1" onclick="showQuiz('qa1',this)">🟡 입문</button>
+    <button class="qtab" onclick="showQuiz('qa2',this)">🔵 초급 B1</button>
+    <button class="qtab" onclick="showQuiz('qb1',this)">🟣 중급</button>
+  </div>
+  <div id="qa1" class="quiz-set active">
+    <div class="quiz-item"><div class="quiz-q">Q1. Where did Watson and Holmes first meet?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">a) In a laboratory at Barts Hospital</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) At 221B Baker Street</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) At a police station</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. What did Holmes say to Watson immediately?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) "Nice to meet you, doctor."</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) "The last words she spoke were: "The speckled band.""</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) "I need your help with a case."</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. What did they decide to do after their first meeting?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Work at the hospital together</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Share rooms at 221B Baker Street</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Join the police force</button>
+      </div>
+    </div>
+  </div>
+  <div id="qa2" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">Q1. How did Holmes know Watson had been in Afghanistan?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Someone had told him about Watson before they met</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) He observed physical clues: the tan, the arm, the boots</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) He had read Watson's medical file at the hospital</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. "Which seemed meaningless to most people" — what does this relative clause tell us?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">b) Holmes sees significance where others see nothing — his genius is in what he notices</button>
+        <button class="qopt" onclick="qChk(this,'no')">a) Most people are stupid and miss obvious things</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) The details really were meaningless and Holmes was wrong</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. Why does Holmes call himself a "consulting detective"?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) He works for the police full-time</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Others come to him for advice — he is not employed but consulted when needed</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) He consults books and records to solve cases</button>
+      </div>
+    </div>
+  </div>
+  <div id="qb1" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">Q1. Holmes said it "the way another person might say good morning." What does this comparison reveal?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Holmes is rude and lacks social awareness</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) What is extraordinary to Watson is routine to Holmes — his deductive ability is so natural it requires no dramatic announcement</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Holmes was trying to impress Watson with a dramatic entrance</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. Watson "dismissed the clues as ordinary." What is the thematic significance of this?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">b) The difference between Watson and Holmes is not intelligence but habit of attention — Holmes trained himself to see what others trained themselves to ignore</button>
+        <button class="qopt" onclick="qChk(this,'no')">a) Watson was not intelligent enough to be a detective</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) The clues were genuinely too small to notice</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. Why is Watson useful to Holmes if Holmes is so much smarter?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Watson provides money and resources for the investigations</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Watson does the physical work while Holmes thinks</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Watson represents the ordinary reader — through his confusion and wonder, we experience Holmes. He also provides Holmes with human connection and a moral anchor.</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑩ 에세이 (중3: CER 논증) -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">에세이 쓰기 — CER 논증</div></div>
+  <div style="background:var(--bg);border-radius:10px;padding:14px;margin-bottom:14px;">
+    <div style="font-size:0.8rem;font-weight:900;color:#b48aff;margin-bottom:10px;">📌 중3 에세이 — CER 구조</div>
+    <div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:6px;">
+      <div style="font-size:0.7rem;font-weight:900;color:#b48aff;margin-bottom:3px;">C — Claim (주장)</div>
+      <div style="font-size:0.75rem;color:var(--sub);">예) "I argue that observation is more important than intelligence because..."</div>
+    </div>
+    <div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:6px;">
+      <div style="font-size:0.7rem;font-weight:900;color:#7ab3ff;margin-bottom:3px;">E — Evidence (근거)</div>
+      <div style="font-size:0.75rem;color:var(--sub);">예) "In the story, Holmes deduces Watson's past not through genius alone, but through careful observation of physical details that others ignored."</div>
+    </div>
+    <div style="background:var(--card);border-radius:8px;padding:10px;">
+      <div style="font-size:0.7rem;font-weight:900;color:#5aff9a;margin-bottom:3px;">R — Reasoning (추론)</div>
+      <div style="font-size:0.75rem;color:var(--sub);">예) "This demonstrates that the ability to notice what others dismiss is itself a form of intelligence — one that can be trained."</div>
+    </div>
+  </div>
+  <div style="font-size:0.84rem;font-weight:700;color:white;margin-bottom:12px;">💬 주제: <strong>"How far should you go to protect someone you love, even if it means breaking rules?"</strong></div>
+  <div class="essay-line">
+    <span class="essay-num">C</span>
+    <input class="essay-input" id="es1" placeholder="I argue that... because...">
+  </div>
+  <div class="essay-line">
+    <span class="essay-num">E</span>
+    <input class="essay-input" id="es2" placeholder="In the story, Holmes... / For example,...">
+  </div>
+  <div class="essay-line">
+    <span class="essay-num">R</span>
+    <input class="essay-input" id="es3" placeholder="This demonstrates that... / This shows that...">
+  </div>
+  <button class="essay-submit" onclick="submitEssay()">📝 Open WebUI에서 피드백받기</button>
+  <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
+</div>
+
+<!-- ⑪ 디베이트 (중3: 정식 3라운드) -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">⚖️</div><div class="sh-title">디베이트 — 정식 3라운드</div></div>
+  <div class="debate-box">
+    <div class="debate-topic">
+      <div class="debate-topic-en">"Stepparents should have the same legal rights as biological parents."</div>
+      <div class="debate-topic-kr">양부모는 친부모와 같은 법적 권리를 가져야 한다.</div>
+    </div>
+
+    <div class="debate-round">
+      <div class="debate-round-label">🎤 Round 1 — Opening Statement (주장)</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">내 입장(찬성/반대)과 주된 이유를 영어로 써보세요.</div>
+      <textarea class="debate-textarea" id="round1" rows="3" placeholder="I (agree / disagree) with this statement because..."></textarea>
+    </div>
+
+    <div class="debate-round">
+      <div class="debate-round-label">⚔️ Round 2 — Rebuttal (반론)</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">상대방 입장을 인정하면서 반박하세요.</div>
+      <textarea class="debate-textarea" id="round2" rows="3" placeholder="I understand that... However, this overlooks the fact that..."></textarea>
+    </div>
+
+    <div class="debate-round">
+      <div class="debate-round-label">🏁 Round 3 — Closing (마무리)</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">내 주장을 강화하며 마무리하세요.</div>
+      <textarea class="debate-textarea" id="round3" rows="3" placeholder="In conclusion, I maintain that... because..."></textarea>
+    </div>
+
+    <div style="font-size:0.75rem;font-weight:900;color:#b48aff;margin-bottom:6px;margin-top:4px;">💡 도움이 되는 표현</div>
+    <div class="phrase-row">
+      <span class="phrase" style="background:#1e0d4a;color:#b48aff;border-color:#7c3aed;" onclick="addPhrase('round1','I argue that...')">I argue that...</span>
+      <span class="phrase" style="background:#1e0d4a;color:#b48aff;border-color:#7c3aed;" onclick="addPhrase('round2','I understand your point, but...')">I understand, but...</span>
+      <span class="phrase" style="background:#1e0d4a;color:#b48aff;border-color:#7c3aed;" onclick="addPhrase('round2','This overlooks the fact that...')">This overlooks...</span>
+      <span class="phrase" style="background:#1e0d4a;color:#b48aff;border-color:#7c3aed;" onclick="addPhrase('round3','In conclusion, I maintain...')">In conclusion...</span>
+      <span class="phrase" style="background:#0a2a15;color:#5aff9a;border-color:#16a34a;" onclick="addPhrase('round1','Furthermore,...')">Furthermore,...</span>
+      <span class="phrase" style="background:#2a0a0a;color:#ff9a9a;border-color:#dc2626;" onclick="addPhrase('round2','On the contrary,...')">On the contrary,...</span>
+    </div>
+    <button class="owui-btn" onclick="sendDebate()">⚔️ Open WebUI에서 토론하기</button>
+    <div style="font-size:0.78rem;color:var(--sub);margin-top:8px;min-height:16px;" id="debate-result"></div>
+  </div>
+</div>
+
+<!-- 회화 안내 -->
+<div class="card" style="background:linear-gradient(135deg,#0d0a1e,#1a0d2e);border:1px solid #3a1a5a;">
+  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">영어 회화 훈련</div></div>
+  <div style="font-size:0.84rem;color:var(--sub);line-height:1.8;text-align:center;padding:8px 0;">
+    디베이트가 끝나면<br>
+    <strong style="color:#b48aff">Open WebUI에서 자동으로 연결</strong>됩니다.<br>
+    <span style="font-size:0.75rem;">AI 선생님과 20분 영어 회화 훈련</span>
+  </div>
+</div>
+
+<!-- 완료 -->
+<div class="complete-card" id="complete-card">
+  <div style="font-size:2.8rem;margin-bottom:10px;">🔍</div>
+  <div style="font-size:1.2rem;font-weight:900;color:#b48aff;margin-bottom:6px;">Week 1 완료!</div>
+  <div style="font-size:0.86rem;color:var(--sub);margin-bottom:16px;line-height:1.7;">셜록 홈즈 W4 완료!<br>얼룩 밴드의 비밀이 밝혀집니다!</div>
+  <button onclick="location.href='week05.html'" style="background:#4B1F79;color:white;border:none;border-radius:20px;padding:10px 28px;font-size:0.9rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;">Week 5 시작하기 →</button>
+</div>
+
+</div>
+
+<script>
+const gramData = {
+  g1:{tag:'G62',title:'Participle Clause — trembling',desc:'tremble → trembling\n"trembling with fear" = 두려워 떨면서\n분사구문: 동시 상태 표현',ex:'A woman arrived, trembling with cold and fear.',gnum:'G62',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g2:{tag:'G52',title:'Relative Clause — whose twin sister',desc:'whose = 소유격 관계대명사\n"Helen Stoner, whose twin sister..."\n= 헬렌 스토너 (그녀의 쌍둥이 언니가)',ex:'Helen Stoner, whose twin sister Julia had died.',gnum:'G52',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g3:{tag:'G62',title:'Participle Clause — sitting',desc:'sit → sitting\n"Sitting across from Holmes"\n= 홈즈와 마주 앉아서\n= As she sat across from Holmes',ex:'Sitting across from Holmes, she described the night.',gnum:'G62',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g4:{tag:'G62',title:'Participle Clause — running',desc:'run → running\n"Running to her room"\n= 방으로 달려가면서\n분사구문: 빠른 동작 연결',ex:'Running to her room, Helen found her sister.',gnum:'G62',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g5:{tag:'G52',title:'Relative Clause — whose expression',desc:'whose = 소유격\n"Holmes, whose expression became serious"\n= 홈즈 (그의 표정이 심각해진)',ex:'Holmes, whose expression became very serious.',gnum:'G52',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g6:{tag:'G69',title:'Nominal Clause — that-clause',desc:'that절 = 명사절\n"I think that I understand why"\nthat 생략 가능\n동사의 목적어로 사용',ex:'He said that he understood why.',gnum:'G69',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'}
+};
+
+let currentGramId='';
+let xp=0;
+
+function addXP(n){
+  xp+=n;
+  document.getElementById('xp-btn').textContent='⭐ '+xp+' XP';
+  document.getElementById('prog-bar').style.width=Math.min(100,xp*2)+'%';
+  if(xp>=50&&document.getElementById('complete-card').style.display!=='block'){
+    setTimeout(()=>{
+      document.getElementById('complete-card').style.display='block';
+      document.getElementById('complete-card').scrollIntoView({behavior:'smooth'});
+    },500);
+  }
+}
+
+function speak(text){
+  if(!text)return;
+  speechSynthesis.cancel();
+  function doSpeak(){
+    const voices=speechSynthesis.getVoices();
+    const u=new SpeechSynthesisUtterance(text);
+    const prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
+    const exclude=['Alex','Fred','Daniel','Google UK English Male'];
+    const v=voices.find(v=>prefer.some(p=>v.name.includes(p))&&!exclude.some(e=>v.name.includes(e)));
+    if(v)u.voice=v;
+    u.lang='en-US';u.rate=0.85;u.pitch=1.0;u.volume=1.0;
+    speechSynthesis.speak(u);
+  }
+  if(speechSynthesis.getVoices().length>0){setTimeout(doSpeak,50);}
+  else{speechSynthesis.onvoiceschanged=()=>{setTimeout(doSpeak,50);};speechSynthesis.getVoices();}
+}
+
+function showStory(lv,btn){
+  ['a1','a2','b1'].forEach(l=>{const el=document.getElementById('sb-'+l);if(el)el.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(b=>b.className='tab-btn');
+  document.getElementById('sb-'+lv).classList.add('active');
+  btn.classList.add('act-'+lv);
+}
+function readStory(){
+  const s=document.getElementById('sb-a2');
+  if(s)speak((s.innerText||s.textContent).replace(/\s+/g,' ').trim());
+}
+function toggleKr(){
+  const kr=document.getElementById('story-kr');
+  const btn=document.getElementById('kr-btn');
+  const show=kr.style.display!=='block';
+  kr.style.display=show?'block':'none';
+  btn.textContent=show?'🇰🇷 번역 숨기기':'🇰🇷 한국어 번역 보기';
+}
+
+document.querySelectorAll('.gram').forEach(el=>{
+  el.addEventListener('click',function(e){
+    e.stopPropagation();
+    const d=gramData[this.dataset.id];if(!d)return;
+    currentGramId=this.dataset.id;
+    document.getElementById('tt-tag').textContent=d.tag;
+    document.getElementById('tt-title').textContent=d.title;
+    document.getElementById('tt-desc').textContent=d.desc;
+    document.getElementById('tt-ex').textContent=d.ex;
+    document.getElementById('tt-gram-link').textContent='📚 Grammar Base '+d.gnum+' →';
+    document.getElementById('tt-gram-link').href=d.glink;
+    const wrap=document.getElementById('tt-wrap');
+    const rect=this.getBoundingClientRect();
+    let top=rect.bottom+8,left=rect.left;
+    if(left+290>window.innerWidth)left=window.innerWidth-295;
+    if(top+200>window.innerHeight)top=rect.top-210;
+    wrap.style.top=top+'px';wrap.style.left=left+'px';
+    wrap.style.display='block';
+    document.getElementById('tt-overlay').style.display='block';
+  });
+});
+function closeTT(){
+  document.getElementById('tt-wrap').style.display='none';
+  document.getElementById('tt-overlay').style.display='none';
+}
+
+function chkFill(btn,val,ans,blId,resId){
+  btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('ok','no'));
+  const res=document.getElementById(resId);
+  if(val===ans){btn.classList.add('ok');document.getElementById(blId).textContent=val;res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(4);}
+  else{btn.classList.add('no');res.innerHTML='❌ 다시 해봐요!';res.style.color='var(--red)';}
+}
+function chkDict(inputId,ans,resId){
+  const val=document.getElementById(inputId).value.trim().toLowerCase();
+  const res=document.getElementById(resId);
+  if(val===ans.toLowerCase()){res.innerHTML='✅ 정답!';res.style.color='var(--green)';document.getElementById(inputId).style.borderColor='var(--green)';addXP(3);}
+  else{res.innerHTML='❌ 정답: <span style="color:#b48aff">'+ans+'</span>';res.style.color='var(--red)';}
+}
+function lcCheck(btn,val){
+  btn.closest('.lc-opts').querySelectorAll('.lc-opt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  document.getElementById('lc-result').textContent=val==='ok'?'✅ 정답!':'❌ 다시 들어보세요!';
+  document.getElementById('lc-result').style.color=val==='ok'?'var(--green)':'var(--red)';
+  if(val==='ok')addXP(4);
+}
+function shuffleLcOpts(){
+  document.querySelectorAll('.lc-opts').forEach(container=>{
+    const btns=Array.from(container.querySelectorAll('.lc-opt'));
+    for(let i=btns.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[btns[i],btns[j]]=[btns[j],btns[i]];}
+    btns.forEach((btn,i)=>{
+      const labels=['①','②','③'];
+      const text=btn.textContent.replace(/^[①②③]\s*/,'').trim();
+      btn.textContent=labels[i]+' '+text;
+      container.appendChild(btn);
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded',shuffleLcOpts);
+
+const woState={};
+function woAdd(id,btn,word){
+  if(btn.classList.contains('used'))return;
+  btn.classList.add('used');woState[id]=woState[id]||[];woState[id].push(word);
+  const box=document.getElementById(id+'-box');
+  const chip=document.createElement('button');
+  chip.className='wo-placed';chip.textContent=word;
+  chip.onclick=()=>{woState[id]=woState[id].filter(w=>w!==word);chip.remove();btn.classList.remove('used');};
+  box.appendChild(chip);
+}
+function woCheck(id,ans,resId){
+  const res=document.getElementById(resId);
+  if((woState[id]||[]).join(' ').trim()===ans){res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(5);}
+  else{res.innerHTML='❌ 정답: <span style="color:#b48aff">'+ans+'</span>';res.style.color='var(--red)';}
+}
+function woReset(id){
+  woState[id]=[];document.getElementById(id+'-box').innerHTML='';
+  document.getElementById(id+'-pool').querySelectorAll('.wo-chip').forEach(c=>c.classList.remove('used'));
+  const r=document.getElementById('wr'+id.replace('wo',''));if(r)r.innerHTML='';
+}
+function initWo(id,words){
+  const pool=document.getElementById(id+'-pool');
+  const sh=[...words].sort(()=>Math.random()-0.5);
+  pool.innerHTML=sh.map(w=>`<button class="wo-chip" onclick="woAdd('${id}',this,'${w}')">${w}</button>`).join('');
+}
+initWo('wo1', ["Running", "to", "her", "room", "Helen", "found", "her", "sister"]);
+initWo('wo2', ["Helen", "whose", "sister", "had", "died", "feared", "for", "her", "life"]);
+
+const matchPairs=[["mysterious", "불가사의한"], ["tremble", "떨다"], ["deduce", "추론하다"], ["exotic", "이국적인"]];
+let matchSel=null,matchDone={};
+function initMatch(){
+  const left=document.getElementById('match-left');
+  const right=document.getElementById('match-right');
+  const rs=[...matchPairs].sort(()=>Math.random()-0.5);
+  left.innerHTML=matchPairs.map(([en])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${en}</button>`).join('');
+  right.innerHTML=rs.map(([en,kr])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${kr}</button>`).join('');
+}
+function matchClick(btn,key){
+  if(btn.classList.contains('matched'))return;
+  btn.classList.remove('wrong-flash');
+  if(!matchSel){matchSel={btn,key};btn.classList.add('selected');}
+  else{
+    if(matchSel.key===key&&matchSel.btn!==btn){
+      matchSel.btn.classList.remove('selected');matchSel.btn.classList.add('matched');
+      btn.classList.add('matched');matchDone[key]=true;matchSel=null;
+      if(Object.keys(matchDone).length===matchPairs.length){
+        document.getElementById('match-result').innerHTML='🎉 모두 맞췄어요!';
+        document.getElementById('match-result').style.color='var(--green)';addXP(8);
+      }
+    }else{
+      const prev=matchSel.btn;prev.classList.remove('selected');prev.classList.add('wrong-flash');
+      btn.classList.add('wrong-flash');matchSel=null;
+      setTimeout(()=>{prev.classList.remove('wrong-flash');btn.classList.remove('wrong-flash');},500);
+    }
+  }
+}
+initMatch();
+
+function chkFD(id,ans,resId){
+  const inp=document.getElementById(id);
+  const res=document.getElementById(resId);
+  const clean=s=>s.trim().toLowerCase().replace(/[.,!?;:—]/g,'').replace(/\s+/g,' ');
+  if(clean(inp.value)===clean(ans)){
+    res.innerHTML='✅ 정답!';res.style.color='var(--green)';
+    inp.style.borderColor='var(--green)';inp.style.background='#0d1f0d';addXP(5);
+  }else{
+    res.innerHTML='❌ 정답: <span style="color:#b48aff;font-weight:800">"'+ans+'"</span>';
+    res.style.color='var(--red)';inp.style.borderColor='var(--red)';
+  }
+}
+function showQuiz(id,btn){
+  document.querySelectorAll('.quiz-set').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.qtab').forEach(b=>b.className='qtab');
+  document.getElementById(id).classList.add('active');
+  if(id==='qa1')btn.classList.add('qa1');
+  else if(id==='qa2')btn.classList.add('qa2');
+  else btn.classList.add('qb1');
+}
+function qChk(btn,val){
+  btn.closest('.quiz-opts').querySelectorAll('.qopt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  if(val==='ok')addXP(4);
+}
+function addPhrase(id,text){
+  const ta=document.getElementById(id);
+  ta.value=ta.value?ta.value+' '+text:text;
+  ta.focus();
+}
+
+function submitEssay(){
+  const c=document.getElementById('es1').value.trim();
+  const e=document.getElementById('es2').value.trim();
+  const r=document.getElementById('es3').value.trim();
+  const res=document.getElementById('essay-result');
+  if(!c||!e||!r){res.innerHTML='❗ C/E/R 세 부분을 모두 작성해주세요!';res.style.color='var(--gold)';return;}
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'중3'):'중3';
+  const essay='[C] '+c+'\n[E] '+e+'\n[R] '+r;
+  const prompt='[ESSAY] 안녕하세요! 저는 '+name+', 중학교 '+grade+'학년이에요.\nSherlock Holmes W04 CER 에세이를 썼는데 피드백 부탁드려요.\n\n'+essay;
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.innerHTML='✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
+    addXP(10);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+  });
+}
+
+function sendDebate(){
+  const r1=document.getElementById('round1').value.trim();
+  const r2=document.getElementById('round2').value.trim();
+  const r3=document.getElementById('round3').value.trim();
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'중3'):'중3';
+  const prompt='[DEBATE] 안녕하세요! 저는 '+name+', 중학교 '+grade+'학년이에요.\nSherlock Holmes W1 디베이트 주제: "Stepparents should have the same legal rights as biological parents."\n\n[Round 1 — Opening]\n'+(r1||'(아직 못 썼어요)')+'\n\n[Round 2 — Rebuttal]\n'+(r2||'(아직 못 썼어요)')+'\n\n[Round 3 — Closing]\n'+(r3||'(아직 못 썼어요)')+'\n\n피드백하고 AI 상대방으로 토론해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    document.getElementById('debate-result').innerHTML='✅ 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';
+    document.getElementById('debate-result').style.color='var(--green)';
+    addXP(8);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+  });
+}
+</script>
+</body>
+</html>

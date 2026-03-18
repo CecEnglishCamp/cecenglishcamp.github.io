@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp B — 중1 W04 · Danger on the River</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Black+Han+Sans&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1a2535;--card:#1e2e42;--card2:#192840;--border:#2a3a52;--acc:#0ea5e9;--acc2:#0369a1;--green:#16a34a;--gold:#f59e0b;--red:#dc2626;--text:#e8e8f0;--sub:#8899aa;--a1c:#16a34a;--a1b:#0d2a1a;--a2c:#0ea5e9;--a2b:#0a1e30;--b1c:#7c3aed;--b1b:#1e0d4a;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+.hd{background:linear-gradient(135deg,#0a1a2e,#102030);padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.hd-left{display:flex;align-items:center;gap:10px;}
+.hd-logo{font-family:'Black Han Sans';font-size:1rem;color:var(--acc);}
+.hd-sub{font-size:0.72rem;color:var(--sub);}
+.hd-badge{background:var(--acc2);color:white;font-size:0.7rem;font-weight:800;padding:3px 10px;border-radius:20px;}
+.xp-btn{background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;border:none;border-radius:20px;padding:5px 14px;font-size:0.8rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;}
+.hero{background:linear-gradient(135deg,#0a1a30,#102040,#0a2a20);padding:20px 16px;text-align:center;border-bottom:1px solid var(--border);}
+.hero-week{font-size:0.72rem;color:var(--sub);font-weight:700;letter-spacing:2px;margin-bottom:6px;}
+.hero-title{font-family:'Black Han Sans';font-size:1.6rem;color:white;margin-bottom:4px;}
+.hero-author{font-size:0.8rem;color:var(--sub);margin-bottom:14px;}
+.hero-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.hb{padding:4px 12px;border-radius:20px;font-size:0.68rem;font-weight:800;}
+.key-card{background:linear-gradient(135deg,#0a1e30,#102a3a);border:1px solid #1a3a5a;border-radius:16px;padding:16px;margin:12px 16px 8px;}
+.key-label{font-size:0.65rem;color:var(--sub);font-weight:700;letter-spacing:2px;margin-bottom:8px;}
+.key-en{font-size:1.05rem;font-weight:900;color:white;margin-bottom:4px;}
+.key-kr{font-size:0.82rem;color:#7ab3ff;margin-bottom:12px;}
+.key-play{background:var(--acc2);color:white;border:none;border-radius:25px;padding:8px 20px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.prog-row{display:flex;align-items:center;gap:8px;padding:8px 16px;}
+.prog-track{flex:1;background:#1a2a3a;border-radius:8px;height:6px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:8px;}
+.prog-label{font-size:0.72rem;color:var(--sub);font-weight:700;white-space:nowrap;}
+.container{max-width:680px;margin:0 auto;padding:0 12px 60px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;}
+.sh{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sh-icon{font-size:1.1rem;}.sh-title{font-size:0.88rem;font-weight:900;color:white;}
+.tab-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.tab-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.tab-btn.act-a1{background:var(--a1b);border-color:var(--a1c);color:#5aff9a;}
+.tab-btn.act-a2{background:var(--a2b);border-color:var(--a2c);color:#7ab3ff;}
+.tab-btn.act-b1{background:var(--b1b);border-color:var(--b1c);color:#b48aff;}
+.listen-row{display:flex;gap:8px;margin-bottom:10px;}
+.listen-btn{background:var(--acc2);color:white;border:none;border-radius:20px;padding:7px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.stop-btn{background:var(--card2);border:1.5px solid var(--border);color:var(--sub);border-radius:20px;padding:7px 12px;font-size:0.82rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.notice-box{background:#0a1e30;border-left:3px solid var(--acc);border-radius:0 8px 8px 0;padding:9px 14px;margin-bottom:10px;font-size:0.78rem;color:var(--sub);line-height:1.6;}
+.story-box{background:var(--card2);border-radius:10px;padding:14px;font-size:0.88rem;line-height:1.85;color:var(--text);display:none;}
+.story-box.active{display:block;}
+.story-box p{margin-bottom:10px;}
+.gram{border-bottom:2px dashed var(--gold);cursor:pointer;color:#fde68a;font-weight:700;}
+.story-kr{background:#0a0d1a;border-left:3px solid var(--acc2);border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.8;display:none;}
+.kr-toggle{background:transparent;border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:4px 12px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+#tt-overlay{position:fixed;inset:0;z-index:999;display:none;}
+.tt-wrap{position:fixed;z-index:1000;display:none;}
+.tt-box{background:#1a1a2e;border:1.5px solid var(--gold);border-radius:12px;padding:14px 16px;max-width:280px;box-shadow:0 8px 32px rgba(0,0,0,0.6);}
+.tt-tag{background:var(--gold);color:#1a1a00;font-size:0.65rem;font-weight:900;padding:2px 8px;border-radius:10px;margin-bottom:8px;display:inline-block;}
+.tt-title{font-size:0.88rem;font-weight:900;color:white;margin-bottom:6px;}
+.tt-desc{font-size:0.78rem;color:var(--sub);line-height:1.6;margin-bottom:8px;white-space:pre-line;}
+.tt-ex{background:var(--bg);border-radius:6px;padding:6px 10px;font-size:0.78rem;color:#7ab3ff;margin-bottom:10px;font-style:italic;}
+.tt-links{display:flex;gap:8px;flex-wrap:wrap;}
+.tt-gram-link{background:#1a3a1a;border:1px solid var(--green);color:#5aff9a;border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;text-decoration:none;}
+.tt-gpt-link{background:#3a1a1a;border:1px solid var(--red);color:#ff9a9a;border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;cursor:pointer;}
+.tt-close{position:absolute;top:8px;right:10px;background:transparent;border:none;color:var(--sub);font-size:1rem;cursor:pointer;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.vc{background:var(--card2);border-radius:10px;padding:10px 12px;border-left:3px solid var(--acc);}
+.vc-w{font-size:0.88rem;font-weight:900;color:white;margin-bottom:2px;}
+.vc-m{font-size:0.75rem;color:var(--sub);margin-bottom:4px;}
+.vc-e{font-size:0.72rem;color:var(--acc);font-style:italic;}
+.fill-sent{font-size:0.9rem;font-weight:700;line-height:1.7;margin-bottom:12px;color:white;}
+.blank-span{display:inline-block;min-width:60px;border-bottom:2px solid var(--acc);color:var(--acc);text-align:center;font-weight:900;}
+.choices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.cbtn{padding:7px 16px;background:var(--card2);border:1.5px solid var(--border);border-radius:20px;color:var(--text);font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.cbtn.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.cbtn.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.fill-res{font-size:0.82rem;font-weight:700;min-height:18px;}
+.dict-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:8px;}
+.dict-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.dict-play{background:var(--acc);color:white;border:none;border-radius:50%;width:36px;height:36px;font-size:0.9rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.dict-label{font-size:0.75rem;color:var(--sub);font-weight:700;}
+.dict-hint{font-size:0.78rem;color:var(--acc);font-style:italic;}
+.dict-input-row{display:flex;gap:8px;}
+.dict-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.dict-input:focus{outline:none;border-color:var(--acc);}
+.dict-btn{background:var(--acc);color:white;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.dict-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.lc-play-btn{background:var(--acc2);color:white;border:none;border-radius:25px;padding:9px 22px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;}
+.lc-opts{display:flex;flex-direction:column;gap:8px;}
+.lc-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.lc-opt.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.lc-opt.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.lc-result{margin-top:8px;font-size:0.84rem;font-weight:700;min-height:18px;}
+.wo-wrap{background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;}
+.wo-q{font-size:0.8rem;color:var(--sub);margin-bottom:8px;font-weight:700;}
+.wo-box{min-height:44px;background:var(--bg);border-radius:8px;border:1.5px dashed var(--acc);padding:6px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px;}
+.wo-pool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;}
+.wo-chip{padding:6px 13px;background:var(--acc2);color:white;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-chip.used{background:#2a2a4a;color:var(--sub);cursor:default;}
+.wo-placed{padding:6px 13px;background:var(--acc);color:white;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-btns{display:flex;gap:8px;}
+.wo-check{background:var(--acc2);color:white;border:none;padding:8px 18px;border-radius:20px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-reset{background:transparent;color:var(--sub);border:1px solid var(--border);padding:8px 12px;border-radius:20px;font-size:0.8rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-result{font-size:0.8rem;font-weight:700;margin-top:6px;min-height:16px;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.match-col{display:flex;flex-direction:column;gap:6px;}
+.match-item{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;color:var(--text);transition:all 0.15s;}
+.match-item.selected{border-color:var(--acc);background:#0a1e30;color:#7ab3ff;}
+.match-item.matched{border-color:var(--green);background:#0d2a1a;color:#5aff9a;cursor:default;}
+.match-item.wrong-flash{border-color:var(--red);background:#3a0d0d;}
+.match-result{font-size:0.84rem;font-weight:700;min-height:18px;text-align:center;}
+.fd-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;}
+.fd-level-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fd-badge{color:white;font-size:0.7rem;font-weight:900;padding:2px 10px;border-radius:20px;}
+.fd-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.fd-play{color:white;border:none;border-radius:20px;padding:6px 14px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-hints{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.fd-hint-label{font-size:0.7rem;color:var(--sub);font-weight:700;}
+.fd-hint-tag{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid;}
+.fd-input-row{display:flex;gap:8px;}
+.fd-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.fd-input:focus{outline:none;border-color:var(--acc);}
+.fd-check{color:white;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.quiz-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.qtab{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.qa1{background:var(--a1b);border-color:var(--a1c);color:#5aff9a;}
+.qa2{background:var(--a2b);border-color:var(--a2c);color:#7ab3ff;}
+.qb1{background:var(--b1b);border-color:var(--b1c);color:#b48aff;}
+.quiz-set{display:none;}.quiz-set.active{display:block;}
+.quiz-item{margin-bottom:14px;}
+.quiz-q{font-size:0.86rem;font-weight:800;color:white;margin-bottom:8px;}
+.quiz-opts{display:flex;flex-direction:column;gap:6px;}
+.qopt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.qopt.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.qopt.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.essay-line{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.essay-num{font-size:0.72rem;font-weight:900;color:var(--gold);width:20px;flex-shrink:0;}
+.essay-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.essay-input:focus{outline:none;border-color:var(--gold);}
+.essay-submit{background:var(--gold);color:#1a1a00;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:4px;}
+.complete-card{background:linear-gradient(135deg,#0a2a3a,#0a1e30);border:2px solid var(--acc);border-radius:20px;padding:24px;text-align:center;margin-bottom:20px;display:none;}
+</style>
+</head>
+<body>
+<div id="tt-overlay" onclick="closeTooltip()"></div>
+<div class="tt-wrap" id="tt-wrap">
+  <div class="tt-box" id="tt-box" style="position:relative;">
+    <button class="tt-close" onclick="closeTooltip()">✕</button>
+    <div class="tt-tag" id="tt-tag"></div>
+    <div class="tt-title" id="tt-title"></div>
+    <div class="tt-desc" id="tt-desc"></div>
+    <div class="tt-ex" id="tt-ex"></div>
+    <div class="tt-links">
+      <a class="tt-gram-link" id="tt-gram-link" href="https://cecenglishcamp.github.io/GrammarBaseCamp/index.html" target="_blank"></a>
+      <button class="tt-gpt-link" onclick="gramToGPT()">💬 ChatGPT</button>
+    </div>
+  </div>
+</div>
+
+<div class="hd">
+  <div class="hd-left">
+    <div class="hd-logo">CEC Camp B</div>
+    <div class="hd-sub">중1 · W04 · Danger on the River</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="hd-badge">중1</div>
+    <button class="xp-btn" id="xp-btn">⭐ 0 XP</button>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-week">WEEK 04 / 36 · MIDDLE SCHOOL 1</div>
+  <div class="hero-title">Huckleberry Finn</div>
+  <div class="hero-author">Mark Twain · The Storm That Changed Everything</div>
+  <div class="hero-badges">
+    <span class="hb" style="background:#0a2a20;color:#5aff9a;border:1px solid #1a4a2a;">G05 불규칙과거</span>
+    <span class="hb" style="background:#0a2a20;color:#5aff9a;border:1px solid #1a4a2a;">G26 접속사 but/and</span>
+    <span class="hb" style="background:#0a2a20;color:#5aff9a;border:1px solid #1a4a2a;">G23 조동사 must</span>
+    <span class="hb" style="background:#2d1a4a;color:#b48aff;border:1px solid #4a2a8e;">⏱ W1~W6</span>
+  </div>
+</div>
+
+<div class="key-card">
+  <div class="key-label">KEY SENTENCE · 이번 주 핵심 표현</div>
+  <div class="key-en">"We must keep moving. It is too dangerous to stop."</div>
+  <div class="key-kr">우리는 계속 가야 해. 멈추기엔 너무 위험해.</div>
+  <button class="key-play" onclick="speak('We must keep moving. It is too dangerous to stop.')">▶ 발음 듣기</button>
+</div>
+
+<div class="prog-row">
+  <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:11%;"></div></div>
+  <div class="prog-label">W04 / 36</div>
+</div>
+
+<div class="container">
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">📖</div><div class="sh-title">이야기 읽기</div></div>
+  <div class="tab-row">
+    <button class="tab-btn" onclick="showStory('a1',this)">🟡 입문 (A2)</button>
+    <button class="tab-btn act-a2" onclick="showStory('a2',this)">🔵 초급 B1 ★ 기준</button>
+    <button class="tab-btn" onclick="showStory('b1',this)">🟣 중급 (B2)</button>
+  </div>
+  <div class="listen-row">
+    <button class="listen-btn" onclick="readStory()">🔊 전체 듣기</button>
+    <button class="stop-btn" onclick="speechSynthesis.cancel()">⏹ 정지</button>
+  </div>
+  <div class="notice-box">🔊 <strong style="color:var(--acc)">듣기는 초급 B1 기준</strong>으로 읽어드려요.<br><span style="font-size:0.72rem;">📌 초급(B1) = 이 학년의 평균 수준. 입문(A2)은 더 쉽게, 중급(B2)은 더 어렵게 조정된 버전이에요.</span></div>
+  <div id="sb-a1" class="story-box"><p>One night a big storm came.<br>
+    The river moved very fast.<br>
+    The raft shook from side to side.<br>
+    Huck and Jim held on tight.<br>
+    Jim pulled Huck back to safety.<br>
+    After the storm, they did not know where they were.<br>
+    They saw a small town on the shore.</p></div>
+  <div id="sb-a2" class="story-box active">
+    <p>One night, a strong storm <span class="gram" data-id="g1">came</span> without warning. The rain <span class="gram" data-id="g2">fell</span> hard and the wind <span class="gram" data-id="g3">shook</span> the trees on the shore.</p>
+    <p>The river <span class="gram" data-id="g4">moved</span> fast and pushed the raft from side to side. Huck <span class="gram" data-id="g5">held</span> on tight and shouted to Jim over the noise.</p>
+    <p>Jim grabbed a rope and pulled Huck back onto the raft. They were both very scared, but they did not give up.</p>
+    <p>When morning came, they did not know where they were. They saw a small town on the bank of the river. "Should we stop?" Huck asked. "No," said Jim. "It is too dangerous. We must keep moving."</p>
+  </div>
+  <div id="sb-b1" class="story-box">
+    <p>The storm arrived without warning, as storms on the Mississippi often did.</p>
+    <p>One moment the river was smooth and still. The next, the sky cracked open and the rain came down in sheets. The raft, which had felt solid an hour before, suddenly seemed very small.</p>
+    <p>Huck grabbed the side and held on. A wave hit the raft and swept him toward the edge. He felt himself slipping.</p>
+    <p>"Hold on!" Jim shouted, throwing a rope.</p>
+    <p>Huck caught it. His hands were shaking.</p>
+    <p>For an hour, they fought the storm together — silent, frightened, determined. And then, as suddenly as it had begun, it stopped.</p>
+    <p>In the grey morning light, they looked around at an unfamiliar river. A small town sat on the western bank.</p>
+    <p>"Should we ask for help?" Huck said.</p>
+    <p>Jim was quiet for a moment. "No," he said at last. "We must keep moving. A town means people. People means questions."</p>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+    <button class="kr-toggle" onclick="toggleKr()" id="kr-btn">🇰🇷 한국어 번역 보기</button>
+    <span style="font-size:0.7rem;color:var(--sub);">※ 번역은 초급 B1 기준</span>
+  </div>
+  <div class="story-kr" id="story-kr">폭풍은 경고 없이 왔어요. 미시시피 강의 폭풍이 늘 그렇듯이.<br><br>
+한 순간 강은 잔잔했어요. 다음 순간 하늘이 열리고 비가 쏟아졌어요. 한 시간 전만 해도 단단하게 느껴지던 뗏목이 갑자기 아주 작아 보였어요.<br><br>
+헉은 옆을 잡고 버텼어요. 파도가 뗏목을 치며 그를 가장자리로 밀었어요. 미끄러지는 걸 느꼈어요.<br>
+"잡아!" 짐이 로프를 던지며 소리쳤어요. 헉이 잡았어요. 손이 떨렸어요.<br><br>
+한 시간 동안 그들은 함께 폭풍과 싸웠어요 — 조용히, 두려워하며, 결연하게. 그리고 시작할 때처럼 갑자기 멈췄어요.<br><br>
+"도움을 요청할까요?" 헉이 말했어요. "아니," 짐이 마침내 말했어요. "계속 가야 해. 마을은 사람들을 의미하고, 사람들은 질문을 의미해."</div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">📝</div><div class="sh-title">이번 주 단어</div></div>
+  <div class="vocab-grid">
+    <div class="vc"><div class="vc-w">warning</div><div class="vc-m">경고</div><div class="vc-e">"The storm came without warning."</div></div>
+    <div class="vc"><div class="vc-w">grabbed</div><div class="vc-m">잡았다</div><div class="vc-e">"Jim grabbed the rope."</div></div>
+    <div class="vc"><div class="vc-w">shaking</div><div class="vc-m">떨리는</div><div class="vc-e">"His hands were shaking."</div></div>
+    <div class="vc"><div class="vc-w">determined</div><div class="vc-m">결연한</div><div class="vc-e">"They were silent and determined."</div></div>
+    <div class="vc"><div class="vc-w">unfamiliar</div><div class="vc-m">낯선</div><div class="vc-e">"They saw an unfamiliar river."</div></div>
+    <div class="vc"><div class="vc-w">western</div><div class="vc-m">서쪽의</div><div class="vc-e">"A town sat on the western bank."</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">빈칸 채우기</div></div>
+  <div class="fill-sent">The wind <span class="blank-span" id="bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span> the trees on the shore.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'shook','shook','bl1','fr1')">shook</button>
+    <button class="cbtn" onclick="chkFill(this,'pushed','shook','bl1','fr1')">pushed</button>
+    <button class="cbtn" onclick="chkFill(this,'hit','shook','bl1','fr1')">hit</button>
+  </div>
+  <div class="fill-res" id="fr1"></div>
+  <br>
+  <div class="fill-sent">We <span class="blank-span" id="bl2">&nbsp;&nbsp;&nbsp;&nbsp;</span> keep moving — it is too dangerous to stop.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'must','must','bl2','fr2')">must</button>
+    <button class="cbtn" onclick="chkFill(this,'can','must','bl2','fr2')">can</button>
+    <button class="cbtn" onclick="chkFill(this,'will','must','bl2','fr2')">will</button>
+  </div>
+  <div class="fill-res" id="fr2"></div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">🎧</div><div class="sh-title">단어 받아쓰기</div></div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" onclick="speak('The storm came without warning.')">▶</button>
+      <div><div class="dict-label">문장 1</div><div class="dict-hint">"The storm came without ______."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di1" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','warning','dr1')">
+      <button class="dict-btn" onclick="chkDict('di1','warning','dr1')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr1"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" onclick="speak('Jim grabbed a rope and pulled Huck back.')">▶</button>
+      <div><div class="dict-label">문장 2</div><div class="dict-hint">"Jim ______ a rope and pulled Huck back."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di2" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','grabbed','dr2')">
+      <button class="dict-btn" onclick="chkDict('di2','grabbed','dr2')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr2"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" onclick="speak('They were silent and determined.')">▶</button>
+      <div><div class="dict-label">문장 3</div><div class="dict-hint">"They were silent and ______."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di3" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','determined','dr3')">
+      <button class="dict-btn" onclick="chkDict('di3','determined','dr3')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr3"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">👂</div><div class="sh-title">듣고 고르기</div></div>
+  <button class="lc-play-btn" onclick="speak('The storm hit the raft hard, but Huck held on and Jim pulled him back to safety.')">🔊 듣기</button>
+  <div class="lc-opts">
+    <button class="lc-opt" data-correct="true" onclick="lcCheck(this,'ok')">The storm hit the raft hard, but Huck held on and Jim pulled him back to safety.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">Huck and Jim stopped at a town to get help after the storm.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">The storm destroyed the raft and they had to swim to shore.</button>
+  </div>
+  <div class="lc-result" id="lc-result"></div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔤</div><div class="sh-title">단어 배열하기</div></div>
+  <div class="wo-wrap">
+    <div class="wo-q">🔵 초급 B1 — 올바른 순서로 배열하세요.</div>
+    <div class="wo-box" id="wo1-box"></div>
+    <div class="wo-pool" id="wo1-pool"></div>
+    <div class="wo-btns">
+      <button class="wo-check" onclick="woCheck('wo1',"Huck held on tight and shouted",'wr1')">확인 ✓</button>
+      <button class="wo-reset" onclick="woReset('wo1')">↺ 다시</button>
+    </div>
+    <div class="wo-result" id="wr1"></div>
+  </div>
+  <div class="wo-wrap">
+    <div class="wo-q">🟣 중급 B2 — 더 어려운 문장을 배열하세요.</div>
+    <div class="wo-box" id="wo2-box"></div>
+    <div class="wo-pool" id="wo2-pool"></div>
+    <div class="wo-btns">
+      <button class="wo-check" onclick="woCheck('wo2',"They were both scared but did not give up",'wr2')">확인 ✓</button>
+      <button class="wo-reset" onclick="woReset('wo2')">↺ 다시</button>
+    </div>
+    <div class="wo-result" id="wr2"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">🃏</div><div class="sh-title">짝맞추기</div></div>
+  <div class="match-grid">
+    <div class="match-col" id="match-left"></div>
+    <div class="match-col" id="match-right"></div>
+  </div>
+  <div class="match-result" id="match-result"></div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">받아쓰기 도전!</div></div>
+  <div style="font-size:0.75rem;color:var(--sub);margin-bottom:14px;">🎙️ 듣고 전체 문장을 입력하세요.</div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#16a34a;">A2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 1</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#16a34a;" onclick="speak('A big storm came.')">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#16a34a;border-color:#16a34a;background:#0d1a2a;">"storm"</span>
+        <span class="fd-hint-tag" style="color:#16a34a;border-color:#16a34a;background:#0d1a2a;">"came"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd1" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd1','A big storm came.','fdr1')">
+      <button class="fd-check" style="background:#16a34a;" onclick="chkFD('fd1','A big storm came.','fdr1')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr1"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#2563eb;">B1</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 2</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#2563eb;" onclick="speak('Huck held on tight and shouted to Jim.')">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#2563eb;border-color:#2563eb;background:#0d1a2a;">"held on"</span>
+        <span class="fd-hint-tag" style="color:#2563eb;border-color:#2563eb;background:#0d1a2a;">"shouted"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd2" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd2','Huck held on tight and shouted to Jim.','fdr2')">
+      <button class="fd-check" style="background:#2563eb;" onclick="chkFD('fd2','Huck held on tight and shouted to Jim.','fdr2')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr2"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#7c3aed;">B2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 3</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#7c3aed;" onclick="speak('A town means people, and people means questions.')">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#7c3aed;border-color:#7c3aed;background:#0d1a2a;">"means"</span>
+        <span class="fd-hint-tag" style="color:#7c3aed;border-color:#7c3aed;background:#0d1a2a;">"questions"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd3" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd3','A town means people, and people means questions.','fdr3')">
+      <button class="fd-check" style="background:#7c3aed;" onclick="chkFD('fd3','A town means people, and people means questions.','fdr3')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr3"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">이해 문제</div></div>
+  <div class="quiz-tabs">
+    <button class="qtab qa1" onclick="showQuiz('qa1',this)">🟡 입문</button>
+    <button class="qtab" onclick="showQuiz('qa2',this)">🔵 초급 B1</button>
+    <button class="qtab" onclick="showQuiz('qb1',this)">🟣 중급</button>
+  </div>
+  <div id="qa1" class="quiz-set active">
+    <div class="quiz-item"><div class="quiz-q">What happened one night?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) They found a town</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) A strong storm came</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) They met strangers</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">What did Jim do to help Huck?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">a) He threw a rope to Huck</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) He shouted at the storm</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) He steered the raft</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Why did they not stop at the town?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) The town was too small</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) They were not tired</button>
+        <button class="qopt" onclick="qChk(this,'ok')">c) It was too dangerous — people might ask questions</button>
+      </div>
+    </div>
+  </div>
+  <div id="qa2" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">Why was the raft dangerous during the storm?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) It was too heavy</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) The fast water pushed it from side to side and could throw them off</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) The raft had a hole in it</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">"A town means people. People means questions." What is Jim afraid of?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) He is shy</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) He doesn't know the area</button>
+        <button class="qopt" onclick="qChk(this,'ok')">c) Someone might recognise him as a runaway slave and report them</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">How did Huck and Jim get through the storm?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">a) They worked together — Huck held on and Jim threw the rope</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) They jumped into the water and swam</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) They hid under the raft</button>
+      </div>
+    </div>
+  </div>
+  <div id="qb1" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">"The raft, which had felt solid an hour before, suddenly seemed very small." What technique is this?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Metaphor</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Contrast — the comparison shows how quickly danger can change your perspective</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Flashback</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Jim says "A town means people. People means questions." How is this different from how Huck thinks?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Jim is smarter than Huck</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) Huck wants help but Jim doesn't</button>
+        <button class="qopt" onclick="qChk(this,'ok')">c) Huck sees a town as possibility; Jim sees it as threat — the same thing looks completely different depending on who you are</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">"Silent, frightened, determined." Why does the author use three words here?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">a) Three words working together capture a complex emotional state — fear and resolve existing at the same time</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) The author was practising adjectives</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) It shows how long the storm lasted</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">에세이 쓰기 (3문장 구조)</div></div>
+  <div style="background:var(--bg);border-radius:10px;padding:12px;margin-bottom:12px;">
+    <div style="font-size:0.75rem;color:var(--gold);font-weight:900;margin-bottom:8px;">📌 3문장 구조</div>
+    <div style="font-size:0.75rem;color:var(--sub);line-height:1.7;">① 주제문 — I think...<br>② 근거/예시 — For example,...<br>③ 결론 — That is why...</div>
+  </div>
+  <div style="font-size:0.84rem;font-weight:700;color:white;margin-bottom:12px;">💬 주제: <strong>"Is it better to ask for help or to solve problems alone?"</strong></div>
+  <div class="essay-line"><span class="essay-num">①</span><input class="essay-input" id="es1" placeholder="I think..."></div>
+  <div class="essay-line"><span class="essay-num">②</span><input class="essay-input" id="es2" placeholder="For example,..."></div>
+  <div class="essay-line"><span class="essay-num">③</span><input class="essay-input" id="es3" placeholder="That is why..."></div>
+  <button class="essay-submit" onclick="submitEssay()">📝 Open WebUI에서 피드백받기</button>
+  <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
+</div>
+
+<div class="card" style="background:linear-gradient(135deg,#0a1e30,#102840);border:1px solid #1a3a5a;">
+  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">영어 회화 훈련</div></div>
+  <div style="font-size:0.84rem;color:var(--sub);line-height:1.8;text-align:center;padding:8px 0;">
+    에세이 피드백이 끝나면<br>
+    <strong style="color:var(--acc)">Open WebUI에서 자동으로 연결</strong>됩니다.<br>
+    <span style="font-size:0.75rem;">AI 선생님과 20분 영어 회화 훈련</span>
+  </div>
+</div>
+
+<div class="complete-card" id="complete-card">
+  <div style="font-size:2.8rem;margin-bottom:10px;">⛈️</div>
+  <div style="font-size:1.2rem;font-weight:900;color:var(--acc);margin-bottom:6px;">Week 04 완료!</div>
+  <div style="font-size:0.86rem;color:var(--sub);margin-bottom:16px;line-height:1.7;">폭풍을 이겨냈어요! 헉과 짐의 우정은 더 강해졌어요!</div>
+  <div style="background:var(--card2);border-radius:12px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+    <div>
+      <div style="font-size:0.7rem;color:var(--sub);font-weight:700;">다음 주</div>
+      <div style="font-size:0.86rem;font-weight:800;color:white;">Week 5 — Huck Makes a Choice</div>
+      <div style="font-size:0.72rem;color:var(--sub);margin-top:2px;">가장 어려운 선택이 기다려요!</div>
+    </div>
+    <button style="background:var(--acc);color:white;border:none;padding:8px 16px;border-radius:8px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;" onclick="location.href='week05.html'">W05 →</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+const gramData = {
+  g1:{tag:"G05 Simple Past",title:"came (불규칙 과거)",desc:"come → came\ngo → went\nrun → ran\nfall → fell",ex:"\"The storm came without warning.\"",gnum:"G05",glink:"https://cecenglishcamp.github.io/GrammarBaseCamp/index.html"},
+  g2:{tag:"G05 Simple Past",title:"fell (불규칙 과거)",desc:"fall → fell\nfeel → felt\ntell → told\nsell → sold",ex:"\"The rain fell hard.\"",gnum:"G05",glink:"https://cecenglishcamp.github.io/GrammarBaseCamp/index.html"},
+  g3:{tag:"G05 Simple Past",title:"shook (불규칙 과거)",desc:"shake → shook\ntake → took\nmake → made\nbreak → broke",ex:"\"The wind shook the trees.\"",gnum:"G05",glink:"https://cecenglishcamp.github.io/GrammarBaseCamp/index.html"},
+  g4:{tag:"G05 Simple Past",title:"moved (규칙 과거)",desc:"move → moved\n규칙 동사: 동사 + d/ed\nlive → lived\nuse → used",ex:"\"The river moved fast.\"",gnum:"G05",glink:"https://cecenglishcamp.github.io/GrammarBaseCamp/index.html"},
+  g5:{tag:"G05 Simple Past",title:"held (불규칙 과거)",desc:"hold → held\nbuild → built\nsend → sent\nspend → spent",ex:"\"Huck held on tight.\"",gnum:"G05",glink:"https://cecenglishcamp.github.io/GrammarBaseCamp/index.html"}
+};
+
+let currentGramId='';
+let voiceCache=null;
+function getBestVoice(){
+  if(voiceCache) return voiceCache;
+  const voices=speechSynthesis.getVoices();
+  if(!voices.length) return null;
+  const prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
+  const exclude=['Alex','Fred','Daniel','Google UK English Male'];
+  for(const name of prefer){const v=voices.find(v=>v.name.includes(name));if(v){voiceCache=v;return v;}}
+  voiceCache=voices.find(v=>v.lang==='en-US'&&!exclude.some(e=>v.name.includes(e)))||voices[0];
+  return voiceCache;
+}
+function speak(text){
+  if(!text) return;
+  speechSynthesis.cancel();
+  function doSpeak(){
+    const voices=speechSynthesis.getVoices();
+    const u=new SpeechSynthesisUtterance(text);
+    const prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
+    const exclude=['Alex','Fred','Daniel','Google UK English Male'];
+    const v=voices.find(v=>prefer.some(p=>v.name.includes(p))&&!exclude.some(e=>v.name.includes(e)));
+    if(v)u.voice=v;
+    u.lang='en-US';u.rate=0.85;u.pitch=1.0;u.volume=1.0;
+    speechSynthesis.speak(u);
+  }
+  if(speechSynthesis.getVoices().length>0){
+    setTimeout(doSpeak,50);
+  } else {
+    speechSynthesis.onvoiceschanged=()=>{setTimeout(doSpeak,50);};
+    speechSynthesis.getVoices();
+  }
+}
+speechSynthesis.onvoiceschanged=()=>{voiceCache=null;};
+
+let xp=0;
+function addXP(n){
+  xp+=n;
+  document.getElementById('xp-btn').textContent='⭐ '+xp+' XP';
+  document.getElementById('prog-bar').style.width=Math.min(100,xp*2)+'%';
+  if(xp>=50&&document.getElementById('complete-card').style.display!=='block'){
+    setTimeout(()=>{document.getElementById('complete-card').style.display='block';document.getElementById('complete-card').scrollIntoView({behavior:'smooth'});},500);
+  }
+}
+
+function showStory(lv,btn){
+  ['a1','a2','b1'].forEach(l=>{const el=document.getElementById('sb-'+l);if(el)el.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(b=>b.className='tab-btn');
+  document.getElementById('sb-'+lv).classList.add('active');
+  btn.classList.add('act-'+lv);
+}
+function readStory(){
+  const s=document.getElementById('sb-a2');
+  if(s) speak((s.innerText||s.textContent).replace(/\s+/g,' ').trim());
+}
+function toggleKr(){
+  const kr=document.getElementById('story-kr');
+  const btn=document.getElementById('kr-btn');
+  const show=kr.style.display!=='block';
+  kr.style.display=show?'block':'none';
+  btn.textContent=show?'🇰🇷 번역 숨기기':'🇰🇷 한국어 번역 보기';
+}
+
+document.querySelectorAll('.gram').forEach(el=>{
+  el.addEventListener('click',function(e){
+    e.stopPropagation();
+    const d=gramData[this.dataset.id];if(!d)return;
+    currentGramId=this.dataset.id;
+    document.getElementById('tt-tag').textContent=d.tag;
+    document.getElementById('tt-title').textContent=d.title;
+    document.getElementById('tt-desc').textContent=d.desc;
+    document.getElementById('tt-ex').textContent=d.ex;
+    document.getElementById('tt-gram-link').textContent='📚 Grammar Base '+d.gnum+' →';
+    document.getElementById('tt-gram-link').href=d.glink;
+    const wrap=document.getElementById('tt-wrap');
+    const rect=this.getBoundingClientRect();
+    let top=rect.bottom+8,left=rect.left;
+    if(left+290>window.innerWidth)left=window.innerWidth-295;
+    if(top+200>window.innerHeight)top=rect.top-210;
+    wrap.style.top=top+'px';wrap.style.left=left+'px';
+    wrap.style.display='block';
+    document.getElementById('tt-overlay').style.display='block';
+  });
+});
+function closeTooltip(){
+  document.getElementById('tt-wrap').style.display='none';
+  document.getElementById('tt-overlay').style.display='none';
+}
+function gramToGPT(){
+  const d=gramData[currentGramId];if(!d)return;
+  const p='안녕! 중학교 1학년인데 이 문법이 이해 안 돼.\n문법: '+d.title+' ('+d.tag+')\n예문: "'+d.ex+'"\n쉽고 재미있게 설명해줘! 예문도 2개 더 만들어줘!';
+  navigator.clipboard.writeText(p).then(()=>window.open('https://chatgpt.com','_blank'));
+  closeTooltip();
+}
+
+function chkFill(btn,val,ans,blId,resId){
+  btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val===ans?'ok':'no');
+  document.getElementById(blId).textContent=val;
+  const res=document.getElementById(resId);
+  res.textContent=val===ans?'✅ 정답!':'❌ 다시 해봐요!';
+  res.style.color=val===ans?'var(--green)':'var(--red)';
+  if(val===ans)addXP(4);
+}
+function chkDict(inputId,ans,resId){
+  const val=document.getElementById(inputId).value.trim().toLowerCase();
+  const res=document.getElementById(resId);
+  if(val===ans.toLowerCase()){res.innerHTML='✅ 정답!';res.style.color='var(--green)';document.getElementById(inputId).style.borderColor='var(--green)';addXP(3);}
+  else{res.innerHTML='❌ 정답: <span style="color:var(--acc)">'+ans+'</span>';res.style.color='var(--red)';}
+}
+function lcCheck(btn,val){
+  btn.closest('.lc-opts').querySelectorAll('.lc-opt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  document.getElementById('lc-result').textContent=val==='ok'?'✅ 정답!':'❌ 다시 들어보세요!';
+  document.getElementById('lc-result').style.color=val==='ok'?'var(--green)':'var(--red)';
+  if(val==='ok')addXP(4);
+}
+
+const woState={};
+function woAdd(id,btn,word){
+  if(btn.classList.contains('used'))return;
+  btn.classList.add('used');
+  woState[id]=woState[id]||[];
+  woState[id].push(word);
+  const box=document.getElementById(id+'-box');
+  const chip=document.createElement('button');
+  chip.className='wo-placed';chip.textContent=word;
+  chip.onclick=()=>{woState[id]=woState[id].filter(w=>w!==word);chip.remove();btn.classList.remove('used');};
+  box.appendChild(chip);
+}
+function woCheck(id,ans,resId){
+  const res=document.getElementById(resId);
+  if((woState[id]||[]).join(' ').trim()===ans){res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(5);}
+  else{res.innerHTML='❌ 정답: <span style="color:var(--acc)">'+ans+'</span>';res.style.color='var(--red)';}
+}
+function woReset(id){
+  woState[id]=[];
+  document.getElementById(id+'-box').innerHTML='';
+  document.getElementById(id+'-pool').querySelectorAll('.wo-chip').forEach(b=>b.classList.remove('used'));
+}
+function initWo(id,words){
+  const pool=document.getElementById(id+'-pool');
+  const sh=[...words].sort(()=>Math.random()-0.5);
+  pool.innerHTML=sh.map(wrd=>'<button class="wo-chip" onclick="woAdd(\''+id+'\',this,\''+wrd+'\')">'+wrd+'</button>').join('');
+}
+initWo('wo1',["Huck","held","on","tight","and","shouted"]);
+initWo('wo2',["They","were","both","scared","but","did","not","give","up"]);
+
+const matchPairs=[["warning","경고"],["grabbed","잡았다"],["shaking","떨리는"],["determined","결연한"]];
+let matchSel=null,matchDone={};
+function initMatch(){
+  const left=document.getElementById('match-left');
+  const right=document.getElementById('match-right');
+  const rs=[...matchPairs].sort(()=>Math.random()-0.5);
+  left.innerHTML=matchPairs.map(([en])=>'<button class="match-item" onclick="matchClick(this,\''+en+'\')">'+en+'</button>').join('');
+  right.innerHTML=rs.map(([en,kr])=>'<button class="match-item" onclick="matchClick(this,\''+en+'\')">'+kr+'</button>').join('');
+}
+function matchClick(btn,key){
+  if(btn.classList.contains('matched'))return;
+  btn.classList.remove('wrong-flash');
+  if(!matchSel){matchSel={btn,key};btn.classList.add('selected');}
+  else{
+    if(matchSel.key===key&&matchSel.btn!==btn){
+      matchSel.btn.classList.remove('selected');matchSel.btn.classList.add('matched');
+      btn.classList.add('matched');matchDone[key]=true;matchSel=null;
+      if(Object.keys(matchDone).length===matchPairs.length){
+        document.getElementById('match-result').innerHTML='🎉 모두 맞췄어요!';
+        document.getElementById('match-result').style.color='var(--green)';addXP(8);
+      }
+    }else{
+      const prev=matchSel.btn;prev.classList.remove('selected');prev.classList.add('wrong-flash');
+      btn.classList.add('wrong-flash');matchSel=null;
+      setTimeout(()=>{prev.classList.remove('wrong-flash');btn.classList.remove('wrong-flash');},500);
+    }
+  }
+}
+initMatch();
+
+function chkFD(id,ans,resId){
+  const inp=document.getElementById(id);
+  const res=document.getElementById(resId);
+  const clean=s=>s.trim().toLowerCase().replace(/[.,!?]/g,'').replace(/\s+/g,' ');
+  if(clean(inp.value)===clean(ans)){
+    res.innerHTML='✅ 정답!';res.style.color='var(--green)';
+    inp.style.borderColor='var(--green)';inp.style.background='#0d1f0d';addXP(5);
+  }else{
+    res.innerHTML='❌ 정답: <span style="color:var(--acc);font-weight:800">"'+ans+'"</span>';
+    res.style.color='var(--red)';inp.style.borderColor='var(--red)';
+  }
+}
+
+function showQuiz(id,btn){
+  document.querySelectorAll('.quiz-set').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.qtab').forEach(b=>b.className='qtab');
+  document.getElementById(id).classList.add('active');
+  if(id==='qa1')btn.classList.add('qa1');
+  else if(id==='qa2')btn.classList.add('qa2');
+  else btn.classList.add('qb1');
+}
+function qChk(btn,val){
+  btn.closest('.quiz-opts').querySelectorAll('.qopt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  if(val==='ok')addXP(4);
+}
+
+function submitEssay(){
+  const s1=document.getElementById('es1').value.trim();
+  const s2=document.getElementById('es2').value.trim();
+  const s3=document.getElementById('es3').value.trim();
+  const res=document.getElementById('essay-result');
+  if(!s1||!s2||!s3){res.innerHTML='❗ 3문장을 모두 작성해주세요!';res.style.color='var(--gold)';return;}
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'중1'):'중1';
+  const essay='① '+s1+'\n② '+s2+'\n③ '+s3;
+  const prompt='[ESSAY] 안녕하세요! 저는 '+name+', 중학교 '+grade+'학년이에요.\nHuckleberry Finn W04 에세이를 썼는데 피드백 부탁드려요.\n\n'+essay;
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.innerHTML='✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
+    addXP(10);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+  });
+}
+
+function shuffleLcOpts(){
+  const containers=document.querySelectorAll('.lc-opts');
+  containers.forEach(container=>{
+    const btns=Array.from(container.querySelectorAll('.lc-opt'));
+    for(let i=btns.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [btns[i],btns[j]]=[btns[j],btns[i]];
+    }
+    btns.forEach((btn,i)=>{
+      const labels=['①','②','③'];
+      const text=btn.textContent.trim();
+      btn.textContent=labels[i]+' '+text;
+      container.appendChild(btn);
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded', shuffleLcOpts);
+</script>
+</body>
+</html>
