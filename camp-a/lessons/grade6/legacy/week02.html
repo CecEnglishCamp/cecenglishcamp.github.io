@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G6 Week 2 — A Little Princess | CEC English Camp A</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito',sans-serif;background:#fdf8ff;min-height:100vh;}
+.topbar{background:linear-gradient(90deg,#3a1a6e,#6a2aae);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar-sub{color:#d4b0ff;font-size:0.75rem;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.ep-badge{background:rgba(255,255,255,0.15);color:white;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;}
+.xp-badge{background:#f97316;color:white;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;}
+.xp-bar-wrap{height:4px;background:rgba(255,255,255,0.2);border-radius:2px;margin-top:4px;width:80px;}
+.xp-fill{height:100%;background:#ffd60a;border-radius:2px;width:0%;transition:width 0.6s ease;}
+.container{max-width:780px;margin:0 auto;padding:24px 16px;}
+.card{background:white;border-radius:20px;overflow:hidden;margin-bottom:20px;box-shadow:0 4px 24px rgba(0,0,0,0.07);}
+.hero-card{background:linear-gradient(135deg,#1a0a2e,#3a1a6e);}
+.hero-img{width:100%;height:200px;background:linear-gradient(135deg,#2a0a4e,#1a0a2e);display:flex;align-items:center;justify-content:center;font-size:6rem;}
+.hero-badges{padding:12px 20px;display:flex;gap:8px;}
+.hb{padding:3px 12px;border-radius:10px;font-size:0.75rem;font-weight:700;}
+.hb-g{background:rgba(255,255,255,0.15);color:white;}
+.hb-o{background:#7c3aed;color:white;}
+.hero-title-area{padding:0 20px 14px;}
+.hero-title{color:white;font-size:1.3rem;font-weight:900;}
+.hero-sub{color:#d4b0ff;font-size:0.85rem;margin-top:4px;}
+.key-box{background:rgba(0,0,0,0.3);border-radius:16px;padding:18px;margin:0 16px 14px;border:1px solid rgba(255,255,255,0.2);}
+.kb-label{font-size:0.7rem;font-weight:800;color:rgba(255,255,255,0.5);letter-spacing:2px;margin-bottom:6px;}
+.kb-text{font-size:1.05rem;font-weight:900;color:white;margin-bottom:4px;}
+.kb-kr{font-size:0.87rem;color:rgba(255,255,255,0.65);}
+.audio-row{background:rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;margin-top:10px;display:flex;align-items:center;gap:10px;}
+.play-btn{width:40px;height:40px;background:#7c3aed;border-radius:50%;border:none;cursor:pointer;color:white;font-size:1rem;flex-shrink:0;font-family:'Nunito',sans-serif;transition:transform 0.15s;}
+.play-btn:hover{transform:scale(1.1);}
+.audio-info{flex:1;color:rgba(255,255,255,0.85);font-size:0.78rem;}
+.audio-title-text{font-weight:800;color:white;}
+.wave{color:rgba(255,255,255,0.3);font-size:0.9rem;letter-spacing:2px;}
+.sh{display:flex;align-items:center;gap:10px;padding:16px 20px 0;}
+.sh-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.sh-title{font-size:0.92rem;font-weight:800;color:#1a1a1a;}
+.sh-sub{font-size:0.7rem;color:#999;font-weight:700;letter-spacing:1px;}
+.sb{padding:12px 20px 18px;}
+.listen-guide{background:#f5f0ff;border-radius:10px;padding:9px 14px;font-size:0.8rem;color:#3a1a6e;font-weight:700;margin-top:10px;}
+.audio-dark{background:#1a0a2e;border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.ltabs{display:flex;gap:8px;margin-bottom:12px;}
+.lt{padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:800;cursor:pointer;border:2px solid #eee;color:#aaa;background:white;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.lt.lt-b{border-color:#3a1a6e;color:#3a1a6e;background:#f5f0ff;}
+.lt.lt-e{border-color:#7c3aed;color:#7c3aed;background:#f5f0ff;}
+.lt.lt-i{border-color:#5a1a9e;color:#5a1a9e;background:#ede9fe;}
+.story-box{background:#f5f0ff;border-left:4px solid #7c3aed;border-radius:0 12px 12px 0;padding:14px;font-size:0.9rem;line-height:2;color:#1a1a1a;}
+.story-kr{background:#fffbf0;border-left:4px solid #f97316;border-radius:0 12px 12px 0;padding:12px;font-size:0.85rem;line-height:1.9;color:#666;margin-top:10px;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
+.vc{background:#f5f0ff;border-radius:12px;padding:11px 13px;border:1.5px solid #ddd6fe;}
+.vc-w{font-size:0.95rem;font-weight:900;color:#3a1a6e;}
+.vc-m{font-size:0.78rem;color:#666;margin-top:2px;}
+.vc-e{font-size:0.72rem;color:#aaa;margin-top:3px;font-style:italic;}
+.fill-wrap{background:#f5f0ff;border-radius:14px;padding:16px;}
+.fill-sent{font-size:1rem;font-weight:700;color:#1a1a1a;margin-bottom:12px;line-height:2;text-align:center;}
+.blank-span{display:inline-block;min-width:80px;border-bottom:3px solid #7c3aed;text-align:center;padding:0 6px;color:#7c3aed;font-weight:900;}
+.choices{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.cbtn{padding:7px 18px;border-radius:25px;border:2px solid #ddd;background:white;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.cbtn:hover{border-color:#3a1a6e;color:#3a1a6e;}
+.cbtn.ok{background:#dcfce7;border-color:#16a34a;color:#15803d;}
+.cbtn.no{background:#fee2e2;border-color:#dc2626;color:#b91c1c;}
+.fill-res{margin-top:8px;text-align:center;font-size:0.88rem;font-weight:700;min-height:20px;}
+.dict-item{background:#f5f0ff;border-radius:13px;padding:14px;margin-bottom:10px;}
+.dict-row{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.dict-play{width:36px;height:36px;background:#3a1a6e;border-radius:50%;border:none;cursor:pointer;color:white;font-size:0.88rem;flex-shrink:0;font-family:'Nunito',sans-serif;}
+.dict-label{font-size:0.82rem;font-weight:700;color:#444;}
+.dict-hint{font-size:0.72rem;color:#aaa;}
+.dict-input-row{display:flex;gap:8px;align-items:center;}
+.dict-input{flex:1;padding:9px 12px;border-radius:9px;border:1.5px solid #ddd;font-size:0.88rem;font-family:'Nunito',sans-serif;font-weight:700;}
+.dict-input:focus{outline:none;border-color:#3a1a6e;}
+.dict-btn{padding:9px 14px;border-radius:9px;background:#3a1a6e;color:white;border:none;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+.dict-result{margin-top:6px;font-size:0.82rem;font-weight:700;min-height:18px;}
+.lc-wrap{background:#f5f0ff;border-radius:14px;padding:16px;}
+.lc-play-btn{background:#3a1a6e;color:white;border:none;border-radius:25px;padding:9px 22px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;}
+.lc-opts{display:flex;flex-direction:column;gap:9px;}
+.lc-opt{background:white;border:2px solid #ddd6fe;border-radius:11px;padding:11px 15px;font-size:0.86rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;transition:all 0.15s;color:#1a1a1a;}
+.lc-opt:hover{border-color:#7c3aed;}
+.lc-opt.ok{border-color:#16a34a;background:#dcfce7;color:#15803d;}
+.lc-opt.no{border-color:#dc2626;background:#fee2e2;color:#b91c1c;}
+.lc-result{margin-top:9px;font-size:0.86rem;font-weight:700;min-height:20px;text-align:center;}
+.wo-wrap{background:#f5f0ff;border-radius:13px;padding:16px;margin-bottom:12px;}
+.wo-q{font-size:0.82rem;color:#555;margin-bottom:9px;font-weight:700;}
+.wo-box{min-height:46px;background:white;border-radius:9px;border:2px dashed #7c3aed;padding:7px 11px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:9px;}
+.wo-pool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px;}
+.wo-chip{padding:6px 13px;background:#3a1a6e;color:white;border-radius:20px;font-size:0.82rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-chip.used{background:#ccc;cursor:default;}
+.wo-placed{padding:6px 13px;background:#7c3aed;color:white;border-radius:20px;font-size:0.82rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-btns{display:flex;gap:8px;}
+.wo-check{background:#3a1a6e;color:white;border:none;padding:9px 20px;border-radius:25px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-reset{background:white;color:#666;border:1.5px solid #ccc;padding:9px 14px;border-radius:25px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-result{font-size:0.82rem;font-weight:700;margin-top:7px;min-height:18px;}
+.match-wrap{background:#f5f0ff;border-radius:13px;padding:16px;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:11px;}
+.match-col{display:flex;flex-direction:column;gap:7px;}
+.match-item{padding:9px 13px;border-radius:9px;border:2px solid #ddd;background:white;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s;font-family:'Nunito',sans-serif;}
+.match-item:hover{border-color:#7c3aed;}
+.match-item.selected{border-color:#f97316;background:#fff8f0;color:#c05200;}
+.match-item.matched{border-color:#16a34a;background:#dcfce7;color:#15803d;cursor:default;}
+.match-item.wrong-flash{border-color:#dc2626;background:#fee2e2;}
+.match-result{text-align:center;font-size:0.88rem;font-weight:700;min-height:20px;}
+.quiz-item{background:#f5f0ff;border-radius:13px;padding:14px;margin-bottom:11px;}
+.quiz-q{font-size:0.88rem;font-weight:700;color:#1a1a1a;margin-bottom:9px;}
+.quiz-opts{display:flex;flex-direction:column;gap:7px;}
+.qopt{padding:9px 13px;border-radius:9px;border:1.5px solid #e0e0e0;background:white;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.qopt:hover{border-color:#3a1a6e;background:#f5f0ff;}
+.qopt.ok{background:#dcfce7;border-color:#16a34a;color:#15803d;}
+.qopt.no{background:#fee2e2;border-color:#dc2626;color:#b91c1c;}
+.prog-row{display:flex;align-items:center;gap:9px;padding:0 20px 14px;}
+.prog-track{flex:1;background:#eee;border-radius:9px;height:7px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,#3a1a6e,#7c3aed);border-radius:9px;transition:width 0.5s;}
+.prog-label{font-size:0.78rem;color:#aaa;font-weight:700;white-space:nowrap;}
+.complete-card{background:white;border-radius:20px;padding:28px;text-align:center;display:none;box-shadow:0 4px 24px rgba(0,0,0,0.07);margin-bottom:20px;}
+.complete-emoji{font-size:2.8rem;margin-bottom:10px;}
+.complete-title{font-size:1.3rem;font-weight:900;color:#3a1a6e;margin-bottom:7px;}
+.complete-sub{font-size:0.88rem;color:#666;margin-bottom:18px;line-height:1.7;}
+.xp-big{background:linear-gradient(135deg,#7c3aed,#f97316);color:white;border-radius:13px;padding:14px 28px;font-size:1.15rem;font-weight:900;display:inline-block;margin-bottom:18px;}
+.robo-box{background:#f5f0ff;border-radius:13px;padding:12px 15px;display:flex;gap:11px;text-align:left;margin-bottom:18px;}
+.robo-av{width:38px;height:38px;background:#7c3aed;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.robo-name{font-weight:900;color:#7c3aed;font-size:0.82rem;margin-bottom:3px;}
+.robo-text{font-size:0.82rem;color:#555;line-height:1.6;}
+.tutor-btn{background:#10a37f;color:white;border:none;padding:13px 28px;border-radius:13px;font-size:0.95rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-bottom:11px;}
+.next-row{background:#f5f0ff;border-radius:13px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:11px;flex-wrap:wrap;}
+.next-lbl{font-size:0.72rem;color:#aaa;font-weight:700;}
+.next-title{font-size:0.88rem;font-weight:800;color:#1a1a1a;margin-top:2px;}
+.next-btn{background:#3a1a6e;color:white;border:none;padding:9px 16px;border-radius:9px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div>
+    <a href="https://cecenglishcamp.github.io/camp-a/" style="text-decoration:none;display:flex;align-items:center;gap:8px;">
+      <video src="../../robo.mp4" autoplay loop muted playsinline style="width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;"></video>
+      <div style="color:white;font-weight:900;font-size:1rem;">CEC English Camp A</div>
+    </a>
+    <div class="topbar-sub">Grade 6 · A Little Princess · Week 2 of 36</div>
+  </div>
+  <div class="topbar-right">
+    <div class="ep-badge">W2 / 36</div>
+    <div><div class="xp-badge">⭐ <span id="xp-num">0</span> XP</div><div class="xp-bar-wrap"><div class="xp-fill" id="xp-bar"></div></div></div>
+  </div>
+</div>
+<div class="container">
+
+  <div class="card hero-card">
+    <div class="hero-img">👸</div>
+    <div class="hero-badges"><div class="hb hb-g">W2 · UNIT 2</div><div class="hb hb-o">B1 UPPER</div></div>
+    <div class="hero-title-area">
+      <div class="hero-title">Sara's Princess Philosophy</div>
+      <div class="hero-sub">사라의 공주 철학 · 진짜 공주는 어떤 사람일까요?</div>
+    </div>
+    <div style="padding:0 16px 14px;">
+      <div class="key-box">
+        <div class="kb-label">KEY SENTENCE · 이번 주 핵심 표현</div>
+        <div class="kb-text">"A real princess is kind — even when things are hard."</div>
+        <div class="kb-kr">진짜 공주는 친절해요 — 힘들 때도요.</div>
+        <div class="audio-row">
+          <button class="play-btn" onclick="speak('A real princess is kind — even when things are hard.')">▶</button>
+          <div class="audio-info"><div class="audio-title-text">발음 듣기</div><div style="opacity:0.6;font-size:0.72rem;">CLICK · EN-US</div></div>
+          <div class="wave">▁▃▅▃▁</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#f5f0ff;">🎧</div><div><div class="sh-title">발음 듣기</div><div class="sh-sub">LISTENING · 눈을 감고 들어보세요</div></div></div>
+    <div class="sb">
+      <div class="audio-dark">
+        <button class="play-btn" id="main-play-btn" onclick="toggleFull()">▶</button>
+        <div class="audio-info"><div class="audio-title-text">A Little Princess — Week 2 Full Story</div><div style="opacity:0.6;font-size:0.72rem;">CLICK · EN-US · SLOW SPEED</div></div>
+        <div class="wave" style="color:rgba(255,255,255,0.3);">▁▃▅▇▅▃▁</div>
+      </div>
+      <div class="listen-guide">💡 아래 <strong>이야기 읽기</strong> 카드에서 <strong>초급 A2</strong> 버튼을 눌러 같이 읽어봐요!</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#f5f0ff;">📖</div><div><div class="sh-title">이야기 읽기</div><div class="sh-sub">READING · 수준을 골라 읽어보세요</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="lt-b" onclick="showStory('b')">입문 A1</button>
+        <button class="lt" id="lt-e" onclick="showStory('e')">초급 A2</button>
+        <button class="lt" id="lt-i" onclick="showStory('i')">중급 B1</button>
+      </div>
+      <div id="sb-b"><div class="story-box">
+        Sara was popular at school.<br>
+        She had nice things and a maid.<br>
+        But Sara was kind to everyone.<br>
+        She helped poor girls too.<br>
+        Sara believed a real princess is kind.
+      </div></div>
+      <div id="sb-e" style="display:none;"><div class="story-box">
+        Sara Crewe was well-liked at Miss Minchin's school. Her father was wealthy, so she had a nice room, pretty clothes, and her own maid named Mariette.<br>
+        But Sara did not act like she was better than anyone else. She was kind to everyone — even poor girls with nothing.<br>
+        Ermengarde had trouble with her lessons. Sara sat with her and helped her patiently. She also gave food to Becky, the school servant, and talked to her like a real friend.<br>
+        Sara believed that a real princess is kind — not just rich.
+      </div></div>
+      <div id="sb-i" style="display:none;"><div class="story-box">
+        Sara Crewe was the most admired girl at Miss Minchin's school. Her father's wealth gave her the finest room, beautiful clothes, and a French maid called Mariette.<br>
+        But Sara did not think of these things as important. She was kind to everyone — even those others ignored.<br>
+        She helped Ermengarde, who struggled with her lessons, sitting with her patiently when the other girls laughed. She befriended Becky, the school servant, slipping her food and treating her with genuine warmth.<br>
+        Sara had a private belief: a real princess is not made of wealth or pretty clothes. A real princess is kind and keeps her dignity — especially when life is difficult.
+      </div></div>
+      <div class="story-kr">
+        사라 크루는 미스 민친의 학교에서 가장 존경받는 학생이었어요. 아버지의 재산 덕분에 가장 좋은 방, 아름다운 옷, 그리고 마리에트라는 프랑스 메이드가 있었어요.<br>
+        하지만 사라는 이것들이 중요하다고 생각하지 않았어요. 다른 사람들이 무시하는 사람들에게도 친절했어요.<br>
+        그녀는 수업이 너무 힘든 에르멩가르드를 도왔어요. 다른 학생들이 비웃을 때도 인내심 있게 옆에 앉아줬어요. 학교 하인인 베키와 친구가 됐고, 음식을 몰래 주며 진심으로 따뜻하게 대해줬어요.<br>
+        사라는 조용히 믿는 것이 있었어요: 진짜 공주는 재산이나 예쁜 옷으로 만들어지지 않는다. 진짜 공주는 친절하고 품위를 지킨다 — 특히 삶이 힘들 때도.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#f5f0ff;">📝</div><div><div class="sh-title">핵심 단어</div><div class="sh-sub">VOCABULARY · 꼭 알아야 할 단어</div></div></div>
+    <div class="sb">
+      <div class="vocab-grid">
+        <div class="vc"><div class="vc-w">popular 🌟</div><div class="vc-m">인기 있는</div><div class="vc-e">"Sara was very popular."</div></div>
+        <div class="vc"><div class="vc-w">servant 🧹</div><div class="vc-m">하인, 일꾼</div><div class="vc-e">"Becky was a school servant."</div></div>
+        <div class="vc"><div class="vc-w">patient 😌</div><div class="vc-m">인내심 있는</div><div class="vc-e">"Sara was patient with Ermengarde."</div></div>
+        <div class="vc"><div class="vc-w">dignity 👑</div><div class="vc-m">품위, 위엄</div><div class="vc-e">"A princess keeps her dignity."</div></div>
+        <div class="vc"><div class="vc-w">believe 💭</div><div class="vc-m">믿다</div><div class="vc-e">"Sara believed kindness matters."</div></div>
+        <div class="vc"><div class="vc-w">ignore 🙈</div><div class="vc-m">무시하다</div><div class="vc-e">"Others ignored poor students."</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#f5f0ff;">✏️</div><div><div class="sh-title">빈칸 채우기 연습</div><div class="sh-sub">WORD FILL · 맞는 단어를 골라보세요</div></div></div>
+    <div class="sb">
+      <div class="fill-wrap">
+        <div class="fill-sent">Sara <span class="blank-span" id="bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span> that a real princess is kind.</div>
+        <div class="choices">
+          <button class="cbtn" onclick="chkFill(this,'forgot','believed','bl1','fr1')">forgot</button>
+          <button class="cbtn" onclick="chkFill(this,'believed','believed','bl1','fr1')">believed</button>
+          <button class="cbtn" onclick="chkFill(this,'doubted','believed','bl1','fr1')">doubted</button>
+        </div>
+        <div class="fill-res" id="fr1"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#f5f0ff;">🎧</div><div><div class="sh-title">소리 듣고 빈칸 채우기</div><div class="sh-sub">DICTATION · 들리는 단어를 입력하세요</div></div></div>
+    <div class="sb">
+      <div class="dict-item">
+        <div class="dict-row"><button class="dict-play" onclick="speak('Sara was kind to everyone.')">▶</button><div><div class="dict-label">문장 1</div><div class="dict-hint">"Sara was ______ to everyone."</div></div></div>
+        <div class="dict-input-row"><input class="dict-input" id="di1" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','kind','dr1')"/><button class="dict-btn" onclick="chkDict('di1','kind','dr1')">확인 ✓</button></div>
+        <div class="dict-result" id="dr1"></div>
+      </div>
+      <div class="dict-item">
+        <div class="dict-row"><button class="dict-play" onclick="speak('Sara helped Ermengarde with her lessons.')">▶</button><div><div class="dict-label">문장 2</div><div class="dict-hint">"Sara ______ Ermengarde with her lessons."</div></div></div>
+        <div class="dict-input-row"><input class="dict-input" id="di2" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','helped','dr2')"/><button class="dict-btn" onclick="chkDict('di2','helped','dr2')">확인 ✓</button></div>
+        <div class="dict-result" id="dr2"></div>
+      </div>
+      <div class="dict-item">
+        <div class="dict-row"><button class="dict-play" onclick="speak('A real princess keeps her dignity.')">▶</button><div><div class="dict-label">문장 3</div><div class="dict-hint">"A real princess keeps her ______."</div></div></div>
+        <div class="dict-input-row"><input class="dict-input" id="di3" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','dignity','dr3')"/><button class="dict-btn" onclick="chkDict('di3','dignity','dr3')">확인 ✓</button></div>
+        <div class="dict-result" id="dr3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#f5f0ff;">👂</div><div><div class="sh-title">들어보고 골라요</div><div class="sh-sub">LISTENING CHOICE · 잘 듣고 맞는 문장을 골라봐요</div></div></div>
+    <div class="sb">
+      <div class="lc-wrap">
+        <button class="lc-play-btn" onclick="speak('Sara gave food to Becky and treated her like a real friend.')">🔊 듣기</button>
+        <div class="lc-opts">
+          <button class="lc-opt" onclick="lcCheck(this,'ok')">① Sara gave food to Becky and treated her like a real friend.</button>
+          <button class="lc-opt" onclick="lcCheck(this,'no')">② Miss Minchin gave food to Becky every day.</button>
+          <button class="lc-opt" onclick="lcCheck(this,'no')">③ Sara ignored Becky because she was just a servant.</button>
+        </div>
+        <div class="lc-result" id="lc-res"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#f5f0ff;">🧩</div><div><div class="sh-title">단어 배열하기 1</div><div class="sh-sub">WORD ORDER · 문장을 만들어봐요</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="wlt-b" onclick="showWO('b')">입문 A1</button>
+        <button class="lt" id="wlt-e" onclick="showWO('e')">초급 A2</button>
+        <button class="lt" id="wlt-i" onclick="showWO('i')">중급 B1</button>
+      </div>
+      <div id="wo-b">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 알맞은 단어를 골라봐요!</div>
+          <div class="fill-sent" style="margin-bottom:12px;">Sara was kind to <span class="blank-span" id="wo-bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span>.</div>
+          <div class="choices">
+            <button class="cbtn" onclick="chkFill(this,'nobody','everyone','wo-bl1','wo-br1')">nobody</button>
+            <button class="cbtn" onclick="chkFill(this,'everyone','everyone','wo-bl1','wo-br1')">everyone</button>
+            <button class="cbtn" onclick="chkFill(this,'teachers','everyone','wo-bl1','wo-br1')">teachers</button>
+          </div>
+          <div class="fill-res" id="wo-br1"></div>
+        </div>
+      </div>
+      <div id="wo-e" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo1e-ans"></div>
+          <div class="wo-pool" id="wo1e-pool">
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'A')">A</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'real')">real</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'princess')">princess</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'is')">is</button>
+            <button class="wo-chip" onclick="woAdd('wo1e',this,'kind')">kind</button>
+          </div>
+          <div class="wo-btns"><button class="wo-check" onclick="woCheck('wo1e','A real princess is kind','wr1e')">확인하기 ✓</button><button class="wo-reset" onclick="woReset('wo1e')">다시하기</button></div>
+          <div class="wo-result" id="wr1e"></div>
+        </div>
+      </div>
+      <div id="wo-i" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo1i-ans"></div>
+          <div class="wo-pool" id="wo1i-pool">
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'Sara')">Sara</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'treated')">treated</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'Becky')">Becky</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'with')">with</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'genuine')">genuine</button>
+            <button class="wo-chip" onclick="woAdd('wo1i',this,'warmth')">warmth</button>
+          </div>
+          <div class="wo-btns"><button class="wo-check" onclick="woCheck('wo1i','Sara treated Becky with genuine warmth','wr1i')">확인하기 ✓</button><button class="wo-reset" onclick="woReset('wo1i')">다시하기</button></div>
+          <div class="wo-result" id="wr1i"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#f5f0ff;">🃏</div><div><div class="sh-title">짝 맞추기</div><div class="sh-sub">MATCHING · 단어와 뜻을 연결해봐요</div></div></div>
+    <div class="sb">
+      <div class="match-wrap">
+        <div style="font-size:0.82rem;color:#666;font-weight:700;margin-bottom:11px;">단어를 클릭하고 맞는 뜻을 클릭해서 연결해봐요!</div>
+        <div class="match-grid">
+          <div class="match-col">
+            <button class="match-item" onclick="matchClick(this,'popular')">popular</button>
+            <button class="match-item" onclick="matchClick(this,'patient')">patient</button>
+            <button class="match-item" onclick="matchClick(this,'dignity')">dignity</button>
+            <button class="match-item" onclick="matchClick(this,'ignore')">ignore</button>
+          </div>
+          <div class="match-col">
+            <button class="match-item" onclick="matchClick(this,'ignore')">무시하다</button>
+            <button class="match-item" onclick="matchClick(this,'popular')">인기 있는</button>
+            <button class="match-item" onclick="matchClick(this,'dignity')">품위</button>
+            <button class="match-item" onclick="matchClick(this,'patient')">인내심 있는</button>
+          </div>
+        </div>
+        <div class="match-result" id="match-result"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#f5f0ff;">🧩</div><div><div class="sh-title">단어 배열하기 2</div><div class="sh-sub">WORD ORDER · 더 도전해봐요!</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="wlt2-b" onclick="showWO2('b')">입문 A1</button>
+        <button class="lt" id="wlt2-e" onclick="showWO2('e')">초급 A2</button>
+        <button class="lt" id="wlt2-i" onclick="showWO2('i')">중급 B1</button>
+      </div>
+      <div id="wo2-b">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 알맞은 단어를 골라봐요!</div>
+          <div class="fill-sent" style="margin-bottom:12px;">Sara was <span class="blank-span" id="wo2-bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span> with Ermengarde.</div>
+          <div class="choices">
+            <button class="cbtn" onclick="chkFill(this,'angry','patient','wo2-bl1','wo2-br1')">angry</button>
+            <button class="cbtn" onclick="chkFill(this,'patient','patient','wo2-bl1','wo2-br1')">patient</button>
+            <button class="cbtn" onclick="chkFill(this,'bored','patient','wo2-bl1','wo2-br1')">bored</button>
+          </div>
+          <div class="fill-res" id="wo2-br1"></div>
+        </div>
+      </div>
+      <div id="wo2-e" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo2e-ans"></div>
+          <div class="wo-pool" id="wo2e-pool">
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'She')">She</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'helped')">helped</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'girls')">girls</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'who')">who</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'had')">had</button>
+            <button class="wo-chip" onclick="woAdd('wo2e',this,'nothing')">nothing</button>
+          </div>
+          <div class="wo-btns"><button class="wo-check" onclick="woCheck('wo2e','She helped girls who had nothing','wr2e')">확인하기 ✓</button><button class="wo-reset" onclick="woReset('wo2e')">다시하기</button></div>
+          <div class="wo-result" id="wr2e"></div>
+        </div>
+      </div>
+      <div id="wo2-i" style="display:none;">
+        <div class="wo-wrap">
+          <div class="wo-q">💬 단어를 올바른 순서로 배열해봐요!</div>
+          <div class="wo-box" id="wo2i-ans"></div>
+          <div class="wo-pool" id="wo2i-pool">
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'A')">A</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'real')">real</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'princess')">princess</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'keeps')">keeps</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'her')">her</button>
+            <button class="wo-chip" onclick="woAdd('wo2i',this,'dignity')">dignity</button>
+          </div>
+          <div class="wo-btns"><button class="wo-check" onclick="woCheck('wo2i','A real princess keeps her dignity','wr2i')">확인하기 ✓</button><button class="wo-reset" onclick="woReset('wo2i')">다시하기</button></div>
+          <div class="wo-result" id="wr2i"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sh"><div class="sh-icon" style="background:#f5f0ff;">❓</div><div><div class="sh-title">이해 문제</div><div class="sh-sub">COMPREHENSION · 수준을 골라 도전해봐요</div></div></div>
+    <div class="sb">
+      <div class="ltabs">
+        <button class="lt lt-b" id="ql-b" onclick="showQuiz('b')">A1 문제</button>
+        <button class="lt" id="ql-e" onclick="showQuiz('e')">A2 문제</button>
+        <button class="lt" id="ql-i" onclick="showQuiz('i')">B1 문제</button>
+      </div>
+      <div id="qb-b">
+        <div class="quiz-item"><div class="quiz-q">Q1. How was Sara different from other rich students?</div><div class="quiz-opts">
+          <button class="qopt" onclick="qChk(this,'no')">a) She had more money than anyone else</button>
+          <button class="qopt" onclick="qChk(this,'ok')">b) She was kind to everyone, even poor students</button>
+          <button class="qopt" onclick="qChk(this,'no')">c) She was the best student in all her classes</button>
+        </div></div>
+        <div class="quiz-item"><div class="quiz-q">Q2. Who was Becky?</div><div class="quiz-opts">
+          <button class="qopt" onclick="qChk(this,'no')">a) Sara's French maid</button>
+          <button class="qopt" onclick="qChk(this,'ok')">b) A servant at the school</button>
+          <button class="qopt" onclick="qChk(this,'no')">c) Sara's best friend from India</button>
+        </div></div>
+        <div class="quiz-item"><div class="quiz-q">Q3. What did Sara believe about a real princess?</div><div class="quiz-opts">
+          <button class="qopt" onclick="qChk(this,'no')">a) A real princess wears beautiful clothes</button>
+          <button class="qopt" onclick="qChk(this,'ok')">b) A real princess is kind — not just rich</button>
+          <button class="qopt" onclick="qChk(this,'no')">c) A real princess lives in a palace</button>
+        </div></div>
+      </div>
+      <div id="qb-e" style="display:none;">
+        <div class="quiz-item"><div class="quiz-q">Q1. Why did Sara help Ermengarde?</div><div class="quiz-opts">
+          <button class="qopt" onclick="qChk(this,'no')">a) Miss Minchin told her to help Ermengarde</button>
+          <button class="qopt" onclick="qChk(this,'ok')">b) Ermengarde found lessons very hard and Sara chose to sit with her when others would not</button>
+          <button class="qopt" onclick="qChk(this,'no')">c) Ermengarde was Sara's cousin from England</button>
+        </div></div>
+        <div class="quiz-item"><div class="quiz-q">Q2. How did Sara treat Becky differently from other students?</div><div class="quiz-opts">
+          <button class="qopt" onclick="qChk(this,'ok')">a) She gave her food and talked to her like a real friend — not like a servant</button>
+          <button class="qopt" onclick="qChk(this,'no')">b) She gave Becky money every week to help her family</button>
+          <button class="qopt" onclick="qChk(this,'no')">c) She asked Becky to help her with her lessons</button>
+        </div></div>
+        <div class="quiz-item"><div class="quiz-q">Q3. Sara believed a real princess is about kindness, not wealth. Do you agree?</div><div class="quiz-opts">
+          <button class="qopt" onclick="qChk(this,'ok')">a) Yes — how you treat other people says more about who you are than how much money you have</button>
+          <button class="qopt" onclick="qChk(this,'no')">b) No — a princess must have wealth and power to help others</button>
+          <button class="qopt" onclick="qChk(this,'no')">c) It depends — some situations need money more than kindness</button>
+        </div></div>
+      </div>
+      <div id="qb-i" style="display:none;">
+        <div class="quiz-item"><div class="quiz-q">Q1. Sara sat with Ermengarde "when the other girls laughed." What does this tell us about Sara?</div><div class="quiz-opts">
+          <button class="qopt" onclick="qChk(this,'ok')">a) She is genuinely kind — she chooses compassion over social approval, even when it would be easier to go along with the crowd</button>
+          <button class="qopt" onclick="qChk(this,'no')">b) She liked being different from the other girls and wanted to stand out</button>
+          <button class="qopt" onclick="qChk(this,'no')">c) She did not notice that the other girls were laughing</button>
+        </div></div>
+        <div class="quiz-item"><div class="quiz-q">Q2. Sara's "princess philosophy" says a princess keeps her dignity "especially when life is difficult." Why is this harder than being kind when things are easy?</div><div class="quiz-opts">
+          <button class="qopt" onclick="qChk(this,'no')">a) It is not actually harder — being kind is always the same amount of effort</button>
+          <button class="qopt" onclick="qChk(this,'ok')">b) When things are hard, we want to be angry or give up — choosing dignity and kindness then requires real strength of character</button>
+          <button class="qopt" onclick="qChk(this,'no')">c) Poor people are naturally less kind, so it is harder for them</button>
+        </div></div>
+        <div class="quiz-item"><div class="quiz-q">Q3. Sara is rich in this chapter. Do you think her "princess philosophy" will be tested later in the story? How?</div><div class="quiz-opts">
+          <button class="qopt" onclick="qChk(this,'ok')">a) Yes — if she loses her wealth, we will see if her philosophy is real. True character only proves itself under pressure</button>
+          <button class="qopt" onclick="qChk(this,'no')">b) No — her philosophy is already proven by how she treats Becky and Ermengarde</button>
+          <button class="qopt" onclick="qChk(this,'no')">c) No — her father is rich so she will always have a comfortable life</button>
+        </div></div>
+      </div>
+    </div>
+    <div class="prog-row">
+      <span class="prog-label">진행도</span>
+      <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:0%;"></div></div>
+      <span class="prog-label" id="prog-cnt">0 / 3</span>
+    </div>
+  </div>
+
+  <div class="complete-card" id="complete-card">
+    <div class="complete-emoji">👸</div>
+    <div class="complete-title">Week 2 완료!</div>
+    <div class="complete-sub">사라의 공주 철학을 배웠어요!<br>다음 주엔 아버지의 큰 비밀이 드러나기 시작해요...</div>
+    <div class="xp-big">⭐ 총 <span id="final-xp">0</span> XP 획득!</div>
+    <div class="robo-box"><div class="robo-av">🤖</div><div class="robo-text"><div class="robo-name">Robo</div>힘들 때도 친절할 수 있을까요? 다음 주엔 사라에게 큰 시련이 다가와요... 👑</div></div>
+    <button class="tutor-btn" onclick="startTutor()">💬 AI 튜터와 영어 회화 연습하기</button>
+    <div class="next-row">
+      <button class="next-btn" onclick="location.href='week01.html'" style="background:#666;">← W1</button>
+      <div><div class="next-lbl">다음 주</div><div class="next-title">Week 3 — The Diamond Mines</div><div style="font-size:0.72rem;color:#aaa;margin-top:2px;">아버지의 큰 결정!</div></div>
+      <button class="next-btn" onclick="location.href='week03.html'">W3 →</button>
+    </div>
+  </div>
+
+</div>
+<script>
+var xp=0,correct=0,total=3;
+var wo1eplaced=[],wo1iplaced=[],wo2eplaced=[],wo2iplaced=[];
+var matchSel=null,matchPairs={};
+var isPlaying=false;
+function getFemaleVoice(){var voices=window.speechSynthesis.getVoices();var names=['Microsoft Zira Desktop - English (United States)','Microsoft Zira','Microsoft Jenny Online (Natural) - English (United States)','Microsoft Jenny','Microsoft Aria Online (Natural) - English (United States)','Microsoft Aria','Samantha','Karen','Google US English'];for(var n of names){var v=voices.find(function(v){return v.name===n;});if(v)return v;}return voices.find(function(v){return v.lang==='en-US';})||voices[0];}
+function speak(text){window.speechSynthesis.cancel();setTimeout(function(){var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.82;u.pitch=1.1;var f=getFemaleVoice();if(f)u.voice=f;window.speechSynthesis.speak(u);},200);}
+function toggleFull(){var btn=document.getElementById('main-play-btn');if(isPlaying){window.speechSynthesis.cancel();isPlaying=false;btn.textContent='▶';}else{isPlaying=true;btn.textContent='⏸';var text=document.getElementById('sb-e').innerText.replace(/\n/g,' ');window.speechSynthesis.cancel();setTimeout(function(){var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.82;u.pitch=1.1;var f=getFemaleVoice();if(f)u.voice=f;u.onend=function(){isPlaying=false;btn.textContent='▶';};window.speechSynthesis.speak(u);},200);}}
+function lcCheck(btn,type){var opts=btn.parentElement.querySelectorAll('.lc-opt');var res=document.getElementById('lc-res');if(type==='ok'){btn.classList.add('ok');opts.forEach(function(o){if(o!==btn)o.style.opacity='0.4';o.style.pointerEvents='none';});res.style.color='#16a34a';res.textContent='정답이에요! +20 XP';addXP(20);}else{btn.classList.add('no');res.style.color='#dc2626';res.textContent='다시 들어봐요!';setTimeout(function(){btn.classList.remove('no');res.textContent='';},1000);}}
+function addXP(n){xp+=n;document.getElementById('xp-num').textContent=xp;document.getElementById('xp-bar').style.width=Math.min(xp/5,100)+'%';}
+function showStory(l){['b','e','i'].forEach(x=>{document.getElementById('sb-'+x).style.display=x===l?'block':'none';var t=document.getElementById('lt-'+x);t.className='lt'+(x===l?' lt-'+x:'');});}
+function showWO(l){['b','e','i'].forEach(x=>{document.getElementById('wo-'+x).style.display=x===l?'block':'none';var t=document.getElementById('wlt-'+x);t.className='lt'+(x===l?' lt-'+x:'');});}
+function showWO2(l){['b','e','i'].forEach(x=>{document.getElementById('wo2-'+x).style.display=x===l?'block':'none';var t=document.getElementById('wlt2-'+x);t.className='lt'+(x===l?' lt-'+x:'');});}
+function showQuiz(l){['b','e','i'].forEach(x=>{document.getElementById('qb-'+x).style.display=x===l?'block':'none';var t=document.getElementById('ql-'+x);t.className='lt'+(x===l?' lt-'+x:'');});correct=0;total=3;updateProg();}
+function chkFill(btn,val,ans,blankId,resId){var r=document.getElementById(resId);var bl=document.getElementById(blankId);if(val===ans){btn.className='cbtn ok';bl.textContent=val;r.style.color='#16a34a';r.textContent='정답이에요! +30 XP';addXP(30);btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.disabled=true);}else{btn.className='cbtn no';r.style.color='#dc2626';r.textContent='다시 해봐요!';setTimeout(function(){btn.className='cbtn';r.textContent='';},1000);}}
+function chkDict(inputId,ans,resId){var val=document.getElementById(inputId).value.trim().toLowerCase();var r=document.getElementById(resId);if(val===ans.toLowerCase()){r.style.color='#16a34a';r.textContent='정답이에요! +20 XP ✓';addXP(20);document.getElementById(inputId).style.borderColor='#3a1a6e';}else{r.style.color='#dc2626';r.textContent='다시 들어보세요! (힌트: '+ans[0]+'...)';}}
+var woPools={wo1e:wo1eplaced,wo1i:wo1iplaced,wo2e:wo2eplaced,wo2i:wo2iplaced};
+function woAdd(id,btn,word){if(btn.classList.contains('used'))return;btn.classList.add('used');woPools[id].push(word);var box=document.getElementById(id+'-ans');var chip=document.createElement('button');chip.className='wo-placed';chip.textContent=word;chip.onclick=function(){woRemove(id,btn,word,chip);};box.appendChild(chip);}
+function woRemove(id,origBtn,word,chip){var arr=woPools[id];var idx=arr.indexOf(word);if(idx>-1)arr.splice(idx,1);origBtn.classList.remove('used');chip.remove();}
+function woCheck(id,ans,resId){var arr=woPools[id];var given=arr.join(' ');var r=document.getElementById(resId);if(given===ans){r.style.color='#16a34a';r.textContent='완벽해요! +50 XP';addXP(50);}else{r.style.color='#dc2626';r.textContent='아쉬워요! 다시 해봐요!';setTimeout(function(){r.textContent='';},2000);}}
+function woReset(id){woPools[id].length=0;var box=document.getElementById(id+'-ans');if(box)box.innerHTML='';document.querySelectorAll('#'+id+'-pool .wo-chip').forEach(w=>w.classList.remove('used'));}
+function matchClick(el,key){if(el.classList.contains('matched'))return;if(!matchSel){matchSel=el;el.classList.add('selected');return;}if(matchSel===el){el.classList.remove('selected');matchSel=null;return;}var aKey=matchSel.getAttribute('onclick').match(/'([^']+)'/)[1];var bKey=el.getAttribute('onclick').match(/'([^']+)'/)[1];if(aKey===bKey){matchSel.classList.remove('selected');matchSel.classList.add('matched');el.classList.add('matched');matchPairs[aKey]=true;matchSel=null;addXP(15);var done=Object.keys(matchPairs).length;var mr=document.getElementById('match-result');mr.style.color='#16a34a';mr.textContent=done>=4?'모두 맞췄어요! 훌륭해요! 🎉':done+'개 맞췄어요!';}else{matchSel.classList.remove('selected');el.classList.remove('selected');matchSel.classList.add('wrong-flash');el.classList.add('wrong-flash');setTimeout(()=>{matchSel&&matchSel.classList.remove('wrong-flash');el.classList.remove('wrong-flash');},600);matchSel=null;}}
+function qChk(el,type){if(type==='ok'){el.parentElement.querySelectorAll('.qopt').forEach(o=>o.disabled=true);el.className='qopt ok';correct++;addXP(20);updateProg();}else{el.className='qopt no';setTimeout(function(){el.className='qopt';},1000);}}
+function updateProg(){document.getElementById('prog-bar').style.width=Math.round(correct/total*100)+'%';document.getElementById('prog-cnt').textContent=correct+' / '+total;if(correct>=total){setTimeout(()=>{document.getElementById('final-xp').textContent=xp;var cc=document.getElementById('complete-card');cc.style.display='block';cc.scrollIntoView({behavior:'smooth'});},800);}}
+function startTutor(){window.open('https://journey-bronzy-fruitily.ngrok-free.dev/static/step12.html?grade=6&camp=a&week=2','_blank');}
+function shuffleLcOpts(){var wrap=document.querySelector('.lc-opts');if(!wrap)return;var opts=Array.from(wrap.children);opts.sort(function(){return Math.random()-0.5;});opts.forEach(function(o){wrap.appendChild(o);});opts=Array.from(wrap.children);var nums=['①','②','③'];opts.forEach(function(o,i){o.textContent=o.textContent.replace(/^[①②③]\s*/,nums[i]+' ');});}
+function shufflePools(){document.querySelectorAll('.wo-pool').forEach(function(pool){var chips=Array.from(pool.children);chips.sort(function(){return Math.random()-0.5;});chips.forEach(function(chip){pool.appendChild(chip);});});}
+window.addEventListener('load',function(){shufflePools();shuffleLcOpts();});
+var urlParams=new URLSearchParams(window.location.search);
+if(urlParams.get('admin')==='true'){setTimeout(function(){document.getElementById('final-xp').textContent='999';document.getElementById('complete-card').style.display='block';},300);}
+</script>
+<style>.wk-nav{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#f8fffe;border-top:1px solid rgba(16,163,127,0.15);z-index:50}.wk-nav a{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}.wk-nav a:hover{transform:translateY(-2px)}.wk-nav .wk-prev{background:#fff;color:#666;border:1px solid rgba(16,163,127,0.15)}.wk-nav .wk-next{background:#10a37f;color:#fff}.wk-nav .wk-label{font-size:11px;color:#999;letter-spacing:1px}</style>
+<div class="wk-nav"><a class="wk-prev" href="week01.html">← W1</a><span class="wk-label">WEEK 2</span><a class="wk-next" href="week03.html">W3 →</a></div>
+</body>
+</html>
