@@ -130,9 +130,30 @@ body{font-family:'DM Sans','Noto Sans KR',sans-serif;background:var(--bg);color:
 </div>
 
 <script>
-// 파이프라인 서버 프록시 경로 (ngrok CORS 우회)
 const PROXY_BASE = 'https://journey-bronzy-fruitily.ngrok-free.dev';
-const LOGIN_URL  = 'https://journey-bronzy-fruitily.ngrok-free.dev';
+const OWUI_URL   = 'https://journey-bronzy-fruitily.ngrok-free.dev';
+const GRADE_TO_PRESTEP = {
+  m1: 'camp-b/m1/prestep.html',
+  m2: 'camp-b/m2/prestep.html',
+  m3: 'camp-b/m3/prestep.html',
+  h1: 'camp-b/m1/prestep.html',
+  h2: 'camp-b/m2/prestep.html',
+  h3: 'camp-b/m3/prestep.html',
+};
+
+// 이미 등록된 학생 → 바로 prestep으로
+(function checkExisting() {
+  const saved = localStorage.getItem('cecStudent');
+  if (saved) {
+    try {
+      const s = JSON.parse(saved);
+      if (s.token && s.grade) {
+        const prestep = GRADE_TO_PRESTEP[s.grade] || 'camp-b/m1/prestep.html';
+        window.location.href = prestep;
+      }
+    } catch(e) {}
+  }
+})();
 
 let selectedGrade = '';
 
@@ -160,8 +181,6 @@ async function handleSubmit(e) {
   btn.innerHTML = '<span class="spinner"></span>계정 생성 중...';
 
   try {
-    // 파이프라인 서버의 /create-student 프록시 호출
-    // (서버가 내부적으로 Open WebUI API를 호출하므로 CORS 문제 없음)
     const resp = await fetch(`${PROXY_BASE}/create-student`, {
       method: 'POST',
       headers: {
@@ -173,21 +192,37 @@ async function handleSubmit(e) {
 
     const data = await resp.json();
 
-    if (data.status === 'ok') {
-      showResult('success', `🎉 환영합니다, ${data.name}님!`,
-        `계정이 성공적으로 생성되었습니다.`,
-        { email: data.email, password: data.password, grade: data.grade });
+    if (data.status === 'ok' && data.token) {
+      // localStorage에 토큰+학년 저장
+      localStorage.setItem('cecStudent', JSON.stringify({
+        token: data.token, name: data.name, email: data.email, grade: data.grade
+      }));
+      // Open WebUI에 토큰 전달 (localStorage에 저장해야 자동 로그인)
+      localStorage.setItem('token', data.token);
+
+      showResult('success', `🎉 환영합니다, ${data.name}님!`, '계정이 생성되었습니다. 수업 페이지로 이동합니다...', data);
+
+      // 2초 후 prestep으로 이동
+      const prestep = GRADE_TO_PRESTEP[data.grade] || 'camp-b/m1/prestep.html';
+      setTimeout(() => {
+        window.open(OWUI_URL, '_blank');
+        window.location.href = prestep;
+      }, 2000);
+
+    } else if (data.status === 'ok' && !data.token) {
+      showResult('success', `🎉 환영합니다, ${data.name}님!`, '계정이 생성되었습니다.', data);
     } else {
       const msg = data.detail || JSON.stringify(data);
       if (msg.includes('UNIQUE') || msg.includes('already') || msg.includes('exist')) {
-        showResult('error', '이미 등록된 이메일', `${email}은 이미 등록되어 있어요.<br>로그인 페이지에서 접속해주세요.`);
+        showResult('error', '이미 등록된 이메일',
+          `${email}은 이미 등록되어 있어요.<br><a href="${OWUI_URL}" target="_blank" style="color:var(--gold2)">로그인 페이지에서 접속하기 →</a>`);
       } else {
         showResult('error', '등록 실패', msg);
       }
     }
   } catch (err) {
     showResult('error', '연결 오류',
-      `서버에 연결할 수 없습니다.<br><small style="color:var(--muted)">${err.message}</small><br>잠시 후 다시 시도해주세요.`);
+      `서버에 연결할 수 없습니다.<br><small style="color:var(--muted)">${err.message}</small>`);
   }
 
   btn.disabled = false;
@@ -201,15 +236,14 @@ function showResult(type, title, message, info) {
   let html = `<h3 style="color:${type === 'success' ? 'var(--green)' : 'var(--red)'}">${title}</h3><p>${message}</p>`;
 
   if (type === 'success' && info) {
+    const prestep = GRADE_TO_PRESTEP[info.grade] || 'camp-b/m1/prestep.html';
     html += `
       <div class="info-box">
-        <strong>로그인 정보 (꼭 메모하세요!)</strong><br>
+        이름: ${info.name}<br>
         이메일: ${info.email}<br>
-        비밀번호: ${info.password}<br>
         학년: ${info.grade}
       </div>
-      <p style="color:var(--gold);font-size:11px;">⚠️ 비밀번호는 이 화면에서만 확인 가능합니다. 반드시 메모해주세요!</p>
-      <a class="start-btn" href="${LOGIN_URL}" target="_blank">🚀 수업 시작하기 →</a>
+      <a class="start-btn" href="${prestep}">🚀 수업 시작하기 →</a>
     `;
   }
 
