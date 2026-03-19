@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peter Rabbit W1 — AI 대화 | CEC Camp A</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Nunito','Noto Sans KR',sans-serif;height:100vh;overflow:hidden;background:#FFFDF5;}
+
+/* 상단바 */
+.topbar{
+  height:48px;background:linear-gradient(135deg,#4a6b4e,#7a9e7e);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;flex-shrink:0;
+  box-shadow:0 2px 12px rgba(74,107,78,0.25);
+}
+.top-left{display:flex;align-items:center;gap:10px;}
+.top-title{color:white;font-weight:900;font-size:0.9rem;}
+.top-sub{color:rgba(255,255,255,0.7);font-size:0.68rem;font-weight:700;}
+.top-back{
+  color:white;text-decoration:none;font-size:0.82rem;font-weight:800;
+  background:rgba(255,255,255,0.15);padding:5px 14px;border-radius:8px;
+  transition:background 0.2s;
+}
+.top-back:hover{background:rgba(255,255,255,0.25);}
+
+/* 메인 레이아웃 */
+.main{display:flex;height:calc(100vh - 48px);}
+
+/* 왼쪽: iframe */
+.left{
+  flex:1;min-width:0;position:relative;
+  box-shadow:4px 0 20px rgba(0,0,0,0.06);
+  z-index:1;
+}
+.left iframe{width:100%;height:100%;border:none;}
+
+/* 오른쪽: AI 패널 */
+.right{
+  flex:1;min-width:0;background:#F0F8FF;
+  display:flex;flex-direction:column;
+  overflow-y:auto;
+}
+
+/* Robo 헤더 */
+.robo-header{
+  padding:28px 24px 20px;text-align:center;
+  background:linear-gradient(180deg,#e3f2fd,#F0F8FF);
+  border-bottom:1px solid rgba(0,0,0,0.05);
+  flex-shrink:0;
+}
+.robo-img{
+  width:80px;height:80px;border-radius:50%;object-fit:cover;
+  box-shadow:0 6px 20px rgba(74,107,78,0.2);
+  margin-bottom:12px;border:3px solid white;
+}
+.robo-greeting{
+  font-size:1.15rem;font-weight:900;color:#4a6b4e;
+  line-height:1.7;margin-bottom:4px;
+}
+.robo-sub{font-size:0.82rem;color:#6b8e6b;font-weight:700;}
+
+/* 대화 내용 박스 */
+.prompt-section{padding:20px 24px;flex:1;}
+.prompt-label{
+  font-size:0.75rem;font-weight:800;color:#999;
+  letter-spacing:1.5px;margin-bottom:10px;
+}
+.prompt-box{
+  background:white;border-radius:16px;padding:18px;
+  border:2px solid #e0eef5;font-size:0.92rem;
+  line-height:1.9;color:#3d3d3d;
+  box-shadow:0 4px 16px rgba(0,0,0,0.04);
+  position:relative;
+}
+.prompt-box .hl{color:#4a6b4e;font-weight:900;}
+
+/* 복사 완료 표시 */
+.copied-badge{
+  position:absolute;top:10px;right:12px;
+  background:#4a6b4e;color:white;font-size:0.7rem;font-weight:800;
+  padding:3px 10px;border-radius:12px;opacity:0;
+  transition:opacity 0.3s;
+}
+.copied-badge.show{opacity:1;}
+
+/* 버튼 */
+.btn-area{padding:0 24px 16px;display:flex;flex-direction:column;gap:10px;flex-shrink:0;}
+.btn{
+  width:100%;padding:14px;border-radius:14px;border:none;
+  font-size:1rem;font-weight:900;cursor:pointer;
+  font-family:inherit;transition:all 0.2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn-copy{
+  background:white;color:#4a6b4e;
+  border:2.5px solid #4a6b4e;
+  box-shadow:0 4px 14px rgba(74,107,78,0.15);
+}
+.btn-copy:hover{background:#e8f0e4;}
+.btn-chat{
+  background:linear-gradient(135deg,#4a6b4e,#7a9e7e);
+  color:white;
+  box-shadow:0 6px 20px rgba(74,107,78,0.3);
+}
+.btn-chat:hover{box-shadow:0 8px 28px rgba(74,107,78,0.4);}
+
+/* 안내 단계 */
+.steps{
+  padding:16px 24px 28px;flex-shrink:0;
+}
+.steps-title{
+  font-size:0.75rem;font-weight:800;color:#999;
+  letter-spacing:1.5px;margin-bottom:12px;
+}
+.step{
+  display:flex;align-items:flex-start;gap:10px;
+  margin-bottom:10px;
+}
+.step-num{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;font-weight:900;color:white;
+}
+.step-text{font-size:0.88rem;color:#555;font-weight:700;line-height:1.6;padding-top:3px;}
+
+/* 모바일 */
+@media(max-width:768px){
+  .main{flex-direction:column;}
+  .left{flex:none;height:50vh;}
+  .right{flex:none;height:50vh;overflow-y:auto;}
+  .robo-header{padding:16px 20px 12px;}
+  .robo-img{width:56px;height:56px;}
+  .robo-greeting{font-size:1rem;}
+  .prompt-section{padding:14px 18px;}
+  .btn-area{padding:0 18px 12px;}
+  .steps{padding:10px 18px 20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- 상단바 -->
+<div class="topbar">
+  <div class="top-left">
+    <video src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.mp4" autoplay loop muted playsinline style="width:32px;height:32px;border-radius:8px;object-fit:cover;"></video>
+    <div>
+      <div class="top-title">Peter Rabbit W1 — AI 대화</div>
+      <div class="top-sub">CEC Camp A 초등3</div>
+    </div>
+  </div>
+  <a class="top-back" href="g3_new_w01.html">← 수업으로</a>
+</div>
+
+<!-- 메인 -->
+<div class="main">
+
+  <!-- 왼쪽: 수업 iframe -->
+  <div class="left">
+    <iframe src="g3_new_w01.html" title="Peter Rabbit W1 수업"></iframe>
+  </div>
+
+  <!-- 오른쪽: AI 대화 패널 -->
+  <div class="right">
+
+    <!-- Robo 인사 -->
+    <div class="robo-header">
+      <video class="robo-img" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.mp4" autoplay loop muted playsinline></video>
+      <div class="robo-greeting">피터래빗 선생님이에요! 🐰<br>오늘 배운 내용으로 영어 대화해봐요!</div>
+      <div class="robo-sub">ChatGPT와 함께 영어 말하기 연습!</div>
+    </div>
+
+    <!-- 대화 프롬프트 -->
+    <div class="prompt-section">
+      <div class="prompt-label">AUTO PROMPT · 자동 생성된 대화 내용</div>
+      <div class="prompt-box" id="promptBox">
+        <div class="copied-badge" id="copiedBadge">Copied!</div>
+        안녕하세요! 저는 초등학교 3학년이에요.<br>
+        오늘 <span class="hl">Peter Rabbit</span>을 배웠어요!<br><br>
+        배운 단어: <span class="hl">garden, run, away, afraid, catch</span><br><br>
+        이 단어들을 써서 저랑 쉽게 영어로 대화해줘!<br>
+        짧은 문장으로, 한국어 힌트도 가끔 줘!
+      </div>
+    </div>
+
+    <!-- 버튼 -->
+    <div class="btn-area">
+      <button class="btn btn-copy" onclick="copyPrompt()">
+        <span id="copyIcon">📋</span>
+        <span id="copyText">대화 내용 복사하기</span>
+      </button>
+      <button class="btn btn-chat" onclick="openChat()">
+        🎤 ChatGPT 음성 대화 시작
+      </button>
+    </div>
+
+    <!-- 안내 단계 -->
+    <div class="steps">
+      <div class="steps-title">HOW TO · 이렇게 하면 돼!</div>
+      <div class="step">
+        <div class="step-num" style="background:#daa520;">1</div>
+        <div class="step-text">위의 <strong>"복사"</strong> 버튼을 눌러요! 📋</div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#7a9e7e;">2</div>
+        <div class="step-text">ChatGPT가 열리면 <strong>붙여넣기(Ctrl+V)</strong> 해요! 📝</div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="background:#e8836b;">3</div>
+        <div class="step-text"><strong>마이크 버튼</strong>을 눌러서 영어로 말해봐요! 🎤<br>틀려도 괜찮아! 용기가 중요해! 💪</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var promptText = "안녕하세요! 저는 초등학교 3학년이에요.\n오늘 Peter Rabbit을 배웠어요!\n\n배운 단어: garden, run, away, afraid, catch\n\n이 단어들을 써서 저랑 쉽게 영어로 대화해줘!\n짧은 문장으로, 한국어 힌트도 가끔 줘!";
+
+function copyPrompt(){
+  navigator.clipboard.writeText(promptText).then(function(){
+    document.getElementById('copiedBadge').classList.add('show');
+    document.getElementById('copyIcon').textContent = '✅';
+    document.getElementById('copyText').textContent = '복사 완료!';
+    setTimeout(function(){
+      document.getElementById('copiedBadge').classList.remove('show');
+      document.getElementById('copyIcon').textContent = '📋';
+      document.getElementById('copyText').textContent = '대화 내용 복사하기';
+    }, 2000);
+  });
+}
+
+function openChat(){
+  copyPrompt();
+  setTimeout(function(){
+    window.open('https://chatgpt.com', '_blank');
+  }, 300);
+}
+</script>
+</body>
+</html>
