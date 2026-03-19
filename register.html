@@ -130,8 +130,9 @@ body{font-family:'DM Sans','Noto Sans KR',sans-serif;background:var(--bg);color:
 </div>
 
 <script>
-const API_BASE = 'https://journey-bronzy-fruitily.ngrok-free.app';
-const API_KEY = 'sk-0bc6b3064fbd4e5119fb2eb751781345d15eee862d60775008b47a843fec9d6f';
+// 파이프라인 서버 프록시 경로 (ngrok CORS 우회)
+const PROXY_BASE = 'https://journey-bronzy-fruitily.ngrok-free.dev';
+const LOGIN_URL  = 'https://journey-bronzy-fruitily.ngrok-free.dev';
 
 let selectedGrade = '';
 
@@ -140,13 +141,6 @@ function pickGrade(el) {
   el.classList.add('active');
   selectedGrade = el.dataset.grade;
   document.getElementById('f-grade').value = selectedGrade;
-}
-
-function generatePassword() {
-  const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
-  let pw = '';
-  for (let i = 0; i < 8; i++) pw += chars[Math.floor(Math.random() * chars.length)];
-  return pw;
 }
 
 async function handleSubmit(e) {
@@ -165,40 +159,35 @@ async function handleSubmit(e) {
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>계정 생성 중...';
 
-  const password = generatePassword();
-
   try {
-    const resp = await fetch(`${API_BASE}/api/v1/auths/add`, {
+    // 파이프라인 서버의 /create-student 프록시 호출
+    // (서버가 내부적으로 Open WebUI API를 호출하므로 CORS 문제 없음)
+    const resp = await fetch(`${PROXY_BASE}/create-student`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`,
         'ngrok-skip-browser-warning': 'true'
       },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        name: name,
-        role: 'user'
-      })
+      body: JSON.stringify({ name, grade, email })
     });
 
     const data = await resp.json();
 
-    if (resp.ok && data.id) {
-      showResult('success', `🎉 환영합니다, ${name}님!`,
+    if (data.status === 'ok') {
+      showResult('success', `🎉 환영합니다, ${data.name}님!`,
         `계정이 성공적으로 생성되었습니다.`,
-        { email, password, grade });
+        { email: data.email, password: data.password, grade: data.grade });
     } else {
       const msg = data.detail || JSON.stringify(data);
-      if (msg.includes('UNIQUE') || msg.includes('already')) {
-        showResult('error', '이미 등록된 이메일', `${email}은 이미 등록되어 있어요. 로그인 페이지에서 접속해주세요.`);
+      if (msg.includes('UNIQUE') || msg.includes('already') || msg.includes('exist')) {
+        showResult('error', '이미 등록된 이메일', `${email}은 이미 등록되어 있어요.<br>로그인 페이지에서 접속해주세요.`);
       } else {
         showResult('error', '등록 실패', msg);
       }
     }
   } catch (err) {
-    showResult('error', '연결 오류', '서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.');
+    showResult('error', '연결 오류',
+      `서버에 연결할 수 없습니다.<br><small style="color:var(--muted)">${err.message}</small><br>잠시 후 다시 시도해주세요.`);
   }
 
   btn.disabled = false;
@@ -220,7 +209,7 @@ function showResult(type, title, message, info) {
         학년: ${info.grade}
       </div>
       <p style="color:var(--gold);font-size:11px;">⚠️ 비밀번호는 이 화면에서만 확인 가능합니다. 반드시 메모해주세요!</p>
-      <a class="start-btn" href="${API_BASE}" target="_blank">🚀 수업 시작하기 →</a>
+      <a class="start-btn" href="${LOGIN_URL}" target="_blank">🚀 수업 시작하기 →</a>
     `;
   }
 
