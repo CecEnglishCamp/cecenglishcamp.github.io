@@ -22,20 +22,28 @@ h1{font-size:24px;color:#fff;margin-bottom:6px}
 <body>
 <div class="wrap">
   <h1>🧪 CEC 테스트 모드</h1>
-  <div class="badge">SESSION SET</div>
+  <div class="badge" id="badge">SESSION SET</div>
 
   <div class="section">
-    <h2>중학교 테스트</h2>
-    <a class="link" href="camp-b/m1/week01.html">중1 W01 <span>Huckleberry Finn</span></a>
-    <a class="link" href="camp-b/m2/week01.html">중2 W01 <span>War of the Worlds</span></a>
-    <a class="link" href="camp-b/m3/week01.html">중3 W01 <span>Sherlock Holmes</span></a>
+    <h2>초등학교 테스트 (Camp A)</h2>
+    <a class="link" onclick="return go(this, 'A', 3)" href="camp-a/lessons/grade3/week01.html">G3 W01 <span>Peter Rabbit</span></a>
+    <a class="link" onclick="return go(this, 'A', 4)" href="camp-a/lessons/grade4/week01.html">G4 W01 <span>Wind in the Willows</span></a>
+    <a class="link" onclick="return go(this, 'A', 5)" href="camp-a/lessons/grade5/week01.html">G5 W01 <span>Treasure Island</span></a>
+    <a class="link" onclick="return go(this, 'A', 6)" href="camp-a/lessons/grade6/week01.html">G6 W01 <span>Little Princess</span></a>
   </div>
 
   <div class="section">
-    <h2>고등학교 테스트</h2>
-    <a class="link" href="camp-b/hs/g1/week01.html">고1 W01 <span>준비 중</span></a>
-    <a class="link" href="camp-b/hs/g2/week01.html">고2 W01 <span>준비 중</span></a>
-    <a class="link" href="camp-b/hs/g3/week01.html">고3 W01 <span>준비 중</span></a>
+    <h2>중학교 테스트 (Camp B)</h2>
+    <a class="link" onclick="return go(this, 'B', 1)" href="camp-b/m1/week01.html">중1 W01 <span>Huckleberry Finn</span></a>
+    <a class="link" onclick="return go(this, 'B', 2)" href="camp-b/m2/week01.html">중2 W01 <span>War of the Worlds</span></a>
+    <a class="link" onclick="return go(this, 'B', 3)" href="camp-b/m3/week01.html">중3 W01 <span>Sherlock Holmes</span></a>
+  </div>
+
+  <div class="section">
+    <h2>고등학교 테스트 (Camp B HS)</h2>
+    <a class="link" onclick="return go(this, 'B', 10)" href="camp-b/hs/g1/week01.html">고1 W01 <span>The Great Gatsby</span></a>
+    <a class="link" onclick="return go(this, 'B', 11)" href="camp-b/hs/g2/week01.html">고2 W01 <span>Lord of the Flies</span></a>
+    <a class="link" onclick="return go(this, 'B', 12)" href="camp-b/hs/g3/week01.html">고3 W01 <span>1984</span></a>
   </div>
 
   <div class="section">
@@ -43,22 +51,47 @@ h1{font-size:24px;color:#fff;margin-bottom:6px}
     <a class="link" href="https://journey-bronzy-fruitily.ngrok-free.dev" target="_blank">AI 연결 <span>Open WebUI →</span></a>
   </div>
 
-  <div class="info">
-    <strong>자동 설정된 세션:</strong><br>
-    <code>cecAuthB = {name:"성태", grade:1, energy:5, interests:"테스트"}</code>
+  <div class="info" id="info">
+    <strong>현재 세션:</strong><br>
+    <code id="session-display">로딩 중...</code>
   </div>
 </div>
 
 <script>
-sessionStorage.setItem('cecAuthB', JSON.stringify({
-  tag: '[PRESTEP] name=성태 grade=1 energy=5 interests=테스트 goal=테스트 camp=B',
-  ts: Date.now(),
-  name: '성태',
-  grade: 1,
-  energy: 5,
-  interests: '테스트',
-  goal: '테스트'
-}));
+function setSession(camp, grade) {
+  var gradeLabel = {
+    3:'초3',4:'초4',5:'초5',6:'초6',
+    1:'중1',2:'중2','3':'중3',
+    10:'고1',11:'고2',12:'고3'
+  }[grade] || ('G'+grade);
+
+  if (camp === 'A') {
+    sessionStorage.setItem('cecAuth', JSON.stringify({
+      tag: '[PRESTEP] name=성태 grade='+grade+' energy=5 interests=테스트 goal=테스트 camp=A',
+      ts: Date.now(), name: '성태', grade: grade, energy: 5, interests: '테스트', goal: '테스트'
+    }));
+  } else {
+    var bgr = grade <= 3 ? grade : (grade >= 10 ? grade - 9 : grade);
+    sessionStorage.setItem('cecAuthB', JSON.stringify({
+      tag: '[PRESTEP] name=성태 grade='+bgr+' energy=5 interests=테스트 goal=테스트 camp=B',
+      ts: Date.now(), name: '성태', grade: bgr, energy: 5, interests: '테스트', goal: '테스트'
+    }));
+  }
+
+  document.getElementById('session-display').textContent =
+    'camp=' + camp + ', name=성태, grade=' + gradeLabel;
+  document.getElementById('badge').textContent = gradeLabel + ' SESSION SET';
+}
+
+function go(el, camp, grade) {
+  setSession(camp, grade);
+  // 약간의 딜레이 후 이동 (세션 저장 보장)
+  setTimeout(function() { window.location.href = el.getAttribute('href'); }, 50);
+  return false;
+}
+
+// 초기 세션: 중1
+setSession('B', 1);
 </script>
 </body>
 </html>
