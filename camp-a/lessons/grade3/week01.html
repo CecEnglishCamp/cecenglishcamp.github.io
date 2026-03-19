@@ -119,6 +119,25 @@ body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--cream);min-
   .book-title-en{font-size:1.1rem;}
 }
 
+
+/* === LISTENING === */
+.listen-box{background:#f7f5f0;border-radius:18px;padding:20px;text-align:center;}
+.listen-play{background:var(--sage);color:white;border:none;border-radius:14px;padding:12px 28px;font-size:1rem;font-weight:900;cursor:pointer;font-family:inherit;margin-bottom:16px;box-shadow:0 4px 14px rgba(122,158,126,0.3);}
+.listen-play:hover{transform:translateY(-2px);}
+.listen-opts{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.listen-opt{flex:1;min-width:100px;max-width:160px;padding:16px 12px;border-radius:16px;border:3px solid #e0e0e0;background:white;cursor:pointer;text-align:center;font-family:inherit;transition:all 0.2s;}
+.listen-opt:hover{border-color:var(--sage);transform:translateY(-3px);}
+.listen-opt .lo-emoji{font-size:2rem;margin-bottom:4px;}
+.listen-opt .lo-label{font-size:0.75rem;color:var(--text2);font-weight:700;}
+.listen-opt.ok{border-color:var(--sage);background:var(--sage-light);}
+.listen-opt.no{border-color:var(--coral);background:var(--coral-light);}
+/* === DICTATION === */
+.dict-box{background:linear-gradient(135deg,#fdf6e3,#fff);border-radius:18px;padding:20px;text-align:center;}
+.dict-play{background:var(--gold);color:white;border:none;border-radius:14px;padding:10px 24px;font-size:0.95rem;font-weight:900;cursor:pointer;font-family:inherit;margin-bottom:12px;box-shadow:0 4px 14px rgba(218,165,32,0.3);}
+.dict-hint{font-size:1.3rem;font-weight:900;letter-spacing:6px;color:var(--text3);margin-bottom:12px;}
+.dict-input{width:200px;padding:10px 16px;border-radius:12px;border:2.5px solid var(--brown-light);font-size:1.1rem;font-family:inherit;font-weight:800;text-align:center;}
+.dict-input:focus{outline:none;border-color:var(--gold);}
+.dict-check{background:var(--brown);color:white;border:none;border-radius:12px;padding:9px 20px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:inherit;margin-left:8px;}
 /* === SECTION HEADERS === */
 .sec-hdr{display:flex;align-items:center;gap:12px;padding:18px 22px 0;}
 .sec-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
@@ -691,6 +710,55 @@ body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--cream);min-
   <div class="prog"><div class="prog-fill" style="width:75%;"></div></div>
 </div>
 
+
+<!-- ═══ LISTENING ═══ -->
+<div class="card">
+  <div class="sec-hdr">
+    <div class="sec-num" style="background:#e91e63;">♪</div>
+    <div><div class="sec-title">👂 들어보자!</div><div class="sec-sub">LISTENING · 듣고 맞는 그림을 골라봐!</div></div>
+  </div>
+  <div class="sec-body">
+    <div class="robo" style="margin-bottom:14px;">
+      <div class="robo-av"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+      <div><div class="robo-nm">Robo</div><div class="robo-msg">잘 듣고 맞는 그림을 골라봐! 🎧</div></div>
+    </div>
+    <div class="listen-box">
+      <button class="listen-play" onclick="speak('He ran away from the garden.')">🔊 듣기</button>
+      <div class="listen-opts">
+        <button class="listen-opt" onclick="listenChk(this,'ok')"><div class="lo-emoji">🐰💨</div><div class="lo-label">토끼가 달린다</div></button>
+        <button class="listen-opt" onclick="listenChk(this,'no')"><div class="lo-emoji">🐰🥕</div><div class="lo-label">토끼가 먹는다</div></button>
+        <button class="listen-opt" onclick="listenChk(this,'no')"><div class="lo-emoji">🐰😴</div><div class="lo-label">토끼가 잔다</div></button>
+      </div>
+      <div class="fb" id="listen-fb" style="margin-top:10px;"></div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:78%;"></div></div>
+</div>
+
+<!-- ═══ DICTATION ═══ -->
+<div class="card">
+  <div class="sec-hdr">
+    <div class="sec-num" style="background:var(--gold);">✎</div>
+    <div><div class="sec-title">✍️ 써보자!</div><div class="sec-sub">DICTATION · 들리는 단어를 써봐!</div></div>
+  </div>
+  <div class="sec-body">
+    <div class="robo" style="margin-bottom:14px;">
+      <div class="robo-av"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+      <div><div class="robo-nm">Robo</div><div class="robo-msg">들리는 단어를 써봐! 어렵지 않아 😊</div></div>
+    </div>
+    <div class="dict-box">
+      <button class="dict-play" onclick="speak('away')">🔊 단어 듣기</button>
+      <div class="dict-hint">a _ _ _ y</div>
+      <div>
+        <input class="dict-input" id="dictIn" placeholder="단어를 써봐!" onkeydown="if(event.key==='Enter')chkDict()">
+        <button class="dict-check" onclick="chkDict()">✓ 확인</button>
+      </div>
+      <div class="fb" id="dict-fb" style="margin-top:10px;"></div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:82%;"></div></div>
+</div>
+
 <!-- ═══════════════════════════════════════ -->
 <!-- STEP 7: 이해 문제 2개                   -->
 <!-- ═══════════════════════════════════════ -->
@@ -729,6 +797,19 @@ body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--cream);min-
     <div><div class="sec-title">한 줄 쓰기! ✍️</div><div class="sec-sub">WRITING · 한 줄만 완성해봐!</div></div>
   </div>
   <div class="sec-body">
+        <div class="game-box" style="margin-bottom:14px;">
+      <div class="game-q">📝 1단계: 맞는 말을 골라봐!</div>
+      <div style="text-align:center;font-size:1.15rem;font-weight:900;margin-bottom:14px;line-height:2;color:var(--text);">
+        "Peter ran ___ the garden."
+      </div>
+      <div class="choices">
+          <button class="ch" onclick="fillChk(this,'ok')">away from</button>
+          <button class="ch" onclick="fillChk(this,'no')">into</button>
+          <button class="ch" onclick="fillChk(this,'no')">around</button>
+      </div>
+      <div class="fb" id="fill-fb"></div>
+    </div>
+    <div style="text-align:center;font-size:0.75rem;color:var(--text3);margin-bottom:14px;">▼ 2단계: 자유롭게 써봐! ▼</div>
     <div class="write-box">
       <div class="write-prompt">🐰 피터가 도망친 이유를 영어로 완성해봐!</div>
       <div style="font-size:1.2rem;font-weight:900;margin-bottom:12px;color:var(--brown);">
@@ -960,6 +1041,10 @@ function shuffle(){
   var mr=document.getElementById('mr');
   if(mr){var b=Array.from(mr.children);b.sort(function(){return Math.random()-0.5;});b.forEach(function(x){mr.appendChild(x);});}
 }
+
+function listenChk(btn,t){var fb=document.getElementById('listen-fb');if(t==='ok'){btn.classList.add('ok');fb.style.color='var(--sage-dark)';fb.textContent='🎉 정답! +20 XP';addXP(20);praise();btn.parentElement.querySelectorAll('.listen-opt').forEach(function(b){b.disabled=true;b.style.pointerEvents='none';});}else{btn.classList.add('no');fb.style.color='var(--coral)';fb.textContent='😅 다시 들어봐!';setTimeout(function(){btn.classList.remove('no');fb.textContent='';},1200);}}
+function chkDict(){var v=document.getElementById('dictIn').value.trim().toLowerCase(),fb=document.getElementById('dict-fb');var ans='away';if(v===ans){fb.style.color='var(--sage-dark)';fb.textContent='🎉 정답! +25 XP';addXP(25);praise();document.getElementById('dictIn').style.borderColor='var(--sage)';}else if(v.length<1){fb.textContent='✏️ 써봐!';}else{fb.style.color='var(--coral)';fb.textContent='😅 다시 들어봐! 힌트: '+ans[0]+'...';}}
+function fillChk(btn,t){var fb=document.getElementById('fill-fb');if(t==='ok'){btn.classList.add('ok');fb.style.color='var(--sage-dark)';fb.textContent='🎉 정답! +15 XP';addXP(15);praise();btn.parentElement.querySelectorAll('.ch').forEach(function(b){b.disabled=true;});}else{btn.classList.add('no');fb.style.color='var(--coral)';fb.textContent='😅 다시!';setTimeout(function(){btn.classList.remove('no');fb.textContent='';},1200);}}
 window.addEventListener('load',shuffle);
 </script>
 </body>

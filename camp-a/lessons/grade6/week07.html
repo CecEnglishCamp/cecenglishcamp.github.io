@@ -119,6 +119,25 @@ body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--cream);min-
   .book-title-en{font-size:1.1rem;}
 }
 
+
+/* === LISTENING === */
+.listen-box{background:#f7f5f0;border-radius:18px;padding:20px;text-align:center;}
+.listen-play{background:var(--sage);color:white;border:none;border-radius:14px;padding:12px 28px;font-size:1rem;font-weight:900;cursor:pointer;font-family:inherit;margin-bottom:16px;box-shadow:0 4px 14px rgba(122,158,126,0.3);}
+.listen-play:hover{transform:translateY(-2px);}
+.listen-opts{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.listen-opt{flex:1;min-width:100px;max-width:160px;padding:16px 12px;border-radius:16px;border:3px solid #e0e0e0;background:white;cursor:pointer;text-align:center;font-family:inherit;transition:all 0.2s;}
+.listen-opt:hover{border-color:var(--sage);transform:translateY(-3px);}
+.listen-opt .lo-emoji{font-size:2rem;margin-bottom:4px;}
+.listen-opt .lo-label{font-size:0.75rem;color:var(--text2);font-weight:700;}
+.listen-opt.ok{border-color:var(--sage);background:var(--sage-light);}
+.listen-opt.no{border-color:var(--coral);background:var(--coral-light);}
+/* === DICTATION === */
+.dict-box{background:linear-gradient(135deg,#fdf6e3,#fff);border-radius:18px;padding:20px;text-align:center;}
+.dict-play{background:var(--gold);color:white;border:none;border-radius:14px;padding:10px 24px;font-size:0.95rem;font-weight:900;cursor:pointer;font-family:inherit;margin-bottom:12px;box-shadow:0 4px 14px rgba(218,165,32,0.3);}
+.dict-hint{font-size:1.3rem;font-weight:900;letter-spacing:6px;color:var(--text3);margin-bottom:12px;}
+.dict-input{width:200px;padding:10px 16px;border-radius:12px;border:2.5px solid var(--brown-light);font-size:1.1rem;font-family:inherit;font-weight:800;text-align:center;}
+.dict-input:focus{outline:none;border-color:var(--gold);}
+.dict-check{background:var(--brown);color:white;border:none;border-radius:12px;padding:9px 20px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:inherit;margin-left:8px;}
 /* === SECTION HEADERS === */
 .sec-hdr{display:flex;align-items:center;gap:12px;padding:18px 22px 0;}
 .sec-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
@@ -408,12 +427,74 @@ body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--cream);min-
           <button class="m-btn" onclick="mClick(this,'give up')">포기하다</button>
           <button class="m-btn" onclick="mClick(this,'heavy')">무거운</button>
           <button class="m-btn" onclick="mClick(this,'imagine')">상상하다</button></div></div><div class="fb" id="mfb"></div></div></div><div class="prog"><div class="prog-fill" style="width:80%;"></div></div></div>
+
+<!-- ═══ LISTENING ═══ -->
+<div class="card">
+  <div class="sec-hdr">
+    <div class="sec-num" style="background:#e91e63;">♪</div>
+    <div><div class="sec-title">👂 들어보자!</div><div class="sec-sub">LISTENING · 듣고 맞는 그림을 골라봐!</div></div>
+  </div>
+  <div class="sec-body">
+    <div class="robo" style="margin-bottom:14px;">
+      <div class="robo-av"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+      <div><div class="robo-nm">Robo</div><div class="robo-msg">잘 듣고 맞는 그림을 골라봐! 🎧</div></div>
+    </div>
+    <div class="listen-box">
+      <button class="listen-play" onclick="speak('Sara carried heavy coal up the stairs.')">🔊 듣기</button>
+      <div class="listen-opts">
+        <button class="listen-opt" onclick="listenChk(this,'ok')"><div class="lo-emoji">🪨😓</div><div class="lo-label">석탄 나르기</div></button>
+        <button class="listen-opt" onclick="listenChk(this,'no')"><div class="lo-emoji">🎉😊</div><div class="lo-label">파티</div></button>
+        <button class="listen-opt" onclick="listenChk(this,'no')"><div class="lo-emoji">🍽️😋</div><div class="lo-label">먹기</div></button>
+      </div>
+      <div class="fb" id="listen-fb" style="margin-top:10px;"></div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:78%;"></div></div>
+</div>
+
+<!-- ═══ DICTATION ═══ -->
+<div class="card">
+  <div class="sec-hdr">
+    <div class="sec-num" style="background:var(--gold);">✎</div>
+    <div><div class="sec-title">✍️ 써보자!</div><div class="sec-sub">DICTATION · 들리는 단어를 써봐!</div></div>
+  </div>
+  <div class="sec-body">
+    <div class="robo" style="margin-bottom:14px;">
+      <div class="robo-av"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+      <div><div class="robo-nm">Robo</div><div class="robo-msg">들리는 단어를 써봐! 어렵지 않아 😊</div></div>
+    </div>
+    <div class="dict-box">
+      <button class="dict-play" onclick="speak('imagine')">🔊 단어 듣기</button>
+      <div class="dict-hint">i _ _ _ _ _ _</div>
+      <div>
+        <input class="dict-input" id="dictIn" placeholder="단어를 써봐!" onkeydown="if(event.key==='Enter')chkDict()">
+        <button class="dict-check" onclick="chkDict()">✓ 확인</button>
+      </div>
+      <div class="fb" id="dict-fb" style="margin-top:10px;"></div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:82%;"></div></div>
+</div>
+
 <div class="card"><div class="sec-hdr"><div class="sec-num" style="background:var(--sky);">7</div><div><div class="sec-title">이해 문제! ❓</div><div class="sec-sub">QUIZ</div></div></div><div class="sec-body"><div class="quiz-box"><div class="quiz-q">Q1. 사라는 뭘 나르고 있었나요?<br><span style="font-size:0.82rem;color:var(--sage);">What was Sara carrying?</span></div><div class="quiz-opts">        <button class="qo" onclick="qChk(this,'ok')">🪨 석탄</button>
         <button class="qo" onclick="qChk(this,'no')">📚 책</button>
         <button class="qo" onclick="qChk(this,'no')">🍞 빵</button></div></div><div class="quiz-box"><div class="quiz-q">Q2. 사라는 뭘 사용했나요?<br><span style="font-size:0.82rem;color:var(--sage);">What did Sara use?</span></div><div class="quiz-opts">        <button class="qo" onclick="qChk(this,'ok')">🌈 상상력</button>
         <button class="qo" onclick="qChk(this,'no')">💰 돈</button>
         <button class="qo" onclick="qChk(this,'no')">📱 전화기</button></div></div></div><div class="prog"><div class="prog-fill" style="width:90%;"></div></div></div>
-<div class="card"><div class="sec-hdr"><div class="sec-num" style="background:var(--gold);">8</div><div><div class="sec-title">한 줄 쓰기! ✍️</div><div class="sec-sub">WRITING</div></div></div><div class="sec-body"><div class="write-box"><div class="write-prompt">👑 영어로 완성해봐!</div><div style="font-size:1.2rem;font-weight:900;margin-bottom:12px;color:var(--brown);">"Sara did not give up because ___________"</div><div style="font-size:0.82rem;color:var(--text3);margin-bottom:10px;">힌트: she was strong / she imagined beautiful things</div><input class="write-input" id="wInput" placeholder="여기에 영어로 써봐!"><br><button class="write-btn" onclick="chkWrite()">✓ 제출!</button><div class="fb" id="wfb" style="margin-top:10px;color:var(--brown);"></div></div></div><div class="prog"><div class="prog-fill" style="width:95%;"></div></div></div>
+<div class="card"><div class="sec-hdr"><div class="sec-num" style="background:var(--gold);">8</div><div><div class="sec-title">한 줄 쓰기! ✍️</div><div class="sec-sub">WRITING</div></div></div><div class="sec-body">    <div class="game-box" style="margin-bottom:14px;">
+      <div class="game-q">📝 1단계: 맞는 말을 골라봐!</div>
+      <div style="text-align:center;font-size:1.15rem;font-weight:900;margin-bottom:14px;line-height:2;color:var(--text);">
+        "I will not give ___!"
+      </div>
+      <div class="choices">
+          <button class="ch" onclick="fillChk(this,'ok')">up</button>
+          <button class="ch" onclick="fillChk(this,'no')">in</button>
+          <button class="ch" onclick="fillChk(this,'no')">out</button>
+      </div>
+      <div class="fb" id="fill-fb"></div>
+    </div>
+    <div style="text-align:center;font-size:0.75rem;color:var(--text3);margin-bottom:14px;">▼ 2단계: 자유롭게 써봐! ▼</div>
+    <div class="write-box"><div class="write-prompt">👑 영어로 완성해봐!</div><div style="font-size:1.2rem;font-weight:900;margin-bottom:12px;color:var(--brown);">"Sara did not give up because ___________"</div><div style="font-size:0.82rem;color:var(--text3);margin-bottom:10px;">힌트: she was strong / she imagined beautiful things</div><input class="write-input" id="wInput" placeholder="여기에 영어로 써봐!"><br><button class="write-btn" onclick="chkWrite()">✓ 제출!</button><div class="fb" id="wfb" style="margin-top:10px;color:var(--brown);"></div></div></div><div class="prog"><div class="prog-fill" style="width:95%;"></div></div></div>
 <div class="card"><div class="sec-hdr"><div class="sec-num" style="background:linear-gradient(135deg,var(--sage),var(--gold));">9</div><div><div class="sec-title">AI 선생님한테 칭찬 받기!</div><div class="sec-sub">AI PRAISE</div></div></div><div class="sec-body"><div class="ai-card"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo" style="width:72px;height:72px;border-radius:50%;border:3px solid #7CAE7A;margin-bottom:8px;"><div class="ai-title">오늘 배운 거 자랑하기!</div><div class="ai-desc"><strong>"I will not give up!"</strong>를 말해봐!</div><button class="ai-btn" onclick="openAI()">💬 AI 선생님과 대화하기!</button></div></div><div class="prog"><div class="prog-fill" style="width:100%;"></div></div></div>
 
 <div class="complete" id="done-card"><div class="complete-emoji">👑🎉🏆</div><div class="complete-title">Week 7 완료!</div><div class="complete-sub">핵심 표현: <strong>"I will not give up!"</strong><br>단어: give up, heavy, imagine, princess<br>정말 잘했어! 👏</div><div class="xp-big">🏆 총 <span id="fxp">0</span> XP</div><div class="robo" style="text-align:left;"><div class="robo-av"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div><div><div class="robo-nm">Robo</div><div class="robo-msg">사라의 의지! 💪<br>마지막 주! 모든 게 괜찮아질까? ✨</div></div></div><div style="margin-top:16px;">    <div class="next-card"><div style="flex:1;"><div class="next-label">📅 다음 주</div><div class="next-title">W8 — Everything Will Be Okay ✨</div><div class="next-hint">행복한 결말!</div></div><button class="next-btn" onclick="location.href='g6_new_w08.html'">W8 →</button></div></div></div>
@@ -438,6 +519,10 @@ function qChk(btn,t){if(t==='ok'){btn.parentElement.querySelectorAll('.qo').forE
 function chkWrite(){var v=document.getElementById('wInput').value.trim(),fb=document.getElementById('wfb');if(v.length<2){fb.textContent='✏️ 뭐든 써봐!';return;}fb.textContent='🎉 잘 썼어! +25 XP';addXP(25);praise();}
 function openAI(){var w=Math.floor(screen.width*0.5),h=screen.height,l=Math.floor(screen.width*0.5);window.open('https://chatgpt.com','chatgpt','width='+w+',height='+h+',left='+l+',top=0');}
 function shuffle(){document.querySelectorAll('.wpool').forEach(function(p){var c=Array.from(p.children);c.sort(function(){return Math.random()-0.5;});c.forEach(function(x){p.appendChild(x);});});var mr=document.getElementById('mr');if(mr){var b=Array.from(mr.children);b.sort(function(){return Math.random()-0.5;});b.forEach(function(x){mr.appendChild(x);});}}
+
+function listenChk(btn,t){var fb=document.getElementById('listen-fb');if(t==='ok'){btn.classList.add('ok');fb.style.color='var(--sage-dark)';fb.textContent='🎉 정답! +20 XP';addXP(20);praise();btn.parentElement.querySelectorAll('.listen-opt').forEach(function(b){b.disabled=true;b.style.pointerEvents='none';});}else{btn.classList.add('no');fb.style.color='var(--coral)';fb.textContent='😅 다시 들어봐!';setTimeout(function(){btn.classList.remove('no');fb.textContent='';},1200);}}
+function chkDict(){var v=document.getElementById('dictIn').value.trim().toLowerCase(),fb=document.getElementById('dict-fb');var ans='imagine';if(v===ans){fb.style.color='var(--sage-dark)';fb.textContent='🎉 정답! +25 XP';addXP(25);praise();document.getElementById('dictIn').style.borderColor='var(--sage)';}else if(v.length<1){fb.textContent='✏️ 써봐!';}else{fb.style.color='var(--coral)';fb.textContent='😅 다시 들어봐! 힌트: '+ans[0]+'...';}}
+function fillChk(btn,t){var fb=document.getElementById('fill-fb');if(t==='ok'){btn.classList.add('ok');fb.style.color='var(--sage-dark)';fb.textContent='🎉 정답! +15 XP';addXP(15);praise();btn.parentElement.querySelectorAll('.ch').forEach(function(b){b.disabled=true;});}else{btn.classList.add('no');fb.style.color='var(--coral)';fb.textContent='😅 다시!';setTimeout(function(){btn.classList.remove('no');fb.textContent='';},1200);}}
 window.addEventListener('load',shuffle);
 </script>
 </body>
