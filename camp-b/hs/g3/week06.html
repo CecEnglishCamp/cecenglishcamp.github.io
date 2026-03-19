@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp B HS3 — W1 · 1984</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#09100f;--card:#0e1a18;--card2:#0a1514;--border:#1a2e2a;
+  --gold:#00c8aa;--gold2:#4affd8;--acc:#00ffcc;
+  --green:#16a34a;--red:#dc2626;--text:#e0f4f2;--sub:#507a74;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+.hd{background:rgba(9,16,15,0.97);padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.hd-logo{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--text);letter-spacing:1px;}
+.hd-badge{background:#0e2420;color:var(--gold);font-size:0.65rem;font-weight:900;padding:3px 10px;border-radius:20px;border:1px solid #1a4a3a;letter-spacing:2px;margin-left:10px;}
+.hd-sub{font-size:0.7rem;color:var(--sub);margin-left:8px;}
+.xp-btn{background:linear-gradient(135deg,#00c8aa,#4affd8);color:#001a16;border:none;border-radius:20px;padding:5px 14px;font-size:0.8rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;}
+.hero{background:linear-gradient(160deg,#0f0a0a 0%,#1a0d0d 50%,#0f0a0a 100%);padding:28px 16px 20px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(217,64,64,0.1) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{font-size:0.62rem;color:var(--gold);font-weight:900;letter-spacing:4px;margin-bottom:10px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:400;color:var(--text);margin-bottom:4px;letter-spacing:4px;}
+.hero-author{font-size:0.78rem;color:var(--sub);margin-bottom:16px;letter-spacing:1px;}
+.hero-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.hb{padding:4px 12px;border-radius:20px;font-size:0.68rem;font-weight:800;}
+.key-card{background:linear-gradient(135deg,#0a1514,#09100f);border:1px solid #1a4a3a;border-radius:16px;padding:18px;margin:12px 16px 8px;}
+.key-label{font-size:0.6rem;color:var(--sub);font-weight:700;letter-spacing:3px;margin-bottom:10px;}
+.key-en{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--text);font-style:italic;margin-bottom:6px;line-height:1.5;}
+.key-kr{font-size:0.8rem;color:var(--gold);margin-bottom:14px;}
+.key-play{background:transparent;color:var(--gold);border:1px solid #1a4a3a;border-radius:25px;padding:7px 20px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.prog-row{display:flex;align-items:center;gap:8px;padding:8px 16px;}
+.prog-track{flex:1;background:#0e2420;border-radius:8px;height:5px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,#00c8aa,#4affd8);border-radius:8px;transition:width 0.5s;}
+.prog-label{font-size:0.7rem;color:var(--sub);font-weight:700;white-space:nowrap;}
+.container{max-width:680px;margin:0 auto;padding:0 12px 80px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;}
+.sh{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sh-icon{font-size:1.05rem;}.sh-title{font-size:0.88rem;font-weight:900;color:white;}
+.tab-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.tab-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.tab-btn.act-b1{background:#0e2420;border-color:#4a2020;color:var(--gold);}
+.tab-btn.act-c1{background:#0a1514;border-color:#4a1a1a;color:#4affd8;}
+.listen-row{display:flex;gap:8px;margin-bottom:10px;}
+.listen-btn{background:#1a3a30;color:var(--gold);border:none;border-radius:20px;padding:7px 16px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.stop-btn{background:var(--card2);border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:7px 12px;font-size:0.8rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.notice-box{background:#0a1514;border-left:3px solid #4a2020;border-radius:0 8px 8px 0;padding:9px 14px;margin-bottom:10px;font-size:0.76rem;color:var(--sub);line-height:1.6;}
+.story-box{background:var(--card2);border-radius:10px;padding:16px;font-size:0.88rem;line-height:1.95;color:var(--text);display:none;}
+.story-box.active{display:block;}
+.story-box p{margin-bottom:12px;}
+.gram{border-bottom:2px dashed var(--gold);cursor:pointer;color:#4affd8;font-weight:700;}
+.story-kr{background:#080f0e;border-left:3px solid #3a1818;border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.8;display:none;}
+.kr-toggle{background:transparent;border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:4px 12px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+#tt-overlay{position:fixed;inset:0;z-index:999;display:none;}
+.tt-wrap{position:fixed;z-index:1000;display:none;}
+.tt-box{background:#0e1a18;border:1.5px solid var(--gold);border-radius:12px;padding:14px 16px;max-width:290px;box-shadow:0 8px 32px rgba(0,0,0,0.7);}
+.tt-tag{background:var(--gold);color:#1a0000;font-size:0.65rem;font-weight:900;padding:2px 8px;border-radius:10px;margin-bottom:8px;display:inline-block;}
+.tt-title{font-size:0.88rem;font-weight:900;color:white;margin-bottom:6px;}
+.tt-desc{font-size:0.78rem;color:var(--sub);line-height:1.6;margin-bottom:8px;white-space:pre-line;}
+.tt-ex{background:var(--bg);border-radius:6px;padding:6px 10px;font-size:0.78rem;color:var(--gold);margin-bottom:10px;font-style:italic;}
+.tt-gram-link{background:#0a1514;border:1px solid #1a4a3a;color:var(--gold);border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;text-decoration:none;}
+.tt-close{position:absolute;top:8px;right:10px;background:transparent;border:none;color:var(--sub);font-size:1rem;cursor:pointer;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.vc{background:var(--card2);border-radius:10px;padding:10px 12px;border-left:3px solid var(--gold);}
+.vc-w{font-size:0.88rem;font-weight:900;color:white;margin-bottom:2px;}
+.vc-m{font-size:0.75rem;color:var(--sub);margin-bottom:4px;}
+.vc-e{font-size:0.72rem;color:var(--gold);font-style:italic;}
+.sa-box{background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;}
+.sa-sentence{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:14px;border-left:3px solid var(--gold);padding-left:12px;}
+.sa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.sa-item{background:var(--bg);border-radius:8px;padding:10px 12px;}
+.sa-role{font-size:0.65rem;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:4px;}
+.sa-text{font-size:0.82rem;color:var(--text);}
+.sa-note{font-size:0.72rem;color:var(--sub);margin-top:2px;}
+.exp-levels{display:flex;flex-direction:column;gap:10px;}
+.exp-item{background:var(--card2);border-radius:10px;padding:12px 14px;}
+.exp-level{font-size:0.65rem;font-weight:900;letter-spacing:2px;margin-bottom:6px;}
+.exp-sentence{font-size:0.84rem;line-height:1.7;color:var(--text);}
+.exp-btn{background:var(--gold);color:#1a0000;border:none;border-radius:8px;padding:7px 16px;font-size:0.78rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px;}
+.sn-passage{background:var(--card2);border-radius:10px;padding:14px;font-size:0.86rem;line-height:1.9;margin-bottom:14px;color:var(--text);border-left:3px solid var(--gold);}
+.sn-blank{display:inline-block;border-bottom:2px solid var(--gold);min-width:80px;text-align:center;color:var(--gold);font-weight:900;}
+.sn-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.sn-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.sn-opt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.sn-opt.no{border-color:var(--red);background:#2a0d0d;color:#4affd8;}
+.sn-result{font-size:0.84rem;font-weight:700;min-height:18px;}
+.sn-explain{background:var(--card2);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:12px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.7;display:none;}
+.sn-explain.show{display:block;}
+.sn-explain strong{color:var(--gold);}
+.ai-btn{background:transparent;border:1px solid #1a3a30;color:var(--gold);border-radius:20px;padding:6px 16px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+.fill-sent{font-size:0.9rem;font-weight:700;line-height:1.7;margin-bottom:12px;color:white;}
+.blank-span{display:inline-block;min-width:70px;border-bottom:2px solid var(--gold);color:var(--gold);text-align:center;font-weight:900;}
+.choices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.cbtn{padding:7px 16px;background:var(--card2);border:1.5px solid var(--border);border-radius:20px;color:var(--text);font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.cbtn.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.cbtn.no{border-color:var(--red);background:#2a0d0d;color:#4affd8;}
+.fill-res{font-size:0.82rem;font-weight:700;min-height:18px;}
+.dict-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:8px;}
+.dict-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.dict-play{background:#1a3a30;color:var(--gold);border:none;border-radius:50%;width:36px;height:36px;font-size:0.9rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.dict-label{font-size:0.75rem;color:var(--sub);font-weight:700;}
+.dict-hint{font-size:0.78rem;color:var(--gold);font-style:italic;}
+.dict-input-row{display:flex;gap:8px;}
+.dict-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.dict-input:focus{outline:none;border-color:var(--gold);}
+.dict-btn{background:#1a3a30;color:var(--gold);border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.dict-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.lc-play-btn{background:#1a3a30;color:var(--gold);border:none;border-radius:25px;padding:9px 22px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;}
+.lc-opts{display:flex;flex-direction:column;gap:8px;}
+.lc-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.lc-opt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.lc-opt.no{border-color:var(--red);background:#2a0d0d;color:#4affd8;}
+.lc-result{margin-top:8px;font-size:0.84rem;font-weight:700;min-height:18px;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.match-col{display:flex;flex-direction:column;gap:6px;}
+.match-item{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;color:var(--text);transition:all 0.15s;}
+.match-item.selected{border-color:var(--gold);background:#0e2420;color:var(--gold);}
+.match-item.matched{border-color:var(--green);background:#0d2a1a;color:#5aff9a;cursor:default;}
+.match-item.wrong-flash{border-color:var(--red);background:#0d2a26;}
+.match-result{font-size:0.84rem;font-weight:700;min-height:18px;text-align:center;}
+.fd-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;}
+.fd-level-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fd-badge{color:#1a0000;font-size:0.7rem;font-weight:900;padding:2px 10px;border-radius:20px;}
+.fd-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.fd-play{color:#1a0000;border:none;border-radius:20px;padding:6px 14px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-hints{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.fd-hint-label{font-size:0.7rem;color:var(--sub);font-weight:700;}
+.fd-hint-tag{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid;}
+.fd-input-row{display:flex;gap:8px;}
+.fd-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.fd-input:focus{outline:none;border-color:var(--gold);}
+.fd-check{color:#1a0000;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.quiz-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.qtab{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.qb1{background:#0e2420;border-color:#4a2020;color:var(--gold);}
+.qc1{background:#0a1514;border-color:#4a1a1a;color:#4affd8;}
+.quiz-set{display:none;}.quiz-set.active{display:block;}
+.quiz-item{margin-bottom:14px;}
+.quiz-q{font-size:0.86rem;font-weight:800;color:white;margin-bottom:8px;}
+.quiz-opts{display:flex;flex-direction:column;gap:6px;}
+.qopt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.qopt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.qopt.no{border-color:var(--red);background:#2a0d0d;color:#4affd8;}
+.essay-struct{background:var(--bg);border-radius:10px;padding:14px;margin-bottom:14px;}
+.essay-struct-title{font-size:0.78rem;font-weight:900;color:var(--gold);margin-bottom:10px;}
+.ep{background:var(--card);border-radius:8px;padding:10px;margin-bottom:6px;}
+.ep-num{font-size:0.68rem;font-weight:900;margin-bottom:3px;}
+.ep-hint{font-size:0.73rem;color:var(--sub);}
+.essay-line{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.essay-num{font-size:0.7rem;font-weight:900;color:var(--gold);width:22px;flex-shrink:0;padding-top:10px;}
+.essay-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.essay-input:focus{outline:none;border-color:var(--gold);}
+.essay-submit{background:linear-gradient(135deg,#00c8aa,#4affd8);color:#001a16;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:4px;}
+.debate-box{background:linear-gradient(135deg,#0a1514,#09100f);border-radius:12px;padding:14px;border:1px solid #1a3a30;}
+.debate-topic{background:#080f0e;border-radius:10px;padding:12px;text-align:center;margin-bottom:12px;border:1px solid #1a4a3a;}
+.debate-topic-en{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;font-weight:500;color:white;margin-bottom:4px;}
+.debate-topic-kr{font-size:0.78rem;color:var(--gold);}
+.debate-round{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;border-left:3px solid var(--gold);}
+.debate-round-label{font-size:0.7rem;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:6px;}
+.debate-textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;resize:none;outline:none;line-height:1.6;margin-top:4px;}
+.debate-textarea:focus{border-color:var(--gold);}
+.phrase-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.phrase{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:0.75rem;font-weight:700;cursor:pointer;color:var(--sub);}
+.owui-btn{background:linear-gradient(135deg,#1a3a30,#0e2420);color:var(--gold);border:1px solid #1a4a3a;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:8px;}
+.complete-card{background:linear-gradient(135deg,#0a1514,#09100f);border:2px solid var(--gold);border-radius:20px;padding:24px;text-align:center;margin-bottom:20px;display:none;}
+.bb-box{background:#0a1514;border:1px solid #1a4a3a;border-radius:10px;padding:12px 14px;margin-bottom:12px;font-size:0.82rem;color:var(--sub);line-height:1.7;}
+.bb-tag{background:var(--gold);color:#1a0000;font-size:0.65rem;font-weight:900;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:6px;}
+</style>
+</head>
+<body>
+
+<div id="tt-overlay" onclick="closeTT()"></div>
+<div class="tt-wrap" id="tt-wrap">
+  <div class="tt-box" id="tt-box">
+    <button class="tt-close" onclick="closeTT()">✕</button>
+    <div class="tt-tag" id="tt-tag"></div>
+    <div class="tt-title" id="tt-title"></div>
+    <div class="tt-desc" id="tt-desc"></div>
+    <div class="tt-ex" id="tt-ex"></div>
+    <div><a class="tt-gram-link" id="tt-gram-link" href="https://cecenglishcamp.github.io/GrammarBaseCamp/index.html" target="_blank"></a></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="hd">
+  <div style="display:flex;align-items:center;">
+    <div class="hd-logo">CEC Camp B</div>
+    <div class="hd-badge">HIGH SCHOOL 3</div>
+    <div class="hd-sub" style="margin-left:8px;">고3 · W06 · 1984</div>
+  </div>
+  <button class="xp-btn" id="xp-btn">⭐ 0 XP</button>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">WEEK 06 / 36 · HIGH SCHOOL 3</div>
+  <div class="hero-title">1984</div>
+  <div class="hero-author">George Orwell · He Loved Big Brother</div>
+  <div class="hero-badges">
+    <span class="hb" style="background:#0e2420;color:var(--gold);border:1px solid #1a4a3a;">G75 도치/강조</span>
+    <span class="hb" style="background:#0e2420;color:var(--gold);border:1px solid #1a4a3a;">G71 명사절 심화</span>
+    <span class="hb" style="background:#0e2420;color:var(--gold);border:1px solid #1a4a3a;">G68 가정법 심화</span>
+    <span class="hb" style="background:#0e2420;color:var(--gold);border:1px solid #1a4a3a;">수능 빈칸 추론</span>
+    <span class="hb" style="background:#0a1514;color:#4affd8;border:1px solid #1a4a3a;">🎯 B1~C1</span>
+    <span class="hb" style="background:#0e2420;color:var(--gold);border:1px solid #1a4a3a;">⏱ W1~W12</span>
+  </div>
+</div>
+
+<!-- KEY EXPRESSION -->
+<div class="key-card">
+  <div class="key-label">KEY EXPRESSION · 이번 주 핵심 표현</div>
+  <div class="key-en">"He loved Big Brother."</div>
+  <div class="key-kr">그는 빅 브라더를 사랑했다.</div>
+  <button class="key-play" data-speak="He loved Big Brother." onclick="speak(this.dataset.speak)">▶ 발음 듣기</button>
+</div>
+
+<!-- BB WARNING BOX -->
+<div style="padding:0 16px;margin-bottom:4px;">
+  <div class="bb-box">
+    <div class="bb-tag">FINAL TRANSMISSION</div>
+    소설의 마지막 네 단어예요.<br>윈스턴은 재교육을 마쳤어요. 진심으로 빅 브라더를 사랑해요.<br><span style="color:var(--sub);font-size:0.76rem;">오웰의 가장 어두운 결론: 당은 단순한 굴복이 아닌 진심을 원하고 — 얻어요.</span>
+  </div>
+    <strong style="color:var(--gold);">Doublethink</strong> = 두 가지 모순된 믿음을 동시에 받아들이는 능력<br>
+    당은 "전쟁이 평화"라고 가르친다. 논리적으로 불가능하지만 — 국민은 믿는다.<br>
+    <span style="color:var(--sub);font-size:0.76rem;">Orwell이 경고한 것: 언어를 통제하면 사고를 통제할 수 있다.</span>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="prog-row">
+  <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:18%;"></div></div>
+  <div class="prog-label">W6 / 36</div>
+</div>
+
+<div class="container">
+
+<!-- ① 지문 읽기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📖</div><div class="sh-title">지문 읽기</div></div>
+  <div class="tab-row">
+    <button class="tab-btn act-b1" onclick="showStory('b1',this)">🔴 B1 ★ 기준</button>
+    <button class="tab-btn" onclick="showStory('c1',this)">⚫ C1 심화</button>
+  </div>
+  <div class="listen-row">
+    <button class="listen-btn" onclick="readStory()">🔊 전체 듣기</button>
+    <button class="stop-btn" onclick="speechSynthesis.cancel()">⏹ 정지</button>
+  </div>
+  <div class="notice-box">📡 <strong style="color:var(--gold)">텔레스크린이 당신을 감시합니다.</strong> B1으로 읽어드려요. C1은 수능 실전 수준이에요.</div>
+
+  <div id="sb-b1" class="story-box active">
+    <p>After Room 101, Winston is released. He sits in a café. <span class="gram" data-id="g1">He is no longer the man he was</span>. The Party has rebuilt him entirely.</p>
+    <p>When Winston sees Julia again, there is nothing between them. <span class="gram" data-id="g2">Both know they have betrayed each other</span>. They exchange a few cold words and part. The love is gone.</p>
+    <p>Winston watches news of a great victory on the telescreen. <span class="gram" data-id="g3">So moved is he that tears run down his face</span>. He is happy. Genuinely, completely happy.</p>
+    <p><span class="gram" data-id="g4">Not until he sees Big Brother's face does he understand the full extent of what has been done to him</span>. He gazes up at the enormous face. The struggle is over. He has won the victory over himself.</p>
+  </div>
+
+  <div id="sb-c1" class="story-box">
+    <p>The final paragraph of 1984 is among the most devastating endings in modern literature. Orwell does not offer Winston death — he offers something worse: the total and genuine conversion of the self. <span class="gram" data-id="g5">What makes the ending unbearable is not that Winston is destroyed but that he is completed — made whole by the Party's design</span>.</p>
+    <p>He loved Big Brother. These four words are the culmination of everything the novel has argued. The Party's goal was never simply obedience — it was love. Not the performance of love, not the simulation of it, but the thing itself: <span class="gram" data-id="g6">the genuine, voluntary, irreversible surrender of the self to the collective</span>.</p>
+    <p>Orwell offers no hope in this ending. But his warning has kept its force for seventy years because it describes not a fantasy of the future but a tendency of the present — the ease with which, under sufficient pressure, a person can come to love the thing that has destroyed them.</p>
+  </div>
+
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+    <button class="kr-toggle" onclick="toggleKr()" id="kr-btn">🇰🇷 한국어 번역 보기</button>
+  </div>
+  <div class="story-kr" id="story-kr">
+    101호실 이후 윈스턴이 풀려나요. 줄리아를 다시 만나도 둘 사이에 아무것도 없어요. 둘 다 서로를 배신했다는 것을 알아요. 윈스턴은 텔레스크린에서 대승의 소식을 봐요. 너무 감동해서 눈물이 흘러요. 그는 행복해요. 진심으로, 완전히 행복해요. 그는 빅 브라더를 사랑했다.
+  </div>
+</div>
+
+<!-- ② 핵심 표현 분석 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔑</div><div class="sh-title">핵심 표현 분석 — Doublethink</div></div>
+  <div class="sa-box">
+    <div style="font-size:0.75rem;color:var(--gold);font-weight:900;margin-bottom:8px;">이번 주 KEY EXPRESSION</div>
+    <div class="sa-sentence">"He loved Big Brother."</div>
+    <div style="font-size:0.8rem;color:var(--sub);line-height:1.8;margin-bottom:12px;">
+      <strong style="color:var(--gold)">War is Peace</strong> = 전쟁은 평화다 → 외부 전쟁이 내부 통합을 만든다<br>
+      <strong style="color:var(--gold)">Freedom is Slavery</strong> = 자유는 노예다 → 개인 자유는 오히려 고립과 취약함<br>
+      <strong style="color:var(--gold)">Ignorance is Strength</strong> = 무지는 힘이다 → 모르면 저항할 수 없다<br>
+    </div>
+    <div style="font-size:0.78rem;color:var(--sub);line-height:1.7;">
+      💡 이 슬로건들이 <strong style="color:var(--gold)">수능에 나오는 이유:</strong><br>
+      모순(contradiction) → 역설(paradox) → 역설이 진실이 되는 구조<br>
+      → 빈칸 추론, 요약문 완성, 주제 파악 문제 단골 소재
+    </div>
+  </div>
+</div>
+
+<!-- ③ 문장 구조 분석 → 재생산 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔍</div><div class="sh-title">문장 구조 분석 → 재생산</div></div>
+  <div style="font-size:0.78rem;color:var(--sub);margin-bottom:12px;line-height:1.6;">
+    구조 분석은 해석이 아니라 <strong style="color:var(--gold)">이해 → 추출 → 재생산</strong>이 목표예요.
+  </div>
+
+  <div style="background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;border-left:3px solid var(--gold);">
+    <div style="font-size:0.65rem;font-weight:900;color:var(--gold);letter-spacing:3px;margin-bottom:10px;">STEP 1 — 분석 (Analyse)</div>
+    <div class="sa-sentence">"Not until Winston had been completely broken did the Party consider its work with him to be done."</div>
+    <div class="sa-grid" style="margin-top:10px;">
+      <div class="sa-item"><div class="sa-role">Not until 도치 (과거완료)</div><div class="sa-text">Not until + had + 과거분사</div><div class="sa-note">과거완료 + Not until 도치</div></div>
+      <div class="sa-item"><div class="sa-role">도치된 주절</div><div class="sa-text">did the Party consider its work to be done</div><div class="sa-note">consider + 목적어 + to be + 형용사</div></div>
+      <div class="sa-item"><div class="sa-role">핵심 의미</div><div class="sa-text">완전히 부서질 때까지 → 그제서야 완료</div><div class="sa-note">당의 목표 = 굴복이 아닌 변형</div></div>
+      <div class="sa-item"><div class="sa-role">수능 연계</div><div class="sa-text">Not until + 과거완료 + 도치</div><div class="sa-note">시제 + 도치 결합 — 수능 어법 심화</div></div>
+    </div>
+    <div style="margin-top:10px;font-size:0.76rem;color:var(--sub);line-height:1.7;">
+      💡 <strong style="color:var(--gold)">수능 어법 최빈출:</strong> "Not until + 절/구 → did/could/would + 주어 + 동사원형"<br>
+      "Not until the war ended <strong style="color:var(--gold)">did</strong> people understand the cost."
+    </div>
+  </div>
+
+  <div style="background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;border-left:3px solid #7ab3ff;">
+    <div style="font-size:0.65rem;font-weight:900;color:#7ab3ff;letter-spacing:3px;margin-bottom:10px;">STEP 2 — 구조 추출 (Extract)</div>
+    <div style="background:var(--bg);border-radius:8px;padding:12px;font-size:0.84rem;color:#7ab3ff;font-family:monospace;line-height:2;">
+      Not until + [주어] + had + [과거분사] + did + [주어] + [동사원형]
+    </div>
+    <div style="margin-top:10px;font-size:0.76rem;color:var(--sub);line-height:1.7;">
+      핵심: <strong style="color:#7ab3ff;">Not until + 과거완료절 → did + 주어 + 동사원형 (과거 기준 도치)</strong><br>
+      → Not until 절이 과거완료면 주절도 과거(did)로
+    </div>
+  </div>
+
+  <div style="background:var(--card2);border-radius:12px;padding:14px;border-left:3px solid #ff9a9a;">
+    <div style="font-size:0.65rem;font-weight:900;color:#4affd8;letter-spacing:3px;margin-bottom:10px;">STEP 3 — 재생산 (Reproduce)</div>
+    <div style="font-size:0.8rem;color:var(--sub);margin-bottom:8px;">같은 구조로 내 문장을 만들어보세요.</div>
+    <div style="background:var(--bg);border-radius:8px;padding:10px;margin-bottom:10px;font-size:0.8rem;color:#4affd8;line-height:1.7;">
+      예시: ""Not until Winston had accepted that 2+2=5 did O'Brien end the torture.""
+    </div>
+    <div style="font-size:0.78rem;color:var(--gold);margin-bottom:6px;font-weight:900;">✏️ 직접 써보기:</div>
+    <textarea class="debate-textarea" id="reproduce-input" rows="3" placeholder="Not until Winston had completely believed... did the Party..."></textarea>
+    <button class="exp-btn" onclick="checkReproduce()" style="margin-top:8px;">📝 Open WebUI 피드백받기</button>
+    <div id="reproduce-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
+  </div>
+</div>
+
+<!-- ④ 문장 확장 훈련 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">문장 확장 훈련</div></div>
+  <div style="font-size:0.78rem;color:var(--sub);margin-bottom:12px;">짧은 문장을 C1 수준까지 확장해보세요.</div>
+  <div class="exp-levels">
+    <div class="exp-item"><div class="exp-level" style="color:#7ab3ff;">LEVEL 1 — A2</div><div class="exp-sentence">Winston wrote in his diary.</div></div>
+    <div class="exp-item"><div class="exp-level" style="color:var(--gold);">LEVEL 2 — B1 ★</div><div class="exp-sentence">Winston secretly wrote in an illegal diary, knowing that the Thought Police would eventually find him and punish him for thoughtcrime.</div></div>
+    <div class="exp-item"><div class="exp-level" style="color:#4affd8;">LEVEL 3 — C1</div><div class="exp-sentence">Not until he had written the forbidden words — DOWN WITH BIG BROTHER — did Winston fully understand that the act of writing itself was his only remaining form of freedom: not the freedom to act, but the freedom to remember, to insist that his own experience was real in a world designed to make such insistence impossible.</div></div>
+  </div>
+  <div style="margin-top:14px;">
+    <div style="font-size:0.78rem;color:var(--gold);font-weight:900;margin-bottom:8px;">✏️ 직접 써보기 — B1 수준으로 확장하세요:</div>
+    <div style="font-size:0.8rem;color:var(--sub);margin-bottom:6px;">시작 문장: "Winston loved Big Brother."</div>
+    <textarea class="debate-textarea" id="expand-input" rows="3" placeholder="Winston, who had once written DOWN WITH BIG BROTHER in his diary, now looked up at the telescreen and felt nothing but love for..."></textarea>
+    <button class="exp-btn" onclick="checkExpand()">📝 Open WebUI에서 피드백받기</button>
+    <div id="expand-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
+  </div>
+</div>
+
+<!-- ⑤ 단어 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📝</div><div class="sh-title">수능 핵심 단어</div></div>
+  <div class="vocab-grid">
+    <div class="vc"><div class="vc-w">conversion 🔄</div><div class="vc-m">전환, 개종</div><div class="vc-e">"the total conversion of the self"</div></div>
+    <div class="vc"><div class="vc-w">culmination 🏔️</div><div class="vc-m">정점, 절정</div><div class="vc-e">"the culmination of everything"</div></div>
+    <div class="vc"><div class="vc-w">obedience 🐕</div><div class="vc-m">복종</div><div class="vc-e">"not simply obedience but love"</div></div>
+    <div class="vc"><div class="vc-w">irreversible ⛔</div><div class="vc-m">되돌릴 수 없는</div><div class="vc-e">"the irreversible surrender of the self"</div></div>
+    <div class="vc"><div class="vc-w">surrender 🏳️</div><div class="vc-m">항복, 포기</div><div class="vc-e">"surrender of the self to the collective"</div></div>
+    <div class="vc"><div class="vc-w">voluntary ✋</div><div class="vc-m">자발적인</div><div class="vc-e">"voluntary and genuine surrender"</div></div>
+  </div>
+</div>
+
+<!-- ⑥ 수능 문제 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">수능 유형 — 빈칸 추론</div></div>
+  <div style="font-size:0.72rem;color:var(--gold);font-weight:900;letter-spacing:2px;margin-bottom:10px;">29번 유형</div>
+  <div class="sn-passage">
+    The final sentence of 1984 — "He loved Big Brother" — represents the completion of the Party's project. Orwell suggests that the most total form of political control is achieved not when citizens obey out of fear, but when they By reducing the vocabulary available to citizens through Newspeak, the Party ensures that certain concepts become literally unthinkable. A person who lacks the words to express rebellion cannot rebel; a person who cannot conceive of an alternative to the present cannot imagine change. This is why Winston's act of writing in his diary is so significant: it is not merely an act of courage but an act of <span class="sn-blank" id="sn-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> — a refusal to allow his inner life to be colonised by the Party's language.
+    <br><br><span style="font-size:12px;color:var(--sub);">* colonise: 식민화하다 &nbsp;** conceive of: ~을 상상하다</span>
+  </div>
+  <div class="sn-opts" id="sn-opts">
+    <button class="sn-opt" onclick="snCheck(this,false)">① are physically incapable of resisting the Party's commands</button>
+    <button class="sn-opt" onclick="snCheck(this,true)">② genuinely and voluntarily love the system that has destroyed their capacity for independent thought</button>
+    <button class="sn-opt" onclick="snCheck(this,false)">③ believe that the Party's actions are necessary for collective survival</button>
+    <button class="sn-opt" onclick="snCheck(this,false)">④ have forgotten that any alternative to the present system ever existed</button>
+    <button class="sn-opt" onclick="snCheck(this,false)">⑤ are rewarded sufficiently to prefer loyalty to resistance</button>
+  </div>
+  <div class="sn-result" id="sn-result"></div>
+  <div class="sn-explain" id="sn-explain">
+    <strong>핵심 구조:</strong> "the most total form of control is achieved not when citizens obey but when they..."<br>빈칸 = 완전한 통제의 최고 형태<br>→ ② "genuinely and voluntarily love the system"<br>(진심으로 자발적으로 시스템을 사랑함)<br><br><strong>오답 분석:</strong><br>① 물리적으로 저항 불가 → 두려움에 의한 복종, 사랑과 다름<br>③ 집단 생존을 위해 필요하다고 믿음 → 합리적 복종<br>④ 대안이 존재했음을 잊음 → 기억 통제, 사랑과 다름<br>⑤ 충분한 보상 → 이익에 의한 복종
+  </div>
+  <button class="ai-btn" id="ai-explain-btn" style="display:none;" onclick="sendToAI()">🤖 AI에게 오답 분석 요청 ↗</button>
+</div>
+
+<!-- ⑦ 빈칸 채우기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">빈칸 채우기</div></div>
+  <div class="fill-sent">The Party wanted not obedience but genuine <span class="blank-span" id="bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span>.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'love','love','bl1','fr1')">love</button>
+    <button class="cbtn" onclick="chkFill(this,'fear','love','bl1','fr1')">fear</button>
+    <button class="cbtn" onclick="chkFill(this,'silence','love','bl1','fr1')">silence</button>
+  </div>
+  <div class="fill-res" id="fr1"></div>
+  <br>
+  <div class="fill-sent">Winston's conversion was total and <span class="blank-span" id="bl2">&nbsp;&nbsp;&nbsp;&nbsp;</span>.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'irreversible','irreversible','bl2','fr2')">irreversible</button>
+    <button class="cbtn" onclick="chkFill(this,'temporary','irreversible','bl2','fr2')">temporary</button>
+    <button class="cbtn" onclick="chkFill(this,'incomplete','irreversible','bl2','fr2')">incomplete</button>
+  </div>
+  <div class="fill-res" id="fr2"></div>
+  <br>
+
+</div>
+
+<!-- ⑧ 단어 받아쓰기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🎧</div><div class="sh-title">단어 받아쓰기</div></div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="The Party achieved the total conversion of Winston's self." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"The Party achieved the total ___ of Winston's self."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di1" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','conversion','dr1')">
+      <button class="dict-btn" onclick="chkDict('di1','conversion','dr1')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr1"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="His surrender to Big Brother was voluntary and complete." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"His ___ to Big Brother was voluntary and complete."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di2" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','surrender','dr2')">
+      <button class="dict-btn" onclick="chkDict('di2','surrender','dr2')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr2"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="The culmination of the Party's work was genuine love, not obedience." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"The ___ of the Party's work was genuine love."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di3" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','culmination','dr3')">
+      <button class="dict-btn" onclick="chkDict('di3','culmination','dr3')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑨ 짝맞추기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🃏</div><div class="sh-title">짝맞추기</div></div>
+  <div class="match-grid">
+    <div class="match-col" id="match-left"></div>
+    <div class="match-col" id="match-right"></div>
+  </div>
+  <div class="match-result" id="match-result"></div>
+</div>
+
+<!-- ⑩ 듣고 고르기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">👂</div><div class="sh-title">듣고 고르기</div></div>
+  <button class="lc-play-btn" data-speak="Winston loved Big Brother — not because he was forced to, but because the Party had rebuilt him so completely that the love was genuine." onclick="speak(this.dataset.speak)">🔊 듣기</button>
+  <div class="lc-opts" id="lc-opts">
+    <button class="lc-opt" data-correct="true" onclick="lcCheck(this,'ok')">Winston loved Big Brother not because he was forced to, but because the Party had rebuilt him so completely that the love was genuine.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">Winston pretended to love Big Brother in order to be released, secretly planning to continue his resistance once free.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">Winston died in Room 101 before he could be converted, which Orwell presents as a form of victory over the Party.</button>
+  </div>
+  <div class="lc-result" id="lc-result"></div>
+</div>
+
+<!-- ⑪ 받아쓰기 도전 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">받아쓰기 도전!</div></div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:var(--gold);color:#001a16;">B1</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:var(--gold);color:#001a16;" data-speak="He loved Big Brother." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:var(--gold);border-color:var(--gold);background:#001a16;">"loved"</span>
+        <span class="fd-hint-tag" style="color:var(--gold);border-color:var(--gold);background:#001a16;">"Big Brother"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd1" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd1','He loved Big Brother.','fdr1')">
+      <button class="fd-check" style="background:var(--gold);color:#001a16;" onclick="chkFD('fd1','He loved Big Brother.','fdr1')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr1"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#00c8aa;color:#001a16;">B2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#00c8aa;color:#001a16;" data-speak="So moved was he that tears ran down his face." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#00c8aa;border-color:#00c8aa;background:#001a16;">"So moved"</span>
+        <span class="fd-hint-tag" style="color:#00c8aa;border-color:#00c8aa;background:#001a16;">"tears ran"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd2" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd2','So moved was he that tears ran down his face.','fdr2')">
+      <button class="fd-check" style="background:#00c8aa;color:#001a16;" onclick="chkFD('fd2','So moved was he that tears ran down his face.','fdr2')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr2"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#4affd8;color:#001a16;">C1</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#4affd8;color:#001a16;" data-speak="Not until Winston had been completely broken did the Party consider its work done." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#4affd8;border-color:#4affd8;background:#001a16;">"Not until"</span>
+        <span class="fd-hint-tag" style="color:#4affd8;border-color:#4affd8;background:#001a16;">"consider its work done"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd3" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd3','Not until Winston had been completely broken did the Party consider its work done.','fdr3')">
+      <button class="fd-check" style="background:#4affd8;color:#001a16;" onclick="chkFD('fd3','Not until Winston had been completely broken did the Party consider its work done.','fdr3')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑫ 이해 문제 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">이해 문제</div></div>
+  <div class="quiz-tabs">
+    <button class="qtab qb1" onclick="showQuiz('qb1',this)">🔴 B1</button>
+    <button class="qtab" onclick="showQuiz('qc1',this)">⚫ C1 심화</button>
+  </div>
+  <div id="qb1" class="quiz-set active">
+    <div class="quiz-item"><div class="quiz-q">Q1. Why is Winston's diary considered thoughtcrime?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) He uses it to plan a physical attack on the Party</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Writing his private thoughts is an act of independence that the Party forbids — it is a form of dissent</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) The diary contains classified government information he stole from the Ministry of Truth</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. What is the main purpose of Newspeak?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) To create a universal language that all citizens of Oceania can understand</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) To make communication between Party members faster and more efficient</button>
+        <button class="qopt" onclick="qChk(this,'ok')">c) To eliminate words that could be used to express dissent, making rebellion literally unthinkable</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. "The past is whatever the Party decides it to be." What does this tell us about the Party's power?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">a) The Party controls not just the present but reality itself — by rewriting history, it removes any standard by which the present can be judged</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) The Party is honest about rewriting history and citizens accept this as necessary</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Winston disagrees with this idea, which is why he rebels against the Party</button>
+      </div>
+    </div>
+  </div>
+  <div id="qc1" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">Q1. Orwell argues that language is the primary instrument of totalitarian control. How does 1984 demonstrate this claim?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) By showing that citizens who speak out are immediately arrested and executed</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) By showing that Newspeak makes certain concepts literally impossible to express, and therefore impossible to think — eliminating the cognitive capacity for rebellion at its source</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) By showing that propaganda posters and Party slogans are so effective that citizens genuinely believe in Big Brother</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. "Not until Winston had been completely broken did the Party consider its work with him to be done." What does this moment represent thematically?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Winston's realisation that the Thought Police are already monitoring him</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) The moment at which private experience becomes publicly asserted — writing transforms an internal dissent into an external, irreversible act, crossing a threshold from which there is no return</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Winston's recognition that he must find allies before he can effectively resist the Party</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑬ 에세이 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">에세이 쓰기 — 5단락 논증</div></div>
+  <div class="essay-struct">
+    <div class="essay-struct-title">📌 고3 에세이 구조 (5단락 — 수능 대비)</div>
+    <div class="ep"><div class="ep-num" style="color:#4affd8;">① Hook + Thesis</div><div class="ep-hint">예) "In 1984, Orwell imagines a world where even thinking has become a crime. I argue that..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:#7ab3ff;">② 근거 1 + 텍스트 근거</div><div class="ep-hint">예) "First, Orwell demonstrates that language is the primary tool of control. The text shows..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:#7ab3ff;">③ 근거 2 + 텍스트 근거</div><div class="ep-hint">예) "Furthermore, Winston's diary represents the last form of resistance available..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:#b48aff;">④ 반론 + 재반박</div><div class="ep-hint">예) "Some argue that physical surveillance is the real source of control. However..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:var(--gold);">⑤ 결론 + 현대적 확장</div><div class="ep-hint">예) "In conclusion, 1984 warns us that... In today's world..."</div></div>
+  </div>
+  <div style="font-size:0.84rem;font-weight:700;color:white;margin-bottom:12px;">💬 주제: <strong>"Does the ending of 1984 offer any form of hope, or is Orwell's vision entirely without redemption?"</strong></div>
+  <div class="essay-line"><span class="essay-num">①</span><input class="essay-input" id="es1" placeholder="Hook + Thesis: In 1984, Orwell argues that..."></div>
+  <div class="essay-line"><span class="essay-num">②</span><input class="essay-input" id="es2" placeholder="First, the text demonstrates that..."></div>
+  <div class="essay-line"><span class="essay-num">③</span><input class="essay-input" id="es3" placeholder="Furthermore,..."></div>
+  <div class="essay-line"><span class="essay-num">④</span><input class="essay-input" id="es4" placeholder="Some argue that... However,..."></div>
+  <div class="essay-line"><span class="essay-num">⑤</span><input class="essay-input" id="es5" placeholder="In conclusion, Orwell warns us that..."></div>
+  <button class="essay-submit" onclick="submitEssay()">📝 Open WebUI에서 피드백받기</button>
+  <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
+</div>
+
+<!-- ⑭ 디베이트 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">⚖️</div><div class="sh-title">디베이트 — 정식 3라운드</div></div>
+  <div class="debate-box">
+    <div class="debate-topic">
+      <div class="debate-topic-en">"The most dangerous form of oppression is when the oppressed genuinely love their oppressor."</div>
+      <div class="debate-topic-kr">가장 위험한 억압의 형태는 억압받는 자가 억압자를 진심으로 사랑할 때이다.</div>
+    </div>
+    <div class="debate-round">
+      <div class="debate-round-label">🎤 ROUND 1 — OPENING STATEMENT</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">핵심 표현을 활용하여 입장과 논거 2가지를 제시하세요.</div>
+      <textarea class="debate-textarea" id="round1" rows="4" placeholder='예) "I argue that controlling language is the ultimate form of political control because..."'></textarea>
+    </div>
+    <div class="debate-round">
+      <div class="debate-round-label">⚔️ ROUND 2 — REBUTTAL</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">상대방 논리를 인정하면서 더 강하게 반박하세요.</div>
+      <textarea class="debate-textarea" id="round2" rows="4" placeholder="예) I concede that physical surveillance is also important. However, Orwell shows that..."></textarea>
+    </div>
+    <div class="debate-round">
+      <div class="debate-round-label">🏁 ROUND 3 — CLOSING</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">핵심 논거를 강화하고 현대와 연결하세요.</div>
+      <textarea class="debate-textarea" id="round3" rows="4" placeholder="예) In conclusion, I maintain that... Not until we examine today's social media algorithms..."></textarea>
+    </div>
+    <div style="font-size:0.75rem;font-weight:900;color:var(--gold);margin-bottom:6px;margin-top:4px;">💡 유용한 표현</div>
+    <div class="phrase-row">
+      <span class="phrase" style="background:#0e2420;color:var(--gold);border-color:#4a2020;" onclick="addPhrase('round1','I argue that language control is...')">I argue that...</span>
+      <span class="phrase" style="background:#0e2420;color:var(--gold);border-color:#4a2020;" onclick="addPhrase('round1','Orwell demonstrates through Winston that...')">Orwell demonstrates...</span>
+      <span class="phrase" style="background:#0e2420;color:var(--gold);border-color:#4a2020;" onclick="addPhrase('round2','I concede that... however...')">I concede that...</span>
+      <span class="phrase" style="background:#0e2420;color:var(--gold);border-color:#4a2020;" onclick="addPhrase('round2','This overlooks the fact that...')">This overlooks...</span>
+      <span class="phrase" style="background:#0e2420;color:var(--gold);border-color:#4a2020;" onclick="addPhrase('round3','I maintain that...')">I maintain that...</span>
+      <span class="phrase" style="background:#0e2420;color:var(--gold);border-color:#4a2020;" onclick="addPhrase('round3','Not until we examine today...')">Not until today...</span>
+    </div>
+    <button class="owui-btn" onclick="sendDebate()">⚔️ Open WebUI에서 AI와 토론하기</button>
+    <div style="font-size:0.78rem;color:var(--sub);margin-top:8px;min-height:16px;" id="debate-result"></div>
+  </div>
+</div>
+
+<!-- 완료 -->
+<div class="complete-card" id="complete-card">
+  <div style="font-size:2.8rem;margin-bottom:10px;">📡</div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);margin-bottom:6px;">Week 1 완료!</div>
+  <div style="font-size:0.86rem;color:var(--sub);margin-bottom:16px;line-height:1.7;">1984 W1~W6 완료!<br>그는 빅 브라더를 사랑했다.<br>오웰의 경고를 절대 잊지 마세요.</div>
+  <button onclick="location.href='week07.html'" style="background:linear-gradient(135deg,#00c8aa,#4affd8);color:#001a16;border:none;border-radius:20px;padding:10px 28px;font-size:0.9rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;">Week 7 시작하기 →</button>
+</div>
+
+</div>
+
+<script>
+const gramData = {
+  g1:{tag:'G52',title:'부정 비교 — no longer the man he was',desc:'no longer = 더 이상 ~이 아닌\n"no longer the man he was"\n= 더 이상 그가 있었던 그 사람이 아닌\nno longer + 명사/형용사\n수능 어법 위치 주의',ex:'He is no longer the man he was.',gnum:'G52',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g2:{tag:'G71',title:'both know — 목적절',desc:'Both know + that절\n"Both know they have betrayed"\n= 둘 다 배신했다는 것을 알아\nboth + 복수동사\nthat 생략 가능',ex:'Both know they have betrayed each other.',gnum:'G71',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g3:{tag:'G75',title:'So + 형용사 도치',desc:'So + 형용사 + be동사 + 주어\n"So moved is he that"\n= 너무 감동받아서\nSo 도치 → 결과 강조\n수능 어법 So vs Such',ex:'So moved is he that tears run down his face.',gnum:'G75',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g4:{tag:'G75',title:'Not until 도치 — does he understand',desc:'Not until + 현재 + does + 주어\n"Not until he sees\ndoes he understand"\n= 볼 때까지는\n이해하지 못했다\nNot until 도치',ex:'Not until he sees Big Brother\'s face does he understand.',gnum:'G75',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g5:{tag:'G71',title:'What절 주어 — What makes',desc:'What + 주어 + 동사 (주어절)\n"What makes the ending unbearable"\n= 결말을 견딜 수 없게 만드는 것\nnot that A but that B 대조',ex:'What makes the ending unbearable is not that Winston is destroyed.',gnum:'G71',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g6:{tag:'G62',title:'명사구 수식 — genuine, voluntary, irreversible surrender',desc:'형용사 나열로 명사 수식\n"genuine, voluntary, irreversible\nsurrender"\n= 진짜이고, 자발적이고,\n되돌릴 수 없는 항복\n수식 형용사 병렬 구조',ex:'the genuine, voluntary, irreversible surrender of the self to the collective',gnum:'G62',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'}
+};
+
+let xp=0;
+function addXP(n){
+  xp+=n;
+  document.getElementById('xp-btn').textContent='⭐ '+xp+' XP';
+  document.getElementById('prog-bar').style.width=Math.min(100,xp*1.5)+'%';
+  if(xp>=60&&document.getElementById('complete-card').style.display!=='block'){
+    setTimeout(()=>{document.getElementById('complete-card').style.display='block';document.getElementById('complete-card').scrollIntoView({behavior:'smooth'});},500);
+  }
+}
+
+function speak(text){
+  if(!text)return;
+  speechSynthesis.cancel();
+  function doSpeak(){
+    const voices=speechSynthesis.getVoices();
+    const u=new SpeechSynthesisUtterance(text);
+    const prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
+    const exclude=['Alex','Fred','Daniel','Google UK English Male'];
+    const v=voices.find(v=>prefer.some(p=>v.name.includes(p))&&!exclude.some(e=>v.name.includes(e)));
+    if(v)u.voice=v;
+    u.lang='en-US';u.rate=0.85;u.pitch=1.0;u.volume=1.0;
+    speechSynthesis.speak(u);
+  }
+  if(speechSynthesis.getVoices().length>0){setTimeout(doSpeak,50);}
+  else{speechSynthesis.onvoiceschanged=()=>{setTimeout(doSpeak,50);};speechSynthesis.getVoices();}
+}
+
+function showStory(lv,btn){
+  ['b1','c1'].forEach(l=>{const el=document.getElementById('sb-'+l);if(el)el.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(b=>b.className='tab-btn');
+  document.getElementById('sb-'+lv).classList.add('active');
+  btn.classList.add('act-'+lv);
+}
+function readStory(){
+  const s=document.getElementById('sb-b1');
+  if(s)speak((s.innerText||s.textContent).replace(/\s+/g,' ').trim());
+}
+function toggleKr(){
+  const kr=document.getElementById('story-kr');
+  const btn=document.getElementById('kr-btn');
+  const show=kr.style.display!=='block';
+  kr.style.display=show?'block':'none';
+  btn.textContent=show?'🇰🇷 번역 숨기기':'🇰🇷 한국어 번역 보기';
+}
+
+document.querySelectorAll('.gram').forEach(el=>{
+  el.addEventListener('click',function(e){
+    e.stopPropagation();
+    const d=gramData[this.dataset.id];if(!d)return;
+    document.getElementById('tt-tag').textContent=d.tag;
+    document.getElementById('tt-title').textContent=d.title;
+    document.getElementById('tt-desc').textContent=d.desc;
+    document.getElementById('tt-ex').textContent=d.ex;
+    document.getElementById('tt-gram-link').textContent='📚 Grammar Base '+d.gnum+' →';
+    document.getElementById('tt-gram-link').href=d.glink;
+    const wrap=document.getElementById('tt-wrap');
+    const rect=this.getBoundingClientRect();
+    let top=rect.bottom+8,left=rect.left;
+    if(left+295>window.innerWidth)left=window.innerWidth-300;
+    if(top+220>window.innerHeight)top=rect.top-225;
+    wrap.style.top=top+'px';wrap.style.left=left+'px';
+    wrap.style.display='block';
+    document.getElementById('tt-overlay').style.display='block';
+  });
+});
+function closeTT(){document.getElementById('tt-wrap').style.display='none';document.getElementById('tt-overlay').style.display='none';}
+
+function snCheck(btn,correct){
+  document.querySelectorAll('.sn-opt').forEach(b=>{b.classList.remove('ok','no');b.style.pointerEvents='none';});
+  const res=document.getElementById('sn-result');
+  const explain=document.getElementById('sn-explain');
+  const aibtn=document.getElementById('ai-explain-btn');
+  if(correct){
+    btn.classList.add('ok');
+    document.getElementById('sn-blank').textContent='genuinely and voluntarily love the system that has destroyed their capacity for independent thought';
+    res.innerHTML='✅ 정답!';res.style.color='var(--green)';
+    explain.classList.add('show');addXP(8);
+  }else{
+    btn.classList.add('no');
+    res.innerHTML='❌ 오답입니다. 해설을 확인하세요.';res.style.color='var(--red)';
+    explain.classList.add('show');aibtn.style.display='block';
+  }
+}
+function sendToAI(){
+  const prompt='[ESSAY] 안녕하세요! 수능 빈칸 추론 문제를 틀렸어요.\n1984 W06 수능 문제에서 오답을 골랐어요.\n정답이 "genuinely and voluntarily love the system that has destroyed their capacity for independent thought"인 이유와\n이런 유형을 푸는 전략을 설명해줘.';
+  navigator.clipboard.writeText(prompt).then(()=>{setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);});
+}
+
+function chkFill(btn,val,ans,blId,resId){
+  btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('ok','no'));
+  const res=document.getElementById(resId);
+  if(val===ans){btn.classList.add('ok');document.getElementById(blId).textContent=val;res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(4);}
+  else{btn.classList.add('no');res.innerHTML='❌ 다시 해봐요!';res.style.color='var(--red)';}
+}
+function chkDict(inputId,ans,resId){
+  const val=document.getElementById(inputId).value.trim().toLowerCase();
+  const res=document.getElementById(resId);
+  if(val===ans.toLowerCase()){res.innerHTML='✅ 정답!';res.style.color='var(--green)';document.getElementById(inputId).style.borderColor='var(--green)';addXP(3);}
+  else{res.innerHTML='❌ 정답: <span style="color:var(--gold)">'+ans+'</span>';res.style.color='var(--red)';}
+}
+function lcCheck(btn,val){
+  btn.closest('.lc-opts').querySelectorAll('.lc-opt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  document.getElementById('lc-result').textContent=val==='ok'?'✅ 정답!':'❌ 다시 들어보세요!';
+  document.getElementById('lc-result').style.color=val==='ok'?'var(--green)':'var(--red)';
+  if(val==='ok')addXP(4);
+}
+function shuffleLcOpts(){
+  document.querySelectorAll('.lc-opts').forEach(container=>{
+    const btns=Array.from(container.querySelectorAll('.lc-opt'));
+    for(let i=btns.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[btns[i],btns[j]]=[btns[j],btns[i]];}
+    btns.forEach((btn,i)=>{
+      const labels=['①','②','③'];
+      const text=btn.textContent.replace(/^[①②③]\s*/,'').trim();
+      btn.textContent=labels[i]+' '+text;
+      container.appendChild(btn);
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded',shuffleLcOpts);
+
+function showQuiz(id,btn){
+  document.querySelectorAll('.quiz-set').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.qtab').forEach(b=>b.className='qtab');
+  document.getElementById(id).classList.add('active');
+  btn.classList.add(id==='qb1'?'qb1':'qc1');
+}
+function qChk(btn,val){
+  btn.closest('.quiz-opts').querySelectorAll('.qopt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  if(val==='ok')addXP(4);
+}
+
+const matchPairs=[["conversion", "전환"], ["culmination", "정점"], ["irreversible", "되돌릴수없는"], ["voluntary", "자발적인"]];
+let matchSel=null,matchDone={};
+function initMatch(){
+  const left=document.getElementById('match-left');
+  const right=document.getElementById('match-right');
+  const rs=[...matchPairs].sort(()=>Math.random()-0.5);
+  left.innerHTML=matchPairs.map(([en])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${en}</button>`).join('');
+  right.innerHTML=rs.map(([en,kr])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${kr}</button>`).join('');
+}
+function matchClick(btn,key){
+  if(btn.classList.contains('matched'))return;
+  btn.classList.remove('wrong-flash');
+  if(!matchSel){matchSel={btn,key};btn.classList.add('selected');}
+  else{
+    if(matchSel.key===key&&matchSel.btn!==btn){
+      matchSel.btn.classList.remove('selected');matchSel.btn.classList.add('matched');
+      btn.classList.add('matched');matchDone[key]=true;matchSel=null;
+      if(Object.keys(matchDone).length===matchPairs.length){
+        document.getElementById('match-result').innerHTML='🎉 모두 맞췄어요!';
+        document.getElementById('match-result').style.color='var(--green)';addXP(8);
+      }
+    }else{
+      const prev=matchSel.btn;prev.classList.remove('selected');prev.classList.add('wrong-flash');
+      btn.classList.add('wrong-flash');matchSel=null;
+      setTimeout(()=>{prev.classList.remove('wrong-flash');btn.classList.remove('wrong-flash');},500);
+    }
+  }
+}
+initMatch();
+
+function chkFD(id,ans,resId){
+  const inp=document.getElementById(id);
+  const res=document.getElementById(resId);
+  const clean=s=>s.trim().toLowerCase().replace(/[.,!?;:—]/g,'').replace(/\s+/g,' ');
+  if(clean(inp.value)===clean(ans)){
+    res.innerHTML='✅ 정답!';res.style.color='var(--green)';
+    inp.style.borderColor='var(--green)';inp.style.background='#0d1f0d';addXP(5);
+  }else{
+    res.innerHTML='❌ 정답: <span style="color:var(--gold);font-weight:800">"'+ans+'"</span>';
+    res.style.color='var(--red)';inp.style.borderColor='var(--red)';
+  }
+}
+
+function addPhrase(id,text){const ta=document.getElementById(id);ta.value=ta.value?ta.value+' '+text:text;ta.focus();}
+
+function checkReproduce(){
+  const text=document.getElementById('reproduce-input').value.trim();
+  const res=document.getElementById('reproduce-result');
+  if(!text){res.textContent='문장을 먼저 써보세요!';return;}
+  const prompt='[ESSAY] 안녕하세요! 문장 구조 재생산 훈련을 했어요.\n\n원본 구조: "Not until + [주어] + had + [과거분사] + did + [주어] + [동사원형]"\n원본 문장: "Not until Winston had been completely broken did the Party consider its work with him to be done."\n\n내가 만든 문장:\n'+text+'\n\n이 구조를 제대로 사용했는지 피드백해줘.\n수능 어법(Not until + 과거완료 도치) 관점에서도 체크해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.textContent='✅ 복사됐어요! Open WebUI에 붙여넣기하세요.';
+    setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+    addXP(5);
+  });
+}
+
+function checkExpand(){
+  const text=document.getElementById('expand-input').value.trim();
+  const res=document.getElementById('expand-result');
+  if(!text){res.textContent='문장을 먼저 써보세요!';return;}
+  const prompt='[ESSAY] 안녕하세요! 문장 확장 훈련을 했어요.\n원래 문장: "Winston loved Big Brother."\n내가 확장한 문장: '+text+'\nB1 수준에 맞는지 피드백해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.textContent='✅ 복사됐어요! Open WebUI에 붙여넣기하세요.';
+    setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+    addXP(5);
+  });
+}
+
+function submitEssay(){
+  const vals=[1,2,3,4,5].map(i=>document.getElementById('es'+i).value.trim());
+  const res=document.getElementById('essay-result');
+  if(vals.some(v=>!v)){res.innerHTML='❗ 5단락을 모두 작성해주세요!';res.style.color='var(--gold)';return;}
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'고3'):'고3';
+  const essay=vals.map((v,i)=>['①','②','③','④','⑤'][i]+' '+v).join('\n');
+  const prompt='[ESSAY] 안녕하세요! 저는 '+name+', '+grade+'이에요.\n1984 W06 에세이를 썼는데 피드백 부탁드려요.\n주제: "Does the ending of 1984 offer any form of hope, or is Orwell\'s vision entirely without redemption?"\n\n'+essay;
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.innerHTML='✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
+    addXP(10);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+  });
+}
+
+function sendDebate(){
+  const r1=document.getElementById('round1').value.trim();
+  const r2=document.getElementById('round2').value.trim();
+  const r3=document.getElementById('round3').value.trim();
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'고3'):'고3';
+  const prompt='[DEBATE] 안녕하세요! 저는 '+name+', '+grade+'이에요.\n1984 W06 디베이트 주제: "The most dangerous form of oppression is when the oppressed genuinely love their oppressor."\n\n[Round 1 - Opening]\n'+(r1||'(아직 못 썼어요)')+'\n\n[Round 2 - Rebuttal]\n'+(r2||'(아직 못 썼어요)')+'\n\n[Round 3 - Closing]\n'+(r3||'(아직 못 썼어요)')+'\n\n피드백하고 AI 상대방으로 토론해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    document.getElementById('debate-result').innerHTML='✅ 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';
+    document.getElementById('debate-result').style.color='var(--green)';
+    addXP(8);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp B HS2 — W1 · Lord of the Flies</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0f0a;--card:#101810;--card2:#0c140c;--border:#1e2e1e;
+  --gold:#4cad6a;--gold2:#7adf9a;--acc:#00ff88;
+  --green:#16a34a;--red:#dc2626;--text:#e4f0e4;--sub:#6e9070;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+.hd{background:rgba(10,15,10,0.97);padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.hd-logo{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--text);letter-spacing:1px;}
+.hd-badge{background:#1a2a1a;color:var(--gold);font-size:0.65rem;font-weight:900;padding:3px 10px;border-radius:20px;border:1px solid #2a4a2a;letter-spacing:2px;margin-left:10px;}
+.hd-sub{font-size:0.7rem;color:var(--sub);margin-left:8px;}
+.xp-btn{background:linear-gradient(135deg,#4cad6a,#7adf9a);color:#0a1a0a;border:none;border-radius:20px;padding:5px 14px;font-size:0.8rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;}
+.hero{background:linear-gradient(160deg,#0a0f0a 0%,#0d1a0d 50%,#0a0f0a 100%);padding:28px 16px 20px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(76,173,106,0.08) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{font-size:0.62rem;color:var(--gold);font-weight:900;letter-spacing:4px;margin-bottom:10px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:400;color:var(--text);margin-bottom:4px;font-style:italic;}
+.hero-author{font-size:0.78rem;color:var(--sub);margin-bottom:16px;letter-spacing:1px;}
+.hero-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.hb{padding:4px 12px;border-radius:20px;font-size:0.68rem;font-weight:800;}
+.key-card{background:linear-gradient(135deg,#0d1a0d,#0a1a0a);border:1px solid #2a4a2a;border-radius:16px;padding:18px;margin:12px 16px 8px;}
+.key-label{font-size:0.6rem;color:var(--sub);font-weight:700;letter-spacing:3px;margin-bottom:10px;}
+.key-en{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--text);font-style:italic;margin-bottom:6px;line-height:1.5;}
+.key-kr{font-size:0.8rem;color:var(--gold);margin-bottom:14px;}
+.key-play{background:transparent;color:var(--gold);border:1px solid #3a6a3a;border-radius:25px;padding:7px 20px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.prog-row{display:flex;align-items:center;gap:8px;padding:8px 16px;}
+.prog-track{flex:1;background:#1a2a1a;border-radius:8px;height:5px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:8px;transition:width 0.5s;}
+.prog-label{font-size:0.7rem;color:var(--sub);font-weight:700;white-space:nowrap;}
+.container{max-width:680px;margin:0 auto;padding:0 12px 80px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;}
+.sh{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sh-icon{font-size:1.05rem;}.sh-title{font-size:0.88rem;font-weight:900;color:white;}
+.tab-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.tab-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.tab-btn.act-b1{background:#1a2a1a;border-color:#3a6a3a;color:var(--gold);}
+.tab-btn.act-c1{background:#0d1a0d;border-color:#1a4a1a;color:#5aff9a;}
+.listen-row{display:flex;gap:8px;margin-bottom:10px;}
+.listen-btn{background:#2a4a2a;color:var(--gold);border:none;border-radius:20px;padding:7px 16px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.stop-btn{background:var(--card2);border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:7px 12px;font-size:0.8rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.notice-box{background:#0d1a0d;border-left:3px solid #3a6a3a;border-radius:0 8px 8px 0;padding:9px 14px;margin-bottom:10px;font-size:0.76rem;color:var(--sub);line-height:1.6;}
+.story-box{background:var(--card2);border-radius:10px;padding:16px;font-size:0.88rem;line-height:1.95;color:var(--text);display:none;}
+.story-box.active{display:block;}
+.story-box p{margin-bottom:12px;}
+.gram{border-bottom:2px dashed var(--gold);cursor:pointer;color:#a8ffb8;font-weight:700;}
+.story-kr{background:#090f09;border-left:3px solid #2a4a2a;border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.8;display:none;}
+.kr-toggle{background:transparent;border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:4px 12px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+#tt-overlay{position:fixed;inset:0;z-index:999;display:none;}
+.tt-wrap{position:fixed;z-index:1000;display:none;}
+.tt-box{background:#101810;border:1.5px solid var(--gold);border-radius:12px;padding:14px 16px;max-width:290px;box-shadow:0 8px 32px rgba(0,0,0,0.7);}
+.tt-tag{background:var(--gold);color:#0a1a0a;font-size:0.65rem;font-weight:900;padding:2px 8px;border-radius:10px;margin-bottom:8px;display:inline-block;}
+.tt-title{font-size:0.88rem;font-weight:900;color:white;margin-bottom:6px;}
+.tt-desc{font-size:0.78rem;color:var(--sub);line-height:1.6;margin-bottom:8px;white-space:pre-line;}
+.tt-ex{background:var(--bg);border-radius:6px;padding:6px 10px;font-size:0.78rem;color:var(--gold);margin-bottom:10px;font-style:italic;}
+.tt-gram-link{background:#0d1a0d;border:1px solid #3a6a3a;color:var(--gold);border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;text-decoration:none;}
+.tt-close{position:absolute;top:8px;right:10px;background:transparent;border:none;color:var(--sub);font-size:1rem;cursor:pointer;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.vc{background:var(--card2);border-radius:10px;padding:10px 12px;border-left:3px solid var(--gold);}
+.vc-w{font-size:0.88rem;font-weight:900;color:white;margin-bottom:2px;}
+.vc-m{font-size:0.75rem;color:var(--sub);margin-bottom:4px;}
+.vc-e{font-size:0.72rem;color:var(--gold);font-style:italic;}
+.sa-box{background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;}
+.sa-sentence{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:14px;border-left:3px solid var(--gold);padding-left:12px;}
+.sa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.sa-item{background:var(--bg);border-radius:8px;padding:10px 12px;}
+.sa-role{font-size:0.65rem;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:4px;}
+.sa-text{font-size:0.82rem;color:var(--text);}
+.sa-note{font-size:0.72rem;color:var(--sub);margin-top:2px;}
+.exp-levels{display:flex;flex-direction:column;gap:10px;}
+.exp-item{background:var(--card2);border-radius:10px;padding:12px 14px;}
+.exp-level{font-size:0.65rem;font-weight:900;letter-spacing:2px;margin-bottom:6px;}
+.exp-sentence{font-size:0.84rem;line-height:1.7;color:var(--text);}
+.exp-btn{background:var(--gold);color:#0a1a0a;border:none;border-radius:8px;padding:7px 16px;font-size:0.78rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px;}
+.sn-passage{background:var(--card2);border-radius:10px;padding:14px;font-size:0.86rem;line-height:1.9;margin-bottom:14px;color:var(--text);border-left:3px solid var(--gold);}
+.sn-blank{display:inline-block;border-bottom:2px solid var(--gold);min-width:80px;text-align:center;color:var(--gold);font-weight:900;}
+.sn-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.sn-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.sn-opt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.sn-opt.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.sn-result{font-size:0.84rem;font-weight:700;min-height:18px;}
+.sn-explain{background:var(--card2);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:12px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.7;display:none;}
+.sn-explain.show{display:block;}
+.sn-explain strong{color:var(--gold);}
+.ai-btn{background:transparent;border:1px solid #2a4a2a;color:var(--gold);border-radius:20px;padding:6px 16px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+.fill-sent{font-size:0.9rem;font-weight:700;line-height:1.7;margin-bottom:12px;color:white;}
+.blank-span{display:inline-block;min-width:70px;border-bottom:2px solid var(--gold);color:var(--gold);text-align:center;font-weight:900;}
+.choices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.cbtn{padding:7px 16px;background:var(--card2);border:1.5px solid var(--border);border-radius:20px;color:var(--text);font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.cbtn.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.cbtn.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.fill-res{font-size:0.82rem;font-weight:700;min-height:18px;}
+.dict-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:8px;}
+.dict-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.dict-play{background:#2a4a2a;color:var(--gold);border:none;border-radius:50%;width:36px;height:36px;font-size:0.9rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.dict-label{font-size:0.75rem;color:var(--sub);font-weight:700;}
+.dict-hint{font-size:0.78rem;color:var(--gold);font-style:italic;}
+.dict-input-row{display:flex;gap:8px;}
+.dict-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.dict-input:focus{outline:none;border-color:var(--gold);}
+.dict-btn{background:#2a4a2a;color:var(--gold);border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.dict-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.lc-play-btn{background:#2a4a2a;color:var(--gold);border:none;border-radius:25px;padding:9px 22px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;}
+.lc-opts{display:flex;flex-direction:column;gap:8px;}
+.lc-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.lc-opt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.lc-opt.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.lc-result{margin-top:8px;font-size:0.84rem;font-weight:700;min-height:18px;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.match-col{display:flex;flex-direction:column;gap:6px;}
+.match-item{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;color:var(--text);transition:all 0.15s;}
+.match-item.selected{border-color:var(--gold);background:#1a2a1a;color:var(--gold);}
+.match-item.matched{border-color:var(--green);background:#0d2a1a;color:#5aff9a;cursor:default;}
+.match-item.wrong-flash{border-color:var(--red);background:#2a0d0d;}
+.match-result{font-size:0.84rem;font-weight:700;min-height:18px;text-align:center;}
+.fd-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;}
+.fd-level-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fd-badge{color:#0a1a0a;font-size:0.7rem;font-weight:900;padding:2px 10px;border-radius:20px;}
+.fd-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.fd-play{color:#0a1a0a;border:none;border-radius:20px;padding:6px 14px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-hints{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.fd-hint-label{font-size:0.7rem;color:var(--sub);font-weight:700;}
+.fd-hint-tag{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid;}
+.fd-input-row{display:flex;gap:8px;}
+.fd-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.fd-input:focus{outline:none;border-color:var(--gold);}
+.fd-check{color:#0a1a0a;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.quiz-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.qtab{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.qb1{background:#1a2a1a;border-color:#3a6a3a;color:var(--gold);}
+.qc1{background:#0d1a0d;border-color:#1a4a1a;color:#5aff9a;}
+.quiz-set{display:none;}.quiz-set.active{display:block;}
+.quiz-item{margin-bottom:14px;}
+.quiz-q{font-size:0.86rem;font-weight:800;color:white;margin-bottom:8px;}
+.quiz-opts{display:flex;flex-direction:column;gap:6px;}
+.qopt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.qopt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.qopt.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.essay-struct{background:var(--bg);border-radius:10px;padding:14px;margin-bottom:14px;}
+.essay-struct-title{font-size:0.78rem;font-weight:900;color:var(--gold);margin-bottom:10px;}
+.ep{background:var(--card);border-radius:8px;padding:10px;margin-bottom:6px;}
+.ep-num{font-size:0.68rem;font-weight:900;margin-bottom:3px;}
+.ep-hint{font-size:0.73rem;color:var(--sub);}
+.essay-line{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.essay-num{font-size:0.7rem;font-weight:900;color:var(--gold);width:22px;flex-shrink:0;padding-top:10px;}
+.essay-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.essay-input:focus{outline:none;border-color:var(--gold);}
+.essay-submit{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0a1a0a;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:4px;}
+.debate-box{background:linear-gradient(135deg,#0d1a0d,#0a1a0a);border-radius:12px;padding:14px;border:1px solid #2a4a2a;}
+.debate-topic{background:#090f09;border-radius:10px;padding:12px;text-align:center;margin-bottom:12px;border:1px solid #3a6a3a;}
+.debate-topic-en{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;font-weight:500;color:white;margin-bottom:4px;}
+.debate-topic-kr{font-size:0.78rem;color:var(--gold);}
+.debate-round{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;border-left:3px solid var(--gold);}
+.debate-round-label{font-size:0.7rem;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:6px;}
+.debate-textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;resize:none;outline:none;line-height:1.6;margin-top:4px;}
+.debate-textarea:focus{border-color:var(--gold);}
+.phrase-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.phrase{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:0.75rem;font-weight:700;cursor:pointer;color:var(--sub);}
+.owui-btn{background:linear-gradient(135deg,#2a4a2a,#1a3a1a);color:var(--gold);border:1px solid #3a6a3a;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:8px;}
+.complete-card{background:linear-gradient(135deg,#0d1a0d,#0a1a0a);border:2px solid var(--gold);border-radius:20px;padding:24px;text-align:center;margin-bottom:20px;display:none;}
+</style>
+</head>
+<body>
+
+<div id="tt-overlay" onclick="closeTT()"></div>
+<div class="tt-wrap" id="tt-wrap">
+  <div class="tt-box" id="tt-box">
+    <button class="tt-close" onclick="closeTT()">✕</button>
+    <div class="tt-tag" id="tt-tag"></div>
+    <div class="tt-title" id="tt-title"></div>
+    <div class="tt-desc" id="tt-desc"></div>
+    <div class="tt-ex" id="tt-ex"></div>
+    <div><a class="tt-gram-link" id="tt-gram-link" href="https://cecenglishcamp.github.io/GrammarBaseCamp/index.html" target="_blank"></a></div>
+  </div>
+</div>
+
+<div class="hd">
+  <div style="display:flex;align-items:center;">
+    <div class="hd-logo">CEC Camp B</div>
+    <div class="hd-badge">HIGH SCHOOL 2</div>
+    <div class="hd-sub" style="margin-left:8px;">고2 · W02 · Lord of the Flies</div>
+  </div>
+  <button class="xp-btn" id="xp-btn">⭐ 0 XP</button>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">WEEK 02 / 36 · HIGH SCHOOL 2</div>
+  <div class="hero-title">Lord of the Flies</div>
+  <div class="hero-author">William Golding · Fire on the Mountain</div>
+  <div class="hero-badges">
+    <span class="hb" style="background:#1a2a1a;color:var(--gold);border:1px solid #3a6a3a;">G68 가정법 심화</span>
+    <span class="hb" style="background:#1a2a1a;color:var(--gold);border:1px solid #3a6a3a;">G52 관계절 심화</span>
+    <span class="hb" style="background:#1a2a1a;color:var(--gold);border:1px solid #3a6a3a;">G75 도치 구문</span>
+    <span class="hb" style="background:#1a2a1a;color:var(--gold);border:1px solid #3a6a3a;">수능 빈칸 추론</span>
+    <span class="hb" style="background:#0d1a0d;color:#5aff9a;border:1px solid #1a4a1a;">🎯 B1~C1</span>
+    <span class="hb" style="background:#1a2a1a;color:var(--gold);border:1px solid #3a6a3a;">⏱ W1~W12</span>
+  </div>
+</div>
+
+<div class="key-card">
+  <div class="key-label">KEY EXPRESSION · 이번 주 핵심 표현</div>
+  <div class="key-en">"We ought to have a chief to decide things."</div>
+  <div class="key-kr">결정을 내릴 지도자가 있어야 해.</div>
+  <button class="key-play" data-speak="We ought to have a chief to decide things." onclick="speak(this.dataset.speak)">▶ 발음 듣기</button>
+</div>
+
+<div class="prog-row">
+  <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:6%;"></div></div>
+  <div class="prog-label">W2 / 36</div>
+</div>
+
+<div class="container">
+
+<!-- ① 지문 읽기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📖</div><div class="sh-title">지문 읽기</div></div>
+  <div class="tab-row">
+    <button class="tab-btn act-b1" onclick="showStory('b1',this)">🟡 B1 ★ 기준</button>
+    <button class="tab-btn" onclick="showStory('c1',this)">🟢 C1 심화</button>
+  </div>
+  <div class="listen-row">
+    <button class="listen-btn" onclick="readStory()">🔊 전체 듣기</button>
+    <button class="stop-btn" onclick="speechSynthesis.cancel()">⏹ 정지</button>
+  </div>
+  <div class="notice-box">🔊 <strong style="color:var(--gold)">B1 기준</strong>으로 읽어드려요. C1은 수능 실전 수준이에요.</div>
+
+  <div id="sb-b1" class="story-box active">
+    <p>Ralph's most important rule is the signal fire. <span class="gram" data-id="g1">If the fire goes out, they cannot be seen by passing ships</span>. Every boy must take turns keeping it burning.</p>
+    <p>But Jack and his hunters have a different priority. One afternoon, <span class="gram" data-id="g2">they abandon the fire to chase a pig</span>. While they are gone, a ship passes the island.</p>
+    <p>Ralph sees the ship from the top of the mountain. He looks at the signal fire. It has gone out. <span class="gram" data-id="g3">The ship disappears over the horizon without seeing them</span>.</p>
+    <p>Ralph confronts Jack furiously. Jack has killed his first pig. He is proud and excited. He cannot understand <span class="gram" data-id="g4">why Ralph is so upset about a missed ship</span>. The conflict between survival and hunting — between Ralph's reason and Jack's instinct — now becomes personal.</p>
+  </div>
+
+  <div id="sb-c1" class="story-box">
+    <p>The signal fire episode is Golding's first demonstration of the central conflict. <span class="gram" data-id="g5">What looks like a trivial disagreement — fire versus hunting — is in fact a philosophical divide</span>: Ralph represents the primacy of rescue and return to civilisation; Jack represents the seductive pull of the island itself.</p>
+    <p>Jack's joy at the kill is genuine and troubling. He has discovered something about himself that civilisation had suppressed — the pleasure of the hunt, the power over life and death. <span class="gram" data-id="g6">Not until he holds the pig's head in his hands does he fully understand the satisfaction it brings him</span>.</p>
+    <p>Golding suggests that the fire — a symbol of connection to the adult world, to reason, to rescue — requires constant, deliberate maintenance. It does not burn on its own. Neither, he implies, does civilisation.</p>
+  </div>
+
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+    <button class="kr-toggle" onclick="toggleKr()" id="kr-btn">🇰🇷 한국어 번역 보기</button>
+  </div>
+  <div class="story-kr" id="story-kr">
+    랄프의 가장 중요한 규칙은 신호 불이에요. 불이 꺼지면 지나가는 배들이 볼 수 없어요. 하지만 잭과 사냥꾼들은 한 오후에 불을 버리고 돼지를 쫓아가요. 그동안 배 한 척이 섬을 지나쳐요.<br><br>랄프는 산꼭대기에서 배를 봐요. 신호 불이 꺼져 있어요. 배는 그들을 보지 못하고 수평선 너머로 사라져요. 랄프는 잭에게 분노하며 맞서요. 잭은 첫 번째 돼지를 잡아서 자랑스럽고 흥분되어 있어요.
+  </div>
+</div>
+
+<!-- ② 핵심 표현 분석 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔑</div><div class="sh-title">핵심 표현 분석</div></div>
+  <div class="sa-box">
+    <div style="font-size:0.75rem;color:var(--gold);font-weight:900;margin-bottom:8px;">이번 주 KEY EXPRESSION</div>
+    <div class="sa-sentence">"We ought to have a chief to decide things."</div>
+    <div style="font-size:0.8rem;color:var(--sub);line-height:1.7;margin-bottom:12px;">
+      <strong style="color:var(--gold)">ought to = ~해야 한다 → 당위, 필요성 (must보다 약한 의무)</strong><br>
+      <strong style="color:var(--gold)">a chief to decide things = 결정을 내릴 지도자 → 권위의 필요성</strong><br>
+      <strong style="color:var(--gold)">decide things = 사물을 결정하다 → 집단 생존의 조건</strong><br>
+    </div>
+    <div style="font-size:0.78rem;color:var(--sub);">💡 이 표현을 에세이 thesis와 디베이트 opening에서 직접 써보세요.</div>
+  </div>
+</div>
+
+<!-- ③ 문장 구조 분석 → 재생산 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔍</div><div class="sh-title">문장 구조 분석 → 재생산</div></div>
+  <div style="font-size:0.78rem;color:var(--sub);margin-bottom:12px;line-height:1.6;">구조 분석은 해석이 목적이 아니에요.<br><strong style="color:var(--gold)">이해 → 구조 추출 → 내 문장으로 재생산</strong>하는 것이 목표예요.</div>
+
+  <div style="background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;border-left:3px solid var(--gold);">
+    <div style="font-size:0.65rem;font-weight:900;color:var(--gold);letter-spacing:3px;margin-bottom:10px;">STEP 1 — 분석 (Analyse)</div>
+    <div class="sa-sentence">"If only they had kept the signal fire burning, a ship might have seen them."</div>
+    <div class="sa-grid" style="margin-top:10px;">
+      <div class="sa-item"><div class="sa-role">가정법 과거완료</div><div class="sa-text">If only + had + 과거분사</div><div class="sa-note">과거 사실의 반대 — 실제로는 불을 끄게 놔뒀음</div></div>
+      <div class="sa-item"><div class="sa-role">주절</div><div class="sa-text">a ship might have seen them</div><div class="sa-note">might have + 과거분사 = ~했을지도 모른다</div></div>
+      <div class="sa-item"><div class="sa-role">핵심 의미</div><div class="sa-text">아쉬움 / 후회</div><div class="sa-note">If only = 차라리 ~했더라면</div></div>
+      <div class="sa-item"><div class="sa-role">수능 연계</div><div class="sa-text">가정법 과거완료</div><div class="sa-note">어법 문제 최빈출 유형</div></div>
+    </div>
+    <div style="margin-top:10px;font-size:0.76rem;color:var(--sub);line-height:1.7;">
+      💡 <strong style="color:var(--gold)">수능 어법 포인트:</strong> "Only + 부사구/절" → 주어-동사 도치 필수<br>
+      "Only then <strong style="color:var(--gold)">did</strong> he understand" / "Only by working hard <strong style="color:var(--gold)">can</strong> you succeed"
+    </div>
+  </div>
+
+  <div style="background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;border-left:3px solid #7ab3ff;">
+    <div style="font-size:0.65rem;font-weight:900;color:#7ab3ff;letter-spacing:3px;margin-bottom:10px;">STEP 2 — 구조 추출 (Extract)</div>
+    <div style="background:var(--bg);border-radius:8px;padding:12px;font-size:0.84rem;color:#7ab3ff;font-family:monospace;line-height:2;">
+      If only + [주어] + had + [과거분사], [주어] + might/would/could + have + [과거분사]
+    </div>
+    <div style="margin-top:10px;font-size:0.76rem;color:var(--sub);line-height:1.7;">
+      핵심: <strong style="color:#7ab3ff;">If only + 가정법 과거완료 → 과거 후회 표현</strong><br>
+      → 실제로 일어난 일의 반대를 상상할 때 사용
+    </div>
+  </div>
+
+  <div style="background:var(--card2);border-radius:12px;padding:14px;border-left:3px solid #5aff9a;">
+    <div style="font-size:0.65rem;font-weight:900;color:#5aff9a;letter-spacing:3px;margin-bottom:10px;">STEP 3 — 재생산 (Reproduce)</div>
+    <div style="font-size:0.8rem;color:var(--sub);margin-bottom:8px;">같은 구조로 내 문장을 만들어보세요.</div>
+    <div style="background:var(--bg);border-radius:8px;padding:10px;margin-bottom:10px;font-size:0.8rem;color:#5aff9a;line-height:1.7;">
+      예시: ""If only they had listened to Ralph, the rescue ship might have seen their fire.""
+    </div>
+    <div style="font-size:0.78rem;color:var(--gold);margin-bottom:6px;font-weight:900;">✏️ 직접 써보기:</div>
+    <textarea class="debate-textarea" id="reproduce-input" rows="3" placeholder="If only they had..., the ship might have..."></textarea>
+    <button class="exp-btn" onclick="checkReproduce()" style="margin-top:8px;">📝 Open WebUI 피드백받기</button>
+    <div id="reproduce-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
+  </div>
+</div>
+
+<!-- ④ 문장 확장 훈련 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">문장 확장 훈련</div></div>
+  <div style="font-size:0.78rem;color:var(--sub);margin-bottom:12px;">짧은 문장을 단계적으로 확장해보세요.</div>
+  <div class="exp-levels">
+    <div class="exp-item"><div class="exp-level" style="color:#7ab3ff;">LEVEL 1 — A2</div><div class="exp-sentence">The boys made rules.</div></div>
+    <div class="exp-item"><div class="exp-level" style="color:var(--gold);">LEVEL 2 — B1 ★</div><div class="exp-sentence">The boys established a system of rules, using the conch shell as a symbol of order and the right to speak.</div></div>
+    <div class="exp-item"><div class="exp-level" style="color:#5aff9a;">LEVEL 3 — C1</div><div class="exp-sentence">In the absence of any adult authority, the boys constructed a fragile democratic system centred on the conch — a symbol of civilised order that derived its power entirely from their collective willingness to respect it, and which would inevitably fail the moment that willingness disappeared.</div></div>
+  </div>
+  <div style="margin-top:14px;">
+    <div style="font-size:0.78rem;color:var(--gold);font-weight:900;margin-bottom:8px;">✏️ 직접 써보기 — B1 수준으로 확장하세요:</div>
+    <div style="font-size:0.8rem;color:var(--sub);margin-bottom:6px;">시작 문장: "The hunters let the fire go out."</div>
+    <textarea class="debate-textarea" id="expand-input" rows="3" placeholder="The hunters, who were supposed to maintain the fire, let it go out because..."></textarea>
+    <button class="exp-btn" onclick="checkExpand()">📝 Open WebUI에서 피드백받기</button>
+    <div id="expand-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
+  </div>
+</div>
+
+<!-- ⑤ 단어 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📝</div><div class="sh-title">수능 핵심 단어</div></div>
+  <div class="vocab-grid">
+    <div class="vc"><div class="vc-w">signal 🔥</div><div class="vc-m">신호, 신호를 보내다</div><div class="vc-e">"the signal fire must keep burning"</div></div>
+    <div class="vc"><div class="vc-w">horizon 🌅</div><div class="vc-m">수평선, 지평선</div><div class="vc-e">"the ship disappears over the horizon"</div></div>
+    <div class="vc"><div class="vc-w">confront ⚔️</div><div class="vc-m">맞서다, 직면하다</div><div class="vc-e">"Ralph confronts Jack furiously"</div></div>
+    <div class="vc"><div class="vc-w">suppress 🔒</div><div class="vc-m">억누르다, 억압하다</div><div class="vc-e">"something civilisation had suppressed"</div></div>
+    <div class="vc"><div class="vc-w">seductive 🌀</div><div class="vc-m">유혹적인</div><div class="vc-e">"the seductive pull of the island"</div></div>
+    <div class="vc"><div class="vc-w">primacy 👑</div><div class="vc-m">최우선, 으뜸</div><div class="vc-e">"the primacy of rescue and civilisation"</div></div>
+  </div>
+</div>
+
+<!-- ⑥ 수능 문제 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">수능 유형 — 빈칸 추론</div></div>
+  <div style="font-size:0.72rem;color:var(--gold);font-weight:900;letter-spacing:2px;margin-bottom:10px;">29번 유형</div>
+  <div class="sn-passage">
+    In the signal fire episode of Lord of the Flies, Golding establishes the novel's central conflict. Ralph insists on maintaining the fire as a signal to passing ships; Jack abandons it to hunt. When a ship passes and does not see them because the fire is out, Ralph's fury is not merely practical — it reveals that the two boys represent fundamentally The conch shell becomes the central symbol of democratic order: whoever holds it has the right to speak, and this right is initially respected by all. However, Golding suggests that this arrangement is fundamentally <span class="sn-blank" id="sn-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> — it depends not on any natural human tendency toward order, but entirely on the collective decision to respect a shared symbol. The moment individuals prioritise personal desire over collective agreement, the entire system collapses.
+    <br><br><span style="font-size:12px;color:var(--sub);">* uninhabited: 무인의 &nbsp;** fundamentally: 근본적으로</span>
+  </div>
+  <div class="sn-opts" id="sn-opts">
+    <button class="sn-opt" onclick="snCheck(this,false)">① similar priorities dressed in different language</button>
+    <button class="sn-opt" onclick="snCheck(this,true)">② incompatible visions of what survival means</button>
+    <button class="sn-opt" onclick="snCheck(this,false)">③ the same goal achieved through different methods</button>
+    <button class="sn-opt" onclick="snCheck(this,false)">④ childhood rivalries that will eventually be resolved</button>
+    <button class="sn-opt" onclick="snCheck(this,false)">⑤ democratic disagreements within a shared framework</button>
+  </div>
+  <div class="sn-result" id="sn-result"></div>
+  <div class="sn-explain" id="sn-explain">
+    <strong>정답 ③ — incompatible visions of what survival means</strong><br><br>
+    <strong>핵심 구조:</strong> "depends not on... but entirely on..."<br>
+    → 빈칸 = "depends entirely on collective decision to respect"<br>
+    → ③ "incompatible visions of what survival means" = 자발적 집단 동의에 달려 있는<br><br>
+    <strong>오답 분석:</strong><br>
+    ① 자연적 지도자 → 지문은 지도자가 아닌 집단 동의를 강조<br>
+    ② 불가피한 → 지문은 취약성을 말하지 불가피성을 말하지 않음<br>
+    ④ 공유 문화 배경 → 지문에 없는 개념<br>
+    ⑤ 경쟁 권위의 부재 → 지문의 논리와 반대
+  </div>
+  <button class="ai-btn" id="ai-explain-btn" style="display:none;" onclick="sendToAI()">🤖 AI에게 오답 분석 요청 ↗</button>
+</div>
+
+<!-- ⑦ 빈칸 채우기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">빈칸 채우기</div></div>
+  <div class="fill-sent">Ralph insisted on keeping the <span class="blank-span" id="bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span> fire burning.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'signal','signal','bl1','fr1')">signal</button>
+    <button class="cbtn" onclick="chkFill(this,'camp','signal','bl1','fr1')">camp</button>
+    <button class="cbtn" onclick="chkFill(this,'small','signal','bl1','fr1')">small</button>
+  </div>
+  <div class="fill-res" id="fr1"></div>
+  <br>
+  <div class="fill-sent">The ship <span class="blank-span" id="bl2">&nbsp;&nbsp;&nbsp;&nbsp;</span> over the horizon without seeing them.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'disappeared','disappeared','bl2','fr2')">disappeared</button>
+    <button class="cbtn" onclick="chkFill(this,'stopped','disappeared','bl2','fr2')">stopped</button>
+    <button class="cbtn" onclick="chkFill(this,'returned','disappeared','bl2','fr2')">returned</button>
+  </div>
+  <div class="fill-res" id="fr2"></div>
+  <br>
+
+</div>
+
+<!-- ⑧ 단어 받아쓰기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🎧</div><div class="sh-title">단어 받아쓰기</div></div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="The signal fire is their only connection to the outside world." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"The ___ fire is their only connection to the outside world."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di1" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','signal','dr1')">
+      <button class="dict-btn" onclick="chkDict('di1','signal','dr1')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr1"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="Ralph had to confront Jack about the fire going out." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"Ralph had to ___ Jack about the fire going out."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di2" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','confront','dr2')">
+      <button class="dict-btn" onclick="chkDict('di2','confront','dr2')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr2"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="Civilisation had suppressed Jack's desire to hunt." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"Civilisation had ___ Jack's desire to hunt."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di3" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','suppressed','dr3')">
+      <button class="dict-btn" onclick="chkDict('di3','suppressed','dr3')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑨ 짝맞추기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🃏</div><div class="sh-title">짝맞추기</div></div>
+  <div class="match-grid">
+    <div class="match-col" id="match-left"></div>
+    <div class="match-col" id="match-right"></div>
+  </div>
+  <div class="match-result" id="match-result"></div>
+</div>
+
+<!-- ⑩ 듣고 고르기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">👂</div><div class="sh-title">듣고 고르기</div></div>
+  <button class="lc-play-btn" data-speak="Ralph insisted on the signal fire because it was their only hope of rescue, while Jack saw it as less important than hunting." onclick="speak(this.dataset.speak)">🔊 듣기</button>
+  <div class="lc-opts" id="lc-opts">
+    <button class="lc-opt" data-correct="true" onclick="lcCheck(this,'ok')">Ralph insisted on the signal fire because it was their only hope of rescue, while Jack saw it as less important than hunting.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">Jack and Ralph both agreed that the signal fire was the most important priority on the island.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">The ship's crew saw the signal fire and decided not to rescue the boys because they were too far away.</button>
+  </div>
+  <div class="lc-result" id="lc-result"></div>
+</div>
+
+<!-- ⑪ 받아쓰기 도전 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">받아쓰기 도전!</div></div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:var(--gold);color:#0a1a0a;">B1</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:var(--gold);color:#0a1a0a;" data-speak="The hunters let the signal fire go out." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:var(--gold);border-color:var(--gold);background:#0a1a00;">"signal fire"</span>
+        <span class="fd-hint-tag" style="color:var(--gold);border-color:var(--gold);background:#0a1a00;">"go out"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd1" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd1','The hunters let the signal fire go out.','fdr1')">
+      <button class="fd-check" style="background:var(--gold);color:#0a1a0a;" onclick="chkFD('fd1','The hunters let the signal fire go out.','fdr1')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr1"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#4cad6a;color:#0a1a0a;">B2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#4cad6a;color:#0a1a0a;" data-speak="If only they had kept the fire burning, the ship might have seen them." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#4cad6a;border-color:#4cad6a;background:#0a1a00;">"If only"</span>
+        <span class="fd-hint-tag" style="color:#4cad6a;border-color:#4cad6a;background:#0a1a00;">"might have seen"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd2" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd2','If only they had kept the fire burning, the ship might have seen them.','fdr2')">
+      <button class="fd-check" style="background:#4cad6a;color:#0a1a0a;" onclick="chkFD('fd2','If only they had kept the fire burning, the ship might have seen them.','fdr2')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr2"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#5aff9a;color:#0a1a0a;">C1</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#5aff9a;color:#0a1a0a;" data-speak="The fire does not burn on its own, and neither does civilisation." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#5aff9a;border-color:#5aff9a;background:#0a1a00;">"on its own"</span>
+        <span class="fd-hint-tag" style="color:#5aff9a;border-color:#5aff9a;background:#0a1a00;">"neither does"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd3" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd3','The fire does not burn on its own, and neither does civilisation.','fdr3')">
+      <button class="fd-check" style="background:#5aff9a;color:#0a1a0a;" onclick="chkFD('fd3','The fire does not burn on its own, and neither does civilisation.','fdr3')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑫ 이해 문제 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">이해 문제</div></div>
+  <div class="quiz-tabs">
+    <button class="qtab qb1" onclick="showQuiz('qb1',this)">🟡 B1</button>
+    <button class="qtab" onclick="showQuiz('qc1',this)">🟢 C1 심화</button>
+  </div>
+  <div id="qb1" class="quiz-set active">
+    <div class="quiz-item"><div class="quiz-q">Q1. What does the conch shell represent?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) The boys' desire to return home</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Democratic order and the right to speak</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Jack's authority over the hunters</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. Why does Ralph insist on keeping the signal fire lit?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) To keep the boys warm at night</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) To frighten away wild animals</button>
+        <button class="qopt" onclick="qChk(this,'ok')">c) It is the only way passing ships or planes might see them and rescue them</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. "If only they had kept the signal fire burning, a ship might have seen them." What grammatical feature does this use?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">a) Inversion — Only + adverbial phrase triggers subject-verb inversion</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) Passive voice — the fire is being kept lit by someone else</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Conditional — this is an if-then structure in disguise</button>
+      </div>
+    </div>
+  </div>
+  <div id="qc1" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">Q1. Golding removes adults from the island deliberately. What does this narrative choice allow him to explore?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) The practical difficulties children face when left alone</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Whether social order is natural to humans or whether it requires the constant enforcement of external authority</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) The superiority of democratic systems over authoritarian ones</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. "Not until the first pig eludes him does Jack understand what he truly wants." What does this reveal about Jack?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Jack is incompetent as a hunter and becomes frustrated easily</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Failure awakens in Jack not hunger but the desire for domination — the hunt is really about power, not survival</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Jack realises that hunting is less important than building shelters</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑬ 에세이 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">에세이 쓰기 — 5단락 논증</div></div>
+  <div class="essay-struct">
+    <div class="essay-struct-title">📌 고등학교 에세이 구조 (5단락)</div>
+    <div class="ep"><div class="ep-num" style="color:#5aff9a;">① Hook + Thesis</div><div class="ep-hint">예) "Golding\'s island is a laboratory. I argue that the conch demonstrates..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:#7ab3ff;">② 근거 1 + 텍스트 근거</div><div class="ep-hint">예) "First, the conch creates a democratic system. The text shows that..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:#7ab3ff;">③ 근거 2 + 텍스트 근거</div><div class="ep-hint">예) "Furthermore, this system is fragile. When Jack..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:#b48aff;">④ 반론 + 재반박</div><div class="ep-hint">예) "Some argue that children naturally cooperate. However..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:var(--gold);">⑤ 결론 + 확장</div><div class="ep-hint">예) "In conclusion, Golding suggests that civilisation is not natural but..."</div></div>
+  </div>
+  <div style="font-size:0.84rem;font-weight:700;color:white;margin-bottom:12px;">💬 주제: <strong>"Is the failure to maintain the signal fire a symbol of something larger in human nature?"</strong></div>
+  <div class="essay-line"><span class="essay-num">①</span><input class="essay-input" id="es1" placeholder="Hook + Thesis: I argue that..."></div>
+  <div class="essay-line"><span class="essay-num">②</span><input class="essay-input" id="es2" placeholder="First, the text shows that..."></div>
+  <div class="essay-line"><span class="essay-num">③</span><input class="essay-input" id="es3" placeholder="Furthermore,..."></div>
+  <div class="essay-line"><span class="essay-num">④</span><input class="essay-input" id="es4" placeholder="Some argue that... However,..."></div>
+  <div class="essay-line"><span class="essay-num">⑤</span><input class="essay-input" id="es5" placeholder="In conclusion,..."></div>
+  <button class="essay-submit" onclick="submitEssay()">📝 Open WebUI에서 피드백받기</button>
+  <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
+</div>
+
+<!-- ⑭ 디베이트 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">⚖️</div><div class="sh-title">디베이트 — 정식 3라운드</div></div>
+  <div class="debate-box">
+    <div class="debate-topic">
+      <div class="debate-topic-en">"The desire to hunt is more natural to humans than the desire to be rescued."</div>
+      <div class="debate-topic-kr">사냥하려는 욕망이 구조받으려는 욕망보다 인간에게 더 자연스럽다.</div>
+    </div>
+    <div class="debate-round">
+      <div class="debate-round-label">🎤 ROUND 1 — OPENING STATEMENT</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">핵심 표현을 활용하여 입장과 논거 2가지를 제시하세요.</div>
+      <textarea class="debate-textarea" id="round1" rows="4" placeholder='예) "I argue that without rules, humans do become violent, as Golding demonstrates through Jack\'s transformation..."'></textarea>
+    </div>
+    <div class="debate-round">
+      <div class="debate-round-label">⚔️ ROUND 2 — REBUTTAL</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">상대방 논리를 인정하면서 더 강하게 반박하세요.</div>
+      <textarea class="debate-textarea" id="round2" rows="4" placeholder="예) I concede that some boys, like Ralph and Piggy, maintain their humanity. However, this overlooks..."></textarea>
+    </div>
+    <div class="debate-round">
+      <div class="debate-round-label">🏁 ROUND 3 — CLOSING</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">핵심 논거를 강화하고 마무리하세요.</div>
+      <textarea class="debate-textarea" id="round3" rows="4" placeholder="예) In conclusion, I maintain that... Only by acknowledging this human tendency can we..."></textarea>
+    </div>
+    <div style="font-size:0.75rem;font-weight:900;color:var(--gold);margin-bottom:6px;margin-top:4px;">💡 유용한 표현</div>
+    <div class="phrase-row">
+      <span class="phrase" style="background:#1a2a1a;color:var(--gold);border-color:#3a6a3a;" onclick="addPhrase('round1','I argue that...')">I argue that...</span>
+      <span class="phrase" style="background:#1a2a1a;color:var(--gold);border-color:#3a6a3a;" onclick="addPhrase('round1','Golding demonstrates through Jack...')">Golding demonstrates...</span>
+      <span class="phrase" style="background:#1a2a1a;color:var(--gold);border-color:#3a6a3a;" onclick="addPhrase('round2','I concede that... however...')">I concede that...</span>
+      <span class="phrase" style="background:#1a2a1a;color:var(--gold);border-color:#3a6a3a;" onclick="addPhrase('round2','This overlooks the fact that...')">This overlooks...</span>
+      <span class="phrase" style="background:#1a2a1a;color:var(--gold);border-color:#3a6a3a;" onclick="addPhrase('round3','I maintain that...')">I maintain that...</span>
+      <span class="phrase" style="background:#1a2a1a;color:var(--gold);border-color:#3a6a3a;" onclick="addPhrase('round3','Only by acknowledging...')">Only by acknowledging...</span>
+    </div>
+    <button class="owui-btn" onclick="sendDebate()">⚔️ Open WebUI에서 AI와 토론하기</button>
+    <div style="font-size:0.78rem;color:var(--sub);margin-top:8px;min-height:16px;" id="debate-result"></div>
+  </div>
+</div>
+
+<!-- 완료 -->
+<div class="complete-card" id="complete-card">
+  <div style="font-size:2.8rem;margin-bottom:10px;">🐚</div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);margin-bottom:6px;">Week 1 완료!</div>
+  <div style="font-size:0.86rem;color:var(--sub);margin-bottom:16px;line-height:1.7;">신호 불의 비극을 이해했어요!<br>문명의 불꽃은 저절로 타오르지 않습니다.</div>
+  <button onclick="location.href='week03.html'" style="background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0a1a0a;border:none;border-radius:20px;padding:10px 28px;font-size:0.9rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;">Week 3 시작하기 →</button>
+</div>
+
+</div>
+
+<script>
+const gramData = {
+  g1:{tag:'G21',title:'조건절 — If the fire goes out',desc:'현재 시제 조건절\n"If the fire goes out,\nthey cannot be seen"\n= 불이 꺼지면 보이지 않는다\n현재 사실/일반 조건',ex:'If the fire goes out, they cannot be seen by passing ships.',gnum:'G21',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g2:{tag:'G62',title:'분사구문 — to chase a pig',desc:'목적의 부정사구\n"abandon the fire to chase a pig"\n= 돼지를 쫓으려고 불을 버리다\nto + 동사원형 = 목적',ex:'they abandon the fire to chase a pig',gnum:'G62',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g3:{tag:'G48',title:'수동태 — without seeing them',desc:'without + 동명사\n"disappears without seeing them"\n= 그들을 보지 못하고 사라지다\nwithout + -ing 동반 상황',ex:'The ship disappears over the horizon without seeing them.',gnum:'G48',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g4:{tag:'G71',title:'간접의문문 — why Ralph is upset',desc:'의문사 + 주어 + 동사\n"cannot understand why Ralph is upset"\n직접: "Why is Ralph upset?"\n간접: "why Ralph is upset"\n어순 주의!',ex:'He cannot understand why Ralph is so upset.',gnum:'G71',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g5:{tag:'G71',title:'명사절 what — what looks like',desc:'what + 주어 + 동사\n"What looks like a trivial disagreement"\n= 사소한 불일치처럼 보이는 것\nwhat절이 주어 역할',ex:'What looks like a trivial disagreement is in fact a philosophical divide.',gnum:'G71',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g6:{tag:'G75',title:'도치 — Not until',desc:'Not until + 절 → 도치\n"Not until he holds the pig\'s head\ndoes he fully understand"\n= 돼지 머리를 들고 나서야 비로소\ndoes + 주어 + 동사원형',ex:'Not until he holds the pig\'s head does he fully understand.',gnum:'G75',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'}
+};
+
+let xp=0;
+function addXP(n){
+  xp+=n;
+  document.getElementById('xp-btn').textContent='⭐ '+xp+' XP';
+  document.getElementById('prog-bar').style.width=Math.min(100,xp*1.5)+'%';
+  if(xp>=60&&document.getElementById('complete-card').style.display!=='block'){
+    setTimeout(()=>{document.getElementById('complete-card').style.display='block';document.getElementById('complete-card').scrollIntoView({behavior:'smooth'});},500);
+  }
+}
+
+function speak(text){
+  if(!text)return;
+  speechSynthesis.cancel();
+  function doSpeak(){
+    const voices=speechSynthesis.getVoices();
+    const u=new SpeechSynthesisUtterance(text);
+    const prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
+    const exclude=['Alex','Fred','Daniel','Google UK English Male'];
+    const v=voices.find(v=>prefer.some(p=>v.name.includes(p))&&!exclude.some(e=>v.name.includes(e)));
+    if(v)u.voice=v;
+    u.lang='en-US';u.rate=0.85;u.pitch=1.0;u.volume=1.0;
+    speechSynthesis.speak(u);
+  }
+  if(speechSynthesis.getVoices().length>0){setTimeout(doSpeak,50);}
+  else{speechSynthesis.onvoiceschanged=()=>{setTimeout(doSpeak,50);};speechSynthesis.getVoices();}
+}
+
+function showStory(lv,btn){
+  ['b1','c1'].forEach(l=>{const el=document.getElementById('sb-'+l);if(el)el.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(b=>b.className='tab-btn');
+  document.getElementById('sb-'+lv).classList.add('active');
+  btn.classList.add('act-'+lv);
+}
+function readStory(){
+  const s=document.getElementById('sb-b1');
+  if(s)speak((s.innerText||s.textContent).replace(/\s+/g,' ').trim());
+}
+function toggleKr(){
+  const kr=document.getElementById('story-kr');
+  const btn=document.getElementById('kr-btn');
+  const show=kr.style.display!=='block';
+  kr.style.display=show?'block':'none';
+  btn.textContent=show?'🇰🇷 번역 숨기기':'🇰🇷 한국어 번역 보기';
+}
+
+document.querySelectorAll('.gram').forEach(el=>{
+  el.addEventListener('click',function(e){
+    e.stopPropagation();
+    const d=gramData[this.dataset.id];if(!d)return;
+    document.getElementById('tt-tag').textContent=d.tag;
+    document.getElementById('tt-title').textContent=d.title;
+    document.getElementById('tt-desc').textContent=d.desc;
+    document.getElementById('tt-ex').textContent=d.ex;
+    document.getElementById('tt-gram-link').textContent='📚 Grammar Base '+d.gnum+' →';
+    document.getElementById('tt-gram-link').href=d.glink;
+    const wrap=document.getElementById('tt-wrap');
+    const rect=this.getBoundingClientRect();
+    let top=rect.bottom+8,left=rect.left;
+    if(left+295>window.innerWidth)left=window.innerWidth-300;
+    if(top+220>window.innerHeight)top=rect.top-225;
+    wrap.style.top=top+'px';wrap.style.left=left+'px';
+    wrap.style.display='block';
+    document.getElementById('tt-overlay').style.display='block';
+  });
+});
+function closeTT(){document.getElementById('tt-wrap').style.display='none';document.getElementById('tt-overlay').style.display='none';}
+
+function snCheck(btn,correct){
+  document.querySelectorAll('.sn-opt').forEach(b=>{b.classList.remove('ok','no');b.style.pointerEvents='none';});
+  const res=document.getElementById('sn-result');
+  const explain=document.getElementById('sn-explain');
+  const aibtn=document.getElementById('ai-explain-btn');
+  if(correct){
+    btn.classList.add('ok');
+    document.getElementById('sn-blank').textContent='incompatible visions of what survival means';
+    res.innerHTML='✅ 정답!';res.style.color='var(--green)';
+    explain.classList.add('show');addXP(8);
+  }else{
+    btn.classList.add('no');
+    res.innerHTML='❌ 오답입니다. 해설을 확인하세요.';res.style.color='var(--red)';
+    explain.classList.add('show');aibtn.style.display='block';
+  }
+}
+function sendToAI(){
+  const prompt='[ESSAY] 안녕하세요! 수능 빈칸 추론 문제를 틀렸어요.\nLord of the Flies W02 수능 문제에서 오답을 골랐어요.\n정답이 "incompatible visions of what survival means"인 이유와\n이런 유형을 푸는 전략을 설명해줘.';
+  navigator.clipboard.writeText(prompt).then(()=>{setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);});
+}
+
+function chkFill(btn,val,ans,blId,resId){
+  btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('ok','no'));
+  const res=document.getElementById(resId);
+  if(val===ans){btn.classList.add('ok');document.getElementById(blId).textContent=val;res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(4);}
+  else{btn.classList.add('no');res.innerHTML='❌ 다시 해봐요!';res.style.color='var(--red)';}
+}
+function chkDict(inputId,ans,resId){
+  const val=document.getElementById(inputId).value.trim().toLowerCase();
+  const res=document.getElementById(resId);
+  if(val===ans.toLowerCase()){res.innerHTML='✅ 정답!';res.style.color='var(--green)';document.getElementById(inputId).style.borderColor='var(--green)';addXP(3);}
+  else{res.innerHTML='❌ 정답: <span style="color:var(--gold)">'+ans+'</span>';res.style.color='var(--red)';}
+}
+function lcCheck(btn,val){
+  btn.closest('.lc-opts').querySelectorAll('.lc-opt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  document.getElementById('lc-result').textContent=val==='ok'?'✅ 정답!':'❌ 다시 들어보세요!';
+  document.getElementById('lc-result').style.color=val==='ok'?'var(--green)':'var(--red)';
+  if(val==='ok')addXP(4);
+}
+function shuffleLcOpts(){
+  document.querySelectorAll('.lc-opts').forEach(container=>{
+    const btns=Array.from(container.querySelectorAll('.lc-opt'));
+    for(let i=btns.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[btns[i],btns[j]]=[btns[j],btns[i]];}
+    btns.forEach((btn,i)=>{
+      const labels=['①','②','③'];
+      const text=btn.textContent.replace(/^[①②③]\s*/,'').trim();
+      btn.textContent=labels[i]+' '+text;
+      container.appendChild(btn);
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded',shuffleLcOpts);
+
+function showQuiz(id,btn){
+  document.querySelectorAll('.quiz-set').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.qtab').forEach(b=>b.className='qtab');
+  document.getElementById(id).classList.add('active');
+  btn.classList.add(id==='qb1'?'qb1':'qc1');
+}
+function qChk(btn,val){
+  btn.closest('.quiz-opts').querySelectorAll('.qopt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  if(val==='ok')addXP(4);
+}
+
+const matchPairs=[["signal", "신호"], ["confront", "맞서다"], ["suppress", "억누르다"], ["primacy", "최우선"]];
+let matchSel=null,matchDone={};
+function initMatch(){
+  const left=document.getElementById('match-left');
+  const right=document.getElementById('match-right');
+  const rs=[...matchPairs].sort(()=>Math.random()-0.5);
+  left.innerHTML=matchPairs.map(([en])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${en}</button>`).join('');
+  right.innerHTML=rs.map(([en,kr])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${kr}</button>`).join('');
+}
+function matchClick(btn,key){
+  if(btn.classList.contains('matched'))return;
+  btn.classList.remove('wrong-flash');
+  if(!matchSel){matchSel={btn,key};btn.classList.add('selected');}
+  else{
+    if(matchSel.key===key&&matchSel.btn!==btn){
+      matchSel.btn.classList.remove('selected');matchSel.btn.classList.add('matched');
+      btn.classList.add('matched');matchDone[key]=true;matchSel=null;
+      if(Object.keys(matchDone).length===matchPairs.length){
+        document.getElementById('match-result').innerHTML='🎉 모두 맞췄어요!';
+        document.getElementById('match-result').style.color='var(--green)';addXP(8);
+      }
+    }else{
+      const prev=matchSel.btn;prev.classList.remove('selected');prev.classList.add('wrong-flash');
+      btn.classList.add('wrong-flash');matchSel=null;
+      setTimeout(()=>{prev.classList.remove('wrong-flash');btn.classList.remove('wrong-flash');},500);
+    }
+  }
+}
+initMatch();
+
+function chkFD(id,ans,resId){
+  const inp=document.getElementById(id);
+  const res=document.getElementById(resId);
+  const clean=s=>s.trim().toLowerCase().replace(/[.,!?;:—]/g,'').replace(/\s+/g,' ');
+  if(clean(inp.value)===clean(ans)){
+    res.innerHTML='✅ 정답!';res.style.color='var(--green)';
+    inp.style.borderColor='var(--green)';inp.style.background='#0d1f0d';addXP(5);
+  }else{
+    res.innerHTML='❌ 정답: <span style="color:var(--gold);font-weight:800">"'+ans+'"</span>';
+    res.style.color='var(--red)';inp.style.borderColor='var(--red)';
+  }
+}
+
+function addPhrase(id,text){const ta=document.getElementById(id);ta.value=ta.value?ta.value+' '+text:text;ta.focus();}
+
+function checkReproduce(){
+  const text=document.getElementById('reproduce-input').value.trim();
+  const res=document.getElementById('reproduce-result');
+  if(!text){res.textContent='문장을 먼저 써보세요!';return;}
+  const prompt='[ESSAY] 안녕하세요! 문장 구조 재생산 훈련을 했어요.\n\n원본 구조: "Only by + [동사-ing] + [조동사] + [주어] + [동사원형]"\n원본 문장: "If only they had kept the signal fire burning, a ship might have seen them."\n\n내가 만든 문장:\n'+text+'\n\n이 구조를 제대로 사용했는지 피드백해줘.\n수능 어법(가정법 과거완료) 관점에서도 체크해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.textContent='✅ 복사됐어요! Open WebUI에 붙여넣기하세요.';
+    setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+    addXP(5);
+  });
+}
+
+function checkExpand(){
+  const text=document.getElementById('expand-input').value.trim();
+  const res=document.getElementById('expand-result');
+  if(!text){res.textContent='문장을 먼저 써보세요!';return;}
+  const prompt='[ESSAY] 안녕하세요! 문장 확장 훈련을 했어요.\n원래 문장: "The hunters let the fire go out."\n내가 확장한 문장: '+text+'\nB1 수준에 맞는지 피드백해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.textContent='✅ 복사됐어요! Open WebUI에 붙여넣기하세요.';
+    setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+    addXP(5);
+  });
+}
+
+function submitEssay(){
+  const vals=[1,2,3,4,5].map(i=>document.getElementById('es'+i).value.trim());
+  const res=document.getElementById('essay-result');
+  if(vals.some(v=>!v)){res.innerHTML='❗ 5단락을 모두 작성해주세요!';res.style.color='#c9a84c';return;}
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'고2'):'고2';
+  const essay=vals.map((v,i)=>['①','②','③','④','⑤'][i]+' '+v).join('\n');
+  const prompt='[ESSAY] 안녕하세요! 저는 '+name+', '+grade+'이에요.\nLord of the Flies W02 에세이를 썼는데 피드백 부탁드려요.\n주제: "Is the failure to maintain the signal fire a symbol of something larger in human nature?"\n\n'+essay;
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.innerHTML='✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
+    addXP(10);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+  });
+}
+
+function sendDebate(){
+  const r1=document.getElementById('round1').value.trim();
+  const r2=document.getElementById('round2').value.trim();
+  const r3=document.getElementById('round3').value.trim();
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'고2'):'고2';
+  const prompt='[DEBATE] 안녕하세요! 저는 '+name+', '+grade+'이에요.\nLord of the Flies W02 디베이트 주제: "The desire to hunt is more natural to humans than the desire to be rescued."\n\n[Round 1 - Opening]\n'+(r1||'(아직 못 썼어요)')+'\n\n[Round 2 - Rebuttal]\n'+(r2||'(아직 못 썼어요)')+'\n\n[Round 3 - Closing]\n'+(r3||'(아직 못 썼어요)')+'\n\n피드백하고 AI 상대방으로 토론해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    document.getElementById('debate-result').innerHTML='✅ 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';
+    document.getElementById('debate-result').style.color='var(--green)';
+    addXP(8);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+  });
+}
+</script>
+</body>
+</html>
