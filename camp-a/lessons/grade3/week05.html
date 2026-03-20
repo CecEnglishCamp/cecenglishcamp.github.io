@@ -500,10 +500,11 @@ body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--cream);min-
 <div class="praise" id="pop"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo" style="width:64px;height:64px;border-radius:50%;border:3px solid #7CAE7A;margin-bottom:6px;"><div class="praise-icon" id="pIcon">🎉</div><div class="praise-t" id="pT">대단해!</div><div class="praise-s" id="pS">정말 잘했어!</div></div>
 <div class="bnav"><a class="bp" href="week04.html">← W4</a><span class="bl">WEEK 5</span><a class="bn" href="week06.html">W6 →</a></div>
 <script>
+speechSynthesis.getVoices();if(speechSynthesis.onvoiceschanged!==undefined){speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices();};}
 var xp=0,qOk=0,woPools={wo1:[]},mSel=null,mPairs={};
 function getVoice(){var v=speechSynthesis.getVoices();var n=['Microsoft Zira Desktop - English (United States)','Microsoft Zira','Microsoft Jenny Online (Natural) - English (United States)','Samantha','Karen','Google US English'];for(var i=0;i<n.length;i++){var f=v.find(function(x){return x.name===n[i];});if(f)return f;}return v.find(function(x){return x.lang==='en-US';})||v[0];}
 function speak(t){speechSynthesis.cancel();setTimeout(function(){var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.75;u.pitch=1.1;var f=getVoice();if(f)u.voice=f;speechSynthesis.speak(u);},150);}
-function speakStory(){var el=document.querySelector('.story-en');if(el)speak(el.textContent);}
+function speakStory(){var el=document.querySelector('.story-en');if(el)speak(el.textContent.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu,'').replace(/\s+/g,' ').trim());}
 function addXP(n){xp+=n;document.getElementById('xp').textContent=xp;}
 var msgs=[{i:'🎉',t:'대단해!',s:'정말 잘했어!'},{i:'⭐',t:'최고야!',s:'영어 천재인걸?'},{i:'🏆',t:'정답!',s:'잘하고 있어!'},{i:'💪',t:'멋져!',s:'계속 가자!'},{i:'🌟',t:'완벽해!',s:'Robo가 감동!'},{i:'🥳',t:'와~!',s:'영어가 쉬워지고 있어!'}];
 function praise(){var m=msgs[Math.floor(Math.random()*msgs.length)];document.getElementById('pIcon').textContent=m.i;document.getElementById('pT').textContent=m.t;document.getElementById('pS').textContent=m.s;document.getElementById('pbg').classList.add('on');document.getElementById('pop').classList.add('on');setTimeout(function(){document.getElementById('pbg').classList.remove('on');document.getElementById('pop').classList.remove('on');},1500);}
