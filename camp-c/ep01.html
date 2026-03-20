@@ -479,7 +479,8 @@ body::before{
   .sec-body{padding:16px 16px}
   .ep-body{padding:14px 16px 18px}
 }
-.mp-item{padding:12px 16px;border-radius:12px;border:2px solid #e0e4ff;background:#f8f9ff;cursor:pointer;text-align:center;font-size:0.95rem;font-weight:700;color:#1e3a8a;transition:all 0.15s;width:100%;}.mp-item:hover{border-color:#4f46e5;}.mp-item.sel{border-color:#4f46e5;background:#eef2ff;color:#4f46e5;}.mp-item.done{border-color:#16a34a;background:#dcfce7;color:#16a34a;cursor:default;}.mp-item.wrong{border-color:#dc2626;background:#fee2e2;}
+
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:700px;margin:0 auto;}.match-col{display:flex;flex-direction:column;gap:8px;}.mp-item{width:100%;padding:12px 16px;background:#f8f9ff;border:2px solid #e0e4ff;border-radius:12px;font-size:0.95rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s;font-family:inherit;color:#1e1b4b;}.mp-item:hover{border-color:#818cf8;background:#eef2ff;}.mp-item.selected{border-color:#4f46e5;background:#eef2ff;color:#4f46e5;}.mp-item.matched{border-color:#16a34a;background:#dcfce7;color:#16a34a;cursor:default;}.mp-item.wrong-flash{border-color:#dc2626;background:#fee2e2;}
 </style>
 </head>
 <body>
@@ -874,8 +875,7 @@ body::before{
 
   <!-- ⑤ 100 EXPRESSIONS JOURNEY -->
   
-<!-- Game: Match Pairs -->
-<div class="section"><div class="sec-hdr"><div class="sec-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a)">🃏</div><div><div class="sec-title">짝맞추기</div><div class="sec-sub">MATCH PAIRS · 영어와 한국어를 연결하세요</div></div></div>
+</div>
 <div class="sec-body">
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:600px;margin:0 auto;" id="mpGrid">
 <div style="display:flex;flex-direction:column;gap:8px;"><button class="mp-item" data-id="terminal" data-side="en" onclick="mpClick(this)">terminal</button><button class="mp-item" data-id="exit" data-side="en" onclick="mpClick(this)">exit</button><button class="mp-item" data-id="worker" data-side="en" onclick="mpClick(this)">worker</button><button class="mp-item" data-id="direction" data-side="en" onclick="mpClick(this)">direction</button><button class="mp-item" data-id="airport" data-side="en" onclick="mpClick(this)">airport</button></div>
@@ -944,6 +944,30 @@ body::before{
 
   <!-- NAV FOOTER -->
   
+
+<!-- Match Pairs (Standard) -->
+<div class="section"><div class="sec-hdr"><div class="sec-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a)">🃏</div><div><div class="sec-title">짝맞추기</div><div class="sec-sub">MATCH PAIRS · 영어와 한국어를 연결하세요</div></div></div>
+<div class="sec-body">
+<p style="font-size:0.85rem;color:#64748b;margin-bottom:14px;">왼쪽 영어를 클릭하고, 오른쪽 한국어를 클릭해서 짝을 맞춰보세요!</p>
+<div class="match-grid">
+  <div class="match-col" id="match-left">
+            <button class="mp-item" onclick="matchClick(this,'airport')">airport</button>
+            <button class="mp-item" onclick="matchClick(this,'worker')">worker</button>
+            <button class="mp-item" onclick="matchClick(this,'terminal')">terminal</button>
+            <button class="mp-item" onclick="matchClick(this,'exit')">exit</button>
+            <button class="mp-item" onclick="matchClick(this,'direction')">direction</button>
+          </div>
+  <div class="match-col" id="match-right">
+            <button class="mp-item" onclick="matchClick(this,'terminal')">터미널</button>
+            <button class="mp-item" onclick="matchClick(this,'worker')">직원</button>
+            <button class="mp-item" onclick="matchClick(this,'direction')">방향</button>
+            <button class="mp-item" onclick="matchClick(this,'exit')">출구</button>
+            <button class="mp-item" onclick="matchClick(this,'airport')">공항</button>
+          </div>
+</div>
+<div id="match-result" style="text-align:center;margin-top:14px;font-size:0.92rem;font-weight:700;min-height:24px;"></div>
+</div></div>
+
 <!-- ChatGPT -->
 <div class="section" style="background:linear-gradient(135deg,#1a73e8,#4285f4);border-radius:22px;border:none;">
 <div style="padding:28px 24px;text-align:center;">
@@ -1291,6 +1315,28 @@ function startTutorSession() {
   }).catch(() => {
     window.open('./tutor.html?ep=01', '_blank');
   });
+}
+
+
+var matchSel=null,matchDone={};
+function matchClick(btn,key){
+  if(btn.classList.contains('matched'))return;
+  btn.classList.remove('wrong-flash');
+  if(!matchSel){matchSel={btn:btn,key:key};btn.classList.add('selected');return;}
+  if(matchSel.btn===btn){btn.classList.remove('selected');matchSel=null;return;}
+  if(matchSel.key===key&&matchSel.btn!==btn){
+    matchSel.btn.classList.remove('selected');matchSel.btn.classList.add('matched');
+    btn.classList.add('matched');matchDone[key]=true;matchSel=null;addXP(5);
+    var cnt=Object.keys(matchDone).length;
+    var r=document.getElementById('match-result');
+    if(cnt>=5){r.innerHTML='🎉 모두 맞췄어요! +30 XP';r.style.color='#16a34a';addXP(30);}
+    else{r.textContent=cnt+' / 5';}
+  }else{
+    var prev=matchSel.btn;prev.classList.remove('selected');
+    prev.classList.add('wrong-flash');btn.classList.add('wrong-flash');
+    matchSel=null;
+    setTimeout(function(){prev.classList.remove('wrong-flash');btn.classList.remove('wrong-flash');},500);
+  }
 }
 
 </script>
