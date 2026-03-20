@@ -536,6 +536,7 @@ body::before{
 </div></div>
 
 <script>
+speechSynthesis.getVoices();if(speechSynthesis.onvoiceschanged!==undefined){speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices();};}
 var xp=0;
 function addXP(n){xp+=n;document.getElementById('xpBadge').textContent=xp;}
 function speak(text){if(!text)return;window.speechSynthesis.cancel();function doSpeak(){var voices=window.speechSynthesis.getVoices();var u=new SpeechSynthesisUtterance(text);var prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];var exclude=['Alex','Fred','Daniel','Google UK English Male'];var v=voices.find(function(v){return prefer.some(function(p){return v.name.indexOf(p)>=0;})&&!exclude.some(function(e){return v.name.indexOf(e)>=0;});});if(v)u.voice=v;u.lang='en-US';u.rate=0.85;u.pitch=1.0;window.speechSynthesis.speak(u);}if(window.speechSynthesis.getVoices().length>0){setTimeout(doSpeak,50);}else{window.speechSynthesis.onvoiceschanged=function(){setTimeout(doSpeak,50);};window.speechSynthesis.getVoices();}}
