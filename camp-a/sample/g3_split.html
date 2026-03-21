@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Peter Rabbit W1 — AI 대화 | CEC Camp A</title>
+<title>CEC Camp A — AI 대화</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -22,6 +22,7 @@ body{display:flex;height:100vh;overflow:hidden;font-family:'Nunito',sans-serif;b
   width:50%;height:100vh;
   display:flex;flex-direction:column;
   background:#f0f8ff;
+  overflow-y:auto;
 }
 
 /* 오른쪽 헤더 */
@@ -131,18 +132,8 @@ body{display:flex;height:100vh;overflow:hidden;font-family:'Nunito',sans-serif;b
 
 <!-- 왼쪽: 수업 페이지 -->
 <div class="left-panel">
-  <button class="back-btn" onclick="window.location.href='g3_new_w01.html'">← 수업으로</button>
-  <iframe id="lessonFrame" src="g3_new_w01.html" title="Peter Rabbit 수업"></iframe>
-  <script>
-    (function(){
-      var p=new URLSearchParams(window.location.search);
-      var w=parseInt(p.get('week'))||1;
-      if(w>=1&&w<=9){
-        var wn=('0'+w).slice(-2);
-        document.getElementById('lessonFrame').src='g3_new_w'+wn+'.html';
-      }
-    })();
-  </script>
+  <button class="back-btn" id="backBtn" onclick="window.location.href='g3_new_w01.html'">← 수업으로</button>
+  <iframe id="lessonFrame" src="g3_new_w01.html" title="수업"></iframe>
 </div>
 
 <!-- 오른쪽: AI 대화 -->
@@ -152,7 +143,7 @@ body{display:flex;height:100vh;overflow:hidden;font-family:'Nunito',sans-serif;b
     <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo">
     <div>
       <div class="r-header-text">Robo AI 선생님과 영어 대화!</div>
-      <div class="r-header-sub">Peter Rabbit W1 · "He ran away" 연습하기</div>
+      <div class="r-header-sub" id="headerSub">Loading...</div>
     </div>
   </div>
 
@@ -175,14 +166,8 @@ body{display:flex;height:100vh;overflow:hidden;font-family:'Nunito',sans-serif;b
       AI 선생님이 영어로 대화해줘!
     </div>
 
-    <div class="fb-prompt-box">
+    <div class="fb-prompt-box" id="promptBox">
       <div class="copied-tag" id="copiedTag">Copied!</div>
-      안녕하세요! 저는 초등학교 3학년이에요.<br>
-      오늘 <span class="hl">Peter Rabbit</span>을 배웠어요!<br><br>
-      배운 단어: <span class="hl">rabbit, garden, ran, listen</span><br>
-      핵심 표현: <span class="hl">"He ran away."</span><br><br>
-      이 단어들로 저랑 쉽게 영어 대화해줘!<br>
-      짧은 문장으로, 한국어 힌트도 가끔 줘!
     </div>
 
     <div class="fb-btns">
@@ -218,13 +203,86 @@ body{display:flex;height:100vh;overflow:hidden;font-family:'Nunito',sans-serif;b
 </div>
 
 <script>
-var promptText = "안녕하세요! 저는 초등학교 3학년이에요.\n오늘 Peter Rabbit을 배웠어요!\n\n배운 단어: rabbit, garden, ran, listen\n핵심 표현: \"He ran away.\"\n\n이 단어들로 저랑 쉽게 영어 대화해줘!\n짧은 문장으로, 한국어 힌트도 가끔 줘!";
+/* ═══ 주차별 콘텐츠 데이터 ═══ */
+var WEEK_DATA = {
+  'Peter Rabbit': {
+    1:  {expr:'"He ran away."', vocab:'rabbit, garden, ran, listen', sub:'Peter Rabbit W1 · "He ran away" 연습하기'},
+    2:  {expr:'"Come back here!"', vocab:'come, back, here, stop', sub:'Peter Rabbit W2 · "Come back here!" 연습하기'},
+    3:  {expr:'"I am so scared!"', vocab:'scared, hide, run, fast', sub:'Peter Rabbit W3 · "I am so scared!" 연습하기'},
+    4:  {expr:'"Please help me!"', vocab:'please, help, friend, kind', sub:'Peter Rabbit W4 · "Please help me!" 연습하기'},
+    5:  {expr:'"Don\'t go there!"', vocab:'go, there, careful, danger', sub:'Peter Rabbit W5 · "Don\'t go there!" 연습하기'},
+    6:  {expr:'"I found it!"', vocab:'found, carrot, happy, garden', sub:'Peter Rabbit W6 · "I found it!" 연습하기'},
+    7:  {expr:'"Let\'s go home."', vocab:'home, tired, walk, together', sub:'Peter Rabbit W7 · "Let\'s go home" 연습하기'},
+    8:  {expr:'"I will be good."', vocab:'good, promise, sorry, mother', sub:'Peter Rabbit W8 · "I will be good" 연습하기'},
+    9:  {expr:'"I am safe now."', vocab:'safe, home, tired, warm', sub:'Peter Rabbit W9 · "I am safe now" 연습하기'}
+  },
+  'Red Riding Hood': {
+    10: {expr:'"Take this to Grandma!"', vocab:'basket, bread, grandma, trip', sub:'Red Riding Hood W10 · "Take this to Grandma!" 연습하기'},
+    11: {expr:'"What a beautiful forest!"', vocab:'forest, flower, bird, beautiful', sub:'Red Riding Hood W11 · "What a beautiful forest!" 연습하기'},
+    12: {expr:'"Where are you going?"', vocab:'wolf, ask, house, scared', sub:'Red Riding Hood W12 · "Where are you going?" 연습하기'},
+    13: {expr:'"Go this way!"', vocab:'way, fast, plan, thank', sub:'Red Riding Hood W13 · "Go this way!" 연습하기'},
+    14: {expr:'"I came first!"', vocab:'first, door, clothes, hide', sub:'Red Riding Hood W14 · "I came first!" 연습하기'},
+    15: {expr:'"Who is it?"', vocab:'knock, voice, arrive, strange', sub:'Red Riding Hood W15 · "Who is it?" 연습하기'},
+    16: {expr:'"What big eyes you have!"', vocab:'eyes, ears, mouth, bed', sub:'Red Riding Hood W16 · "What big eyes you have!" 연습하기'},
+    17: {expr:'"I will save you!"', vocab:'hunter, save, help, run away', sub:'Red Riding Hood W17 · "I will save you!" 연습하기'},
+    18: {expr:'"I love you, Grandma!"', vocab:'hug, love, happy, together', sub:'Red Riding Hood W18 · "I love you, Grandma!" 연습하기'}
+  }
+};
 
-/* ChatGPT는 X-Frame-Options로 iframe 차단함 → 폴백 표시 */
+/* ═══ URL 파라미터 파싱 + 콘텐츠 반영 ═══ */
+var params = new URLSearchParams(window.location.search);
+var weekNum = parseInt(params.get('week')) || 1;
+var character = params.get('character') || 'Peter Rabbit';
+
+/* 해당 캐릭터에서 주차 데이터 찾기 */
+var weekInfo = null;
+if (WEEK_DATA[character] && WEEK_DATA[character][weekNum]) {
+  weekInfo = WEEK_DATA[character][weekNum];
+} else {
+  /* 캐릭터 전체에서 주차 번호로 검색 */
+  for (var c in WEEK_DATA) {
+    if (WEEK_DATA[c][weekNum]) {
+      weekInfo = WEEK_DATA[c][weekNum];
+      character = c;
+      break;
+    }
+  }
+}
+if (!weekInfo) weekInfo = {expr:'"Hello!"', vocab:'hello, hi, friend, good', sub:character + ' W' + weekNum};
+
+/* 왼쪽 iframe 설정 */
+var lessonFile;
+if (character === 'Red Riding Hood' && weekNum >= 10 && weekNum <= 18) {
+  lessonFile = '../lessons/grade3/week' + weekNum + '.html';
+} else {
+  var wn = ('0' + weekNum).slice(-2);
+  lessonFile = 'g3_new_w' + wn + '.html';
+}
+document.getElementById('lessonFrame').src = lessonFile;
+document.getElementById('lessonFrame').title = character + ' W' + weekNum;
+document.getElementById('backBtn').onclick = function() { window.location.href = lessonFile; };
+
+/* 오른쪽 패널 업데이트 */
+document.getElementById('headerSub').textContent = weekInfo.sub;
+document.title = character + ' W' + weekNum + ' — AI 대화 | CEC Camp A';
+
+/* 프롬프트 생성 */
+var promptText = '안녕하세요! 저는 초등학교 3학년이에요.\n오늘 ' + character + '을 배웠어요!\n\n배운 단어: ' + weekInfo.vocab + '\n핵심 표현: ' + weekInfo.expr + '\n\n이 단어들로 저랑 쉽게 영어 대화해줘!\n짧은 문장으로, 한국어 힌트도 가끔 줘!';
+
+/* 프롬프트 박스 HTML 업데이트 */
+document.getElementById('promptBox').innerHTML =
+  '<div class="copied-tag" id="copiedTag">Copied!</div>' +
+  '안녕하세요! 저는 초등학교 3학년이에요.<br>' +
+  '오늘 <span class="hl">' + character + '</span>을 배웠어요!<br><br>' +
+  '배운 단어: <span class="hl">' + weekInfo.vocab + '</span><br>' +
+  '핵심 표현: <span class="hl">' + weekInfo.expr + '</span><br><br>' +
+  '이 단어들로 저랑 쉽게 영어 대화해줘!<br>' +
+  '짧은 문장으로, 한국어 힌트도 가끔 줘!';
+
+/* ═══ ChatGPT iframe / 폴백 ═══ */
 var frameChecked = false;
 
 function checkFrame() {
-  /* iframe load 이벤트가 발생해도 cross-origin이면 내용 접근 불가 */
   setTimeout(function() {
     if (!frameChecked) showFallback();
   }, 2000);
@@ -238,7 +296,6 @@ function showFallback() {
   document.getElementById('fallback').classList.add('active');
 }
 
-/* ChatGPT는 거의 확실히 iframe 차단하므로, 바로 폴백 표시 */
 setTimeout(showFallback, 500);
 
 function copyPrompt() {
@@ -265,7 +322,6 @@ function openChatGPT() {
       'chatgpt',
       'width=' + w + ',height=' + h + ',left=' + l + ',top=0'
     );
-    /* 현재 창을 왼쪽 절반으로 이동 */
     window.moveTo(0, 0);
     window.resizeTo(Math.floor(screen.width * 0.5), screen.height);
   }, 400);
