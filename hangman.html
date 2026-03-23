@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hangman | CEC Grammar Game</title>
+<link rel="stylesheet" href="./assets/css/game.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+.hm-wrap{max-width:700px;margin:0 auto;padding:20px;}
+.hm-top{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+.hm-robo{width:80px;height:80px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(0,242,255,.3));}
+.hm-info{flex:1;}
+.hm-cat{font-size:12px;color:var(--cyan);letter-spacing:2px;font-weight:700;}
+.hm-hint{font-size:14px;color:var(--muted);margin-top:4px;}
+.hm-lives{display:flex;gap:6px;margin-top:8px;}
+.hm-heart{font-size:20px;transition:all 0.3s;}
+.hm-heart.lost{opacity:0.2;transform:scale(0.7);}
+.hm-word{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:30px 0;}
+.hm-letter{width:44px;height:54px;border-bottom:3px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:28px;font-weight:700;color:#fff;transition:all 0.3s;}
+.hm-letter.revealed{color:var(--green);border-color:var(--green);}
+.hm-keys{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:20px 0;}
+.hm-key{width:42px;height:42px;border-radius:10px;border:2px solid rgba(0,242,255,.4);background:rgba(255,255,255,.05);color:#fff;font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
+.hm-key:hover{background:rgba(0,242,255,.15);border-color:var(--cyan);}
+.hm-key.correct{background:rgba(25,255,136,.2);border-color:var(--green);color:var(--green);}
+.hm-key.wrong{background:rgba(255,43,43,.15);border-color:var(--danger);color:var(--danger);opacity:0.5;}
+.hm-key:disabled{cursor:default;pointer-events:none;}
+.hm-msg{text-align:center;font-size:18px;font-weight:700;margin:20px 0;min-height:28px;}
+.hm-msg.win{color:var(--green);}
+.hm-msg.lose{color:var(--danger);}
+.hm-btns{display:flex;gap:12px;justify-content:center;margin-top:16px;}
+.hm-btn{padding:10px 28px;border-radius:12px;border:none;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.hm-btn-primary{background:var(--cyan);color:#000;}
+.hm-btn-ghost{background:transparent;border:2px solid rgba(255,255,255,.3);color:#fff;}
+.hm-level{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:20px 0;}
+.hm-lvl{padding:12px 28px;border-radius:14px;border:2px solid rgba(0,242,255,.6);background:rgba(0,0,0,.5);color:#fff;font-family:'Poppins',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.hm-lvl:hover{background:rgba(0,242,255,.1);transform:translateY(-2px);}
+.hm-lvl span{color:var(--cyan);}
+.hm-score{text-align:center;color:var(--muted);font-size:13px;margin-top:12px;}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar__inner">
+  <a href="index.html" class="brand"><img src="./assets/img/robo2.png" alt="CEC" class="brand__logo"><span class="brand__name">CEC ENGLISH CAMP</span></a>
+  <nav class="nav"><a href="grammar-game.html">← Games</a></nav>
+</div></header>
+
+<section class="title">
+  <h1><span class="title__emoji">🔤</span> Hangman</h1>
+  <p class="title__desc">Robo를 구해! 단어를 맞춰봐요!</p>
+</section>
+
+<div class="hm-wrap">
+  <div id="hmSelect" class="hm-level">
+    <button class="hm-lvl" onclick="startHangman('A1')"><span>A1</span> 초급</button>
+    <button class="hm-lvl" onclick="startHangman('A2')"><span>A2</span> 초급+</button>
+    <button class="hm-lvl" onclick="startHangman('B1')"><span>B1</span> 중급</button>
+    <button class="hm-lvl" onclick="startHangman('B2')"><span>B2</span> 중급+</button>
+  </div>
+
+  <div id="hmGame" style="display:none;">
+    <div class="hm-top">
+      <img src="./assets/img/robo2.png" class="hm-robo" id="hmRobo">
+      <div class="hm-info">
+        <div class="hm-cat" id="hmCat">A1 · 초급</div>
+        <div class="hm-hint" id="hmHint">힌트: ...</div>
+        <div class="hm-lives" id="hmLives"></div>
+      </div>
+    </div>
+    <div class="hm-word" id="hmWord"></div>
+    <div class="hm-keys" id="hmKeys"></div>
+    <div class="hm-msg" id="hmMsg"></div>
+    <div class="hm-score" id="hmScore"></div>
+    <div class="hm-btns">
+      <button class="hm-btn hm-btn-primary" onclick="nextWord()">다음 단어</button>
+      <button class="hm-btn hm-btn-ghost" onclick="resetHangman()">레벨 선택</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const WORDS={
+  A1:[
+    {word:'APPLE',hint:'빨간 과일'},{word:'HAPPY',hint:'기분이 좋은'},{word:'SCHOOL',hint:'공부하는 곳'},
+    {word:'WATER',hint:'마시는 것'},{word:'FRIEND',hint:'같이 노는 사람'},{word:'GARDEN',hint:'꽃이 있는 곳'},
+    {word:'RABBIT',hint:'귀가 긴 동물'},{word:'MORNING',hint:'아침'},{word:'LISTEN',hint:'귀로 하는 것'},
+    {word:'DOCTOR',hint:'아픈 사람을 치료하는 사람'}
+  ],
+  A2:[
+    {word:'JOURNEY',hint:'여행'},{word:'WEATHER',hint:'날씨'},{word:'IMAGINE',hint:'상상하다'},
+    {word:'HOLIDAY',hint:'쉬는 날'},{word:'KITCHEN',hint:'요리하는 곳'},{word:'EXCITED',hint:'흥분한'},
+    {word:'VILLAGE',hint:'작은 마을'},{word:'TROUBLE',hint:'문제, 어려움'},{word:'PROMISE',hint:'약속하다'},
+    {word:'LIBRARY',hint:'책이 많은 곳'}
+  ],
+  B1:[
+    {word:'ADVENTURE',hint:'모험'},{word:'DANGEROUS',hint:'위험한'},{word:'KNOWLEDGE',hint:'지식'},
+    {word:'IMPORTANT',hint:'중요한'},{word:'BEAUTIFUL',hint:'아름다운'},{word:'EXPENSIVE',hint:'비싼'},
+    {word:'SURPRISED',hint:'놀란'},{word:'ATTENTION',hint:'주의, 집중'},{word:'CONFIDENT',hint:'자신감 있는'},
+    {word:'CELEBRATE',hint:'축하하다'}
+  ],
+  B2:[
+    {word:'ACCOMPLISH',hint:'성취하다'},{word:'PHENOMENON',hint:'현상'},{word:'APPRECIATE',hint:'감사하다'},
+    {word:'CONSEQUENCE',hint:'결과'},{word:'DEMONSTRATE',hint:'보여주다'},{word:'IMMEDIATELY',hint:'즉시'},
+    {word:'OPPORTUNITY',hint:'기회'},{word:'ACKNOWLEDGE',hint:'인정하다'},{word:'PERSPECTIVE',hint:'관점'},
+    {word:'SIGNIFICANT',hint:'중대한'}
+  ]
+};
+
+let hmLevel='A1',hmIdx=0,hmWord='',hmGuessed=[],hmLives=6,hmWins=0,hmTotal=0;
+
+function speak(t){if(!('speechSynthesis' in window))return;const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.8;speechSynthesis.cancel();speechSynthesis.speak(u);}
+
+function startHangman(lv){
+  hmLevel=lv;hmIdx=0;hmWins=0;hmTotal=0;
+  document.getElementById('hmSelect').style.display='none';
+  document.getElementById('hmGame').style.display='block';
+  nextWord();
+}
+
+function resetHangman(){
+  document.getElementById('hmSelect').style.display='flex';
+  document.getElementById('hmGame').style.display='none';
+}
+
+function nextWord(){
+  const words=WORDS[hmLevel];
+  if(hmIdx>=words.length)hmIdx=0;
+  const w=words[hmIdx++];
+  hmWord=w.word;hmGuessed=[];hmLives=6;
+  document.getElementById('hmCat').textContent=hmLevel+' · '+(hmLevel==='A1'?'초급':hmLevel==='A2'?'초급+':hmLevel==='B1'?'중급':'중급+');
+  document.getElementById('hmHint').textContent='힌트: '+w.hint;
+  document.getElementById('hmMsg').textContent='';
+  document.getElementById('hmMsg').className='hm-msg';
+  renderHangman();
+}
+
+function renderHangman(){
+  // Word
+  const wd=document.getElementById('hmWord');
+  wd.innerHTML=hmWord.split('').map(c=>{
+    const show=hmGuessed.includes(c);
+    return `<div class="hm-letter${show?' revealed':''}">${show?c:''}</div>`;
+  }).join('');
+  // Lives
+  const lv=document.getElementById('hmLives');
+  lv.innerHTML='';
+  for(let i=0;i<6;i++){
+    const h=document.createElement('span');
+    h.className='hm-heart'+(i>=hmLives?' lost':'');
+    h.textContent='❤️';
+    lv.appendChild(h);
+  }
+  // Keys
+  const keys=document.getElementById('hmKeys');
+  keys.innerHTML='';
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(c=>{
+    const btn=document.createElement('button');
+    btn.className='hm-key';
+    btn.textContent=c;
+    if(hmGuessed.includes(c)){
+      btn.disabled=true;
+      btn.classList.add(hmWord.includes(c)?'correct':'wrong');
+    }
+    btn.onclick=()=>guessLetter(c);
+    keys.appendChild(btn);
+  });
+  // Score
+  document.getElementById('hmScore').textContent=`${hmWins}/${hmTotal} 정답`;
+  // Robo shake
+  const robo=document.getElementById('hmRobo');
+  robo.style.filter=hmLives<=2?'drop-shadow(0 0 12px rgba(255,43,43,.5))':'drop-shadow(0 0 10px rgba(0,242,255,.3))';
+}
+
+function guessLetter(c){
+  if(hmGuessed.includes(c))return;
+  hmGuessed.push(c);
+  if(!hmWord.includes(c)){
+    hmLives--;
+    speak('No!');
+    if(hmLives<=0){
+      hmTotal++;
+      document.getElementById('hmMsg').textContent='💔 정답: '+hmWord;
+      document.getElementById('hmMsg').className='hm-msg lose';
+      speak(hmWord);
+      renderHangman();
+      disableAllKeys();
+      return;
+    }
+  }else{
+    speak(c);
+  }
+  renderHangman();
+  // Check win
+  if(hmWord.split('').every(l=>hmGuessed.includes(l))){
+    hmWins++;hmTotal++;
+    document.getElementById('hmMsg').textContent='🎉 정답! '+hmWord;
+    document.getElementById('hmMsg').className='hm-msg win';
+    speak('Great job! '+hmWord);
+    disableAllKeys();
+    renderHangman();
+  }
+}
+
+function disableAllKeys(){
+  document.querySelectorAll('.hm-key').forEach(b=>b.disabled=true);
+}
+</script>
+</body>
+</html>

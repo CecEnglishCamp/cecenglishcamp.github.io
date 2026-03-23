@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Drop | CEC Grammar Game</title>
+<link rel="stylesheet" href="./assets/css/game.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+.td-wrap{max-width:600px;margin:0 auto;padding:20px;}
+.td-board{position:relative;width:100%;height:420px;border:2px solid rgba(0,242,255,.4);border-radius:16px;background:rgba(255,255,255,.03);overflow:hidden;margin:16px 0;}
+.td-tile{position:absolute;left:50%;transform:translateX(-50%);width:90%;max-width:360px;padding:18px 24px;border-radius:14px;text-align:center;font-family:'Poppins',sans-serif;font-weight:700;font-size:20px;transition:top 0.3s linear;z-index:2;}
+.td-tile .td-en{color:#fff;font-size:22px;margin-bottom:4px;}
+.td-tile .td-kr{color:rgba(255,255,255,.6);font-size:13px;}
+.td-tile.correct-tile{background:rgba(25,255,136,.15);border:2px solid var(--green);}
+.td-tile.wrong-tile{background:rgba(255,43,43,.15);border:2px solid var(--danger);}
+.td-zone{position:absolute;bottom:0;left:0;right:0;height:80px;display:flex;gap:8px;padding:10px 12px;z-index:5;}
+.td-choice{flex:1;border-radius:12px;border:2px solid rgba(0,242,255,.5);background:rgba(0,0,0,.6);color:#fff;font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.3;}
+.td-choice:hover{background:rgba(0,242,255,.12);border-color:var(--cyan);}
+.td-choice.flash-green{background:rgba(25,255,136,.3);border-color:var(--green);}
+.td-choice.flash-red{background:rgba(255,43,43,.3);border-color:var(--danger);}
+.td-hud{display:flex;justify-content:space-between;align-items:center;padding:0 4px;}
+.td-stat{font-size:13px;color:var(--muted);}
+.td-stat span{color:var(--cyan);font-weight:700;font-size:16px;}
+.td-diff{display:flex;gap:10px;justify-content:center;margin:16px 0;}
+.td-diff-btn{padding:10px 24px;border-radius:12px;border:2px solid rgba(0,242,255,.5);background:rgba(0,0,0,.5);color:#fff;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.td-diff-btn:hover{background:rgba(0,242,255,.1);}
+.td-diff-btn.active{background:rgba(0,242,255,.2);border-color:var(--cyan);color:var(--cyan);}
+.td-msg{text-align:center;font-size:18px;font-weight:700;margin:16px 0;min-height:28px;}
+.td-msg.win{color:var(--green);}
+.td-robo{width:60px;position:absolute;bottom:85px;right:12px;z-index:3;filter:drop-shadow(0 0 8px rgba(0,242,255,.3));transition:all 0.3s;}
+.td-start{display:flex;flex-direction:column;align-items:center;gap:16px;padding:30px 0;}
+.td-start img{width:120px;filter:drop-shadow(0 0 14px rgba(0,242,255,.3));}
+.td-btns{display:flex;gap:12px;justify-content:center;margin-top:12px;}
+.td-btn{padding:10px 28px;border-radius:12px;border:none;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
+.td-btn-primary{background:var(--cyan);color:#000;}
+.td-btn-ghost{background:transparent;border:2px solid rgba(255,255,255,.3);color:#fff;}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar__inner">
+  <a href="index.html" class="brand"><img src="./assets/img/robo2.png" alt="CEC" class="brand__logo"><span class="brand__name">CEC ENGLISH CAMP</span></a>
+  <nav class="nav"><a href="grammar-game.html">← Games</a></nav>
+</div></header>
+
+<section class="title">
+  <h1><span class="title__emoji">🧩</span> Word Drop</h1>
+  <p class="title__desc">떨어지는 단어의 올바른 뜻을 골라요!</p>
+</section>
+
+<div class="td-wrap">
+  <!-- Start Screen -->
+  <div id="tdStart" class="td-start">
+    <img src="./assets/img/robo2.png" alt="Robo">
+    <p style="color:var(--muted);font-size:14px;">난이도를 선택하세요</p>
+    <div class="td-diff">
+      <button class="td-diff-btn active" onclick="setDiff('easy',this)">😊 Easy</button>
+      <button class="td-diff-btn" onclick="setDiff('hard',this)">😤 Hard</button>
+      <button class="td-diff-btn" onclick="setDiff('crazy',this)">🔥 Crazy</button>
+    </div>
+    <button class="td-btn td-btn-primary" onclick="startTetris()" style="font-size:18px;padding:14px 40px;">시작!</button>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="tdGame" style="display:none;">
+    <div class="td-hud">
+      <div class="td-stat">점수 <span id="tdScore">0</span></div>
+      <div class="td-stat">❤️ <span id="tdLives">5</span></div>
+      <div class="td-stat">단어 <span id="tdProgress">0/30</span></div>
+    </div>
+    <div class="td-board" id="tdBoard">
+      <img src="./assets/img/robo2.png" class="td-robo" id="tdRobo">
+    </div>
+    <div class="td-msg" id="tdMsg"></div>
+    <div class="td-btns">
+      <button class="td-btn td-btn-ghost" onclick="resetTetris()">다시 시작</button>
+      <button class="td-btn td-btn-ghost" onclick="location.href='grammar-game.html'">게임 목록</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const PAIRS=[
+  {en:'accept',kr:'받아들이다',wrong:'기대하다'},{en:'affect',kr:'영향을 주다',wrong:'효과'},
+  {en:'advice',kr:'조언 (명사)',wrong:'조언하다 (동사)'},{en:'borrow',kr:'빌리다',wrong:'빌려주다'},
+  {en:'beside',kr:'~옆에',wrong:'~외에도'},{en:'breath',kr:'숨 (명사)',wrong:'숨쉬다 (동사)'},
+  {en:'desert',kr:'사막',wrong:'디저트'},{en:'loose',kr:'헐거운',wrong:'잃다'},
+  {en:'quiet',kr:'조용한',wrong:'꽤, 상당히'},{en:'weather',kr:'날씨',wrong:'~인지 아닌지'},
+  {en:'principal',kr:'교장',wrong:'원칙'},{en:'stationary',kr:'정지한',wrong:'문구류'},
+  {en:'compliment',kr:'칭찬',wrong:'보충물'},{en:'emigrate',kr:'이민 가다',wrong:'이민 오다'},
+  {en:'assure',kr:'확신시키다',wrong:'보장하다'},{en:'conscious',kr:'의식하는',wrong:'양심'},
+  {en:'historic',kr:'역사적으로 중요한',wrong:'역사의'},{en:'economic',kr:'경제의',wrong:'경제적인'},
+  {en:'personal',kr:'개인의',wrong:'직원'},{en:'sensible',kr:'분별 있는',wrong:'민감한'},
+  {en:'literally',kr:'문자 그대로',wrong:'문학적으로'},{en:'farther',kr:'더 먼 (거리)',wrong:'더 나아가 (추상)'},
+  {en:'lay',kr:'눕히다',wrong:'눕다'},{en:'raise',kr:'올리다',wrong:'오르다'},
+  {en:'rob',kr:'강탈하다 (사람을)',wrong:'훔치다 (물건을)'},{en:'lend',kr:'빌려주다',wrong:'빌리다'},
+  {en:'remember',kr:'기억하다',wrong:'상기시키다'},{en:'especially',kr:'특히',wrong:'특별히'},
+  {en:'interested',kr:'흥미를 느끼는',wrong:'흥미로운'},{en:'tired',kr:'피곤한',wrong:'피곤하게 하는'}
+];
+
+let diff='easy',score=0,lives=5,pairIdx=0,timer=null,falling=false,gameOver=false;
+const SPEEDS={easy:6000,hard:4000,crazy:2500};
+
+function speak(t){if(!('speechSynthesis' in window))return;const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.8;speechSynthesis.cancel();speechSynthesis.speak(u);}
+
+function setDiff(d,btn){
+  diff=d;
+  document.querySelectorAll('.td-diff-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function startTetris(){
+  score=0;lives=5;pairIdx=0;gameOver=false;
+  document.getElementById('tdStart').style.display='none';
+  document.getElementById('tdGame').style.display='block';
+  updateHUD();
+  dropNext();
+}
+
+function resetTetris(){
+  clearTimeout(timer);
+  const board=document.getElementById('tdBoard');
+  board.querySelectorAll('.td-tile,.td-zone').forEach(e=>e.remove());
+  document.getElementById('tdStart').style.display='flex';
+  document.getElementById('tdGame').style.display='none';
+  document.getElementById('tdMsg').textContent='';
+  document.getElementById('tdMsg').className='td-msg';
+}
+
+function updateHUD(){
+  document.getElementById('tdScore').textContent=score;
+  document.getElementById('tdLives').textContent=lives;
+  document.getElementById('tdProgress').textContent=pairIdx+'/'+PAIRS.length;
+}
+
+function dropNext(){
+  if(gameOver)return;
+  if(pairIdx>=PAIRS.length){
+    document.getElementById('tdMsg').textContent='🎉 완료! 점수: '+score+'/'+PAIRS.length;
+    document.getElementById('tdMsg').className='td-msg win';
+    speak('Congratulations!');
+    return;
+  }
+
+  const pair=PAIRS[pairIdx];
+  const board=document.getElementById('tdBoard');
+
+  // Remove old tile and zone
+  board.querySelectorAll('.td-tile,.td-zone').forEach(e=>e.remove());
+
+  // Create tile
+  const tile=document.createElement('div');
+  tile.className='td-tile';
+  tile.innerHTML=`<div class="td-en">${pair.en}</div><div class="td-kr">올바른 뜻을 골라주세요!</div>`;
+  tile.style.top='-80px';
+  board.appendChild(tile);
+
+  // Create choice zone
+  const zone=document.createElement('div');
+  zone.className='td-zone';
+  const opts=Math.random()>0.5?[{text:pair.kr,correct:true},{text:pair.wrong,correct:false}]:[{text:pair.wrong,correct:false},{text:pair.kr,correct:true}];
+  opts.forEach(opt=>{
+    const btn=document.createElement('button');
+    btn.className='td-choice';
+    btn.textContent=opt.text;
+    btn.onclick=()=>pick(opt.correct,btn,tile);
+    zone.appendChild(btn);
+  });
+  board.appendChild(zone);
+
+  // Animate fall
+  falling=true;
+  const speed=SPEEDS[diff];
+  const boardH=board.offsetHeight-80-80; // minus tile height and zone
+  tile.style.transition=`top ${speed}ms linear`;
+  requestAnimationFrame(()=>{tile.style.top=boardH+'px';});
+
+  speak(pair.en);
+
+  // Timer for miss
+  timer=setTimeout(()=>{
+    if(!falling)return;
+    falling=false;
+    lives--;
+    flash(tile,'wrong-tile');
+    updateHUD();
+    if(lives<=0){endGame();return;}
+    pairIdx++;
+    setTimeout(dropNext,800);
+  },speed+200);
+}
+
+function pick(correct,btn,tile){
+  if(!falling||gameOver)return;
+  falling=false;
+  clearTimeout(timer);
+
+  tile.style.transition='none'; // Stop falling
+
+  if(correct){
+    score++;
+    btn.classList.add('flash-green');
+    flash(tile,'correct-tile');
+    speak('Correct!');
+  }else{
+    lives--;
+    btn.classList.add('flash-red');
+    flash(tile,'wrong-tile');
+    speak('Wrong!');
+  }
+
+  // Disable both buttons
+  document.querySelectorAll('.td-choice').forEach(b=>{b.style.pointerEvents='none';});
+
+  updateHUD();
+
+  if(lives<=0){setTimeout(endGame,600);return;}
+
+  pairIdx++;
+  setTimeout(dropNext,1000);
+}
+
+function flash(el,cls){
+  el.classList.add(cls);
+  setTimeout(()=>el.classList.remove(cls),800);
+}
+
+function endGame(){
+  gameOver=true;
+  clearTimeout(timer);
+  document.getElementById('tdMsg').textContent='💔 게임 오버! 점수: '+score+'/'+PAIRS.length;
+  document.getElementById('tdMsg').className='td-msg';
+  document.getElementById('tdMsg').style.color='var(--danger)';
+  const board=document.getElementById('tdBoard');
+  board.querySelectorAll('.td-tile,.td-zone').forEach(e=>e.remove());
+}
+</script>
+</body>
+</html>
