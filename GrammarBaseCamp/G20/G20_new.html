@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G20. Imperative Commands</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Sans+KR:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --white: #ffffff;
+    --green-dark: #4a6741;
+    --green-mid: #5a7a50;
+    --green-light: #e8f0e5;
+    --green-card: #3d5c35;
+    --gold: #c8972a;
+    --gold-light: #fdf3e0;
+    --cream: #faf7f0;
+    --brown: #6b5c3e;
+    --brown-light: #f0e8d8;
+    --text: #2d2d2d;
+    --muted: #7a7a7a;
+    --border: #ddd6c8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; line-height: 1.7; padding-bottom: 80px; }
+
+  /* HEADER */
+  .lesson-header { background: #0a1628; padding: 36px 24px 32px; text-align: center; }
+  .gbc-badge { display: inline-block; border: 1px solid rgba(0,242,255,0.5); color: rgba(0,242,255,0.8); font-family: 'Poppins', sans-serif; font-size: 11px; letter-spacing: 2px; padding: 4px 14px; border-radius: 20px; margin-bottom: 16px; }
+  .lesson-num-title { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+  .lesson-main-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 44px; font-weight: 500; color: #00f2ff; line-height: 1.15; margin-bottom: 10px; }
+  .lesson-sub { font-size: 14px; color: rgba(255,255,255,0.5); }
+
+  /* TOC */
+  .toc { background: var(--green-dark); padding: 12px 20px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .toc a { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.75); text-decoration: none; }
+  .toc a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+  /* LAYOUT */
+  .content { max-width: 740px; margin: 0 auto; padding: 0 20px; }
+
+  /* SECTION */
+  .section { margin-top: 28px; background: var(--white); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+  .section-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+  .section-num { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; flex-shrink: 0; color: #fff; }
+  .section-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .section-en { font-size: 11px; color: var(--muted); font-family: 'Poppins', sans-serif; letter-spacing: 1px; margin-left: 6px; }
+  .section-body { padding: 20px; }
+
+  /* KEY CARD */
+  .key-card { background: var(--green-card); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .key-label { font-size: 11px; font-family: 'Poppins', sans-serif; letter-spacing: 2px; color: var(--gold); margin-bottom: 10px; }
+  .key-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 30px; font-weight: 500; color: #fff; margin-bottom: 6px; }
+  .key-kr { font-size: 13px; color: rgba(255,255,255,0.65); }
+
+  /* CONCEPT BOX */
+  .concept-box { background: var(--green-light); border-radius: 10px; padding: 16px; margin-bottom: 12px; border-left: 4px solid var(--green-mid); }
+  .concept-box p { font-size: 14px; margin-bottom: 8px; }
+  .concept-box p:last-child { margin-bottom: 0; }
+
+  /* RULE GRID */
+  .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .rule-card { padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); }
+  .rule-label { font-size: 10px; font-family: 'Poppins', sans-serif; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 8px; }
+  .rule-example { font-family: 'Poppins', sans-serif; font-size: 13px; }
+  .rule-example strong { font-weight: 700; }
+  .r-is { background: var(--green-light); border-color: #b8d4b0; }
+  .r-is .rule-label { color: var(--green-dark); }
+  .r-is .rule-example strong { color: var(--green-dark); }
+  .r-are { background: #e8f4e8; border-color: #a8ccaa; }
+  .r-are .rule-label { color: #3a6640; }
+  .r-are .rule-example strong { color: #3a6640; }
+  .r-neg { background: #fdf0e0; border-color: #e8c88a; }
+  .r-neg .rule-label { color: #8a5a1a; }
+  .r-neg .rule-example strong { color: #8a5a1a; }
+  .r-q { background: var(--brown-light); border-color: #d4c0a0; }
+  .r-q .rule-label { color: var(--brown); }
+  .r-q .rule-example strong { color: var(--brown); }
+
+  /* BULLET LIST */
+  .rule-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .rule-list li { font-size: 14px; padding: 8px 12px; background: var(--cream); border-radius: 8px; border-left: 3px solid var(--green-mid); }
+  .rule-list li strong { color: var(--green-dark); font-family: 'Poppins', sans-serif; }
+
+  /* EXAMPLE LIST */
+  .ex-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .ex-list li { padding: 12px 16px; background: var(--cream); border-radius: 10px; border-left: 4px solid var(--green-mid); font-size: 14px; }
+  .ex-list li .en { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
+  .ex-list li .kr { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+  .ex-q { border-left-color: var(--brown) !important; }
+  .ex-q .en { color: var(--brown) !important; }
+
+  /* DIALOGUE */
+  .dialogue { background: var(--cream); border-radius: 12px; padding: 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+  .d-title { font-size: 10px; font-family: 'Poppins', sans-serif; letter-spacing: 1.5px; color: var(--gold); font-weight: 700; margin-bottom: 10px; }
+  .d-line { font-size: 14px; margin-bottom: 5px; }
+  .d-line .sp { color: var(--green-dark); font-weight: 700; margin-right: 6px; }
+  .d-line .key { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
+
+  /* PRACTICE */
+  .practice-item { padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 8px; font-size: 14px; background: var(--cream); }
+  .practice-item .original { color: var(--muted); margin-bottom: 4px; font-size: 13px; }
+  .practice-item .result { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
+
+  /* PATTERN BOX */
+  .pattern-box { background: var(--gold-light); border: 1px solid #e8c88a; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .pattern-box .p-label { font-size: 11px; color: var(--gold); font-family: 'Poppins', sans-serif; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+  .pattern-box .p-text { font-size: 14px; color: var(--brown); }
+  .pattern-box .p-text strong { color: #7a5010; font-family: 'Poppins', sans-serif; }
+
+  /* MISTAKE BOX */
+  .mistake-box { background: #fff5f5; border: 1px solid #f4c0c0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .mistake-box .wrong { color: #c0392b; font-size: 13px; text-decoration: line-through; margin-bottom: 4px; }
+  .mistake-box .right { color: var(--green-dark); font-size: 14px; font-weight: 700; font-family: 'Poppins', sans-serif; }
+  .mistake-box .reason { color: var(--muted); font-size: 12px; margin-top: 4px; }
+
+  /* TIP BOX */
+  .tip-box { background: #e8f0ff; border: 1px solid #b8c8f0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .tip-box .tip-label { font-size: 11px; color: #3050a0; font-family: 'Poppins', sans-serif; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+  .tip-box .tip-text { font-size: 14px; color: #1a2a60; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .checklist li { display: flex; align-items: center; gap: 12px; font-size: 14px; padding: 10px 14px; background: var(--cream); border-radius: 10px; cursor: pointer; }
+  .chk { width: 20px; height: 20px; border: 2px solid var(--green-mid); border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: #fff; }
+  .chk.on { background: var(--green-mid); border-color: var(--green-dark); }
+  .chk.on::after { content: '✓'; color: #fff; font-size: 12px; font-weight: 700; }
+
+  /* FOOTER */
+  .footer-nav { background: var(--green-dark); display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; margin-top: 32px; }
+  .fnav-btn { padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; border: none; font-family: 'Poppins', sans-serif; }
+  .fnav-prev { background: rgba(255,255,255,0.15); color: #fff; }
+  .fnav-center { color: rgba(255,255,255,0.6); font-size: 12px; letter-spacing: 1px; font-family: 'Poppins', sans-serif; }
+  .fnav-next { background: var(--gold); color: #000; }
+</style>
+</head>
+<body>
+
+<div class="lesson-header">
+  <div class="gbc-badge">CEC GRAMMAR BASECAMP</div>
+  <div class="lesson-num-title">G20 · Basic Grammar</div>
+  <div class="lesson-main-title">Imperative Commands</div>
+  <div class="lesson-sub">명령문 — 지시와 요청 표현</div>
+</div>
+
+<div class="toc">
+  <a href="#concept">기본 개념</a>
+  <a href="#grammar">문법 규칙</a>
+  <a href="#positive">긍정문</a>
+  <a href="#question">의문문</a>
+  <a href="#dialogue">대화 흐름</a>
+  <a href="#combining">문장 결합</a>
+  <a href="#reallife">실생활</a>
+  <a href="#patterns">패턴</a>
+  <a href="#mistakes">흔한 실수</a>
+  <a href="#tips">레벨업 팁</a>
+  <a href="#practice">연습문제</a>
+  <a href="#check">자가진단</a>
+</div>
+
+<div class="content">
+
+  <!-- 1. 기본 개념 -->
+  <div class="section" id="concept">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">1</div>
+      <div><span class="section-title">기본 개념</span><span class="section-en">BASIC CONCEPT</span></div>
+    </div>
+    <div class="section-body">
+      <div class="key-card">
+        <div class="key-label">⭐ TODAY'S KEY GRAMMAR</div>
+        <div class="key-text">Imperative Commands</div>
+        <div class="key-kr">명령문 — 지시와 요청 표현</div>
+      </div>
+      <div class="concept-box">
+        <p><strong style="color:var(--green-dark)">명령문:</strong> 상대방에게 <strong>지시, 요청, 안내</strong>를 할 때 사용하는 문장입니다.</p>
+        <p><strong style="color:#3a6640">핵심 형태:</strong> 문장이 <strong>동사 원형</strong>으로 시작하며, 주어 (<strong>You</strong>)는 생략됩니다.</p>
+        <p><strong>사용 목적:</strong> 상대방이 특정 행동을 하도록 요구합니다.</p>
+      </div>
+      <ul class="ex-list">
+        <li><span class="en">Open the door.</span><span class="kr">문을 열어라.</span></li>
+        <li><span class="en">Be quiet.</span><span class="kr">조용히 해.</span></li>
+        <li><span class="en">Don't touch that.</span><span class="kr">저것 만지지 마.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2. 문법 규칙 -->
+  <div class="section" id="grammar">
+    <div class="section-header">
+      <div class="section-num" style="background:#3a6640;">2</div>
+      <div><span class="section-title">문법 규칙</span><span class="section-en">GRAMMAR RULES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="rule-grid">
+        <div class="rule-card r-is">
+          <div class="rule-label">POSITIVE COMMAND</div>
+          <div class="rule-example"><strong>Open</strong> the door.</div>
+        </div>
+        <div class="rule-card r-are">
+          <div class="rule-label">BE-VERB COMMAND</div>
+          <div class="rule-example"><strong>Be</strong> quiet.</div>
+        </div>
+        <div class="rule-card r-neg">
+          <div class="rule-label">NEGATIVE COMMAND</div>
+          <div class="rule-example"><strong>Don't</strong> run.</div>
+        </div>
+        <div class="rule-card r-q">
+          <div class="rule-label">POLITE REQUEST</div>
+          <div class="rule-example"><strong>Please</strong> sit down.</div>
+        </div>
+      </div>
+      <ul class="rule-list">
+        <li><strong>형태:</strong> 항상 <strong>동사 원형</strong>으로 시작 (주어 'You'는 생략)</li>
+        <li><strong>긍정 명령:</strong> 동사 원형 + 목적어/보어 (예: <strong>Sit</strong> down. / <strong>Read</strong> this.)</li>
+        <li><strong>부정 명령:</strong> <strong>Don't</strong> + 동사 원형 (예: <strong>Don't run</strong>. / <strong>Don't talk</strong>.)</li>
+        <li><strong>Be동사 명령:</strong> <strong>Be</strong> + 형용사/명사 (예: <strong>Be careful</strong>. / <strong>Be quiet</strong>.)</li>
+        <li><strong>공손한 표현:</strong> <strong>Please</strong>를 문장 맨 앞이나 맨 뒤에 추가 (예: <strong>Please open</strong> the door. / Wait here, <strong>please</strong>.)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3. 긍정문 -->
+  <div class="section" id="positive">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--gold); color:#000;">3</div>
+      <div><span class="section-title">긍정문 예시</span><span class="section-en">POSITIVE EXAMPLES</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en">Open the window.</span><span class="kr">창문을 열어라.</span></li>
+        <li><span class="en">Close the door.</span><span class="kr">문을 닫아라.</span></li>
+        <li><span class="en">Listen carefully.</span><span class="kr">주의 깊게 들어라.</span></li>
+        <li><span class="en">Write your name.</span><span class="kr">이름을 써라.</span></li>
+        <li><span class="en">Read this page.</span><span class="kr">이 페이지를 읽어라.</span></li>
+        <li><span class="en">Stand up.</span><span class="kr">일어서라.</span></li>
+        <li><span class="en">Turn off the light.</span><span class="kr">불을 꺼라.</span></li>
+        <li><span class="en">Come here.</span><span class="kr">이리 와라.</span></li>
+        <li><span class="en">Wait a moment.</span><span class="kr">잠깐 기다려라.</span></li>
+        <li><span class="en">Be quiet.</span><span class="kr">조용히 해라. (Be동사 명령)</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. 의문문 -->
+  <div class="section" id="question">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">4</div>
+      <div><span class="section-title">의문문 예시</span><span class="section-en">QUESTION EXAMPLES</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li class="ex-q"><span class="en">Can you open the window?</span><span class="kr">창문 좀 열어줄 수 있니?</span></li>
+        <li class="ex-q"><span class="en">Would you close the door?</span><span class="kr">문 좀 닫아주시겠어요?</span></li>
+        <li class="ex-q"><span class="en">Could you write your name here?</span><span class="kr">여기에 이름을 써주시겠어요?</span></li>
+        <li class="ex-q"><span class="en">Could we read this page together?</span><span class="kr">이 페이지를 같이 읽을 수 있을까요?</span></li>
+        <li class="ex-q"><span class="en">May I come in?</span><span class="kr">들어가도 될까요?</span></li>
+        <li class="ex-q"><span class="en">Can we stand up now?</span><span class="kr">이제 일어나도 될까요?</span></li>
+        <li class="ex-q"><span class="en">Should I turn off the light?</span><span class="kr">불을 꺼야 할까요?</span></li>
+        <li class="ex-q"><span class="en">Can you wait a moment?</span><span class="kr">잠깐 기다려줄 수 있니?</span></li>
+        <li class="ex-q"><span class="en">May I be excused?</span><span class="kr">나가도 될까요?</span></li>
+        <li class="ex-q"><span class="en">Can I listen again?</span><span class="kr">다시 들어도 될까요?</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5. 상황별 대화 흐름 -->
+  <div class="section" id="dialogue">
+    <div class="section-header">
+      <div class="section-num" style="background:#5a7a50;">5</div>
+      <div><span class="section-title">상황별 대화 흐름</span><span class="section-en">SITUATIONAL DIALOGUES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="dialogue">
+        <div class="d-title">🏫 학교 상황 · SCHOOL</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Open</span> your books to page 10.</div>
+        <div class="d-line"><span class="sp">B:</span> Okay.</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Read</span> the first sentence.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">✈️ 안내 상황 · GUIDANCE</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Show</span> me your passport, please.</div>
+        <div class="d-line"><span class="sp">B:</span> Here it is.</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Wait</span> here for a moment.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">💼 직장 상황 · OFFICE</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Send</span> me the file by 3 PM.</div>
+        <div class="d-line"><span class="sp">B:</span> Sure.</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Check</span> the numbers before sending.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">💻 기술/온라인 상황 · ONLINE</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Click</span> the link below.</div>
+        <div class="d-line"><span class="sp">B:</span> Got it.</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Follow</span> the instructions carefully.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">🏠 가족 상황 · FAMILY</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Turn</span> off the TV.</div>
+        <div class="d-line"><span class="sp">B:</span> Okay.</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Go</span> brush your teeth, now.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 문장 결합 연습 -->
+  <div class="section" id="combining">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">6</div>
+      <div><span class="section-title">문장 결합 연습</span><span class="section-en">SENTENCE COMBINING</span></div>
+    </div>
+    <div class="section-body">
+      <div class="practice-item">
+        <div class="original">You open the window.</div>
+        <div class="result">→ Open the window.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You close the door.</div>
+        <div class="result">→ Close the door.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You listen carefully.</div>
+        <div class="result">→ Listen carefully.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You write your name.</div>
+        <div class="result">→ Write your name.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You read this page.</div>
+        <div class="result">→ Read this page.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You stand up.</div>
+        <div class="result">→ Stand up.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You turn off the light.</div>
+        <div class="result">→ Turn off the light.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You come here.</div>
+        <div class="result">→ Come here.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You wait a moment.</div>
+        <div class="result">→ Wait a moment.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You are quiet.</div>
+        <div class="result">→ Be quiet. (Be동사는 원형 Be로 시작)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 실생활 사용 예시 -->
+  <div class="section" id="reallife">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--gold); color:#000;">7</div>
+      <div><span class="section-title">실생활 사용 예시</span><span class="section-en">REAL-LIFE USAGE</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en">Open your books. / Listen to the teacher.</span><span class="kr">🏫 학교 — 책을 펴라. / 선생님 말씀을 들어라.</span></li>
+        <li><span class="en">Send the email. / Check the report. / Be on time.</span><span class="kr">💼 직장 — 이메일을 보내라. / 보고서를 확인해라. / 시간을 지켜라.</span></li>
+        <li><span class="en">Turn off the TV. / Go to bed. / Don't eat my snack.</span><span class="kr">🏠 가족 — TV를 꺼라. / 자러 가라. / 내 간식 먹지 마.</span></li>
+        <li><span class="en">Click the button. / Follow the steps. / Don't share your password.</span><span class="kr">💻 온라인 — 버튼을 눌러라. / 단계를 따라가라. / 비밀번호를 공유하지 마.</span></li>
+        <li><span class="en">Take a deep breath. / Don't move. / Wait here.</span><span class="kr">🏥 병원 — 심호흡해라. / 움직이지 마. / 여기서 기다려라.</span></li>
+        <li><span class="en">Show your ticket. / Wait in line. / Be careful with your luggage.</span><span class="kr">✈️ 여행 — 표를 보여줘라. / 줄을 서라. / 짐 조심해라.</span></li>
+        <li><span class="en">Start the presentation. / Speak clearly. / Don't interrupt.</span><span class="kr">📋 회의 — 발표를 시작해라. / 명확하게 말해라. / 끼어들지 마.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 8. 자주 쓰이는 패턴 -->
+  <div class="section" id="patterns">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">8</div>
+      <div><span class="section-title">자주 쓰이는 패턴</span><span class="section-en">COMMON PATTERNS</span></div>
+    </div>
+    <div class="section-body">
+      <div class="pattern-box">
+        <div class="p-label">긍정 명령 · POSITIVE COMMAND</div>
+        <div class="p-text"><strong>동사 원형</strong>으로 시작<br><span style="font-size:13px;">Sit down. / Read this.</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">부정 명령 · NEGATIVE COMMAND</div>
+        <div class="p-text"><strong>Don't</strong> + 동사 원형<br><span style="font-size:13px;">Don't run. / Don't touch.</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">Be동사 명령 · BE-VERB COMMAND</div>
+        <div class="p-text"><strong>Be</strong> + 형용사/명사<br><span style="font-size:13px;">Be quiet. / Be careful.</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">공손한 표현 · POLITE REQUEST</div>
+        <div class="p-text"><strong>Please</strong> + 명령문 / 명령문 + <strong>please</strong><br><span style="font-size:13px;">Please wait. / Now listen. / Just do it.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. 흔한 실수 -->
+  <div class="section" id="mistakes">
+    <div class="section-header">
+      <div class="section-num" style="background:#c0392b;">9</div>
+      <div><span class="section-title">흔한 실수</span><span class="section-en">COMMON MISTAKES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="mistake-box">
+        <div class="wrong">✗ You open the door.</div>
+        <div class="right">✓ Open the door.</div>
+        <div class="reason">명령문에서 주어(You)는 생략</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ Don't to run.</div>
+        <div class="right">✓ Don't run.</div>
+        <div class="reason">Don't 뒤에는 동사 원형 (to 사용 안 함)</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ Be quiet you.</div>
+        <div class="right">✓ Be quiet.</div>
+        <div class="reason">주어는 완전히 생략</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ Please you sit down.</div>
+        <div class="right">✓ Please sit down.</div>
+        <div class="reason">주어(You) 생략</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ Don't runs.</div>
+        <div class="right">✓ Don't run.</div>
+        <div class="reason">Don't 뒤에는 동사 원형 (3인칭 변화 없음)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. 레벨업 팁 -->
+  <div class="section" id="tips">
+    <div class="section-header">
+      <div class="section-num" style="background:#185fa5;">10</div>
+      <div><span class="section-title">레벨업 팁</span><span class="section-en">LEVEL-UP TIPS</span></div>
+    </div>
+    <div class="section-body">
+      <div class="tip-box">
+        <div class="tip-label">TIP 1 · Let's 제안</div>
+        <div class="tip-text">Let's + 동사 원형은 "우리 ~하자"라는 청유문으로, 명령문과 함께 자주 사용됩니다. (e.g., Let's go to the park, and come back at 5.)</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 2 · Don't Be</div>
+        <div class="tip-text">Be동사의 부정 명령은 Don't be입니다. (e.g., Don't be shy. / Don't be late.)</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 3 · 부사 추가</div>
+        <div class="tip-text">명령문의 동사 뒤에 부사를 추가하여 디테일을 더하세요. (e.g., Walk quickly. / Speak slowly.)</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 4 · 강조</div>
+        <div class="tip-text">명령의 긴급함을 표현할 때는 Don't와 Be에 강세를 줍니다. (e.g., Don't wait!)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. 연습문제 -->
+  <div class="section" id="practice">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">11</div>
+      <div><span class="section-title">연습문제</span><span class="section-en">PRACTICE EXERCISES</span></div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">올바른 명령문을 선택하거나 만들어 보세요.</p>
+      <ul class="rule-list">
+        <li>창문을 열어. → <strong style="color:var(--green-dark)">Open the window.</strong> (주어 생략, 동사 원형으로 시작)</li>
+        <li>저것을 만지지 마세요. → <strong style="color:var(--green-dark)">Don't touch that.</strong> (Don't + 동사 원형)</li>
+        <li>___ careful. → <strong style="color:var(--green-dark)">Be</strong> careful. (Be동사 명령문)</li>
+        <li>You don't touch that. → <strong style="color:var(--green-dark)">Don't touch that.</strong> (주어 생략)</li>
+        <li>Be quiet you. → <strong style="color:var(--green-dark)">Be quiet.</strong> (주어 생략)</li>
+        <li>문을 닫아 주세요. → <strong style="color:var(--green-dark)">Please close the door.</strong> (공손한 요청)</li>
+        <li>조용히 하세요. → <strong style="color:var(--green-dark)">Be quiet.</strong> (Be동사 명령)</li>
+        <li>늦지 마. → <strong style="color:var(--green-dark)">Don't be late.</strong> (Don't be 사용)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 12. 자가진단 -->
+  <div class="section" id="check">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">12</div>
+      <div><span class="section-title">자가진단 체크리스트</span><span class="section-en">SELF-CHECK</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 명령문의 기본 구조를 안다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 긍정 명령문을 만들 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 부정 명령문(Don't)을 만들 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> Be동사 명령문을 사용할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 공손한 요청 표현을 쓸 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 실생활에서 명령문을 사용할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 흔한 실수 5가지를 이해했다.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-nav">
+  <a href="G19_new.html" class="fnav-btn fnav-prev">← G19</a>
+  <span class="fnav-center">G20 · IMPERATIVE COMMANDS</span>
+  <a href="G21_new.html" class="fnav-btn fnav-next">G21 →</a>
+</div>
+
+</body>
+</html>
