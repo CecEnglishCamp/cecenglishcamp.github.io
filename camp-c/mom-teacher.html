@@ -66,6 +66,12 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--b
 .ep-arrow{font-size:0.82rem;color:var(--brown-muted);transition:color 0.2s;}
 .ep-item:hover .ep-arrow{color:var(--rose);}
 
+/* Disabled episodes (ep16~ep30) */
+.ep-link.disabled{pointer-events:none;cursor:default;}
+.ep-link.disabled .ep-item{opacity:0.4;}
+.ep-link.disabled .ep-item:hover{transform:none;border-color:rgba(196,149,106,0.08);box-shadow:none;}
+.ep-robo-video{height:36px;border-radius:6px;vertical-align:middle;margin-left:auto;flex-shrink:0;}
+
 /* How Section */
 .how-section{margin-top:48px;}
 .how-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;text-align:center;margin-bottom:24px;}
@@ -338,17 +344,22 @@ function buildEpList(grade) {
   var eps = epData[grade];
   for (var i = 0; i < eps.length; i++) {
     var num = String(i + 1).padStart(2, '0');
+    var epNum = i + 1;
+    var isDisabled = epNum >= 16;
     var a = document.createElement('a');
-    a.className = 'ep-link';
-    a.href = '/mom-teacher/grade' + grade + '/ep' + num + '.html';
+    a.className = isDisabled ? 'ep-link disabled' : 'ep-link';
+    a.href = isDisabled ? 'javascript:void(0)' : '/mom-teacher/grade' + grade + '/ep' + num + '.html';
+    var videoHtml = isDisabled
+      ? '<video src="/assets/videos/robo_game.mp4" autoplay loop muted playsinline class="ep-robo-video"></video>'
+      : '<div class="ep-arrow">&rarr;</div>';
     a.innerHTML =
       '<div class="ep-item">' +
         '<div class="ep-num">' + num + '</div>' +
         '<div class="ep-info">' +
-          '<div class="ep-title">Episode ' + (i+1) + ' — ' + eps[i].t + '</div>' +
+          '<div class="ep-title">Episode ' + epNum + ' — ' + eps[i].t + '</div>' +
           '<div class="ep-desc">' + eps[i].d + '</div>' +
         '</div>' +
-        '<div class="ep-arrow">&rarr;</div>' +
+        videoHtml +
       '</div>';
     list.appendChild(a);
   }
