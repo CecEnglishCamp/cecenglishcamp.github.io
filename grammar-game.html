@@ -1,323 +1,903 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grammar Game | CEC English Camp</title>
-
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%A4%96%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="./assets/css/game.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grammar Game - 문법 게임</title>
   <style>
-    /* About 섹션 padding 조절 */
-    #about {
-      padding-top: 300px !important;
-      margin-top: 200px !important;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 5%;
+      background: rgba(0, 0, 0, 0.95);
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      margin: -20px -20px 0 -20px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .logo img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .game-nav {
+      display: flex;
+      gap: 25px;
+    }
+
+    .game-nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .game-nav a:hover {
+      color: #00f2ff;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      margin-top: 20px;
+    }
+
+    .header h1 {
+      font-size: 2.2rem;
+      color: #00f2ff;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 0.95rem;
+      color: #888;
+      transition: opacity 0.8s ease-in-out;
+    }
+
+    .header p.hide {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* 레벨 선택 */
+    .level-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+      margin-top: 50px;
+    }
+
+    .level-title {
+      font-size: 1.8rem;
+      color: #00f2ff;
+      margin-bottom: 20px;
+    }
+
+    .level-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      width: 100%;
+    }
+
+    .level-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      padding: 30px 20px;
+      background: rgba(17, 17, 17, 0.95);
+      border: 2px solid #00f2ff;
+      border-radius: 15px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .level-btn:hover {
+      border-color: #00ff88;
+      background: rgba(0, 255, 136, 0.1);
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+    }
+
+    .level-thumbnail {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.4));
+    }
+
+    .level-btn:hover .level-thumbnail {
+      filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.8));
+    }
+
+    .level-label {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .level-description {
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    .game-screen {
+      display: none;
+    }
+
+    .game-screen.active {
+      display: block;
+    }
+
+    .game-content {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .robot-section {
+      text-align: center;
+      flex: 1;
+      min-width: 350px;
+      max-width: 500px;
+    }
+
+    .robot-container {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      height: 400px;
+      margin: 0 auto 0;
+      background: rgba(17, 17, 17, 0.6);
+      border: 3px solid #00f2ff;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 40px rgba(0, 242, 255, 0.3);
+      overflow: hidden;
+      transition: all 0.5s ease;
+    }
+
+    .robot-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.2));
+      transition: filter 0.3s;
+      opacity: 0.6;
+    }
+
+    .robot-img.stage1 {
+      opacity: 0.5;
+      filter: drop-shadow(0 0 5px rgba(0, 100, 150, 0.3));
+    }
+
+    .robot-img.stage2 {
+      opacity: 0.8;
+      filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.6));
+    }
+
+    .robot-container.stage2-vibrate {
+      animation: gentleVibrate 0.4s infinite;
+    }
+
+    @keyframes gentleVibrate {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+
+    .robot-img.stage3 {
+      opacity: 1;
+      filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.8));
+    }
+
+    .robot-gif {
+      width: 100%;
+      height: auto;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out;
+    }
+
+    .robot-gif.show {
+      opacity: 1;
+    }
+
+    .robot-container.glow {
+      box-shadow: 0 0 60px rgba(0, 242, 255, 0.6), inset 0 0 40px rgba(0, 242, 255, 0.1);
+      border-color: #00ff88;
+    }
+
+    .robot-img.glow {
+      filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.9));
+    }
+
+    .robot-container.full {
+      box-shadow: 0 0 100px rgba(0, 255, 136, 0.9), inset 0 0 80px rgba(0, 255, 136, 0.3);
+      border-color: #00ff88;
+    }
+
+    .robot-img.full {
+      animation: robotDance 0.8s ease-in-out infinite;
+      filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.8));
+    }
+
+    @keyframes batteryWarning {
+      0%, 100% { border-color: #00f2ff; box-shadow: 0 0 40px rgba(0, 242, 255, 0.3); }
+      50% { border-color: #ff4444; box-shadow: 0 0 60px rgba(255, 68, 68, 0.6); }
+    }
+
+    .robot-container.warning {
+      animation: batteryWarning 0.6s infinite;
+    }
+
+    @keyframes lightFlash {
+      0% { box-shadow: 0 0 40px rgba(0, 242, 255, 0.3); }
+      50% { box-shadow: 0 0 80px rgba(0, 242, 255, 0.9), inset 0 0 40px rgba(0, 242, 255, 0.4); }
+      100% { box-shadow: 0 0 40px rgba(0, 242, 255, 0.3); }
+    }
+
+    .robot-container.light-flash {
+      animation: lightFlash 0.4s ease-out;
+    }
+
+    @keyframes engineVibration {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-3px) rotate(-1deg); }
+      50% { transform: translateY(3px) rotate(1deg); }
+      75% { transform: translateY(-2px) rotate(-0.5deg); }
+    }
+
+    @keyframes robotDance {
+      0% { transform: scale(1) rotate(0deg) translateY(0); }
+      10% { transform: scale(1.05) rotate(-3deg) translateY(-5px); }
+      20% { transform: scale(1.08) rotate(3deg) translateY(5px); }
+      30% { transform: scale(1.05) rotate(-2deg) translateY(-8px); }
+      40% { transform: scale(1.1) rotate(2deg) translateY(8px); }
+      50% { transform: scale(1.08) rotate(-3deg) translateY(-5px); }
+      60% { transform: scale(1.05) rotate(3deg) translateY(5px); }
+      70% { transform: scale(1.1) rotate(-2deg) translateY(-8px); }
+      80% { transform: scale(1.08) rotate(2deg) translateY(8px); }
+      90% { transform: scale(1.05) rotate(-1deg) translateY(-4px); }
+      100% { transform: scale(1) rotate(0deg) translateY(0); }
+    }
+
+    .battery-display {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      z-index: 10;
+      text-align: center;
+    }
+
+    .battery-percent {
+      font-size: 0.7rem;
+      font-weight: bold;
+      color: #00f2ff;
+      margin-bottom: 4px;
+    }
+
+    .battery-bar {
+      width: 100%;
+      height: 12px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid #00f2ff;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .battery-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00f2ff 0%, #00ff88 50%, #00f2ff 100%);
+      background-size: 200% 100%;
+      animation: shimmer 2s infinite;
+      transition: width 0.5s ease;
+      width: 3%;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .quiz-section {
+      flex: 1;
+      min-width: 350px;
+      max-width: 500px;
+    }
+
+    .question-box {
+      background: rgba(17, 17, 17, 0.95);
+      border: 2px solid #333;
+      border-radius: 20px;
+      padding: 35px;
+      margin-bottom: 30px;
+    }
+
+    .question-box h2 {
+      font-size: 1.3rem;
+      color: #00f2ff;
+      margin-bottom: 15px;
+    }
+
+    .question-box p {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: #ddd;
+      margin-bottom: 25px;
+    }
+
+    .question-number {
+      display: inline-block;
+      background: #00f2ff;
+      color: #000;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .option-btn {
+      padding: 16px;
+      background: #222;
+      border: 2px solid #444;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .option-btn:hover {
+      border-color: #00f2ff;
+      background: #1a1a1a;
+      transform: translateY(-2px);
+    }
+
+    .option-btn.correct {
+      background: #00ff88;
+      color: #000;
+      border-color: #00ff88;
+      animation: pulse 0.6s;
+    }
+
+    .option-btn.wrong {
+      background: #ff4444;
+      color: #fff;
+      border-color: #ff4444;
+      animation: shake 0.6s;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .completion-screen {
+      display: none;
+      text-align: center;
+      background: rgba(0, 10, 10, 0.95);
+      border: 2px solid #00ff88;
+      border-radius: 15px;
+      padding: 40px 30px;
+    }
+
+    .completion-screen.show {
+      display: block;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    .completion-screen h2 {
+      font-size: 1.8rem;
+      color: #00ff88;
+      margin-bottom: 15px;
+    }
+
+    .completion-screen .exciting-text {
+      font-size: 1.4rem;
+      color: #00ff88;
+      font-weight: bold;
+      margin: 20px 0;
+      line-height: 1.8;
+    }
+
+    .completion-screen p {
+      font-size: 1rem;
+      color: #ddd;
+      margin-bottom: 20px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .restart-btn {
+      padding: 12px 40px;
+      background: #00f2ff;
+      color: #000;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .restart-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00f2ff;
+    }
+
+    .home-btn {
+      padding: 12px 40px;
+      background: #666;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .home-btn:hover {
+      background: #888;
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     @media (max-width: 768px) {
-      #about {
-        padding-top: 150px !important;
-        margin-top: 100px !important;
-      }
+      .robot-container { max-width: 300px; height: 300px; }
+      .options { grid-template-columns: 1fr; }
+      .level-grid { grid-template-columns: 1fr; }
+      .level-thumbnail { width: 80px; height: 80px; }
     }
   </style>
 </head>
-
 <body>
-  <header class="topbar">
-    <div class="topbar__inner">
-      <a href="index.html" class="brand">
-        <img src="./assets/img/robo2.png" alt="CEC Logo" class="brand__logo">
-        <span class="brand__name">CEC ENGLISH CAMP</span>
-      </a>
-
-      <nav class="nav">
-        <a href="index.html">Home</a>
-        <a href="grammar-game.html" class="active">Game</a>
-        <a href="GrammarBaseCamp/index.html">Grammar Base</a>
-        <a href="camp-a/">Camp A</a>
-        <a href="camp-b/">Camp B</a>
-        <a href="camp-c/">Camp C</a>
-        <a href="about.html">About</a>
-        <a href="register.html">Register</a>
-      </nav>
-    </div>
+  <header>
+    <a href="index.html" class="logo">
+      <img src="assets/img/robo2.png" alt="CEC Logo">
+      <span>CEC ENGLISH CAMP</span>
+    </a>
+    <nav class="game-nav">
+      <a href="index.html">Home</a>
+      <a href="grammar-game.html">Game</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#register">Register</a>
+    </nav>
   </header>
 
-  <main id="game">
-    <section class="title">
-      <h1><span class="title__emoji">🤖</span> Grammar Game</h1>
-      <p id="headerDesc" class="title__desc">
-        Robo와 함께 영어 문법 게임을 해봐요!
-      </p>
-    </section>
+  <div class="container">
+    <div class="header">
+      <h1>🤖 Grammar Game</h1>
+      <p id="headerDesc">레벨을 선택해서 게임을 시작하세요!</p>
+    </div>
 
-    <!-- GAME SELECT -->
-    <section id="gameSelect" class="level-screen">
+    <!-- 다른 게임 링크 -->
+    <div style="display:flex;gap:16px;justify-content:center;margin-bottom:30px;flex-wrap:wrap;">
+      <a href="hangman.html" style="display:flex;align-items:center;gap:8px;padding:12px 24px;background:rgba(17,17,17,0.95);border:2px solid #00f2ff;border-radius:12px;color:#fff;text-decoration:none;font-weight:700;font-size:0.95rem;transition:all 0.3s;">🔤 Hangman</a>
+      <a href="tetris.html" style="display:flex;align-items:center;gap:8px;padding:12px 24px;background:rgba(17,17,17,0.95);border:2px solid #ff9500;border-radius:12px;color:#fff;text-decoration:none;font-weight:700;font-size:0.95rem;transition:all 0.3s;">🧩 Word Drop</a>
+    </div>
+
+    <!-- 레벨 선택 -->
+    <div class="level-screen" id="levelScreen">
+      <div class="level-title">📚 레벨을 선택하세요</div>
       <div class="level-grid">
-        <button class="level-card" type="button" onclick="document.getElementById('gameSelect').style.display='none';document.getElementById('levelScreen').style.display='flex';document.getElementById('headerDesc').textContent='급해요! Robo의 배터리가 3%밖에 안 남았어요!';">
-          <img src="./assets/img/robo2.png" alt="Quiz" />
-          <h3 style="color:var(--cyan);">⚡ Quiz</h3>
-          <p>배터리 충전 퀴즈</p>
+        <button class="level-btn" onclick="startGame('A1')">
+          <img src="assets/img/robo2.png" class="level-thumbnail" alt="A1">
+          <div class="level-label">A1</div>
+          <div class="level-description">초급</div>
         </button>
-        <a class="level-card" href="hangman.html" style="text-decoration:none;">
-          <img src="./assets/img/robo2.png" alt="Hangman" />
-          <h3 style="color:var(--green);">🔤 Hangman</h3>
-          <p>단어 맞추기</p>
-        </a>
-        <a class="level-card" href="tetris.html" style="text-decoration:none;">
-          <img src="./assets/img/robo2.png" alt="Tetris" />
-          <h3 style="color:#ff9500;">🧩 Word Drop</h3>
-          <p>혼동 단어 테트리스</p>
-        </a>
-      </div>
-    </section>
-
-    <!-- LEVEL SELECT (for Quiz) -->
-    <section id="levelScreen" class="level-screen" style="display:none;">
-      <div class="level-grid">
-        <button class="level-card" type="button" onclick="startGame('A1')">
-          <img src="./assets/img/robo2.png" alt="A1" />
-          <h3>A1</h3>
-          <p>초급</p>
+        <button class="level-btn" onclick="startGame('A2')">
+          <img src="assets/img/robo2.png" class="level-thumbnail" alt="A2">
+          <div class="level-label">A2</div>
+          <div class="level-description">초급+</div>
         </button>
-
-        <button class="level-card" type="button" onclick="startGame('A2')">
-          <img src="./assets/img/robo2.png" alt="A2" />
-          <h3>A2</h3>
-          <p>초급+</p>
+        <button class="level-btn" onclick="startGame('B1')">
+          <img src="assets/img/robo_jump.png" class="level-thumbnail" alt="B1">
+          <div class="level-label">B1</div>
+          <div class="level-description">중급</div>
         </button>
-
-        <button class="level-card" type="button" onclick="startGame('B1')">
-          <img src="./assets/img/robo_jump.png" alt="B1" />
-          <h3>B1</h3>
-          <p>중급</p>
+        <button class="level-btn" onclick="startGame('B2')">
+          <img src="assets/img/robo_jump.png" class="level-thumbnail" alt="B2">
+          <div class="level-label">B2</div>
+          <div class="level-description">중급+</div>
         </button>
-
-        <button class="level-card" type="button" onclick="startGame('B2')">
-          <img src="./assets/img/robo_jump.png" alt="B2" />
-          <h3>B2</h3>
-          <p>중급+</p>
-        </button>
-      </div>
-    </section>
-
-    <!-- GAME -->
-    <section id="gameScreen" class="game-screen" style="display:none;">
-      <div class="game-grid">
-        <!-- LEFT -->
-        <aside class="left">
-          <div id="robotFrame" class="card card--danger">
-            <img id="robotImg" class="robot-media" src="./assets/img/robo2.png" alt="Robot" />
-            <img id="robotGif" class="robot-media robot-gif" src="./assets/img/robo.gif" alt="Robot GIF" />
-            <video id="robotVideo" class="robot-media robot-video" muted playsinline loop preload="metadata"></video>
-
-            <div class="battery">
-              <div class="battery__percent"><span id="batteryPercent">3</span>%</div>
-              <div class="battery__bar">
-                <div id="batteryFill" class="battery__fill" style="width:3%;"></div>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        <!-- RIGHT -->
-        <main class="right">
-          <div id="questionBox" class="card">
-            <div class="badge" id="questionNum">Q1/10</div>
-            <h2 class="panel__title" id="questionTitle">문법 문제</h2>
-            <p class="panel__text" id="questionText">문제 내용</p>
-            <div class="panel__options" id="options"></div>
-          </div>
-
-          <div id="completionScreen" class="card card--complete">
-            <div class="complete__icons">⚡ ⚡</div>
-            <p class="complete__line">Robo가 완전히 충전되었습니다!</p>
-            <h2 class="complete__big">정말 고마워!<br/>나를 구해줘서! 🚀</h2>
-            <p id="finalScore" class="complete__score">최종 배터리: 100%</p>
-
-            <div class="btn-row">
-              <button class="btn btn--primary" type="button" onclick="resetGame()">다시 시작</button>
-              <button class="btn btn--ghost" type="button" onclick="goHome()">홈</button>
-            </div>
-          </div>
-        </main>
-      </div>
-    </section>
-  </main>
-
-  <!-- ✅ ABOUT: 업로드해주신 about.html 내용을 단일페이지 섹션으로 이식 -->
-  <section id="about" class="about">
-    <div class="about__container">
-      <h2 class="about__h2">About Us</h2>
-      <div class="about__maincopy">영어를 '공부하는 대상'에서 '사고하고 사용하는 언어'로</div>
-      <p>이곳은 단기 성과를 위한 영어 학습장이 아닙니다.<br>
-        <span class="about__hl">문법으로 기초를 세우고, 이해로 소화하며, 실제 언어 환경에서 작동하게 만드는 영어 전문 캠프장</span>입니다.
-      </p>
-      <p>우리는 영어를 암기 → 시험 → 잊혀지는 지식이 아니라 <span class="about__hl">읽고, 듣고, 말하고, 쓰며 축적되는 사고의 도구</span>로 다룹니다.</p>
-
-      <div class="about__spacer"></div>
-
-      <h2 class="about__h2">우리의 영어교육 접근 방식</h2>
-
-      <h3 class="about__h3">1. 문법은 출발점이다</h3>
-      <p>모든 캠프는 <span class="about__hl">문법을 기반으로 시작</span>합니다. 문법을 문제풀이용 규칙이 아니라,</p>
-      <ul class="about__ul">
-        <li>문장을 이해하는 구조</li>
-        <li>의미를 예측하는 틀</li>
-        <li>말과 글을 정확히 만들어내는 설계도로 다룹니다.</li>
-      </ul>
-      <p>기초가 없는 몰입은 오래가지 않습니다. 우리는 <span class="about__hl">기초를 단단히 세운 뒤 확장</span>합니다.</p>
-
-      <h3 class="about__h3">2. 이해는 NotebookLM에서 완성된다</h3>
-      <p>수업에서 다룬 문법, 표현, 문장 구조는 <span class="about__hl">NotebookLM 환경에서 충분히 해석·정리·재구성</span>됩니다.</p>
-      <ul class="about__ul">
-        <li>학습자는 단순히 "배우는 사람"이 아니라 <strong>자신만의 영어 노트를 축적하는 연구자</strong>가 됩니다.</li>
-        <li>입력된 지식은 연결되고, 반복되며, 스스로 설명할 수 있는 수준까지 소화됩니다.</li>
-      </ul>
-
-      <h3 class="about__h3">3. 세 개의 AI와 함께하는 언어 실전 훈련 (AI Trinity)</h3>
-      <p>이 캠프의 핵심은 <span class="about__hl">AI와의 협업 학습</span>입니다. 우리는 세 가지 AI를 유기적으로 활용합니다.</p>
-
-      <div class="about__ai">
-        <h4 class="about__h4">Coach - Practice - Review</h4>
-        <ul class="about__ul">
-          <li><strong>ChatGPT (개인 코치):</strong> 레벨별 맞춤 가이드라인을 제공하며 "어떻게 말할지"를 가르쳐줍니다.</li>
-          <li><strong>Open WebUI (실전 운동장):</strong> 소설 속 인물과 대화하며 배운 것을 마음껏 써보는 공간입니다.</li>
-          <li><strong>NotebookLM (최종 검토관):</strong> 원문을 바탕으로 팩트를 체크하고 나만의 노트를 완성합니다.</li>
-        </ul>
-      </div>
-
-      <div class="about__spacer"></div>
-
-      <h2 class="about__h2">문학을 통해 만나는 진짜 영어</h2>
-      <p>우리는 영어를 교재로만 가르치지 않습니다. <span class="about__hl">영어의 고전부터 현대 소설까지</span>, 시대를 관통하는 텍스트를 통해 자연스럽게 접근합니다.</p>
-      <ul class="about__ul">
-        <li>살아 있는 문장</li>
-        <li>실제로 사용되는 어휘와 표현</li>
-        <li>현대 영어와 생활 영어의 감각</li>
-      </ul>
-      <p>문학은 가장 정제된 언어이자, 가장 현실적인 영어입니다.</p>
-
-      <div class="about__spacer"></div>
-
-      <h2 class="about__h2">Camp Program</h2>
-
-      <div class="about__camp">
-        <h4 class="about__campTitle">Camp A | 초등학생 A1 · A2</h4>
-        <ul class="about__ul">
-          <li>영어 문장의 기본 구조 이해</li>
-          <li>문법을 '규칙'이 아닌 '의미'로 인식</li>
-          <li>듣기·읽기 중심에서 말하기·쓰기의 첫 확장</li>
-          <li>영어에 대한 긍정적 언어 경험 형성</li>
-        </ul>
-      </div>
-
-      <div class="about__camp">
-        <h4 class="about__campTitle">Camp B | 중·고등학생 B1 · B2</h4>
-        <ul class="about__ul">
-          <li>문법 기반 사고 정교화</li>
-          <li>소설과 텍스트를 통한 독해·표현 확장</li>
-          <li>말과 글의 정확성과 자연스러움 강화</li>
-          <li>시험을 넘어 실제 사용 가능한 영어 구축</li>
-        </ul>
-      </div>
-
-      <div class="about__camp">
-        <h4 class="about__campTitle">Camp C | 성인 초급 · 중급</h4>
-        <ul class="about__ul">
-          <li>무너진 기초 재정비</li>
-          <li>이해되지 않았던 문법의 재해석</li>
-          <li>생활 영어·현대 영어 중심의 실전 활용</li>
-          <li>읽고, 말하고, 쓰는 균형 잡힌 언어 회복</li>
-        </ul>
-      </div>
-
-      <div class="about__spacer"></div>
-
-      <h2 class="about__h2">우리가 지향하는 목표</h2>
-      <p>이 캠프의 목표는 단순한 레벨 상승이 아닙니다. <span class="about__hl">영어로 사고하고, 스스로 성장할 수 있는 학습자</span>를 만드는 것입니다.</p>
-      <ul class="about__ul">
-        <li>혼자서도 영어를 읽을 수 있고</li>
-        <li>AI와 대화하며 연습할 수 있고</li>
-        <li>자신의 언어로 영어를 써 내려갈 수 있는 상태</li>
-      </ul>
-      <p>그것이 우리가 생각하는 <span class="about__hl">완성에 가까운 영어</span>입니다.</p>
-
-      <div class="about__footer">
-        <p class="about__note">
-          프로그램의 모든 기능과 AI 도구는 수강 등록 후 활성화됩니다.<br>
-          위의 메뉴들은 미리보기용이며, 실제 학습을 위해서는 등록이 필요합니다.
-        </p>
-        <a href="#register" class="about__btn">수강 신청하기</a>
       </div>
     </div>
-  </section>
 
-  <!-- ✅ REGISTER: 기본 폼 -->
-  <section id="register" class="register">
-    <div class="register__container">
-      <h2 class="register__h2">Register</h2>
-      <p class="register__desc">기본 정보만 먼저 입력해 주세요. (백엔드 연결 전까지는 임시 제출입니다)</p>
-
-      <form id="registerForm" class="form">
-        <div class="form__row">
-          <label class="form__label" for="r_name">이름</label>
-          <input class="form__input" id="r_name" name="name" type="text" required />
+    <!-- 게임 -->
+    <div class="game-screen" id="gameScreen">
+      <div class="game-content">
+        <div class="robot-section">
+          <div class="robot-container" id="robotContainer">
+            <img src="assets/img/robo2.png" alt="Robot" class="robot-img" id="robotImg">
+            <img src="assets/img/robo.gif" alt="Robot Dance" class="robot-gif" id="robotGif" style="display: none;">
+            <div class="battery-display">
+              <div class="battery-percent"><span id="batteryPercent">3</span>%</div>
+              <div class="battery-bar"><div class="battery-fill" id="batteryFill"></div></div>
+            </div>
+          </div>
         </div>
 
-        <div class="form__row">
-          <label class="form__label" for="r_phone">전화번호</label>
-          <input class="form__input" id="r_phone" name="phone" type="tel" placeholder="010-1234-5678" required />
-        </div>
+        <div class="quiz-section">
+          <div class="question-box" id="questionBox">
+            <span class="question-number" id="questionNum">Q1/10</span>
+            <h2 id="questionTitle">문법</h2>
+            <p id="questionText">문제</p>
+            <div class="options" id="options"></div>
+          </div>
 
-        <div class="form__row">
-          <label class="form__label" for="r_email">이메일</label>
-          <input class="form__input" id="r_email" name="email" type="email" placeholder="name@email.com" required />
+          <div class="completion-screen" id="completionScreen">
+            <h2>🎉 축하합니다!</h2>
+            <p>로봇이 완전히 깨어났습니다!</p>
+            <div class="exciting-text">⚡ 넌 최고야! ⚡<br>고마워! 정말 고마워!<br>나를 구해줘서! 🚀</div>
+            <p id="finalScore" style="font-weight: bold; color: #00f2ff; margin: 15px 0; font-size: 1.1rem;"></p>
+            <div class="button-group">
+              <button class="restart-btn" onclick="resetGame()">다시 시작</button>
+              <button class="home-btn" onclick="goHome()">홈</button>
+            </div>
+          </div>
         </div>
-
-        <div class="form__row">
-          <label class="form__label" for="r_address">주소</label>
-          <input class="form__input" id="r_address" name="address" type="text" placeholder="시/군/구 까지만" required />
-        </div>
-
-        <div class="form__row">
-          <label class="form__label" for="r_grade">학년</label>
-          <select class="form__input" id="r_grade" name="grade" required>
-            <option value="" selected disabled>선택</option>
-            <option>초1</option><option>초2</option><option>초3</option><option>초4</option><option>초5</option><option>초6</option>
-            <option>중1</option><option>중2</option><option>중3</option>
-            <option>고1</option><option>고2</option><option>고3</option>
-            <option>성인</option>
-          </select>
-        </div>
-
-        <div class="form__row">
-          <label class="form__label" for="r_school">학교/기관</label>
-          <input class="form__input" id="r_school" name="school" type="text" />
-        </div>
-
-        <div class="form__row">
-          <label class="form__label" for="r_note">메모</label>
-          <textarea class="form__input form__textarea" id="r_note" name="note" rows="4" placeholder="요청사항/희망레벨/특이사항"></textarea>
-        </div>
-
-        <div class="form__actions">
-          <button class="btn btn--primary" type="submit">등록 제출</button>
-          <button class="btn btn--ghost" type="reset">초기화</button>
-        </div>
-
-        <p id="registerMsg" class="form__msg" aria-live="polite"></p>
-      </form>
+      </div>
     </div>
-  </section>
+  </div>
 
-  <footer class="footer">
-    <p>© CEC English Camp</p>
-  </footer>
+  <script>
+    let currentLevel = 'A1';
+    let currentQuestion = 0;
+    let battery = 3;
+    let answered = false;
+    let engineSoundPlayed = false;
+    let questions = [];
+    let missionStates = [];
 
-  <script defer src="./js/game.js?v=9001"></script>
+    const questionsA1 = [
+      { title: "Simple Present", text: "I ___ to school every day.", options: ["goes", "go", "going"], correct: 1 },
+      { title: "Simple Past", text: "She ___ to the movies yesterday.", options: ["went", "goes", "going"], correct: 0 },
+      { title: "Be Verb", text: "They ___ students.", options: ["is", "are", "am"], correct: 1 },
+      { title: "Present Continuous", text: "He ___ eating now.", options: ["eat", "is eating", "eats"], correct: 1 },
+      { title: "Negative", text: "I ___ like apples.", options: ["not", "don't", "doesn't"], correct: 1 },
+      { title: "Yes/No Question", text: "___ you have a pen?", options: ["Do", "Does", "Are"], correct: 0 },
+      { title: "Plural", text: "I have three ___.", options: ["book", "books", "bokes"], correct: 1 },
+      { title: "Possessive", text: "This is ___ cat.", options: ["my", "me", "I"], correct: 0 },
+      { title: "Articles", text: "___ apple is red.", options: ["A", "An", "The"], correct: 1 },
+      { title: "Future", text: "I ___ visit you tomorrow.", options: ["will visit", "visit", "visits"], correct: 0 }
+    ];
+
+    const questionsA2 = [
+      { title: "Present Habit", text: "He usually ___ coffee in the morning.", options: ["drink", "drinks", "drinking"], correct: 1 },
+      { title: "Past Continuous", text: "I ___ when he called.", options: ["sleep", "was sleeping", "slept"], correct: 1 },
+      { title: "Present Perfect", text: "Have you ___ London?", options: ["visit", "visited", "visiting"], correct: 1 },
+      { title: "Conditional", text: "If I ___ time, I would help.", options: ["have", "had", "having"], correct: 1 },
+      { title: "Comparative", text: "This book is ___ than that one.", options: ["more interesting", "interestinger", "interesting"], correct: 0 },
+      { title: "Must/Might", text: "You ___ finish your homework.", options: ["must", "might", "can"], correct: 0 },
+      { title: "Relative Clause", text: "The girl ___ won the prize.", options: ["who", "which", "whose"], correct: 0 },
+      { title: "Passive Voice", text: "The letter was ___ by my sister.", options: ["write", "written", "writing"], correct: 1 },
+      { title: "Gerund", text: "___ is good for health.", options: ["Exercise", "Exercising", "Exercises"], correct: 1 },
+      { title: "Reported Speech", text: "She said she ___ a student.", options: ["is", "was", "were"], correct: 1 }
+    ];
+
+    const questionsB1 = [
+      { title: "Complex Sentence", text: "Although tired, she ___.", options: ["continue", "continued", "continues"], correct: 1 },
+      { title: "Perf Continuous", text: "I ___ English for 5 years.", options: ["study", "have studied", "have been studying"], correct: 2 },
+      { title: "Subjunctive", text: "I suggest he ___ earlier.", options: ["come", "comes", "came"], correct: 0 },
+      { title: "Inversion", text: "Never ___ I seen such beauty.", options: ["have", "had", "has"], correct: 0 },
+      { title: "Participle", text: "___ by noise, I couldn't sleep.", options: ["Disturb", "Disturbing", "Disturbed"], correct: 2 },
+      { title: "Cleft", text: "It is John ___ did the work.", options: ["who", "that", "which"], correct: 0 },
+      { title: "Phrasal Verb", text: "They decided to ___ their trip.", options: ["put on", "put off", "put up"], correct: 1 },
+      { title: "Collocation", text: "I ___ an important decision.", options: ["make", "do", "take"], correct: 0 },
+      { title: "Idiom", text: "She's ___ a tough time.", options: ["going through", "going over", "going by"], correct: 0 },
+      { title: "Advanced", text: "The project is said ___ soon.", options: ["to be", "being", "to have"], correct: 0 }
+    ];
+
+    const questionsB2 = [
+      { title: "Mixed Conditional", text: "Had I known, I ___ you.", options: ["would contact", "would have contacted", "will contact"], correct: 1 },
+      { title: "Hypothetical", text: "If you studied, you ___ pass.", options: ["would", "would be", "would have"], correct: 0 },
+      { title: "Nominalization", text: "The ___ was delayed.", options: ["implement", "implementation", "implementing"], correct: 1 },
+      { title: "Parallel", text: "She enjoys reading, writing, ___.", options: ["to speak", "speaking", "speak"], correct: 1 },
+      { title: "Passive Advanced", text: "It is believed ___ change is real.", options: ["that", "which", "who"], correct: 0 },
+      { title: "Discourse", text: "___ said, we must act.", options: ["In light of", "As a result", "Therefore"], correct: 0 },
+      { title: "Ellipsis", text: "Who solved it? John ___.", options: ["did", "solved", "did solve"], correct: 0 },
+      { title: "Hedging", text: "Results ___ suggest correlation.", options: ["might", "could", "appear to"], correct: 2 },
+      { title: "Causative", text: "She had the mechanic ___ car.", options: ["repair", "to repair", "repaired"], correct: 0 },
+      { title: "Vocabulary", text: "Proposal was met with ___.", options: ["resistance", "persist", "assistance"], correct: 0 }
+    ];
+
+    function startGame(level) {
+      currentLevel = level;
+      currentQuestion = 0;
+      battery = 3;
+      answered = false;
+      engineSoundPlayed = false;
+
+      if (level === 'A1') questions = questionsA1;
+      else if (level === 'A2') questions = questionsA2;
+      else if (level === 'B1') questions = questionsB1;
+      else questions = questionsB2;
+
+      missionStates = questions.map((q, i) => ({
+        id: i,
+        completed: false,
+        triedOnce: false,
+        usedBaseCamp: false
+      }));
+
+      document.getElementById('levelScreen').style.display = 'none';
+      document.getElementById('gameScreen').classList.add('active');
+      document.getElementById('questionBox').style.display = 'block';
+      document.getElementById('completionScreen').classList.remove('show');
+
+      const robotImg = document.getElementById('robotImg');
+      const robotGif = document.getElementById('robotGif');
+      robotImg.style.display = 'block';
+      robotGif.style.display = 'none';
+      robotGif.classList.remove('show');
+      robotImg.classList.add('stage1');
+      robotImg.classList.remove('stage2', 'stage3');
+
+      displayQuestion();
+      updateRobot();
+    }
+
+    function displayQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById("questionNum").textContent = `Q${currentQuestion + 1}/10`;
+      document.getElementById("questionTitle").textContent = q.title;
+      document.getElementById("questionText").textContent = q.text;
+
+      const optionsContainer = document.getElementById("options");
+      optionsContainer.innerHTML = "";
+
+      q.options.forEach((option, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.textContent = option;
+        btn.onclick = () => selectAnswer(idx);
+        optionsContainer.appendChild(btn);
+      });
+
+      answered = false;
+    }
+
+    function selectAnswer(selectedIdx) {
+      if (answered) return;
+      answered = true;
+
+      const q = questions[currentQuestion];
+      const buttons = document.querySelectorAll(".option-btn");
+      const state = missionStates[currentQuestion];
+
+      buttons[selectedIdx].classList.add(selectedIdx === q.correct ? "correct" : "wrong");
+      buttons[q.correct].classList.add("correct");
+
+      if (selectedIdx === q.correct) {
+        if (!state.triedOnce) {
+          battery = Math.min(battery + 10, 100);
+          state.triedOnce = true;
+        } else if (state.usedBaseCamp) {
+          battery = Math.min(battery + 15, 100);
+        }
+        
+        state.completed = true;
+        updateRobot();
+        
+        if (battery >= 50) flashLight();
+
+        setTimeout(() => {
+          if (currentQuestion < 9) {
+            currentQuestion++;
+            displayQuestion();
+          } else {
+            completeGame();
+          }
+        }, 1500);
+      } else {
+        speak("틀렸어요! 다시 도전해봐요!");
+        state.triedOnce = true;
+        state.usedBaseCamp = true;
+        
+        setTimeout(() => { answered = false; }, 1500);
+      }
+    }
+
+    function updateRobot() {
+      const percent = document.getElementById("batteryPercent");
+      const fill = document.getElementById("batteryFill");
+      const robot = document.getElementById("robotContainer");
+      const robotImg = document.getElementById("robotImg");
+
+      percent.textContent = battery;
+      fill.style.width = battery + "%";
+
+      if (battery < 40) {
+        robotImg.classList.add('stage1');
+        robotImg.classList.remove('stage2', 'stage3');
+        robot.classList.remove('stage2-vibrate');
+      } else if (battery < 100) {
+        robotImg.classList.add('stage2');
+        robotImg.classList.remove('stage1', 'stage3');
+        robot.classList.add('stage2-vibrate');
+      } else {
+        robotImg.classList.add('stage3');
+        robotImg.classList.remove('stage1', 'stage2');
+        robot.classList.remove('stage2-vibrate');
+      }
+
+      if (battery <= 30 && battery > 0) {
+        robot.classList.add('warning');
+        if (battery === 3 || battery === 13 || battery === 23) playWarningSound();
+      } else {
+        robot.classList.remove('warning');
+      }
+
+      if (battery >= 50 && battery < 80) {
+        robot.classList.add('glow');
+        robotImg.classList.add('glow');
+        if (!engineSoundPlayed) { playEngineSound(); engineSoundPlayed = true; }
+      } else if (battery < 50) {
+        robot.classList.remove('glow');
+        robotImg.classList.remove('glow');
+      }
+
+      if (battery >= 80 && battery < 100) {
+        robot.classList.add('glow');
+        robotImg.classList.add('glow');
+        robot.style.animation = 'engineVibration 0.3s infinite';
+      } else if (battery >= 50 && battery < 80) {
+        robot.style.animation = 'none';
+      }
+
+      if (battery >= 100) {
+        robot.classList.add('full');
+        robot.classList.remove('warning');
+        robotImg.classList.add('full');
+        robot.style.animation = 'none';
+      }
+    }
+
+    function completeGame() {
+      battery = 100;
+      updateRobot();
+      const robotImg = document.getElementById('robotImg');
+      const robotGif = document.getElementById('robotGif');
+      const headerP = document.getElementById('headerDesc');
+
+      robotImg.style.display = 'none';
+      robotGif.style.display = 'block';
+      setTimeout(() => robotGif.classList.add('show'), 10);
+
+      if (headerP) headerP.classList.add('hide');
+
+      document.getElementById('questionBox').style.display = 'none';
+      document.getElementById('completionScreen').classList.add('show');
+      document.getElementById('finalScore').textContent = `최종 배터리: 100% ⚡ 완벽해! 넌 진짜 최고야!`;
+
+      speak("축하해! 고마워! 나를 구해줘서!");
+    }
+
+    function resetGame() {
+      document.getElementById('levelScreen').style.display = 'flex';
+      document.getElementById('gameScreen').classList.remove('active');
+      const headerP = document.getElementById('headerDesc');
+      if (headerP) headerP.classList.remove('hide');
+    }
+
+    function goHome() {
+      window.location.href = 'index.html';
+    }
+
+    function flashLight() {
+      const robot = document.getElementById('robotContainer');
+      robot.classList.remove('light-flash');
+      setTimeout(() => { robot.classList.add('light-flash'); }, 10);
+    }
+
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ko-KR';
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function playEngineSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.setValueAtTime(80, now);
+        osc.frequency.exponentialRampToValueAtTime(100, now + 0.5);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.05, now + 0.5);
+        osc.start(now);
+        osc.stop(now + 0.5);
+      } catch(e) {}
+    }
+
+    function playWarningSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.setValueAtTime(800, now);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.setValueAtTime(0, now + 0.2);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      } catch(e) {}
+    }
+  </script>
 </body>
 </html>
