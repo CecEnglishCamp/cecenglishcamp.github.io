@@ -16,6 +16,13 @@
 .hm-lives{display:flex;gap:6px;margin-top:8px;}
 .hm-heart{font-size:20px;transition:all 0.3s;}
 .hm-heart.lost{opacity:0.2;transform:scale(0.7);}
+.hm-gallows{display:flex;justify-content:center;margin:10px 0 20px;}
+.hm-gallows svg{filter:drop-shadow(0 0 8px rgba(0,242,255,.15));}
+.hm-gallows svg .gallow-line{stroke:rgba(0,242,255,.5);stroke-width:3;stroke-linecap:round;}
+.hm-gallows svg .body-part{stroke:#ff2b2b;stroke-width:3;stroke-linecap:round;fill:none;opacity:0;transition:opacity 0.4s;}
+.hm-gallows svg .body-part.show{opacity:1;}
+.hm-gallows svg .head{fill:none;stroke:#ff2b2b;stroke-width:3;opacity:0;transition:opacity 0.4s;}
+.hm-gallows svg .head.show{opacity:1;}
 .hm-word{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:30px 0;}
 .hm-letter{width:44px;height:54px;border-bottom:3px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:28px;font-weight:700;color:#fff;transition:all 0.3s;}
 .hm-letter.revealed{color:var(--green);border-color:var(--green);}
@@ -67,6 +74,24 @@
         <div class="hm-lives" id="hmLives"></div>
       </div>
     </div>
+    <!-- SVG Gallows -->
+    <div class="hm-gallows">
+      <svg width="200" height="220" viewBox="0 0 200 220">
+        <!-- 교수대 -->
+        <line class="gallow-line" x1="40" y1="210" x2="160" y2="210"/>
+        <line class="gallow-line" x1="60" y1="210" x2="60" y2="20"/>
+        <line class="gallow-line" x1="60" y1="20" x2="140" y2="20"/>
+        <line class="gallow-line" x1="140" y1="20" x2="140" y2="50"/>
+        <!-- 사람 (틀릴 때마다 show 추가) -->
+        <circle class="head body-part" id="hm-head" cx="140" cy="65" r="15"/>
+        <line class="body-part" id="hm-body" x1="140" y1="80" x2="140" y2="130"/>
+        <line class="body-part" id="hm-larm" x1="140" y1="95" x2="110" y2="115"/>
+        <line class="body-part" id="hm-rarm" x1="140" y1="95" x2="170" y2="115"/>
+        <line class="body-part" id="hm-lleg" x1="140" y1="130" x2="115" y2="170"/>
+        <line class="body-part" id="hm-rleg" x1="140" y1="130" x2="165" y2="170"/>
+      </svg>
+    </div>
+
     <div class="hm-word" id="hmWord"></div>
     <div class="hm-keys" id="hmKeys"></div>
     <div class="hm-msg" id="hmMsg"></div>
@@ -122,11 +147,28 @@ function resetHangman(){
   document.getElementById('hmGame').style.display='none';
 }
 
+const BODY_PARTS=['hm-head','hm-body','hm-larm','hm-rarm','hm-lleg','hm-rleg'];
+
+function resetGallows(){
+  BODY_PARTS.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.classList.remove('show');
+  });
+}
+
+function showBodyPart(wrongCount){
+  if(wrongCount>=1&&wrongCount<=6){
+    const el=document.getElementById(BODY_PARTS[wrongCount-1]);
+    if(el)el.classList.add('show');
+  }
+}
+
 function nextWord(){
   const words=WORDS[hmLevel];
   if(hmIdx>=words.length)hmIdx=0;
   const w=words[hmIdx++];
   hmWord=w.word;hmGuessed=[];hmLives=6;
+  resetGallows();
   document.getElementById('hmCat').textContent=hmLevel+' · '+(hmLevel==='A1'?'초급':hmLevel==='A2'?'초급+':hmLevel==='B1'?'중급':'중급+');
   document.getElementById('hmHint').textContent='힌트: '+w.hint;
   document.getElementById('hmMsg').textContent='';
@@ -176,6 +218,7 @@ function guessLetter(c){
   hmGuessed.push(c);
   if(!hmWord.includes(c)){
     hmLives--;
+    showBodyPart(6-hmLives);
     speak('No!');
     if(hmLives<=0){
       hmTotal++;
