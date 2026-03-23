@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G17. Object Pronouns</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Sans+KR:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --white: #ffffff;
+    --green-dark: #4a6741;
+    --green-mid: #5a7a50;
+    --green-light: #e8f0e5;
+    --green-card: #3d5c35;
+    --gold: #c8972a;
+    --gold-light: #fdf3e0;
+    --cream: #faf7f0;
+    --brown: #6b5c3e;
+    --brown-light: #f0e8d8;
+    --text: #2d2d2d;
+    --muted: #7a7a7a;
+    --border: #ddd6c8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; line-height: 1.7; padding-bottom: 80px; }
+
+  /* HEADER */
+  .lesson-header { background: #0a1628; padding: 36px 24px 32px; text-align: center; }
+  .gbc-badge { display: inline-block; border: 1px solid rgba(0,242,255,0.5); color: rgba(0,242,255,0.8); font-family: 'Poppins', sans-serif; font-size: 11px; letter-spacing: 2px; padding: 4px 14px; border-radius: 20px; margin-bottom: 16px; }
+  .lesson-num-title { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+  .lesson-main-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 44px; font-weight: 500; color: #00f2ff; line-height: 1.15; margin-bottom: 10px; }
+  .lesson-sub { font-size: 14px; color: rgba(255,255,255,0.5); }
+
+  /* TOC */
+  .toc { background: var(--green-dark); padding: 12px 20px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .toc a { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.75); text-decoration: none; }
+  .toc a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+  /* LAYOUT */
+  .content { max-width: 740px; margin: 0 auto; padding: 0 20px; }
+
+  /* SECTION */
+  .section { margin-top: 28px; background: var(--white); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+  .section-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+  .section-num { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; flex-shrink: 0; color: #fff; }
+  .section-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .section-en { font-size: 11px; color: var(--muted); font-family: 'Poppins', sans-serif; letter-spacing: 1px; margin-left: 6px; }
+  .section-body { padding: 20px; }
+
+  /* KEY CARD */
+  .key-card { background: var(--green-card); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .key-label { font-size: 11px; font-family: 'Poppins', sans-serif; letter-spacing: 2px; color: var(--gold); margin-bottom: 10px; }
+  .key-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 30px; font-weight: 500; color: #fff; margin-bottom: 6px; }
+  .key-kr { font-size: 13px; color: rgba(255,255,255,0.65); }
+
+  /* CONCEPT BOX */
+  .concept-box { background: var(--green-light); border-radius: 10px; padding: 16px; margin-bottom: 12px; border-left: 4px solid var(--green-mid); }
+  .concept-box p { font-size: 14px; margin-bottom: 8px; }
+  .concept-box p:last-child { margin-bottom: 0; }
+
+  /* RULE GRID */
+  .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .rule-card { padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); }
+  .rule-label { font-size: 10px; font-family: 'Poppins', sans-serif; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 8px; }
+  .rule-example { font-family: 'Poppins', sans-serif; font-size: 13px; }
+  .rule-example strong { font-weight: 700; }
+  .r-is { background: var(--green-light); border-color: #b8d4b0; }
+  .r-is .rule-label { color: var(--green-dark); }
+  .r-is .rule-example strong { color: var(--green-dark); }
+  .r-are { background: #e8f4e8; border-color: #a8ccaa; }
+  .r-are .rule-label { color: #3a6640; }
+  .r-are .rule-example strong { color: #3a6640; }
+  .r-neg { background: #fdf0e0; border-color: #e8c88a; }
+  .r-neg .rule-label { color: #8a5a1a; }
+  .r-neg .rule-example strong { color: #8a5a1a; }
+  .r-q { background: var(--brown-light); border-color: #d4c0a0; }
+  .r-q .rule-label { color: var(--brown); }
+  .r-q .rule-example strong { color: var(--brown); }
+
+  /* BULLET LIST */
+  .rule-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .rule-list li { font-size: 14px; padding: 8px 12px; background: var(--cream); border-radius: 8px; border-left: 3px solid var(--green-mid); }
+  .rule-list li strong { color: var(--green-dark); font-family: 'Poppins', sans-serif; }
+
+  /* EXAMPLE LIST */
+  .ex-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .ex-list li { padding: 12px 16px; background: var(--cream); border-radius: 10px; border-left: 4px solid var(--green-mid); font-size: 14px; }
+  .ex-list li .en { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
+  .ex-list li .kr { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+  .ex-q { border-left-color: var(--brown) !important; }
+  .ex-q .en { color: var(--brown) !important; }
+
+  /* DIALOGUE */
+  .dialogue { background: var(--cream); border-radius: 12px; padding: 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+  .d-title { font-size: 10px; font-family: 'Poppins', sans-serif; letter-spacing: 1.5px; color: var(--gold); font-weight: 700; margin-bottom: 10px; }
+  .d-line { font-size: 14px; margin-bottom: 5px; }
+  .d-line .sp { color: var(--green-dark); font-weight: 700; margin-right: 6px; }
+  .d-line .key { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
+
+  /* PRACTICE */
+  .practice-item { padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 8px; font-size: 14px; background: var(--cream); }
+  .practice-item .original { color: var(--muted); margin-bottom: 4px; font-size: 13px; }
+  .practice-item .result { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
+
+  /* PATTERN BOX */
+  .pattern-box { background: var(--gold-light); border: 1px solid #e8c88a; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .pattern-box .p-label { font-size: 11px; color: var(--gold); font-family: 'Poppins', sans-serif; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+  .pattern-box .p-text { font-size: 14px; color: var(--brown); }
+  .pattern-box .p-text strong { color: #7a5010; font-family: 'Poppins', sans-serif; }
+
+  /* MISTAKE BOX */
+  .mistake-box { background: #fff5f5; border: 1px solid #f4c0c0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .mistake-box .wrong { color: #c0392b; font-size: 13px; text-decoration: line-through; margin-bottom: 4px; }
+  .mistake-box .right { color: var(--green-dark); font-size: 14px; font-weight: 700; font-family: 'Poppins', sans-serif; }
+  .mistake-box .reason { color: var(--muted); font-size: 12px; margin-top: 4px; }
+
+  /* TIP BOX */
+  .tip-box { background: #e8f0ff; border: 1px solid #b8c8f0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .tip-box .tip-label { font-size: 11px; color: #3050a0; font-family: 'Poppins', sans-serif; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+  .tip-box .tip-text { font-size: 14px; color: #1a2a60; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .checklist li { display: flex; align-items: center; gap: 12px; font-size: 14px; padding: 10px 14px; background: var(--cream); border-radius: 10px; cursor: pointer; }
+  .chk { width: 20px; height: 20px; border: 2px solid var(--green-mid); border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: #fff; }
+  .chk.on { background: var(--green-mid); border-color: var(--green-dark); }
+  .chk.on::after { content: '✓'; color: #fff; font-size: 12px; font-weight: 700; }
+
+  /* FOOTER */
+  .footer-nav { background: var(--green-dark); display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; margin-top: 32px; }
+  .fnav-btn { padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; border: none; font-family: 'Poppins', sans-serif; }
+  .fnav-prev { background: rgba(255,255,255,0.15); color: #fff; }
+  .fnav-center { color: rgba(255,255,255,0.6); font-size: 12px; letter-spacing: 1px; font-family: 'Poppins', sans-serif; }
+  .fnav-next { background: var(--gold); color: #000; }
+</style>
+</head>
+<body>
+
+<div class="lesson-header">
+  <div class="gbc-badge">CEC GRAMMAR BASECAMP</div>
+  <div class="lesson-num-title">G17 · Basic Grammar</div>
+  <div class="lesson-main-title">Object Pronouns</div>
+  <div class="lesson-sub">목적격 대명사 — me, you, him, her</div>
+</div>
+
+<div class="toc">
+  <a href="#concept">기본 개념</a>
+  <a href="#grammar">문법 규칙</a>
+  <a href="#positive">긍정문</a>
+  <a href="#question">의문문</a>
+  <a href="#dialogue">대화 흐름</a>
+  <a href="#combining">문장 결합</a>
+  <a href="#reallife">실생활</a>
+  <a href="#patterns">패턴</a>
+  <a href="#mistakes">흔한 실수</a>
+  <a href="#tips">레벨업 팁</a>
+  <a href="#practice">연습문제</a>
+  <a href="#check">자가진단</a>
+</div>
+
+<div class="content">
+
+  <!-- 1. 기본 개념 -->
+  <div class="section" id="concept">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">1</div>
+      <div><span class="section-title">기본 개념</span><span class="section-en">BASIC CONCEPT</span></div>
+    </div>
+    <div class="section-body">
+      <div class="key-card">
+        <div class="key-label">⭐ TODAY'S KEY GRAMMAR</div>
+        <div class="key-text">Object Pronouns</div>
+        <div class="key-kr">목적격 대명사 — me, you, him, her</div>
+      </div>
+      <div class="concept-box">
+        <p><strong style="color:var(--green-dark)">목적격 대명사 (Object Pronouns):</strong> 문장에서 <strong>동작의 대상</strong>이 되는 대명사입니다. 주로 <strong>동사 뒤</strong>나 <strong>전치사 뒤</strong>에 위치합니다.</p>
+        <p><strong style="color:#3a6640">me:</strong> 나를, 나에게 / <strong>you:</strong> 너를, 너에게 / <strong>him:</strong> 그를, 그에게 / <strong>her:</strong> 그녀를, 그녀에게</p>
+        <p><strong style="color:#8a5a1a">주격 (I, you, he, she)</strong>과 그 역할과 형태가 다름을 구분하는 것이 중요합니다.</p>
+      </div>
+      <ul class="ex-list">
+        <li><span class="en">He sees <strong>me</strong>.</span><span class="kr">그가 나를 본다.</span></li>
+        <li><span class="en">I call <strong>you</strong>.</span><span class="kr">내가 너에게 전화한다.</span></li>
+        <li><span class="en">We help <strong>him</strong>.</span><span class="kr">우리가 그를 돕는다.</span></li>
+        <li><span class="en">They like <strong>her</strong>.</span><span class="kr">그들이 그녀를 좋아한다.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2. 문법 규칙 -->
+  <div class="section" id="grammar">
+    <div class="section-header">
+      <div class="section-num" style="background:#3a6640;">2</div>
+      <div><span class="section-title">문법 규칙</span><span class="section-en">GRAMMAR RULES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="rule-grid">
+        <div class="rule-card r-is">
+          <div class="rule-label">I → ME</div>
+          <div class="rule-example">He helps <strong>me</strong>.</div>
+        </div>
+        <div class="rule-card r-are">
+          <div class="rule-label">YOU → YOU</div>
+          <div class="rule-example">I call <strong>you</strong>.</div>
+        </div>
+        <div class="rule-card r-neg">
+          <div class="rule-label">HE → HIM</div>
+          <div class="rule-example">We see <strong>him</strong>.</div>
+        </div>
+        <div class="rule-card r-q">
+          <div class="rule-label">SHE → HER</div>
+          <div class="rule-example">They like <strong>her</strong>.</div>
+        </div>
+      </div>
+      <ul class="rule-list">
+        <li><strong>I → me:</strong> He helps <strong>me</strong>.</li>
+        <li><strong>you → you:</strong> I call <strong>you</strong>. (주격과 목적격 형태가 동일)</li>
+        <li><strong>he → him:</strong> We see <strong>him</strong>.</li>
+        <li><strong>she → her:</strong> They like <strong>her</strong>.</li>
+        <li><strong>기본 형태:</strong> 주어 + 동사 + <strong>목적격 대명사</strong> (e.g., She knows <strong>me</strong>.)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3. 긍정문 -->
+  <div class="section" id="positive">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--gold); color:#000;">3</div>
+      <div><span class="section-title">긍정문 예시</span><span class="section-en">POSITIVE EXAMPLES</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en">He sees <strong>me</strong>.</span><span class="kr">그가 나를 본다.</span></li>
+        <li><span class="en">I call <strong>you</strong>.</span><span class="kr">내가 너에게 전화한다.</span></li>
+        <li><span class="en">We help <strong>him</strong>.</span><span class="kr">우리는 그를 돕는다.</span></li>
+        <li><span class="en">They like <strong>her</strong>.</span><span class="kr">그들은 그녀를 좋아한다.</span></li>
+        <li><span class="en">She teaches <strong>me</strong>.</span><span class="kr">그녀가 나를 가르친다.</span></li>
+        <li><span class="en">You know <strong>him</strong>.</span><span class="kr">너는 그를 안다.</span></li>
+        <li><span class="en">I visit <strong>her</strong> every week.</span><span class="kr">나는 매주 그녀를 방문한다.</span></li>
+        <li><span class="en">He gives <strong>me</strong> a gift.</span><span class="kr">그는 나에게 선물을 준다. (간접 목적어)</span></li>
+        <li><span class="en">We invite <strong>you</strong> to the party.</span><span class="kr">우리는 너를 파티에 초대한다.</span></li>
+        <li><span class="en">They support <strong>him</strong> and <strong>her</strong>.</span><span class="kr">그들은 그와 그녀를 지지한다.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. 의문문 -->
+  <div class="section" id="question">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">4</div>
+      <div><span class="section-title">의문문 예시</span><span class="section-en">QUESTION EXAMPLES</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li class="ex-q"><span class="en"><strong>Do</strong> you see <strong>me</strong>?</span><span class="kr">너는 나를 보니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Can</strong> I call <strong>you</strong>?</span><span class="kr">내가 너에게 전화해도 될까?</span></li>
+        <li class="ex-q"><span class="en"><strong>Does</strong> she help <strong>him</strong>?</span><span class="kr">그녀가 그를 돕니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Do</strong> they like <strong>her</strong>?</span><span class="kr">그들이 그녀를 좋아하니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Did</strong> he teach <strong>me</strong>?</span><span class="kr">그가 나를 가르쳤니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Will</strong> you visit <strong>her</strong>?</span><span class="kr">너는 그녀를 방문할 거니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Can</strong> we invite <strong>him</strong>?</span><span class="kr">우리가 그를 초대할 수 있을까?</span></li>
+        <li class="ex-q"><span class="en"><strong>Do</strong> you support <strong>her</strong>?</span><span class="kr">너는 그녀를 지지하니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Did</strong> they call <strong>you</strong>?</span><span class="kr">그들이 너에게 전화했니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Does</strong> he know <strong>me</strong>?</span><span class="kr">그가 나를 아니?</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5. 대화 흐름 -->
+  <div class="section" id="dialogue">
+    <div class="section-header">
+      <div class="section-num" style="background:#5a7a50;">5</div>
+      <div><span class="section-title">상황별 대화 흐름</span><span class="section-en">SITUATIONAL DIALOGUES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="dialogue">
+        <div class="d-title">🏫 학교 상황 · SCHOOL</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Does</span> the teacher help <span class="key">you</span>?</div>
+        <div class="d-line"><span class="sp">B:</span> Yes, she helps <span class="key">me</span> every day.</div>
+        <div class="d-line"><span class="sp">A:</span> That's great!</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">✈️ 여행 상황 · TRAVEL</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Can</span> you call <span class="key">him</span> now?</div>
+        <div class="d-line"><span class="sp">B:</span> Sure, I'll call <span class="key">him</span>.</div>
+        <div class="d-line"><span class="sp">A:</span> Thanks!</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">💼 직장 상황 · OFFICE</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Do</span> they support <span class="key">her</span> idea?</div>
+        <div class="d-line"><span class="sp">B:</span> Yes, they really like <span class="key">her</span> plan.</div>
+        <div class="d-line"><span class="sp">A:</span> Good to hear.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">💻 온라인 상황 · ONLINE</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Did</span> you email <span class="key">me</span>?</div>
+        <div class="d-line"><span class="sp">B:</span> Yes, I sent it to <span class="key">you</span> this morning.</div>
+        <div class="d-line"><span class="sp">A:</span> Got it.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">🏠 가족 상황 · FAMILY</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Will</span> you visit <span class="key">her</span> this weekend?</div>
+        <div class="d-line"><span class="sp">B:</span> Yes, I'll visit <span class="key">her</span> on Sunday.</div>
+        <div class="d-line"><span class="sp">A:</span> Say hello for me!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 문장 결합 -->
+  <div class="section" id="combining">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">6</div>
+      <div><span class="section-title">문장 결합 연습</span><span class="section-en">SENTENCE COMBINING</span></div>
+    </div>
+    <div class="section-body">
+      <div class="practice-item">
+        <div class="original">I see a person. The person is you.</div>
+        <div class="result">→ I see <strong>you</strong>.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You help a person. The person is me.</div>
+        <div class="result">→ You help <strong>me</strong>.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">We call a boy. The boy is him.</div>
+        <div class="result">→ We call <strong>him</strong>.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">They visit a girl. The girl is her.</div>
+        <div class="result">→ They visit <strong>her</strong>.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">The woman teaches a student. The student is me.</div>
+        <div class="result">→ She teaches <strong>me</strong>.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">I know a man. The man is him.</div>
+        <div class="result">→ I know <strong>him</strong>.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You invite a friend. The friend is her.</div>
+        <div class="result">→ You invite <strong>her</strong>.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">The man supports me.</div>
+        <div class="result">→ He supports <strong>me</strong>.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">We email you.</div>
+        <div class="result">→ We email <strong>you</strong>.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">They like a boy and a girl.</div>
+        <div class="result">→ They like <strong>him</strong> and <strong>her</strong>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 실생활 사용 -->
+  <div class="section" id="reallife">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--gold); color:#000;">7</div>
+      <div><span class="section-title">실생활 사용 예시</span><span class="section-en">REAL-LIFE USAGE</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en">The teacher helps <strong>me</strong> with homework.</span><span class="kr">🏫 학교 — 선생님이 내가 숙제하는 것을 돕는다.</span></li>
+        <li><span class="en">I emailed <strong>you</strong> the report.</span><span class="kr">💼 직장 — 내가 너에게 보고서를 이메일로 보냈다.</span></li>
+        <li><span class="en">We visited <strong>her</strong> last weekend.</span><span class="kr">🏠 가족 — 우리는 지난 주말에 그녀를 방문했다.</span></li>
+        <li><span class="en">He called <strong>me</strong> on video chat.</span><span class="kr">💻 온라인 — 그가 나에게 화상 채팅으로 전화했다.</span></li>
+        <li><span class="en">The nurse gave <strong>him</strong> the medicine.</span><span class="kr">🏥 병원 — 간호사가 그에게 약을 주었다.</span></li>
+        <li><span class="en">I asked <strong>you</strong> for directions.</span><span class="kr">✈️ 여행 — 내가 너에게 길을 물어봤다.</span></li>
+        <li><span class="en">They invited <strong>her</strong> to speak.</span><span class="kr">📋 회의 — 그들이 그녀를 연설하도록 초대했다.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 8. 자주 쓰이는 패턴 -->
+  <div class="section" id="patterns">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">8</div>
+      <div><span class="section-title">자주 쓰이는 패턴</span><span class="section-en">COMMON PATTERNS</span></div>
+    </div>
+    <div class="section-body">
+      <div class="pattern-box">
+        <div class="p-label">주어 + 동사 + 목적격 · S + V + O</div>
+        <div class="p-text"><strong>I see you.</strong> / <strong>She helps me.</strong><br><span style="font-size:13px;">가장 기본적인 목적격 대명사 위치</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">동사 + 목적격 + 명사 · INDIRECT OBJECT</div>
+        <div class="p-text"><strong>He gives me a gift.</strong><br><span style="font-size:13px;">간접 목적어로 사용</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">전치사 + 목적격 · PREPOSITION + OBJECT</div>
+        <div class="p-text"><strong>She is with him.</strong> / <strong>I talked to her.</strong><br><span style="font-size:13px;">전치사의 목적어로 사용</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">주격 VS 목적격 · SUBJECT VS OBJECT</div>
+        <div class="p-text"><strong>He → him</strong> / <strong>She → her</strong> / <strong>I → me</strong> / <strong>You → you</strong><br><span style="font-size:13px;">문장에서의 위치에 따라 형태가 달라진다.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. 흔한 실수 -->
+  <div class="section" id="mistakes">
+    <div class="section-header">
+      <div class="section-num" style="background:#c0392b;">9</div>
+      <div><span class="section-title">흔한 실수</span><span class="section-en">COMMON MISTAKES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="mistake-box">
+        <div class="wrong">✗ He helps I.</div>
+        <div class="right">✓ He helps me.</div>
+        <div class="reason">동사 뒤에는 목적격 me를 사용 (주격 I 사용 불가)</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ I call he.</div>
+        <div class="right">✓ I call him.</div>
+        <div class="reason">동사 뒤에는 목적격 him을 사용 (주격 he 사용 불가)</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ They like she.</div>
+        <div class="right">✓ They like her.</div>
+        <div class="reason">동사 뒤에는 목적격 her를 사용 (주격 she 사용 불가)</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ This gift is for he.</div>
+        <div class="right">✓ This gift is for him.</div>
+        <div class="reason">전치사 뒤에는 목적격 him을 사용</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ Me and John went to the store.</div>
+        <div class="right">✓ John and I went to the store.</div>
+        <div class="reason">주어 자리에는 주격 I를 사용 (목적격 me 사용 불가)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. 레벨업 팁 -->
+  <div class="section" id="tips">
+    <div class="section-header">
+      <div class="section-num" style="background:#185fa5;">10</div>
+      <div><span class="section-title">레벨업 팁</span><span class="section-en">LEVEL-UP TIPS</span></div>
+    </div>
+    <div class="section-body">
+      <div class="tip-box">
+        <div class="tip-label">TIP 1 · 전치사와의 결합</div>
+        <div class="tip-text">전치사 (to, for, with, about) 뒤에는 항상 목적격 대명사를 사용합니다. (e.g., Talk to me, Wait for him, Go with her.)</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 2 · "You"의 특징</div>
+        <div class="tip-text">you는 주격과 목적격 형태가 같기 때문에 헷갈리지 않지만, 문장에서의 위치를 보고 그 역할(주어/목적어)을 판단해야 합니다.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 3 · 친한 사이의 사용</div>
+        <div class="tip-text">him과 her는 일상 대화에서 남성/여성을 지칭할 때 매우 자주 사용되며, 명사 반복을 피하는 가장 기본적인 방법입니다.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 4 · 복합 목적어 (Part 2 예고)</div>
+        <div class="tip-text">us (우리를), them (그들을)까지 함께 배우면 모든 인칭 목적격을 완성할 수 있습니다. (e.g., They help us.)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. 연습문제 -->
+  <div class="section" id="practice">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">11</div>
+      <div><span class="section-title">연습문제</span><span class="section-en">PRACTICE EXERCISES</span></div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">빈칸에 올바른 목적격 대명사를 채워 넣으세요.</p>
+      <ul class="rule-list">
+        <li>I saw ___ at the park. (he) <strong style="color:var(--green-dark)">(him)</strong></li>
+        <li>The book is for ___. (she) <strong style="color:var(--green-dark)">(her)</strong></li>
+        <li>Do you understand ___? (I) <strong style="color:var(--green-dark)">(me)</strong></li>
+        <li>❌ She helped I. → ✅ ___ <strong style="color:var(--green-dark)">(She helped me.)</strong></li>
+        <li>❌ Please talk to she. → ✅ ___ <strong style="color:var(--green-dark)">(Please talk to her.)</strong></li>
+        <li>그는 나에게 전화했어. → ___ <strong style="color:var(--green-dark)">(He called me.)</strong></li>
+        <li>나는 그를 좋아해. → ___ <strong style="color:var(--green-dark)">(I like him.)</strong></li>
+        <li>그녀는 너를 알고 있니? → ___ <strong style="color:var(--brown)">(Does she know you?)</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 12. 자가진단 -->
+  <div class="section" id="check">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">12</div>
+      <div><span class="section-title">자가진단 체크리스트</span><span class="section-en">SELF-CHECK</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> me (I의 목적격)를 올바르게 사용할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> you는 주격과 목적격이 동일하다는 것을 이해한다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> him (he의 목적격)을 올바르게 사용할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> her (she의 목적격)를 올바르게 사용할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 목적격 대명사를 동사 뒤와 전치사 뒤에 올바르게 배치할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 주격과 목적격을 혼동하지 않고 구분할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 일상 대화에서 목적격 대명사를 자연스럽게 사용할 수 있다.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-nav">
+  <a href="G16_new.html" class="fnav-btn fnav-prev">← G16</a>
+  <span class="fnav-center">G17 · OBJECT PRONOUNS</span>
+  <a href="G18_new.html" class="fnav-btn fnav-next">G18 →</a>
+</div>
+
+</body>
+</html>
