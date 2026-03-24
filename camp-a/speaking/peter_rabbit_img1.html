@@ -652,33 +652,36 @@ function showNextSteps() {
   document.getElementById("nextSteps").classList.add("show");
 }
 
-function showToast() {
+function showToast(msg) {
   const t = document.getElementById("copyToast");
+  if (msg) t.innerHTML = msg;
   t.classList.add("show");
   setTimeout(() => t.classList.remove("show"), 3000);
 }
 
 function goNext(type) {
-  navigator.clipboard.writeText(TEACHER_PROMPT).then(() => {
-    showToast();
-    setTimeout(() => {
-      if (type === "ai") window.open("http://localhost:3001", "_blank");
-      else window.open("https://chat.openai.com", "_blank");
-    }, 500);
-  }).catch(() => {
-    // Fallback: textarea copy
-    const ta = document.createElement("textarea");
-    ta.value = TEACHER_PROMPT;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand("copy");
-    document.body.removeChild(ta);
-    showToast();
-    setTimeout(() => {
-      if (type === "ai") window.open("http://localhost:3001", "_blank");
-      else window.open("https://chat.openai.com", "_blank");
-    }, 500);
-  });
+  if (type === "ai") {
+    // Build auth-relay URL with speaking data
+    const sentencesStr = SENTENCES.join("|");
+    const relayUrl = "http://localhost:8000/static/auth-relay.html"
+      + "?name=" + encodeURIComponent(studentName)
+      + "&grade=3&camp=a&week=1"
+      + "&lesson=peter_rabbit_img1"
+      + "&sentences=" + encodeURIComponent(sentencesStr);
+    window.open(relayUrl, "_blank");
+  } else {
+    // ChatGPT: copy prompt and open
+    navigator.clipboard.writeText(TEACHER_PROMPT).catch(() => {
+      const ta = document.createElement("textarea");
+      ta.value = TEACHER_PROMPT;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    });
+    showToast("\uc120\uc0dd\ub2d8 \uc9c0\uc2dc\ubb38\uc774 \ubcf5\uc0ac\ub410\uc5b4\uc694!<br>\ubd99\uc5ec\ub123\uae30(Ctrl+V)\ud558\uace0 \uc2dc\uc791\ud558\uc138\uc694!");
+    setTimeout(() => { window.open("https://chat.openai.com", "_blank"); }, 500);
+  }
 }
 </script>
 <div class="copy-toast" id="copyToast">선생님 지시문이 복사됐어요!<br>붙여넣기(Ctrl+V)하고 시작하세요!</div>
