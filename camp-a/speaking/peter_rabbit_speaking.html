@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peter Rabbit Speaking Practice</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e0e0e0;font-family:'Segoe UI',Tahoma,sans-serif;min-height:100vh}
+.container{max-width:900px;margin:0 auto;padding:16px}
+h1{text-align:center;color:#00ffff;font-size:1.5rem;margin-bottom:12px;text-shadow:0 0 10px rgba(0,255,255,.3)}
+.image-wrap{text-align:center;margin-bottom:16px}
+.image-wrap img{width:100%;max-width:560px;border-radius:12px;border:2px solid #00ffff33;box-shadow:0 0 20px rgba(0,255,255,.15)}
+.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.main-grid{grid-template-columns:1fr}}
+
+/* Sentence list */
+.panel{background:#111;border-radius:12px;padding:16px;border:1px solid #222}
+.panel h2{color:#00ffff;font-size:1.1rem;margin-bottom:12px}
+.sentence{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:8px;margin-bottom:4px;transition:all .3s;font-size:.95rem;line-height:1.4}
+.sentence .num{color:#555;font-weight:700;min-width:22px;flex-shrink:0}
+.sentence .text{color:#666;transition:all .3s}
+.sentence.active{background:#00ffff0d;transform:scale(1.03)}
+.sentence.active .num{color:#00ffff}
+.sentence.active .text{color:#00ffff;font-size:1.05rem;font-weight:600}
+.sentence.done .num{color:#4ade80}
+.sentence.done .text{color:#4ade80}
+.sentence.done .check{color:#4ade80;margin-left:auto;flex-shrink:0}
+.sentence.cumulative{background:#00ffff08}
+.sentence.cumulative .text{color:#88dddd}
+.sentence.hidden-text .text{color:transparent;background:#222;border-radius:4px;user-select:none}
+.sentence.hidden-text.active .text{color:transparent;background:#00ffff22}
+.sentence.hidden-text.done .text{color:transparent;background:#4ade8033}
+
+/* Controls */
+.controls{display:flex;flex-direction:column;gap:12px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:10px;border:none;cursor:pointer;font-size:1rem;font-weight:600;transition:all .2s}
+.btn:active{transform:scale(.97)}
+.btn-play{background:linear-gradient(135deg,#00ffff,#0088aa);color:#0a0a0a;width:100%}
+.btn-play:hover{box-shadow:0 0 20px rgba(0,255,255,.4)}
+.btn-play.playing{background:linear-gradient(135deg,#ff6b6b,#cc3333);color:#fff}
+.btn-memo{background:#1a1a2e;color:#00ffff;border:1px solid #00ffff44;width:100%}
+.btn-memo:hover{background:#00ffff15}
+.btn-memo.active-memo{background:#00ffff22;border-color:#00ffff}
+
+/* Progress */
+.progress-section{background:#111;border-radius:10px;padding:12px;border:1px solid #222}
+.progress-label{display:flex;justify-content:space-between;font-size:.85rem;color:#888;margin-bottom:6px}
+.progress-label span:first-child{color:#00ffff}
+.progress-bar-track{height:8px;background:#222;border-radius:4px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,#00ffff,#4ade80);border-radius:4px;transition:width .3s;width:0%}
+.time-display{text-align:center;font-size:.85rem;color:#666;margin-top:6px;font-variant-numeric:tabular-nums}
+
+/* Phase indicator */
+.phase{text-align:center;padding:10px;border-radius:8px;background:#0a0a1a;border:1px solid #00ffff22;font-size:.9rem;color:#aaa;min-height:44px;display:flex;align-items:center;justify-content:center}
+.phase b{color:#00ffff}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Peter Rabbit Speaking Practice</h1>
+
+  <div class="image-wrap">
+    <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/mom-teacher/grade3/peter_rabbit_image2.png" alt="Peter Rabbit">
+  </div>
+
+  <div class="main-grid">
+    <!-- Left: Sentence List -->
+    <div class="panel">
+      <h2>Sentences</h2>
+      <div id="sentenceList"></div>
+    </div>
+
+    <!-- Right: Controls -->
+    <div class="controls">
+      <button class="btn btn-play" id="btnPlay" onclick="togglePlay()">
+        <svg id="iconPlay" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+        <svg id="iconPause" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/></svg>
+        <span id="btnLabel">Play</span>
+      </button>
+      <button class="btn btn-memo" id="btnMemo" onclick="toggleMemo()">Memorize Mode</button>
+
+      <div class="progress-section">
+        <div class="progress-label"><span id="chunkLabel">Ready</span><span id="pctLabel">0%</span></div>
+        <div class="progress-bar-track"><div class="progress-bar-fill" id="progressBar"></div></div>
+        <div class="time-display" id="timeDisplay">0:00 / 6:44</div>
+      </div>
+
+      <div class="phase" id="phaseDisplay">Press Play to start</div>
+    </div>
+  </div>
+</div>
+
+<audio id="audio" preload="auto" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/mom-teacher/grade3/peter_rabbit_student_v1.mp3"></audio>
+
+<script>
+const sentences = [
+  "I see a rabbit.",
+  "The rabbit has a blue jacket.",
+  "He is under the gate.",
+  "He is going into the garden.",
+  "I see carrots on the ground.",
+  "I see a basket with carrots.",
+  "There are green plants in the garden.",
+  "The rabbit is hungry.",
+  "He wants to eat the carrots.",
+  "He is sneaking into the garden."
+];
+
+// Timeline: each entry = { time, active: [indices], done: [indices], chunk, phase }
+const timeline = [
+  { time: 0,   active: [],     done: [],                    chunk: 0, phase: "Intro" },
+  { time: 15,  active: [0],    done: [],                    chunk: 1, phase: "Sentence 1 - Listen & Repeat" },
+  { time: 30,  active: [1],    done: [],                    chunk: 1, phase: "Sentence 2 - Listen & Repeat" },
+  { time: 50,  active: [0,1],  done: [],                    chunk: 1, phase: "Chunk 1 - Say both!" },
+  { time: 70,  active: [2],    done: [0,1],                 chunk: 2, phase: "Sentence 3 - Listen & Repeat" },
+  { time: 85,  active: [3],    done: [0,1],                 chunk: 2, phase: "Sentence 4 - Listen & Repeat" },
+  { time: 105, active: [0,1,2,3], done: [],                 chunk: 2, phase: "Chunk 1~2 - Say all 4!" },
+  { time: 130, active: [4],    done: [0,1,2,3],             chunk: 3, phase: "Sentence 5 - Listen & Repeat" },
+  { time: 145, active: [5],    done: [0,1,2,3],             chunk: 3, phase: "Sentence 6 - Listen & Repeat" },
+  { time: 165, active: [0,1,2,3,4,5], done: [],             chunk: 3, phase: "Chunk 1~3 - Say all 6!" },
+  { time: 200, active: [6],    done: [0,1,2,3,4,5],         chunk: 4, phase: "Sentence 7 - Listen & Repeat" },
+  { time: 215, active: [7],    done: [0,1,2,3,4,5],         chunk: 4, phase: "Sentence 8 - Listen & Repeat" },
+  { time: 235, active: [0,1,2,3,4,5,6,7], done: [],         chunk: 4, phase: "Chunk 1~4 - Say all 8!" },
+  { time: 270, active: [8],    done: [0,1,2,3,4,5,6,7],     chunk: 5, phase: "Sentence 9 - Listen & Repeat" },
+  { time: 285, active: [9],    done: [0,1,2,3,4,5,6,7],     chunk: 5, phase: "Sentence 10 - Listen & Repeat" },
+  { time: 310, active: [0,1,2,3,4,5,6,7,8,9], done: [],     chunk: 5, phase: "Final - All 10 sentences!" },
+];
+
+const audio = document.getElementById("audio");
+const totalDuration = 404; // 6:44
+let memoMode = false;
+
+// Build sentence list
+const listEl = document.getElementById("sentenceList");
+sentences.forEach((s, i) => {
+  const div = document.createElement("div");
+  div.className = "sentence";
+  div.id = "s" + i;
+  div.innerHTML = `<span class="num">${i + 1}.</span><span class="text">${s}</span><span class="check"></span>`;
+  listEl.appendChild(div);
+});
+
+function togglePlay() {
+  if (audio.paused) {
+    audio.play();
+    document.getElementById("btnLabel").textContent = "Pause";
+    document.getElementById("iconPlay").style.display = "none";
+    document.getElementById("iconPause").style.display = "";
+    document.getElementById("btnPlay").classList.add("playing");
+  } else {
+    audio.pause();
+    document.getElementById("btnLabel").textContent = "Play";
+    document.getElementById("iconPlay").style.display = "";
+    document.getElementById("iconPause").style.display = "none";
+    document.getElementById("btnPlay").classList.remove("playing");
+  }
+}
+
+function toggleMemo() {
+  memoMode = !memoMode;
+  document.getElementById("btnMemo").classList.toggle("active-memo", memoMode);
+  document.querySelectorAll(".sentence").forEach(el => el.classList.toggle("hidden-text", memoMode));
+}
+
+function getPhase(t) {
+  let current = timeline[0];
+  for (let i = timeline.length - 1; i >= 0; i--) {
+    if (t >= timeline[i].time) { current = timeline[i]; break; }
+  }
+  return current;
+}
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return m + ":" + String(sec).padStart(2, "0");
+}
+
+function update() {
+  const t = audio.currentTime;
+  const dur = audio.duration || totalDuration;
+  const pct = Math.min((t / dur) * 100, 100);
+  const phase = getPhase(t);
+
+  // Progress
+  document.getElementById("progressBar").style.width = pct + "%";
+  document.getElementById("pctLabel").textContent = Math.round(pct) + "%";
+  document.getElementById("timeDisplay").textContent = formatTime(t) + " / " + formatTime(dur);
+  document.getElementById("chunkLabel").textContent = phase.chunk > 0 ? "Chunk " + phase.chunk + " / 5" : "Ready";
+  document.getElementById("phaseDisplay").innerHTML = phase.phase.replace(/Chunk \d~?\d?/, '<b>$&</b>').replace(/Sentence \d+/, '<b>$&</b>').replace(/Final/, '<b>Final</b>');
+
+  // Sentences
+  for (let i = 0; i < 10; i++) {
+    const el = document.getElementById("s" + i);
+    const isActive = phase.active.includes(i);
+    const isDone = phase.done.includes(i);
+    el.classList.toggle("active", isActive);
+    el.classList.toggle("done", isDone);
+    el.classList.toggle("cumulative", isActive && phase.active.length > 2);
+    el.querySelector(".check").textContent = isDone ? "\u2705" : "";
+  }
+
+  requestAnimationFrame(update);
+}
+
+audio.addEventListener("play", () => requestAnimationFrame(update));
+audio.addEventListener("ended", () => {
+  document.getElementById("btnLabel").textContent = "Play";
+  document.getElementById("iconPlay").style.display = "";
+  document.getElementById("iconPause").style.display = "none";
+  document.getElementById("btnPlay").classList.remove("playing");
+  // Mark all done
+  for (let i = 0; i < 10; i++) {
+    const el = document.getElementById("s" + i);
+    el.classList.remove("active", "cumulative");
+    el.classList.add("done");
+    el.querySelector(".check").textContent = "\u2705";
+  }
+  document.getElementById("progressBar").style.width = "100%";
+  document.getElementById("pctLabel").textContent = "100%";
+  document.getElementById("chunkLabel").textContent = "Complete!";
+  document.getElementById("phaseDisplay").innerHTML = "<b>Well done!</b> You said all 10 sentences!";
+});
+</script>
+</body>
+</html>
