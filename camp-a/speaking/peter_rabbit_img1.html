@@ -228,6 +228,24 @@ let pollTimer = null;
 let lastStateVersion = 0;
 let preloadDone = false;
 let preloadRunning = false;
+let iosUnlocked = false;
+
+// ── iOS audio unlock ──
+// Create a persistent Audio element and AudioContext, unlock on first user tap
+const _iosAudio = new Audio();
+_iosAudio.src = "data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABhgC7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7u7//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAABhkVHjSgAAAAAAAAAAAAAAAAAAP/7UGQAD/AAADSAAAAAgAAA0gAAABAAAANIAAAAAAAAA0gAAABExBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7UGQeD/AAADSAAAAAgAAA0gAAABAAAANIAAAAAAAAA0gAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ==";
+let _audioCtx = null;
+
+function unlockAudio() {
+  if (iosUnlocked) return;
+  // Create AudioContext
+  _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (_audioCtx.state === "suspended") _audioCtx.resume();
+  // Play silent audio to unlock HTML5 Audio
+  _iosAudio.volume = 0;
+  _iosAudio.play().then(() => { _iosAudio.pause(); }).catch(() => {});
+  iosUnlocked = true;
+}
 
 // ── IndexedDB cache (single connection) ──
 const DB_NAME = "cec_tts_cache";
@@ -414,11 +432,25 @@ async function ensureAudioReady() {
 function playBlob(blob) {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(blob);
-    const audio = new Audio(url);
+    // Reuse the persistent audio element for iOS compatibility
+    const audio = _iosAudio;
+    audio.volume = 1;
+    audio.src = url;
     currentAudio = audio;
-    audio.onended = () => { URL.revokeObjectURL(url); currentAudio = null; resolve(); };
-    audio.onerror = (e) => { URL.revokeObjectURL(url); currentAudio = null; reject(e); };
-    audio.play();
+
+    const cleanup = () => { URL.revokeObjectURL(url); currentAudio = null; };
+    audio.onended = () => { cleanup(); resolve(); };
+    audio.onerror = (e) => { cleanup(); reject(e); };
+
+    const playPromise = audio.play();
+    if (playPromise) {
+      playPromise.catch(() => {
+        // Retry once on iOS autoplay block
+        setTimeout(() => {
+          audio.play().catch((e2) => { cleanup(); reject(e2); });
+        }, 100);
+      });
+    }
   });
 }
 
@@ -520,6 +552,7 @@ async function playSequence() {
 
 function handlePlay() {
   if (!studentName) { document.getElementById("nameModal").classList.remove("hidden"); return; }
+  unlockAudio();
   if (isPlaying && !isPaused) {
     isPaused = true;
     if (currentAudio) currentAudio.pause();
