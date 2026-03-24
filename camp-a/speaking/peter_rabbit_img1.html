@@ -68,29 +68,9 @@ h1{text-align:center;color:#00ffff;font-size:1.4rem;margin-bottom:14px;text-shad
 .spinner{width:40px;height:40px;border:3px solid #222;border-top-color:#00ffff;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-progress{color:#00ffff;font-size:.95rem;font-variant-numeric:tabular-nums}
-
-/* API key modal */
-.modal{position:fixed;inset:0;background:rgba(10,10,10,.95);display:flex;align-items:center;justify-content:center;z-index:200}
-.modal.hidden{display:none}
-.modal-box{background:#151520;border:1px solid #00ffff44;border-radius:14px;padding:28px;max-width:420px;width:90%}
-.modal-box h2{color:#00ffff;margin-bottom:12px;font-size:1.1rem}
-.modal-box p{color:#888;font-size:.85rem;margin-bottom:14px;line-height:1.5}
-.modal-box input{width:100%;padding:10px 12px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#e0e0e0;font-size:.9rem;margin-bottom:12px}
-.modal-box input:focus{outline:none;border-color:#00ffff}
-.modal-box .btn-ok{background:#00ffff;color:#0a0a0a;padding:10px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:.95rem;width:100%}
 </style>
 </head>
 <body>
-
-<!-- API Key Modal -->
-<div class="modal" id="keyModal">
-  <div class="modal-box">
-    <h2>OpenAI API Key</h2>
-    <p>TTS audio requires an OpenAI API key.<br>Your key is stored locally in this browser only.</p>
-    <input type="password" id="apiKeyInput" placeholder="sk-proj-...">
-    <button class="btn-ok" onclick="saveKey()">Start</button>
-  </div>
-</div>
 
 <!-- Loading overlay -->
 <div class="loading hidden" id="loadingOverlay">
@@ -135,6 +115,9 @@ h1{text-align:center;color:#00ffff;font-size:1.4rem;margin-bottom:14px;text-shad
 </div>
 
 <script>
+const TTS_ENDPOINT = "https://journey-bronzy-fruitily.ngrok-free.dev/api/tts";
+const TTS_TOKEN = "cec-speaking-2026";
+
 const SENTENCES = [
   "I see a mother rabbit.",
   "She has a white apron.",
@@ -142,10 +125,6 @@ const SENTENCES = [
   "The mother is talking to her children."
 ];
 
-// Script: each step = { type, text, highlight, done, chunk, phaseText }
-// type: "kr" | "en" | "silence"
-// highlight: array of sentence indices to highlight as active
-// done: array of sentence indices to show as done
 const SCRIPT = [
   { type:"kr", text:"안녕! 나는 Robo야! 오늘 우리가 할 건 정말 특별한 영어 훈련이야. 이 방법은 최신 영어 교육 방법으로 CEC 영어캠프에서만 경험할 수 있는 특별한 프로그램이야. 그림을 보면서 영어로 말하는 훈련인데, 이 방법으로 공부하면 영어 실력이 정말 빠르게 늘 거야!", hi:[], done:[], chunk:0, phase:"Intro" },
   { type:"kr", text:"오늘의 훈련 목표는 이거야. 이 그림을 보고 영어 문장 4개를 외워서, 마지막엔 그림만 보고 혼자 줄줄 말하는 거야. 엄마 앞에서도 자신 있게 영어로 말할 수 있게 될 거야!", hi:[], done:[], chunk:0, phase:"Intro" },
@@ -205,15 +184,13 @@ const SCRIPT = [
   { type:"kr", text:"완벽해! 4문장 다 외웠어! 이제 그림만 보고 혼자 말해봐. Robo가 응원할게!", hi:[], done:[0,1,2,3], chunk:2, phase:"Complete!" },
 ];
 
-let apiKey = localStorage.getItem("openai_tts_key") || "";
-let audioCache = []; // pre-generated audio blobs
+let audioCache = [];
 let isPlaying = false;
 let isPaused = false;
 let currentStep = -1;
 let currentAudio = null;
 let silenceTimer = null;
 let memoMode = false;
-let pauseResolve = null;
 
 // Build sentence list
 const listEl = document.getElementById("sentenceList");
@@ -225,39 +202,19 @@ SENTENCES.forEach((s, i) => {
   listEl.appendChild(div);
 });
 
-// API key handling
-if (apiKey) {
-  document.getElementById("keyModal").classList.add("hidden");
-}
-function saveKey() {
-  const v = document.getElementById("apiKeyInput").value.trim();
-  if (!v) return;
-  apiKey = v;
-  localStorage.setItem("openai_tts_key", v);
-  document.getElementById("keyModal").classList.add("hidden");
-}
-
-// TTS generation
+// TTS via server proxy
 async function generateTTS(text, voice, speed) {
-  const res = await fetch("https://api.openai.com/v1/audio/speech", {
+  const res = await fetch(TTS_ENDPOINT, {
     method: "POST",
-    headers: { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" },
-    body: JSON.stringify({ model: "tts-1-hd", voice, speed, input: text, response_format: "mp3" })
+    headers: {
+      "Authorization": "Bearer " + TTS_TOKEN,
+      "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true"
+    },
+    body: JSON.stringify({ text, voice, speed })
   });
-  if (!res.ok) throw new Error("TTS API error: " + res.status);
+  if (!res.ok) throw new Error("TTS error: " + res.status);
   return await res.blob();
-}
-
-function createSilence(durationSec) {
-  // Generate silence as a very short WAV with correct duration via AudioContext
-  return new Promise(resolve => {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const sr = ctx.sampleRate;
-    const len = sr * durationSec;
-    const buf = ctx.createBuffer(1, len, sr);
-    // buffer is already zeros = silence
-    resolve({ type: "silence", duration: durationSec, buffer: buf, ctx });
-  });
 }
 
 async function preGenerateAll() {
@@ -313,19 +270,16 @@ function updateUI(idx) {
   document.getElementById("stepLabel").textContent = (idx + 1) + " / " + total;
   document.getElementById("chunkLabel").textContent = step.chunk > 0 ? "Chunk " + step.chunk + " / 2" : "Intro";
 
-  // Phase
   let phaseHtml = step.phase;
   phaseHtml = phaseHtml.replace(/Sentence \d/g, '<b>$&</b>').replace(/Sentences \d~\d/g, '<b>$&</b>').replace(/All \d/g, '<b>$&</b>').replace(/Complete!/g, '<b>$&</b>').replace(/Chunk \d/g, '<b>$&</b>');
 
-  // Show current script text in phase display
   if (step.type === "silence") {
-    phaseHtml += '<br><span style="color:#ffd700;font-size:.8rem">🎤 Your turn...</span>';
+    phaseHtml += '<br><span style="color:#ffd700;font-size:.8rem">\uD83C\uDFA4 Your turn...</span>';
   } else if (step.type === "en") {
     phaseHtml += '<br><span class="en" style="font-size:.82rem">' + step.text + '</span>';
   }
   document.getElementById("phaseDisplay").innerHTML = phaseHtml;
 
-  // Sentences
   for (let i = 0; i < 4; i++) {
     const el = document.getElementById("s" + i);
     const isActive = step.hi.includes(i);
@@ -364,14 +318,12 @@ async function playSequence() {
       await playBlob(cached.blob);
     }
 
-    // Check if paused during playback
     if (isPaused) {
       currentStep = i + 1;
       return;
     }
   }
 
-  // Finished
   isPlaying = false;
   currentStep = -1;
   setPlayBtn(false);
@@ -387,23 +339,16 @@ async function playSequence() {
 }
 
 function handlePlay() {
-  if (!apiKey) {
-    document.getElementById("keyModal").classList.remove("hidden");
-    return;
-  }
   if (isPlaying && !isPaused) {
-    // Pause
     isPaused = true;
     if (currentAudio) { currentAudio.pause(); }
     if (silenceTimer) { clearTimeout(silenceTimer); silenceTimer = null; }
     setPlayBtn(false);
   } else if (isPaused) {
-    // Resume
     isPaused = false;
     setPlayBtn(true);
     playSequence();
   } else {
-    // Start
     currentStep = -1;
     playSequence();
   }
