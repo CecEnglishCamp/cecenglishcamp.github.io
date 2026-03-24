@@ -80,6 +80,19 @@ h1{text-align:center;color:#00ffff;font-size:1.4rem;margin-bottom:14px;text-shad
 .modal-box .btn-ok{background:#00ffff;color:#0a0a0a;padding:12px;border-radius:8px;border:none;cursor:pointer;font-weight:700;font-size:1rem;width:100%}
 .modal-box .btn-ok:hover{box-shadow:0 0 15px rgba(0,255,255,.4)}
 
+/* Next step buttons */
+.next-steps{display:none;margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.next-steps.show{display:flex}
+.btn-next{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 16px;border-radius:10px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;width:100%;transition:all .2s}
+.btn-next:hover{transform:scale(1.02)}
+.btn-next:active{transform:scale(.97)}
+.btn-ai{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff}
+.btn-ai:hover{box-shadow:0 0 20px rgba(124,58,237,.4)}
+.btn-gpt{background:linear-gradient(135deg,#10a37f,#0d8c6d);color:#fff}
+.btn-gpt:hover{box-shadow:0 0 20px rgba(16,163,127,.4)}
+.copy-toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#ffd700;padding:12px 24px;border-radius:10px;border:1px solid #ffd70044;font-size:.9rem;z-index:300;opacity:0;transition:opacity .3s;pointer-events:none;text-align:center;line-height:1.5}
+.copy-toast.show{opacity:1}
+
 /* Student badge */
 .student-badge{text-align:center;padding:8px;background:#0a0a1a;border:1px solid #00ffff22;border-radius:8px;font-size:.85rem;color:#888}
 .student-badge b{color:#00ffff}
@@ -139,6 +152,11 @@ h1{text-align:center;color:#00ffff;font-size:1.4rem;margin-bottom:14px;text-shad
 
       <div class="phase" id="phaseDisplay">Press Play to start</div>
 
+      <div class="next-steps" id="nextSteps">
+        <button class="btn-next btn-ai" onclick="goNext('ai')">🤖 AI와 영어로 말하기</button>
+        <button class="btn-next btn-gpt" onclick="goNext('gpt')">💬 ChatGPT와 대화하기</button>
+      </div>
+
       <div class="progress-box" id="preloadBox" style="display:none">
         <div class="progress-label"><span id="preloadLabel">Preparing audio...</span><span id="preloadPct">0%</span></div>
         <div class="progress-track"><div class="progress-fill" id="preloadBar" style="background:linear-gradient(90deg,#00ffff55,#00ffff)"></div></div>
@@ -166,7 +184,7 @@ const DEFAULT_SENTENCES = [
 let SENTENCES = [...DEFAULT_SENTENCES];
 
 const SCRIPT = [
-  { type:"kr", text:"\uc548\ub155! \ub098\ub294 Robo\uc57c! \uc624\ub298 \uc6b0\ub9ac\uac00 \ud560 \uac74 \uc815\ub9d0 \ud2b9\ubcc4\ud55c \uc601\uc5b4 \ud6c8\ub828\uc774\uc57c. \uc774 \ubc29\ubc95\uc740 \ucd5c\uc2e0 \uc601\uc5b4 \uad50\uc721 \ubc29\ubc95\uc73c\ub85c CEC \uc601\uc5b4\uce60\ud504\uc5d0\uc11c\ub9cc \uacbd\ud5d8\ud560 \uc218 \uc788\ub294 \ud2b9\ubcc4\ud55c \ud504\ub85c\uadf8\ub7a8\uc774\uc57c. \uadf8\ub9bc\uc744 \ubcf4\uba74\uc11c \uc601\uc5b4\ub85c \ub9d0\ud558\ub294 \ud6c8\ub828\uc778\ub370, \uc774 \ubc29\ubc95\uc73c\ub85c \uacf5\ubd80\ud558\uba74 \uc601\uc5b4 \uc2e4\ub825\uc774 \uc815\ub9d0 \ube68\ub9ac \ub298 \uac70\uc57c!", hi:[], done:[], chunk:0, phase:"Intro" },
+  { type:"kr", text:"\uc548\ub155! \ub098\ub294 Robo\uc57c! \uc624\ub298 \uc6b0\ub9ac\uac00 \ud560 \uac74 \uc815\ub9d0 \ud2b9\ubcc4\ud55c \uc601\uc5b4 \ud6c8\ub828\uc774\uc57c. \uc774 \ubc29\ubc95\uc740 \ucd5c\uc2e0 \uc601\uc5b4 \uad50\uc721 \ubc29\ubc95\uc73c\ub85c CEC English Camp\uc5d0\uc11c\ub9cc \uacbd\ud5d8\ud560 \uc218 \uc788\ub294 \ud2b9\ubcc4\ud55c \ud504\ub85c\uadf8\ub7a8\uc774\uc57c. \uadf8\ub9bc\uc744 \ubcf4\uba74\uc11c \uc601\uc5b4\ub85c \ub9d0\ud558\ub294 \ud6c8\ub828\uc778\ub370, \uc774 \ubc29\ubc95\uc73c\ub85c \uacf5\ubd80\ud558\uba74 \uc601\uc5b4 \uc2e4\ub825\uc774 \uc815\ub9d0 \ube68\ub9ac \ub298 \uac70\uc57c!", hi:[], done:[], chunk:0, phase:"Intro" },
   { type:"kr", text:"\uc624\ub298\uc758 \ud6c8\ub828 \ubaa9\ud45c\ub294 \uc774\uac70\uc57c. \uc774 \uadf8\ub9bc\uc744 \ubcf4\uace0 \uc601\uc5b4 \ubb38\uc7a5 4\uac1c\ub97c \uc678\uc6cc\uc11c, \ub9c8\uc9c0\ub9c9\uc5d4 \uadf8\ub9bc\ub9cc \ubcf4\uace0 \ud63c\uc790 \uc904\uc904 \ub9d0\ud558\ub294 \uac70\uc57c. \uc5c4\ub9c8 \uc55e\uc5d0\uc11c\ub3c4 \uc790\uc2e0 \uc788\uac8c \uc601\uc5b4\ub85c \ub9d0\ud560 \uc218 \uc788\uac8c \ub420 \uac70\uc57c!", hi:[], done:[], chunk:0, phase:"Intro" },
   { type:"kr", text:"\ub531 4\uac1c \ubb38\uc7a5\uc774\uc57c. \uc9e7\uace0 \uc26c\uc6cc. \ud560 \uc218 \uc788\uc5b4! \uadf8\ub7fc \uc2dc\uc791\ud558\uc790!", hi:[], done:[], chunk:0, phase:"Intro" },
 
@@ -548,6 +566,7 @@ async function playSequence() {
     el.querySelector(".check").textContent = "\u2705";
   }
   await reportProgress(SENTENCES.length, SENTENCES.length);
+  setTimeout(showNextSteps, 3000);
 }
 
 function handlePlay() {
@@ -616,6 +635,53 @@ function startPolling() {
   if (pollTimer) return;
   pollTimer = setInterval(pollLessonState, 5000);
 }
+
+// ── Next step buttons ──
+const TEACHER_PROMPT = `You are an English teacher for elementary students.
+The student just learned these 4 sentences about Peter Rabbit:
+1. I see a mother rabbit.
+2. She has a white apron.
+3. There are four rabbits.
+4. The mother is talking to her children.
+Now practice speaking with the student.
+Ask them to say each sentence.
+Correct gently if wrong.
+Use simple English only.`;
+
+function showNextSteps() {
+  document.getElementById("nextSteps").classList.add("show");
+}
+
+function showToast() {
+  const t = document.getElementById("copyToast");
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 3000);
+}
+
+function goNext(type) {
+  navigator.clipboard.writeText(TEACHER_PROMPT).then(() => {
+    showToast();
+    setTimeout(() => {
+      if (type === "ai") window.open("http://localhost:3001", "_blank");
+      else window.open("https://chat.openai.com", "_blank");
+    }, 500);
+  }).catch(() => {
+    // Fallback: textarea copy
+    const ta = document.createElement("textarea");
+    ta.value = TEACHER_PROMPT;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    showToast();
+    setTimeout(() => {
+      if (type === "ai") window.open("http://localhost:3001", "_blank");
+      else window.open("https://chat.openai.com", "_blank");
+    }, 500);
+  });
+}
 </script>
+<div class="copy-toast" id="copyToast">선생님 지시문이 복사됐어요!<br>붙여넣기(Ctrl+V)하고 시작하세요!</div>
+</body>
 </body>
 </html>
