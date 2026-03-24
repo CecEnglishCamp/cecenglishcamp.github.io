@@ -68,9 +68,34 @@ h1{text-align:center;color:#00ffff;font-size:1.4rem;margin-bottom:14px;text-shad
 .spinner{width:40px;height:40px;border:3px solid #222;border-top-color:#00ffff;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-progress{color:#00ffff;font-size:.95rem;font-variant-numeric:tabular-nums}
+
+/* Name modal */
+.modal{position:fixed;inset:0;background:rgba(10,10,10,.95);display:flex;align-items:center;justify-content:center;z-index:200}
+.modal.hidden{display:none}
+.modal-box{background:#151520;border:1px solid #00ffff44;border-radius:14px;padding:28px;max-width:380px;width:90%;text-align:center}
+.modal-box h2{color:#00ffff;margin-bottom:8px;font-size:1.2rem}
+.modal-box p{color:#888;font-size:.85rem;margin-bottom:16px}
+.modal-box input{width:100%;padding:12px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#e0e0e0;font-size:1.1rem;text-align:center;margin-bottom:12px}
+.modal-box input:focus{outline:none;border-color:#00ffff}
+.modal-box .btn-ok{background:#00ffff;color:#0a0a0a;padding:12px;border-radius:8px;border:none;cursor:pointer;font-weight:700;font-size:1rem;width:100%}
+.modal-box .btn-ok:hover{box-shadow:0 0 15px rgba(0,255,255,.4)}
+
+/* Student badge */
+.student-badge{text-align:center;padding:8px;background:#0a0a1a;border:1px solid #00ffff22;border-radius:8px;font-size:.85rem;color:#888}
+.student-badge b{color:#00ffff}
 </style>
 </head>
 <body>
+
+<!-- Student Name Modal -->
+<div class="modal" id="nameModal">
+  <div class="modal-box">
+    <h2>Welcome!</h2>
+    <p>Enter your name to start</p>
+    <input type="text" id="nameInput" placeholder="Your name" maxlength="20" autofocus>
+    <button class="btn-ok" onclick="saveName()">Start</button>
+  </div>
+</div>
 
 <!-- Loading overlay -->
 <div class="loading hidden" id="loadingOverlay">
@@ -98,6 +123,8 @@ h1{text-align:center;color:#00ffff;font-size:1.4rem;margin-bottom:14px;text-shad
 
     <!-- Right: Controls -->
     <div class="panel ctrl-panel">
+      <div class="student-badge" id="studentBadge"></div>
+
       <button class="btn btn-play" id="btnPlay" onclick="handlePlay()">
         <svg id="iconPlay" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
         <svg id="iconPause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/></svg>
@@ -115,73 +142,72 @@ h1{text-align:center;color:#00ffff;font-size:1.4rem;margin-bottom:14px;text-shad
 </div>
 
 <script>
-const TTS_ENDPOINT = "https://journey-bronzy-fruitily.ngrok-free.dev/api/tts";
+const API_BASE = "https://journey-bronzy-fruitily.ngrok-free.dev";
 const TTS_TOKEN = "cec-speaking-2026";
+const NGROK_HEADERS = { "ngrok-skip-browser-warning": "true" };
 
-const SENTENCES = [
+let studentName = "";
+let sentencesDone = 0;
+
+const DEFAULT_SENTENCES = [
   "I see a mother rabbit.",
   "She has a white apron.",
   "There are four rabbits.",
   "The mother is talking to her children."
 ];
 
-const SCRIPT = [
-  { type:"kr", text:"안녕! 나는 Robo야! 오늘 우리가 할 건 정말 특별한 영어 훈련이야. 이 방법은 최신 영어 교육 방법으로 CEC 영어캠프에서만 경험할 수 있는 특별한 프로그램이야. 그림을 보면서 영어로 말하는 훈련인데, 이 방법으로 공부하면 영어 실력이 정말 빠르게 늘 거야!", hi:[], done:[], chunk:0, phase:"Intro" },
-  { type:"kr", text:"오늘의 훈련 목표는 이거야. 이 그림을 보고 영어 문장 4개를 외워서, 마지막엔 그림만 보고 혼자 줄줄 말하는 거야. 엄마 앞에서도 자신 있게 영어로 말할 수 있게 될 거야!", hi:[], done:[], chunk:0, phase:"Intro" },
-  { type:"kr", text:"딱 4개 문장이야. 짧고 쉬워. 할 수 있어! 그럼 시작하자!", hi:[], done:[], chunk:0, phase:"Intro" },
+let SENTENCES = [...DEFAULT_SENTENCES];
 
-  // Sentence 1
-  { type:"kr", text:"첫 번째 문장이야.", hi:[0], done:[], chunk:1, phase:"Sentence 1 - Listen" },
+const SCRIPT = [
+  { type:"kr", text:"\uc548\ub155! \ub098\ub294 Robo\uc57c! \uc624\ub298 \uc6b0\ub9ac\uac00 \ud560 \uac74 \uc815\ub9d0 \ud2b9\ubcc4\ud55c \uc601\uc5b4 \ud6c8\ub828\uc774\uc57c. \uc774 \ubc29\ubc95\uc740 \ucd5c\uc2e0 \uc601\uc5b4 \uad50\uc721 \ubc29\ubc95\uc73c\ub85c CEC \uc601\uc5b4\uce60\ud504\uc5d0\uc11c\ub9cc \uacbd\ud5d8\ud560 \uc218 \uc788\ub294 \ud2b9\ubcc4\ud55c \ud504\ub85c\uadf8\ub7a8\uc774\uc57c. \uadf8\ub9bc\uc744 \ubcf4\uba74\uc11c \uc601\uc5b4\ub85c \ub9d0\ud558\ub294 \ud6c8\ub828\uc778\ub370, \uc774 \ubc29\ubc95\uc73c\ub85c \uacf5\ubd80\ud558\uba74 \uc601\uc5b4 \uc2e4\ub825\uc774 \uc815\ub9d0 \ube68\ub9ac \ub298 \uac70\uc57c!", hi:[], done:[], chunk:0, phase:"Intro" },
+  { type:"kr", text:"\uc624\ub298\uc758 \ud6c8\ub828 \ubaa9\ud45c\ub294 \uc774\uac70\uc57c. \uc774 \uadf8\ub9bc\uc744 \ubcf4\uace0 \uc601\uc5b4 \ubb38\uc7a5 4\uac1c\ub97c \uc678\uc6cc\uc11c, \ub9c8\uc9c0\ub9c9\uc5d4 \uadf8\ub9bc\ub9cc \ubcf4\uace0 \ud63c\uc790 \uc904\uc904 \ub9d0\ud558\ub294 \uac70\uc57c. \uc5c4\ub9c8 \uc55e\uc5d0\uc11c\ub3c4 \uc790\uc2e0 \uc788\uac8c \uc601\uc5b4\ub85c \ub9d0\ud560 \uc218 \uc788\uac8c \ub420 \uac70\uc57c!", hi:[], done:[], chunk:0, phase:"Intro" },
+  { type:"kr", text:"\ub531 4\uac1c \ubb38\uc7a5\uc774\uc57c. \uc9e7\uace0 \uc26c\uc6cc. \ud560 \uc218 \uc788\uc5b4! \uadf8\ub7fc \uc2dc\uc791\ud558\uc790!", hi:[], done:[], chunk:0, phase:"Intro" },
+
+  { type:"kr", text:"\uccab \ubc88\uc9f8 \ubb38\uc7a5\uc774\uc57c.", hi:[0], done:[], chunk:1, phase:"Sentence 1 - Listen" },
   { type:"en", text:"I see a mother rabbit.", hi:[0], done:[], chunk:1, phase:"Sentence 1 - Listen" },
-  { type:"kr", text:"따라해봐!", hi:[0], done:[], chunk:1, phase:"Sentence 1 - Repeat!" },
+  { type:"kr", text:"\ub530\ub77c\ud574\ubd10!", hi:[0], done:[], chunk:1, phase:"Sentence 1 - Repeat!" },
   { type:"silence", dur:3, hi:[0], done:[], chunk:1, phase:"Sentence 1 - Your turn!" },
   { type:"en", text:"I see a mother rabbit.", hi:[0], done:[], chunk:1, phase:"Sentence 1 - Check" },
-  { type:"kr", text:"잘했어!", hi:[], done:[0], chunk:1, phase:"Sentence 1 - Done!" },
+  { type:"kr", text:"\uc798\ud588\uc5b4!", hi:[], done:[0], chunk:1, phase:"Sentence 1 - Done!" },
 
-  // Sentence 2
-  { type:"kr", text:"두 번째 문장이야.", hi:[1], done:[0], chunk:1, phase:"Sentence 2 - Listen" },
+  { type:"kr", text:"\ub450 \ubc88\uc9f8 \ubb38\uc7a5\uc774\uc57c.", hi:[1], done:[0], chunk:1, phase:"Sentence 2 - Listen" },
   { type:"en", text:"She has a white apron.", hi:[1], done:[0], chunk:1, phase:"Sentence 2 - Listen" },
-  { type:"kr", text:"apron은 앞치마야. 따라해봐!", hi:[1], done:[0], chunk:1, phase:"Sentence 2 - Repeat!" },
+  { type:"kr", text:"apron\uc740 \uc55e\uce58\ub9c8\uc57c. \ub530\ub77c\ud574\ubd10!", hi:[1], done:[0], chunk:1, phase:"Sentence 2 - Repeat!" },
   { type:"silence", dur:3, hi:[1], done:[0], chunk:1, phase:"Sentence 2 - Your turn!" },
   { type:"en", text:"She has a white apron.", hi:[1], done:[0], chunk:1, phase:"Sentence 2 - Check" },
 
-  // Cumulative 1-2
-  { type:"kr", text:"좋아! 이제 두 문장 연속으로 들어봐!", hi:[0,1], done:[], chunk:1, phase:"Sentences 1~2 together" },
+  { type:"kr", text:"\uc88b\uc544! \uc774\uc81c \ub450 \ubb38\uc7a5 \uc5f0\uc18d\uc73c\ub85c \ub4e4\uc5b4\ubd10!", hi:[0,1], done:[], chunk:1, phase:"Sentences 1~2 together" },
   { type:"en", text:"I see a mother rabbit. She has a white apron.", hi:[0,1], done:[], chunk:1, phase:"Sentences 1~2 - Listen" },
-  { type:"kr", text:"혼자 말해봐! 4초!", hi:[0,1], done:[], chunk:1, phase:"Sentences 1~2 - Your turn!" },
+  { type:"kr", text:"\ud63c\uc790 \ub9d0\ud574\ubd10! 4\ucd08!", hi:[0,1], done:[], chunk:1, phase:"Sentences 1~2 - Your turn!" },
   { type:"silence", dur:4, hi:[0,1], done:[], chunk:1, phase:"Sentences 1~2 - Your turn!" },
   { type:"en", text:"I see a mother rabbit. She has a white apron.", hi:[0,1], done:[], chunk:1, phase:"Sentences 1~2 - Check" },
-  { type:"kr", text:"대단해! 2문장 완료!", hi:[], done:[0,1], chunk:1, phase:"Chunk 1 complete!" },
+  { type:"kr", text:"\ub300\ub2e8\ud574! 2\ubb38\uc7a5 \uc644\ub8cc!", hi:[], done:[0,1], chunk:1, phase:"Chunk 1 complete!" },
 
-  // Sentence 3
-  { type:"kr", text:"세 번째 문장이야.", hi:[2], done:[0,1], chunk:2, phase:"Sentence 3 - Listen" },
+  { type:"kr", text:"\uc138 \ubc88\uc9f8 \ubb38\uc7a5\uc774\uc57c.", hi:[2], done:[0,1], chunk:2, phase:"Sentence 3 - Listen" },
   { type:"en", text:"There are four rabbits.", hi:[2], done:[0,1], chunk:2, phase:"Sentence 3 - Listen" },
-  { type:"kr", text:"따라해봐!", hi:[2], done:[0,1], chunk:2, phase:"Sentence 3 - Repeat!" },
+  { type:"kr", text:"\ub530\ub77c\ud574\ubd10!", hi:[2], done:[0,1], chunk:2, phase:"Sentence 3 - Repeat!" },
   { type:"silence", dur:3, hi:[2], done:[0,1], chunk:2, phase:"Sentence 3 - Your turn!" },
   { type:"en", text:"There are four rabbits.", hi:[2], done:[0,1], chunk:2, phase:"Sentence 3 - Check" },
-  { type:"kr", text:"잘했어!", hi:[], done:[0,1,2], chunk:2, phase:"Sentence 3 - Done!" },
+  { type:"kr", text:"\uc798\ud588\uc5b4!", hi:[], done:[0,1,2], chunk:2, phase:"Sentence 3 - Done!" },
 
-  // Sentence 4
-  { type:"kr", text:"네 번째 문장이야.", hi:[3], done:[0,1,2], chunk:2, phase:"Sentence 4 - Listen" },
+  { type:"kr", text:"\ub124 \ubc88\uc9f8 \ubb38\uc7a5\uc774\uc57c.", hi:[3], done:[0,1,2], chunk:2, phase:"Sentence 4 - Listen" },
   { type:"en", text:"The mother is talking to her children.", hi:[3], done:[0,1,2], chunk:2, phase:"Sentence 4 - Listen" },
-  { type:"kr", text:"talking to는 말하고 있다는 뜻이야. 따라해봐!", hi:[3], done:[0,1,2], chunk:2, phase:"Sentence 4 - Repeat!" },
+  { type:"kr", text:"talking to\ub294 \ub9d0\ud558\uace0 \uc788\ub2e4\ub294 \ub73b\uc774\uc57c. \ub530\ub77c\ud574\ubd10!", hi:[3], done:[0,1,2], chunk:2, phase:"Sentence 4 - Repeat!" },
   { type:"silence", dur:3, hi:[3], done:[0,1,2], chunk:2, phase:"Sentence 4 - Your turn!" },
   { type:"en", text:"The mother is talking to her children.", hi:[3], done:[0,1,2], chunk:2, phase:"Sentence 4 - Check" },
 
-  // Cumulative 3-4
-  { type:"kr", text:"좋아! 3번 4번 연속으로!", hi:[2,3], done:[0,1], chunk:2, phase:"Sentences 3~4 together" },
+  { type:"kr", text:"\uc88b\uc544! 3\ubc88 4\ubc88 \uc5f0\uc18d\uc73c\ub85c!", hi:[2,3], done:[0,1], chunk:2, phase:"Sentences 3~4 together" },
   { type:"en", text:"There are four rabbits. The mother is talking to her children.", hi:[2,3], done:[0,1], chunk:2, phase:"Sentences 3~4 - Listen" },
-  { type:"kr", text:"혼자 말해봐! 5초!", hi:[2,3], done:[0,1], chunk:2, phase:"Sentences 3~4 - Your turn!" },
+  { type:"kr", text:"\ud63c\uc790 \ub9d0\ud574\ubd10! 5\ucd08!", hi:[2,3], done:[0,1], chunk:2, phase:"Sentences 3~4 - Your turn!" },
   { type:"silence", dur:5, hi:[2,3], done:[0,1], chunk:2, phase:"Sentences 3~4 - Your turn!" },
   { type:"en", text:"There are four rabbits. The mother is talking to her children.", hi:[2,3], done:[0,1], chunk:2, phase:"Sentences 3~4 - Check" },
 
-  // Final cumulative 1-4
-  { type:"kr", text:"이제 4문장 전체 들어봐!", hi:[0,1,2,3], done:[], chunk:2, phase:"All 4 sentences!" },
+  { type:"kr", text:"\uc774\uc81c 4\ubb38\uc7a5 \uc804\uccb4 \ub4e4\uc5b4\ubd10!", hi:[0,1,2,3], done:[], chunk:2, phase:"All 4 sentences!" },
   { type:"en", text:"I see a mother rabbit. She has a white apron. There are four rabbits. The mother is talking to her children.", hi:[0,1,2,3], done:[], chunk:2, phase:"All 4 - Listen" },
-  { type:"kr", text:"혼자 말해봐! 8초!", hi:[0,1,2,3], done:[], chunk:2, phase:"All 4 - Your turn!" },
+  { type:"kr", text:"\ud63c\uc790 \ub9d0\ud574\ubd10! 8\ucd08!", hi:[0,1,2,3], done:[], chunk:2, phase:"All 4 - Your turn!" },
   { type:"silence", dur:8, hi:[0,1,2,3], done:[], chunk:2, phase:"All 4 - Your turn!" },
   { type:"en", text:"I see a mother rabbit. She has a white apron. There are four rabbits. The mother is talking to her children.", hi:[0,1,2,3], done:[], chunk:2, phase:"All 4 - Check" },
-  { type:"kr", text:"완벽해! 4문장 다 외웠어! 이제 그림만 보고 혼자 말해봐. Robo가 응원할게!", hi:[], done:[0,1,2,3], chunk:2, phase:"Complete!" },
+  { type:"kr", text:"\uc644\ubcbd\ud574! 4\ubb38\uc7a5 \ub2e4 \uc678\uc6e0\uc5b4! \uc774\uc81c \uadf8\ub9bc\ub9cc \ubcf4\uace0 \ud63c\uc790 \ub9d0\ud574\ubd10. Robo\uac00 \uc751\uc6d0\ud560\uac8c!", hi:[], done:[0,1,2,3], chunk:2, phase:"Complete!" },
 ];
 
 let audioCache = [];
@@ -191,26 +217,40 @@ let currentStep = -1;
 let currentAudio = null;
 let silenceTimer = null;
 let memoMode = false;
+let pollTimer = null;
+let lastStateVersion = 0;
 
-// Build sentence list
+// ── Name modal ──
+function saveName() {
+  const v = document.getElementById("nameInput").value.trim();
+  if (!v) return;
+  studentName = v;
+  document.getElementById("nameModal").classList.add("hidden");
+  document.getElementById("studentBadge").innerHTML = "Student: <b>" + studentName + "</b>";
+  startPolling();
+}
+document.getElementById("nameInput").addEventListener("keydown", e => { if (e.key === "Enter") saveName(); });
+
+// ── Build sentence list ──
 const listEl = document.getElementById("sentenceList");
-SENTENCES.forEach((s, i) => {
-  const div = document.createElement("div");
-  div.className = "sentence";
-  div.id = "s" + i;
-  div.innerHTML = `<span class="num">${i+1}.</span><span class="text">${s}</span><span class="check"></span>`;
-  listEl.appendChild(div);
-});
+function buildSentenceList() {
+  listEl.innerHTML = "";
+  SENTENCES.forEach((s, i) => {
+    const div = document.createElement("div");
+    div.className = "sentence";
+    div.id = "s" + i;
+    div.innerHTML = '<span class="num">' + (i+1) + '.</span><span class="text">' + s + '</span><span class="check"></span>';
+    if (memoMode) div.classList.add("hidden-text");
+    listEl.appendChild(div);
+  });
+}
+buildSentenceList();
 
-// TTS via server proxy
+// ── TTS via server proxy ──
 async function generateTTS(text, voice, speed) {
-  const res = await fetch(TTS_ENDPOINT, {
+  const res = await fetch(API_BASE + "/api/tts", {
     method: "POST",
-    headers: {
-      "Authorization": "Bearer " + TTS_TOKEN,
-      "Content-Type": "application/json",
-      "ngrok-skip-browser-warning": "true"
-    },
+    headers: { "Authorization": "Bearer " + TTS_TOKEN, "Content-Type": "application/json", ...NGROK_HEADERS },
     body: JSON.stringify({ text, voice, speed })
   });
   if (!res.ok) throw new Error("TTS error: " + res.status);
@@ -221,11 +261,9 @@ async function preGenerateAll() {
   const overlay = document.getElementById("loadingOverlay");
   const prog = document.getElementById("loadProgress");
   overlay.classList.remove("hidden");
-
   const ttsSteps = SCRIPT.filter(s => s.type !== "silence");
   const total = ttsSteps.length;
   let done = 0;
-
   audioCache = [];
   for (let i = 0; i < SCRIPT.length; i++) {
     const step = SCRIPT[i];
@@ -240,7 +278,6 @@ async function preGenerateAll() {
       prog.textContent = done + " / " + total;
     }
   }
-
   overlay.classList.add("hidden");
 }
 
@@ -265,14 +302,12 @@ function updateUI(idx) {
   const step = SCRIPT[idx];
   const total = SCRIPT.length;
   const pct = Math.round(((idx + 1) / total) * 100);
-
   document.getElementById("progressBar").style.width = pct + "%";
   document.getElementById("stepLabel").textContent = (idx + 1) + " / " + total;
   document.getElementById("chunkLabel").textContent = step.chunk > 0 ? "Chunk " + step.chunk + " / 2" : "Intro";
 
   let phaseHtml = step.phase;
   phaseHtml = phaseHtml.replace(/Sentence \d/g, '<b>$&</b>').replace(/Sentences \d~\d/g, '<b>$&</b>').replace(/All \d/g, '<b>$&</b>').replace(/Complete!/g, '<b>$&</b>').replace(/Chunk \d/g, '<b>$&</b>');
-
   if (step.type === "silence") {
     phaseHtml += '<br><span style="color:#ffd700;font-size:.8rem">\uD83C\uDFA4 Your turn...</span>';
   } else if (step.type === "en") {
@@ -280,8 +315,12 @@ function updateUI(idx) {
   }
   document.getElementById("phaseDisplay").innerHTML = phaseHtml;
 
-  for (let i = 0; i < 4; i++) {
+  // Track sentences done
+  sentencesDone = step.done.length;
+
+  for (let i = 0; i < SENTENCES.length; i++) {
     const el = document.getElementById("s" + i);
+    if (!el) continue;
     const isActive = step.hi.includes(i);
     const isDone = step.done.includes(i);
     el.classList.toggle("active", isActive);
@@ -298,11 +337,24 @@ function setPlayBtn(playing) {
   document.getElementById("btnPlay").classList.toggle("playing", playing);
 }
 
-async function playSequence() {
-  if (audioCache.length === 0) {
-    await preGenerateAll();
-  }
+async function reportProgress(done, total) {
+  if (!studentName) return;
+  try {
+    await fetch(API_BASE + "/api/lesson-progress", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...NGROK_HEADERS },
+      body: JSON.stringify({
+        student_name: studentName,
+        lesson: "peter_rabbit_img1",
+        sentences_done: done,
+        sentences_total: total
+      })
+    });
+  } catch (e) { console.warn("Progress report failed:", e); }
+}
 
+async function playSequence() {
+  if (audioCache.length === 0) await preGenerateAll();
   isPlaying = true;
   isPaused = false;
   setPlayBtn(true);
@@ -310,38 +362,37 @@ async function playSequence() {
   for (let i = currentStep < 0 ? 0 : currentStep; i < SCRIPT.length; i++) {
     currentStep = i;
     updateUI(i);
-
     const cached = audioCache[i];
     if (cached.type === "silence") {
       await playSilence(cached.dur);
     } else {
       await playBlob(cached.blob);
     }
-
-    if (isPaused) {
-      currentStep = i + 1;
-      return;
-    }
+    if (isPaused) { currentStep = i + 1; return; }
   }
 
+  // Finished
   isPlaying = false;
   currentStep = -1;
   setPlayBtn(false);
   document.getElementById("chunkLabel").textContent = "Complete!";
   document.getElementById("progressBar").style.width = "100%";
-  document.getElementById("phaseDisplay").innerHTML = "<b>Well done!</b> You said all 4 sentences!";
-  for (let i = 0; i < 4; i++) {
+  document.getElementById("phaseDisplay").innerHTML = "<b>Well done!</b> You said all " + SENTENCES.length + " sentences!";
+  for (let i = 0; i < SENTENCES.length; i++) {
     const el = document.getElementById("s" + i);
+    if (!el) continue;
     el.classList.remove("active", "cumulative");
     el.classList.add("done");
     el.querySelector(".check").textContent = "\u2705";
   }
+  await reportProgress(SENTENCES.length, SENTENCES.length);
 }
 
 function handlePlay() {
+  if (!studentName) { document.getElementById("nameModal").classList.remove("hidden"); return; }
   if (isPlaying && !isPaused) {
     isPaused = true;
-    if (currentAudio) { currentAudio.pause(); }
+    if (currentAudio) currentAudio.pause();
     if (silenceTimer) { clearTimeout(silenceTimer); silenceTimer = null; }
     setPlayBtn(false);
   } else if (isPaused) {
@@ -358,6 +409,49 @@ function toggleMemo() {
   memoMode = !memoMode;
   document.getElementById("btnMemo").classList.toggle("on", memoMode);
   document.querySelectorAll(".sentence").forEach(el => el.classList.toggle("hidden-text", memoMode));
+}
+
+// ── Polling: lesson-state from server (every 5s) ──
+async function pollLessonState() {
+  try {
+    const res = await fetch(API_BASE + "/api/lesson-state", { headers: NGROK_HEADERS });
+    if (!res.ok) return;
+    const state = await res.json();
+    if (state.version && state.version !== lastStateVersion) {
+      lastStateVersion = state.version;
+      applyRemoteState(state);
+    }
+  } catch (e) { /* silent */ }
+}
+
+function applyRemoteState(state) {
+  // Update sentences if provided
+  if (state.sentences && state.sentences.length > 0) {
+    SENTENCES.length = 0;
+    state.sentences.forEach(s => SENTENCES.push(s));
+    buildSentenceList();
+  }
+
+  // Apply highlight if provided (only when not playing TTS)
+  if (state.highlight && !isPlaying) {
+    for (let i = 0; i < SENTENCES.length; i++) {
+      const el = document.getElementById("s" + i);
+      if (!el) continue;
+      el.classList.toggle("active", state.highlight.includes(i));
+      el.classList.remove("done", "cumulative");
+      el.querySelector(".check").textContent = "";
+    }
+  }
+
+  // Update phase display if provided
+  if (state.phase && !isPlaying) {
+    document.getElementById("phaseDisplay").innerHTML = "<b>" + state.phase + "</b>";
+  }
+}
+
+function startPolling() {
+  if (pollTimer) return;
+  pollTimer = setInterval(pollLessonState, 5000);
 }
 </script>
 </body>
