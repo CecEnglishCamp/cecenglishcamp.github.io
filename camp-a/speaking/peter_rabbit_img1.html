@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peter Rabbit - Picture Speaking Practice</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e0e0e0;font-family:'Segoe UI',Tahoma,sans-serif;min-height:100vh}
+.container{max-width:1200px;margin:0 auto;padding:16px}
+h1{text-align:center;color:#00ffff;font-size:1.4rem;margin-bottom:14px;text-shadow:0 0 10px rgba(0,255,255,.3)}
+
+.main-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;align-items:start}
+@media(max-width:900px){.main-grid{grid-template-columns:1fr}}
+
+/* Panels */
+.panel{background:#111;border-radius:12px;padding:16px;border:1px solid #222}
+.panel h2{color:#00ffff;font-size:1rem;margin-bottom:12px}
+
+/* Image */
+.img-panel img{width:100%;border-radius:10px;border:2px solid #00ffff33;box-shadow:0 0 20px rgba(0,255,255,.12)}
+
+/* Sentences */
+.sentence{display:flex;align-items:flex-start;gap:8px;padding:9px 10px;border-radius:8px;margin-bottom:4px;transition:all .3s;font-size:1rem;line-height:1.4}
+.sentence .num{color:#555;font-weight:700;min-width:22px;flex-shrink:0}
+.sentence .text{color:#666;transition:all .3s}
+.sentence.active{background:#00ffff0d;transform:scale(1.03)}
+.sentence.active .num{color:#00ffff}
+.sentence.active .text{color:#00ffff;font-size:1.08rem;font-weight:600}
+.sentence.done .num{color:#4ade80}
+.sentence.done .text{color:#4ade80}
+.sentence.done .check{color:#4ade80;margin-left:auto;flex-shrink:0}
+.sentence.cumulative{background:#00ffff08}
+.sentence.cumulative .text{color:#88dddd}
+.sentence.hidden-text .text{color:transparent;background:#222;border-radius:4px;user-select:none}
+.sentence.hidden-text.active .text{color:transparent;background:#00ffff22}
+.sentence.hidden-text.done .text{color:transparent;background:#4ade8033}
+
+/* Controls */
+.ctrl-panel{display:flex;flex-direction:column;gap:12px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:10px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s;width:100%}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-play{background:linear-gradient(135deg,#00ffff,#0088aa);color:#0a0a0a}
+.btn-play:hover:not(:disabled){box-shadow:0 0 20px rgba(0,255,255,.4)}
+.btn-play.playing{background:linear-gradient(135deg,#ff6b6b,#cc3333);color:#fff}
+.btn-memo{background:#1a1a2e;color:#00ffff;border:1px solid #00ffff44}
+.btn-memo:hover{background:#00ffff15}
+.btn-memo.on{background:#00ffff22;border-color:#00ffff}
+
+/* Progress */
+.progress-box{background:#0a0a1a;border-radius:10px;padding:12px;border:1px solid #222}
+.progress-label{display:flex;justify-content:space-between;font-size:.85rem;color:#888;margin-bottom:6px}
+.progress-label span:first-child{color:#00ffff}
+.progress-track{height:8px;background:#222;border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00ffff,#4ade80);border-radius:4px;transition:width .3s;width:0%}
+
+/* Phase & script line */
+.phase{text-align:center;padding:10px;border-radius:8px;background:#0a0a1a;border:1px solid #00ffff22;font-size:.88rem;color:#aaa;min-height:52px;display:flex;align-items:center;justify-content:center;line-height:1.4}
+.phase b{color:#00ffff}
+.phase .en{color:#ffd700}
+
+/* Loading overlay */
+.loading{position:fixed;inset:0;background:rgba(10,10,10,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;gap:16px}
+.loading.hidden{display:none}
+.loading h2{color:#00ffff;font-size:1.2rem}
+.loading p{color:#888;font-size:.9rem}
+.spinner{width:40px;height:40px;border:3px solid #222;border-top-color:#00ffff;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-progress{color:#00ffff;font-size:.95rem;font-variant-numeric:tabular-nums}
+
+/* API key modal */
+.modal{position:fixed;inset:0;background:rgba(10,10,10,.95);display:flex;align-items:center;justify-content:center;z-index:200}
+.modal.hidden{display:none}
+.modal-box{background:#151520;border:1px solid #00ffff44;border-radius:14px;padding:28px;max-width:420px;width:90%}
+.modal-box h2{color:#00ffff;margin-bottom:12px;font-size:1.1rem}
+.modal-box p{color:#888;font-size:.85rem;margin-bottom:14px;line-height:1.5}
+.modal-box input{width:100%;padding:10px 12px;background:#0a0a0a;border:1px solid #333;border-radius:8px;color:#e0e0e0;font-size:.9rem;margin-bottom:12px}
+.modal-box input:focus{outline:none;border-color:#00ffff}
+.modal-box .btn-ok{background:#00ffff;color:#0a0a0a;padding:10px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:.95rem;width:100%}
+</style>
+</head>
+<body>
+
+<!-- API Key Modal -->
+<div class="modal" id="keyModal">
+  <div class="modal-box">
+    <h2>OpenAI API Key</h2>
+    <p>TTS audio requires an OpenAI API key.<br>Your key is stored locally in this browser only.</p>
+    <input type="password" id="apiKeyInput" placeholder="sk-proj-...">
+    <button class="btn-ok" onclick="saveKey()">Start</button>
+  </div>
+</div>
+
+<!-- Loading overlay -->
+<div class="loading hidden" id="loadingOverlay">
+  <div class="spinner"></div>
+  <h2>Generating Audio...</h2>
+  <p class="load-progress" id="loadProgress">0 / 0</p>
+  <p style="color:#666;font-size:.8rem">First play generates all TTS clips</p>
+</div>
+
+<div class="container">
+  <h1>Peter Rabbit - Picture Speaking</h1>
+
+  <div class="main-grid">
+    <!-- Left: Image -->
+    <div class="panel img-panel">
+      <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/peter_rabbit_img1.png" alt="Peter Rabbit Image 1">
+    </div>
+
+    <!-- Center: Sentences -->
+    <div class="panel">
+      <h2>Sentences</h2>
+      <div id="sentenceList"></div>
+      <button class="btn btn-memo" id="btnMemo" onclick="toggleMemo()" style="margin-top:12px">Memorize Mode</button>
+    </div>
+
+    <!-- Right: Controls -->
+    <div class="panel ctrl-panel">
+      <button class="btn btn-play" id="btnPlay" onclick="handlePlay()">
+        <svg id="iconPlay" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+        <svg id="iconPause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/></svg>
+        <span id="btnLabel">Play</span>
+      </button>
+
+      <div class="progress-box">
+        <div class="progress-label"><span id="chunkLabel">Ready</span><span id="stepLabel">0 / 42</span></div>
+        <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+      </div>
+
+      <div class="phase" id="phaseDisplay">Press Play to start</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SENTENCES = [
+  "I see a mother rabbit.",
+  "She has a white apron.",
+  "There are four rabbits.",
+  "The mother is talking to her children."
+];
+
+// Script: each step = { type, text, highlight, done, chunk, phaseText }
+// type: "kr" | "en" | "silence"
+// highlight: array of sentence indices to highlight as active
+// done: array of sentence indices to show as done
+const SCRIPT = [
+  { type:"kr", text:"안녕! 나는 Robo야! 오늘 우리가 할 건 정말 특별한 영어 훈련이야. 이 방법은 최신 영어 교육 방법으로 CEC 영어캠프에서만 경험할 수 있는 특별한 프로그램이야. 그림을 보면서 영어로 말하는 훈련인데, 이 방법으로 공부하면 영어 실력이 정말 빠르게 늘 거야!", hi:[], done:[], chunk:0, phase:"Intro" },
+  { type:"kr", text:"오늘의 훈련 목표는 이거야. 이 그림을 보고 영어 문장 4개를 외워서, 마지막엔 그림만 보고 혼자 줄줄 말하는 거야. 엄마 앞에서도 자신 있게 영어로 말할 수 있게 될 거야!", hi:[], done:[], chunk:0, phase:"Intro" },
+  { type:"kr", text:"딱 4개 문장이야. 짧고 쉬워. 할 수 있어! 그럼 시작하자!", hi:[], done:[], chunk:0, phase:"Intro" },
+
+  // Sentence 1
+  { type:"kr", text:"첫 번째 문장이야.", hi:[0], done:[], chunk:1, phase:"Sentence 1 - Listen" },
+  { type:"en", text:"I see a mother rabbit.", hi:[0], done:[], chunk:1, phase:"Sentence 1 - Listen" },
+  { type:"kr", text:"따라해봐!", hi:[0], done:[], chunk:1, phase:"Sentence 1 - Repeat!" },
+  { type:"silence", dur:3, hi:[0], done:[], chunk:1, phase:"Sentence 1 - Your turn!" },
+  { type:"en", text:"I see a mother rabbit.", hi:[0], done:[], chunk:1, phase:"Sentence 1 - Check" },
+  { type:"kr", text:"잘했어!", hi:[], done:[0], chunk:1, phase:"Sentence 1 - Done!" },
+
+  // Sentence 2
+  { type:"kr", text:"두 번째 문장이야.", hi:[1], done:[0], chunk:1, phase:"Sentence 2 - Listen" },
+  { type:"en", text:"She has a white apron.", hi:[1], done:[0], chunk:1, phase:"Sentence 2 - Listen" },
+  { type:"kr", text:"apron은 앞치마야. 따라해봐!", hi:[1], done:[0], chunk:1, phase:"Sentence 2 - Repeat!" },
+  { type:"silence", dur:3, hi:[1], done:[0], chunk:1, phase:"Sentence 2 - Your turn!" },
+  { type:"en", text:"She has a white apron.", hi:[1], done:[0], chunk:1, phase:"Sentence 2 - Check" },
+
+  // Cumulative 1-2
+  { type:"kr", text:"좋아! 이제 두 문장 연속으로 들어봐!", hi:[0,1], done:[], chunk:1, phase:"Sentences 1~2 together" },
+  { type:"en", text:"I see a mother rabbit. She has a white apron.", hi:[0,1], done:[], chunk:1, phase:"Sentences 1~2 - Listen" },
+  { type:"kr", text:"혼자 말해봐! 4초!", hi:[0,1], done:[], chunk:1, phase:"Sentences 1~2 - Your turn!" },
+  { type:"silence", dur:4, hi:[0,1], done:[], chunk:1, phase:"Sentences 1~2 - Your turn!" },
+  { type:"en", text:"I see a mother rabbit. She has a white apron.", hi:[0,1], done:[], chunk:1, phase:"Sentences 1~2 - Check" },
+  { type:"kr", text:"대단해! 2문장 완료!", hi:[], done:[0,1], chunk:1, phase:"Chunk 1 complete!" },
+
+  // Sentence 3
+  { type:"kr", text:"세 번째 문장이야.", hi:[2], done:[0,1], chunk:2, phase:"Sentence 3 - Listen" },
+  { type:"en", text:"There are four rabbits.", hi:[2], done:[0,1], chunk:2, phase:"Sentence 3 - Listen" },
+  { type:"kr", text:"따라해봐!", hi:[2], done:[0,1], chunk:2, phase:"Sentence 3 - Repeat!" },
+  { type:"silence", dur:3, hi:[2], done:[0,1], chunk:2, phase:"Sentence 3 - Your turn!" },
+  { type:"en", text:"There are four rabbits.", hi:[2], done:[0,1], chunk:2, phase:"Sentence 3 - Check" },
+  { type:"kr", text:"잘했어!", hi:[], done:[0,1,2], chunk:2, phase:"Sentence 3 - Done!" },
+
+  // Sentence 4
+  { type:"kr", text:"네 번째 문장이야.", hi:[3], done:[0,1,2], chunk:2, phase:"Sentence 4 - Listen" },
+  { type:"en", text:"The mother is talking to her children.", hi:[3], done:[0,1,2], chunk:2, phase:"Sentence 4 - Listen" },
+  { type:"kr", text:"talking to는 말하고 있다는 뜻이야. 따라해봐!", hi:[3], done:[0,1,2], chunk:2, phase:"Sentence 4 - Repeat!" },
+  { type:"silence", dur:3, hi:[3], done:[0,1,2], chunk:2, phase:"Sentence 4 - Your turn!" },
+  { type:"en", text:"The mother is talking to her children.", hi:[3], done:[0,1,2], chunk:2, phase:"Sentence 4 - Check" },
+
+  // Cumulative 3-4
+  { type:"kr", text:"좋아! 3번 4번 연속으로!", hi:[2,3], done:[0,1], chunk:2, phase:"Sentences 3~4 together" },
+  { type:"en", text:"There are four rabbits. The mother is talking to her children.", hi:[2,3], done:[0,1], chunk:2, phase:"Sentences 3~4 - Listen" },
+  { type:"kr", text:"혼자 말해봐! 5초!", hi:[2,3], done:[0,1], chunk:2, phase:"Sentences 3~4 - Your turn!" },
+  { type:"silence", dur:5, hi:[2,3], done:[0,1], chunk:2, phase:"Sentences 3~4 - Your turn!" },
+  { type:"en", text:"There are four rabbits. The mother is talking to her children.", hi:[2,3], done:[0,1], chunk:2, phase:"Sentences 3~4 - Check" },
+
+  // Final cumulative 1-4
+  { type:"kr", text:"이제 4문장 전체 들어봐!", hi:[0,1,2,3], done:[], chunk:2, phase:"All 4 sentences!" },
+  { type:"en", text:"I see a mother rabbit. She has a white apron. There are four rabbits. The mother is talking to her children.", hi:[0,1,2,3], done:[], chunk:2, phase:"All 4 - Listen" },
+  { type:"kr", text:"혼자 말해봐! 8초!", hi:[0,1,2,3], done:[], chunk:2, phase:"All 4 - Your turn!" },
+  { type:"silence", dur:8, hi:[0,1,2,3], done:[], chunk:2, phase:"All 4 - Your turn!" },
+  { type:"en", text:"I see a mother rabbit. She has a white apron. There are four rabbits. The mother is talking to her children.", hi:[0,1,2,3], done:[], chunk:2, phase:"All 4 - Check" },
+  { type:"kr", text:"완벽해! 4문장 다 외웠어! 이제 그림만 보고 혼자 말해봐. Robo가 응원할게!", hi:[], done:[0,1,2,3], chunk:2, phase:"Complete!" },
+];
+
+let apiKey = localStorage.getItem("openai_tts_key") || "";
+let audioCache = []; // pre-generated audio blobs
+let isPlaying = false;
+let isPaused = false;
+let currentStep = -1;
+let currentAudio = null;
+let silenceTimer = null;
+let memoMode = false;
+let pauseResolve = null;
+
+// Build sentence list
+const listEl = document.getElementById("sentenceList");
+SENTENCES.forEach((s, i) => {
+  const div = document.createElement("div");
+  div.className = "sentence";
+  div.id = "s" + i;
+  div.innerHTML = `<span class="num">${i+1}.</span><span class="text">${s}</span><span class="check"></span>`;
+  listEl.appendChild(div);
+});
+
+// API key handling
+if (apiKey) {
+  document.getElementById("keyModal").classList.add("hidden");
+}
+function saveKey() {
+  const v = document.getElementById("apiKeyInput").value.trim();
+  if (!v) return;
+  apiKey = v;
+  localStorage.setItem("openai_tts_key", v);
+  document.getElementById("keyModal").classList.add("hidden");
+}
+
+// TTS generation
+async function generateTTS(text, voice, speed) {
+  const res = await fetch("https://api.openai.com/v1/audio/speech", {
+    method: "POST",
+    headers: { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" },
+    body: JSON.stringify({ model: "tts-1-hd", voice, speed, input: text, response_format: "mp3" })
+  });
+  if (!res.ok) throw new Error("TTS API error: " + res.status);
+  return await res.blob();
+}
+
+function createSilence(durationSec) {
+  // Generate silence as a very short WAV with correct duration via AudioContext
+  return new Promise(resolve => {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const sr = ctx.sampleRate;
+    const len = sr * durationSec;
+    const buf = ctx.createBuffer(1, len, sr);
+    // buffer is already zeros = silence
+    resolve({ type: "silence", duration: durationSec, buffer: buf, ctx });
+  });
+}
+
+async function preGenerateAll() {
+  const overlay = document.getElementById("loadingOverlay");
+  const prog = document.getElementById("loadProgress");
+  overlay.classList.remove("hidden");
+
+  const ttsSteps = SCRIPT.filter(s => s.type !== "silence");
+  const total = ttsSteps.length;
+  let done = 0;
+
+  audioCache = [];
+  for (let i = 0; i < SCRIPT.length; i++) {
+    const step = SCRIPT[i];
+    if (step.type === "silence") {
+      audioCache.push({ type: "silence", dur: step.dur });
+    } else {
+      const voice = step.type === "kr" ? "alloy" : "coral";
+      const speed = step.type === "kr" ? 1.0 : 0.85;
+      const blob = await generateTTS(step.text, voice, speed);
+      audioCache.push({ type: "audio", blob });
+      done++;
+      prog.textContent = done + " / " + total;
+    }
+  }
+
+  overlay.classList.add("hidden");
+}
+
+function playBlob(blob) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    currentAudio = audio;
+    audio.onended = () => { URL.revokeObjectURL(url); currentAudio = null; resolve(); };
+    audio.onerror = (e) => { URL.revokeObjectURL(url); currentAudio = null; reject(e); };
+    audio.play();
+  });
+}
+
+function playSilence(dur) {
+  return new Promise(resolve => {
+    silenceTimer = setTimeout(() => { silenceTimer = null; resolve(); }, dur * 1000);
+  });
+}
+
+function updateUI(idx) {
+  const step = SCRIPT[idx];
+  const total = SCRIPT.length;
+  const pct = Math.round(((idx + 1) / total) * 100);
+
+  document.getElementById("progressBar").style.width = pct + "%";
+  document.getElementById("stepLabel").textContent = (idx + 1) + " / " + total;
+  document.getElementById("chunkLabel").textContent = step.chunk > 0 ? "Chunk " + step.chunk + " / 2" : "Intro";
+
+  // Phase
+  let phaseHtml = step.phase;
+  phaseHtml = phaseHtml.replace(/Sentence \d/g, '<b>$&</b>').replace(/Sentences \d~\d/g, '<b>$&</b>').replace(/All \d/g, '<b>$&</b>').replace(/Complete!/g, '<b>$&</b>').replace(/Chunk \d/g, '<b>$&</b>');
+
+  // Show current script text in phase display
+  if (step.type === "silence") {
+    phaseHtml += '<br><span style="color:#ffd700;font-size:.8rem">🎤 Your turn...</span>';
+  } else if (step.type === "en") {
+    phaseHtml += '<br><span class="en" style="font-size:.82rem">' + step.text + '</span>';
+  }
+  document.getElementById("phaseDisplay").innerHTML = phaseHtml;
+
+  // Sentences
+  for (let i = 0; i < 4; i++) {
+    const el = document.getElementById("s" + i);
+    const isActive = step.hi.includes(i);
+    const isDone = step.done.includes(i);
+    el.classList.toggle("active", isActive);
+    el.classList.toggle("done", isDone);
+    el.classList.toggle("cumulative", isActive && step.hi.length > 1);
+    el.querySelector(".check").textContent = isDone ? "\u2705" : "";
+  }
+}
+
+function setPlayBtn(playing) {
+  document.getElementById("btnLabel").textContent = playing ? "Pause" : "Play";
+  document.getElementById("iconPlay").style.display = playing ? "none" : "";
+  document.getElementById("iconPause").style.display = playing ? "" : "none";
+  document.getElementById("btnPlay").classList.toggle("playing", playing);
+}
+
+async function playSequence() {
+  if (audioCache.length === 0) {
+    await preGenerateAll();
+  }
+
+  isPlaying = true;
+  isPaused = false;
+  setPlayBtn(true);
+
+  for (let i = currentStep < 0 ? 0 : currentStep; i < SCRIPT.length; i++) {
+    currentStep = i;
+    updateUI(i);
+
+    const cached = audioCache[i];
+    if (cached.type === "silence") {
+      await playSilence(cached.dur);
+    } else {
+      await playBlob(cached.blob);
+    }
+
+    // Check if paused during playback
+    if (isPaused) {
+      currentStep = i + 1;
+      return;
+    }
+  }
+
+  // Finished
+  isPlaying = false;
+  currentStep = -1;
+  setPlayBtn(false);
+  document.getElementById("chunkLabel").textContent = "Complete!";
+  document.getElementById("progressBar").style.width = "100%";
+  document.getElementById("phaseDisplay").innerHTML = "<b>Well done!</b> You said all 4 sentences!";
+  for (let i = 0; i < 4; i++) {
+    const el = document.getElementById("s" + i);
+    el.classList.remove("active", "cumulative");
+    el.classList.add("done");
+    el.querySelector(".check").textContent = "\u2705";
+  }
+}
+
+function handlePlay() {
+  if (!apiKey) {
+    document.getElementById("keyModal").classList.remove("hidden");
+    return;
+  }
+  if (isPlaying && !isPaused) {
+    // Pause
+    isPaused = true;
+    if (currentAudio) { currentAudio.pause(); }
+    if (silenceTimer) { clearTimeout(silenceTimer); silenceTimer = null; }
+    setPlayBtn(false);
+  } else if (isPaused) {
+    // Resume
+    isPaused = false;
+    setPlayBtn(true);
+    playSequence();
+  } else {
+    // Start
+    currentStep = -1;
+    playSequence();
+  }
+}
+
+function toggleMemo() {
+  memoMode = !memoMode;
+  document.getElementById("btnMemo").classList.toggle("on", memoMode);
+  document.querySelectorAll(".sentence").forEach(el => el.classList.toggle("hidden-text", memoMode));
+}
+</script>
+</body>
+</html>
