@@ -1,54 +1,47 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>수업 시작 — Week 01</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;display:flex;align-items:center;justify-content:center;height:100vh;font-family:'Noto Sans KR',sans-serif}
-.card{background:#0a1628;border:1px solid #00f2ff;border-radius:20px;padding:48px;max-width:480px;width:90%;text-align:center}
-.robo{width:60px;height:60px;border-radius:50%;border:2px solid #00f2ff55;margin:0 auto 20px;display:block}
-.title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:28px;font-weight:700;color:#00f2ff;margin-bottom:10px}
-.sub{font-family:'Noto Sans KR',sans-serif;font-size:14px;color:#888;line-height:1.7;margin-bottom:20px}
-.warn{font-family:'Noto Sans KR',sans-serif;font-size:13px;color:#ffaa00;margin-bottom:28px}
-.btn{display:inline-block;padding:16px 48px;background:#00f2ff;color:#000;border:none;border-radius:12px;font-size:18px;font-weight:bold;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:background .2s}
-.btn:hover{background:#00c8d4}
-</style>
+  <meta charset="UTF-8">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { width:100%; height:100vh; overflow:hidden; background:#000; }
+    iframe {
+      width:100%;
+      height:100vh;
+      border:none;
+      display:block;
+    }
+    .guide-bar {
+      position:fixed;
+      top:0;
+      width:100%;
+      background:#00f2ff;
+      color:#000;
+      font-size:12px;
+      text-align:center;
+      padding:4px;
+      z-index:9999;
+      transition:opacity 0.5s;
+    }
+  </style>
 </head>
 <body>
-<div class="card">
-  <img class="robo" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo">
-  <div class="title">수업 + AI 튜터 동시 시작</div>
-  <div class="sub">버튼을 누르면 수업과 ChatGPT가<br>좌우로 열립니다</div>
-  <div class="warn">⚠️ 팝업 차단 허용이 필요합니다</div>
-  <button class="btn" onclick="openBoth()">지금 시작하기 →</button>
-</div>
-<script>
-function openBoth() {
-  const W = screen.availWidth;
-  const H = screen.availHeight;
-  const left = screen.availLeft || 0;
-  const top = screen.availTop || 0;
+  <div class="guide-bar" id="guideBar">💡 이 창을 왼쪽에, ChatGPT 창을 오른쪽에 배치하세요</div>
+  <iframe src="./week01.html"></iframe>
 
-  // ChatGPT 먼저 오른쪽에 열기
-  window.open(
-    'https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b-yeongeo-tyuteo-cec-englishcamp-a',
-    'chatgpt',
-    `width=${W/2},height=${H},left=${left + W/2},top=${top}`
-  );
-
-  // 약간 딜레이 후 수업 창 왼쪽에 열기
-  setTimeout(() => {
+  <script>
+    // 페이지 로드 즉시 ChatGPT를 새 탭으로 열기
     window.open(
-      './week01.html',
-      'lesson',
-      `width=${W/2},height=${H},left=${left},top=${top}`
+      'https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b-yeongeo-tyuteo-cec-englishcamp-a',
+      '_blank'
     );
-    window.close();
-  }, 300);
-}
-</script>
+
+    // 3초 후 안내바 페이드아웃
+    setTimeout(function() {
+      var bar = document.getElementById('guideBar');
+      bar.style.opacity = '0';
+      setTimeout(function() { bar.style.display = 'none'; }, 500);
+    }, 3000);
+  </script>
 </body>
 </html>
