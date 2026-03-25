@@ -45,7 +45,7 @@ h1{text-align:center;color:#00ffff;font-size:1.4rem;margin-bottom:14px;text-shad
 </style>
 </head>
 <body>
-<div class="modal" id="nameModal"><div class="modal-box"><h2>Welcome!</h2><p>Enter your name to start</p><input type="text" id="nameInput" placeholder="Your name" maxlength="20" autofocus><button class="btn-ok" onclick="saveName()">Start</button></div></div>
+
 <div class="container">
 <h1>Peter Rabbit - Picture Speaking 2</h1>
 <div class="main-grid">
@@ -66,12 +66,11 @@ var SENTENCES=["I see a rabbit.", "He has a blue jacket.", "He is under the gate
 var SCRIPT=[{"type": "kr", "text": "잘했어! 이제 두 번째 그림이야! 피터가 뭘 하고 있지? 맞아! 엄마 말을 안 듣고 몰래 나무 문 밑으로 기어들어가고 있어. 당근도 보이지? 배가 고팠나봐! 자, 영어로 말해보자!", "t": 0.0}, {"type": "kr", "text": "첫 번째 문장이야. 그림에 누가 보여? 맞아, 토끼야!", "t": 15.2}, {"type": "en", "text": "I see a rabbit.", "t": 20.2}, {"type": "kr", "text": "따라해봐!", "t": 22.0}, {"type": "silence", "dur": 3, "t": 23.5}, {"type": "en", "text": "I see a rabbit.", "t": 25.9}, {"type": "kr", "text": "잘했어!", "t": 27.7}, {"type": "kr", "text": "두 번째 문장이야. 피터가 무슨 색 재킷을 입고 있어? 파란색이지!", "t": 29.1}, {"type": "en", "text": "He has a blue jacket.", "t": 35.2}, {"type": "kr", "text": "따라해봐!", "t": 37.2}, {"type": "silence", "dur": 3, "t": 38.7}, {"type": "en", "text": "He has a blue jacket.", "t": 41.1}, {"type": "kr", "text": "두 문장 연속으로!", "t": 43.2}, {"type": "en", "text": "I see a rabbit. He has a blue jacket.", "t": 45.3}, {"type": "kr", "text": "혼자 말해봐! 4초!", "t": 48.5}, {"type": "silence", "dur": 4, "t": 50.7}, {"type": "en", "text": "I see a rabbit. He has a blue jacket.", "t": 53.9}, {"type": "kr", "text": "대단해!", "t": 57.2}, {"type": "kr", "text": "세 번째 문장이야. 피터가 지금 어디 있어? 문 밑이지? under가 밑에라는 뜻이야!", "t": 58.6}, {"type": "en", "text": "He is under the gate.", "t": 66.2}, {"type": "kr", "text": "따라해봐!", "t": 68.3}, {"type": "silence", "dur": 3, "t": 69.8}, {"type": "en", "text": "He is under the gate.", "t": 72.2}, {"type": "kr", "text": "잘했어!", "t": 74.2}, {"type": "kr", "text": "네 번째 문장이야. 피터가 어디로 가고 있어? 맥그리거 아저씨 정원으로 들어가고 있지!", "t": 75.7}, {"type": "en", "text": "He is going into the garden.", "t": 83.3}, {"type": "kr", "text": "따라해봐!", "t": 85.7}, {"type": "silence", "dur": 3, "t": 87.1}, {"type": "en", "text": "He is going into the garden.", "t": 89.5}, {"type": "kr", "text": "3번 4번 연속으로!", "t": 91.9}, {"type": "en", "text": "He is under the gate. He is going into the garden.", "t": 94.2}, {"type": "kr", "text": "혼자 말해봐! 5초!", "t": 97.9}, {"type": "silence", "dur": 5, "t": 100.2}, {"type": "en", "text": "He is under the gate. He is going into the garden.", "t": 104.2}, {"type": "kr", "text": "이제 4문장 전체!", "t": 108.0}, {"type": "en", "text": "I see a rabbit. He has a blue jacket. He is under the gate. He is going into the garden.", "t": 110.1}, {"type": "kr", "text": "혼자 말해봐! 8초!", "t": 116.5}, {"type": "silence", "dur": 8, "t": 118.7}, {"type": "en", "text": "I see a rabbit. He has a blue jacket. He is under the gate. He is going into the garden.", "t": 125.1}, {"type": "kr", "text": "완벽해!", "t": 131.5}];
 var NGROK="https://journey-bronzy-fruitily.ngrok-free.dev";
 var LESSON_ID="peter_rabbit_img2";
-var studentName=new URLSearchParams(window.location.search).get("name")||"";
+var studentName=new URLSearchParams(window.location.search).get("name")||"Student";
 var memoMode=false;
 
-if(studentName){document.getElementById("nameModal").classList.add("hidden");document.getElementById("studentBadge").innerHTML="Student: <b>"+studentName+"</b>";}
-function saveName(){var v=document.getElementById("nameInput").value.trim();if(!v)return;studentName=v;document.getElementById("nameModal").classList.add("hidden");document.getElementById("studentBadge").innerHTML="Student: <b>"+studentName+"</b>";}
-document.getElementById("nameInput").addEventListener("keydown",function(e){if(e.key==="Enter")saveName();});
+
+
 
 var listEl=document.getElementById("sentenceList");
 SENTENCES.forEach(function(s,i){var d=document.createElement("div");d.className="sentence";d.id="s"+i;d.innerHTML='<span class="num">'+(i+1)+'.</span><span class="text">'+s+'</span><span class="check"></span>';listEl.appendChild(d);});
@@ -117,7 +116,7 @@ function updateUI(){
 function setPlayBtn(p){document.getElementById("btnLabel").textContent=p?"Pause":"Play";document.getElementById("iconPlay").style.display=p?"none":"";document.getElementById("iconPause").style.display=p?"":"none";document.getElementById("btnPlay").classList.toggle("playing",p);}
 
 function handlePlay(){
-  if(!studentName){document.getElementById("nameModal").classList.remove("hidden");return;}
+  
   if(audio.paused){audio.play();setPlayBtn(true);requestAnimationFrame(updateUI);}
   else{audio.pause();setPlayBtn(false);}
 }
