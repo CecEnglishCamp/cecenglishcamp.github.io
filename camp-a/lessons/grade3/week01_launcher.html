@@ -29,23 +29,25 @@ body{background:#000;display:flex;align-items:center;justify-content:center;heig
 function openBoth() {
   const W = screen.availWidth;
   const H = screen.availHeight;
+  const left = screen.availLeft || 0;
+  const top = screen.availTop || 0;
 
-  // 왼쪽 50% — 수업 창
-  window.open(
-    './week01.html',
-    'lesson',
-    `width=${W/2},height=${H},left=0,top=0`
-  );
-
-  // 오른쪽 50% — ChatGPT 창
+  // ChatGPT 먼저 오른쪽에 열기
   window.open(
     'https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b-yeongeo-tyuteo-cec-englishcamp-a',
     'chatgpt',
-    `width=${W/2},height=${H},left=${W/2},top=0`
+    `width=${W/2},height=${H},left=${left + W/2},top=${top}`
   );
 
-  // 런처 창 닫기
-  window.close();
+  // 약간 딜레이 후 수업 창 왼쪽에 열기
+  setTimeout(() => {
+    window.open(
+      './week01.html',
+      'lesson',
+      `width=${W/2},height=${H},left=${left},top=${top}`
+    );
+    window.close();
+  }, 300);
 }
 </script>
 </body>
