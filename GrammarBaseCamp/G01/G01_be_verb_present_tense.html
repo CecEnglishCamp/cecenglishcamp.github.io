@@ -459,60 +459,136 @@
 </div>
 <script src="../grammar_story_map.js"></script>
 <script>
-(function(){
-  var path=window.location.pathname;
-  var m=path.match(/G(\d+)/i);
-  var gid=m?'G'+('0'+m[1]).slice(-2):'G01';
-  var data=(typeof GRAMMAR_STORY_MAP!=='undefined')?GRAMMAR_STORY_MAP[gid]:null;
+document.addEventListener('DOMContentLoaded', function(){
+  var path = window.location.pathname;
+  var m = path.match(/G(\d+)/i);
+  var gid = m ? 'G' + ('0' + m[1]).slice(-2) : 'G01';
+  var data = (typeof GRAMMAR_STORY_MAP !== 'undefined') ? GRAMMAR_STORY_MAP[gid] : null;
+
   if(data){
-    document.getElementById('gbHintText').textContent=data.title;
-    document.getElementById('gbSub').textContent=gid+' — '+data.title;
-    gbAddAI('안녕하세요! 👋\n'+data.title+' 궁금한 거 물어보세요!\n예: '+data.example);
+    var ht = document.getElementById('gbHintText');
+    var sub = document.getElementById('gbSub');
+    if(ht) ht.textContent = data.title;
+    if(sub) sub.textContent = gid + ' \u2014 ' + data.title;
+    gbAddAI('\uc548\ub155\ud558\uc138\uc694! \ud83d\udc4b\n' + gid + ' ' + data.title + ' \uacf5\ubd80 \uc911\uc774\uc2dc\uad70\uc694!\n\uad81\uae08\ud55c \ubb38\ubc95\uc774 \uc788\uc73c\uba74 \ubc14\ub85c \ubb3c\uc5b4\ubcf4\uc138\uc694!\n\uc608: "\uc218\ub3d9\ud0dc \uba87 \ubc88?" "\ud604\uc7ac\uc644\ub8cc \uc124\uba85\ud574\uc918"');
   }
-  var gbOpen=false;
-  window.gbToggle=function(){
-    gbOpen=!gbOpen;
-    document.getElementById('gbPanel').style.display=gbOpen?'block':'none';
-    document.getElementById('gbHint').style.opacity=gbOpen?'0':'1';
-    if(gbOpen)setTimeout(function(){document.getElementById('gbInput').focus();},100);
-  };
-  window.gbSend=function(){
-    var inp=document.getElementById('gbInput');
-    var msg=inp.value.trim();
-    if(!msg)return;
+
+  var gbOpen = false;
+
+  document.getElementById('gbHint').addEventListener('click', gbToggle);
+  document.querySelector('.gb-robo').addEventListener('click', gbToggle);
+  document.getElementById('gbClose').addEventListener('click', gbToggle);
+  document.getElementById('gbSend').addEventListener('click', gbSend);
+  document.getElementById('gbInput').addEventListener('keydown', function(e){
+    if(e.key === 'Enter') gbSend();
+  });
+  document.getElementById('gbBtn1').addEventListener('click', gbConversation);
+  document.getElementById('gbBtn2').addEventListener('click', gbCamp);
+
+  function gbToggle(){
+    gbOpen = !gbOpen;
+    document.getElementById('gbPanel').style.display = gbOpen ? 'block' : 'none';
+    document.getElementById('gbHint').style.opacity = gbOpen ? '0' : '1';
+    if(gbOpen) setTimeout(function(){ document.getElementById('gbInput').focus(); }, 100);
+  }
+
+  function gbSend(){
+    var inp = document.getElementById('gbInput');
+    var msg = inp.value.trim();
+    if(!msg) return;
     gbAddUser(msg);
-    inp.value='';
-    setTimeout(function(){gbAddAI('좋은 질문이에요!\nOpen WebUI에서 더 자세히 답해드릴게요 😊');},500);
-  };
-  window.gbAsk=function(){
-    var prompt=data?data.prompt:'문법 질문이 있어요!';
+    inp.value = '';
+    gbAnswer(msg);
+  }
+
+  function gbAnswer(msg){
+    var lower = msg.toLowerCase();
+    var map = typeof GRAMMAR_STORY_MAP !== 'undefined' ? GRAMMAR_STORY_MAP : {};
+
+    var searchTerms = {
+      'be\ub3d9\uc0ac': 'G01', '\uad00\uc0ac': 'G02', '\ud604\uc7ac\uc2dc\uc81c': 'G03', '\ud604\uc7ac\uc9c4\ud589': 'G04',
+      '\uacfc\uac70\uc2dc\uc81c': 'G05', '\ubbf8\ub798\uc2dc\uc81c': 'G06', '\uc870\ub3d9\uc0ac': 'G07', '\uac00\uc0b0\ubd88\uac00\uc0b0': 'G08',
+      '\uc758\ubb38\ubb38': 'G09', '\ube44\uad50\uae09': 'G10', '\uc18c\uc720\uaca9': 'G11', 'there is': 'G12',
+      '\uc7a5\uc18c \uc804\uce58\uc0ac': 'G13', '\uc2dc\uac04 \uc804\uce58\uc0ac': 'G14', '\uc9c0\uc2dc\ub300\uba85\uc0ac': 'G15',
+      '\uba85\ub839\ubb38': 'G16', '\ube48\ub3c4\ubd80\uc0ac': 'G17', '\ud615\uc6a9\uc0ac': 'G18', '\uc811\uc18d\uc0ac': 'G19',
+      'should': 'G20', '\uacfc\uac70\uc9c4\ud589': 'G21', '\ud604\uc7ac\uc644\ub8cc': 'G22', '\uc218\ub3d9\ud0dc': 'G23',
+      '\uac04\uc811\uc758\ubb38\ubb38': 'G24', '\uad00\uacc4\ub300\uba85\uc0ac': 'G25', '\ub3d9\uba85\uc0ac': 'G26', '\uac00\uc815\ubc95': 'G27',
+      '\ubd84\uc0ac\uad6c\ubb38': 'G28', '\uc2dc\uac04\uc811\uc18d\uc0ac': 'G29', 'too enough': 'G30',
+      '\ud604\uc7ac\uc644\ub8cc\uc9c4\ud589': 'G31', 'used to': 'G32', 'wish': 'G33', 'so such': 'G34',
+      '\uc7ac\uadc0\ub300\uba85\uc0ac': 'G35', '\uacfc\uac70\uc644\ub8cc': 'G41', '\uc870\uac74\ubb38': 'G42', '\uc0ac\uc5ed\ub3d9\uc0ac': 'G58',
+      '\uc9c0\uac01\ub3d9\uc0ac': 'G59', '\ud63c\ud569\uac00\uc815\ubc95': 'G60', '\uad00\uacc4\ubd80\uc0ac': 'G45'
+    };
+
+    var found = null;
+    for(var term in searchTerms){
+      if(lower.indexOf(term) !== -1){
+        found = searchTerms[term];
+        break;
+      }
+    }
+
+    var directG = msg.match(/G(\d+)/i);
+    if(directG) found = 'G' + ('0' + directG[1]).slice(-2);
+
+    if(found && map[found]){
+      var d = map[found];
+      gbAddAI(found + ' \u2014 ' + d.title + ' \uc774\uc5d0\uc694! \ud83d\udcd6\n\n\uc608\ubb38: ' + d.example + '\n\n\uc9c0\uae08 ' + found + ' \ud398\uc774\uc9c0\ub85c \uac00\uc2dc\uaca0\uc5b4\uc694?', found);
+      return;
+    }
+
+    if(data && (lower.indexOf('\uc124\uba85') !== -1 || lower.indexOf('\ubb50\uc57c') !== -1 || lower.indexOf('\uc54c\ub824') !== -1 || lower.indexOf('\uc608\ubb38') !== -1)){
+      gbAddAI(gid + ' ' + data.title + ' \uc608\ubb38:\n\n' + data.example + '\n\n\ub354 \uc790\uc138\ud55c \uc124\uba85\uc774 \ud544\uc694\ud558\uba74\n\uc544\ub798 "\ud68c\ud654 \uc5f0\uc2b5" \ubc84\ud2bc\uc73c\ub85c\nAI \uc120\uc0dd\ub2d8\uacfc \ub300\ud654\ud574\ubcf4\uc138\uc694! \ud83d\ude0a');
+      return;
+    }
+
+    gbAddAI('\ucc3e\uc73c\uc2dc\ub294 \ubb38\ubc95\uc744 \uc880 \ub354 \uad6c\uccb4\uc801\uc73c\ub85c \ub9d0\uc500\ud574\uc8fc\uc138\uc694!\n\uc608: "\uc218\ub3d9\ud0dc \uba87 \ubc88?" "\ud604\uc7ac\uc644\ub8cc \uc608\ubb38 \uc918"\n\nG01~G80 \uc804\uccb4 \ubb38\ubc95\uc744 \uc548\ub0b4\ud574\ub4dc\ub9b4 \uc218 \uc788\uc5b4\uc694 \ud83d\ude0a');
+  }
+
+  function gbConversation(){
+    var prompt = data ? data.prompt : '\ubb38\ubc95 \ud68c\ud654 \uc5f0\uc2b5\uc744 \ud558\uace0 \uc2f6\uc5b4\uc694!';
     navigator.clipboard.writeText(prompt).catch(function(){});
     window.open('http://localhost:3001/?models=cec_grammar','_blank');
-  };
-  window.gbCamp=function(){
-    window.location.href='https://cecenglishcamp.github.io/';
-  };
-  window.gbAddAI=function(msg){
-    var c=document.getElementById('gbChat');
-    var d=document.createElement('div');
-    d.className='gb-ai-msg';
-    d.innerHTML='<img src="../robo_jump.gif" onerror="this.src=\'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif\'">'
-      +'<div class="gb-ai-bubble">'+msg+'</div>';
-    c.appendChild(d);c.scrollTop=c.scrollHeight;
-  };
-  window.gbAddUser=function(msg){
-    var c=document.getElementById('gbChat');
-    var d=document.createElement('div');
-    d.className='gb-user-msg';
-    d.innerHTML='<div class="gb-user-bubble">'+msg+'</div>';
-    c.appendChild(d);c.scrollTop=c.scrollHeight;
-  };
+  }
+
+  function gbCamp(){
+    window.location.href = 'https://cecenglishcamp.github.io/';
+  }
+
+  function gbAddAI(msg, linkGid){
+    var c = document.getElementById('gbChat');
+    var d = document.createElement('div');
+    d.className = 'gb-ai-msg';
+    var bubble = '<div class="gb-ai-bubble">' + msg.replace(/\n/g,'<br>');
+    if(linkGid){
+      bubble += '<br><br><a href="../' + linkGid + '/' + linkGid + '_new.html" style="color:#4a6741;font-weight:700;">\u2192 ' + linkGid + ' \ud398\uc774\uc9c0\ub85c \uc774\ub3d9</a>';
+    }
+    bubble += '</div>';
+    d.innerHTML = '<img src="../robo_jump.gif" onerror="this.src=\'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif\'">' + bubble;
+    c.appendChild(d);
+    c.scrollTop = c.scrollHeight;
+  }
+
+  function gbAddUser(msg){
+    var c = document.getElementById('gbChat');
+    var d = document.createElement('div');
+    d.className = 'gb-user-msg';
+    d.innerHTML = '<div class="gb-user-bubble">' + msg + '</div>';
+    c.appendChild(d);
+    c.scrollTop = c.scrollHeight;
+  }
+
   setTimeout(function(){
-    var h=document.getElementById('gbHint');
-    if(h){h.style.background='#a8d070';h.style.color='#2d4a25';
-      setTimeout(function(){h.style.background='#4a6741';h.style.color='#fff';},2000);}
-  },5000);
-})();
+    var h = document.getElementById('gbHint');
+    if(h){
+      h.style.background = '#a8d070';
+      h.style.color = '#2d4a25';
+      setTimeout(function(){
+        h.style.background = '#4a6741';
+        h.style.color = '#fff';
+      }, 2000);
+    }
+  }, 5000);
+});
 </script>
 </body>
 </html>
