@@ -388,53 +388,120 @@
 
 <style>
 .gb{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
-.gb-hint{background:#0a1628;color:#fff;font-size:12px;padding:7px 14px;border-radius:20px 20px 4px 20px;cursor:pointer;white-space:nowrap;animation:gbFloat 3s ease-in-out infinite;font-family:sans-serif;}
-.gb-hint span{color:#00f2ff;}
+.gb-hint{background:#3d2b1f;color:#f0e0d0;font-size:12px;padding:7px 14px;border-radius:20px 20px 4px 20px;cursor:pointer;white-space:nowrap;animation:gbFloat 3s ease-in-out infinite;font-family:sans-serif;}
+.gb-hint span{color:#c8956c;}
 @keyframes gbFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
-.gb-btn{width:56px;height:56px;border-radius:50%;background:#0a1628;border:2px solid #00f2ff;cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.gb-btn img{width:46px;height:46px;border-radius:50%;object-fit:cover;}
-.gb-panel{display:none;position:fixed;bottom:92px;right:24px;width:272px;background:#fff;border-radius:20px;border:1px solid #e0d8cc;box-shadow:0 4px 24px rgba(0,0,0,0.12);overflow:hidden;z-index:9998;}
-.gb-head{background:#0a1628;padding:12px 16px;display:flex;align-items:center;gap:10px;}
+.gb-robo{width:56px;height:56px;border-radius:50%;background:#3d2b1f;border:2px solid #c8956c;cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.gb-robo img{width:46px;height:46px;object-fit:cover;border-radius:50%;}
+.gb-panel{display:none;position:fixed;bottom:92px;right:24px;width:300px;background:#fff;border-radius:20px;border:0.5px solid #e0d0c0;box-shadow:0 4px 24px rgba(61,43,31,0.15);overflow:hidden;z-index:9998;}
+.gb-head{background:#3d2b1f;padding:12px 16px;display:flex;align-items:center;gap:10px;}
 .gb-head img{width:28px;height:28px;border-radius:50%;object-fit:cover;}
 .gb-ht{font-size:13px;font-weight:700;color:#fff;font-family:sans-serif;}
-.gb-hs{font-size:11px;color:#00f2ff;font-family:sans-serif;}
-.gb-close{margin-left:auto;background:none;border:none;color:#6a8fad;font-size:14px;cursor:pointer;}
-.gb-body{padding:14px 16px;}
-.gb-topic{background:#f0fffe;border:1px solid #d1fae5;border-radius:8px;padding:9px 12px;margin-bottom:12px;font-size:12px;color:#374151;font-family:sans-serif;}
-.gb-topic strong{color:#059669;}
-.gb-msg{font-size:12px;color:#555;line-height:1.65;margin-bottom:14px;font-family:sans-serif;}
-.gb-btn1{width:100%;padding:10px;background:#0a1628;color:#00f2ff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:sans-serif;margin-bottom:8px;}
-.gb-btn2{width:100%;padding:9px;background:#f0fdf4;border:1px solid #6ee7b7;color:#059669;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:sans-serif;}
-.gb-note{margin-top:8px;font-size:11px;color:#aaa;text-align:center;font-family:sans-serif;}
+.gb-hs{font-size:11px;color:#c8956c;font-family:sans-serif;}
+.gb-close{margin-left:auto;background:none;border:none;color:#a08060;font-size:14px;cursor:pointer;}
+.gb-chat{padding:12px 14px;height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:#fdf8f4;}
+.gb-ai-msg{display:flex;gap:8px;align-items:flex-start;}
+.gb-ai-msg img{width:22px;height:22px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.gb-ai-bubble{background:#fff;border:0.5px solid #e8d8c8;border-radius:0 10px 10px 10px;padding:8px 12px;font-size:12px;color:#4a3728;line-height:1.6;max-width:210px;white-space:pre-line;font-family:sans-serif;}
+.gb-user-msg{display:flex;justify-content:flex-end;}
+.gb-user-bubble{background:#8b5e3c;color:#fff;border-radius:10px 0 10px 10px;padding:8px 12px;font-size:12px;max-width:200px;line-height:1.5;white-space:pre-line;font-family:sans-serif;}
+.gb-input-row{padding:10px 12px;border-top:0.5px solid #e8d8c8;display:flex;gap:8px;background:#fff;}
+.gb-input{flex:1;padding:8px 12px;border-radius:20px;border:0.5px solid #d8c8b8;font-size:12px;font-family:sans-serif;outline:none;background:#fdf8f4;}
+.gb-send{width:34px;height:34px;border-radius:50%;background:#8b5e3c;border:none;cursor:pointer;color:#fff;font-size:14px;flex-shrink:0;}
+.gb-btns{padding:10px 12px 12px;display:flex;gap:8px;background:#fff;}
+.gb-btn1{flex:1;padding:9px;background:#8b5e3c;color:#fff;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:sans-serif;}
+.gb-btn2{flex:1;padding:9px;background:#fdf6f0;border:0.5px solid #c8956c;color:#8b5e3c;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:sans-serif;}
 </style>
 <div class="gb">
   <div class="gb-hint" onclick="gbToggle()" id="gbHint">
     <span id="gbHintText">문법</span> 질문 있으세요?
   </div>
-  <div class="gb-btn" onclick="gbToggle()">
-    <img src="../robo_jump.gif" alt="Robo"
-         onerror="this.src='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif'">
+  <div class="gb-robo" onclick="gbToggle()">
+    <img src="../robo_jump.gif" alt="Robo" onerror="this.src='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif'">
   </div>
 </div>
 <div class="gb-panel" id="gbPanel">
   <div class="gb-head">
-    <img src="../robo_jump.gif" alt="Robo"
-         onerror="this.src='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif'">
+    <img src="../robo_jump.gif" alt="Robo" onerror="this.src='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif'">
     <div>
       <div class="gb-ht">Grammar AI 선생님</div>
-      <div class="gb-hs">문법 설명 + 회화 연결</div>
+      <div class="gb-hs" id="gbSub">문법 설명 + 회화 연결</div>
     </div>
     <button class="gb-close" onclick="gbToggle()">&#10005;</button>
   </div>
-  <div class="gb-body">
-    <div class="gb-topic" id="gbTopic">📖 로딩 중...</div>
-    <div class="gb-msg" id="gbMsg">안녕하세요! 👋<br>문법이 궁금하면 AI 선생님께 질문하고<br>배운 문법으로 회화도 연습해보세요!</div>
-    <button class="gb-btn1" onclick="gbAsk()">💬 회화 연습하기</button>
-    <button class="gb-btn2" onclick="gbCamp()">🏕️ 영어캠프 둘러보기</button>
-    <div class="gb-note">Open WebUI에서 대화하세요</div>
+  <div class="gb-chat" id="gbChat">
+    <div class="gb-ai-msg">
+      <img src="../robo_jump.gif" onerror="this.src='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif'">
+      <div class="gb-ai-bubble">안녕하세요! 👋 궁금한 문법 뭐든 물어보세요!</div>
+    </div>
+  </div>
+  <div class="gb-input-row">
+    <input class="gb-input" id="gbInput" type="text" placeholder="질문을 입력하세요..." onkeydown="if(event.key==='Enter')gbSend()">
+    <button class="gb-send" onclick="gbSend()">→</button>
+  </div>
+  <div class="gb-btns">
+    <button class="gb-btn1" onclick="gbAsk()">💬 Open WebUI 열기</button>
+    <button class="gb-btn2" onclick="gbCamp()">🏕️ 캠프 보기</button>
   </div>
 </div>
 <script src="../grammar_story_map.js"></script>
+<script>
+(function(){
+  var path=window.location.pathname;
+  var m=path.match(/G(\d+)/i);
+  var gid=m?'G'+('0'+m[1]).slice(-2):'G01';
+  var data=(typeof GRAMMAR_STORY_MAP!=='undefined')?GRAMMAR_STORY_MAP[gid]:null;
+  if(data){
+    document.getElementById('gbHintText').textContent=data.title;
+    document.getElementById('gbSub').textContent=gid+' — '+data.title;
+    gbAddAI('안녕하세요! 👋\n'+data.title+' 궁금한 거 물어보세요!\n예: '+data.example);
+  }
+  var open=false;
+  window.gbToggle=function(){
+    open=!open;
+    document.getElementById('gbPanel').style.display=open?'block':'none';
+    document.getElementById('gbHint').style.opacity=open?'0':'1';
+    if(open)setTimeout(function(){document.getElementById('gbInput').focus();},100);
+  };
+  window.gbSend=function(){
+    var inp=document.getElementById('gbInput');
+    var msg=inp.value.trim();
+    if(!msg)return;
+    gbAddUser(msg);
+    inp.value='';
+    var reply=data?'좋은 질문이에요! Open WebUI에서 더 자세히 답해드릴게요 😊':'Open WebUI에서 AI 선생님께 물어보세요!';
+    setTimeout(function(){gbAddAI(reply);},500);
+  };
+  window.gbAsk=function(){
+    var prompt=data?data.prompt:'문법 질문이 있어요!';
+    navigator.clipboard.writeText(prompt).catch(function(){});
+    window.open('http://localhost:3001/?models=cec_grammar','_blank');
+  };
+  window.gbCamp=function(){
+    window.open('https://cecenglishcamp.github.io/','_blank');
+  };
+  window.gbAddAI=function(msg){
+    var c=document.getElementById('gbChat');
+    var d=document.createElement('div');
+    d.className='gb-ai-msg';
+    d.innerHTML='<img src="../robo_jump.gif" onerror="this.src=\'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif\'">'
+      +'<div class="gb-ai-bubble">'+msg+'</div>';
+    c.appendChild(d);c.scrollTop=c.scrollHeight;
+  };
+  window.gbAddUser=function(msg){
+    var c=document.getElementById('gbChat');
+    var d=document.createElement('div');
+    d.className='gb-user-msg';
+    d.innerHTML='<div class="gb-user-bubble">'+msg+'</div>';
+    c.appendChild(d);c.scrollTop=c.scrollHeight;
+  };
+  setTimeout(function(){
+    var h=document.getElementById('gbHint');
+    if(h){h.style.background='#c8956c';h.style.color='#fff';
+      setTimeout(function(){h.style.background='#3d2b1f';h.style.color='#f0e0d0';},2000);}
+  },5000);
+})();
+</script>
 <script>
 (function(){
   var path = window.location.pathname;
