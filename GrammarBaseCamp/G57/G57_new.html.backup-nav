@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G57. Linking Words</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Sans+KR:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --white: #ffffff;
+    --green-dark: #4a6741;
+    --green-mid: #5a7a50;
+    --green-light: #e8f0e5;
+    --green-card: #3d5c35;
+    --gold: #c8972a;
+    --gold-light: #fdf3e0;
+    --cream: #faf7f0;
+    --brown: #6b5c3e;
+    --brown-light: #f0e8d8;
+    --text: #2d2d2d;
+    --muted: #7a7a7a;
+    --border: #ddd6c8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; line-height: 1.7; padding-bottom: 80px; }
+
+  /* HEADER */
+  .lesson-header { background: #0a1628; padding: 36px 24px 32px; text-align: center; }
+  .gbc-badge { display: inline-block; border: 1px solid rgba(0,242,255,0.5); color: rgba(0,242,255,0.8); font-family: 'Poppins', sans-serif; font-size: 11px; letter-spacing: 2px; padding: 4px 14px; border-radius: 20px; margin-bottom: 16px; }
+  .lesson-num-title { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+  .lesson-main-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 44px; font-weight: 500; color: #00f2ff; line-height: 1.15; margin-bottom: 10px; }
+  .lesson-sub { font-size: 14px; color: rgba(255,255,255,0.5); }
+
+  /* TOC */
+  .toc { background: var(--green-dark); padding: 12px 20px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .toc a { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.75); text-decoration: none; }
+  .toc a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+  /* LAYOUT */
+  .content { max-width: 740px; margin: 0 auto; padding: 0 20px; }
+
+  /* SECTION */
+  .section { margin-top: 28px; background: var(--white); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+  .section-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+  .section-num { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; flex-shrink: 0; color: #fff; }
+  .section-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .section-en { font-size: 11px; color: var(--muted); font-family: 'Poppins', sans-serif; letter-spacing: 1px; margin-left: 6px; }
+  .section-body { padding: 20px; }
+
+  /* KEY CARD */
+  .key-card { background: var(--green-card); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .key-label { font-size: 11px; font-family: 'Poppins', sans-serif; letter-spacing: 2px; color: var(--gold); margin-bottom: 10px; }
+  .key-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 30px; font-weight: 500; color: #fff; margin-bottom: 6px; }
+  .key-kr { font-size: 13px; color: rgba(255,255,255,0.65); }
+
+  /* CONCEPT BOX */
+  .concept-box { background: var(--green-light); border-radius: 10px; padding: 16px; margin-bottom: 12px; border-left: 4px solid var(--green-mid); }
+  .concept-box p { font-size: 14px; margin-bottom: 8px; }
+  .concept-box p:last-child { margin-bottom: 0; }
+
+  /* RULE GRID */
+  .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .rule-card { padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); }
+  .rule-label { font-size: 10px; font-family: 'Poppins', sans-serif; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 8px; }
+  .rule-example { font-family: 'Poppins', sans-serif; font-size: 13px; }
+  .rule-example strong { font-weight: 700; }
+  .r-is { background: var(--green-light); border-color: #b8d4b0; }
+  .r-is .rule-label { color: var(--green-dark); }
+  .r-is .rule-example strong { color: var(--green-dark); }
+  .r-are { background: #e8f4e8; border-color: #a8ccaa; }
+  .r-are .rule-label { color: #3a6640; }
+  .r-are .rule-example strong { color: #3a6640; }
+  .r-neg { background: #fdf0e0; border-color: #e8c88a; }
+  .r-neg .rule-label { color: #8a5a1a; }
+  .r-neg .rule-example strong { color: #8a5a1a; }
+  .r-q { background: var(--brown-light); border-color: #d4c0a0; }
+  .r-q .rule-label { color: var(--brown); }
+  .r-q .rule-example strong { color: var(--brown); }
+
+  /* BULLET LIST */
+  .rule-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .rule-list li { font-size: 14px; padding: 8px 12px; background: var(--cream); border-radius: 8px; border-left: 3px solid var(--green-mid); }
+  .rule-list li strong { color: var(--green-dark); font-family: 'Poppins', sans-serif; }
+
+  /* EXAMPLE LIST */
+  .ex-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .ex-list li { padding: 12px 16px; background: var(--cream); border-radius: 10px; border-left: 4px solid var(--green-mid); font-size: 14px; }
+  .ex-list li .en { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
+  .ex-list li .kr { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+  .ex-q { border-left-color: var(--brown) !important; }
+  .ex-q .en { color: var(--brown) !important; }
+
+  /* DIALOGUE */
+  .dialogue { background: var(--cream); border-radius: 12px; padding: 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+  .d-title { font-size: 10px; font-family: 'Poppins', sans-serif; letter-spacing: 1.5px; color: var(--gold); font-weight: 700; margin-bottom: 10px; }
+  .d-line { font-size: 14px; margin-bottom: 5px; }
+  .d-line .sp { color: var(--green-dark); font-weight: 700; margin-right: 6px; }
+  .d-line .key { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
+
+  /* PRACTICE */
+  .practice-item { padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 8px; font-size: 14px; background: var(--cream); }
+  .practice-item .original { color: var(--muted); margin-bottom: 4px; font-size: 13px; }
+  .practice-item .result { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
+
+  /* PATTERN BOX */
+  .pattern-box { background: var(--gold-light); border: 1px solid #e8c88a; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .pattern-box .p-label { font-size: 11px; color: var(--gold); font-family: 'Poppins', sans-serif; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+  .pattern-box .p-text { font-size: 14px; color: var(--brown); }
+  .pattern-box .p-text strong { color: #7a5010; font-family: 'Poppins', sans-serif; }
+
+  /* MISTAKE BOX */
+  .mistake-box { background: #fff5f5; border: 1px solid #f4c0c0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .mistake-box .wrong { color: #c0392b; font-size: 13px; text-decoration: line-through; margin-bottom: 4px; }
+  .mistake-box .right { color: var(--green-dark); font-size: 14px; font-weight: 700; font-family: 'Poppins', sans-serif; }
+  .mistake-box .reason { color: var(--muted); font-size: 12px; margin-top: 4px; }
+
+  /* TIP BOX */
+  .tip-box { background: #e8f0ff; border: 1px solid #b8c8f0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .tip-box .tip-label { font-size: 11px; color: #3050a0; font-family: 'Poppins', sans-serif; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+  .tip-box .tip-text { font-size: 14px; color: #1a2a60; }
+
+  /* CHECKLIST */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .checklist li { display: flex; align-items: center; gap: 12px; font-size: 14px; padding: 10px 14px; background: var(--cream); border-radius: 10px; cursor: pointer; }
+  .chk { width: 20px; height: 20px; border: 2px solid var(--green-mid); border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: #fff; }
+  .chk.on { background: var(--green-mid); border-color: var(--green-dark); }
+  .chk.on::after { content: '✓'; color: #fff; font-size: 12px; font-weight: 700; }
+
+  /* FOOTER */
+  .footer-nav { background: var(--green-dark); display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; margin-top: 32px; }
+  .fnav-btn { padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; border: none; font-family: 'Poppins', sans-serif; }
+  .fnav-prev { background: rgba(255,255,255,0.15); color: #fff; }
+  .fnav-center { color: rgba(255,255,255,0.6); font-size: 12px; letter-spacing: 1px; font-family: 'Poppins', sans-serif; }
+  .fnav-next { background: var(--gold); color: #000; }
+</style>
+</head>
+<body data-grammar-id="G57">
+
+<div class="lesson-header">
+  <div class="gbc-badge">CEC GRAMMAR BASECAMP</div>
+  <div class="lesson-num-title">G57 · Basic Grammar</div>
+  <div class="lesson-main-title">Linking Words</div>
+  <div class="lesson-sub">연결어 — however, therefore, although</div>
+</div>
+
+<div class="toc">
+  <a href="#concept">기본 개념</a>
+  <a href="#grammar">문법 규칙</a>
+  <a href="#positive">긍정문</a>
+  <a href="#question">의문문</a>
+  <a href="#dialogue">대화 흐름</a>
+  <a href="#combining">문장 결합</a>
+  <a href="#reallife">실생활</a>
+  <a href="#patterns">패턴</a>
+  <a href="#mistakes">흔한 실수</a>
+  <a href="#tips">레벨업 팁</a>
+  <a href="#practice">연습문제</a>
+  <a href="#check">자가진단</a>
+</div>
+
+<div class="content">
+
+  <!-- 1 -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">1</div>
+      <div><span class="section-title">기본 개념</span><span class="section-en">BASIC CONCEPT</span></div>
+    </div>
+    <div class="section-body">
+      <div class="key-card">
+        <div class="key-label">⭐ TODAY'S KEY GRAMMAR</div>
+        <div class="key-text">Linking Words</div>
+        <div class="key-kr">문장과 문장을 연결해 의미를 확장하는 표현</div>
+      </div>
+      <div class="concept-box">
+        <p><strong style="color:var(--green-dark)">however</strong> → 대조 (그러나, 반면에)</p>
+        <p><strong style="color:#3a6640">therefore</strong> → 결과 (그러므로, 그래서)</p>
+        <p><strong style="color:var(--brown)">although</strong> → 양보 (비록 ~이지만)</p>
+      </div>
+      <ul class="ex-list">
+        <li><span class="en">It was raining. However, we went out.</span><span class="kr">비가 왔다. 그러나 우리는 나갔다.</span></li>
+        <li><span class="en">He studied hard. Therefore, he passed.</span><span class="kr">그는 열심히 공부했다. 그래서 합격했다.</span></li>
+        <li><span class="en">Although it was raining, we went out.</span><span class="kr">비록 비가 왔지만, 우리는 나갔다.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num" style="background:#3a6640;">2</div>
+      <div><span class="section-title">문법 규칙</span><span class="section-en">GRAMMAR RULES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="rule-grid">
+        <div class="rule-card r-is">
+          <div class="rule-label">대조 · CONTRAST</div>
+          <div class="rule-example"><strong>However</strong>, + 문장<br><span style="font-size:12px;color:var(--muted)">It was cold. However, we went.</span></div>
+        </div>
+        <div class="rule-card r-are">
+          <div class="rule-label">결과 · RESULT</div>
+          <div class="rule-example"><strong>Therefore</strong>, + 문장<br><span style="font-size:12px;color:var(--muted)">He studied. Therefore, he passed.</span></div>
+        </div>
+        <div class="rule-card r-neg">
+          <div class="rule-label">양보(앞) · CONCESSION</div>
+          <div class="rule-example"><strong>Although</strong> + 절, 주절<br><span style="font-size:12px;color:var(--muted)">Although it rained, we stayed.</span></div>
+        </div>
+        <div class="rule-card r-q">
+          <div class="rule-label">양보(뒤) · CONCESSION</div>
+          <div class="rule-example">주절 + <strong>although</strong> + 절<br><span style="font-size:12px;color:var(--muted)">We stayed although it was late.</span></div>
+        </div>
+      </div>
+      <ul class="rule-list">
+        <li><strong>however:</strong> 문장 앞에서 쉼표 필요 — However, we continued.</li>
+        <li><strong>therefore:</strong> 문장 앞에서 쉼표 필요 — Therefore, we succeeded.</li>
+        <li><strong>although:</strong> 문장 앞 → 쉼표 중간 / 문장 뒤 → 쉼표 없음</li>
+        <li><strong>주의:</strong> however/therefore는 두 문장 사이에 마침표 필요</li>
+        <li><strong>주의:</strong> although는 절 중간에 마침표 사용 불가</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--gold); color:#000;">3</div>
+      <div><span class="section-title">긍정문 예시</span><span class="section-en">POSITIVE EXAMPLES</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en">It was cold. However, we went hiking.</span><span class="kr">추웠다. 그러나 등산을 갔다.</span></li>
+        <li><span class="en">She is shy. However, she spoke clearly.</span><span class="kr">그녀는 수줍음이 많다. 그러나 명확하게 말했다.</span></li>
+        <li><span class="en">He studied hard. Therefore, he passed the test.</span><span class="kr">열심히 공부했다. 그래서 시험에 합격했다.</span></li>
+        <li><span class="en">She practiced daily. Therefore, she improved.</span><span class="kr">매일 연습했다. 그래서 실력이 늘었다.</span></li>
+        <li><span class="en">Although it was raining, we went out.</span><span class="kr">비가 왔지만 우리는 나갔다.</span></li>
+        <li><span class="en">Although he was tired, he kept working.</span><span class="kr">피곤했지만 계속 일했다.</span></li>
+        <li><span class="en">We were tired. However, we finished the task.</span><span class="kr">피곤했다. 그러나 과제를 끝냈다.</span></li>
+        <li><span class="en">We arrived early. Therefore, we got good seats.</span><span class="kr">일찍 도착했다. 그래서 좋은 자리를 잡았다.</span></li>
+        <li><span class="en">Although the movie was long, it was interesting.</span><span class="kr">영화가 길었지만 재미있었다.</span></li>
+        <li><span class="en">The roads were icy. Therefore, we drove slowly.</span><span class="kr">길이 얼어 있었다. 그래서 천천히 운전했다.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">4</div>
+      <div><span class="section-title">의문문 예시</span><span class="section-en">QUESTION EXAMPLES</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li class="ex-q"><span class="en">Why did you go out although it was raining?</span><span class="kr">비가 오는데 왜 나갔니?</span></li>
+        <li class="ex-q"><span class="en">Did you finish the task although you were tired?</span><span class="kr">피곤했는데 과제를 끝냈니?</span></li>
+        <li class="ex-q"><span class="en">Did she speak although she was shy?</span><span class="kr">수줍음이 많았는데 말을 했니?</span></li>
+        <li class="ex-q"><span class="en">Did you buy it although it was expensive?</span><span class="kr">비쌌는데도 샀니?</span></li>
+        <li class="ex-q"><span class="en">Did you stay although it was late?</span><span class="kr">늦었는데도 머물렀니?</span></li>
+        <li class="ex-q"><span class="en">Was the test hard? However, did you pass?</span><span class="kr">시험이 어려웠니? 그래도 합격했니?</span></li>
+        <li class="ex-q"><span class="en">Did they win? Therefore, how did they celebrate?</span><span class="kr">이겼니? 그래서 어떻게 축하했니?</span></li>
+        <li class="ex-q"><span class="en">Did you succeed? Therefore, what's next?</span><span class="kr">성공했니? 그러면 다음은 뭐니?</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num" style="background:#5a7a50;">5</div>
+      <div><span class="section-title">상황별 대화 흐름</span><span class="section-en">SITUATIONAL DIALOGUES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="dialogue">
+        <div class="d-title">🏫 학교 상황 · SCHOOL</div>
+        <div class="d-line"><span class="sp">A:</span> The test was hard.</div>
+        <div class="d-line"><span class="sp">B:</span> <span class="key">However</span>, I tried my best.</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Therefore</span>, you should be proud.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">📧 이메일 상황 · EMAIL</div>
+        <div class="d-line"><span class="sp">A:</span> The project was delayed.</div>
+        <div class="d-line"><span class="sp">B:</span> <span class="key">However</span>, the team remained focused.</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Therefore</span>, we met the final deadline.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">✈️ 여행 상황 · TRAVEL</div>
+        <div class="d-line"><span class="sp">A:</span> It rained every day.</div>
+        <div class="d-line"><span class="sp">B:</span> <span class="key">However</span>, we explored the city.</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Although</span> the weather was bad, the food was amazing.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">💼 직장 상황 · OFFICE</div>
+        <div class="d-line"><span class="sp">A:</span> We lacked resources.</div>
+        <div class="d-line"><span class="sp">B:</span> <span class="key">However</span>, we used creative solutions.</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Therefore</span>, the client was satisfied.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">🏥 건강 상황 · HEALTH</div>
+        <div class="d-line"><span class="sp">A:</span> The patient was weak.</div>
+        <div class="d-line"><span class="sp">B:</span> <span class="key">However</span>, he followed instructions.</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Therefore</span>, he recovered quickly.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">6</div>
+      <div><span class="section-title">문장 결합 연습</span><span class="section-en">SENTENCE COMBINING</span></div>
+    </div>
+    <div class="section-body">
+      <div class="practice-item">
+        <div class="original">It was raining. + We went out.</div>
+        <div class="result">→ Although it was raining, we went out.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">He studied hard. + He passed the test.</div>
+        <div class="result">→ He studied hard. Therefore, he passed the test.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">She was shy. + She spoke clearly.</div>
+        <div class="result">→ She was shy. However, she spoke clearly.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">The weather was bad. + The food was amazing.</div>
+        <div class="result">→ Although the weather was bad, the food was amazing.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">We were tired. + We finished the task.</div>
+        <div class="result">→ We were tired. However, we finished the task.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">It was expensive. + We bought it.</div>
+        <div class="result">→ It was expensive. However, we bought it.</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">The roads were icy. + We drove slowly.</div>
+        <div class="result">→ The roads were icy. Therefore, we drove slowly.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7 -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--gold); color:#000;">7</div>
+      <div><span class="section-title">실생활 사용 예시</span><span class="section-en">REAL-LIFE USAGE</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en">English was difficult. However, I studied every day.</span><span class="kr">🎓 학습 — 영어가 어려웠다. 그러나 매일 공부했다.</span></li>
+        <li><span class="en">Although I made many mistakes, I kept practicing. Therefore, I improved.</span><span class="kr">🎓 학습 — 실수가 많았지만 계속 연습했고, 그래서 실력이 늘었다.</span></li>
+        <li><span class="en">I was out of shape. However, I started exercising regularly.</span><span class="kr">🏃 운동 — 몸이 안 좋았다. 그러나 규칙적으로 운동을 시작했다.</span></li>
+        <li><span class="en">Although it was hard at first, I didn't give up. Therefore, I'm much healthier now.</span><span class="kr">🏃 운동 — 처음엔 힘들었지만 포기하지 않았고, 그래서 훨씬 건강해졌다.</span></li>
+        <li><span class="en">I'm shy. However, I enjoy public speaking.</span><span class="kr">👋 자기소개 — 수줍음이 많지만 대중 앞에서 말하는 걸 좋아한다.</span></li>
+        <li><span class="en">The project was delayed. However, the team remained focused. Therefore, we met the deadline.</span><span class="kr">📧 이메일 — 프로젝트가 지연되었지만 팀은 집중력을 유지했고, 마감을 맞췄다.</span></li>
+        <li><span class="en">Although the medicine tasted bad, he took it daily. Therefore, he recovered quickly.</span><span class="kr">🏥 건강 — 약 맛이 나빴지만 매일 복용했고, 빠르게 회복했다.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 8 -->
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">8</div>
+      <div><span class="section-title">자주 쓰이는 패턴</span><span class="section-en">COMMON PATTERNS</span></div>
+    </div>
+    <div class="section-body">
+      <div class="pattern-box">
+        <div class="p-label">대조 · HOWEVER</div>
+        <div class="p-text">문장. <strong>However</strong>, 문장.<br><span style="font-size:13px;">It was difficult. However, we tried.</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">결과 · THEREFORE</div>
+        <div class="p-text">문장. <strong>Therefore</strong>, 문장.<br><span style="font-size:13px;">He studied hard. Therefore, he passed.</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">양보 (앞) · ALTHOUGH</div>
+        <div class="p-text"><strong>Although</strong> + 절, 주절.<br><span style="font-size:13px;">Although it was raining, we went out.</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">복합 사용 · COMBINED</div>
+        <div class="p-text"><strong>Although</strong> + 절, 문장. <strong>However</strong>, 문장. <strong>Therefore</strong>, 문장.<br><span style="font-size:13px;">Although it rained, we went out. However, we got wet. Therefore, we went home early.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9 -->
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="section-num" style="background:#c0392b;">9</div>
+      <div><span class="section-title">흔한 실수</span><span class="section-en">COMMON MISTAKES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="mistake-box">
+        <div class="wrong">✗ It was raining, however we went out.</div>
+        <div class="right">✓ It was raining. However, we went out.</div>
+        <div class="reason">however 앞에는 마침표, 뒤에는 쉼표 필요</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ He studied hard therefore he passed.</div>
+        <div class="right">✓ He studied hard. Therefore, he passed.</div>
+        <div class="reason">therefore 앞에는 마침표, 뒤에는 쉼표 필요</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ Although it was raining. We went out.</div>
+        <div class="right">✓ Although it was raining, we went out.</div>
+        <div class="reason">although 절은 마침표로 나누면 안 됨 — 쉼표 사용</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ However we tried our best.</div>
+        <div class="right">✓ However, we tried our best.</div>
+        <div class="reason">however 뒤에 쉼표 필요</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 -->
+  <div class="section" id="s10">
+    <div class="section-header">
+      <div class="section-num" style="background:#185fa5;">10</div>
+      <div><span class="section-title">레벨업 팁</span><span class="section-en">LEVEL-UP TIPS</span></div>
+    </div>
+    <div class="section-body">
+      <div class="tip-box">
+        <div class="tip-label">TIP 1 · 기능별 구분</div>
+        <div class="tip-text">대조 → however, 결과 → therefore, 양보 → although. 세 가지 기능을 먼저 이해하세요.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 2 · 쉼표 위치 주의</div>
+        <div class="tip-text">however/therefore 뒤에 항상 쉼표! although는 문장 앞에 올 때만 중간에 쉼표.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 3 · 복합 사용 연습</div>
+        <div class="tip-text">여러 연결어를 조합하면 논리적인 글을 만들 수 있습니다. 이메일이나 보고서에 활용하세요.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 4 · 일기 쓰기</div>
+        <div class="tip-text">매일 간단한 일기를 쓸 때 연결어를 의식적으로 사용해보세요.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11 -->
+  <div class="section" id="s11">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">11</div>
+      <div><span class="section-title">연습문제</span><span class="section-en">PRACTICE EXERCISES</span></div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">빈칸에 알맞은 연결어를 선택하세요.</p>
+      <ul class="rule-list">
+        <li>It was raining. _____, we went out. <strong style="color:var(--green-dark)">(However)</strong></li>
+        <li>He studied hard. _____, he passed the test. <strong style="color:var(--green-dark)">(Therefore)</strong></li>
+        <li>_____ it was late, we stayed at the party. <strong style="color:var(--green-dark)">(Although)</strong></li>
+        <li>She was tired. _____, she finished her work. <strong style="color:var(--green-dark)">(However)</strong></li>
+        <li>The weather was bad. _____, the flight was canceled. <strong style="color:var(--green-dark)">(Therefore)</strong></li>
+        <li>_____ she was nervous, she performed well. <strong style="color:var(--green-dark)">(Although)</strong></li>
+        <li>It was expensive. _____, we bought it. <strong style="color:var(--green-dark)">(However)</strong></li>
+        <li>_____ it was cold, we went swimming. <strong style="color:var(--green-dark)">(Although)</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 12 -->
+  <div class="section" id="s11">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">12</div>
+      <div><span class="section-title">자가진단 체크리스트</span><span class="section-en">SELF-CHECK</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 연결어(Linking Words)가 무엇인지 안다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> however를 사용해서 대조를 표현할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> therefore를 사용해서 결과를 표현할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> although를 사용해서 양보를 표현할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 연결어와 함께 쉼표를 올바르게 사용할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 실생활 상황에서 연결어를 자연스럽게 사용할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 여러 연결어를 조합해서 복합적인 의미를 표현할 수 있다.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-nav">
+  <a href="G56_new.html" class="fnav-btn fnav-prev">← G56</a>
+  <span class="fnav-center">G57 · LINKING WORDS</span>
+  <a href="G58_new.html" class="fnav-btn fnav-next">G58 →</a>
+</div>
+
+
+
+
+<style>
+.gb{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+.gb-hint{background:#4a6741;color:#fff;font-size:12px;padding:7px 14px;border-radius:20px 20px 4px 20px;cursor:pointer;white-space:nowrap;animation:gbFloat 3s ease-in-out infinite;font-family:sans-serif;}
+.gb-hint span{color:#c8e6a0;}
+@keyframes gbFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+.gb-robo{width:56px;height:56px;border-radius:50%;background:#4a6741;border:2px solid #a8d070;cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.gb-robo img{width:46px;height:46px;object-fit:cover;border-radius:50%;}
+.gb-panel{display:none;position:fixed;bottom:92px;right:24px;width:300px;background:#fff;border-radius:20px;border:0.5px solid #c8d8b8;box-shadow:0 4px 24px rgba(74,103,65,0.15);overflow:hidden;z-index:9998;}
+.gb-head{background:#4a6741;padding:12px 16px;display:flex;align-items:center;gap:10px;}
+.gb-head img{width:28px;height:28px;border-radius:50%;object-fit:cover;}
+.gb-ht{font-size:13px;font-weight:700;color:#fff;font-family:sans-serif;}
+.gb-hs{font-size:11px;color:#c8e6a0;font-family:sans-serif;}
+.gb-close{margin-left:auto;background:none;border:none;color:#a0c080;font-size:14px;cursor:pointer;}
+.gb-chat{padding:12px 14px;height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:#f8faf5;}
+.gb-ai-msg{display:flex;gap:8px;align-items:flex-start;}
+.gb-ai-msg img{width:22px;height:22px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.gb-ai-bubble{background:#fff;border:0.5px solid #c8d8b8;border-radius:0 10px 10px 10px;padding:8px 12px;font-size:12px;color:#2d4a25;line-height:1.6;max-width:210px;white-space:pre-line;font-family:sans-serif;}
+.gb-user-msg{display:flex;justify-content:flex-end;}
+.gb-user-bubble{background:#4a6741;color:#fff;border-radius:10px 0 10px 10px;padding:8px 12px;font-size:12px;max-width:200px;line-height:1.5;white-space:pre-line;font-family:sans-serif;}
+.gb-input-row{padding:10px 12px;border-top:0.5px solid #d0e0c0;display:flex;gap:8px;background:#fff;}
+.gb-input{flex:1;padding:8px 12px;border-radius:20px;border:0.5px solid #c0d0b0;font-size:12px;font-family:sans-serif;outline:none;background:#f8faf5;}
+.gb-send{width:34px;height:34px;border-radius:50%;background:#4a6741;border:none;cursor:pointer;color:#fff;font-size:14px;flex-shrink:0;}
+.gb-btns{padding:10px 12px 12px;display:flex;gap:8px;background:#fff;}
+.gb-btn1{flex:1;padding:9px;background:#4a6741;color:#fff;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:sans-serif;}
+.gb-btn2{flex:1;padding:9px;background:#f0f8e8;border:0.5px solid #a8d070;color:#4a6741;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:sans-serif;}
+</style>
+<div class="gb">
+  <div class="gb-hint" onclick="gbToggle()" id="gbHint">
+    <span id="gbHintText">문법</span> 질문 있으세요?
+  </div>
+  <div class="gb-robo" onclick="gbToggle()">
+    <img src="../robo_jump.gif" alt="Robo" onerror="this.src='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif'">
+  </div>
+</div>
+<div class="gb-panel" id="gbPanel">
+  <div class="gb-head">
+    <img src="../robo_jump.gif" alt="Robo" onerror="this.src='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif'">
+    <div>
+      <div class="gb-ht">Grammar AI 선생님</div>
+      <div class="gb-hs" id="gbSub">문법 설명 + 회화 연결</div>
+    </div>
+    <button class="gb-close" onclick="gbToggle()">&#10005;</button>
+  </div>
+  <div class="gb-chat" id="gbChat">
+    <div class="gb-ai-msg">
+      <img src="../robo_jump.gif" onerror="this.src='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif'">
+      <div class="gb-ai-bubble">안녕하세요! 👋 궁금한 문법 뭐든 물어보세요!</div>
+    </div>
+  </div>
+  <div class="gb-input-row">
+    <input class="gb-input" id="gbInput" type="text" placeholder="질문을 입력하세요..." onkeydown="if(event.key==='Enter')gbSend()">
+    <button class="gb-send" onclick="gbSend()">→</button>
+  </div>
+  <div class="gb-btns">
+    <button class="gb-btn1" onclick="gbAsk()">💬 Open WebUI 열기</button>
+    <button class="gb-btn2" onclick="gbCamp()">🏕️ 캠프 보기</button>
+  </div>
+</div>
+<script src="../grammar_story_map.js"></script>
+<script>
+(function(){
+  var path=window.location.pathname;
+  var m=path.match(/G(\d+)/i);
+  var gid=m?'G'+('0'+m[1]).slice(-2):'G01';
+  var data=(typeof GRAMMAR_STORY_MAP!=='undefined')?GRAMMAR_STORY_MAP[gid]:null;
+  if(data){
+    document.getElementById('gbHintText').textContent=data.title;
+    document.getElementById('gbSub').textContent=gid+' — '+data.title;
+    gbAddAI('안녕하세요! 👋\n'+data.title+' 궁금한 거 물어보세요!\n예: '+data.example);
+  }
+  var gbOpen=false;
+  window.gbToggle=function(){
+    gbOpen=!gbOpen;
+    document.getElementById('gbPanel').style.display=gbOpen?'block':'none';
+    document.getElementById('gbHint').style.opacity=gbOpen?'0':'1';
+    if(gbOpen)setTimeout(function(){document.getElementById('gbInput').focus();},100);
+  };
+  window.gbSend=function(){
+    var inp=document.getElementById('gbInput');
+    var msg=inp.value.trim();
+    if(!msg)return;
+    gbAddUser(msg);
+    inp.value='';
+    setTimeout(function(){gbAddAI('좋은 질문이에요!\nOpen WebUI에서 더 자세히 답해드릴게요 😊');},500);
+  };
+  window.gbAsk=function(){
+    var prompt=data?data.prompt:'문법 질문이 있어요!';
+    navigator.clipboard.writeText(prompt).catch(function(){});
+    window.open('http://localhost:3001/?models=cec_grammar','_blank');
+  };
+  window.gbCamp=function(){
+    window.open('https://cecenglishcamp.github.io/','_blank');
+  };
+  window.gbAddAI=function(msg){
+    var c=document.getElementById('gbChat');
+    var d=document.createElement('div');
+    d.className='gb-ai-msg';
+    d.innerHTML='<img src="../robo_jump.gif" onerror="this.src=\'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif\'">'
+      +'<div class="gb-ai-bubble">'+msg+'</div>';
+    c.appendChild(d);c.scrollTop=c.scrollHeight;
+  };
+  window.gbAddUser=function(msg){
+    var c=document.getElementById('gbChat');
+    var d=document.createElement('div');
+    d.className='gb-user-msg';
+    d.innerHTML='<div class="gb-user-bubble">'+msg+'</div>';
+    c.appendChild(d);c.scrollTop=c.scrollHeight;
+  };
+  setTimeout(function(){
+    var h=document.getElementById('gbHint');
+    if(h){h.style.background='#a8d070';h.style.color='#2d4a25';
+      setTimeout(function(){h.style.background='#4a6741';h.style.color='#fff';},2000);}
+  },5000);
+})();
+</script>
+</body>
+</html>
