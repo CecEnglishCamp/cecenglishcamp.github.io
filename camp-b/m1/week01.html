@@ -239,7 +239,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-se
     <div class="tt-ex" id="tt-ex"></div>
     <div class="tt-links">
       <a class="tt-gram-link" id="tt-gram-link" href="#" target="_blank"></a>
-      <button class="tt-gpt-link" onclick="openGPTTooltip()">💬 Open WebUI에 물어보기</button>
     </div>
   </div>
 </div>
@@ -719,7 +718,6 @@ function readStory() {
       <span class="essay-num">③</span>
       <input class="essay-input" id="es3" placeholder="That is why..."/>
     </div>
-    <button class="essay-submit" onclick="submitEssay()">📝 Open WebUI에서 피드백받기</button>
     <div class="essay-result" id="essay-result"></div>
   </div>
 </div>
@@ -729,7 +727,6 @@ function readStory() {
   <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">AI 영어 튜터 벡스 (20분)</div></div>
   <div class="gpt-card">
     <div class="gpt-title">🤖 AI 튜터 벡스와 영어 연습</div>
-    <div class="gpt-sub">버튼을 클릭하면 오늘 학습 내용이 클립보드에 복사돼요. Open WebUI를 열고 붙여넣기(Ctrl+V)하세요!</div>
     <div class="gpt-prompt" id="gpt-prompt">안녕! 나는 중학교 1학년이야.
 오늘 Huckleberry Finn W1을 공부했어.
 
@@ -748,7 +745,6 @@ function readStory() {
 [할 것 3 - 5분] 내가 쓴 에세이 교정해줘:
 {에세이}</div>
     <button class="gpt-copy" onclick="copyGPT()">📋 프롬프트 복사하기</button>
-    <button class="gpt-open" onclick="openGPT()">💬 Open WebUI 열기</button>
     <div class="gpt-timer">⏱ 목표 시간: 20분 | 문법 5분 + 연습 10분 + 대화 5분</div>
   </div>
 </div>
@@ -886,7 +882,6 @@ function openGPTTooltip() {
   const nm = _getStudentName();
   const prompt = `안녕! 저는 ${nm}, 중학교 1학년이에요.\n이 문법이 이해가 안 돼요.\n문법: ${d.title} (${d.tag})\n예문: "${d.ex}"\n쉽고 재미있게 설명해줄 수 있어? 예문도 2개 더 만들어줘!`;
   navigator.clipboard.writeText(prompt).then(() => {
-    window.open('http://localhost:3001/?models=cec_camp_b', '_blank');
   });
   closeTooltip();
 }
@@ -1081,22 +1076,21 @@ function submitEssay() {
   const nm = _getStudentName();
   const essayPrompt = `[ESSAY] 안녕하세요! 저는 ${nm}, 중학교 1학년이에요.\nHuckleberry Finn W1 에세이를 썼는데 피드백 부탁드려요.\n① ${s1}\n② ${s2}\n③ ${s3}`;
   navigator.clipboard.writeText(essayPrompt).then(() => {
-    document.getElementById('essay-result').innerHTML = '✅ 에세이가 복사됐어요! Open WebUI에서 붙여넣기 하세요.';
+    document.getElementById('essay-result').innerHTML = '✅ 에세이가 복사됐어요! ChatGPT에서 붙여넣기 하세요.';
     document.getElementById('essay-result').style.color = 'var(--a1c)';
     addXP(10);
-    window.open('http://localhost:3001/?models=cec_camp_b', '_blank');
   }).catch(() => {
-    document.getElementById('essay-result').innerHTML = '📋 복사 실패 — 직접 Open WebUI에 붙여넣어 주세요!';
+    document.getElementById('essay-result').innerHTML = '📋 복사 실패 — 직접 ChatGPT에 붙여넣어 주세요!';
     document.getElementById('essay-result').style.color = 'var(--sub)';
   });
 }
 
-// ── Open WebUI ──
+// ── ChatGPT ──
 function copyGPT() {
   const prompt = document.getElementById('gpt-prompt').textContent;
   navigator.clipboard.writeText(prompt).then(() => {
     const btn = document.querySelector('.gpt-copy');
-    btn.textContent = '✅ 복사됐어요! Open WebUI를 열어주세요.';
+    btn.textContent = '✅ 복사됐어요! ChatGPT를 열어주세요.';
     btn.style.background = 'var(--green)';
     setTimeout(() => {
       btn.textContent = '📋 프롬프트 복사하기';
@@ -1106,10 +1100,137 @@ function copyGPT() {
 }
 function openGPT() {
   copyGPT();
-  setTimeout(() => window.open('http://localhost:3001/?models=cec_camp_b', '_blank'), 300);
 }
 </script>
-<style>.wk-nav{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#000;border-top:1px solid rgba(201,168,76,0.2);z-index:50}.wk-nav a{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}.wk-nav a:hover{transform:translateY(-2px)}.wk-nav .wk-prev{background:#0C1428;color:#8A9AB0;border:1px solid rgba(201,168,76,0.2)}.wk-nav .wk-next{background:#C9A84C;color:#000}.wk-nav .wk-label{font-size:11px;color:#5A6A80;letter-spacing:1px}</style>
+<style>.wk-nav{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#000;border-top:1px solid rgba(201,168,76,0.2);z-index:50}.wk-nav a{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}.wk-nav a:hover{transform:translateY(-2px)}.wk-nav .wk-prev{background:#0C1428;color:#8A9AB0;border:1px solid rgba(201,168,76,0.2)}.wk-nav .wk-next{background:#C9A84C;color:#000}.wk-nav .wk-label{font-size:11px;color:#5A6A80;letter-spacing:1px}
+/* ── ChatGPT 회화 연습 버튼 ── */
+.chatgpt-practice-section {
+  margin: 40px auto 20px;
+  max-width: 860px;
+  padding: 0 20px;
+}
+.chatgpt-practice-wrap {
+  background: linear-gradient(135deg, #050e1f, #0a1628);
+  border: 2px solid rgba(0,210,255,0.4);
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.chatgpt-practice-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%,
+    rgba(0,210,255,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.chatgpt-practice-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.chatgpt-practice-desc {
+  color: #6a8fad;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.chatgpt-practice-desc strong { color: #00d2ff; }
+.chatgpt-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #00d2ff, #0055ff);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(0,210,255,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+.chatgpt-launch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(0,210,255,0.5);
+}
+.chatgpt-practice-note {
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: #3a5a7a;
+}
+
+</style>
 <div class="wk-nav"><a class="wk-prev" href="prestep.html">← 목록</a><span class="wk-label">WEEK 1</span><a class="wk-next" href="week02.html">W2 →</a></div>
+
+<div class="chatgpt-practice-section">
+  <div class="chatgpt-practice-wrap">
+    <div class="chatgpt-practice-title">🎉 수업 완료! 이제 회화 연습!</div>
+    <div class="chatgpt-practice-desc">
+      오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 영어로 대화해보세요!<br>
+      <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
+    </div>
+    <button class="chatgpt-launch-btn" onclick="launchChatGPTPractice()">
+      🎙️ ChatGPT 회화 연습 시작
+    </button>
+    <div class="chatgpt-practice-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
+  </div>
+</div>
+
+<script>
+function getCampType() {
+  var path = window.location.pathname;
+  if (path.includes('camp-b') ||
+      path.includes('/m1/') || path.includes('/m2/') || path.includes('/m3/') ||
+      path.includes('/g1/') || path.includes('/g2/') || path.includes('/g3/')) return 'b';
+  if (path.includes('camp-c') || path.includes('mom-teacher')) return 'c';
+  return 'a';
+}
+
+function launchChatGPTPractice() {
+  // 단어 자동 수집
+  var words = [];
+  document.querySelectorAll(
+    '.word-en, .vocab-en, .key-word, [class*="word-en"], [class*="vocab"]'
+  ).forEach(function(el) {
+    var t = el.textContent.trim();
+    if (t && t.length < 30) words.push(t);
+  });
+
+  // 본문 첫 문장
+  var storyEl = document.querySelector(
+    '.story-content.active p, .reading-text p, .story p'
+  );
+  var firstLine = storyEl
+    ? storyEl.textContent.substring(0, 80) + '...'
+    : '';
+
+  var summary = [
+    '[' + document.title + ']',
+    words.length ? '배운 단어: ' + words.slice(0,8).join(', ') : '',
+    firstLine ? '오늘 이야기: ' + firstLine : '',
+    '위 내용으로 영어 회화 연습을 도와주세요!'
+  ].filter(Boolean).join('\n');
+
+  var camp = getCampType();
+
+  // cec_guide.html 경로: GitHub Pages 루트
+  var depth = (window.location.pathname.match(/\//g) || []).length - 1;
+  var prefix = depth <= 1 ? '' : '../'.repeat(depth - 1);
+
+  var guideUrl = prefix + 'cec_guide.html'
+    + '?camp=' + camp
+    + '&url=' + encodeURIComponent(window.location.href)
+    + '&summary=' + encodeURIComponent(summary);
+
+  window.location.href = guideUrl;
+}
+</script>
+
 </body>
 </html>

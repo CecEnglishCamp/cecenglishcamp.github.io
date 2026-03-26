@@ -164,7 +164,6 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
     <div class="tt-ex" id="tt-ex"></div>
     <div class="tt-links">
       <a class="tt-gram-link" id="tt-gram-link" href="https://cecenglishcamp.github.io/GrammarBaseCamp/index.html" target="_blank"></a>
-      <button class="tt-gpt-link" onclick="gramToGPT()">💬 Open WebUI</button>
     </div>
   </div>
 </div>
@@ -507,7 +506,6 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
   <div class="essay-line"><span class="essay-num">C</span><input class="essay-input" id="es1" placeholder="I argue that..."></div>
   <div class="essay-line"><span class="essay-num">E</span><input class="essay-input" id="es2" placeholder="As Holmes demonstrates / According to the story,..."></div>
   <div class="essay-line"><span class="essay-num">R</span><input class="essay-input" id="es3" placeholder="This shows that..."></div>
-  <button class="essay-submit" onclick="submitEssay()">📝 Open WebUI에서 피드백받기</button>
   <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
 </div>
 
@@ -524,7 +522,6 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
       <div style="font-size:0.78rem;color:var(--text);margin-bottom:8px;line-height:1.6;">"Irene succeeded once by chance. Holmes solves hundreds of cases. Consistency proves superiority."</div>
       <textarea id="rebuttal-m3" class="debate-textarea" rows="5" placeholder="재반박문을 영어로 써보세요...&#10;&#10;While it is true that Holmes has solved more cases...&#10;this ignores the fact that Irene defeated him on his own terms...&#10;As Watson himself wrote..."></textarea>
     </div>
-    <button onclick="sendDebate_m3()" style="background:#10b981;color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;">💬 Open WebUI와 Closing Statement 준비</button>
     <div style="font-size:0.78rem;color:var(--sub);margin-top:8px;min-height:16px;" id="debate-result"></div>
   </div>
 </div>
@@ -533,7 +530,6 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
   <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">AI 영어 튜터 벡스 (25분)</div></div>
   <div class="gpt-card">
     <div style="font-size:0.9rem;font-weight:900;color:white;margin-bottom:6px;">🤖 AI 튜터와 영어 연습</div>
-    <div style="font-size:0.75rem;color:var(--sub);margin-bottom:14px;">버튼을 누르면 복사돼요. Open WebUI에 붙여넣기(Ctrl+V)!</div>
     <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:0.78rem;color:#9090aa;line-height:1.7;margin-bottom:12px;white-space:pre-wrap;" id="gpt-prompt">안녕! 나는 중학교 3학년이야.
 오늘 Sherlock Holmes W2 (A Scandal in Bohemia)를 공부했어.
 
@@ -554,7 +550,6 @@ Claim이 명확한지, Evidence가 텍스트 기반인지, Reasoning이 논리�
 
 고급 영어로 피드백 줘!</div>
     <button class="gpt-copy" onclick="copyGPT()">📋 프롬프트 복사하기</button>
-    <button class="gpt-open" onclick="openGPT()">💬 Open WebUI 열기</button>
     <div style="text-align:center;font-size:0.75rem;color:var(--sub);margin-top:8px;">⏱ 목표: 25분 | 에세이 8분 + 디베이트 10분 + 교정 7분</div>
   </div>
 </div>
@@ -640,7 +635,6 @@ function toggleKr(){const kr=document.getElementById('story-kr');const btn=docum
 
 document.querySelectorAll('.gram').forEach(el=>{el.addEventListener('click',function(e){e.stopPropagation();const d=gramData[this.dataset.id];if(!d) return;currentGramId=this.dataset.id;document.getElementById('tt-tag').textContent=d.tag;document.getElementById('tt-title').textContent=d.title;document.getElementById('tt-desc').textContent=d.desc;document.getElementById('tt-ex').textContent=d.ex;document.getElementById('tt-gram-link').textContent='📚 Grammar Base '+d.gnum+' →';document.getElementById('tt-gram-link').href=d.glink;const wrap=document.getElementById('tt-wrap');const rect=this.getBoundingClientRect();let top=rect.bottom+8,left=rect.left;if(left+290>window.innerWidth) left=window.innerWidth-295;if(top+200>window.innerHeight) top=rect.top-210;wrap.style.top=top+'px';wrap.style.left=left+'px';wrap.style.display='block';document.getElementById('tt-overlay').style.display='block';});});
 function closeTooltip(){document.getElementById('tt-wrap').style.display='none';document.getElementById('tt-overlay').style.display='none';}
-function gramToGPT(){const d=gramData[currentGramId];if(!d) return;const p=`안녕! 중학교 3학년인데 이 문법이 이해 안 돼.\n문법: ${d.title} (${d.tag})\n예문: "${d.ex}"\n쉽게 설명해줘! 예문도 2개 더 만들어줘!`;navigator.clipboard.writeText(p).then(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'));closeTooltip();}
 
 function chkFill(btn,val,ans,blId,resId){btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('ok','no'));const res=document.getElementById(resId);if(val===ans){document.getElementById(blId).textContent=val;document.getElementById(blId).style.color='var(--green)';btn.classList.add('ok');res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(3);}else{btn.classList.add('no');res.innerHTML='❌ 다시!';res.style.color='var(--red)';}}
 function chkDict(id,ans,resId){const v=document.getElementById(id).value.trim().toLowerCase();const res=document.getElementById(resId);if(v===ans.toLowerCase()){res.innerHTML='✅ 정답!';res.style.color='var(--green)';document.getElementById(id).style.borderColor='var(--green)';addXP(3);}else{res.innerHTML='❌ 정답: <span style="color:var(--acc);font-weight:900">'+ans+'</span>';res.style.color='var(--red)';document.getElementById(id).style.borderColor='var(--red)';}}
@@ -674,20 +668,145 @@ function submitEssay(){
   if(!claim||!evidence||!reasoning){res.innerHTML='❗ C, E, R을 모두 작성해주세요!';res.style.color='var(--gold)';return;}
   const nm = _getStudentName();
   const prompt=`[ESSAY] 안녕하세요! 저는 ${nm}, 중학교 3학년이에요.\nSherlock Holmes W2 CER 에세이를 썼는데 피드백 부탁드려요.\n[C] ${claim}\n[E] ${evidence}\n[R] ${reasoning}`;
-  navigator.clipboard.writeText(prompt).then(()=>{res.innerHTML='✅ 복사 완료!';res.style.color='var(--green)';addXP(10);window.open('http://localhost:3001/?models=cec_camp_b','_blank');});
 }
 
 function sendDebate_m3(){
   const rebuttal=document.getElementById('rebuttal-m3').value.trim();
   const nm = _getStudentName();
   const prompt=`[DEBATE] 안녕하세요! 저는 ${nm}, 중학교 3학년이에요.\nSherlock Holmes W2 디베이트 주제: "Irene Adler is smarter than Sherlock Holmes."\n[Round 1 - Opening]: (상대방: "Holmes solves hundreds of cases. Consistency proves superiority.")\n[Round 2 - Rebuttal]: ${rebuttal||'(아직 못 썼어)'}\n[Round 3 - Closing]: (아직 못 썼어)`;
-  navigator.clipboard.writeText(prompt).then(()=>{document.getElementById('debate-result').innerHTML='✅ 복사 완료!';document.getElementById('debate-result').style.color='var(--green)';addXP(10);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);});
 }
 
 function copyGPT(){const p=document.getElementById('gpt-prompt').textContent;navigator.clipboard.writeText(p).then(()=>{const btn=document.querySelector('.gpt-copy');const orig=btn.textContent;btn.textContent='✅ 복사됐어요!';btn.style.background='var(--green)';setTimeout(()=>{btn.textContent=orig;btn.style.background='#10a37f';},2000);});}
-function openGPT(){copyGPT();setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);}
 </script>
-<style>.wk-nav{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#000;border-top:1px solid rgba(201,168,76,0.2);z-index:50}.wk-nav a{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}.wk-nav a:hover{transform:translateY(-2px)}.wk-nav .wk-prev{background:#0C1428;color:#8A9AB0;border:1px solid rgba(201,168,76,0.2)}.wk-nav .wk-next{background:#C9A84C;color:#000}.wk-nav .wk-label{font-size:11px;color:#5A6A80;letter-spacing:1px}</style>
+<style>.wk-nav{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#000;border-top:1px solid rgba(201,168,76,0.2);z-index:50}.wk-nav a{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}.wk-nav a:hover{transform:translateY(-2px)}.wk-nav .wk-prev{background:#0C1428;color:#8A9AB0;border:1px solid rgba(201,168,76,0.2)}.wk-nav .wk-next{background:#C9A84C;color:#000}.wk-nav .wk-label{font-size:11px;color:#5A6A80;letter-spacing:1px}
+/* ── ChatGPT 회화 연습 버튼 ── */
+.chatgpt-practice-section {
+  margin: 40px auto 20px;
+  max-width: 860px;
+  padding: 0 20px;
+}
+.chatgpt-practice-wrap {
+  background: linear-gradient(135deg, #050e1f, #0a1628);
+  border: 2px solid rgba(0,210,255,0.4);
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.chatgpt-practice-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%,
+    rgba(0,210,255,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.chatgpt-practice-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.chatgpt-practice-desc {
+  color: #6a8fad;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.chatgpt-practice-desc strong { color: #00d2ff; }
+.chatgpt-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #00d2ff, #0055ff);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(0,210,255,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+.chatgpt-launch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(0,210,255,0.5);
+}
+.chatgpt-practice-note {
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: #3a5a7a;
+}
+
+</style>
 <div class="wk-nav"><a class="wk-prev" href="week01.html">← W1</a><span class="wk-label">WEEK 2</span><a class="wk-next" href="week03.html">W3 →</a></div>
+
+<div class="chatgpt-practice-section">
+  <div class="chatgpt-practice-wrap">
+    <div class="chatgpt-practice-title">🎉 수업 완료! 이제 회화 연습!</div>
+    <div class="chatgpt-practice-desc">
+      오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 영어로 대화해보세요!<br>
+      <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
+    </div>
+    <button class="chatgpt-launch-btn" onclick="launchChatGPTPractice()">
+      🎙️ ChatGPT 회화 연습 시작
+    </button>
+    <div class="chatgpt-practice-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
+  </div>
+</div>
+
+<script>
+function getCampType() {
+  var path = window.location.pathname;
+  if (path.includes('camp-b') ||
+      path.includes('/m1/') || path.includes('/m2/') || path.includes('/m3/') ||
+      path.includes('/g1/') || path.includes('/g2/') || path.includes('/g3/')) return 'b';
+  if (path.includes('camp-c') || path.includes('mom-teacher')) return 'c';
+  return 'a';
+}
+
+function launchChatGPTPractice() {
+  // 단어 자동 수집
+  var words = [];
+  document.querySelectorAll(
+    '.word-en, .vocab-en, .key-word, [class*="word-en"], [class*="vocab"]'
+  ).forEach(function(el) {
+    var t = el.textContent.trim();
+    if (t && t.length < 30) words.push(t);
+  });
+
+  // 본문 첫 문장
+  var storyEl = document.querySelector(
+    '.story-content.active p, .reading-text p, .story p'
+  );
+  var firstLine = storyEl
+    ? storyEl.textContent.substring(0, 80) + '...'
+    : '';
+
+  var summary = [
+    '[' + document.title + ']',
+    words.length ? '배운 단어: ' + words.slice(0,8).join(', ') : '',
+    firstLine ? '오늘 이야기: ' + firstLine : '',
+    '위 내용으로 영어 회화 연습을 도와주세요!'
+  ].filter(Boolean).join('\n');
+
+  var camp = getCampType();
+
+  // cec_guide.html 경로: GitHub Pages 루트
+  var depth = (window.location.pathname.match(/\//g) || []).length - 1;
+  var prefix = depth <= 1 ? '' : '../'.repeat(depth - 1);
+
+  var guideUrl = prefix + 'cec_guide.html'
+    + '?camp=' + camp
+    + '&url=' + encodeURIComponent(window.location.href)
+    + '&summary=' + encodeURIComponent(summary);
+
+  window.location.href = guideUrl;
+}
+</script>
+
 </body>
 </html>
