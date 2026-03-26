@@ -530,7 +530,96 @@ body::before{
       <div class="nav-info-s">다음: Ep 08 · 이웃 인사</div>
     </div>
     <a href="ep28.html" class="nav-btn">다음 에피소드 →</a>
+  
+<!-- 프롬프트 + ChatGPT 연습 섹션 -->
+<div class="practice-wrap">
+  <div class="prompt-section">
+    <div class="prompt-header">🤖 AI 튜터 빅스와 영어 연습</div>
+    <div class="prompt-body" id="promptBody"></div>
+    <button class="copy-prompt-btn" onclick="copyPrompt()">📋 프롬프트 복사하기</button>
+    <div class="copy-feedback" id="copyFeedback">✅ 복사됐어요! ChatGPT에서 Ctrl+V 하세요!</div>
   </div>
+  <div class="chatgpt-launch-wrap">
+    <div class="launch-title">🎉 수업 완료! 이제 회화 연습!</div>
+    <div class="launch-desc">
+      오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 대화해보세요!<br>
+      <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
+    </div>
+    <button class="chatgpt-launch-btn" onclick="launchChatGPTPractice()">🎙️ ChatGPT 회화 연습 시작</button>
+    <div class="launch-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
+  </div>
+</div>
+
+<script>
+function getCampType() {
+  var path = window.location.pathname;
+  if (path.includes('camp-b') || path.includes('/m1/') ||
+      path.includes('/m2/') || path.includes('/m3/')) return 'b';
+  if (path.includes('camp-c') || path.includes('mom-teacher')) return 'c';
+  return 'a';
+}
+
+function buildSummary() {
+  var words = [];
+  document.querySelectorAll(
+    '.key-expression, .expression-en, .vocab-en, .v-eng, .word-en, .key-word, .mom-vocab, .vocab-item, .expression-card, .key-phrase'
+  ).forEach(function(el) {
+    var t = el.textContent.trim();
+    if (t && t.length < 40) words.push(t);
+  });
+
+  var storyEl = document.querySelector(
+    '.story-en, .dialogue p, .story-content p, .reading-text p, .story p, .ep-story p'
+  );
+  var storyText = '';
+  if (storyEl) {
+    storyText = storyEl.textContent
+      .replace(/\s+/g, ' ').trim()
+      .substring(0, 100) + '...';
+  }
+
+  return [
+    '안녕! 나는 CEC English Camp 학생이야.',
+    '오늘 ' + document.title + ' 을 공부했어.',
+    '',
+    '📚 오늘 배운 내용:',
+    words.length ? '- 표현/단어: ' + words.slice(0,8).join(', ') : '',
+    storyText ? '- 내용: ' + storyText : '',
+    '',
+    '[할 것 - 5분] 오늘 배운 표현으로 짧은 대화를 도와줘.',
+    '[할 것 - 10분] 오늘 상황과 비슷한 롤플레이를 해줘.',
+    '[할 것 - 5분] 내가 말하는 영어를 듣고 자연스럽게 대화해줘.'
+  ].filter(function(l) { return l !== undefined; }).join('\n');
+}
+
+function copyPrompt() {
+  var summary = buildSummary();
+  navigator.clipboard.writeText(summary).then(function() {
+    var fb = document.getElementById('copyFeedback');
+    if (fb) {
+      fb.style.display = 'block';
+      setTimeout(function() { fb.style.display = 'none'; }, 3000);
+    }
+  });
+}
+
+function launchChatGPTPractice() {
+  var summary = buildSummary();
+  var camp = getCampType();
+  var guideUrl = 'https://cecenglishcamp.github.io/cec_guide.html'
+    + '?camp=' + camp
+    + '&url=' + encodeURIComponent(window.location.href)
+    + '&summary=' + encodeURIComponent(summary);
+  window.location.href = guideUrl;
+}
+
+window.addEventListener('load', function() {
+  var el = document.getElementById('promptBody');
+  if (el) el.textContent = buildSummary();
+});
+</script>
+
+</div>
 
 </div></div>
 
@@ -680,94 +769,6 @@ document.addEventListener('DOMContentLoaded',function(){g2init();});
   color: #6a8aaa;
 }
 </style>
-
-<!-- 프롬프트 + ChatGPT 연습 섹션 -->
-<div class="practice-wrap">
-  <div class="prompt-section">
-    <div class="prompt-header">🤖 AI 튜터 빅스와 영어 연습</div>
-    <div class="prompt-body" id="promptBody"></div>
-    <button class="copy-prompt-btn" onclick="copyPrompt()">📋 프롬프트 복사하기</button>
-    <div class="copy-feedback" id="copyFeedback">✅ 복사됐어요! ChatGPT에서 Ctrl+V 하세요!</div>
-  </div>
-  <div class="chatgpt-launch-wrap">
-    <div class="launch-title">🎉 수업 완료! 이제 회화 연습!</div>
-    <div class="launch-desc">
-      오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 대화해보세요!<br>
-      <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
-    </div>
-    <button class="chatgpt-launch-btn" onclick="launchChatGPTPractice()">🎙️ ChatGPT 회화 연습 시작</button>
-    <div class="launch-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
-  </div>
-</div>
-
-<script>
-function getCampType() {
-  var path = window.location.pathname;
-  if (path.includes('camp-b') || path.includes('/m1/') ||
-      path.includes('/m2/') || path.includes('/m3/')) return 'b';
-  if (path.includes('camp-c') || path.includes('mom-teacher')) return 'c';
-  return 'a';
-}
-
-function buildSummary() {
-  var words = [];
-  document.querySelectorAll(
-    '.key-expression, .expression-en, .vocab-en, .v-eng, .word-en, .key-word, .mom-vocab, .vocab-item, .expression-card, .key-phrase'
-  ).forEach(function(el) {
-    var t = el.textContent.trim();
-    if (t && t.length < 40) words.push(t);
-  });
-
-  var storyEl = document.querySelector(
-    '.story-en, .dialogue p, .story-content p, .reading-text p, .story p, .ep-story p'
-  );
-  var storyText = '';
-  if (storyEl) {
-    storyText = storyEl.textContent
-      .replace(/\s+/g, ' ').trim()
-      .substring(0, 100) + '...';
-  }
-
-  return [
-    '안녕! 나는 CEC English Camp 학생이야.',
-    '오늘 ' + document.title + ' 을 공부했어.',
-    '',
-    '📚 오늘 배운 내용:',
-    words.length ? '- 표현/단어: ' + words.slice(0,8).join(', ') : '',
-    storyText ? '- 내용: ' + storyText : '',
-    '',
-    '[할 것 - 5분] 오늘 배운 표현으로 짧은 대화를 도와줘.',
-    '[할 것 - 10분] 오늘 상황과 비슷한 롤플레이를 해줘.',
-    '[할 것 - 5분] 내가 말하는 영어를 듣고 자연스럽게 대화해줘.'
-  ].filter(function(l) { return l !== undefined; }).join('\n');
-}
-
-function copyPrompt() {
-  var summary = buildSummary();
-  navigator.clipboard.writeText(summary).then(function() {
-    var fb = document.getElementById('copyFeedback');
-    if (fb) {
-      fb.style.display = 'block';
-      setTimeout(function() { fb.style.display = 'none'; }, 3000);
-    }
-  });
-}
-
-function launchChatGPTPractice() {
-  var summary = buildSummary();
-  var camp = getCampType();
-  var guideUrl = 'https://cecenglishcamp.github.io/cec_guide.html'
-    + '?camp=' + camp
-    + '&url=' + encodeURIComponent(window.location.href)
-    + '&summary=' + encodeURIComponent(summary);
-  window.location.href = guideUrl;
-}
-
-window.addEventListener('load', function() {
-  var el = document.getElementById('promptBody');
-  if (el) el.textContent = buildSummary();
-});
-</script>
 
 </body>
 </html>
