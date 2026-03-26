@@ -488,9 +488,9 @@
 </div>
 
 <div class="footer-nav">
-  <a href="G11_new.html" class="fnav-btn fnav-prev">← G11</a>
+  <a href="../G11/G11_new.html" class="fnav-btn fnav-prev">← G11</a>
   <span class="fnav-center">G12 · THERE IS / THERE ARE</span>
-  <a href="G13_new.html" class="fnav-btn fnav-next">G13 →</a>
+  <a href="../G13/G13_new.html" class="fnav-btn fnav-next">G13 →</a>
 </div>
 
 
@@ -523,10 +523,10 @@
 .gb-btn2{flex:1;padding:9px;background:#f0f8e8;border:0.5px solid #a8d070;color:#4a6741;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:sans-serif;}
 </style>
 <div class="gb">
-  <div class="gb-hint" onclick="gbToggle()" id="gbHint">
+  <div class="gb-hint"  id="gbHint">
     <span id="gbHintText">문법</span> 질문 있으세요?
   </div>
-  <div class="gb-robo" onclick="gbToggle()">
+  <div class="gb-robo" >
     <img src="../robo_jump.gif" alt="Robo" onerror="this.src='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif'">
   </div>
 </div>
@@ -537,7 +537,7 @@
       <div class="gb-ht">Grammar AI 선생님</div>
       <div class="gb-hs" id="gbSub">문법 설명 + 회화 연결</div>
     </div>
-    <button class="gb-close" onclick="gbToggle()">&#10005;</button>
+    <button class="gb-close" id="gbClose" >&#10005;</button>
   </div>
   <div class="gb-chat" id="gbChat">
     <div class="gb-ai-msg">
@@ -547,7 +547,7 @@
   </div>
   <div class="gb-input-row">
     <input class="gb-input" id="gbInput" type="text" placeholder="질문을 입력하세요..." onkeydown="if(event.key==='Enter')gbSend()">
-    <button class="gb-send" onclick="gbSend()">→</button>
+    <button class="gb-send" id="gbSend" onclick="gbSend()">→</button>
   </div>
   <div class="gb-btns">
     <button class="gb-btn1" onclick="gbAsk()">💬 Open WebUI 열기</button>
@@ -556,60 +556,92 @@
 </div>
 <script src="../grammar_story_map.js"></script>
 <script>
-(function(){
-  var path=window.location.pathname;
-  var m=path.match(/G(\d+)/i);
-  var gid=m?'G'+('0'+m[1]).slice(-2):'G01';
-  var data=(typeof GRAMMAR_STORY_MAP!=='undefined')?GRAMMAR_STORY_MAP[gid]:null;
-  if(data){
-    document.getElementById('gbHintText').textContent=data.title;
-    document.getElementById('gbSub').textContent=gid+' — '+data.title;
-    gbAddAI('안녕하세요! 👋\n'+data.title+' 궁금한 거 물어보세요!\n예: '+data.example);
-  }
-  var gbOpen=false;
-  window.gbToggle=function(){
-    gbOpen=!gbOpen;
-    document.getElementById('gbPanel').style.display=gbOpen?'block':'none';
-    document.getElementById('gbHint').style.opacity=gbOpen?'0':'1';
-    if(gbOpen)setTimeout(function(){document.getElementById('gbInput').focus();},100);
-  };
-  window.gbSend=function(){
-    var inp=document.getElementById('gbInput');
-    var msg=inp.value.trim();
-    if(!msg)return;
-    gbAddUser(msg);
-    inp.value='';
-    setTimeout(function(){gbAddAI('좋은 질문이에요!\nOpen WebUI에서 더 자세히 답해드릴게요 😊');},500);
-  };
-  window.gbAsk=function(){
-    var prompt=data?data.prompt:'문법 질문이 있어요!';
-    navigator.clipboard.writeText(prompt).catch(function(){});
-    window.open('http://localhost:3001/?models=cec_grammar','_blank');
-  };
-  window.gbCamp=function(){
-    window.open('https://cecenglishcamp.github.io/','_blank');
-  };
-  window.gbAddAI=function(msg){
-    var c=document.getElementById('gbChat');
-    var d=document.createElement('div');
-    d.className='gb-ai-msg';
-    d.innerHTML='<img src="../robo_jump.gif" onerror="this.src=\'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif\'">'
-      +'<div class="gb-ai-bubble">'+msg+'</div>';
-    c.appendChild(d);c.scrollTop=c.scrollHeight;
-  };
-  window.gbAddUser=function(msg){
-    var c=document.getElementById('gbChat');
-    var d=document.createElement('div');
-    d.className='gb-user-msg';
-    d.innerHTML='<div class="gb-user-bubble">'+msg+'</div>';
-    c.appendChild(d);c.scrollTop=c.scrollHeight;
-  };
-  setTimeout(function(){
-    var h=document.getElementById('gbHint');
-    if(h){h.style.background='#a8d070';h.style.color='#2d4a25';
-      setTimeout(function(){h.style.background='#4a6741';h.style.color='#fff';},2000);}
-  },5000);
-})();
+document.addEventListener('DOMContentLoaded', function(){
+ var path = window.location.pathname;
+ var m = path.match(/G(\d+)/i);
+ var gid = m ? 'G' + ('0' + m[1]).slice(-2) : 'G01';
+ var data = (typeof GRAMMAR_STORY_MAP !== 'undefined') ? GRAMMAR_STORY_MAP[gid] : null;
+
+ if(data){
+ var ht = document.getElementById('gbHintText');
+ var sub = document.getElementById('gbSub');
+ if(ht) ht.textContent = data.title;
+ if(sub) sub.textContent = gid + ' — ' + data.title;
+ gbAddAI('안녕하세요! ' + data.title + ' 궁금한 거 물어보세요!\n예: ' + data.example);
+ }
+
+ var gbOpen = false;
+
+ document.getElementById('gbHint').addEventListener('click', gbToggle);
+ document.querySelector('.gb-robo').addEventListener('click', gbToggle);
+ document.getElementById('gbClose').addEventListener('click', gbToggle);
+ document.getElementById('gbSend').addEventListener('click', gbSend);
+ document.getElementById('gbInput').addEventListener('keydown', function(e){
+ if(e.key === 'Enter') gbSend();
+ });
+ document.getElementById('gbBtn1').addEventListener('click', gbAsk);
+ document.getElementById('gbBtn2').addEventListener('click', gbCamp);
+
+ function gbToggle(){
+ gbOpen = !gbOpen;
+ document.getElementById('gbPanel').style.display = gbOpen ? 'block' : 'none';
+ document.getElementById('gbHint').style.opacity = gbOpen ? '0' : '1';
+ if(gbOpen) setTimeout(function(){ document.getElementById('gbInput').focus(); }, 100);
+ }
+
+ function gbSend(){
+ var inp = document.getElementById('gbInput');
+ var msg = inp.value.trim();
+ if(!msg) return;
+ gbAddUser(msg);
+ inp.value = '';
+ setTimeout(function(){
+ gbAddAI('좋은 질문이에요!\nOpen WebUI에서 더 자세히 답해드릴게요!');
+ }, 500);
+ }
+
+ function gbAsk(){
+ var prompt = data ? data.prompt : '문법 질문이 있어요!';
+ navigator.clipboard.writeText(prompt).catch(function(){});
+ window.open('http://localhost:3001/?models=cec_grammar', '_blank');
+ }
+
+ function gbCamp(){
+ window.open('https://cecenglishcamp.github.io/', '_blank');
+ }
+
+ function gbAddAI(msg){
+ var c = document.getElementById('gbChat');
+ var d = document.createElement('div');
+ d.className = 'gb-ai-msg';
+ d.innerHTML = '<img src="../robo_jump.gif" onerror="this.src=\'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif\'">'
+ + '<div class="gb-ai-bubble">' + msg + '</div>';
+ c.appendChild(d);
+ c.scrollTop = c.scrollHeight;
+ }
+
+ function gbAddUser(msg){
+ var c = document.getElementById('gbChat');
+ var d = document.createElement('div');
+ d.className = 'gb-user-msg';
+ d.innerHTML = '<div class="gb-user-bubble">' + msg + '</div>';
+ c.appendChild(d);
+ c.scrollTop = c.scrollHeight;
+ }
+
+ setTimeout(function(){
+ var h = document.getElementById('gbHint');
+ if(h){
+ h.style.background = '#a8d070';
+ h.style.color = '#2d4a25';
+ setTimeout(function(){
+ h.style.background = '#4a6741';
+ h.style.color = '#fff';
+ }, 2000);
+ }
+ }, 5000);
+});
 </script>
 </body>
 </html>
+
