@@ -613,561 +613,7 @@ body::before{
       <p style="font-size:0.85rem;color:#64748b;margin:0 0 14px;text-align:center;">카드를 클릭해서 짝을 찾아보세요 · <span id="mp-score" style="color:#2563eb;font-weight:700">0 / 5</span> 완료</p>
       <div id="mp-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:640px;margin:0 auto;"></div>
       <div id="mp-done" style="display:none;text-align:center;margin-top:16px;padding:14px;background:linear-gradient(135deg,#dcfce7,#bbf7d0);border-radius:12px;font-size:1rem;font-weight:700;color:#15803d;">🎉 완벽해요! +5 XP 획득!
-<!-- 프롬프트 + ChatGPT 연습 섹션 -->
 
-
-</div>
-    </div>
-  </div>
-
-  <script>
-  (function(){
-    const PAIRS = [
-      {ko:'슈퍼마켓', en:'supermarket'},
-      {ko:'쇼핑 카트', en:'shopping cart'},
-      {ko:'갤런 우유', en:'a gallon of milk'},
-      {ko:'시리얼 통로', en:'cereal aisle'},
-      {ko:'종이봉투 or 비닐봉투', en:'paper or plastic'},
-    ];
-    let selected=null, matched=0, xpGiven=false;
-    const grid=document.getElementById('mp-grid');
-    const scoreEl=document.getElementById('mp-score');
-    const doneEl=document.getElementById('mp-done');
-
-    function shuffle(arr){return arr.sort(()=>Math.random()-0.5);}
-
-    const cards=[];
-    PAIRS.forEach((p,i)=>{
-      cards.push({id:i,side:'ko',text:p.ko});
-      cards.push({id:i,side:'en',text:p.en});
-    });
-    shuffle(cards);
-
-    cards.forEach(c=>{
-      const el=document.createElement('div');
-      el.dataset.id=c.id;
-      el.dataset.side=c.side;
-      el.textContent=c.text;
-      el.style.cssText='padding:14px 10px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;text-align:center;font-size:0.88rem;font-weight:600;color:#1e3a8a;transition:all 0.2s;user-select:none;min-height:54px;display:flex;align-items:center;justify-content:center;';
-      el.addEventListener('click',()=>pick(el,c));
-      grid.appendChild(el);
-    });
-
-    function pick(el,c){
-      if(el.dataset.matched==='1') return;
-      if(selected && selected.el===el) return;
-
-      el.style.background='#dbeafe';
-      el.style.borderColor='#2563eb';
-
-      if(!selected){
-        selected={el,c};
-      } else {
-        if(selected.c.id===c.id && selected.c.side!==c.side){
-          [selected.el,el].forEach(e=>{
-            e.style.background='#dcfce7';
-            e.style.borderColor='#16a34a';
-            e.style.cursor='default';
-            e.dataset.matched='1';
-          });
-          matched++;
-          scoreEl.textContent=matched+' / 5';
-          if(matched===5){
-            doneEl.style.display='block';
-            if(!xpGiven){xpGiven=true;addXP(5);}
-          }
-        } else {
-          const s=selected.el, cur=el;
-          s.style.background='#fee2e2'; s.style.borderColor='#dc2626';
-          cur.style.background='#fee2e2'; cur.style.borderColor='#dc2626';
-          setTimeout(()=>{
-            [s,cur].forEach(e=>{e.style.background='#fff';e.style.borderColor='#e2e8f0';});
-          },700);
-        }
-        selected=null;
-      }
-    }
-  })();
-  </script>
-
-  <!-- 듀오링고 게임 6개 -->
-  <div class="section"><div class="sec-hdr"><div class="sec-icon" style="background:linear-gradient(135deg,#ecfdf5,#d1fae5)">✏️</div><div><div class="sec-title">단어 고르기</div><div class="sec-sub">WORD CHOICE</div></div></div>
-  <div class="sec-body"><div style="font-size:1.1rem;font-weight:700;text-align:center;margin-bottom:18px;color:var(--navy);line-height:2.2;">"Excuse me, <span id="g1bl" style="display:inline-block;min-width:80px;border-bottom:3px solid var(--blue);text-align:center;font-weight:900;color:var(--blue);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> can I find the milk?"</div><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button onclick="g1check(this,'where')" style="background:#f1f5f9;border:2px solid #e2e8f0;border-radius:30px;padding:9px 24px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit;color:var(--navy);">where</button><button onclick="g1check(this,'what')" style="background:#f1f5f9;border:2px solid #e2e8f0;border-radius:30px;padding:9px 24px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit;color:var(--navy);">what</button><button onclick="g1check(this,'how')" style="background:#f1f5f9;border:2px solid #e2e8f0;border-radius:30px;padding:9px 24px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit;color:var(--navy);">how</button></div><div id="g1fb" style="text-align:center;margin-top:10px;font-weight:700;min-height:20px;"></div></div></div>
-
-  <div class="section"><div class="sec-hdr"><div class="sec-icon" style="background:linear-gradient(135deg,#fdf4ff,#ede9fe)">🧩</div><div><div class="sec-title">문장 순서 맞추기</div><div class="sec-sub">WORD ORDER</div></div></div>
-  <div class="sec-body"><p style="font-size:0.88rem;color:var(--text2);margin-bottom:14px;">"실례합니다, 우유는 어디서 찾나요?"를 영어로!</p><div id="g2zone" style="min-height:48px;border:2.5px dashed #cbd5e1;border-radius:14px;display:flex;flex-wrap:wrap;gap:8px;padding:10px 14px;margin-bottom:12px;background:#f8faff;"><span id="g2ph" style="color:#cbd5e1;font-size:0.85rem;font-weight:600;">여기에 단어를 배열하세요...</span></div><div id="g2pool" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;justify-content:center;"></div><div style="display:flex;gap:10px;justify-content:center;"><button onclick="g2check()" style="background:linear-gradient(135deg,#1e3a8a,#1d4ed8);color:#fff;border:none;border-radius:30px;padding:10px 26px;font-weight:800;font-size:0.93rem;cursor:pointer;font-family:inherit;">✓ 확인하기</button><button onclick="g2reset()" style="background:#64748b;color:#fff;border:none;border-radius:30px;padding:10px 22px;font-weight:800;font-size:0.93rem;cursor:pointer;font-family:inherit;">↩ 초기화</button></div><div id="g2fb" style="text-align:center;margin-top:10px;font-weight:700;min-height:20px;"></div></div></div>
-
-  <div class="section"><div class="sec-hdr"><div class="sec-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a)">🃏</div><div><div class="sec-title">짝맞추기</div><div class="sec-sub">MATCH PAIRS</div></div></div>
-  <div class="sec-body"><p style="font-size:0.85rem;color:var(--text3);margin-bottom:14px;">왼쪽 영어 → 오른쪽 한국어 클릭!</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:700px;margin:0 auto;"><div style="display:flex;flex-direction:column;gap:8px;"><button class="g3i" onclick="g3click(this,'supermarket')">supermarket</button><button class="g3i" onclick="g3click(this,'aisle')">aisle</button><button class="g3i" onclick="g3click(this,'cashier')">cashier</button><button class="g3i" onclick="g3click(this,'receipt')">receipt</button><button class="g3i" onclick="g3click(this,'cart')">cart</button></div><div style="display:flex;flex-direction:column;gap:8px;"><button class="g3i" onclick="g3click(this,'cart')">카트</button><button class="g3i" onclick="g3click(this,'supermarket')">슈퍼마켓</button><button class="g3i" onclick="g3click(this,'receipt')">영수증</button><button class="g3i" onclick="g3click(this,'aisle')">통로</button><button class="g3i" onclick="g3click(this,'cashier')">계산원</button></div></div><div id="g3fb" style="text-align:center;margin-top:14px;font-size:0.92rem;font-weight:700;min-height:24px;"></div></div></div>
-
-  <div class="section"><div class="sec-hdr"><div class="sec-icon" style="background:linear-gradient(135deg,#ecfdf5,#d1fae5)">✏️</div><div><div class="sec-title">빈칸 채우기</div><div class="sec-sub">FILL IN THE BLANK</div></div></div>
-  <div class="sec-body"><div style="font-size:1.1rem;font-weight:700;text-align:center;margin-bottom:18px;color:var(--navy);line-height:2.2;">"She pushed the <span id="g4bl" style="display:inline-block;min-width:80px;border-bottom:3px solid var(--blue);text-align:center;font-weight:900;color:var(--blue);">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> through the store."</div><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;"><button onclick="g4check(this,'cart')" style="background:#f1f5f9;border:2px solid #e2e8f0;border-radius:30px;padding:9px 24px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit;color:var(--navy);">cart</button><button onclick="g4check(this,'bag')" style="background:#f1f5f9;border:2px solid #e2e8f0;border-radius:30px;padding:9px 24px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit;color:var(--navy);">bag</button><button onclick="g4check(this,'box')" style="background:#f1f5f9;border:2px solid #e2e8f0;border-radius:30px;padding:9px 24px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit;color:var(--navy);">box</button></div><div id="g4fb" style="text-align:center;margin-top:10px;font-weight:700;min-height:20px;"></div></div></div>
-
-  <div class="section"><div class="sec-hdr"><div class="sec-icon" style="background:linear-gradient(135deg,#fff1f2,#fce7f3)">🔄</div><div><div class="sec-title">한국어 → 영어</div><div class="sec-sub">TRANSLATION</div></div></div>
-  <div class="sec-body"><div style="font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:14px;text-align:center;">"실례합니다, 우유는 어디서 찾을 수 있나요?"</div><div style="max-width:420px;margin:0 auto;display:flex;flex-direction:column;gap:8px;"><button onclick="g5check(this,true)" style="padding:10px 16px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;font-size:0.88rem;font-weight:600;cursor:pointer;text-align:left;font-family:inherit;">Excuse me, where can I find the milk?</button><button onclick="g5check(this,false)" style="padding:10px 16px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;font-size:0.88rem;font-weight:600;cursor:pointer;text-align:left;font-family:inherit;">How much is the milk?</button><button onclick="g5check(this,false)" style="padding:10px 16px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;font-size:0.88rem;font-weight:600;cursor:pointer;text-align:left;font-family:inherit;">Do you have milk?</button></div><div id="g5fb" style="text-align:center;margin-top:10px;font-weight:700;min-height:20px;"></div></div></div>
-
-  <div class="section"><div class="sec-hdr"><div class="sec-icon" style="background:linear-gradient(135deg,#eff6ff,#dbeafe)">💬</div><div><div class="sec-title">대화 완성하기</div><div class="sec-sub">DIALOGUE</div></div></div>
-  <div class="sec-body"><div style="background:#f1f5f9;border-radius:12px;padding:14px;margin-bottom:14px;"><div style="font-size:0.85rem;font-weight:700;color:#64748b;margin-bottom:4px;">Young-ja:</div><div style="font-size:1rem;font-weight:700;color:var(--navy);">"Excuse me, where can I find eggs?"</div></div><div style="font-size:0.88rem;font-weight:700;color:#64748b;margin-bottom:8px;">직원의 대답은?</div><div style="max-width:420px;display:flex;flex-direction:column;gap:8px;"><button onclick="g6check(this,true)" style="padding:10px 16px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;font-size:0.88rem;font-weight:600;cursor:pointer;text-align:left;font-family:inherit;">They're in aisle 3, on the left!</button><button onclick="g6check(this,false)" style="padding:10px 16px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;font-size:0.88rem;font-weight:600;cursor:pointer;text-align:left;font-family:inherit;">Yes, we have eggs.</button><button onclick="g6check(this,false)" style="padding:10px 16px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;font-size:0.88rem;font-weight:600;cursor:pointer;text-align:left;font-family:inherit;">I don't know.</button></div><div id="g6fb" style="text-align:center;margin-top:10px;font-weight:700;min-height:20px;"></div></div></div>
-
-  <div style="text-align:center;padding:32px 20px;margin:20px auto;max-width:600px;"><div style="font-size:2rem;">🎉</div><div style="color:#666;margin-bottom:16px;font-size:0.88rem;line-height:1.7;">AI 선생님과 오늘 배운 표현으로 대화해봐요!</div></div>
-
-  <!-- ⑤ 100 JOURNEY -->
-  <div class="hundred-section">
-    <div class="hundred-hdr">
-      <div class="hundred-t">
-        <div class="hundred-ic">🗺️</div>
-        <div>
-          <div class="hundred-nm">100 Expressions Journey</div>
-          <div class="hundred-sb">한 에피소드씩, 100개의 표현을 마스터하세요!</div>
-        </div>
-      </div>
-      <div class="hundred-stat">
-        <div class="hundred-big">4%</div>
-        <div class="hundred-sm">4 / 100 완료</div>
-      </div>
-    </div>
-    <div class="hundred-body">
-      <div class="dot-grid" id="dotGrid"></div>
-      <div class="prog-row">
-        <span class="prog-lbl">PROGRESS</span>
-        <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
-        <span class="prog-pct">4 / 100</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- COMPLETION CARD -->
-  <div id="completionCard" style="display:none;background:#fff;border-radius:24px;box-shadow:0 8px 40px rgba(30,43,94,0.13);padding:32px 24px;text-align:center;margin:20px 0;">
-    <div style="font-size:3.2rem;margin-bottom:12px;">🎉</div>
-    <div style="font-size:1.45rem;font-weight:900;color:var(--navy);margin-bottom:8px;">EP 04 완료!</div>
-    <div style="color:var(--text2);font-size:0.95rem;margin-bottom:18px;line-height:1.7;">오늘 <strong>"Everything is so big here!"</strong>를 완벽하게 익혔어요!<br>이제 미국 슈퍼마켓에서 놀라운 크기를 자연스럽게 표현할 수 있어요.</div>
-    <div id="finalXPBadge" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a2b5e;font-weight:900;font-size:1.25rem;border-radius:30px;padding:10px 28px;display:inline-block;box-shadow:0 4px 16px rgba(251,191,36,0.4);margin-bottom:20px;">⭐ 총 0 XP 획득!</div>
-    <div style="display:flex;align-items:flex-start;gap:10px;background:#f8faff;border:2px solid #e0e7ff;border-radius:14px;padding:14px 16px;text-align:left;">
-      <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#fbbf24,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;">👩</div>
-      <div><div style="font-weight:900;color:var(--navy);font-size:0.73rem;margin-bottom:3px;">박영자</div><span style="font-size:0.87rem;line-height:1.6;font-weight:600;color:var(--text);">슈퍼마켓 한 번 갔다 왔을 뿐인데 영어 표현까지 배웠네요! 다음엔 셀프 계산대도 도전해 봐요! 🛒</span></div>
-    </div>
-  </div>
-<div id="ai-tutor-widget" style="display:none; margin-top:24px;">
-  <div style="background:#fff;border-radius:24px;box-shadow:0 8px 40px rgba(30,43,94,0.13);padding:24px; text-align:center;">
-    <div style="font-size:1.1rem; font-weight:bold; margin-bottom:8px;">
-      🎓 영어 튜터와 연습하기
-    </div>
-    <div style="font-size:0.85rem; color:#64748b; margin-bottom:20px;">
-      오늘 배운 표현으로 바로 대화 연습해봐요!<br>
-      버튼을 누르면 학습 내용이 자동 복사되고 ChatGPT가 열려요.
-    </div>
-    <button onclick="startTutorSession()"
-      style="background:#10a37f; color:white; border:none; padding:14px 32px;
-             border-radius:10px; font-size:1rem; font-weight:bold; cursor:pointer;">
-      💬 영어 튜터 시작하기
-    </button>
-    <div style="font-size:0.75rem; color:#94a3b8; margin-top:12px;">
-      ChatGPT가 열리면 Ctrl+V 로 붙여넣기 후 시작하세요
-    </div>
-  </div>
-</div>
-<canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:9999;"></canvas>
-<div id="xpToast" style="position:fixed;top:70px;right:16px;background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1a2b5e;font-weight:900;font-size:1.05rem;border-radius:30px;padding:8px 20px;box-shadow:0 4px 20px rgba(251,191,36,0.5);z-index:9999;transform:translateY(-20px);opacity:0;transition:all 0.4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;">⭐ +0 XP</div>
-
-  <!-- NAV FOOTER -->
-  <div class="ep-nav">
-    <a href="ep03.html" class="nav-prev">← Ep 03 동네 산책</a>
-    <div>
-      <div class="nav-info-t">Episode 04 — 슈퍼마켓의 문화 충격</div>
-      <div class="nav-info-s">다음: Ep 05 · 첫 외출</div>
-    </div>
-    <a href="ep05.html" class="nav-btn">다음 에피소드 →</a>
-  </div>
-
-</div></div>
-
-<script>
-speechSynthesis.getVoices();if(speechSynthesis.onvoiceschanged!==undefined){speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices();};}
-function showTab(prefix, level, btn) {
-  const parent = btn.closest('.sec-body');
-  parent.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  parent.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  const panel = parent.querySelector('#' + prefix + '-' + level);
-  if (panel) panel.classList.add('active');
-  btn.classList.add('active');
-}
-
-let mainSpeaking = false;
-let waveInt = null;
-const wvBars = document.querySelectorAll('#wf .wvb');
-const baseH = [4,14,7,20,9,24,11,17,5,13,8,10];
-
-function animWave(on) {
-  clearInterval(waveInt);
-  if (on) { waveInt = setInterval(() => { wvBars.forEach(b => { b.style.height=(Math.random()*22+3)+'px'; b.classList.add('on'); }); },80); }
-  else { wvBars.forEach((b,i) => { b.style.height=baseH[i]+'px'; b.classList.remove('on'); }); }
-}
-function hlWords(on) {
-  const ws = document.querySelectorAll('#kp .w');
-  if (!on) { ws.forEach(w => w.style.color=''); return; }
-  let i=0;
-  const t = setInterval(() => { ws.forEach(w=>w.style.color=''); if(i<ws.length){ws[i].style.color='#fbbf24';i++;}else clearInterval(t); }, 340);
-}
-function getVoice() {
-  const vs = window.speechSynthesis.getVoices();
-  const femaleNames = [
-    'Samantha','Karen','Victoria','Moira','Fiona','Tessa','Alice','Allison',
-    'Google US English Female','Google UK English Female',
-    'Microsoft Zira','Zira','Microsoft Eva','Eva','Microsoft Jenny',
-    'Jenny Online (Natural)','Aria Online (Natural)','Aria'
-  ];
-  const maleAvoid = ['Alex','Fred','Daniel','Tom','Lee','Rishi','Google US English Male',
-                     'Microsoft David','Microsoft Mark','Microsoft Guy'];
-  for (const name of femaleNames) {
-    const v = vs.find(v => v.name === name || v.name.startsWith(name));
-    if (v) return v;
-  }
-  return vs.find(v => v.lang==='en-US' && !maleAvoid.some(m => v.name.includes(m)))
-      || vs.find(v => v.lang==='en-US');
-}
-function speak(text, rate=0.86) {
-  if(!('speechSynthesis' in window)) return null;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang='en-US'; u.rate=rate; u.pitch=1.15; u.volume=1.0;
-  const v=getVoice(); if(v) u.voice=v;
-  return u;
-}
-function speakMain() {
-  if(!('speechSynthesis' in window)){alert('Chrome을 사용하시면 발음을 들을 수 있습니다!');return;}
-  if(mainSpeaking){
-    window.speechSynthesis.cancel();mainSpeaking=false;
-    document.getElementById('mainBtn').classList.remove('playing');
-    document.getElementById('mainIcon').textContent='▶';
-    animWave(false);hlWords(false);return;
-  }
-  function go(){
-    const u=speak('Everything is so big here!');
-    if(!u)return;
-    u.onstart=()=>{mainSpeaking=true;document.getElementById('mainBtn').classList.add('playing');document.getElementById('mainIcon').textContent='■';animWave(true);hlWords(true);};
-    u.onend=u.onerror=()=>{mainSpeaking=false;document.getElementById('mainBtn').classList.remove('playing');document.getElementById('mainIcon').textContent='▶';animWave(false);hlWords(false);};
-    window.speechSynthesis.speak(u);
-  }
-  if(window.speechSynthesis.getVoices().length===0){window.speechSynthesis.onvoiceschanged=go;window.speechSynthesis.getVoices();}else go();
-}
-
-const scripts = {
-  a1:`Young-ja goes to the supermarket. She gets a cart. The cart is very big. She sees the milk. The milk is in a big bottle. She sees many cereals. There are so many kinds. She pays at the counter. The worker asks: Paper or plastic? She says: Plastic, please. She goes home and says: Everything is so big here!`,
-  a2:`Young-ja's daughter asks her to buy milk and eggs. Young-ja walks to the supermarket. The store is huge. The cart is twice the size of carts in Korea. The milk comes in gallon bottles. The cereal aisle seems endless. At checkout, the cashier asks: Paper or plastic? She says: Plastic, please. At home she says: Everything is so big here!`,
-  b1:`Young-ja agrees to pick up groceries. She steps into the supermarket and freezes. The store is enormous. The shopping cart is twice the size of Korean carts. She nearly crashes into a display. This cart has a mind of its own, she mutters. Milk comes by the gallon. The cereal aisle is an infinite wall of colorful boxes. At checkout: Paper or plastic? Back home: Everything is so big here!`
-};
-let activeMp3=null;
-function playScript(level){
-  if(!('speechSynthesis' in window)){alert('Chrome을 사용하시면 발음을 들을 수 있습니다!');return;}
-  const btn=document.getElementById('mp3btn-'+level);
-  const icon=document.getElementById('mp3icon-'+level);
-  if(activeMp3===level){window.speechSynthesis.cancel();activeMp3=null;btn.classList.remove('playing');icon.textContent='▶';return;}
-  ['a1','a2','b1'].forEach(l=>{document.getElementById('mp3btn-'+l).classList.remove('playing');document.getElementById('mp3icon-'+l).textContent='▶';});
-  window.speechSynthesis.cancel();
-  function go(){
-    const u=speak(scripts[level],0.82);if(!u)return;
-    u.onstart=()=>{activeMp3=level;btn.classList.add('playing');icon.textContent='■';};
-    u.onend=u.onerror=()=>{activeMp3=null;btn.classList.remove('playing');icon.textContent='▶';};
-    window.speechSynthesis.speak(u);
-  }
-  if(window.speechSynthesis.getVoices().length===0){window.speechSynthesis.onvoiceschanged=go;window.speechSynthesis.getVoices();}else go();
-}
-function pickOpt(el,correct){
-  const group=el.closest('.quiz-options');
-  group.querySelectorAll('.quiz-opt').forEach(o=>{o.classList.remove('correct','wrong');o.querySelector('.quiz-mark').textContent=o.dataset.letter||'';});
-  el.classList.add(correct?'correct':'wrong');
-  el.querySelector('.quiz-mark').textContent=correct?'✓':'✗';
-  if(correct){quizCorrectCount++;if(quizCorrectCount>=TOTAL_QUIZ_QUESTIONS&&!quizXPDone){quizXPDone=true;addXP(10);}}
-  checkCompletion();
-}
-
-// 100 dots: ep1-3=done, ep4=active, rest=locked
-const labels=['공항에 도착','딸의 아파트에서','동네 산책','슈퍼마켓 문화충격','첫 외출','첫 전화','이웃 인사','미국식 식사','세탁기 대참사','병원 예약','셀프계산기','엘리베이터','감기약','카페 이름','택시 도전','병원 진료','Potluck 파티','아울렛 쇼핑','약국 실수','인터넷 반품','패스트푸드','세탁소 분실','음료 실수','택배 해프닝','쿠폰 전쟁','병원 해프닝','우버 대화','은행 개설','셀프 주유','도서관','헬스장','우체국','스테이크','학부모 회의','BBQ 초대','드라이브스루','치과','마트 도움','관리실 신고','피자 주문','팁 계산','길 묻기','마트 환불','자동응답','이웃 대화','버스 타기','알레르기','헤어살롱','학교 봉사','ATM','이름 발음','약 복용법','음성 메일','주차 벌금','운전면허','포장 요청','불평하기','꽃 주문','생일 파티','50일 점검','드라이클리닝','입국심사','책 추천','처방전','손녀에게 배우기','야드세일','쿠폰 기한','개 짖음','바자회','영어 일기','학교 운동회','생일 축하','유기농 비교','셀프계산대','직장 파티','날씨 대화','스타벅스','Paper or plastic','How are you?','커피 약속','무게 달기','설탕 빌리기','영어 농담','키즈 메뉴','공원 대화','인터넷 쇼핑','애플파이','처방전 받기','홈파티','100일 점검','수업 등록','수업 첫날','반 친구','칭찬','수업 발표','Maria와 커피','이야기 읽어주기','영어 문자','추수감사절','영자의 편지'];
-const grid=document.getElementById('dotGrid');
-const EP_EXISTS=[1,2,3,4,5,6];
-labels.forEach((tip,i)=>{
-  const n=i+1, num=String(n).padStart(2,'0');
-  const cls=i<4?'done':i===4?'active':'locked';
-  const d=document.createElement('div');
-  d.className='ep-dot '+cls;
-  d.dataset.tip=`Ep ${num} · ${tip}`;
-  if(cls!=='active' && EP_EXISTS.includes(n)){
-    d.style.cursor='pointer';
-    d.onclick=()=>location.href='ep'+num+'.html';
-  } else if(cls==='locked' && !EP_EXISTS.includes(n)){
-    d.title='준비 중';
-    d.style.pointerEvents='none';
-    d.style.opacity='0.5';
-  }
-  grid.appendChild(d);
-});
-
-setTimeout(()=>{
-  document.getElementById('tbFill').style.width='4%';
-  document.getElementById('progFill').style.width='4%';
-},700);
-window.addEventListener('load',()=>{if('speechSynthesis' in window) window.speechSynthesis.getVoices();});
-
-/* ── DUOLINGO SYSTEM ─────────────────────────────────── */
-let xp=0,wfDone=false,woDone=false,quizXPDone=false,quizCorrectCount=0,episodeCompleted=false,woAnswer=[];
-const TOTAL_QUIZ_QUESTIONS=3;
-const WO_CORRECT=['Everything','is','so','big','here!'];
-const WO_SHUFFLE=['so','here!','Everything','big','is'];
-
-(function initXP(){try{xp=parseInt(localStorage.getItem('cec_campc_xp')||'0');}catch(e){}updateXP();})();
-(function initStreak(){try{const last=localStorage.getItem('cec_campc_lastdate');let s=parseInt(localStorage.getItem('cec_campc_streak')||'1');const today=new Date().toDateString();if(last!==today){const y=new Date(Date.now()-86400000).toDateString();if(last===y)s++;else if(last)s=1;localStorage.setItem('cec_campc_lastdate',today);localStorage.setItem('cec_campc_streak',s);}}catch(e){}})();
-
-function addXP(n){xp+=n;try{localStorage.setItem('cec_campc_xp',xp);}catch(e){}updateXP();showXPToast(n);checkCompletion();}
-function updateXP(){const el=document.getElementById('xpBadge');if(el)el.textContent=xp;}
-function showXPToast(n){const t=document.getElementById('xpToast');if(!t)return;t.textContent='⭐ +'+n+' XP';t.style.opacity='1';t.style.transform='translateY(0)';setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(-20px)';},2000);}
-
-/* Word Fill */
-function checkWF1(btn,word,hint){
-  if(wfDone)return;
-  document.querySelectorAll('#wfOpts1 button').forEach(b=>{b.disabled=true;b.style.opacity='0.45';});
-  btn.style.opacity='1';
-  const blank=document.getElementById('wfBlank1'),fb=document.getElementById('wfFb1'),yj=document.getElementById('wfYJ1'),yjTxt=document.getElementById('wfYJTxt1');
-  blank.textContent=word;
-  if(word==='big'){
-    blank.style.borderColor='#10b981';blank.style.color='#10b981';
-    fb.style.cssText='display:block;background:#f0fdf4;border:2px solid #86efac;color:#166534;border-radius:12px;padding:13px 17px;font-size:0.9rem;font-weight:600;line-height:1.6;';
-    fb.textContent='✅ 정답이에요! "big" = 큰. "Everything is so big here!" 미국 슈퍼마켓의 스케일에 놀랐을 때 딱 이 표현!';
-    yj.style.display='flex';yjTxt.textContent='맞아요! "big"은 미국 생활에서 정말 자주 쓰이는 단어예요! 카트도 big, 우유도 big! 🛒';
-    wfDone=true;addXP(5);
-  } else {
-    blank.style.borderColor='#ef4444';blank.style.color='#ef4444';
-    fb.style.cssText='display:block;background:#fef2f2;border:2px solid #fca5a5;color:#991b1b;border-radius:12px;padding:13px 17px;font-size:0.9rem;font-weight:600;line-height:1.6;';
-    fb.innerHTML='❌ 아쉬워요! '+hint+' <button onclick="resetWF1()" style="background:#1e3a8a;color:#fff;border:none;border-radius:20px;padding:4px 14px;font-weight:800;font-size:0.8rem;cursor:pointer;margin-top:6px;">다시 해볼게요 ↩</button>';
-    setTimeout(()=>{blank.innerHTML='\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0';blank.style.borderColor='var(--blue)';blank.style.color='var(--blue)';},450);
-  }
-}
-function resetWF1(){
-  document.querySelectorAll('#wfOpts1 button').forEach(b=>{b.disabled=false;b.style.opacity='1';});
-  const blank=document.getElementById('wfBlank1');blank.innerHTML='\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0';blank.style.borderColor='var(--blue)';blank.style.color='var(--blue)';
-  document.getElementById('wfFb1').style.display='none';document.getElementById('wfYJ1').style.display='none';
-}
-
-/* Word Order */
-(function buildWO(){
-  const bank=document.getElementById('woBank1');
-  WO_SHUFFLE.forEach(w=>{
-    const c=document.createElement('button');
-    c.textContent=w;c.dataset.word=w;
-    c.style.cssText='background:linear-gradient(135deg,#1a2b5e,#1e3a8a);color:#fff;border:none;border-radius:20px;padding:7px 16px;font-weight:800;font-size:0.9rem;cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(30,43,94,0.2);transition:all 0.2s;';
-    c.onmouseenter=()=>{if(!c.dataset.placed)c.style.transform='translateY(-2px)';};
-    c.onmouseleave=()=>{c.style.transform='';};
-    c.onclick=()=>woAdd1(c);
-    bank.appendChild(c);
-  });
-})();
-function woAdd1(chip){
-  if(chip.dataset.placed)return;
-  woAnswer.push({word:chip.dataset.word,chip});
-  chip.dataset.placed='1';chip.style.background='#e2e8f0';chip.style.color='#94a3b8';chip.style.boxShadow='none';
-  woRenderZone1();document.getElementById('woFb1').style.display='none';document.getElementById('woYJ1').style.display='none';
-}
-function woRemove1(e){
-  const ac=e.target.closest('[data-ans-idx]');if(!ac)return;
-  const idx=parseInt(ac.dataset.ansIdx);
-  const item=woAnswer[idx];
-  item.chip.dataset.placed='';item.chip.style.background='linear-gradient(135deg,#1a2b5e,#1e3a8a)';item.chip.style.color='#fff';item.chip.style.boxShadow='0 2px 8px rgba(30,43,94,0.2)';
-  woAnswer.splice(idx,1);woRenderZone1();
-}
-function woRenderZone1(){
-  const zone=document.getElementById('woZone1');zone.innerHTML='';
-  if(woAnswer.length===0){const ph=document.createElement('span');ph.style.cssText='color:#cbd5e1;font-size:0.85rem;font-weight:600;';ph.textContent='여기에 단어를 배열하세요...';zone.appendChild(ph);return;}
-  woAnswer.forEach((item,i)=>{
-    const c=document.createElement('span');c.textContent=item.word;c.dataset.ansIdx=i;
-    c.style.cssText='background:#1d4ed8;color:#fff;border-radius:20px;padding:7px 16px;font-weight:800;font-size:0.9rem;cursor:pointer;transition:background 0.15s;';
-    c.onmouseenter=()=>c.style.background='#ef4444';c.onmouseleave=()=>c.style.background='#1d4ed8';
-    zone.appendChild(c);
-  });
-}
-function checkWO1(){
-  if(woDone)return;
-  const zone=document.getElementById('woZone1'),fb=document.getElementById('woFb1'),yj=document.getElementById('woYJ1'),yjTxt=document.getElementById('woYJTxt1');
-  if(woAnswer.length===0){fb.style.cssText='display:block;background:#fef2f2;border:2px solid #fca5a5;color:#991b1b;border-radius:12px;padding:13px 17px;font-size:0.9rem;font-weight:600;';fb.textContent='단어를 먼저 배열해 주세요!';return;}
-  const attempt=woAnswer.map(a=>a.word).join(' '),correct=WO_CORRECT.join(' ');
-  if(attempt===correct){
-    zone.style.borderColor='#10b981';zone.style.background='#f0fdf4';
-    fb.style.cssText='display:block;background:#f0fdf4;border:2px solid #86efac;color:#166534;border-radius:12px;padding:13px 17px;font-size:0.9rem;font-weight:600;';
-    fb.textContent='✅ 완벽해요! "Everything is so big here!" 완성!';
-    yj.style.display='flex';yjTxt.textContent='문장 순서도 완벽해요! 슈퍼마켓에서 바로 써먹을 수 있어요! 🌟';
-    woDone=true;addXP(5);
-  } else {
-    zone.style.borderColor='#ef4444';zone.style.background='#fef2f2';
-    fb.style.cssText='display:block;background:#fef2f2;border:2px solid #fca5a5;color:#991b1b;border-radius:12px;padding:13px 17px;font-size:0.9rem;font-weight:600;';
-    fb.innerHTML='❌ 순서가 달라요! 힌트: "Everything"으로 시작하는 문장이에요. <button onclick="resetWO1()" style="background:#1e3a8a;color:#fff;border:none;border-radius:20px;padding:4px 14px;font-weight:800;font-size:0.8rem;cursor:pointer;margin-top:6px;">다시 해볼게요 ↩</button>';
-    setTimeout(()=>{zone.style.borderColor='#cbd5e1';zone.style.background='#f8faff';},400);
-  }
-}
-function resetWO1(){
-  woAnswer=[];document.querySelectorAll('#woBank1 button').forEach(b=>{b.dataset.placed='';b.style.background='linear-gradient(135deg,#1a2b5e,#1e3a8a)';b.style.color='#fff';b.style.boxShadow='0 2px 8px rgba(30,43,94,0.2)';});
-  woRenderZone1();document.getElementById('woFb1').style.display='none';document.getElementById('woYJ1').style.display='none';document.getElementById('woZone1').style.borderColor='#cbd5e1';document.getElementById('woZone1').style.background='#f8faff';
-}
-
-/* Completion */
-function checkCompletion(){if(wfDone&&woDone&&quizXPDone)setTimeout(showCompletion,600);}
-function showCompletion(){
-  if(episodeCompleted)return;
-  episodeCompleted=true;
-  addXP(10);
-  const card=document.getElementById('completionCard');if(!card)return;
-  card.style.display='block';
-  document.getElementById('finalXPBadge').textContent='⭐ 총 '+xp+' XP 획득!';
-  card.scrollIntoView({behavior:'smooth',block:'center'});
-  launchConfetti();try{localStorage.setItem('cec_ep04_done','1');}catch(e){}
-  document.getElementById('ai-tutor-widget').style.display='block';
-}
-function launchConfetti(){
-  const canvas=document.getElementById('confettiCanvas');if(!canvas)return;
-  const ctx=canvas.getContext('2d');canvas.width=window.innerWidth;canvas.height=window.innerHeight;
-  const pieces=[],colors=['#fbbf24','#10b981','#2563eb','#7c3aed','#ef4444','#f97316','#38bdf8'];
-  for(let i=0;i<120;i++)pieces.push({x:Math.random()*canvas.width,y:-20-Math.random()*200,w:7+Math.random()*8,h:4+Math.random()*6,color:colors[Math.floor(Math.random()*colors.length)],vx:(Math.random()-.5)*4,vy:3+Math.random()*4,rot:Math.random()*360,rotV:(Math.random()-.5)*8,life:1});
-  let frame;
-  function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);pieces.forEach(p=>{ctx.save();ctx.translate(p.x+p.w/2,p.y+p.h/2);ctx.rotate(p.rot*Math.PI/180);ctx.globalAlpha=p.life;ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();p.x+=p.vx;p.y+=p.vy;p.rot+=p.rotV;if(p.y>canvas.height*.7)p.life-=.03;});if(pieces.some(p=>p.life>0))frame=requestAnimationFrame(draw);else ctx.clearRect(0,0,canvas.width,canvas.height);}
-  draw();setTimeout(()=>cancelAnimationFrame(frame),4500);
-}
-
-</script>
-<script>
-function startTutorSession() {
-    const lessonContext = `안녕하세요! 저는 오늘 CEC Camp C Episode 04 - 슈퍼마켓의 문화 충격을 공부했어요.
-오늘 배운 핵심 표현: "Everything is so big here!"
-상황: 미국 슈퍼마켓, 거대한 카트, 갤런 우유, 시리얼 통로
-지금 이 표현으로 슈퍼마켓 상황 롤플레이 연습을 도와주세요.
-천천히, 쉬운 영어로 부탁드려요!`;
-    navigator.clipboard.writeText(lessonContext).then(() => {
-        window.open('./tutor.html?ep=04', '_blank');
-    }).catch(() => {
-        window.open('./tutor.html?ep=04', '_blank');
-    });
-}
-/* -- GAMES JS -- */
-function g1check(btn,val){var bl=document.getElementById('g1bl'),fb=document.getElementById('g1fb');if(val==='where'){bl.textContent='where';btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.disabled=true;});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';fb.style.color='#dc2626';fb.textContent='\u274c \ub2e4\uc2dc!';setTimeout(function(){btn.style.background='#f1f5f9';btn.style.borderColor='#e2e8f0';fb.textContent='';},1000);}}
-var g2arr=[],g2words=['find','where','I','Excuse','can','me,','?'];
-function g2init(){var pool=document.getElementById('g2pool');var sh=g2words.slice().sort(function(){return Math.random()-0.5;});pool.innerHTML='';sh.forEach(function(w){var b=document.createElement('button');b.textContent=w;b.style.cssText='padding:8px 18px;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:25px;font-size:0.9rem;font-weight:700;cursor:pointer;border:none;font-family:inherit;';b.onclick=function(){g2add(b,w);};pool.appendChild(b);});}
-function g2add(btn,w){if(btn.classList.contains('used'))return;btn.classList.add('used');btn.style.opacity='0.4';g2arr.push(w);var z=document.getElementById('g2zone');var ph=document.getElementById('g2ph');if(ph)ph.style.display='none';var c=document.createElement('span');c.textContent=w;c.style.cssText='padding:6px 14px;background:#2563eb;color:#fff;border-radius:20px;font-size:0.85rem;font-weight:700;cursor:pointer;';c.onclick=function(){g2arr.splice(g2arr.indexOf(w),1);btn.classList.remove('used');btn.style.opacity='1';c.remove();if(!g2arr.length&&document.getElementById('g2ph'))document.getElementById('g2ph').style.display='';};z.appendChild(c);}
-function g2check(){var fb=document.getElementById('g2fb');if(g2arr.join(' ')==='Excuse me, where can I find ?'){fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);}else{fb.style.color='#dc2626';fb.textContent='\u274c Excuse me, \u2192 where \u2192 can \u2192 I \u2192 find \u2192 ?';setTimeout(function(){fb.textContent='';},2500);}}
-function g2reset(){g2arr=[];document.getElementById('g2zone').innerHTML='<span id="g2ph" style="color:#cbd5e1;font-size:0.85rem;font-weight:600;">\uc5ec\uae30\uc5d0 \ub2e8\uc5b4\ub97c \ubc30\uc5f4\ud558\uc138\uc694...</span>';g2init();}
-var g3sel=null,g3done={};
-function g3click(btn,key){if(btn.classList.contains('g3matched'))return;btn.classList.remove('g3wrong');if(!g3sel){g3sel={btn:btn,key:key};btn.classList.add('g3sel');return;}if(g3sel.btn===btn){btn.classList.remove('g3sel');g3sel=null;return;}if(g3sel.key===key&&g3sel.btn!==btn){g3sel.btn.classList.remove('g3sel');g3sel.btn.classList.add('g3matched');btn.classList.add('g3matched');g3done[key]=true;g3sel=null;addXP(5);var cnt=Object.keys(g3done).length;var fb=document.getElementById('g3fb');if(cnt>=5){fb.innerHTML='\ud83c\udf89 \ubaa8\ub450 \ub9de\ucca8\uc5b4\uc694! +30 XP';fb.style.color='#16a34a';addXP(30);}else{fb.textContent=cnt+' / 5';}}else{var prev=g3sel.btn;prev.classList.remove('g3sel');prev.classList.add('g3wrong');btn.classList.add('g3wrong');g3sel=null;setTimeout(function(){prev.classList.remove('g3wrong');btn.classList.remove('g3wrong');},500);}}
-function g4check(btn,val){var bl=document.getElementById('g4bl'),fb=document.getElementById('g4fb');if(val==='cart'){bl.textContent='cart';btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.disabled=true;});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';fb.style.color='#dc2626';fb.textContent='\u274c \ub2e4\uc2dc!';setTimeout(function(){btn.style.background='#f1f5f9';btn.style.borderColor='#e2e8f0';fb.textContent='';},1000);}}
-function g5check(btn,correct){var fb=document.getElementById('g5fb');if(correct){btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';setTimeout(function(){btn.style.background='#fff';btn.style.borderColor='#e2e8f0';},800);}}
-function g6check(btn,correct){var fb=document.getElementById('g6fb');if(correct){btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';setTimeout(function(){btn.style.background='#fff';btn.style.borderColor='#e2e8f0';},800);}}
-function openChatGPT(){var p="\uc548\ub155\ud558\uc138\uc694! \uc800\ub294 \ud55c\uad6d \uc8fc\ubd80\uc608\uc694.\n\uc624\ub298 \ubbf8\uad6d \uc288\ud37c\ub9c8\ucf13\uc5d0\uc11c \ubb3c\uac74 \ucc3e\ub294 \uc0c1\ud669\uc744 \uacf5\ubd80\ud588\uc5b4\uc694.\n\ud575\uc2ec \ud45c\ud604: Excuse me, where can I find...?\nA2 \uc218\uc900 \ub300\ud654 \uc5f0\uc2b5 \ub3c4\uc640\uc8fc\uc138\uc694!";try{navigator.clipboard.writeText(p);}catch(e){}setTimeout(function(){window.open("https://chatgpt.com/g/g-69b48918e32c81919f5a6c6c6d187df3-yeongeo-tyuteo-cec-englishcamp-c","_blank");},300);}
-document.addEventListener('DOMContentLoaded',function(){g2init();});
-</script>
-<style>.g3i{width:100%;padding:12px 16px;background:#f8f9ff;border:2px solid #e0e4ff;border-radius:12px;font-size:0.95rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s;font-family:inherit;color:#1e1b4b;}.g3i:hover{border-color:#818cf8;}.g3sel{border-color:#4f46e5!important;background:#eef2ff!important;color:#4f46e5!important;}.g3matched{border-color:#16a34a!important;background:#dcfce7!important;color:#16a34a!important;cursor:default!important;}.g3wrong{border-color:#dc2626!important;background:#fee2e2!important;}
-
-/* ── 프롬프트 + ChatGPT 연습 ── */
-.practice-wrap {
-  max-width: 860px;
-  margin: 40px auto 40px;
-  padding: 0 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.prompt-section {
-  background: #fff;
-  border-radius: 20px;
-  border: 1px solid rgba(0,0,0,0.08);
-  padding: 24px 28px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-}
-.prompt-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-}
-.prompt-header-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-.prompt-header-text { display: flex; flex-direction: column; }
-.prompt-header-title { font-size: 14px; font-weight: 700; color: #1a1a1a; }
-.prompt-header-sub { font-size: 11px; color: #888; margin-top: 1px; }
-.prompt-body {
-  background: #f8fffe;
-  border: 1px solid #d1fae5;
-  border-radius: 12px;
-  padding: 16px 18px;
-  font-size: 13px;
-  color: #374151;
-  line-height: 1.85;
-  white-space: pre-line;
-  margin-bottom: 16px;
-  min-height: 80px;
-}
-.copy-prompt-btn {
-  width: 100%;
-  padding: 14px;
-  background: #059669;
-  color: #fff;
-  border: none;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.2s, transform 0.15s;
-}
-.copy-prompt-btn:hover { background: #047857; transform: translateY(-1px); }
-.copy-feedback {
-  display: none;
-  margin-top: 10px;
-  color: #059669;
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-align: center;
-}
-.chatgpt-launch-wrap {
-  background: #fff;
-  border-radius: 20px;
-  border: 1px solid rgba(0,0,0,0.08);
-  padding: 24px 28px;
-  text-align: center;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
-}
-.launch-emoji { font-size: 20px; margin-bottom: 6px; }
-.launch-title { font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
-.launch-desc { font-size: 13px; color: #6b7280; line-height: 1.7; margin-bottom: 20px; }
-.launch-desc strong { color: #2563eb; }
-.chatgpt-launch-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 40px;
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
-  color: #fff;
-  border: none;
-  border-radius: 50px;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: inherit;
-  transition: transform 0.2s, opacity 0.2s;
-}
-.chatgpt-launch-btn:hover { transform: translateY(-2px); opacity: 0.92; }
-.launch-note { margin-top: 10px; font-size: 12px; color: #9ca3af; }
-</style>
-
-
-<div class="practice-wrap">
-  <div class="prompt-section">
-    <div class="prompt-header">
-      <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif"
-           class="prompt-header-icon" alt="Robo">
-      <div class="prompt-header-text">
-        <div class="prompt-header-title">AI 튜터 빅스와 영어 연습</div>
-        <div class="prompt-header-sub">오늘 배운 내용을 ChatGPT에 붙여넣으세요</div>
-      </div>
-    </div>
     <div class="prompt-body" id="promptBody"></div>
     <button class="copy-prompt-btn" onclick="copyPrompt()">📋 프롬프트 복사하기</button>
     <div class="copy-feedback" id="copyFeedback">✅ 복사됐어요! ChatGPT에서 Ctrl+V 하세요!</div>
@@ -1183,72 +629,82 @@ document.addEventListener('DOMContentLoaded',function(){g2init();});
   </div>
 </div>
 
+
+<style>
+.pw-wrap{max-width:860px;margin:40px auto;padding:0 20px;display:flex;flex-direction:column;gap:16px;}
+.pw-prompt{background:#f0faf5;border-radius:20px;border:2px solid #6ee7b7;padding:24px 28px;}
+.pw-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.pw-header img{width:36px;height:36px;border-radius:50%;object-fit:cover;}
+.pw-header-t{font-size:14px;font-weight:700;color:#065f46;}
+.pw-header-s{font-size:11px;color:#6b7280;margin-top:1px;}
+.pw-body{background:#fff;border:1px solid #a7f3d0;border-radius:12px;padding:16px 18px;font-size:13px;color:#374151;line-height:1.85;white-space:pre-line;margin-bottom:16px;min-height:60px;}
+.pw-copy{width:100%;padding:14px;background:#059669;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
+.pw-copy:hover{background:#047857;}
+.pw-ok{display:none;margin-top:10px;color:#059669;font-size:13px;font-weight:700;text-align:center;}
+.pw-launch{background:#f5f3ff;border-radius:20px;border:2px solid #c4b5fd;padding:24px 28px;text-align:center;}
+.pw-launch-title{font-size:16px;font-weight:700;color:#4c1d95;margin-bottom:6px;}
+.pw-launch-desc{font-size:13px;color:#6b7280;line-height:1.7;margin-bottom:20px;}
+.pw-launch-desc strong{color:#7c3aed;}
+.pw-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 40px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;border:none;border-radius:50px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;}
+.pw-note{margin-top:10px;font-size:12px;color:#9ca3af;}
+</style>
+
+<div class="pw-wrap">
+  <div class="pw-prompt">
+    <div class="pw-header">
+      <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif" alt="Robo">
+      <div>
+        <div class="pw-header-t">AI 튜터 빅스와 영어 연습</div>
+        <div class="pw-header-s">오늘 배운 내용을 ChatGPT에 붙여넣으세요</div>
+      </div>
+    </div>
+    <div class="pw-body" id="pwBody"></div>
+    <button class="pw-copy" onclick="pwCopy()">📋 프롬프트 복사하기</button>
+    <div class="pw-ok" id="pwOk">✅ 복사됐어요! ChatGPT에서 Ctrl+V 하세요!</div>
+  </div>
+  <div class="pw-launch">
+    <div style="font-size:20px;margin-bottom:6px;">🎉</div>
+    <div class="pw-launch-title">수업 완료! 이제 회화 연습!</div>
+    <div class="pw-launch-desc">
+      오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 대화해보세요!<br>
+      <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
+    </div>
+    <button class="pw-btn" onclick="pwLaunch()">🎙️ ChatGPT 회화 연습 시작</button>
+    <div class="pw-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
+  </div>
+</div>
+
 <script>
-function getCampType() {
-  var path = window.location.pathname;
-  if (path.includes('camp-b') || path.includes('/m1/') ||
-      path.includes('/m2/') || path.includes('/m3/')) return 'b';
-  if (path.includes('camp-c') || path.includes('mom-teacher')) return 'c';
-  return 'a';
-}
-
-function buildSummary() {
-  var words = [];
-  document.querySelectorAll(
-    '.key-expression, .expression-en, .vocab-en, .v-eng, .word-en, .key-word, .mom-vocab, .vocab-item, .expression-card, .key-phrase'
-  ).forEach(function(el) {
-    var t = el.textContent.trim();
-    if (t && t.length < 40) words.push(t);
-  });
-
-  var storyEl = document.querySelector(
-    '.story-en, .dialogue p, .story-content p, .reading-text p, .story p, .ep-story p'
-  );
-  var storyText = '';
-  if (storyEl) {
-    storyText = storyEl.textContent
-      .replace(/\s+/g, ' ').trim()
-      .substring(0, 100) + '...';
-  }
-
-  return [
-    '안녕! 나는 CEC English Camp 학생이야.',
-    '오늘 ' + document.title + ' 을 공부했어.',
-    '',
+function pwBuild(){
+  var w=[];
+  document.querySelectorAll('.key-expression,.expression-en,.vocab-en,.v-eng,.word-en,.key-word')
+    .forEach(function(e){var t=e.textContent.trim();if(t&&t.length<40)w.push(t);});
+  var s=document.querySelector('.story-en,.dialogue p,.story-content p,.ep-story p');
+  var st=s?s.textContent.replace(/\s+/g,' ').trim().substring(0,100)+'...':'';
+  return ['안녕! 나는 CEC English Camp 학생이야.',
+    '오늘 '+document.title+' 을 공부했어.','',
     '📚 오늘 배운 내용:',
-    words.length ? '- 표현/단어: ' + words.slice(0,8).join(', ') : '',
-    storyText ? '- 내용: ' + storyText : '',
-    '',
+    w.length?'- 표현/단어: '+w.slice(0,8).join(', '):'',
+    st?'- 내용: '+st:'','',
     '[할 것 - 5분] 오늘 배운 표현으로 짧은 대화를 도와줘.',
     '[할 것 - 10분] 오늘 상황과 비슷한 롤플레이를 해줘.',
     '[할 것 - 5분] 내가 말하는 영어를 듣고 자연스럽게 대화해줘.'
-  ].filter(function(l) { return l !== undefined; }).join('\n');
+  ].filter(Boolean).join('\n');
 }
-
-function copyPrompt() {
-  var summary = buildSummary();
-  navigator.clipboard.writeText(summary).then(function() {
-    var fb = document.getElementById('copyFeedback');
-    if (fb) {
-      fb.style.display = 'block';
-      setTimeout(function() { fb.style.display = 'none'; }, 3000);
-    }
+function pwCopy(){
+  navigator.clipboard.writeText(pwBuild()).then(function(){
+    var e=document.getElementById('pwOk');
+    if(e){e.style.display='block';setTimeout(function(){e.style.display='none';},3000);}
   });
 }
-
-function launchChatGPTPractice() {
-  var summary = buildSummary();
-  var camp = getCampType();
-  var guideUrl = 'https://cecenglishcamp.github.io/cec_guide.html'
-    + '?camp=' + camp
-    + '&url=' + encodeURIComponent(window.location.href)
-    + '&summary=' + encodeURIComponent(summary);
-  window.location.href = guideUrl;
+function pwLaunch(){
+  window.location.href='https://cecenglishcamp.github.io/cec_guide.html'
+    +'?camp=c&url='+encodeURIComponent(window.location.href)
+    +'&summary='+encodeURIComponent(pwBuild());
 }
-
-window.addEventListener('load', function() {
-  var el = document.getElementById('promptBody');
-  if (el) el.textContent = buildSummary();
+window.addEventListener('load',function(){
+  var e=document.getElementById('pwBody');
+  if(e)e.textContent=pwBuild();
 });
 </script>
 </body>
