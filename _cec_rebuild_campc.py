@@ -1,22 +1,8 @@
-<!DOCTYPE html>
-<html><head><meta http-equiv="refresh" content="0; url=/camp-c/ep01.html"></head><body>
+#!/usr/bin/env python3
+import sys, io, re, glob, os
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-    <div class="prompt-body" id="promptBody"></div>
-    <button class="copy-prompt-btn" onclick="copyPrompt()">📋 프롬프트 복사하기</button>
-    <div class="copy-feedback" id="copyFeedback">✅ 복사됐어요! ChatGPT에서 Ctrl+V 하세요!</div>
-  </div>
-  <div class="chatgpt-launch-wrap">
-    <div class="launch-emoji">🎉</div>
-    <div class="launch-title">수업 완료! 이제 회화 연습!</div>
-    <div class="launch-desc">
-      오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 대화해보세요!<br>
-      <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
-    </div>
-    <div class="launch-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
-  </div>
-</div>
-
-
+INJECT = r'''
 <style>
 .pw-wrap{max-width:860px;margin:40px auto;padding:0 20px;display:flex;flex-direction:column;gap:16px;}
 .pw-prompt{background:#f0faf5;border-radius:20px;border:2px solid #6ee7b7;padding:24px 28px;}
@@ -86,5 +72,44 @@ window.addEventListener('load',function(){
   var e=document.getElementById('pwBody');
   if(e)e.textContent=pwBuild();
 });
-</script>
-</body></html>
+</script>'''
+
+folder = r'C:\Users\cecsu\cecenglishcamp.github.io\camp-c'
+fixed = 0
+
+for fpath in sorted(glob.glob(os.path.join(folder, '**', '*.html'), recursive=True)):
+    with open(fpath, 'r', encoding='utf-8', errors='ignore') as f:
+        content = f.read()
+    original = content
+
+    # ── 모든 구버전 코드 제거 ──
+    # pw-wrap CSS+HTML+JS blocks
+    content = re.sub(r'<style>\s*\n?\.pw-wrap\{.*?</script>', '', content, flags=re.DOTALL)
+    content = re.sub(r'<style>\s*\n?\.pw-wrap\s*\{.*?</script>', '', content, flags=re.DOTALL)
+    # practice-wrap CSS+HTML+JS blocks
+    content = re.sub(r'<style>\s*\n?\.practice-wrap\s*\{.*?</script>', '', content, flags=re.DOTALL)
+    # chatgpt-practice sections
+    content = re.sub(r'<div[^>]*class="chatgpt-practice[^"]*"[^>]*>.*?</div>\s*</div>', '', content, flags=re.DOTALL)
+    # Standalone pw- blocks (no <style> wrapper)
+    content = re.sub(r'<div class="pw-wrap">.*?</div>\s*</div>\s*</div>', '', content, flags=re.DOTALL)
+    content = re.sub(r'<script>\s*\n?function pwBuild.*?</script>', '', content, flags=re.DOTALL)
+    # Old getCampType/buildSummary scripts
+    content = re.sub(r'<script>\s*\n?function getCampType\(\).*?</script>', '', content, flags=re.DOTALL)
+    # Orphaned style blocks with pw- or practice-wrap
+    content = re.sub(r'<style>[^<]*\.pw-[^<]*</style>', '', content, flags=re.DOTALL)
+    content = re.sub(r'<style>[^<]*\.practice-wrap[^<]*</style>', '', content, flags=re.DOTALL)
+    # Empty style tags
+    content = re.sub(r'<style>\s*</style>', '', content)
+    # Excess blank lines
+    content = re.sub(r'\n{4,}', '\n\n', content)
+
+    # ── </body> 앞에 새 코드 삽입 ──
+    if '</body>' in content and 'pwBuild' not in content:
+        content = content.replace('</body>', INJECT + '\n</body>', 1)
+
+    if content != original:
+        with open(fpath, 'w', encoding='utf-8') as f:
+            f.write(content)
+        fixed += 1
+
+print(f'Fixed: {fixed}')
