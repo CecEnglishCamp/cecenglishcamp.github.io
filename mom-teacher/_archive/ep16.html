@@ -185,6 +185,49 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--b
   color: #3a5a7a;
 }
 
+
+/* ── Prompt Copy Box ── */
+.prompt-box {
+  background: rgba(0,210,255,0.06);
+  border: 1px solid rgba(0,210,255,0.25);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+.prompt-label {
+  font-size: 0.75rem;
+  color: #00d2ff;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+.prompt-text {
+  font-size: 0.82rem;
+  color: #8ab0c8;
+  line-height: 1.7;
+  white-space: pre-line;
+  margin-bottom: 14px;
+}
+.copy-btn {
+  background: linear-gradient(135deg, #00d2ff, #0055ff);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.15s;
+}
+.copy-btn:hover { transform: scale(1.03); }
+.copy-done {
+  margin-top: 10px;
+  color: #00e88a;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
 </style></head><body>
 <nav class="nav"><a class="nav-brand" href="/mom-teacher/"><span>Mom</span> Teacher</a><ul class="nav-links"><li><a href="/mom-teacher/">Home</a></li><li><a href="/mom-teacher/ep16.html" class="active">EP16</a></li><li><a href="/">CEC Main</a></li></ul></nav>
 <div class="wrap">
@@ -219,6 +262,12 @@ function openAI(){var p="초등 4학년 자녀 엄마입니다. Wind in the Will
       오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 영어로 대화해보세요!<br>
       <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
     </div>
+    <div class="prompt-box" id="promptBox">
+      <div class="prompt-label">📋 오늘 학습 요약 (ChatGPT에 붙여넣기용)</div>
+      <div class="prompt-text" id="promptText"></div>
+      <button class="copy-btn" onclick="copyPrompt()">📋 프롬프트 복사하기</button>
+      <div class="copy-done" id="copyDone" style="display:none">✅ 복사됐어요! ChatGPT에서 Ctrl+V 하세요!</div>
+    </div>
     <button class="chatgpt-launch-btn" onclick="launchChatGPTPractice()">
       🎙️ ChatGPT 회화 연습 시작
     </button>
@@ -236,15 +285,7 @@ function getCampType() {
   return 'a';
 }
 
-function launchChatGPTPractice() {
-  // 단어 자동 수집
-  var words = [];
-  document.querySelectorAll(
-    '.word-en, .vocab-en, .key-word, [class*="word-en"], [class*="vocab"]'
-  ).forEach(function(el) {
-    var t = el.textContent.trim();
-    if (t && t.length < 30) words.push(t);
-  });
+);
 
   // 본문 첫 문장
   var storyEl = document.querySelector(
@@ -271,6 +312,55 @@ function launchChatGPTPractice() {
 
   window.location.href = guideUrl;
 }
+
+function buildSummary() {
+  var words = [];
+  document.querySelectorAll(
+    '.word-en, .vocab-en, .key-word, .key-expression, .expression-en'
+  ).forEach(function(el) {
+    var t = el.textContent.trim();
+    if (t && t.length < 30) words.push(t);
+  });
+  var storyEl = document.querySelector(
+    '.story-content.active p, .reading-text p, .story p, .story-content p, .dialogue p'
+  );
+  var firstLine = storyEl
+    ? storyEl.textContent.substring(0, 80) + '...' : '';
+  return [
+    '[' + document.title + ']',
+    words.length ? '배운 단어: ' + words.slice(0,8).join(', ') : '',
+    firstLine ? '오늘 이야기: ' + firstLine : '',
+    '위 내용으로 영어 회화 연습을 도와주세요!'
+  ].filter(Boolean).join('\n');
+}
+
+function copyPrompt() {
+  var summary = buildSummary();
+  document.getElementById('promptText').textContent = summary;
+  navigator.clipboard.writeText(summary).then(function() {
+    document.getElementById('copyDone').style.display = 'block';
+    setTimeout(function() {
+      document.getElementById('copyDone').style.display = 'none';
+    }, 3000);
+  });
+}
+
+function launchChatGPTPractice() {
+  var summary = buildSummary();
+  document.getElementById('promptText').textContent = summary;
+  var camp = getCampType();
+  var guideUrl = 'https://cecenglishcamp.github.io/cec_guide.html'
+    + '?camp=' + camp
+    + '&url=' + encodeURIComponent(window.location.href)
+    + '&summary=' + encodeURIComponent(summary);
+  window.location.href = guideUrl;
+}
+
+window.addEventListener('load', function() {
+  var el = document.getElementById('promptText');
+  if (el) el.textContent = buildSummary();
+});
+
 </script>
 
 </body></html>
