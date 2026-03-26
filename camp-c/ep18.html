@@ -535,56 +535,7 @@ body::before{
     <a href="ep19.html" class="nav-btn">다음 에피소드 →</a>
   </div>
 
-</div></div>
-
-<script>
-speechSynthesis.getVoices();if(speechSynthesis.onvoiceschanged!==undefined){speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices();};}
-var xp=0;
-function addXP(n){xp+=n;document.getElementById('xpBadge').textContent=xp;}
-function speak(text){if(!text)return;window.speechSynthesis.cancel();function doSpeak(){var voices=window.speechSynthesis.getVoices();var u=new SpeechSynthesisUtterance(text);var prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];var exclude=['Alex','Fred','Daniel','Google UK English Male'];var v=voices.find(function(v){return prefer.some(function(p){return v.name.indexOf(p)>=0;})&&!exclude.some(function(e){return v.name.indexOf(e)>=0;});});if(v)u.voice=v;u.lang='en-US';u.rate=0.85;u.pitch=1.0;window.speechSynthesis.speak(u);}if(window.speechSynthesis.getVoices().length>0){setTimeout(doSpeak,50);}else{window.speechSynthesis.onvoiceschanged=function(){setTimeout(doSpeak,50);};window.speechSynthesis.getVoices();}}
-var currentLevel=null,isSpeaking=false;
-function stopAll(){window.speechSynthesis.cancel();isSpeaking=false;currentLevel=null;document.querySelectorAll('.mp3-play').forEach(function(b){b.innerHTML='▶';if(b.dataset.color)b.style.background=b.dataset.color;});}
-function playScript(level,text,btn,color){if(currentLevel===level&&isSpeaking){stopAll();return;}stopAll();currentLevel=level;isSpeaking=true;btn.innerHTML='⏸';btn.style.background='#ef4444';var sentences=text.match(/[^.!?]+[.!?]+/g)||[text];var i=0;function next(){if(i>=sentences.length||!isSpeaking){btn.innerHTML='▶';btn.style.background=color;isSpeaking=false;currentLevel=null;return;}var u=new SpeechSynthesisUtterance(sentences[i].trim());var voices=window.speechSynthesis.getVoices();var prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];var exclude=['Alex','Fred','Daniel','Google UK English Male'];var v=voices.find(function(v){return prefer.some(function(p){return v.name.indexOf(p)>=0;})&&!exclude.some(function(e){return v.name.indexOf(e)>=0;});});if(v)u.voice=v;u.lang='en-US';u.rate=0.82;u.onend=function(){if(isSpeaking){i++;next();}};u.onerror=function(){i++;next();};window.speechSynthesis.speak(u);}if(window.speechSynthesis.getVoices().length>0){setTimeout(next,50);}else{window.speechSynthesis.onvoiceschanged=function(){setTimeout(next,50);};window.speechSynthesis.getVoices();}}
-
-function playMP3(btn){var level=btn.dataset.level;var text=btn.dataset.text;var color=btn.dataset.color;playScript(level,text,btn,color);}
-function showTab(group,level,btn){document.querySelectorAll('#'+group+'-a1,#'+group+'-a2,#'+group+'-b1').forEach(function(p){p.classList.remove('active');});document.getElementById(group+'-'+level).classList.add('active');btn.parentElement.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});btn.classList.add('active');}
-function pickOpt(el,correct){if(correct){el.classList.add('correct');addXP(10);el.parentElement.querySelectorAll('.quiz-opt').forEach(function(o){o.style.pointerEvents='none';});}else{el.classList.add('wrong');setTimeout(function(){el.classList.remove('wrong');},800);}}
-</script>
-<script>
-function startTutorSession() {
-    const lessonContext = `안녕하세요! 저는 오늘 CEC Camp C Episode 18 - 아울렛 쇼핑 실수담를 공부했어요.
-오늘 배운 핵심 표현: "Can I try this on?"
-상황: 약국에서 약 고르기, 라벨 읽기
-지금 이 표현으로 약국 상황 롤플레이 연습을 도와주세요.
-천천히, 쉬운 영어로 부탁드려요!`;
-    navigator.clipboard.writeText(lessonContext).then(() => {
-        window.open('./tutor.html?ep=18', '_blank');
-    }).catch(() => {
-        window.open('./tutor.html?ep=18', '_blank');
-    });
-}
-/* -- GAMES JS -- */
-// GAMES_JS_START
-function g1check(btn,val){var bl=document.getElementById('g1bl'),fb=document.getElementById('g1fb');if(val==='try'){bl.textContent='try';btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.disabled=true;});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';fb.style.color='#dc2626';fb.textContent='\u274c \ub2e4\uc2dc!';setTimeout(function(){btn.style.background='#f1f5f9';btn.style.borderColor='#e2e8f0';fb.textContent='';},1000);}}
-var g2arr=[],g2words=['on?','this','try','I','Can'];
-function g2init(){var pool=document.getElementById('g2pool');var sh=g2words.slice().sort(function(){return Math.random()-0.5;});pool.innerHTML='';sh.forEach(function(w){var b=document.createElement('button');b.textContent=w;b.className='wo-chip';b.onclick=function(){g2add(b,w);};pool.appendChild(b);});}
-function g2add(btn,w){if(btn.classList.contains('used'))return;btn.classList.add('used');btn.style.opacity='0.4';g2arr.push(w);var z=document.getElementById('g2zone');var c=document.createElement('span');c.textContent=w;c.style.cssText='padding:6px 14px;background:#2563eb;color:#fff;border-radius:20px;font-size:0.85rem;font-weight:700;cursor:pointer;';c.onclick=function(){g2arr.splice(g2arr.indexOf(w),1);btn.classList.remove('used');btn.style.opacity='1';c.remove();};z.appendChild(c);}
-function g2check(){var fb=document.getElementById('g2fb');if(g2arr.join(' ')==='Can I try this on?'){fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);}else{fb.style.color='#dc2626';fb.textContent='\u274c \ub2e4\uc2dc \ud574\ubcf4\uc138\uc694!';setTimeout(function(){fb.textContent='';},2000);}}
-function g2reset(){g2arr=[];document.getElementById('g2zone').innerHTML='';g2init();}
-var g3sel=null,g3done={};
-function g3click(btn,key){if(btn.classList.contains('g3matched'))return;btn.classList.remove('g3wrong');if(!g3sel){g3sel={btn:btn,key:key};btn.classList.add('g3sel');return;}if(g3sel.btn===btn){btn.classList.remove('g3sel');g3sel=null;return;}if(g3sel.key===key&&g3sel.btn!==btn){g3sel.btn.classList.remove('g3sel');g3sel.btn.classList.add('g3matched');btn.classList.add('g3matched');g3done[key]=true;g3sel=null;addXP(5);var cnt=Object.keys(g3done).length;var fb=document.getElementById('g3fb');if(cnt>=5){fb.innerHTML='\ud83c\udf89 \ubaa8\ub450 \ub9de\ucca8\uc5b4\uc694! +30 XP';fb.style.color='#16a34a';addXP(30);}else{fb.textContent=cnt+' / 5';}}else{var prev=g3sel.btn;prev.classList.remove('g3sel');prev.classList.add('g3wrong');btn.classList.add('g3wrong');g3sel=null;setTimeout(function(){prev.classList.remove('g3wrong');btn.classList.remove('g3wrong');},500);}}
-function g4check(btn,val){var bl=document.getElementById('g4bl'),fb=document.getElementById('g4fb');if(val==='medium'){bl.textContent='medium';btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.disabled=true;});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';fb.style.color='#dc2626';fb.textContent='\u274c \ub2e4\uc2dc!';setTimeout(function(){btn.style.background='#f1f5f9';btn.style.borderColor='#e2e8f0';fb.textContent='';},1000);}}
-function g5check(btn,correct){var fb=document.getElementById('g5fb');if(correct){btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';setTimeout(function(){btn.style.background='#fff';btn.style.borderColor='#e2e8f0';},800);}}
-function g6check(btn,correct){var fb=document.getElementById('g6fb');if(correct){btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';setTimeout(function(){btn.style.background='#fff';btn.style.borderColor='#e2e8f0';},800);}}
-function openChatGPT(){var p="\uc548\ub155\ud558\uc138\uc694! \uc800\ub294 \ud55c\uad6d \uc8fc\ubd80\uc608\uc694.\n\uc624\ub298 미국 아울렛에서 옷 입어보는 상황\uc744 \uc601\uc5b4\ub85c \uacf5\ubd80\ud588\uc5b4\uc694.\n\ud575\uc2ec \ud45c\ud604: Can I try this on?\nA2 \uc218\uc900 \ub300\ud654 \uc5f0\uc2b5 \ub3c4\uc640\uc8fc\uc138\uc694!";try{navigator.clipboard.writeText(p);}catch(e){}setTimeout(function(){window.open("https://chatgpt.com/g/g-69b48918e32c81919f5a6c6c6d187df3-yeongeo-tyuteo-cec-englishcamp-c","_blank");},300);}
-document.addEventListener('DOMContentLoaded',function(){g2init();});
-// GAMES_JS_END
-</script>
-<style>.g3i{width:100%;padding:12px 16px;background:#f8f9ff;border:2px solid #e0e4ff;border-radius:12px;font-size:0.95rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s;font-family:inherit;color:#1e1b4b;}.g3i:hover{border-color:#818cf8;}.g3sel{border-color:#4f46e5!important;background:#eef2ff!important;color:#4f46e5!important;}.g3matched{border-color:#16a34a!important;background:#dcfce7!important;color:#16a34a!important;cursor:default!important;}.g3wrong{border-color:#dc2626!important;background:#fee2e2!important;}
-
-
-</style>
-
+</div>
 
 <style>
 .pw-wrap{max-width:860px;margin:40px auto;padding:0 20px;display:flex;flex-direction:column;gap:16px;}
@@ -661,6 +612,58 @@ window.addEventListener('load',function(){
   if(e)e.textContent=pwBuild();
 });
 </script>
+</div>
+
+<script>
+speechSynthesis.getVoices();if(speechSynthesis.onvoiceschanged!==undefined){speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices();};}
+var xp=0;
+function addXP(n){xp+=n;document.getElementById('xpBadge').textContent=xp;}
+function speak(text){if(!text)return;window.speechSynthesis.cancel();function doSpeak(){var voices=window.speechSynthesis.getVoices();var u=new SpeechSynthesisUtterance(text);var prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];var exclude=['Alex','Fred','Daniel','Google UK English Male'];var v=voices.find(function(v){return prefer.some(function(p){return v.name.indexOf(p)>=0;})&&!exclude.some(function(e){return v.name.indexOf(e)>=0;});});if(v)u.voice=v;u.lang='en-US';u.rate=0.85;u.pitch=1.0;window.speechSynthesis.speak(u);}if(window.speechSynthesis.getVoices().length>0){setTimeout(doSpeak,50);}else{window.speechSynthesis.onvoiceschanged=function(){setTimeout(doSpeak,50);};window.speechSynthesis.getVoices();}}
+var currentLevel=null,isSpeaking=false;
+function stopAll(){window.speechSynthesis.cancel();isSpeaking=false;currentLevel=null;document.querySelectorAll('.mp3-play').forEach(function(b){b.innerHTML='▶';if(b.dataset.color)b.style.background=b.dataset.color;});}
+function playScript(level,text,btn,color){if(currentLevel===level&&isSpeaking){stopAll();return;}stopAll();currentLevel=level;isSpeaking=true;btn.innerHTML='⏸';btn.style.background='#ef4444';var sentences=text.match(/[^.!?]+[.!?]+/g)||[text];var i=0;function next(){if(i>=sentences.length||!isSpeaking){btn.innerHTML='▶';btn.style.background=color;isSpeaking=false;currentLevel=null;return;}var u=new SpeechSynthesisUtterance(sentences[i].trim());var voices=window.speechSynthesis.getVoices();var prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];var exclude=['Alex','Fred','Daniel','Google UK English Male'];var v=voices.find(function(v){return prefer.some(function(p){return v.name.indexOf(p)>=0;})&&!exclude.some(function(e){return v.name.indexOf(e)>=0;});});if(v)u.voice=v;u.lang='en-US';u.rate=0.82;u.onend=function(){if(isSpeaking){i++;next();}};u.onerror=function(){i++;next();};window.speechSynthesis.speak(u);}if(window.speechSynthesis.getVoices().length>0){setTimeout(next,50);}else{window.speechSynthesis.onvoiceschanged=function(){setTimeout(next,50);};window.speechSynthesis.getVoices();}}
+
+function playMP3(btn){var level=btn.dataset.level;var text=btn.dataset.text;var color=btn.dataset.color;playScript(level,text,btn,color);}
+function showTab(group,level,btn){document.querySelectorAll('#'+group+'-a1,#'+group+'-a2,#'+group+'-b1').forEach(function(p){p.classList.remove('active');});document.getElementById(group+'-'+level).classList.add('active');btn.parentElement.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});btn.classList.add('active');}
+function pickOpt(el,correct){if(correct){el.classList.add('correct');addXP(10);el.parentElement.querySelectorAll('.quiz-opt').forEach(function(o){o.style.pointerEvents='none';});}else{el.classList.add('wrong');setTimeout(function(){el.classList.remove('wrong');},800);}}
+</script>
+<script>
+function startTutorSession() {
+    const lessonContext = `안녕하세요! 저는 오늘 CEC Camp C Episode 18 - 아울렛 쇼핑 실수담를 공부했어요.
+오늘 배운 핵심 표현: "Can I try this on?"
+상황: 약국에서 약 고르기, 라벨 읽기
+지금 이 표현으로 약국 상황 롤플레이 연습을 도와주세요.
+천천히, 쉬운 영어로 부탁드려요!`;
+    navigator.clipboard.writeText(lessonContext).then(() => {
+        window.open('./tutor.html?ep=18', '_blank');
+    }).catch(() => {
+        window.open('./tutor.html?ep=18', '_blank');
+    });
+}
+/* -- GAMES JS -- */
+// GAMES_JS_START
+function g1check(btn,val){var bl=document.getElementById('g1bl'),fb=document.getElementById('g1fb');if(val==='try'){bl.textContent='try';btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.disabled=true;});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';fb.style.color='#dc2626';fb.textContent='\u274c \ub2e4\uc2dc!';setTimeout(function(){btn.style.background='#f1f5f9';btn.style.borderColor='#e2e8f0';fb.textContent='';},1000);}}
+var g2arr=[],g2words=['on?','this','try','I','Can'];
+function g2init(){var pool=document.getElementById('g2pool');var sh=g2words.slice().sort(function(){return Math.random()-0.5;});pool.innerHTML='';sh.forEach(function(w){var b=document.createElement('button');b.textContent=w;b.className='wo-chip';b.onclick=function(){g2add(b,w);};pool.appendChild(b);});}
+function g2add(btn,w){if(btn.classList.contains('used'))return;btn.classList.add('used');btn.style.opacity='0.4';g2arr.push(w);var z=document.getElementById('g2zone');var c=document.createElement('span');c.textContent=w;c.style.cssText='padding:6px 14px;background:#2563eb;color:#fff;border-radius:20px;font-size:0.85rem;font-weight:700;cursor:pointer;';c.onclick=function(){g2arr.splice(g2arr.indexOf(w),1);btn.classList.remove('used');btn.style.opacity='1';c.remove();};z.appendChild(c);}
+function g2check(){var fb=document.getElementById('g2fb');if(g2arr.join(' ')==='Can I try this on?'){fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);}else{fb.style.color='#dc2626';fb.textContent='\u274c \ub2e4\uc2dc \ud574\ubcf4\uc138\uc694!';setTimeout(function(){fb.textContent='';},2000);}}
+function g2reset(){g2arr=[];document.getElementById('g2zone').innerHTML='';g2init();}
+var g3sel=null,g3done={};
+function g3click(btn,key){if(btn.classList.contains('g3matched'))return;btn.classList.remove('g3wrong');if(!g3sel){g3sel={btn:btn,key:key};btn.classList.add('g3sel');return;}if(g3sel.btn===btn){btn.classList.remove('g3sel');g3sel=null;return;}if(g3sel.key===key&&g3sel.btn!==btn){g3sel.btn.classList.remove('g3sel');g3sel.btn.classList.add('g3matched');btn.classList.add('g3matched');g3done[key]=true;g3sel=null;addXP(5);var cnt=Object.keys(g3done).length;var fb=document.getElementById('g3fb');if(cnt>=5){fb.innerHTML='\ud83c\udf89 \ubaa8\ub450 \ub9de\ucca8\uc5b4\uc694! +30 XP';fb.style.color='#16a34a';addXP(30);}else{fb.textContent=cnt+' / 5';}}else{var prev=g3sel.btn;prev.classList.remove('g3sel');prev.classList.add('g3wrong');btn.classList.add('g3wrong');g3sel=null;setTimeout(function(){prev.classList.remove('g3wrong');btn.classList.remove('g3wrong');},500);}}
+function g4check(btn,val){var bl=document.getElementById('g4bl'),fb=document.getElementById('g4fb');if(val==='medium'){bl.textContent='medium';btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.disabled=true;});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';fb.style.color='#dc2626';fb.textContent='\u274c \ub2e4\uc2dc!';setTimeout(function(){btn.style.background='#f1f5f9';btn.style.borderColor='#e2e8f0';fb.textContent='';},1000);}}
+function g5check(btn,correct){var fb=document.getElementById('g5fb');if(correct){btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';setTimeout(function(){btn.style.background='#fff';btn.style.borderColor='#e2e8f0';},800);}}
+function g6check(btn,correct){var fb=document.getElementById('g6fb');if(correct){btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';setTimeout(function(){btn.style.background='#fff';btn.style.borderColor='#e2e8f0';},800);}}
+function openChatGPT(){var p="\uc548\ub155\ud558\uc138\uc694! \uc800\ub294 \ud55c\uad6d \uc8fc\ubd80\uc608\uc694.\n\uc624\ub298 미국 아울렛에서 옷 입어보는 상황\uc744 \uc601\uc5b4\ub85c \uacf5\ubd80\ud588\uc5b4\uc694.\n\ud575\uc2ec \ud45c\ud604: Can I try this on?\nA2 \uc218\uc900 \ub300\ud654 \uc5f0\uc2b5 \ub3c4\uc640\uc8fc\uc138\uc694!";try{navigator.clipboard.writeText(p);}catch(e){}setTimeout(function(){window.open("https://chatgpt.com/g/g-69b48918e32c81919f5a6c6c6d187df3-yeongeo-tyuteo-cec-englishcamp-c","_blank");},300);}
+document.addEventListener('DOMContentLoaded',function(){g2init();});
+// GAMES_JS_END
+</script>
+<style>.g3i{width:100%;padding:12px 16px;background:#f8f9ff;border:2px solid #e0e4ff;border-radius:12px;font-size:0.95rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s;font-family:inherit;color:#1e1b4b;}.g3i:hover{border-color:#818cf8;}.g3sel{border-color:#4f46e5!important;background:#eef2ff!important;color:#4f46e5!important;}.g3matched{border-color:#16a34a!important;background:#dcfce7!important;color:#16a34a!important;cursor:default!important;}.g3wrong{border-color:#dc2626!important;background:#fee2e2!important;}
+
+
+</style>
+
+
+
 
 </body>
 </html>
