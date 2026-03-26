@@ -1,21 +1,18 @@
-<!DOCTYPE html>
-<html><head><meta http-equiv="refresh" content="0; url=/camp-c/ep01.html"></head><body>
+#!/usr/bin/env python3
+import sys, io, re
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-    <div class="prompt-body" id="promptBody"></div>
-    <button class="copy-prompt-btn" onclick="copyPrompt()">📋 프롬프트 복사하기</button>
-    <div class="copy-feedback" id="copyFeedback">✅ 복사됐어요! ChatGPT에서 Ctrl+V 하세요!</div>
-  </div>
-  <div class="chatgpt-launch-wrap">
-    <div class="launch-emoji">🎉</div>
-    <div class="launch-title">수업 완료! 이제 회화 연습!</div>
-    <div class="launch-desc">
-      </div>
-    <div class="launch-note"></div>
-  </div>
-</div>
+with open('camp-c/ep02.html', 'r', encoding='utf-8') as f:
+    content = f.read()
 
+# Remove old practice-wrap/chatgpt sections
+content = re.sub(r'<div class="chatgpt-practice-section">.*?</div>\s*</div>', '', content, flags=re.DOTALL)
+content = re.sub(r'<script>\s*function getCampType\(\).*?</script>', '', content, flags=re.DOTALL)
+content = re.sub(r'/\*\s*.{0,5}ChatGPT.*?\*/.*?\.chatgpt-practice-note\s*\{[^}]*\}', '', content, flags=re.DOTALL)
+content = re.sub(r'/\*\s*.{0,5}Prompt Copy Box.*?\*/.*?\.copy-done\s*\{[^}]*\}', '', content, flags=re.DOTALL)
+content = re.sub(r'\n{4,}', '\n\n', content)
 
-<style>
+PW = """<style>
 .pw-wrap{max-width:860px;margin:40px auto;padding:0 20px;display:flex;flex-direction:column;gap:16px;}
 .pw-prompt{background:#f0faf5;border-radius:20px;border:2px solid #6ee7b7;padding:24px 28px;}
 .pw-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
@@ -46,9 +43,10 @@
   <div class="pw-launch">
     <div style="font-size:20px;margin-bottom:6px;">🎉</div>
     <div class="pw-launch-title">수업 완료! 이제 회화 연습!</div>
-    <div class="pw-launch-desc"></div>
+    <div class="pw-launch-desc">오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 대화해보세요!<br>
+    <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.</div>
     <button class="pw-btn" onclick="pwLaunch()">🎙️ ChatGPT 회화 연습 시작</button>
-    <div class="pw-note"></div>
+    <div class="pw-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
   </div>
 </div>
 <script>
@@ -57,7 +55,7 @@ function pwBuild(){
   document.querySelectorAll('.key-expression,.expression-en,.vocab-en,.v-eng,.word-en,.key-word')
     .forEach(function(e){var t=e.textContent.trim();if(t&&t.length<40)w.push(t);});
   var s=document.querySelector('.story-en,.dialogue p,.story-content p,.ep-story p');
-  var st=s?s.textContent.replace(/\s+/g,' ').trim().substring(0,100)+'...':'';
+  var st=s?s.textContent.replace(/\\s+/g,' ').trim().substring(0,100)+'...':'';
   return ['안녕! 나는 CEC English Camp 학생이야.',
     '오늘 '+document.title+' 을 공부했어.','',
     '📚 오늘 배운 내용:',
@@ -66,7 +64,7 @@ function pwBuild(){
     '[할 것 - 5분] 오늘 배운 표현으로 짧은 대화를 도와줘.',
     '[할 것 - 10분] 오늘 상황과 비슷한 롤플레이를 해줘.',
     '[할 것 - 5분] 내가 말하는 영어를 듣고 자연스럽게 대화해줘.'
-  ].filter(Boolean).join('\n');
+  ].filter(Boolean).join('\\n');
 }
 function pwCopy(){
   navigator.clipboard.writeText(pwBuild()).then(function(){
@@ -83,5 +81,18 @@ window.addEventListener('load',function(){
   var e=document.getElementById('pwBody');
   if(e)e.textContent=pwBuild();
 });
-</script>
-</body></html>
+</script>"""
+
+content = content.replace('</body>', PW + '\n</body>', 1)
+
+with open('camp-c/ep02.html', 'w', encoding='utf-8') as f:
+    f.write(content)
+
+# Verify
+with open('camp-c/ep02.html', 'r', encoding='utf-8') as f:
+    c = f.read()
+print(f'speakMain: {"speakMain" in c}')
+print(f'playScript: {"playScript" in c}')
+print(f'pwBuild count: {c.count("pwBuild")}')
+print(f'old practice-wrap: {"practice-wrap" in c}')
+print(f'old getCampType: {"getCampType" in c}')
