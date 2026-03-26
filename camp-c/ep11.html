@@ -224,7 +224,6 @@ body::before{
 <div class="shape s1"></div><div class="shape s2"></div>
 <div class="shape s3"></div><div class="shape s4"></div>
 
-
 <!-- TOP BANNER -->
 <nav class="top-banner">
   <div class="banner-inner">
@@ -303,7 +302,6 @@ body::before{
       </div>
     </div>
   </div>
-
 
   <!-- ① KOREAN STORY -->
   <div class="section">
@@ -469,8 +467,6 @@ body::before{
   </div>
 <!-- MP3_SECTION_END -->
 
-
-
 <!-- QUIZ_START -->
   <div class="section">
     <div class="sec-hdr">
@@ -494,7 +490,6 @@ body::before{
     </div>
   </div>
 <!-- QUIZ_END -->
-
 
   <!-- 듀오링고 게임 6개 -->
 <!-- GAMES_HTML_START -->
@@ -529,7 +524,7 @@ body::before{
 <button onclick="g6check(this,false)" style="padding:10px 16px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;font-size:0.88rem;font-weight:600;cursor:pointer;text-align:left;font-family:inherit;">Give me a discount.</button></div><div id="g6fb" style="text-align:center;margin-top:10px;font-weight:700;min-height:20px;"></div></div></div>
 <!-- GAMES_HTML_END -->
 
-  <div style="text-align:center;padding:32px 20px;margin:20px auto;max-width:600px;"><div style="font-size:2rem;">🎉</div><div style="font-size:1.1rem;font-weight:800;margin:8px 0;color:var(--navy);">오늘 공부 완료!</div><div style="color:#666;margin-bottom:16px;font-size:0.88rem;line-height:1.7;">AI 선생님과 오늘 배운 표현으로 대화해봐요!</div><button onclick="openChatGPT()" style="background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:25px;padding:14px 32px;font-size:1rem;font-weight:900;cursor:pointer;width:100%;max-width:320px;font-family:inherit;box-shadow:0 6px 24px rgba(102,126,234,0.35);">💬 ChatGPT 선생님과 대화하기</button><div style="font-size:0.72rem;color:#aaa;margin-top:12px;">클릭하면 학습 내용이 복사되고 ChatGPT가 열려요!</div></div>
+  <div style="text-align:center;padding:32px 20px;margin:20px auto;max-width:600px;"><div style="font-size:2rem;">🎉</div><div style="color:#666;margin-bottom:16px;font-size:0.88rem;line-height:1.7;">AI 선생님과 오늘 배운 표현으로 대화해봐요!</div></div>
 
   <!-- ⑤ 100 JOURNEY -->
   <div class="hundred-section">
@@ -556,7 +551,6 @@ body::before{
     </div>
   </div>
 
-
   <!-- COMPLETION CARD -->
   <div id="completionCard" style="display:none;background:#fff;border-radius:24px;box-shadow:0 8px 40px rgba(30,43,94,0.13);padding:32px 24px;text-align:center;margin:20px 0;">
     <div style="font-size:3.2rem;margin-bottom:12px;">🎉</div>
@@ -568,7 +562,6 @@ body::before{
       <div><div style="font-weight:900;color:var(--navy);font-size:0.73rem;margin-bottom:3px;">박영자</div><span style="font-size:0.87rem;line-height:1.6;font-weight:600;color:var(--text);">약국에서 약 고르기가 이렇게 어려울 줄 몰랐죠? 이제 "Do you need a bag?" 자신있게!</span></div>
     </div>
   </div>
-
 
   <!-- NAV FOOTER -->
   <div class="ep-nav">
@@ -688,6 +681,48 @@ document.addEventListener('DOMContentLoaded',function(){g2init();});
   color: #3a5a7a;
 }
 
+/* ── Prompt Copy Box ── */
+.prompt-box {
+  background: rgba(0,210,255,0.06);
+  border: 1px solid rgba(0,210,255,0.25);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+.prompt-label {
+  font-size: 0.75rem;
+  color: #00d2ff;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+.prompt-text {
+  font-size: 0.82rem;
+  color: #8ab0c8;
+  line-height: 1.7;
+  white-space: pre-line;
+  margin-bottom: 14px;
+}
+.copy-btn {
+  background: linear-gradient(135deg, #00d2ff, #0055ff);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.15s;
+}
+.copy-btn:hover { transform: scale(1.03); }
+.copy-done {
+  margin-top: 10px;
+  color: #00e88a;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
 </style>
 
 <div class="chatgpt-practice-section">
@@ -696,6 +731,12 @@ document.addEventListener('DOMContentLoaded',function(){g2init();});
     <div class="chatgpt-practice-desc">
       오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 영어로 대화해보세요!<br>
       <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
+    </div>
+    <div class="prompt-box" id="promptBox">
+      <div class="prompt-label">📋 오늘 학습 요약 (ChatGPT에 붙여넣기용)</div>
+      <div class="prompt-text" id="promptText"></div>
+      <button class="copy-btn" onclick="copyPrompt()">📋 프롬프트 복사하기</button>
+      <div class="copy-done" id="copyDone" style="display:none">✅ 복사됐어요! ChatGPT에서 Ctrl+V 하세요!</div>
     </div>
     <button class="chatgpt-launch-btn" onclick="launchChatGPTPractice()">
       🎙️ ChatGPT 회화 연습 시작
@@ -714,41 +755,54 @@ function getCampType() {
   return 'a';
 }
 
-function launchChatGPTPractice() {
-  // 단어 자동 수집
+function buildSummary() {
   var words = [];
   document.querySelectorAll(
-    '.word-en, .vocab-en, .key-word, [class*="word-en"], [class*="vocab"]'
+    '.word-en, .vocab-en, .key-word, .key-expression, .expression-en'
   ).forEach(function(el) {
     var t = el.textContent.trim();
     if (t && t.length < 30) words.push(t);
   });
-
-  // 본문 첫 문장
   var storyEl = document.querySelector(
-    '.story-content.active p, .reading-text p, .story p'
+    '.story-content.active p, .reading-text p, .story p, .story-content p, .dialogue p'
   );
   var firstLine = storyEl
-    ? storyEl.textContent.substring(0, 80) + '...'
-    : '';
-
-  var summary = [
+    ? storyEl.textContent.substring(0, 80) + '...' : '';
+  return [
     '[' + document.title + ']',
     words.length ? '배운 단어: ' + words.slice(0,8).join(', ') : '',
     firstLine ? '오늘 이야기: ' + firstLine : '',
     '위 내용으로 영어 회화 연습을 도와주세요!'
   ].filter(Boolean).join('\n');
+}
 
+function copyPrompt() {
+  var summary = buildSummary();
+  document.getElementById('promptText').textContent = summary;
+  navigator.clipboard.writeText(summary).then(function() {
+    document.getElementById('copyDone').style.display = 'block';
+    setTimeout(function() {
+      document.getElementById('copyDone').style.display = 'none';
+    }, 3000);
+  });
+}
+
+function launchChatGPTPractice() {
+  var summary = buildSummary();
+  document.getElementById('promptText').textContent = summary;
   var camp = getCampType();
-
-  // cec_guide.html 경로: GitHub Pages 루트
   var guideUrl = 'https://cecenglishcamp.github.io/cec_guide.html'
     + '?camp=' + camp
     + '&url=' + encodeURIComponent(window.location.href)
     + '&summary=' + encodeURIComponent(summary);
-
   window.location.href = guideUrl;
 }
+
+window.addEventListener('load', function() {
+  var el = document.getElementById('promptText');
+  if (el) el.textContent = buildSummary();
+});
+
 </script>
 
 </body>
