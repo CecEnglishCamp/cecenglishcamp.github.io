@@ -224,6 +224,7 @@ body::before{
 <div class="shape s1"></div><div class="shape s2"></div>
 <div class="shape s3"></div><div class="shape s4"></div>
 
+
 <!-- TOP BANNER -->
 <nav class="top-banner">
   <div class="banner-inner">
@@ -302,6 +303,7 @@ body::before{
       </div>
     </div>
   </div>
+
 
   <!-- ① KOREAN STORY -->
   <div class="section">
@@ -424,6 +426,8 @@ body::before{
   </div>
 <!-- MP3_SECTION_END -->
 
+
+
 <!-- QUIZ_START -->
   <div class="section">
     <div class="sec-hdr">
@@ -447,6 +451,7 @@ body::before{
     </div>
   </div>
 <!-- QUIZ_END -->
+
 
   <!-- 듀오링고 게임 6개 -->
 <!-- GAMES_HTML_START -->
@@ -481,7 +486,7 @@ body::before{
 <button onclick="g6check(this,false)" style="padding:10px 16px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;font-size:0.88rem;font-weight:600;cursor:pointer;text-align:left;font-family:inherit;">Everything.</button></div><div id="g6fb" style="text-align:center;margin-top:10px;font-weight:700;min-height:20px;"></div></div></div>
 <!-- GAMES_HTML_END -->
 
-  <div style="text-align:center;padding:32px 20px;margin:20px auto;max-width:600px;"><div style="font-size:2rem;">🎉</div><div style="color:#666;margin-bottom:16px;font-size:0.88rem;line-height:1.7;">AI 선생님과 오늘 배운 표현으로 대화해봐요!</div></div>
+  <div style="text-align:center;padding:32px 20px;margin:20px auto;max-width:600px;"><div style="font-size:2rem;">🎉</div><div style="font-size:1.1rem;font-weight:800;margin:8px 0;color:var(--navy);">오늘 공부 완료!</div><div style="color:#666;margin-bottom:16px;font-size:0.88rem;line-height:1.7;">AI 선생님과 오늘 배운 표현으로 대화해봐요!</div><button onclick="openChatGPT()" style="background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:25px;padding:14px 32px;font-size:1rem;font-weight:900;cursor:pointer;width:100%;max-width:320px;font-family:inherit;box-shadow:0 6px 24px rgba(102,126,234,0.35);">💬 ChatGPT 선생님과 대화하기</button><div style="font-size:0.72rem;color:#aaa;margin-top:12px;">클릭하면 학습 내용이 복사되고 ChatGPT가 열려요!</div></div>
 
   <!-- ⑤ 100 JOURNEY -->
   <div class="hundred-section">
@@ -508,6 +513,7 @@ body::before{
     </div>
   </div>
 
+
   <!-- COMPLETION CARD -->
   <div id="completionCard" style="display:none;background:#fff;border-radius:24px;box-shadow:0 8px 40px rgba(30,43,94,0.13);padding:32px 24px;text-align:center;margin:20px 0;">
     <div style="font-size:3.2rem;margin-bottom:12px;">🎉</div>
@@ -520,6 +526,7 @@ body::before{
     </div>
   </div>
 
+
   <!-- NAV FOOTER -->
   <div class="ep-nav">
     <a href="ep22.html" class="nav-prev">← Ep 05 딸과의 첫 외출</a>
@@ -528,20 +535,181 @@ body::before{
       <div class="nav-info-s">다음: Ep 08 · 이웃 인사</div>
     </div>
     <a href="ep22.html" class="nav-btn">다음 에피소드 →</a>
-  
-
-    <div class="prompt-body" id="promptBody"></div>
-    <button class="copy-prompt-btn" onclick="copyPrompt()">📋 프롬프트 복사하기</button>
-    <div class="copy-feedback" id="copyFeedback">✅ 복사됐어요! ChatGPT에서 Ctrl+V 하세요!</div>
   </div>
-  <div class="chatgpt-launch-wrap">
-    <div class="launch-title"></div>
-    <div class="launch-desc">
-      </div>
-    <div class="launch-note"></div>
+
+</div></div>
+
+<script>
+speechSynthesis.getVoices();if(speechSynthesis.onvoiceschanged!==undefined){speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices();};}
+var xp=0;
+function addXP(n){xp+=n;document.getElementById('xpBadge').textContent=xp;}
+function speak(text){if(!text)return;window.speechSynthesis.cancel();function doSpeak(){var voices=window.speechSynthesis.getVoices();var u=new SpeechSynthesisUtterance(text);var prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];var exclude=['Alex','Fred','Daniel','Google UK English Male'];var v=voices.find(function(v){return prefer.some(function(p){return v.name.indexOf(p)>=0;})&&!exclude.some(function(e){return v.name.indexOf(e)>=0;});});if(v)u.voice=v;u.lang='en-US';u.rate=0.85;u.pitch=1.0;window.speechSynthesis.speak(u);}if(window.speechSynthesis.getVoices().length>0){setTimeout(doSpeak,50);}else{window.speechSynthesis.onvoiceschanged=function(){setTimeout(doSpeak,50);};window.speechSynthesis.getVoices();}}
+var currentLevel=null,isSpeaking=false;
+function stopAll(){window.speechSynthesis.cancel();isSpeaking=false;currentLevel=null;document.querySelectorAll('.mp3-play').forEach(function(b){b.innerHTML='▶';if(b.dataset.color)b.style.background=b.dataset.color;});}
+function playScript(level,text,btn,color){if(currentLevel===level&&isSpeaking){stopAll();return;}stopAll();currentLevel=level;isSpeaking=true;btn.innerHTML='⏸';btn.style.background='#ef4444';var sentences=text.match(/[^.!?]+[.!?]+/g)||[text];var i=0;function next(){if(i>=sentences.length||!isSpeaking){btn.innerHTML='▶';btn.style.background=color;isSpeaking=false;currentLevel=null;return;}var u=new SpeechSynthesisUtterance(sentences[i].trim());var voices=window.speechSynthesis.getVoices();var prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];var exclude=['Alex','Fred','Daniel','Google UK English Male'];var v=voices.find(function(v){return prefer.some(function(p){return v.name.indexOf(p)>=0;})&&!exclude.some(function(e){return v.name.indexOf(e)>=0;});});if(v)u.voice=v;u.lang='en-US';u.rate=0.82;u.onend=function(){if(isSpeaking){i++;next();}};u.onerror=function(){i++;next();};window.speechSynthesis.speak(u);}if(window.speechSynthesis.getVoices().length>0){setTimeout(next,50);}else{window.speechSynthesis.onvoiceschanged=function(){setTimeout(next,50);};window.speechSynthesis.getVoices();}}
+
+function playMP3(btn){var level=btn.dataset.level;var text=btn.dataset.text;var color=btn.dataset.color;playScript(level,text,btn,color);}
+function showTab(group,level,btn){document.querySelectorAll('#'+group+'-a1,#'+group+'-a2,#'+group+'-b1').forEach(function(p){p.classList.remove('active');});document.getElementById(group+'-'+level).classList.add('active');btn.parentElement.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});btn.classList.add('active');}
+function pickOpt(el,correct){if(correct){el.classList.add('correct');addXP(10);el.parentElement.querySelectorAll('.quiz-opt').forEach(function(o){o.style.pointerEvents='none';});}else{el.classList.add('wrong');setTimeout(function(){el.classList.remove('wrong');},800);}}
+</script>
+<script>
+function startTutorSession() {
+    const lessonContext = `안녕하세요! 저는 오늘 CEC Camp C Episode 21 - 패스트푸드점에서 이상하게 주문된 이야기를 공부했어요.
+오늘 배운 핵심 표현: "Can I have a number 3?"
+상황: 약국에서 약 고르기, 라벨 읽기
+지금 이 표현으로 약국 상황 롤플레이 연습을 도와주세요.
+천천히, 쉬운 영어로 부탁드려요!`;
+    navigator.clipboard.writeText(lessonContext).then(() => {
+        window.open('./tutor.html?ep=21', '_blank');
+    }).catch(() => {
+        window.open('./tutor.html?ep=21', '_blank');
+    });
+}
+/* -- GAMES JS -- */
+// GAMES_JS_START
+function g1check(btn,val){var bl=document.getElementById('g1bl'),fb=document.getElementById('g1fb');if(val==='number'){bl.textContent='number';btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.disabled=true;});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';fb.style.color='#dc2626';fb.textContent='\u274c \ub2e4\uc2dc!';setTimeout(function(){btn.style.background='#f1f5f9';btn.style.borderColor='#e2e8f0';fb.textContent='';},1000);}}
+var g2arr=[],g2words=['3?','number','a','have','I','Can'];
+function g2init(){var pool=document.getElementById('g2pool');var sh=g2words.slice().sort(function(){return Math.random()-0.5;});pool.innerHTML='';sh.forEach(function(w){var b=document.createElement('button');b.textContent=w;b.className='wo-chip';b.onclick=function(){g2add(b,w);};pool.appendChild(b);});}
+function g2add(btn,w){if(btn.classList.contains('used'))return;btn.classList.add('used');btn.style.opacity='0.4';g2arr.push(w);var z=document.getElementById('g2zone');var c=document.createElement('span');c.textContent=w;c.style.cssText='padding:6px 14px;background:#2563eb;color:#fff;border-radius:20px;font-size:0.85rem;font-weight:700;cursor:pointer;';c.onclick=function(){g2arr.splice(g2arr.indexOf(w),1);btn.classList.remove('used');btn.style.opacity='1';c.remove();};z.appendChild(c);}
+function g2check(){var fb=document.getElementById('g2fb');if(g2arr.join(' ')==='Can I have a number 3?'){fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);}else{fb.style.color='#dc2626';fb.textContent='\u274c \ub2e4\uc2dc \ud574\ubcf4\uc138\uc694!';setTimeout(function(){fb.textContent='';},2000);}}
+function g2reset(){g2arr=[];document.getElementById('g2zone').innerHTML='';g2init();}
+var g3sel=null,g3done={};
+function g3click(btn,key){if(btn.classList.contains('g3matched'))return;btn.classList.remove('g3wrong');if(!g3sel){g3sel={btn:btn,key:key};btn.classList.add('g3sel');return;}if(g3sel.btn===btn){btn.classList.remove('g3sel');g3sel=null;return;}if(g3sel.key===key&&g3sel.btn!==btn){g3sel.btn.classList.remove('g3sel');g3sel.btn.classList.add('g3matched');btn.classList.add('g3matched');g3done[key]=true;g3sel=null;addXP(5);var cnt=Object.keys(g3done).length;var fb=document.getElementById('g3fb');if(cnt>=5){fb.innerHTML='\ud83c\udf89 \ubaa8\ub450 \ub9de\ucca8\uc5b4\uc694! +30 XP';fb.style.color='#16a34a';addXP(30);}else{fb.textContent=cnt+' / 5';}}else{var prev=g3sel.btn;prev.classList.remove('g3sel');prev.classList.add('g3wrong');btn.classList.add('g3wrong');g3sel=null;setTimeout(function(){prev.classList.remove('g3wrong');btn.classList.remove('g3wrong');},500);}}
+function g4check(btn,val){var bl=document.getElementById('g4bl'),fb=document.getElementById('g4fb');if(val==='Coke'){bl.textContent='Coke';btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.disabled=true;});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';fb.style.color='#dc2626';fb.textContent='\u274c \ub2e4\uc2dc!';setTimeout(function(){btn.style.background='#f1f5f9';btn.style.borderColor='#e2e8f0';fb.textContent='';},1000);}}
+function g5check(btn,correct){var fb=document.getElementById('g5fb');if(correct){btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';setTimeout(function(){btn.style.background='#fff';btn.style.borderColor='#e2e8f0';},800);}}
+function g6check(btn,correct){var fb=document.getElementById('g6fb');if(correct){btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='\u2705 \uc815\ub2f5! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.style.pointerEvents='none';});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';setTimeout(function(){btn.style.background='#fff';btn.style.borderColor='#e2e8f0';},800);}}
+function openChatGPT(){var p="\uc548\ub155\ud558\uc138\uc694! \uc800\ub294 \ud55c\uad6d \uc8fc\ubd80\uc608\uc694.\n\uc624\ub298 미국 패스트푸드점에서 주문하는 상황\uc744 \uc601\uc5b4\ub85c \uacf5\ubd80\ud588\uc5b4\uc694.\n\ud575\uc2ec \ud45c\ud604: Can I have a number 3?\nA2 \uc218\uc900 \ub300\ud654 \uc5f0\uc2b5 \ub3c4\uc640\uc8fc\uc138\uc694!";try{navigator.clipboard.writeText(p);}catch(e){}setTimeout(function(){window.open("https://chatgpt.com/g/g-69b48918e32c81919f5a6c6c6d187df3-yeongeo-tyuteo-cec-englishcamp-c","_blank");},300);}
+document.addEventListener('DOMContentLoaded',function(){g2init();});
+// GAMES_JS_END
+</script>
+<style>.g3i{width:100%;padding:12px 16px;background:#f8f9ff;border:2px solid #e0e4ff;border-radius:12px;font-size:0.95rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.15s;font-family:inherit;color:#1e1b4b;}.g3i:hover{border-color:#818cf8;}.g3sel{border-color:#4f46e5!important;background:#eef2ff!important;color:#4f46e5!important;}.g3matched{border-color:#16a34a!important;background:#dcfce7!important;color:#16a34a!important;cursor:default!important;}.g3wrong{border-color:#dc2626!important;background:#fee2e2!important;}
+/* ── ChatGPT 회화 연습 버튼 ── */
+.chatgpt-practice-section {
+  margin: 40px auto 20px;
+  max-width: 860px;
+  padding: 0 20px;
+}
+.chatgpt-practice-wrap {
+  background: linear-gradient(135deg, #050e1f, #0a1628);
+  border: 2px solid rgba(0,210,255,0.4);
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.chatgpt-practice-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%,
+    rgba(0,210,255,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.chatgpt-practice-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.chatgpt-practice-desc {
+  color: #6a8fad;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.chatgpt-practice-desc strong { color: #00d2ff; }
+.chatgpt-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #00d2ff, #0055ff);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(0,210,255,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+.chatgpt-launch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(0,210,255,0.5);
+}
+.chatgpt-practice-note {
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: #3a5a7a;
+}
+
+</style>
+
+<div class="chatgpt-practice-section">
+  <div class="chatgpt-practice-wrap">
+    <div class="chatgpt-practice-title">🎉 수업 완료! 이제 회화 연습!</div>
+    <div class="chatgpt-practice-desc">
+      오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 영어로 대화해보세요!<br>
+      <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
+    </div>
+    <button class="chatgpt-launch-btn" onclick="launchChatGPTPractice()">
+      🎙️ ChatGPT 회화 연습 시작
+    </button>
+    <div class="chatgpt-practice-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
   </div>
 </div>
 
+<script>
+function getCampType() {
+  var path = window.location.pathname;
+  if (path.includes('camp-b') ||
+      path.includes('/m1/') || path.includes('/m2/') || path.includes('/m3/') ||
+      path.includes('/g1/') || path.includes('/g2/') || path.includes('/g3/')) return 'b';
+  if (path.includes('camp-c') || path.includes('mom-teacher')) return 'c';
+  return 'a';
+}
+
+function launchChatGPTPractice() {
+  // 단어 자동 수집
+  var words = [];
+  document.querySelectorAll(
+    '.word-en, .vocab-en, .key-word, [class*="word-en"], [class*="vocab"]'
+  ).forEach(function(el) {
+    var t = el.textContent.trim();
+    if (t && t.length < 30) words.push(t);
+  });
+
+  // 본문 첫 문장
+  var storyEl = document.querySelector(
+    '.story-content.active p, .reading-text p, .story p'
+  );
+  var firstLine = storyEl
+    ? storyEl.textContent.substring(0, 80) + '...'
+    : '';
+
+  var summary = [
+    '[' + document.title + ']',
+    words.length ? '배운 단어: ' + words.slice(0,8).join(', ') : '',
+    firstLine ? '오늘 이야기: ' + firstLine : '',
+    '위 내용으로 영어 회화 연습을 도와주세요!'
+  ].filter(Boolean).join('\n');
+
+  var camp = getCampType();
+
+  // cec_guide.html 경로: GitHub Pages 루트
+  var depth = (window.location.pathname.match(/\//g) || []).length - 1;
+  var prefix = depth <= 1 ? '' : '../'.repeat(depth - 1);
+
+  var guideUrl = prefix + 'cec_guide.html'
+    + '?camp=' + camp
+    + '&url=' + encodeURIComponent(window.location.href)
+    + '&summary=' + encodeURIComponent(summary);
+
+  window.location.href = guideUrl;
+}
+</script>
 
 <style>
 .pw-wrap{max-width:860px;margin:40px auto;padding:0 20px;display:flex;flex-direction:column;gap:16px;}
@@ -553,7 +721,7 @@ body::before{
 .pw-body{background:#fff;border:1px solid #a7f3d0;border-radius:12px;padding:16px 18px;font-size:13px;color:#374151;line-height:1.85;white-space:pre-line;margin-bottom:16px;min-height:60px;}
 .pw-copy{width:100%;padding:14px;background:#059669;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
 .pw-ok{display:none;margin-top:10px;color:#059669;font-size:13px;font-weight:700;text-align:center;}
-.pw-launch{background:#f5f3ff;border-radius:20px;border:2px solid #c4b5fd;padding:24px 28px;text-align:center;}
+.pw-launch{background:#f5f3ff;border-radius:20px;border:2px solid #c4b5fd;padding:24px 28px;text-align:center;margin-top:0;}
 .pw-launch-title{font-size:16px;font-weight:700;color:#4c1d95;margin-bottom:6px;}
 .pw-launch-desc{font-size:13px;color:#6b7280;line-height:1.7;margin-bottom:20px;}
 .pw-launch-desc strong{color:#7c3aed;}
@@ -564,8 +732,10 @@ body::before{
   <div class="pw-prompt">
     <div class="pw-header">
       <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif" alt="Robo">
-      <div><div class="pw-header-t">AI 튜터 빅스와 영어 연습</div>
-      <div class="pw-header-s">오늘 배운 내용을 ChatGPT에 붙여넣으세요</div></div>
+      <div>
+        <div class="pw-header-t">AI 튜터 빅스와 영어 연습</div>
+        <div class="pw-header-s">오늘 배운 내용을 ChatGPT에 붙여넣으세요</div>
+      </div>
     </div>
     <div class="pw-body" id="pwBody"></div>
     <button class="pw-copy" onclick="pwCopy()">📋 프롬프트 복사하기</button>
@@ -574,9 +744,12 @@ body::before{
   <div class="pw-launch">
     <div style="font-size:20px;margin-bottom:6px;">🎉</div>
     <div class="pw-launch-title">수업 완료! 이제 회화 연습!</div>
-    <div class="pw-launch-desc"></div>
+    <div class="pw-launch-desc">
+      오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 대화해보세요!<br>
+      <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
+    </div>
     <button class="pw-btn" onclick="pwLaunch()">🎙️ ChatGPT 회화 연습 시작</button>
-    <div class="pw-note"></div>
+    <div class="pw-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
   </div>
 </div>
 <script>
@@ -599,7 +772,8 @@ function pwBuild(){
 function pwCopy(){
   navigator.clipboard.writeText(pwBuild()).then(function(){
     var e=document.getElementById('pwOk');
-    if(e){e.style.display='block';setTimeout(function(){e.style.display='none';},3000);}
+    if(e){e.style.display='block';
+      setTimeout(function(){e.style.display='none';},3000);}
   });
 }
 function pwLaunch(){
@@ -612,5 +786,6 @@ window.addEventListener('load',function(){
   if(e)e.textContent=pwBuild();
 });
 </script>
+
 </body>
 </html>
