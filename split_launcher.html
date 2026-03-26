@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>열기 중...</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a1628; color: #00f2ff; font-family: sans-serif; overflow: hidden; }
+  .msg {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 1.2rem; gap: 12px;
+  }
+  .sub { color: #7a9bb5; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+
+<div class="msg" id="loading">
+  <div>🎙️ 창을 여는 중...</div>
+  <div class="sub">수업 페이지 + ChatGPT 준비 중</div>
+</div>
+
+<script>
+window.onload = function() {
+  var params = new URLSearchParams(window.location.search);
+  var lessonUrl = params.get('url') ||
+    'https://cecenglishcamp.github.io/camp-a/lessons/grade3/week01.html';
+  var camp = params.get('camp') || 'a';
+  var summary = params.get('summary') || '';
+
+  var GPT = {
+    a: 'https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b',
+    b: 'https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166',
+    c: 'https://chatgpt.com/g/g-69b48918e32c81919f5a6c6c6d187df3'
+  };
+  var gptUrl = GPT[camp] || GPT['a'];
+
+  var sw = window.screen.width;
+  var sh = window.screen.height;
+  var half = Math.floor(sw / 2);
+
+  // 클립보드 복사
+  if (summary) {
+    try { navigator.clipboard.writeText(decodeURIComponent(summary)); } catch(e) {}
+  }
+
+  // ① 이 창(launcher)을 오른쪽 절반으로 이동 - 팝업이라 가능
+  window.moveTo(half, 0);
+  window.resizeTo(half, sh);
+
+  // ② 500ms 후 수업 창 열기
+  setTimeout(function() {
+    var lessonWin = window.open(
+      lessonUrl,
+      'cec_lesson',
+      'width=' + half + ',height=' + sh + ',left=0,top=0,scrollbars=yes,resizable=yes'
+    );
+
+    // 수업창 열리자마자 뒤로 보내고 launcher(ChatGPT)가 앞으로
+    setTimeout(function() {
+      if (lessonWin) lessonWin.blur();
+      window.focus();
+    }, 100);
+
+    // ③ 안내 오버레이 표시 후 ChatGPT로 이동
+    setTimeout(function() {
+      document.body.innerHTML = '\
+<div style="\
+  position:fixed; inset:0;\
+  background:#0a1628;\
+  display:flex; flex-direction:column;\
+  align-items:center; justify-content:center;\
+  font-family:sans-serif; color:white; gap:20px;\
+  z-index:9999;\
+">\
+  <div style="font-size:3rem;">📋</div>\
+  <div style="font-size:1.3rem; font-weight:bold; color:#00f2ff;">\
+    수업 내용이 복사됐어요!\
+  </div>\
+  <div style="\
+    background:rgba(0,242,255,0.15);\
+    border:2px solid #00f2ff;\
+    border-radius:16px;\
+    padding:20px 32px;\
+    text-align:center;\
+    line-height:2;\
+    font-size:1rem;\
+  ">\
+    ① ChatGPT가 열리면<br>\
+    ② 입력창 클릭 후<br>\
+    ③ <strong style="color:#ffd700; font-size:1.3rem;">Ctrl+V</strong> 붙여넣기<br>\
+    ④ Enter 누르기\
+  </div>\
+  <div style="color:#5a8a9a; font-size:0.85rem;">잠시 후 ChatGPT로 이동합니다...</div>\
+</div>';
+
+      setTimeout(function() {
+        window.location.href = gptUrl;
+      }, 500);
+    }, 200);
+  }, 500);
+};
+</script>
+</body>
+</html>

@@ -515,7 +515,135 @@ window.addEventListener('load',function(){shufflePools();shuffleLcOpts();});
 var urlParams=new URLSearchParams(window.location.search);
 if(urlParams.get('admin')==='true'){setTimeout(function(){document.getElementById('final-xp').textContent='999';document.getElementById('complete-card').style.display='block';},300);}
 </script>
-<style>.wk-nav{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#f8fffe;border-top:1px solid rgba(16,163,127,0.15);z-index:50}.wk-nav a{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}.wk-nav a:hover{transform:translateY(-2px)}.wk-nav .wk-prev{background:#fff;color:#666;border:1px solid rgba(16,163,127,0.15)}.wk-nav .wk-next{background:#10a37f;color:#fff}.wk-nav .wk-label{font-size:11px;color:#999;letter-spacing:1px}</style>
+<style>.wk-nav{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#f8fffe;border-top:1px solid rgba(16,163,127,0.15);z-index:50}.wk-nav a{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}.wk-nav a:hover{transform:translateY(-2px)}.wk-nav .wk-prev{background:#fff;color:#666;border:1px solid rgba(16,163,127,0.15)}.wk-nav .wk-next{background:#10a37f;color:#fff}.wk-nav .wk-label{font-size:11px;color:#999;letter-spacing:1px}
+/* ── ChatGPT 회화 연습 버튼 ── */
+.chatgpt-practice-section {
+  margin: 40px auto 20px;
+  max-width: 860px;
+  padding: 0 20px;
+}
+.chatgpt-practice-wrap {
+  background: linear-gradient(135deg, #050e1f, #0a1628);
+  border: 2px solid rgba(0,210,255,0.4);
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.chatgpt-practice-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%,
+    rgba(0,210,255,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.chatgpt-practice-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.chatgpt-practice-desc {
+  color: #6a8fad;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.chatgpt-practice-desc strong { color: #00d2ff; }
+.chatgpt-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #00d2ff, #0055ff);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(0,210,255,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+.chatgpt-launch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(0,210,255,0.5);
+}
+.chatgpt-practice-note {
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: #3a5a7a;
+}
+
+</style>
 <div class="wk-nav"><a class="wk-prev" href="week03.html">← W3</a><span class="wk-label">WEEK 4</span><a class="wk-next" href="week05.html">W5 →</a></div>
+
+<div class="chatgpt-practice-section">
+  <div class="chatgpt-practice-wrap">
+    <div class="chatgpt-practice-title">🎉 수업 완료! 이제 회화 연습!</div>
+    <div class="chatgpt-practice-desc">
+      오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 영어로 대화해보세요!<br>
+      <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
+    </div>
+    <button class="chatgpt-launch-btn" onclick="launchChatGPTPractice()">
+      🎙️ ChatGPT 회화 연습 시작
+    </button>
+    <div class="chatgpt-practice-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
+  </div>
+</div>
+
+<script>
+function getCampType() {
+  var path = window.location.pathname;
+  if (path.includes('camp-b') ||
+      path.includes('/m1/') || path.includes('/m2/') || path.includes('/m3/') ||
+      path.includes('/g1/') || path.includes('/g2/') || path.includes('/g3/')) return 'b';
+  if (path.includes('camp-c') || path.includes('mom-teacher')) return 'c';
+  return 'a';
+}
+
+function launchChatGPTPractice() {
+  // 단어 자동 수집
+  var words = [];
+  document.querySelectorAll(
+    '.word-en, .vocab-en, .key-word, [class*="word-en"], [class*="vocab"]'
+  ).forEach(function(el) {
+    var t = el.textContent.trim();
+    if (t && t.length < 30) words.push(t);
+  });
+
+  // 본문 첫 문장
+  var storyEl = document.querySelector(
+    '.story-content.active p, .reading-text p, .story p'
+  );
+  var firstLine = storyEl
+    ? storyEl.textContent.substring(0, 80) + '...'
+    : '';
+
+  var summary = [
+    '[' + document.title + ']',
+    words.length ? '배운 단어: ' + words.slice(0,8).join(', ') : '',
+    firstLine ? '오늘 이야기: ' + firstLine : '',
+    '위 내용으로 영어 회화 연습을 도와주세요!'
+  ].filter(Boolean).join('\n');
+
+  var camp = getCampType();
+
+  // cec_guide.html 경로: GitHub Pages 루트
+  var depth = (window.location.pathname.match(/\//g) || []).length - 1;
+  var prefix = depth <= 1 ? '' : '../'.repeat(depth - 1);
+
+  var guideUrl = prefix + 'cec_guide.html'
+    + '?camp=' + camp
+    + '&url=' + encodeURIComponent(window.location.href)
+    + '&summary=' + encodeURIComponent(summary);
+
+  window.location.href = guideUrl;
+}
+</script>
+
 </body>
 </html>

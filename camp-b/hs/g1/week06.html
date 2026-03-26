@@ -380,7 +380,6 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
     <div style="font-size:0.78rem;color:var(--gold);margin-bottom:6px;font-weight:900;">✏️ 직접 써보기:</div>
     <textarea class="debate-textarea" id="reproduce-input" rows="3" placeholder="[주어] was [과거분사], as though [주어] was [동사-ing]..."></textarea>
     <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
-      <button class="exp-btn" onclick="checkReproduce()">📝 Open WebUI 피드백받기</button>
       <div style="font-size:0.72rem;color:var(--sub);padding:8px 0;">→ 에세이 thesis에 이 구조를 활용하세요!</div>
     </div>
     <div id="reproduce-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
@@ -409,7 +408,6 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
     <div style="font-size:0.78rem;color:var(--gold);font-weight:900;margin-bottom:8px;">✏️ 직접 써보기 — B1 수준으로 확장하세요:</div>
     <div style="font-size:0.8rem;color:var(--sub);margin-bottom:6px;">시작 문장: "Nick watched Gatsby."</div>
     <textarea class="debate-textarea" id="expand-input" rows="3" placeholder="Nick watched Gatsby standing alone, reaching toward..."></textarea>
-    <button class="exp-btn" onclick="checkExpand()">📝 Open WebUI에서 피드백받기</button>
     <div id="expand-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
   </div>
 </div>
@@ -644,7 +642,6 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
   <div class="essay-line"><span class="essay-num">③</span><input class="essay-input" id="es3" placeholder="Furthermore,..."></div>
   <div class="essay-line"><span class="essay-num">④</span><input class="essay-input" id="es4" placeholder="Some argue that... However,..."></div>
   <div class="essay-line"><span class="essay-num">⑤</span><input class="essay-input" id="es5" placeholder="In conclusion,..."></div>
-  <button class="essay-submit" onclick="submitEssay()">📝 Open WebUI에서 피드백받기</button>
   <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
 </div>
 
@@ -680,7 +677,6 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
       <span class="phrase" style="background:#1a1428;color:var(--gold);border-color:#3a2a5a;" onclick="addPhrase('round3','I maintain that...')">I maintain that...</span>
       <span class="phrase" style="background:#1a1428;color:var(--gold);border-color:#3a2a5a;" onclick="addPhrase('round3','Ultimately,...')">Ultimately,...</span>
     </div>
-    <button class="owui-btn" onclick="sendDebate()">⚔️ Open WebUI에서 AI와 토론하기</button>
     <div style="font-size:0.78rem;color:var(--sub);margin-top:8px;min-height:16px;" id="debate-result"></div>
   </div>
 </div>
@@ -791,7 +787,6 @@ function snCheck(btn,correct){
 function sendToAI(){
   const prompt='[ESSAY] 안녕하세요! 수능 빈칸 추론 문제를 틀렸어요.\nThe Great Gatsby W1 수능 문제에서 오답을 골랐어요.\n정답이 "the impossibility of escaping the past while still reaching for the future"인 이유와\n이런 유형을 푸는 전략을 설명해줘.';
   navigator.clipboard.writeText(prompt).then(()=>{
-    setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
   });
 }
 
@@ -875,8 +870,7 @@ function checkReproduce(){
   if(!text){res.textContent='문장을 먼저 써보세요!';return;}
   const prompt='[ESSAY] 안녕하세요! 문장 구조 재생산 훈련을 했어요.\n\n원본 구조: "[주어] was [과거분사], as though [주어] was [동사-ing]"\n원본 문장: "Gatsby believed in the green light, the orgastic future that year by year recedes before us."\n\n내가 만든 문장:\n'+text+'\n\n이 구조를 제대로 사용했는지 피드백해줘.\n수능 어법 관점에서도 체크해줘!';
   navigator.clipboard.writeText(prompt).then(()=>{
-    res.textContent='✅ 복사됐어요! Open WebUI에 붙여넣기하세요.';
-    setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+    res.textContent='✅ 복사됐어요! ChatGPT에 붙여넣기하세요.';
     addXP(5);
   });
 }
@@ -886,8 +880,7 @@ function checkExpand(){
   if(!text){res.textContent='문장을 먼저 써보세요!';return;}
   const prompt='[ESSAY] 안녕하세요! 문장 확장 훈련을 했어요.\n원래 문장: "Nick watched Gatsby."\n내가 확장한 문장: '+text+'\nB1 수준에 맞는지 피드백해줘!';
   navigator.clipboard.writeText(prompt).then(()=>{
-    res.textContent='✅ 복사됐어요! Open WebUI에 붙여넣기하세요.';
-    setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+    res.textContent='✅ 복사됐어요! ChatGPT에 붙여넣기하세요.';
     addXP(5);
   });
 }
@@ -904,8 +897,7 @@ function submitEssay(){
   const essay=vals.map((v,i)=>['①','②','③','④','⑤'][i]+' '+v).join('\n');
   const prompt='[ESSAY] 안녕하세요! 저는 '+name+', '+grade+'이에요.\nThe Great Gatsby W06 에세이를 썼는데 피드백 부탁드려요.\n주제: "Is the American Dream a source of hope or a mechanism of self-destruction?"\n\n'+essay;
   navigator.clipboard.writeText(prompt).then(()=>{
-    res.innerHTML='✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
-    addXP(10);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
+    res.innerHTML='✅ 에세이 복사 완료! ChatGPT에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
   });
 }
 
@@ -918,13 +910,140 @@ function sendDebate(){
   const grade=auth?(JSON.parse(auth).grade||'고1'):'고1';
   const prompt='[DEBATE] 안녕하세요! 저는 '+name+', '+grade+'이에요.\nThe Great Gatsby W06 디베이트 주제: "Gatsby is "great" despite his flaws — his capacity for hope makes him worth admiring."\n\n[Round 1 - Opening]\n'+(r1||'(아직 못 썼어요)')+'\n\n[Round 2 - Rebuttal]\n'+(r2||'(아직 못 썼어요)')+'\n\n[Round 3 - Closing]\n'+(r3||'(아직 못 썼어요)')+'\n\n피드백하고 AI 상대방으로 토론해줘!';
   navigator.clipboard.writeText(prompt).then(()=>{
-    document.getElementById('debate-result').innerHTML='✅ 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';
+    document.getElementById('debate-result').innerHTML='✅ 복사 완료! ChatGPT에서 붙여넣기(Ctrl+V)하세요.';
     document.getElementById('debate-result').style.color='var(--green)';
-    addXP(8);setTimeout(()=>window.open('http://localhost:3001/?models=cec_camp_b','_blank'),300);
   });
 }
 </script>
-<style>.wk-nav{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#000;border-top:1px solid rgba(201,168,76,0.2);z-index:50}.wk-nav a{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}.wk-nav a:hover{transform:translateY(-2px)}.wk-nav .wk-prev{background:#0C1428;color:#8A9AB0;border:1px solid rgba(201,168,76,0.2)}.wk-nav .wk-next{background:#C9A84C;color:#000}.wk-nav .wk-label{font-size:11px;color:#5A6A80;letter-spacing:1px}</style>
+<style>.wk-nav{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#000;border-top:1px solid rgba(201,168,76,0.2);z-index:50}.wk-nav a{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}.wk-nav a:hover{transform:translateY(-2px)}.wk-nav .wk-prev{background:#0C1428;color:#8A9AB0;border:1px solid rgba(201,168,76,0.2)}.wk-nav .wk-next{background:#C9A84C;color:#000}.wk-nav .wk-label{font-size:11px;color:#5A6A80;letter-spacing:1px}
+/* ── ChatGPT 회화 연습 버튼 ── */
+.chatgpt-practice-section {
+  margin: 40px auto 20px;
+  max-width: 860px;
+  padding: 0 20px;
+}
+.chatgpt-practice-wrap {
+  background: linear-gradient(135deg, #050e1f, #0a1628);
+  border: 2px solid rgba(0,210,255,0.4);
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.chatgpt-practice-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%,
+    rgba(0,210,255,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.chatgpt-practice-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.chatgpt-practice-desc {
+  color: #6a8fad;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.chatgpt-practice-desc strong { color: #00d2ff; }
+.chatgpt-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #00d2ff, #0055ff);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(0,210,255,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+.chatgpt-launch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(0,210,255,0.5);
+}
+.chatgpt-practice-note {
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: #3a5a7a;
+}
+
+</style>
 <div class="wk-nav"><a class="wk-prev" href="week05.html">← W5</a><span class="wk-label">WEEK 6</span><a class="wk-next" href="../prestep.html">목록으로 →</a></div>
+
+<div class="chatgpt-practice-section">
+  <div class="chatgpt-practice-wrap">
+    <div class="chatgpt-practice-title">🎉 수업 완료! 이제 회화 연습!</div>
+    <div class="chatgpt-practice-desc">
+      오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 영어로 대화해보세요!<br>
+      <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
+    </div>
+    <button class="chatgpt-launch-btn" onclick="launchChatGPTPractice()">
+      🎙️ ChatGPT 회화 연습 시작
+    </button>
+    <div class="chatgpt-practice-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
+  </div>
+</div>
+
+<script>
+function getCampType() {
+  var path = window.location.pathname;
+  if (path.includes('camp-b') ||
+      path.includes('/m1/') || path.includes('/m2/') || path.includes('/m3/') ||
+      path.includes('/g1/') || path.includes('/g2/') || path.includes('/g3/')) return 'b';
+  if (path.includes('camp-c') || path.includes('mom-teacher')) return 'c';
+  return 'a';
+}
+
+function launchChatGPTPractice() {
+  // 단어 자동 수집
+  var words = [];
+  document.querySelectorAll(
+    '.word-en, .vocab-en, .key-word, [class*="word-en"], [class*="vocab"]'
+  ).forEach(function(el) {
+    var t = el.textContent.trim();
+    if (t && t.length < 30) words.push(t);
+  });
+
+  // 본문 첫 문장
+  var storyEl = document.querySelector(
+    '.story-content.active p, .reading-text p, .story p'
+  );
+  var firstLine = storyEl
+    ? storyEl.textContent.substring(0, 80) + '...'
+    : '';
+
+  var summary = [
+    '[' + document.title + ']',
+    words.length ? '배운 단어: ' + words.slice(0,8).join(', ') : '',
+    firstLine ? '오늘 이야기: ' + firstLine : '',
+    '위 내용으로 영어 회화 연습을 도와주세요!'
+  ].filter(Boolean).join('\n');
+
+  var camp = getCampType();
+
+  // cec_guide.html 경로: GitHub Pages 루트
+  var depth = (window.location.pathname.match(/\//g) || []).length - 1;
+  var prefix = depth <= 1 ? '' : '../'.repeat(depth - 1);
+
+  var guideUrl = prefix + 'cec_guide.html'
+    + '?camp=' + camp
+    + '&url=' + encodeURIComponent(window.location.href)
+    + '&summary=' + encodeURIComponent(summary);
+
+  window.location.href = guideUrl;
+}
+</script>
+
 </body>
 </html>
