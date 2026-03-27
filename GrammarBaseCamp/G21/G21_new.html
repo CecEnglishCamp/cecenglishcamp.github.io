@@ -535,6 +535,13 @@
 .gb-btns{padding:10px 12px 12px;display:flex;gap:8px;background:#fff;}
 .gb-btn1{flex:1;padding:9px;background:#4a6741;color:#fff;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:sans-serif;}
 .gb-btn2{flex:1;padding:9px;background:#f0f8e8;border:0.5px solid #a8d070;color:#4a6741;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;font-family:sans-serif;}
+
+.gb-dropdown{position:absolute;bottom:52px;left:0;right:0;background:#fff;border:0.5px solid #c8d8b8;border-radius:12px;overflow:hidden;z-index:9999;box-shadow:0 -4px 16px rgba(74,103,65,0.15);max-height:200px;overflow-y:auto;}
+.gb-dropdown a{display:flex;align-items:center;gap:8px;padding:8px 12px;text-decoration:none;border-bottom:0.5px solid #f0f4ec;font-family:sans-serif;}
+.gb-dropdown a:hover{background:#f0f8e8;}
+.gb-dropdown a:last-child{border-bottom:none;}
+.gb-dd-badge{background:#4a6741;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:6px;flex-shrink:0;}
+.gb-dd-title{font-size:12px;color:#2d4a25;flex:1;}
 </style>
 <div class="gb">
   <div class="gb-hint" onclick="gbToggle()" id="gbHint">
@@ -555,14 +562,11 @@
   </div>
   <div class="gb-chat" id="gbChat">
   </div>
-  <div class="gb-input-row">
-    <input class="gb-input" id="gbInput" type="text" placeholder="질문을 입력하세요..." onkeydown="gbCheckEnter(event)">
+  <div class="gb-input-row" style="position:relative;">
+    <input class="gb-input" id="gbInput" type="text" placeholder="질문을 입력하세요..." onkeydown="gbCheckEnter(event)" oninput="gbDropdown(this.value)">
     <button class="gb-send" onclick="gbSend()">→</button>
   </div>
-  <div class="gb-btns">
-    <button class="gb-btn1" id="gbBtn1" onclick="gbAsk()">💬 Open WebUI 열기</button>
-    <button class="gb-btn2" id="gbBtn2" onclick="gbCamp()">🏕️ 캠프 보기</button>
-  </div>
+  <div class="gb-btns"><button class="gb-btn2" id="gbBtn2" onclick="gbCamp()" style="flex:none;width:100%;">🏕️ 영어칠프 둘러보기</button></div>
 </div>
 <script src="../grammar_story_map.js"></script>
 <script>
@@ -715,6 +719,41 @@
     window.open('http://localhost:3001/?models=cec_grammar','_blank');
   };
 
+
+  window.gbDropdown = function(val){
+    var box = document.getElementById('gbDropdownBox');
+    if(!val || val.trim().length < 1){
+      if(box) box.style.display='none';
+      return;
+    }
+    var q = val.toLowerCase().trim();
+    var map = (typeof GRAMMAR_STORY_MAP !== 'undefined') ? GRAMMAR_STORY_MAP : {};
+    var results = [];
+    for(var gid in map){
+      var d = map[gid];
+      if(d.title.toLowerCase().indexOf(q) !== -1 ||
+         gid.toLowerCase().indexOf(q) !== -1 ||
+         d.example.toLowerCase().indexOf(q) !== -1){
+        results.push({gid:gid, data:d});
+      }
+      if(results.length >= 5) break;
+    }
+    if(!box){
+      box = document.createElement('div');
+      box.id = 'gbDropdownBox';
+      box.className = 'gb-dropdown';
+      var row = document.querySelector('.gb-input-row');
+      if(row) row.appendChild(box);
+    }
+    if(results.length === 0){ box.style.display='none'; return; }
+    box.innerHTML = results.map(function(r){
+      return '<a href="../'+r.gid+'/'+r.gid+'_new.html">' +
+        '<span class="gb-dd-badge">'+r.gid+'</span>' +
+        '<span class="gb-dd-title">'+r.data.title+'</span>' +
+        '</a>';
+    }).join('');
+    box.style.display = 'block';
+  };
   window.gbCamp = function(){
     window.location.href = 'https://cecenglishcamp.github.io/';
   };
