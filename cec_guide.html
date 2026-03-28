@@ -180,10 +180,16 @@ body {
   <div class="card">
     <div class="card-num">2</div>
     <div class="card-body">
-      <div class="card-title"><span class="icon">📋</span> 수업 내용이 자동 복사돼요</div>
+      <div class="card-title"><span class="icon">🔓</span> 팝업 허용이 필요해요</div>
       <div class="card-desc">
-        버튼을 누르면 오늘 배운 내용이 클립보드에<br>
-        자동 복사되고, ChatGPT가 새 탭에서 열려요!
+        Edge 주소창 오른쪽에 팝업 차단 아이콘이<br>
+        보이면 클릭 → '허용' 선택해주세요.<br>
+        처음 한 번만 하면 돼요!
+      </div>
+      <div class="card-visual">
+        <span class="tag">🔒 주소창 오른쪽</span>
+        <span class="arrow">→</span>
+        <span class="tag">팝업 허용 클릭</span>
       </div>
     </div>
   </div>
@@ -201,38 +207,18 @@ body {
   </div>
 
   <div class="btn-wrap">
-    <button class="start-btn" onclick="launchDirect()">✅ 이해했어요! ChatGPT 시작</button>
+    <button class="start-btn" onclick="launchSplit()">✅ 이해했어요! 시작하기</button>
   </div>
-  <div class="note">새 탭에서 ChatGPT가 열립니다. Ctrl+V로 붙여넣기 하세요!</div>
+  <div class="note">※ 팝업 허용 후 버튼을 다시 눌러주세요</div>
 
 </div>
 
 <script>
-function launchDirect() {
+function launchSplit() {
   var params = new URLSearchParams(window.location.search);
-  var camp = params.get('camp') || 'a';
-  var summary = params.get('summary') || '';
-  var lessonUrl = params.get('url') || document.referrer || 'https://cecenglishcamp.github.io/';
-
-  var GPT = {
-    a: 'https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b',
-    b: 'https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166',
-    c: 'https://chatgpt.com/g/g-69b48918e32c81919f5a6c6c6d187df3'
-  };
-  var gptUrl = GPT[camp] || GPT['a'];
-
-  // 1. Copy summary to clipboard
-  if (summary) {
-    try { navigator.clipboard.writeText(decodeURIComponent(summary)); } catch(e) {}
-  }
-
-  // 2. Open ChatGPT in new tab (works on direct click)
-  window.open(gptUrl, '_blank');
-
-  // 3. Navigate current tab back to lesson
-  setTimeout(function() {
-    window.location.href = lessonUrl;
-  }, 500);
+  var launcherUrl = 'split_launcher.html?' + params.toString();
+  window.open(launcherUrl, 'launcher',
+    'width=400,height=300,left=' + Math.floor(screen.width/2 - 200) + ',top=' + Math.floor(screen.height/2 - 150));
 }
 </script>
 </body>
