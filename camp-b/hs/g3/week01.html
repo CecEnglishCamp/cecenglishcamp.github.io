@@ -6,99 +6,303 @@
 <title>1984 W01 | CEC Camp B High School 3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../style.css">
+<style>
+:root {
+  --bg: #1c1c3a;
+  --card: #252550;
+  --card2: #202248;
+  --accent: #4f8ef7;
+  --accent2: #7c3aed;
+  --green: #16a34a;
+  --gold: #f59e0b;
+  --red: #dc2626;
+  --text: #e8e8f0;
+  --sub: #9090aa;
+  --border: #2a2a4a;
+  --a1c: #16a34a; --a1b: #0d3320;
+  --a2c: #2563eb; --a2b: #0d1f4a;
+  --b1c: #7c3aed; --b1b: #1e0d4a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; min-height: 100vh; }
+
+/* 헤더 */
+.hd { background: linear-gradient(135deg, #1a1a40 0%, #242460 100%); padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.hd-left { display: flex; align-items: center; gap: 10px; }
+.hd-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--accent); }
+.hd-sub { font-size: 0.72rem; color: var(--sub); }
+.hd-badge { background: var(--accent2); color: white; font-size: 0.7rem; font-weight: 800; padding: 3px 10px; border-radius: 20px; }
+.xp-btn { background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; border: none; border-radius: 20px; padding: 5px 14px; font-size: 0.8rem; font-weight: 900; cursor: pointer; font-family: 'Nunito', sans-serif; }
+
+/* 히어로 */
+.hero { background: linear-gradient(135deg, #0d1b4a 0%, #1a0d4a 50%, #0d3a2e 100%); padding: 20px 16px; text-align: center; border-bottom: 1px solid var(--border); }
+.hero-week { font-size: 0.72rem; color: var(--sub); font-weight: 700; letter-spacing: 2px; margin-bottom: 6px; }
+.hero-title { font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: #00f2ff; margin-bottom: 4px; }
+.hero-author { font-size: 0.8rem; color: var(--sub); margin-bottom: 14px; }
+.hero-badges { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.hb { padding: 4px 12px; border-radius: 20px; font-size: 0.68rem; font-weight: 800; }
+.hb-novel { background: #1a3a6e; color: #7ab3ff; border: 1px solid #2a4a8e; }
+.hb-level { background: #2d1a4a; color: #b48aff; border: 1px solid #4a2a8e; }
+.hb-weeks { background: #1a4a2e; color: #5aff9a; border: 1px solid #2a6a3e; }
+
+/* KEY SENTENCE */
+.key-card { background: linear-gradient(135deg, #1a1a3e 0%, #2a1a4e 100%); border: 1px solid #3a2a6e; border-radius: 16px; padding: 16px; margin: 0 16px 8px; }
+.key-label { font-size: 0.65rem; color: var(--sub); font-weight: 700; letter-spacing: 2px; margin-bottom: 8px; }
+.key-en { font-size: 1.05rem; font-weight: 900; color: white; margin-bottom: 4px; line-height: 1.4; }
+.key-kr { font-size: 0.82rem; color: #b48aff; margin-bottom: 12px; }
+.key-play { background: var(--accent2); color: white; border: none; border-radius: 25px; padding: 8px 20px; font-size: 0.82rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
+
+/* 컨테이너 */
+.container { max-width: 680px; margin: 0 auto; padding: 0 12px 60px; }
+
+/* 카드 */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+.sh { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.sh-icon { font-size: 1.1rem; }
+.sh-title { font-size: 0.88rem; font-weight: 900; color: white; }
+
+/* 이야기 탭 */
+.tab-row { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.tab-btn { padding: 5px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: transparent; color: var(--sub); font-size: 0.75rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.15s; }
+.tab-btn.active-a1 { background: var(--a1b); border-color: var(--a1c); color: #5aff9a; }
+.tab-btn.active-a2 { background: var(--a2b); border-color: var(--a2c); color: #7ab3ff; }
+.tab-btn.active-b1 { background: var(--b1b); border-color: var(--b1c); color: #b48aff; }
+.story-box { background: var(--card2); border-radius: 10px; padding: 14px; font-size: 0.88rem; line-height: 1.85; color: var(--text); display: none; }
+.story-box.active { display: block; }
+.story-box p { margin-bottom: 10px; }
+.story-kr { background: #0d0d1a; border-left: 3px solid var(--accent2); border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 10px; font-size: 0.8rem; color: var(--sub); line-height: 1.8; display: none; }
+.kr-toggle { background: transparent; border: 1px solid var(--border); color: var(--sub); border-radius: 20px; padding: 4px 12px; font-size: 0.72rem; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; margin-top: 8px; }
+
+/* 문법 툴팁 */
+.gram { border-bottom: 2px dashed var(--gold); cursor: pointer; color: #fde68a; font-weight: 700; position: relative; }
+.gram:hover { background: rgba(245,158,11,0.1); border-radius: 3px; }
+.tooltip-wrap { position: fixed; z-index: 1000; display: none; }
+.tooltip-box { background: #1a1a2e; border: 1.5px solid var(--gold); border-radius: 12px; padding: 14px 16px; max-width: 280px; box-shadow: 0 8px 32px rgba(0,0,0,0.6); }
+.tt-tag { background: var(--gold); color: #1a1a00; font-size: 0.65rem; font-weight: 900; padding: 2px 8px; border-radius: 10px; margin-bottom: 8px; display: inline-block; }
+.tt-title { font-size: 0.88rem; font-weight: 900; color: white; margin-bottom: 6px; }
+.tt-desc { font-size: 0.78rem; color: var(--sub); line-height: 1.6; margin-bottom: 8px; }
+.tt-ex { background: var(--bg); border-radius: 6px; padding: 6px 10px; font-size: 0.78rem; color: #7ab3ff; margin-bottom: 10px; font-style: italic; }
+.tt-links { display: flex; gap: 8px; flex-wrap: wrap; }
+.tt-gram-link { background: #1a3a1a; border: 1px solid var(--green); color: #5aff9a; border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; text-decoration: none; }
+.tt-gpt-link { background: #3a1a1a; border: 1px solid var(--red); color: #ff9a9a; border-radius: 20px; padding: 3px 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; }
+.tt-close { position: absolute; top: 8px; right: 10px; background: transparent; border: none; color: var(--sub); font-size: 1rem; cursor: pointer; }
+
+/* 단어 카드 */
+.vocab-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.vc { background: var(--card2); border-radius: 10px; padding: 10px 12px; border-left: 3px solid var(--accent); }
+.vc-w { font-size: 0.88rem; font-weight: 900; color: white; margin-bottom: 2px; }
+.vc-m { font-size: 0.75rem; color: var(--sub); margin-bottom: 4px; }
+.vc-e { font-size: 0.72rem; color: var(--accent); font-style: italic; }
+
+/* 빈칸 채우기 */
+.fill-sent { font-size: 0.9rem; font-weight: 700; line-height: 1.7; margin-bottom: 12px; color: white; }
+.blank-span { display: inline-block; min-width: 60px; border-bottom: 2px solid var(--accent); color: var(--accent); text-align: center; font-weight: 900; }
+.choices { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.cbtn { padding: 7px 16px; background: var(--card2); border: 1.5px solid var(--border); border-radius: 20px; color: var(--text); font-size: 0.82rem; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.15s; }
+.cbtn:hover { border-color: var(--accent); color: var(--accent); }
+.cbtn.ok { border-color: var(--green); background: #0d3320; color: #5aff9a; }
+.cbtn.no { border-color: var(--red); background: #3a0d0d; color: #ff9a9a; }
+.fill-res { font-size: 0.82rem; font-weight: 700; min-height: 18px; }
+
+/* 딕테이션 */
+.dict-item { background: var(--card2); border-radius: 10px; padding: 12px; margin-bottom: 8px; }
+.dict-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.dict-play { background: var(--accent); color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 0.82rem; cursor: pointer; flex-shrink: 0; }
+.dict-label { font-size: 0.75rem; color: var(--sub); font-weight: 700; }
+.dict-hint { font-size: 0.78rem; color: var(--accent); font-style: italic; }
+.dict-input-row { display: flex; gap: 8px; }
+.dict-input { flex: 1; background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 12px; color: white; font-size: 0.82rem; font-family: 'Nunito', sans-serif; }
+.dict-input:focus { outline: none; border-color: var(--accent); }
+.dict-btn { background: var(--accent); color: white; border: none; border-radius: 8px; padding: 8px 14px; font-size: 0.78rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
+.dict-result { font-size: 0.78rem; font-weight: 700; min-height: 16px; margin-top: 4px; }
+
+/* LC */
+.lc-play-btn { background: var(--accent2); color: white; border: none; border-radius: 25px; padding: 9px 22px; font-size: 0.88rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; margin-bottom: 14px; }
+.lc-opts { display: flex; flex-direction: column; gap: 8px; min-height: 140px; }
+.lc-opt { background: var(--card2); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: 0.84rem; font-weight: 700; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; color: var(--text); transition: all 0.15s; }
+.lc-opt:hover { border-color: var(--accent2); }
+.lc-opt.ok { border-color: var(--green); background: #0d3320; color: #5aff9a; }
+.lc-opt.no { border-color: var(--red); background: #3a0d0d; color: #ff9a9a; }
+.lc-result { margin-top: 8px; font-size: 0.84rem; font-weight: 700; min-height: 18px; }
+
+/* 단어 배열 */
+.wo-wrap { background: var(--card2); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.wo-q { font-size: 0.8rem; color: var(--sub); margin-bottom: 8px; font-weight: 700; }
+.wo-box { min-height: 44px; background: var(--bg); border-radius: 8px; border: 1.5px dashed var(--accent); padding: 6px 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 8px; }
+.wo-pool { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; }
+.wo-chip { padding: 5px 12px; background: var(--accent2); color: white; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; font-family: 'Nunito', sans-serif; transition: all 0.15s; }
+.wo-chip:hover { opacity: 0.8; }
+.wo-chip.used { background: #2a2a4a; color: var(--sub); cursor: default; }
+.wo-placed { padding: 5px 12px; background: var(--accent); color: white; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; font-family: 'Nunito', sans-serif; }
+.wo-btns { display: flex; gap: 8px; }
+.wo-check { background: var(--accent2); color: white; border: none; padding: 8px 18px; border-radius: 20px; font-size: 0.8rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
+.wo-reset { background: transparent; color: var(--sub); border: 1px solid var(--border); padding: 8px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
+.wo-result { font-size: 0.8rem; font-weight: 700; margin-top: 6px; min-height: 16px; }
+
+/* 짝맞추기 */
+.match-wrap { background: var(--card2); border-radius: 12px; padding: 14px; }
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.match-col { display: flex; flex-direction: column; gap: 6px; }
+.match-item { padding: 8px 12px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--bg); font-size: 0.8rem; font-weight: 700; cursor: pointer; text-align: center; transition: all 0.15s; font-family: 'Nunito', sans-serif; color: var(--text); }
+.match-item:hover { border-color: var(--accent); }
+.match-item.selected { border-color: var(--gold); background: #2a2a00; color: #fde68a; }
+.match-item.matched { border-color: var(--green); background: #0d3320; color: #5aff9a; cursor: default; }
+.match-item.wrong-flash { border-color: var(--red); background: #3a0d0d; }
+.match-result { text-align: center; font-size: 0.86rem; font-weight: 700; min-height: 18px; }
+
+/* 받아쓰기 도전 (전체 문장) */
+.fd-item { background: var(--card2); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.fd-level { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.fd-lv-badge { font-size: 0.65rem; font-weight: 900; padding: 2px 8px; border-radius: 20px; color: white; }
+.fd-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.fd-play { border: none; border-radius: 9px; padding: 7px 14px; font-size: 0.82rem; font-weight: 800; cursor: pointer; color: white; }
+.fd-replay { background: transparent; border-radius: 9px; padding: 7px 10px; font-size: 0.82rem; font-weight: 700; cursor: pointer; }
+.fd-hints { background: var(--bg); border-radius: 9px; padding: 6px 12px; flex: 1; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 120px; }
+.fd-hint-label { font-size: 0.68rem; color: var(--sub); }
+.fd-hint-tag { border-radius: 6px; padding: 2px 8px; font-weight: 700; font-size: 0.78rem; border: 1.5px solid; }
+.fd-input-row { display: flex; gap: 8px; }
+.fd-input { flex: 1; background: var(--bg); border: 1.5px solid var(--border); border-radius: 9px; padding: 9px 12px; color: white; font-size: 0.82rem; font-family: 'Nunito', sans-serif; }
+.fd-input:focus { outline: none; border-color: var(--accent); }
+.fd-check { border: none; border-radius: 9px; padding: 9px 16px; font-size: 0.82rem; font-weight: 800; cursor: pointer; color: white; flex-shrink: 0; }
+.fd-result { margin-top: 8px; font-size: 0.8rem; font-weight: 700; min-height: 18px; }
+
+/* 이해문제 */
+.quiz-tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+.qtab { padding: 5px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: transparent; color: var(--sub); font-size: 0.75rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
+.qtab.qa1 { background: var(--a1b); border-color: var(--a1c); color: #5aff9a; }
+.qtab.qa2 { background: var(--a2b); border-color: var(--a2c); color: #7ab3ff; }
+.qtab.qb1 { background: var(--b1b); border-color: var(--b1c); color: #b48aff; }
+.quiz-set { display: none; }
+.quiz-set.active { display: block; }
+.quiz-item { background: var(--card2); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+.quiz-q { font-size: 0.86rem; font-weight: 700; color: white; margin-bottom: 10px; line-height: 1.5; }
+.quiz-opts { display: flex; flex-direction: column; gap: 7px; }
+.qopt { padding: 9px 14px; border-radius: 9px; border: 1.5px solid var(--border); background: var(--bg); font-size: 0.82rem; font-weight: 700; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; color: var(--text); transition: all 0.15s; }
+.qopt:hover { border-color: var(--accent2); }
+.qopt.ok { background: #0d3320; border-color: var(--green); color: #5aff9a; }
+.qopt.no { background: #3a0d0d; border-color: var(--red); color: #ff9a9a; }
+
+/* 에세이 */
+.essay-wrap { background: var(--card2); border-radius: 12px; padding: 14px; }
+.essay-prompt { font-size: 0.84rem; color: white; font-weight: 700; margin-bottom: 8px; line-height: 1.5; }
+.essay-tip { font-size: 0.75rem; color: var(--sub); margin-bottom: 12px; padding: 8px 12px; background: var(--bg); border-radius: 8px; border-left: 3px solid var(--gold); }
+.essay-line { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.essay-num { font-size: 0.75rem; font-weight: 900; color: var(--gold); width: 20px; flex-shrink: 0; }
+.essay-input { flex: 1; background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 12px; color: white; font-size: 0.82rem; font-family: 'Nunito', sans-serif; }
+.essay-input:focus { outline: none; border-color: var(--gold); }
+.essay-submit { background: var(--gold); color: #1a1a00; border: none; border-radius: 20px; padding: 10px 24px; font-size: 0.86rem; font-weight: 900; cursor: pointer; font-family: 'Nunito', sans-serif; width: 100%; margin-top: 4px; }
+.essay-result { font-size: 0.8rem; color: var(--sub); margin-top: 8px; min-height: 16px; }
+
+/* ChatGPT 섹션 */
+.gpt-card { background: linear-gradient(135deg, #0d2a1a 0%, #1a0d2a 100%); border: 1px solid #2a4a3a; border-radius: 14px; padding: 16px; }
+.gpt-title { font-size: 0.9rem; font-weight: 900; color: white; margin-bottom: 6px; }
+.gpt-sub { font-size: 0.75rem; color: var(--sub); margin-bottom: 14px; }
+.gpt-prompt { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 0.78rem; color: #9090aa; line-height: 1.7; margin-bottom: 12px; white-space: pre-wrap; }
+.gpt-copy { background: #10a37f; color: white; border: none; border-radius: 20px; padding: 10px 24px; font-size: 0.86rem; font-weight: 900; cursor: pointer; font-family: 'Nunito', sans-serif; width: 100%; margin-bottom: 8px; }
+.gpt-open { background: transparent; border: 1.5px solid #10a37f; color: #10a37f; border-radius: 20px; padding: 9px 24px; font-size: 0.82rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; width: 100%; }
+.gpt-timer { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.75rem; color: var(--sub); margin-top: 8px; }
+
+/* 진행 바 */
+.prog-row { display: flex; align-items: center; gap: 8px; padding: 0 16px 16px; }
+.prog-track { flex: 1; background: #2a2a4a; border-radius: 8px; height: 6px; overflow: hidden; }
+.prog-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 8px; transition: width 0.5s; }
+.prog-label { font-size: 0.72rem; color: var(--sub); font-weight: 700; white-space: nowrap; }
+
+/* 완료 */
+.complete-card { background: var(--card); border-radius: 20px; padding: 28px; text-align: center; display: none; margin-bottom: 16px; border: 1px solid var(--accent2); }
+.complete-emoji { font-size: 2.8rem; margin-bottom: 10px; }
+.complete-title { font-size: 1.2rem; font-weight: 900; color: var(--accent); margin-bottom: 6px; }
+.complete-sub { font-size: 0.86rem; color: var(--sub); margin-bottom: 16px; line-height: 1.7; }
+.xp-big { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; border-radius: 12px; padding: 12px 24px; font-size: 1.1rem; font-weight: 900; display: inline-block; margin-bottom: 16px; }
+.next-row { background: var(--card2); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.next-lbl { font-size: 0.7rem; color: var(--sub); font-weight: 700; }
+.next-title { font-size: 0.86rem; font-weight: 800; color: white; }
+.next-btn { background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; white-space: nowrap; }
+
+/* 네비 */
+.nav-row { display: flex; justify-content: space-between; padding: 0 16px; margin-bottom: 12px; gap: 10px; }
+.nav-btn { padding: 9px 20px; border-radius: 10px; font-size: 0.8rem; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; border: none; flex: 1; max-width: 140px; }
+
+/* 툴팁 오버레이 */
+#tt-overlay { position: fixed; inset: 0; z-index: 999; display: none; }
+</style>
+<style>
+.sec-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;margin:12px 16px;overflow:hidden}
+.sec-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border)}
+.sec-num{background:var(--accent);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:900;flex-shrink:0}
+.sec-title{font-size:0.95rem;font-weight:800;color:var(--text)}
+.sec-en-title{font-size:0.7rem;color:var(--sub);font-weight:700;letter-spacing:1px;margin-left:6px}
+.sec-body{padding:16px}
+.key-box{background:linear-gradient(135deg,#1a1a3e,#2a1a4e);border:1px solid #3a2a6e;border-radius:12px;padding:14px;margin-bottom:12px}
+.key-label{font-size:0.65rem;color:var(--sub);font-weight:700;letter-spacing:2px;margin-bottom:6px}
+.key-title{font-size:1rem;font-weight:900;color:#fff;margin-bottom:2px}
+.key-sub{font-size:0.85rem;color:var(--sub)}
+.exp-text{font-size:0.9rem;color:var(--text);line-height:1.7;margin-bottom:8px}
+.vocab-card{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px}
+.vocab-word{font-size:1rem;font-weight:800;color:var(--accent);margin-bottom:2px}
+.vocab-meaning{font-size:0.85rem;color:var(--sub);margin-bottom:4px}
+.vocab-example{font-size:0.82rem;color:var(--text);font-style:italic;line-height:1.5}
+.reading-item{background:var(--card2);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 14px;margin-bottom:10px}
+.reading-en{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:#fff;margin-bottom:4px;line-height:1.5}
+.reading-ko{font-size:0.82rem;color:var(--sub)}
+.grammar-title{font-size:0.95rem;font-weight:800;color:var(--accent);margin-bottom:8px}
+.grammar-list{padding-left:18px;color:var(--text);font-size:0.88rem;line-height:1.8}
+.grammar-list li em{color:var(--accent)}
+.grammar-tags{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
+.grammar-tag{background:#1a2a4e;color:#7ab3ff;border:1px solid #2a4a8e;padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:700;text-decoration:none}
+.debate-topic-box{background:linear-gradient(135deg,#1a1a3e,#2a1a4e);border:1px solid #3a2a6e;border-radius:12px;padding:14px;font-size:0.92rem;color:#fff;line-height:1.6;margin-bottom:12px}
+.debate-sides{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:600px){.debate-sides{grid-template-columns:1fr}}
+.debate-agree,.debate-disagree{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:0.85rem;color:var(--text)}
+.debate-agree strong{color:var(--green)}.debate-disagree strong{color:var(--red)}
+.debate-agree ul,.debate-disagree ul{padding-left:16px;margin-top:6px;line-height:1.7}
+.essay-box{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
+.essay-box h3{font-size:0.9rem;color:var(--text);margin-bottom:8px}
+.essay-q{font-size:0.95rem;font-weight:700;color:var(--accent);margin-bottom:4px}
+.essay-ko{font-size:0.85rem;color:var(--sub);margin-bottom:10px}
+.essay-step{font-size:0.85rem;color:var(--text);padding:3px 0}
+.btn-essay{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:10px;padding:12px 20px;font-size:0.9rem;font-weight:700;cursor:pointer;width:100%;font-family:'Nunito',sans-serif}
+.btn-ai{display:inline-block;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;padding:12px 24px;border-radius:10px;font-size:0.9rem;font-weight:700;text-decoration:none;margin:8px 0}
+.debate-guide{margin-top:12px;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:0.85rem;color:var(--text)}
+.debate-guide em{color:var(--accent)}
+.hd-wrap{background:linear-gradient(135deg,#1a1a40,#242460);padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.hd-inner{display:flex;align-items:center;gap:10px}
+.hero-wrap{background:linear-gradient(135deg,#0d1b4a,#1a0d4a 50%,#0d3a2e);padding:20px 16px;text-align:center;border-bottom:1px solid var(--border)}
+.hero-meta{font-size:0.72rem;color:var(--sub);font-weight:700;letter-spacing:2px;margin-bottom:6px}
+.content-wrap{max-width:680px;margin:0 auto;padding-bottom:80px}
+
+.hero-inner{max-width:680px;margin:0 auto}
+.hero-sub{font-size:0.85rem;color:#9090aa;margin-top:4px}
+.pw-wrap{position:fixed;bottom:20px;right:16px;z-index:100;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.pw-bubble{background:#252550;border:1px solid #2a2a4a;color:#e8e8f0;font-size:0.78rem;padding:8px 14px;border-radius:20px;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+.pw-robo{width:56px;height:56px;border-radius:50%;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+.essay-structure{margin-top:8px}
+</style>
 </head>
-<body class="camp-b hs g3">
-<header class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">High School 3</span></div></header>
-<main class="lesson-wrap">
-<section class="hero-section">
-<div class="hero-label">&#x1f4e1; 1984 &middot; W01 / 06</div>
-<h1 class="hero-title">Big Brother Is Watching</h1>
-<p class="hero-sub">&#xbe45; &#xbe0c;&#xb77c;&#xb354;&#xac00; &#xc9c0;&#xcf1c;&#xbcf4;&#xace0; &#xc788;&#xb2e4; &mdash; George Orwell &middot; C1</p>
-</section>
-
-<section class="card-section" id="s1">
-<div class="sec-head"><span class="sec-num">1</span><h2>&#xae30;&#xbcf8; &#xac1c;&#xb150; <span class="sec-en">BASIC CONCEPT</span></h2></div>
-<div class="sec-body">
-<div class="key-grammar-box">
-<div class="kg-label">&#x2b50; TODAY'S KEY THEME</div>
-<div class="kg-title">1984 &mdash; Week 1</div>
-<div class="kg-sub">&#xc804;&#xccb4;&#xc8fc;&#xc758; &mdash; Totalitarianism &amp; Surveillance</div>
+<body>
+<div class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">High School 3</span></div></div>
+<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">1984 · W01 / 06</div><h1 class="hero-title">1984</h1><p class="hero-sub">빅 브라더가 지켜보고 있다 — George Orwell · C1</p></div></div>
+<div class="content-wrap">
+<section class="sec-wrap" id="s1"><div class="sec-head"><span class="sec-num">1</span><h2 class="sec-title">기본 개념 <span class="sec-en-title">BASIC CONCEPT</span></h2></div><div class="sec-body"><div class="key-box"><div class="key-label">⭐ TODAY'S KEY THEME</div><div class="key-title">1984 — Week 1</div><div class="key-sub">전체주의 사회 — Totalitarianism & Surveillance</div></div><p class="exp-text">1949년 출판된 Orwell의 디스토피아 소설. 모든 것이 감시되고 통제되는 사회에서 살아가는 Winston Smith의 이야기.</p><p class="exp-text">이 소설은 <strong>언어가 사고를 통제할 수 있다</strong>는 무서운 통찰을 담고 있습니다. Newspeak — 생각 자체를 불가능하게 만드는 언어.</p></div></section>
+<section class="sec-wrap" id="s2"><div class="sec-head"><span class="sec-num">2</span><h2 class="sec-title">핵심 어휘 <span class="sec-en-title">KEY VOCABULARY</span></h2></div><div class="sec-body"><div class="vocab-grid"><div class="vocab-card"><div class="vocab-word">totalitarianism</div><div class="vocab-meaning">전체주의</div><div class="vocab-example">"Oceania was a totalitarian state with no freedom."</div></div>
+<div class="vocab-card"><div class="vocab-word">doublethink</div><div class="vocab-meaning">이중사고</div><div class="vocab-example">"Doublethink means holding two contradictory beliefs."</div></div>
+<div class="vocab-card"><div class="vocab-word">surveillance</div><div class="vocab-meaning">감시</div><div class="vocab-example">"The telescreen maintained constant surveillance."</div></div>
+<div class="vocab-card"><div class="vocab-word">propaganda</div><div class="vocab-meaning">선전</div><div class="vocab-example">"The Party used propaganda to control citizens' minds."</div></div>
+<div class="vocab-card"><div class="vocab-word">rebellion</div><div class="vocab-meaning">반란</div><div class="vocab-example">"Winston's diary was an act of silent rebellion."</div></div>
+<div class="vocab-card"><div class="vocab-word">Newspeak</div><div class="vocab-meaning">신어</div><div class="vocab-example">"Newspeak was designed to limit freedom of thought."</div></div>
+</div></div></section>
+<section class="sec-wrap" id="s3"><div class="sec-head"><span class="sec-num">3</span><h2 class="sec-title">본문 읽기 <span class="sec-en-title">READING</span></h2></div><div class="sec-body"><div class="reading-item"><p class="reading-en">"War is Peace. Freedom is Slavery. Ignorance is Strength."</p><p class="reading-ko">— 전쟁은 평화다. 자유는 예속이다. 무지는 힘이다.</p></div>
+<div class="reading-item"><p class="reading-en">"If you want to keep a secret, you must also hide it from yourself."</p><p class="reading-ko">— 비밀을 지키고 싶다면, 자기 자신에게서도 숨겨야 한다.</p></div>
+<div class="reading-item"><p class="reading-en">"Big Brother is watching you."</p><p class="reading-ko">— 빅 브라더가 당신을 지켜보고 있다.</p></div>
+</div></section>
+<section class="sec-wrap" id="s4"><div class="sec-head"><span class="sec-num">4</span><h2 class="sec-title">문법 포인트 <span class="sec-en-title">GRAMMAR</span></h2></div><div class="sec-body"><h3 class="grammar-title">Advanced Passive & Nominalization (C1)</h3><ul class="grammar-list"><li>"The records were falsified." — 행위자 없는 수동태 (G66)</li><li>"The destruction of words is a beautiful thing." — 명사화 (G79)</li><li>"Never had Winston felt so alone." — 도치 강조 (G63)</li></ul><div class="grammar-tags"><a href="https://cecenglishcamp.github.io/cec-edu/grammar/advanced-passive/" class="grammar-tag">G66 수동태심화</a><a href="https://cecenglishcamp.github.io/cec-edu/grammar/nominalization/" class="grammar-tag">G79 명사화</a><a href="https://cecenglishcamp.github.io/cec-edu/grammar/inversion/" class="grammar-tag">G63 도치</a></div></div></section>
+<section class="sec-wrap" id="s5"><div class="sec-head"><span class="sec-num">5</span><h2 class="sec-title">토론 주제 <span class="sec-en-title">DEBATE TOPIC</span></h2></div><div class="sec-body"><div class="debate-topic-box">💬 "Government surveillance is necessary for national security."<br>국가 안보를 위한 정부 감시는 필요하다.</div><div class="debate-sides"><div class="debate-agree"><strong>찬성 (Agree):</strong><ul><li>Surveillance prevents terrorism and crime</li><li>Most citizens have nothing to hide</li><li>National security protects everyone's freedom</li></ul></div><div class="debate-disagree"><strong>반대 (Disagree):</strong><ul><li>Privacy is a fundamental human right</li><li>Surveillance can be abused by those in power</li><li>1984 shows the dangers of total surveillance</li></ul></div></div></div></section>
+<section class="sec-wrap" id="s6"><div class="sec-head"><span class="sec-num">6</span><h2 class="sec-title">에세이 쓰기 <span class="sec-en-title">ESSAY WRITING</span></h2></div><div class="sec-body"><div class="essay-box"><h3>📝 이번 주 에세이 주제</h3><p class="essay-q">"How does Orwell use language as a tool of oppression in 1984?"</p><p class="essay-ko">Orwell은 언어를 억압의 도구로 어떻게 사용하는가?</p><div class="essay-structure"><div class="essay-step">🔷 언어와 사고의 관계 + thesis</div><div class="essay-step">🔷 Newspeak — 생각을 제한하는 언어</div><div class="essay-step">🔷 Doublethink — 모순을 수용하게 하는 기제</div><div class="essay-step">🔷 현대 사회와의 연관성</div><div class="essay-step">🔷 언어 통제의 위험성</div></div></div><button class="btn-essay" onclick="copyEssayPrompt()">✍️ ChatGPT 에세이 피드백</button></div></section>
+<section class="sec-wrap" id="s7"><div class="sec-head"><span class="sec-num">7</span><h2 class="sec-title">AI 토론 연습 <span class="sec-en-title">AI DEBATE</span></h2></div><div class="sec-body"><p>Open WebUI에서 AI와 토론 연습을 해보세요!</p><a href="https://journey-bronzy-fruitily.ngrok-free.dev" target="_blank" class="btn-ai">🤖 AI와 토론 시작</a><div class="debate-guide"><p><strong>토론 시작 멘트:</strong></p><p><em>"I want to debate: Government surveillance is necessary for security. I will argue AGAINST this."</em></p></div></div></section>
 </div>
-<div class="exp-box">
-<p>1949&#xb144; &#xcd9c;&#xd310;&#xb41c; Orwell&#xc758; &#xb514;&#xc2a4;&#xd1a0;&#xd53c;&#xc544; &#xc18c;&#xc124;. &#xbaa8;&#xb4e0; &#xac83;&#xc774; &#xac10;&#xc2dc;&#xb418;&#xace0; &#xd1b5;&#xc81c;&#xb418;&#xb294; &#xc0ac;&#xd68c;&#xc5d0;&#xc11c; &#xc0b4;&#xc544;&#xac00;&#xb294; Winston Smith&#xc758; &#xc774;&#xc57c;&#xae30;.</p>
-<p><strong>&#xc5b8;&#xc5b4;&#xac00; &#xc0ac;&#xace0;&#xb97c; &#xd1b5;&#xc81c;&#xd560; &#xc218; &#xc788;&#xb2e4;</strong>&#xb294; &#xbb34;&#xc11c;&#xc6b4; &#xd1b5;&#xcc30;. "Newspeak" &mdash; &#xc0dd;&#xac01; &#xc790;&#xccb4;&#xb97c; &#xbd88;&#xac00;&#xb2a5;&#xd558;&#xac8c; &#xb9cc;&#xb4dc;&#xb294; &#xc5b8;&#xc5b4;.</p>
-</div></div></section>
-
-<section class="card-section" id="s2">
-<div class="sec-head"><span class="sec-num">2</span><h2>&#xd575;&#xc2ec; &#xc5b4;&#xd718; <span class="sec-en">KEY VOCABULARY</span></h2></div>
-<div class="sec-body"><div class="vocab-grid">
-<div class="vocab-card"><div class="vocab-en">totalitarianism</div><div class="vocab-ko">&#xc804;&#xccb4;&#xc8fc;&#xc758;</div><div class="vocab-ex">"Oceania was a totalitarian state with no freedom."</div></div>
-<div class="vocab-card"><div class="vocab-en">doublethink</div><div class="vocab-ko">&#xc774;&#xc911;&#xc0ac;&#xace0;</div><div class="vocab-ex">"Doublethink means holding two contradictory beliefs."</div></div>
-<div class="vocab-card"><div class="vocab-en">surveillance</div><div class="vocab-ko">&#xac10;&#xc2dc;</div><div class="vocab-ex">"The telescreen maintained constant surveillance."</div></div>
-<div class="vocab-card"><div class="vocab-en">propaganda</div><div class="vocab-ko">&#xc120;&#xc804;</div><div class="vocab-ex">"The Party used propaganda to control citizens' minds."</div></div>
-<div class="vocab-card"><div class="vocab-en">rebellion</div><div class="vocab-ko">&#xbc18;&#xb780;</div><div class="vocab-ex">"Winston's diary was an act of silent rebellion."</div></div>
-<div class="vocab-card"><div class="vocab-en">Newspeak</div><div class="vocab-ko">&#xc2e0;&#xc5b4;</div><div class="vocab-ex">"Newspeak was designed to limit freedom of thought."</div></div>
-</div></div></section>
-
-<section class="card-section" id="s3">
-<div class="sec-head"><span class="sec-num">3</span><h2>&#xbcf8;&#xbb38; &#xc77d;&#xae30; <span class="sec-en">READING</span></h2></div>
-<div class="sec-body">
-<div class="reading-box"><p class="reading-en">"War is Peace. Freedom is Slavery. Ignorance is Strength."</p><p class="reading-ko">&mdash; &#xc804;&#xc7c1;&#xc740; &#xd3c9;&#xd654;&#xb2e4;. &#xc790;&#xc720;&#xb294; &#xc608;&#xc18d;&#xc774;&#xb2e4;. &#xbb34;&#xc9c0;&#xb294; &#xd798;&#xc774;&#xb2e4;.</p></div>
-<div class="reading-box"><p class="reading-en">"If you want to keep a secret, you must also hide it from yourself."</p><p class="reading-ko">&mdash; &#xbe44;&#xbc00;&#xc744; &#xc9c0;&#xd0a4;&#xace0; &#xc2f6;&#xb2e4;&#xba74;, &#xc790;&#xae30; &#xc790;&#xc2e0;&#xc5d0;&#xac8c;&#xc11c;&#xb3c4; &#xc228;&#xaca8;&#xc57c; &#xd55c;&#xb2e4;.</p></div>
-<div class="reading-box"><p class="reading-en">"Big Brother is watching you."</p><p class="reading-ko">&mdash; &#xbe45; &#xbe0c;&#xb77c;&#xb354;&#xac00; &#xb2f9;&#xc2e0;&#xc744; &#xc9c0;&#xcf1c;&#xbcf4;&#xace0; &#xc788;&#xb2e4;.</p></div>
-</div></section>
-
-<section class="card-section" id="s4">
-<div class="sec-head"><span class="sec-num">4</span><h2>&#xbb38;&#xbc95; <span class="sec-en">GRAMMAR</span></h2></div>
-<div class="sec-body"><div class="grammar-point">
-<h3>Advanced Passive &amp; Nominalization (C1)</h3>
-<ul>
-<li><em>"The records were falsified."</em> &mdash; &#xd589;&#xc704;&#xc790; &#xc5c6;&#xb294; &#xc218;&#xb3d9;&#xd0dc; (G66)</li>
-<li><em>"The destruction of words is a beautiful thing."</em> &mdash; &#xba85;&#xc0ac;&#xd654; (G79)</li>
-<li><em>"Never had Winston felt so alone."</em> &mdash; &#xb3c4;&#xce58; (G63)</li>
-</ul>
-<div class="grammar-tag-wrap">
-<a href="https://cecenglishcamp.github.io/cec-edu/grammar/advanced-passive/" class="grammar-tag">G66 &#xc218;&#xb3d9;&#xd0dc;&#xc2ec;&#xd654;</a>
-<a href="https://cecenglishcamp.github.io/cec-edu/grammar/nominalization/" class="grammar-tag">G79 &#xba85;&#xc0ac;&#xd654;</a>
-<a href="https://cecenglishcamp.github.io/cec-edu/grammar/inversion/" class="grammar-tag">G63 &#xb3c4;&#xce58;</a>
-</div></div></div></section>
-
-<section class="card-section" id="s5">
-<div class="sec-head"><span class="sec-num">5</span><h2>&#xd1a0;&#xb860; <span class="sec-en">DEBATE</span></h2></div>
-<div class="sec-body"><div class="debate-box">
-<div class="debate-topic">&#x1f4ac; "Government surveillance is necessary for national security, even if it limits individual freedom."</div>
-<div class="debate-sides">
-<div class="debate-agree"><strong>&#xcc2c;&#xc131;:</strong><ul><li>Surveillance prevents terrorism and crime</li><li>National security protects everyone's freedom</li></ul></div>
-<div class="debate-disagree"><strong>&#xbc18;&#xb300;:</strong><ul><li>Privacy is a fundamental human right</li><li>1984 shows the dangers of total surveillance</li></ul></div>
-</div></div></div></section>
-
-<section class="card-section" id="s6">
-<div class="sec-head"><span class="sec-num">6</span><h2>&#xc5d0;&#xc138;&#xc774; <span class="sec-en">ESSAY</span></h2></div>
-<div class="sec-body"><div class="essay-prompt">
-<h3>&#x1f4dd; Essay Topic</h3>
-<p><strong>"How does Orwell use language as a tool of oppression in 1984?"</strong></p>
-<div class="essay-structure">
-<div>&#x1f537; Introduction: language &amp; thought + thesis</div>
-<div>&#x1f537; Body 1: Newspeak limits thought</div>
-<div>&#x1f537; Body 2: Doublethink as control mechanism</div>
-<div>&#x1f537; Body 3: modern parallels</div>
-<div>&#x1f537; Conclusion: danger of language control</div>
-</div></div>
-<div class="essay-btn-wrap"><button class="btn-essay" onclick="copyEssayPrompt()">&#x270d;&#xfe0f; ChatGPT &#xc5d0;&#xc138;&#xc774; &#xd53c;&#xb4dc;&#xbc31;</button></div>
-</div></section>
-
-<section class="card-section" id="s7">
-<div class="sec-head"><span class="sec-num">7</span><h2>AI &#xd1a0;&#xb860; <span class="sec-en">AI DEBATE</span></h2></div>
-<div class="sec-body">
-<div class="ai-btn-wrap"><a href="https://journey-bronzy-fruitily.ngrok-free.dev" target="_blank" class="btn-ai">&#x1f916; AI&#xc640; &#xd1a0;&#xb860; &#xc2dc;&#xc791;</a></div>
-</div></section>
-</main>
-
-<div class="pw-wrap"><div class="pw-bubble">1984 &#xc9c8;&#xbb38;?</div><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif" class="pw-robo" onclick="toggleChat()" alt="Robo"></div>
-
+<div class="pw-wrap"><div class="pw-bubble">1984 질문 있으세요?</div><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif" class="pw-robo" onclick="toggleChat()" alt="Robo"></div>
 <script>
-function copyEssayPrompt(){var p="1984 W01 essay feedback:\n\nTopic: How does Orwell use language as oppression?\n\n[Write essay here]\n\nCheck: structure, grammar, C1 expressions.";navigator.clipboard.writeText(p);alert("Copied!");}
+function copyEssayPrompt(){var p="고등학교 3학년 1984 W01 essay:\n\nTopic: "How does Orwell use language as a tool of oppression in 1984?"\n\n[Write essay here]\n\nFeedback: structure, grammar, academic expressions";navigator.clipboard.writeText(p);alert("Copied!");}
 function toggleChat(){window.open("https://journey-bronzy-fruitily.ngrok-free.dev","_blank");}
 </script>
 </body>
