@@ -671,14 +671,20 @@ function copyPrompt() {
 }
 
 function launchChatGPTPractice() {
-  var summary = buildSummary();
-  var camp = getCampType();
-  var guideUrl = 'https://cecenglishcamp.github.io/cec_guide.html'
-    + '?camp=' + camp
-    + '&url=' + encodeURIComponent(window.location.href)
-    + '&summary=' + encodeURIComponent(summary);
-  window.location.href = guideUrl;
-}
+    var summary = buildSummary();
+    var camp = getCampType();
+    var safeUrl = window.location.href.replace(/[^\x00-\x7F]/g, '');
+    var safeSummary = summary.replace(/[\uD800-\uDFFF]/g, '');
+    try {
+      var guideUrl = 'https://cecenglishcamp.github.io/cec_guide.html'
+        + '?camp=' + camp
+        + '&url=' + encodeURIComponent(safeUrl)
+        + '&summary=' + encodeURIComponent(safeSummary);
+      window.location.href = guideUrl;
+    } catch(e) {
+      window.location.href = 'https://cecenglishcamp.github.io/cec_guide.html?camp=' + camp;
+    }
+  }
 
 window.addEventListener('load', function() {
   var el = document.getElementById('promptBody');
