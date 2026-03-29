@@ -487,5 +487,81 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
   }
 </script>
 
+
+<style>.wk-nav{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#000;border-top:1px solid rgba(201,168,76,0.2);z-index:50}.wk-nav a{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}.wk-nav a:hover{transform:translateY(-2px)}.wk-nav .wk-prev{background:#0C1428;color:#8A9AB0;border:1px solid rgba(201,168,76,0.2)}.wk-nav .wk-next{background:#C9A84C;color:#000}.wk-nav .wk-label{font-size:11px;color:#5A6A80;letter-spacing:1px}
+.chatgpt-practice-section{margin:40px auto 20px;max-width:860px;padding:0 20px}
+.chatgpt-practice-wrap{background:linear-gradient(135deg,#050e1f,#0a1628);border:2px solid rgba(0,210,255,0.4);border-radius:20px;padding:32px 28px;text-align:center;position:relative;overflow:hidden}
+.chatgpt-practice-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,210,255,0.07) 0%,transparent 60%);pointer-events:none}
+.chatgpt-practice-title{font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:8px}
+.chatgpt-practice-desc{color:#6a8fad;font-size:0.88rem;line-height:1.7;margin-bottom:24px}
+.chatgpt-practice-desc strong{color:#00d2ff}
+.chatgpt-launch-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#00d2ff,#0055ff);color:#fff;font-size:1rem;font-weight:700;padding:16px 36px;border:none;border-radius:50px;cursor:pointer;box-shadow:0 0 30px rgba(0,210,255,0.3);transition:transform 0.2s,box-shadow 0.2s;font-family:inherit}
+.chatgpt-launch-btn:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(0,210,255,0.5)}
+.chatgpt-practice-note{margin-top:12px;font-size:0.75rem;color:#3a5a7a}
+</style>
+<div class="wk-nav"><span></span><span class="wk-label">WEEK 1</span><a class="wk-next" href="week02.html">W2 &rarr;</a></div>
+
+<div class="chatgpt-practice-section">
+  <div class="chatgpt-practice-wrap">
+    <div class="chatgpt-practice-title">&#127881; &#49688;&#50629; &#50756;&#47308;! &#51060;&#51228; &#54924;&#54868; &#50672;&#49845;!</div>
+    <div class="chatgpt-practice-desc">
+      &#50724;&#45720; &#48176;&#50868; &#45236;&#50857;&#51012; &#48372;&#47732;&#49436; <strong>ChatGPT</strong>&#50752; &#50689;&#50612;&#47196; &#45824;&#54868;&#54644;&#48372;&#49464;&#50836;!<br>
+      <strong>&#50812;&#51901;</strong>&#50628; &#50724;&#45720; &#49688;&#50629;, <strong>&#50724;&#47480;&#51901;</strong>&#50628; ChatGPT&#44032; &#50676;&#47549;&#45768;&#45796;.
+    </div>
+    <button class="chatgpt-launch-btn" onclick="launchChatGPTPractice()">
+      &#127897;&#65039; ChatGPT &#54924;&#54868; &#50672;&#49845; &#49884;&#51089;
+    </button>
+    <div class="chatgpt-practice-note">&#8251; &#52376;&#51020; &#54620; &#48264;&#47564; &#54045;&#50629; &#54728;&#50857;&#51060; &#54596;&#50836;&#54633;&#45768;&#45796;</div>
+  </div>
+</div>
+
+<div style="text-align:center;margin:24px 0 12px;">
+  <a href="https://forms.gle/BUG01campB" target="_blank"
+     style="display:inline-block;padding:10px 24px;border-radius:100px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.4);font-size:0.78rem;text-decoration:none;transition:all 0.2s;"
+     onmouseover="this.style.borderColor='#00f2ff';this.style.color='#00f2ff'"
+     onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.color='rgba(255,255,255,0.4)'">
+    &#128027; BUG-01 &#183; &#50724;&#47448; &#49888;&#44256;
+  </a>
+</div>
+
+<script>
+function getCampType() {
+  var path = window.location.pathname;
+  if (path.includes('camp-b') ||
+      path.includes('/m1/') || path.includes('/m2/') || path.includes('/m3/') ||
+      path.includes('/g1/') || path.includes('/g2/') || path.includes('/g3/')) return 'b';
+  if (path.includes('camp-c') || path.includes('mom-teacher')) return 'c';
+  return 'a';
+}
+
+function launchChatGPTPractice() {
+  var words = [];
+  document.querySelectorAll(
+    '.word-en, .vocab-en, .key-word, .vocab-word, [class*="word-en"], [class*="vocab"]'
+  ).forEach(function(el) {
+    var t = el.textContent.trim();
+    if (t && t.length < 30) words.push(t);
+  });
+  var storyEl = document.querySelector(
+    '.story-content.active p, .reading-text p, .story p, .reading-en'
+  );
+  var firstLine = storyEl
+    ? storyEl.textContent.substring(0, 80) + '...'
+    : '';
+  var summary = [
+    '[' + document.title + ']',
+    words.length ? '\ubc30\uc6b4 \ub2e8\uc5b4: ' + words.slice(0,8).join(', ') : '',
+    firstLine ? '\uc624\ub298 \uc774\uc57c\uae30: ' + firstLine : '',
+    '\uc704 \ub0b4\uc6a9\uc73c\ub85c \uc601\uc5b4 \ud68c\ud654 \uc5f0\uc2b5\uc744 \ub3c4\uc640\uc8fc\uc138\uc694!'
+  ].filter(Boolean).join('\n');
+  var camp = getCampType();
+  var guideUrl = 'https://cecenglishcamp.github.io/cec_guide.html'
+    + '?camp=' + camp
+    + '&url=' + encodeURIComponent(window.location.href)
+    + '&summary=' + encodeURIComponent(summary);
+  window.location.href = guideUrl;
+}
+</script>
+
 </body>
 </html>
