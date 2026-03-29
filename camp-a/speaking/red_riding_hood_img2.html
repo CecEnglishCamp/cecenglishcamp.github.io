@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Red Riding Hood - Picture Speaking 2</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e0e0e0;font-family:'Segoe UI',Tahoma,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 0}
+.container{max-width:1200px;margin:0 auto;padding:16px;width:100%}
+h1{text-align:center;color:#00ffff;font-size:1.4rem;margin-bottom:14px;text-shadow:0 0 10px rgba(0,255,255,.3)}
+.main-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;align-items:start}
+@media(max-width:768px){.main-grid{grid-template-columns:1fr}body{align-items:flex-start;padding-top:16px}}
+.panel{background:#111;border-radius:12px;padding:16px;border:1px solid #222}
+.panel h2{color:#00ffff;font-size:1rem;margin-bottom:12px}
+.img-panel img{width:100%;border-radius:10px;border:2px solid #00ffff33;box-shadow:0 0 20px rgba(0,255,255,.12)}
+.sentence{display:flex;align-items:flex-start;gap:8px;padding:9px 10px;border-radius:8px;margin-bottom:4px;transition:all .3s;font-size:1rem;line-height:1.4}
+.sentence .num{color:#555;font-weight:700;min-width:22px;flex-shrink:0}
+.sentence .text{color:#666;transition:all .3s}
+.sentence.active{background:#00ffff0d;transform:scale(1.03)}
+.sentence.active .num{color:#00ffff}
+.sentence.active .text{color:#00ffff;font-size:1.08rem;font-weight:600}
+.sentence.done .num{color:#4ade80}
+.sentence.done .text{color:#4ade80}
+.sentence.done .check{color:#4ade80;margin-left:auto;flex-shrink:0}
+.sentence.hidden-text .text{color:transparent;background:#222;border-radius:4px;user-select:none}
+.ctrl-panel{display:flex;flex-direction:column;gap:12px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:10px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s;width:100%}
+.btn:active{transform:scale(.97)}
+.btn-play{background:linear-gradient(135deg,#00ffff,#0088aa);color:#0a0a0a}
+.btn-play:hover{box-shadow:0 0 20px rgba(0,255,255,.4)}
+.btn-play.playing{background:linear-gradient(135deg,#ff6b6b,#cc3333);color:#fff}
+.btn-memo{background:#1a1a2e;color:#00ffff;border:1px solid #00ffff44}
+.btn-memo:hover{background:#00ffff15}
+.btn-memo.on{background:#00ffff22;border-color:#00ffff}
+.progress-box{background:#0a0a1a;border-radius:10px;padding:12px;border:1px solid #222}
+.progress-label{display:flex;justify-content:space-between;font-size:.85rem;color:#888;margin-bottom:6px}
+.progress-label span:first-child{color:#00ffff}
+.progress-track{height:8px;background:#222;border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00ffff,#4ade80);border-radius:4px;transition:width .3s;width:0%}
+.phase{text-align:center;padding:10px;border-radius:8px;background:#0a0a1a;border:1px solid #00ffff22;font-size:.88rem;color:#aaa;min-height:52px;display:flex;align-items:center;justify-content:center;line-height:1.4}
+.phase b{color:#00ffff}
+.phase .en{color:#ffd700}
+.next-steps{display:none;margin-top:12px;flex-direction:column;gap:8px}
+.next-steps.show{display:flex}
+.btn-next{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 16px;border-radius:10px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;width:100%;transition:all .2s}
+.btn-next:hover{transform:scale(1.02)}
+.btn-ai{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff}
+.time-display{text-align:center;font-size:.82rem;color:#666;margin-top:4px;font-variant-numeric:tabular-nums}
+.student-badge{text-align:center;padding:8px;background:#0a0a1a;border:1px solid #00ffff22;border-radius:8px;font-size:.85rem;color:#888}
+.student-badge b{color:#00ffff}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Red Riding Hood - Picture Speaking 2</h1>
+<div class="main-grid">
+
+  <div class="panel img-panel">
+    <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/red_riding_hood_img2.png"
+         alt="Red Riding Hood walks in the forest">
+  </div>
+
+  <div class="panel">
+    <h2>Sentences</h2>
+    <div id="sentenceList"></div>
+    <button class="btn btn-memo" id="btnMemo" onclick="toggleMemo()" style="margin-top:12px">Memorize Mode</button>
+  </div>
+
+  <div class="panel ctrl-panel">
+    <div class="student-badge" id="studentBadge"></div>
+    <button class="btn btn-play" id="btnPlay" onclick="handlePlay()">
+      <svg id="iconPlay" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+      <svg id="iconPause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/></svg>
+      <span id="btnLabel">Play</span>
+    </button>
+    <div class="progress-box">
+      <div class="progress-label"><span id="chunkLabel">Ready</span><span id="stepLabel">0:00 / 2:18</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+      <div class="time-display" id="timeDisplay"></div>
+    </div>
+    <div class="phase" id="phaseDisplay">Press Play to start</div>
+    <div class="next-steps" id="nextSteps">
+      <button class="btn-next btn-ai" onclick="goNext('ai')">
+        <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo.gif" style="height:20px;width:auto;vertical-align:middle">
+        AI와 영어 공부하기
+      </button>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<audio id="audio" preload="auto"
+  src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/red_riding_hood_img2.mp3"></audio>
+
+<script>
+var SENTENCES = [
+  "Red Riding Hood walks in the forest.",
+  "She carries a basket.",
+  "The forest is big and green.",
+  "She is going to Grandma\u0027s house."
+];
+
+var SCRIPT = [
+  {"type": "kr", "text": "자! 탐험 두 번째 장면이야! 오늘은 빨간 모자가 숲길을 걷고 있어!", "t": 0.0},
+  {"type": "kr", "text": "손에 바구니도 들고 있어! 할머니 집에 가는 길이야! 네 문장 시작!", "t": 5.0},
+  {"type": "kr", "text": "일번! 빨간 모자가 숲을 걷고 있어! 들어봐!", "t": 9.9},
+  {"type": "silence", "dur": 0.5, "t": 13.2},
+  {"type": "en", "text": "Red Riding Hood walks in the forest.", "t": 13.7},
+  {"type": "silence", "dur": 0.3, "t": 16.7},
+  {"type": "kr", "text": "따라해봐! 크게!", "t": 17.0},
+  {"type": "silence", "dur": 3.5, "t": 18.1},
+  {"type": "en", "text": "Red Riding Hood walks in the forest.", "t": 21.6},
+  {"type": "kr", "text": "한 번 더!", "t": 24.3},
+  {"type": "silence", "dur": 3.5, "t": 25.0},
+  {"type": "kr", "text": "잘했어! 이번! 바구니를 들고 있어! 들어봐!", "t": 28.5},
+  {"type": "silence", "dur": 0.5, "t": 31.7},
+  {"type": "en", "text": "She carries a basket.", "t": 32.2},
+  {"type": "silence", "dur": 0.3, "t": 33.9},
+  {"type": "kr", "text": "따라해봐!", "t": 34.2},
+  {"type": "silence", "dur": 3.5, "t": 35.0},
+  {"type": "en", "text": "She carries a basket.", "t": 38.5},
+  {"type": "kr", "text": "한 번 더!", "t": 40.2},
+  {"type": "silence", "dur": 3.5, "t": 40.9},
+  {"type": "kr", "text": "일번이랑 이번 같이! 들어봐!", "t": 44.4},
+  {"type": "silence", "dur": 0.3, "t": 46.7},
+  {"type": "en", "text": "Red Riding Hood walks in the forest. She carries a basket.", "t": 47.0},
+  {"type": "kr", "text": "혼자 말해봐!", "t": 51.5},
+  {"type": "silence", "dur": 5.0, "t": 52.5},
+  {"type": "en", "text": "Red Riding Hood walks in the forest. She carries a basket.", "t": 57.5},
+  {"type": "kr", "text": "굿! 삼번! 숲이 크고 초록이야! 들어봐!", "t": 62.2},
+  {"type": "silence", "dur": 0.3, "t": 65.0},
+  {"type": "en", "text": "The forest is big and green.", "t": 65.3},
+  {"type": "kr", "text": "따라해봐!", "t": 67.6},
+  {"type": "silence", "dur": 3.5, "t": 68.3},
+  {"type": "en", "text": "The forest is big and green.", "t": 71.8},
+  {"type": "kr", "text": "사번! 할머니 집에 가는 중이야! 들어봐!", "t": 73.9},
+  {"type": "silence", "dur": 0.3, "t": 76.9},
+  {"type": "en", "text": "She is going to Grandma\u0027s house.", "t": 77.2},
+  {"type": "kr", "text": "따라해봐!", "t": 79.9},
+  {"type": "silence", "dur": 4.0, "t": 80.5},
+  {"type": "en", "text": "She is going to Grandma\u0027s house.", "t": 84.5},
+  {"type": "kr", "text": "삼번이랑 사번 같이!", "t": 87.2},
+  {"type": "silence", "dur": 0.3, "t": 88.8},
+  {"type": "en", "text": "The forest is big and green. She is going to Grandma\u0027s house.", "t": 89.1},
+  {"type": "kr", "text": "혼자!", "t": 94.1},
+  {"type": "silence", "dur": 5.0, "t": 94.6},
+  {"type": "en", "text": "The forest is big and green. She is going to Grandma\u0027s house.", "t": 99.6},
+  {"type": "kr", "text": "이제 네 문장 전부! 들어봐!", "t": 104.4},
+  {"type": "silence", "dur": 0.3, "t": 106.4},
+  {"type": "en", "text": "Red Riding Hood walks in the forest. She carries a basket. The forest is big and green. She is going to Grandma\u0027s house.", "t": 106.7},
+  {"type": "kr", "text": "혼자 말해봐! 여덟 초!", "t": 116.2},
+  {"type": "silence", "dur": 8.0, "t": 117.5},
+  {"type": "en", "text": "Red Riding Hood walks in the forest. She carries a basket. The forest is big and green. She is going to Grandma\u0027s house.", "t": 125.5},
+  {"type": "kr", "text": "야!! 네 문장 완료!! 탐험 미션 성공!!", "t": 135.4}
+];
+
+var NGROK = "https://journey-bronzy-fruitily.ngrok-free.dev";
+var LESSON_ID = "red_riding_hood_img2";
+var studentName = new URLSearchParams(window.location.search).get("name") || "Student";
+var memoMode = false;
+
+var listEl = document.getElementById("sentenceList");
+SENTENCES.forEach(function(s, i) {
+  var d = document.createElement("div");
+  d.className = "sentence"; d.id = "s" + i;
+  d.innerHTML = '<span class="num">' + (i+1) + '.</span><span class="text">' + s + '</span><span class="check"></span>';
+  listEl.appendChild(d);
+});
+
+var audio = document.getElementById("audio");
+
+function fmt(s) {
+  var m = Math.floor(s/60);
+  var sec = Math.floor(s%60);
+  return m + ":" + (sec < 10 ? "0" : "") + sec;
+}
+
+function getCurrentStep(t) {
+  for (var i = SCRIPT.length - 1; i >= 0; i--) {
+    if (t >= SCRIPT[i].t) return i;
+  }
+  return 0;
+}
+
+function updateUI() {
+  var t = audio.currentTime;
+  var dur = audio.duration || 138.0;
+  var pct = Math.min((t / dur) * 100, 100);
+  document.getElementById("progressBar").style.width = pct + "%";
+  document.getElementById("stepLabel").textContent = fmt(t) + " / " + fmt(dur);
+
+  var idx = getCurrentStep(t);
+  var step = SCRIPT[idx];
+  var ph = "";
+  if (step.type === "silence") {
+    ph = '<span style="color:#ffd700;font-size:1.1rem">🎤 Your turn!</span>';
+  } else if (step.type === "en") {
+    ph = '<span class="en" style="font-size:.85rem">' + step.text + '</span>';
+  } else {
+    ph = '<span style="font-size:.82rem">' + step.text.substring(0, 60) + (step.text.length > 60 ? "..." : "") + '</span>';
+  }
+  document.getElementById("phaseDisplay").innerHTML = ph;
+  document.getElementById("chunkLabel").textContent = "Step " + (idx+1) + " / " + SCRIPT.length;
+
+  // 문장 하이라이트
+  for (var i = 0; i < SENTENCES.length; i++) {
+    var el = document.getElementById("s" + i);
+    var isActive = step.type === "en" && step.text.indexOf(SENTENCES[i]) !== -1;
+    var isDone = false;
+    for (var j = 0; j < idx; j++) {
+      if (SCRIPT[j].type === "en" && SCRIPT[j].text === SENTENCES[i]) isDone = true;
+    }
+    el.classList.toggle("active", isActive);
+    el.classList.toggle("done", isDone && !isActive);
+    el.querySelector(".check").textContent = (isDone && !isActive) ? "✅" : "";
+  }
+
+  if (!audio.paused) requestAnimationFrame(updateUI);
+}
+
+function setPlayBtn(p) {
+  document.getElementById("btnLabel").textContent = p ? "Pause" : "Play";
+  document.getElementById("iconPlay").style.display = p ? "none" : "";
+  document.getElementById("iconPause").style.display = p ? "" : "none";
+  document.getElementById("btnPlay").classList.toggle("playing", p);
+}
+
+function handlePlay() {
+  if (audio.paused) {
+    audio.play();
+    setPlayBtn(true);
+    requestAnimationFrame(updateUI);
+  } else {
+    audio.pause();
+    setPlayBtn(false);
+  }
+}
+
+audio.addEventListener("ended", function() {
+  setPlayBtn(false);
+  document.getElementById("chunkLabel").textContent = "Complete!";
+  document.getElementById("progressBar").style.width = "100%";
+  document.getElementById("phaseDisplay").innerHTML = "<b>🎉 네 문장 완료! 탐험 미션 성공!</b>";
+  for (var i = 0; i < SENTENCES.length; i++) {
+    var el = document.getElementById("s" + i);
+    el.classList.remove("active");
+    el.classList.add("done");
+    el.querySelector(".check").textContent = "✅";
+  }
+  try {
+    fetch(NGROK + "/api/lesson-progress", {
+      method: "POST",
+      headers: {"Content-Type": "application/json", "ngrok-skip-browser-warning": "true"},
+      body: JSON.stringify({student_name: studentName, lesson: LESSON_ID, sentences_done: SENTENCES.length, sentences_total: SENTENCES.length})
+    });
+  } catch(e) {}
+  setTimeout(function() {
+    document.getElementById("nextSteps").classList.add("show");
+  }, 2000);
+});
+
+function toggleMemo() {
+  memoMode = !memoMode;
+  document.getElementById("btnMemo").classList.toggle("on", memoMode);
+  document.querySelectorAll(".sentence").forEach(function(el) {
+    el.classList.toggle("hidden-text", memoMode);
+  });
+}
+
+function goNext(t) {
+  var s = SENTENCES.join("|");
+  window.open(NGROK + "/static/auth-relay.html?name=" + encodeURIComponent(studentName) + "&grade=3&camp=a&lesson=" + LESSON_ID + "&sentences=" + encodeURIComponent(s), "_blank");
+}
+</script>
+</body>
+</html>
