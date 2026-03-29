@@ -330,7 +330,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
     </div>
     <div style="font-size:0.78rem;color:var(--gold);margin-bottom:6px;font-weight:900;">✏️ 직접 써보기:</div>
     <textarea class="debate-textarea" id="reproduce-input" rows="3" placeholder="Not until + [주어 + 동사], did/could + [주어] + [동사원형]..."></textarea>
-    <button class="exp-btn" onclick="checkReproduce()" style="margin-top:8px;">📝 Open WebUI 피드백받기</button>
+    <button class="exp-btn" onclick="checkReproduce()" style="margin-top:8px;">📝 ChatGPT 피드백받기</button>
     <div id="reproduce-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
   </div>
 </div>
@@ -348,7 +348,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
     <div style="font-size:0.78rem;color:var(--gold);font-weight:900;margin-bottom:8px;">✏️ 직접 써보기 — B1 수준으로 확장하세요:</div>
     <div style="font-size:0.8rem;color:var(--sub);margin-bottom:6px;">시작 문장: "The Party controls history."</div>
     <textarea class="debate-textarea" id="expand-input" rows="3" placeholder="The Party controls history by rewriting old records, which means that..."></textarea>
-    <button class="exp-btn" onclick="checkExpand()">📝 Open WebUI에서 피드백받기</button>
+    <button class="exp-btn" onclick="checkExpand()">📝 ChatGPT에서 피드백받기</button>
     <div id="expand-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
   </div>
 </div>
@@ -593,7 +593,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
   <div class="essay-line"><span class="essay-num">③</span><input class="essay-input" id="es3" placeholder="Furthermore,..."></div>
   <div class="essay-line"><span class="essay-num">④</span><input class="essay-input" id="es4" placeholder="Some argue that... However,..."></div>
   <div class="essay-line"><span class="essay-num">⑤</span><input class="essay-input" id="es5" placeholder="In conclusion, Orwell warns us that..."></div>
-  <button class="essay-submit" onclick="submitEssay()">📝 Open WebUI에서 피드백받기</button>
+  <button class="essay-submit" onclick="submitEssay()">📝 ChatGPT에서 피드백받기</button>
   <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
 </div>
 
@@ -629,7 +629,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
       <span class="phrase" style="background:#0e2420;color:var(--gold);border-color:#4a2020;" onclick="addPhrase('round3','I maintain that...')">I maintain that...</span>
       <span class="phrase" style="background:#0e2420;color:var(--gold);border-color:#4a2020;" onclick="addPhrase('round3','Not until we examine today...')">Not until today...</span>
     </div>
-    <button class="owui-btn" onclick="sendDebate()">⚔️ Open WebUI에서 AI와 토론하기</button>
+    <button class="owui-btn" onclick="sendDebate()">⚔️ ChatGPT에서 AI와 토론하기</button>
     <div style="font-size:0.78rem;color:var(--sub);margin-top:8px;min-height:16px;" id="debate-result"></div>
   </div>
 </div>
@@ -838,7 +838,7 @@ function checkReproduce(){
   if(!text){res.textContent='문장을 먼저 써보세요!';return;}
   const prompt='[ESSAY] 안녕하세요! 문장 구조 재생산 훈련을 했어요.\n\n원본 구조: "Not until + [주어 + 동사], did/could + [주어] + [동사원형]"\n원본 문장: "Not until he wrote the words did Winston understand what he had done."\n\n내가 만든 문장:\n'+text+'\n\n이 구조를 제대로 사용했는지 피드백해줘.\n수능 어법(Not until 도치) 관점에서도 체크해줘!';
   navigator.clipboard.writeText(prompt).then(()=>{
-    res.textContent='✅ 복사됐어요! Open WebUI에 붙여넣기하세요.';
+    res.textContent='✅ 복사됐어요! ChatGPT에 붙여넣기하세요.';
     setTimeout(()=>window.open('https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166','_blank'),300);
     addXP(5);
   });
@@ -850,7 +850,7 @@ function checkExpand(){
   if(!text){res.textContent='문장을 먼저 써보세요!';return;}
   const prompt='[ESSAY] 안녕하세요! 문장 확장 훈련을 했어요.\n원래 문장: "The Party controls history."\n내가 확장한 문장: '+text+'\nB1 수준에 맞는지 피드백해줘!';
   navigator.clipboard.writeText(prompt).then(()=>{
-    res.textContent='✅ 복사됐어요! Open WebUI에 붙여넣기하세요.';
+    res.textContent='✅ 복사됐어요! ChatGPT에 붙여넣기하세요.';
     setTimeout(()=>window.open('https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166','_blank'),300);
     addXP(5);
   });
@@ -866,7 +866,7 @@ function submitEssay(){
   const essay=vals.map((v,i)=>['①','②','③','④','⑤'][i]+' '+v).join('\n');
   const prompt='[ESSAY] 안녕하세요! 저는 '+name+', '+grade+'이에요.\n1984 W1 에세이를 썼는데 피드백 부탁드려요.\n주제: "Is controlling language the most powerful form of political control?"\n\n'+essay;
   navigator.clipboard.writeText(prompt).then(()=>{
-    res.innerHTML='✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
+    res.innerHTML='✅ 에세이 복사 완료! ChatGPT에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
     addXP(10);setTimeout(()=>window.open('https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166','_blank'),300);
   });
 }
@@ -880,7 +880,7 @@ function sendDebate(){
   const grade=auth?(JSON.parse(auth).grade||'고3'):'고3';
   const prompt='[DEBATE] 안녕하세요! 저는 '+name+', '+grade+'이에요.\n1984 W1 디베이트 주제: "A government that controls language controls thought itself."\n\n[Round 1 - Opening]\n'+(r1||'(아직 못 썼어요)')+'\n\n[Round 2 - Rebuttal]\n'+(r2||'(아직 못 썼어요)')+'\n\n[Round 3 - Closing]\n'+(r3||'(아직 못 썼어요)')+'\n\n피드백하고 AI 상대방으로 토론해줘!';
   navigator.clipboard.writeText(prompt).then(()=>{
-    document.getElementById('debate-result').innerHTML='✅ 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';
+    document.getElementById('debate-result').innerHTML='✅ 복사 완료! ChatGPT에서 붙여넣기(Ctrl+V)하세요.';
     document.getElementById('debate-result').style.color='var(--green)';
     addXP(8);setTimeout(()=>window.open('https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166','_blank'),300);
   });
