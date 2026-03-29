@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp B HS — W7 · Lord of the Flies</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0f0a;--card:#101810;--card2:#0c140c;--border:#1e2e1e;
+  --gold:#4cad6a;--gold2:#7adf9a;--acc:#00ff88;
+  --green:#16a34a;--red:#dc2626;--text:#e4f0e4;--sub:#6e9070;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+.hd{background:rgba(10,15,10,0.97);padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.hd-logo{font-family:'Cormorant Garamond',serif;font-size: 1.1rem;color:var(--text);letter-spacing:1px;}
+.hd-badge{background:#1a2a1a;color:var(--gold);font-size:0.65rem;font-weight:900;padding:3px 10px;border-radius:20px;border:1px solid #2a4a2a;letter-spacing:2px;margin-left:10px;}
+.hd-sub{font-size:0.7rem;color:var(--sub);margin-left:8px;}
+.xp-btn{background:linear-gradient(135deg,#4cad6a,#7adf9a);color:#0a1a0a;border:none;border-radius:20px;padding:5px 14px;font-size:0.8rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;}
+.hero{background:linear-gradient(160deg,#0a0f0a 0%,#0d1a0d 50%,#0a0f0a 100%);padding:28px 16px 20px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(76,173,106,0.08) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{font-size:0.62rem;color:var(--gold);font-weight:900;letter-spacing:4px;margin-bottom:10px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size: 2.2rem;font-weight:400;color:var(--text);margin-bottom:4px;font-style:italic;}
+.hero-author{font-size:0.78rem;color:var(--sub);margin-bottom:16px;letter-spacing:1px;}
+.hero-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.hb{padding:4px 12px;border-radius:20px;font-size:0.68rem;font-weight:800;}
+.key-card{background:linear-gradient(135deg,#0d1a0d,#0a1a0a);border:1px solid #2a4a2a;border-radius:16px;padding:18px;margin:12px 16px 8px;}
+.key-label{font-size:0.6rem;color:var(--sub);font-weight:700;letter-spacing:3px;margin-bottom:10px;}
+.key-en{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--text);font-style:italic;margin-bottom:6px;line-height:1.5;}
+.key-kr{font-size:0.8rem;color:var(--gold);margin-bottom:14px;}
+.key-play{background:transparent;color:var(--gold);border:1px solid #3a6a3a;border-radius:25px;padding:7px 20px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.prog-row{display:flex;align-items:center;gap:8px;padding:8px 16px;}
+.prog-track{flex:1;background:#1a2a1a;border-radius:8px;height:5px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:8px;transition:width 0.5s;}
+.prog-label{font-size:0.7rem;color:var(--sub);font-weight:700;white-space:nowrap;}
+.container{max-width:680px;margin:0 auto;padding:0 12px 80px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;}
+.sh{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sh-icon{font-size:1.05rem;}.sh-title{font-size:0.88rem;font-weight:900;color:white;}
+.tab-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.tab-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.tab-btn.act-b1{background:#1a2a1a;border-color:#3a6a3a;color:var(--gold);}
+.tab-btn.act-c1{background:#0d1a0d;border-color:#1a4a1a;color:#5aff9a;}
+.listen-row{display:flex;gap:8px;margin-bottom:10px;}
+.listen-btn{background:#2a4a2a;color:var(--gold);border:none;border-radius:20px;padding:7px 16px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.stop-btn{background:var(--card2);border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:7px 12px;font-size:0.8rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.notice-box{background:#0d1a0d;border-left:3px solid #3a6a3a;border-radius:0 8px 8px 0;padding:9px 14px;margin-bottom:10px;font-size:0.76rem;color:var(--sub);line-height:1.6;}
+.story-box{background:var(--card2);border-radius:10px;padding:16px;font-size:0.88rem;line-height:1.95;color:var(--text);display:none;}
+.story-box.active{display:block;}
+.story-box p{margin-bottom:12px;}
+.gram{border-bottom:2px dashed var(--gold);cursor:pointer;color:#a8ffb8;font-weight:700;}
+.story-kr{background:#090f09;border-left:3px solid #2a4a2a;border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.8;display:none;}
+.kr-toggle{background:transparent;border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:4px 12px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+#tt-overlay{position:fixed;inset:0;z-index:999;display:none;}
+.tt-wrap{position:fixed;z-index:1000;display:none;}
+.tt-box{background:#101810;border:1.5px solid var(--gold);border-radius:12px;padding:14px 16px;max-width:290px;box-shadow:0 8px 32px rgba(0,0,0,0.7);}
+.tt-tag{background:var(--gold);color:#0a1a0a;font-size:0.65rem;font-weight:900;padding:2px 8px;border-radius:10px;margin-bottom:8px;display:inline-block;}
+.tt-title{font-size:0.88rem;font-weight:900;color:white;margin-bottom:6px;}
+.tt-desc{font-size:0.78rem;color:var(--sub);line-height:1.6;margin-bottom:8px;white-space:pre-line;}
+.tt-ex{background:var(--bg);border-radius:6px;padding:6px 10px;font-size:0.78rem;color:var(--gold);margin-bottom:10px;font-style:italic;}
+.tt-gram-link{background:#0d1a0d;border:1px solid #3a6a3a;color:var(--gold);border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;text-decoration:none;}
+.tt-close{position:absolute;top:8px;right:10px;background:transparent;border:none;color:var(--sub);font-size:1rem;cursor:pointer;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.vc{background:var(--card2);border-radius:10px;padding:10px 12px;border-left:3px solid var(--gold);}
+.vc-w{font-size:0.88rem;font-weight:900;color:white;margin-bottom:2px;}
+.vc-m{font-size:0.75rem;color:var(--sub);margin-bottom:4px;}
+.vc-e{font-size:0.72rem;color:var(--gold);font-style:italic;}
+.sa-box{background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;}
+.sa-sentence{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:14px;border-left:3px solid var(--gold);padding-left:12px;}
+.sa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.sa-item{background:var(--bg);border-radius:8px;padding:10px 12px;}
+.sa-role{font-size:0.65rem;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:4px;}
+.sa-text{font-size:0.82rem;color:var(--text);}
+.sa-note{font-size:0.72rem;color:var(--sub);margin-top:2px;}
+.exp-levels{display:flex;flex-direction:column;gap:10px;}
+.exp-item{background:var(--card2);border-radius:10px;padding:12px 14px;}
+.exp-level{font-size:0.65rem;font-weight:900;letter-spacing:2px;margin-bottom:6px;}
+.exp-sentence{font-size:0.84rem;line-height:1.7;color:var(--text);}
+.exp-btn{background:var(--gold);color:#0a1a0a;border:none;border-radius:8px;padding:7px 16px;font-size:0.78rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px;}
+.sn-passage{background:var(--card2);border-radius:10px;padding:14px;font-size:0.86rem;line-height:1.9;margin-bottom:14px;color:var(--text);border-left:3px solid var(--gold);}
+.sn-blank{display:inline-block;border-bottom:2px solid var(--gold);min-width:80px;text-align:center;color:var(--gold);font-weight:900;}
+.sn-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.sn-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.sn-opt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.sn-opt.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.sn-result{font-size:0.84rem;font-weight:700;min-height:18px;}
+.sn-explain{background:var(--card2);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:12px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.7;display:none;}
+.sn-explain.show{display:block;}
+.sn-explain strong{color:var(--gold);}
+.ai-btn{background:transparent;border:1px solid #2a4a2a;color:var(--gold);border-radius:20px;padding:6px 16px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+.fill-sent{font-size:0.9rem;font-weight:700;line-height:1.7;margin-bottom:12px;color:white;}
+.blank-span{display:inline-block;min-width:70px;border-bottom:2px solid var(--gold);color:var(--gold);text-align:center;font-weight:900;}
+.choices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.cbtn{padding:7px 16px;background:var(--card2);border:1.5px solid var(--border);border-radius:20px;color:var(--text);font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.cbtn.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.cbtn.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.fill-res{font-size:0.82rem;font-weight:700;min-height:18px;}
+.dict-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:8px;}
+.dict-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.dict-play{background:#2a4a2a;color:var(--gold);border:none;border-radius:50%;width:36px;height:36px;font-size:0.9rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.dict-label{font-size:0.75rem;color:var(--sub);font-weight:700;}
+.dict-hint{font-size:0.78rem;color:var(--gold);font-style:italic;}
+.dict-input-row{display:flex;gap:8px;}
+.dict-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.dict-input:focus{outline:none;border-color:var(--gold);}
+.dict-btn{background:#2a4a2a;color:var(--gold);border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.dict-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.lc-play-btn{background:#2a4a2a;color:var(--gold);border:none;border-radius:25px;padding:9px 22px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;}
+.lc-opts{display:flex;flex-direction:column;gap:8px;}
+.lc-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.lc-opt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.lc-opt.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.lc-result{margin-top:8px;font-size:0.84rem;font-weight:700;min-height:18px;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.match-col{display:flex;flex-direction:column;gap:6px;}
+.match-item{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;color:var(--text);transition:all 0.15s;}
+.match-item.selected{border-color:var(--gold);background:#1a2a1a;color:var(--gold);}
+.match-item.matched{border-color:var(--green);background:#0d2a1a;color:#5aff9a;cursor:default;}
+.match-item.wrong-flash{border-color:var(--red);background:#2a0d0d;}
+.match-result{font-size:0.84rem;font-weight:700;min-height:18px;text-align:center;}
+.fd-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;}
+.fd-level-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fd-badge{color:#0a1a0a;font-size:0.7rem;font-weight:900;padding:2px 10px;border-radius:20px;}
+.fd-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.fd-play{color:#0a1a0a;border:none;border-radius:20px;padding:6px 14px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-hints{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.fd-hint-label{font-size:0.7rem;color:var(--sub);font-weight:700;}
+.fd-hint-tag{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid;}
+.fd-input-row{display:flex;gap:8px;}
+.fd-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.fd-input:focus{outline:none;border-color:var(--gold);}
+.fd-check{color:#0a1a0a;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.quiz-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.qtab{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.qb1{background:#1a2a1a;border-color:#3a6a3a;color:var(--gold);}
+.qc1{background:#0d1a0d;border-color:#1a4a1a;color:#5aff9a;}
+.quiz-set{display:none;}.quiz-set.active{display:block;}
+.quiz-item{margin-bottom:14px;}
+.quiz-q{font-size:0.86rem;font-weight:800;color:white;margin-bottom:8px;}
+.quiz-opts{display:flex;flex-direction:column;gap:6px;}
+.qopt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.qopt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.qopt.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.essay-struct{background:var(--bg);border-radius:10px;padding:14px;margin-bottom:14px;}
+.essay-struct-title{font-size:0.78rem;font-weight:900;color:var(--gold);margin-bottom:10px;}
+.ep{background:var(--card);border-radius:8px;padding:10px;margin-bottom:6px;}
+.ep-num{font-size:0.68rem;font-weight:900;margin-bottom:3px;}
+.ep-hint{font-size:0.73rem;color:var(--sub);}
+.essay-line{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.essay-num{font-size:0.7rem;font-weight:900;color:var(--gold);width:22px;flex-shrink:0;padding-top:10px;}
+.essay-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.essay-input:focus{outline:none;border-color:var(--gold);}
+.essay-submit{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0a1a0a;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:4px;}
+.debate-box{background:linear-gradient(135deg,#0d1a0d,#0a1a0a);border-radius:12px;padding:14px;border:1px solid #2a4a2a;}
+.debate-topic{background:#090f09;border-radius:10px;padding:12px;text-align:center;margin-bottom:12px;border:1px solid #3a6a3a;}
+.debate-topic-en{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;font-weight:500;color:white;margin-bottom:4px;}
+.debate-topic-kr{font-size:0.78rem;color:var(--gold);}
+.debate-round{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;border-left:3px solid var(--gold);}
+.debate-round-label{font-size:0.7rem;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:6px;}
+.debate-textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;resize:none;outline:none;line-height:1.6;margin-top:4px;}
+.debate-textarea:focus{border-color:var(--gold);}
+.phrase-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.phrase{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:0.75rem;font-weight:700;cursor:pointer;color:var(--sub);}
+.owui-btn{background:linear-gradient(135deg,#2a4a2a,#1a3a1a);color:var(--gold);border:1px solid #3a6a3a;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:8px;}
+.complete-card{background:linear-gradient(135deg,#0d1a0d,#0a1a0a);border:2px solid var(--gold);border-radius:20px;padding:24px;text-align:center;margin-bottom:20px;display:none;}
+</style>
+
+  <meta name="description" content="CEC English Camp B hs Week 06 — 중고등 영어 수업">
+  <meta name="keywords" content="중학영어,고등영어,CEC English Camp B">
+  <meta property="og:title" content="Camp B hs W07 | CEC English Camp">
+  <meta name="robots" content="index, follow">
+</head>
+<body data-camp="b" data-grade="hs" data-week="06">
+
+<div id="tt-overlay" onclick="closeTT()"></div>
+<div class="tt-wrap" id="tt-wrap">
+  <div class="tt-box" id="tt-box">
+    <button class="tt-close" onclick="closeTT()">✕</button>
+    <div class="tt-tag" id="tt-tag"></div>
+    <div class="tt-title" id="tt-title"></div>
+    <div class="tt-desc" id="tt-desc"></div>
+    <div class="tt-ex" id="tt-ex"></div>
+    <div><a class="tt-gram-link" id="tt-gram-link" href="https://cecenglishcamp.github.io/GrammarBaseCamp/index.html" target="_blank"></a></div>
+  </div>
+</div>
+
+<header class="hd" role="banner">
+  <div style="display:flex;align-items:center;">
+    <div class="hd-logo">CEC Camp B</div>
+    <div class="hd-badge">HIGH SCHOOL 2</div>
+    <div class="hd-sub" style="margin-left:8px;">고2 · W07 · Lord of the Flies</div>
+  </div>
+  <button class="xp-btn" id="xp-btn">⭐ 0 XP</button>
+</header>
+
+<div class="hero">
+  <div class="hero-eyebrow">WEEK 06 / 36 · HIGH SCHOOL 2</div>
+  <div class="hero-title">Lord of the Flies</div>
+  <div class="hero-author">William Golding · The Shell and the Glasses</div>
+  <div class="hero-badges">
+    <span class="hb" style="background:#1a2a1a;color:var(--gold);border:1px solid #3a6a3a;">G68 가정법 심화</span>
+    <span class="hb" style="background:#1a2a1a;color:var(--gold);border:1px solid #3a6a3a;">G52 관계절 심화</span>
+    <span class="hb" style="background:#1a2a1a;color:var(--gold);border:1px solid #3a6a3a;">G75 도치 구문</span>
+    <span class="hb" style="background:#1a2a1a;color:var(--gold);border:1px solid #3a6a3a;">수능 빈칸 추론</span>
+    <span class="hb" style="background:#0d1a0d;color:#5aff9a;border:1px solid #1a4a1a;">🎯 B1~C1</span>
+    <span class="hb" style="background:#1a2a1a;color:var(--gold);border:1px solid #3a6a3a;">⏱ W1~W12</span>
+  </div>
+</div>
+
+<div class="key-card">
+  <div class="key-label">KEY EXPRESSION · 이번 주 핵심 표현</div>
+  <div class="key-en">"Which is better — to have rules and agree, or to hunt and kill?"</div>
+  <div class="key-kr">무엇이 더 나은가 — 규칙을 갖고 동의하는 것, 아니면 사냥하고 죽이는 것?</div>
+  <button class="key-play" data-speak="Which is better — to have rules and agree, or to hunt and kill?" onclick="speak(this.dataset.speak)">▶ 발음 듣기</button>
+</div>
+
+<div class="prog-row">
+  <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:18%;"></div></div>
+  <div class="prog-label">W7 / 36</div>
+</div>
+
+<main class="container" role="main">
+
+<!-- ① 지문 읽기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📖</div><div class="sh-title">지문 읽기</div></div>
+  <div class="tab-row">
+    <button class="tab-btn act-b1" onclick="showStory('b1',this)">🟡 B1 ★ 기준</button>
+    <button class="tab-btn" onclick="showStory('c1',this)">🟢 C1 심화</button>
+  </div>
+  <div class="listen-row">
+    <button class="listen-btn" onclick="readStory()">🔊 전체 듣기</button>
+    <button class="stop-btn" onclick="speechSynthesis.cancel()">⏹ 정지</button>
+  </div>
+  <div class="notice-box">🔊 <strong style="color:var(--gold)">B1 기준</strong>으로 읽어드려요. C1은 수능 실전 수준이에요.</div>
+
+  <div id="sb-b1" class="story-box active">
+    <p>Jack's tribe raids Ralph's camp at night to steal Piggy's glasses. Without the glasses, <span class="gram" data-id="g1">Ralph's group can no longer make fire</span>. Piggy's glasses were their only means of starting the signal fire.</p>
+    <p>Ralph and Piggy go to Castle Rock to demand the glasses back. <span class="gram" data-id="g2">Piggy holds the conch and attempts to speak</span>. Roger, one of Jack's hunters, pushes a boulder from above. It kills Piggy and smashes the conch.</p>
+    <p><span class="gram" data-id="g3">The destruction of both Piggy and the conch at the same moment is not accidental</span>. Reason and the symbol of civilised order die together. Jack's tribe hunts Ralph across the island.</p>
+    <p>A naval officer arrives on the beach. The boys stop. <span class="gram" data-id="g4">They are rescued, but Ralph weeps for the end of innocence and the darkness of man's heart</span>. The officer is uncomfortable. He looks away.</p>
+  </div>
+
+  <div id="sb-c1" class="story-box">
+    <p>The simultaneous destruction of Piggy and the conch is Golding's most deliberate act of symbolism. Piggy represents reason, intelligence, and the application of scientific thought to human problems. The conch represents the legitimacy of democratic speech. <span class="gram" data-id="g5">Their destruction in the same instant signals that reason and order are not merely defeated but abolished</span>.</p>
+    <p>Roger's act is significant: he does not kill Piggy on Jack's orders — he does it himself, from pleasure. This is the novel's darkest moment. The boys have not merely become hunters; they have become killers who enjoy killing.</p>
+    <p><span class="gram" data-id="g6">Ralph's tears at the end are not relief at rescue but grief — grief for what has been lost and what has been discovered: that the darkness of man's heart is not an exception but the rule</span>. The naval officer's embarrassment suggests that he understands this too, and wishes he did not.</p>
+  </div>
+
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+    <button class="kr-toggle" onclick="toggleKr()" id="kr-btn">🇰🇷 한국어 번역 보기</button>
+  </div>
+  <div class="story-kr" id="story-kr">
+    잭의 부족이 밤에 피기의 안경을 훔쳐요. 랄프와 피기가 안경을 돌려받으러 가요. 로저가 바위를 밀어 피기를 죽이고 소라 껍데기를 부숴요. 이성과 문명 질서의 상징이 함께 죽어요.<br><br>해군 장교가 해변에 도착해요. 랄프는 순수함의 끝과 인간 마음의 어둠을 위해 울어요. 장교는 불편해요. 그는 고개를 돌려요.
+  </div>
+</div>
+
+<!-- ② 핵심 표현 분석 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔑</div><div class="sh-title">핵심 표현 분석</div></div>
+  <div class="sa-box">
+    <div style="font-size:0.75rem;color:var(--gold);font-weight:900;margin-bottom:8px;">이번 주 KEY EXPRESSION</div>
+    <div class="sa-sentence">"Which is better — to have rules and agree, or to hunt and kill?"</div>
+    <div style="font-size:0.8rem;color:var(--sub);line-height:1.7;margin-bottom:12px;">
+      <strong style="color:var(--gold)">rules and agree = 규칙과 합의 → 민주주의, 문명의 핵심</strong><br>
+      <strong style="color:var(--gold)">hunt and kill = 사냥하고 죽이다 → 본능, 야만의 핵심</strong><br>
+      <strong style="color:var(--gold)">Which is better = 무엇이 더 나은가 → 소설 전체의 핵심 질문</strong><br>
+    </div>
+    <div style="font-size:0.78rem;color:var(--sub);">💡 이 표현을 에세이 thesis와 디베이트 opening에서 직접 써보세요.</div>
+  </div>
+</div>
+
+<!-- ③ 문장 구조 분석 → 재생산 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔍</div><div class="sh-title">문장 구조 분석 → 재생산</div></div>
+  <div style="font-size:0.78rem;color:var(--sub);margin-bottom:12px;line-height:1.6;">구조 분석은 해석이 목적이 아니에요.<br><strong style="color:var(--gold)">이해 → 구조 추출 → 내 문장으로 재생산</strong>하는 것이 목표예요.</div>
+
+  <div style="background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;border-left:3px solid var(--gold);">
+    <div style="font-size:0.65rem;font-weight:900;color:var(--gold);letter-spacing:3px;margin-bottom:10px;">STEP 1 — 분석 (Analyse)</div>
+    <div class="sa-sentence">"Ralph wept for the end of innocence and the darkness of man's heart."</div>
+    <div class="sa-grid" style="margin-top:10px;">
+      <div class="sa-item"><div class="sa-role">동사 wept</div><div class="sa-text">wept = cry의 과거형</div><div class="sa-note">울다 → 슬픔, 상실감 표현</div></div>
+      <div class="sa-item"><div class="sa-role">전치사구 1</div><div class="sa-text">for the end of innocence</div><div class="sa-note">순수함의 끝을 위해 울다</div></div>
+      <div class="sa-item"><div class="sa-role">전치사구 2</div><div class="sa-text">the darkness of man's heart</div><div class="sa-note">인간 마음의 어둠 → 소설의 결론</div></div>
+      <div class="sa-item"><div class="sa-role">수능 연계</div><div class="sa-text">소설의 마지막 문장</div><div class="sa-note">주제를 직접 표현 — 수능 주제 문제 출제</div></div>
+    </div>
+    <div style="margin-top:10px;font-size:0.76rem;color:var(--sub);line-height:1.7;">
+      💡 <strong style="color:var(--gold)">수능 어법 포인트:</strong> "Only + 부사구/절" → 주어-동사 도치 필수<br>
+      "Only then <strong style="color:var(--gold)">did</strong> he understand" / "Only by working hard <strong style="color:var(--gold)">can</strong> you succeed"
+    </div>
+  </div>
+
+  <div style="background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;border-left:3px solid #7ab3ff;">
+    <div style="font-size:0.65rem;font-weight:900;color:#7ab3ff;letter-spacing:3px;margin-bottom:10px;">STEP 2 — 구조 추출 (Extract)</div>
+    <div style="background:var(--bg);border-radius:8px;padding:12px;font-size:0.84rem;color:#7ab3ff;font-family:monospace;line-height:2;">
+      [주어] + wept for + [명사구1] + and + [명사구2]
+    </div>
+    <div style="margin-top:10px;font-size:0.76rem;color:var(--sub);line-height:1.7;">
+      핵심: <strong style="color:#7ab3ff;">wept for = ~을 위해 울다 → 추모, 애도, 상실</strong><br>
+      → and로 연결된 병렬 명사구 → 두 가지 상실
+    </div>
+  </div>
+
+  <div style="background:var(--card2);border-radius:12px;padding:14px;border-left:3px solid #5aff9a;">
+    <div style="font-size:0.65rem;font-weight:900;color:#5aff9a;letter-spacing:3px;margin-bottom:10px;">STEP 3 — 재생산 (Reproduce)</div>
+    <div style="font-size:0.8rem;color:var(--sub);margin-bottom:8px;">같은 구조로 내 문장을 만들어보세요.</div>
+    <div style="background:var(--bg);border-radius:8px;padding:10px;margin-bottom:10px;font-size:0.8rem;color:#5aff9a;line-height:1.7;">
+      예시: ""She wept for the loss of childhood and the cruelty she had witnessed.""
+    </div>
+    <div style="font-size:0.78rem;color:var(--gold);margin-bottom:6px;font-weight:900;">✏️ 직접 써보기:</div>
+    <textarea class="debate-textarea" id="reproduce-input" rows="3" placeholder="Ralph wept for the end of... and the darkness of..."></textarea>
+    <div id="reproduce-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
+  </div>
+</div>
+
+<!-- ④ 문장 확장 훈련 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">문장 확장 훈련</div></div>
+  <div style="font-size:0.78rem;color:var(--sub);margin-bottom:12px;">짧은 문장을 단계적으로 확장해보세요.</div>
+  <div class="exp-levels">
+    <div class="exp-item"><div class="exp-level" style="color:#7ab3ff;">LEVEL 1 — A2</div><div class="exp-sentence">The boys made rules.</div></div>
+    <div class="exp-item"><div class="exp-level" style="color:var(--gold);">LEVEL 2 — B1 ★</div><div class="exp-sentence">The boys established a system of rules, using the conch shell as a symbol of order and the right to speak.</div></div>
+    <div class="exp-item"><div class="exp-level" style="color:#5aff9a;">LEVEL 3 — C1</div><div class="exp-sentence">In the absence of any adult authority, the boys constructed a fragile democratic system centred on the conch — a symbol of civilised order that derived its power entirely from their collective willingness to respect it, and which would inevitably fail the moment that willingness disappeared.</div></div>
+  </div>
+  <div style="margin-top:14px;">
+    <div style="font-size:0.78rem;color:var(--gold);font-weight:900;margin-bottom:8px;">✏️ 직접 써보기 — B1 수준으로 확장하세요:</div>
+    <div style="font-size:0.8rem;color:var(--sub);margin-bottom:6px;">시작 문장: "The conch was smashed."</div>
+    <textarea class="debate-textarea" id="expand-input" rows="3" placeholder="The conch, which had been the symbol of democratic order, was smashed when Piggy..."></textarea>
+    <div id="expand-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
+  </div>
+</div>
+
+<!-- ⑤ 단어 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📝</div><div class="sh-title">수능 핵심 단어</div></div>
+  <div class="vocab-grid">
+    <div class="vc"><div class="vc-w">innocence 🌟</div><div class="vc-m">순수함, 무고함</div><div class="vc-e">"the end of innocence"</div></div>
+    <div class="vc"><div class="vc-w">legitimate ⚖️</div><div class="vc-m">정당한, 합법적인</div><div class="vc-e">"the legitimacy of democratic speech"</div></div>
+    <div class="vc"><div class="vc-w">abolished 🚫</div><div class="vc-m">폐지된, 완전히 없어진</div><div class="vc-e">"reason and order are abolished"</div></div>
+    <div class="vc"><div class="vc-w">simultaneously ⏱️</div><div class="vc-m">동시에</div><div class="vc-e">"Piggy and the conch destroyed simultaneously"</div></div>
+    <div class="vc"><div class="vc-w">grief 😢</div><div class="vc-m">슬픔, 비탄</div><div class="vc-e">"Ralph's tears are grief, not relief"</div></div>
+    <div class="vc"><div class="vc-w">embarrassment 😳</div><div class="vc-m">당혹감</div><div class="vc-e">"the officer's embarrassment"</div></div>
+  </div>
+</div>
+
+<!-- ⑥ 수능 문제 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">수능 유형 — 빈칸 추론</div></div>
+  <div style="font-size:0.72rem;color:var(--gold);font-weight:900;letter-spacing:2px;margin-bottom:10px;">29번 유형</div>
+  <div class="sn-passage">
+    At the end of Lord of the Flies, when a naval officer arrives to rescue the boys, Ralph weeps — not with relief, but with grief. Golding describes this as weeping "for the end of innocence, and the darkness of man's heart." This ending suggests that the experience on the island has not been an aberration — a temporary lapse caused by exceptional circumstances — but rather The conch shell becomes the central symbol of democratic order: whoever holds it has the right to speak, and this right is initially respected by all. However, Golding suggests that this arrangement is fundamentally <span class="sn-blank" id="sn-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> — it depends not on any natural human tendency toward order, but entirely on the collective decision to respect a shared symbol. The moment individuals prioritise personal desire over collective agreement, the entire system collapses.
+    <br><br><span style="font-size:12px;color:var(--sub);">* uninhabited: 무인의 &nbsp;** fundamentally: 근본적으로</span>
+  </div>
+  <div class="sn-opts" id="sn-opts">
+    <button class="sn-opt" onclick="snCheck(this,false)">① proof that children require more supervision than adults</button>
+    <button class="sn-opt" onclick="snCheck(this,true)">② a revelation of what human beings are capable of when civilisation is removed</button>
+    <button class="sn-opt" onclick="snCheck(this,false)">③ evidence that war corrupts even the most innocent</button>
+    <button class="sn-opt" onclick="snCheck(this,false)">④ a warning about the dangers of isolation</button>
+    <button class="sn-opt" onclick="snCheck(this,false)">⑤ confirmation that democratic systems always fail under pressure</button>
+  </div>
+  <div class="sn-result" id="sn-result"></div>
+  <div class="sn-explain" id="sn-explain">
+    <strong>정답 ③ — a revelation of what human beings are capable of when civilisation is removed</strong><br><br>
+    <strong>핵심 구조:</strong> "depends not on... but entirely on..."<br>
+    → 빈칸 = "depends entirely on collective decision to respect"<br>
+    → ③ "a revelation of what human beings are capable of when civilisation is removed" = 자발적 집단 동의에 달려 있는<br><br>
+    <strong>오답 분석:</strong><br>
+    ① 자연적 지도자 → 지문은 지도자가 아닌 집단 동의를 강조<br>
+    ② 불가피한 → 지문은 취약성을 말하지 불가피성을 말하지 않음<br>
+    ④ 공유 문화 배경 → 지문에 없는 개념<br>
+    ⑤ 경쟁 권위의 부재 → 지문의 논리와 반대
+  </div>
+  <button class="ai-btn" id="ai-explain-btn" style="display:none;" onclick="sendToAI()">🤖 AI에게 오답 분석 요청 ↗</button>
+</div>
+
+<!-- ⑦ 빈칸 채우기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">빈칸 채우기</div></div>
+  <div class="fill-sent">The destruction of the conch and Piggy happened <span class="blank-span" id="bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span>.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'simultaneously','simultaneously','bl1','fr1')">simultaneously</button>
+    <button class="cbtn" onclick="chkFill(this,'accidentally','simultaneously','bl1','fr1')">accidentally</button>
+    <button class="cbtn" onclick="chkFill(this,'gradually','simultaneously','bl1','fr1')">gradually</button>
+  </div>
+  <div class="fill-res" id="fr1"></div>
+  <br>
+  <div class="fill-sent">Ralph wept for the <span class="blank-span" id="bl2">&nbsp;&nbsp;&nbsp;&nbsp;</span> of innocence on the island.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'end','end','bl2','fr2')">end</button>
+    <button class="cbtn" onclick="chkFill(this,'loss','end','bl2','fr2')">loss</button>
+    <button class="cbtn" onclick="chkFill(this,'beginning','end','bl2','fr2')">beginning</button>
+  </div>
+  <div class="fill-res" id="fr2"></div>
+  <br>
+
+</div>
+
+<!-- ⑧ 단어 받아쓰기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🎧</div><div class="sh-title">단어 받아쓰기</div></div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="Ralph wept for the end of innocence and the darkness of man's heart." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"Ralph wept for the end of ___ and the darkness of man's heart."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di1" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','innocence','dr1')">
+      <button class="dict-btn" onclick="chkDict('di1','innocence','dr1')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr1"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="Reason and order were abolished at the same moment." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"Reason and order were ___ at the same moment."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di2" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','abolished','dr2')">
+      <button class="dict-btn" onclick="chkDict('di2','abolished','dr2')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr2"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="The officer's embarrassment showed that he understood what had happened." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"The officer's ___ showed that he understood what had happened."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di3" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','embarrassment','dr3')">
+      <button class="dict-btn" onclick="chkDict('di3','embarrassment','dr3')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑨ 짝맞추기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🃏</div><div class="sh-title">짝맞추기</div></div>
+  <div class="match-grid">
+    <div class="match-col" id="match-left"></div>
+    <div class="match-col" id="match-right"></div>
+  </div>
+  <div class="match-result" id="match-result"></div>
+</div>
+
+<!-- ⑩ 듣고 고르기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">👂</div><div class="sh-title">듣고 고르기</div></div>
+  <button class="lc-play-btn" data-speak="Ralph's tears at the end of the novel are not relief but grief — grief for the loss of innocence and the discovery of the darkness within human nature." onclick="speak(this.dataset.speak)">🔊 듣기</button>
+  <div class="lc-opts" id="lc-opts">
+    <button class="lc-opt" data-correct="true" onclick="lcCheck(this,'ok')">Ralph's tears at the end are not relief but grief — grief for the loss of innocence and the discovery of the darkness within human nature.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">Ralph cried because he was happy to be rescued and looked forward to returning to his normal life in England.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">The naval officer wept alongside Ralph because he too had witnessed terrible violence during the war.</button>
+  </div>
+  <div class="lc-result" id="lc-result"></div>
+</div>
+
+<!-- ⑪ 받아쓰기 도전 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">받아쓰기 도전!</div></div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:var(--gold);color:#0a1a0a;">B1</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:var(--gold);color:#0a1a0a;" data-speak="Ralph wept for the end of innocence and the darkness of man's heart." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:var(--gold);border-color:var(--gold);background:#0a1a00;">"end of innocence"</span>
+        <span class="fd-hint-tag" style="color:var(--gold);border-color:var(--gold);background:#0a1a00;">"darkness"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd1" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd1','Ralph wept for the end of innocence and the darkness of man's heart.','fdr1')">
+      <button class="fd-check" style="background:var(--gold);color:#0a1a0a;" onclick="chkFD('fd1','Ralph wept for the end of innocence and the darkness of man's heart.','fdr1')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr1"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#4cad6a;color:#0a1a0a;">B2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#4cad6a;color:#0a1a0a;" data-speak="The conch and Piggy were destroyed simultaneously at Castle Rock." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#4cad6a;border-color:#4cad6a;background:#0a1a00;">"simultaneously"</span>
+        <span class="fd-hint-tag" style="color:#4cad6a;border-color:#4cad6a;background:#0a1a00;">"Castle Rock"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd2" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd2','The conch and Piggy were destroyed simultaneously at Castle Rock.','fdr2')">
+      <button class="fd-check" style="background:#4cad6a;color:#0a1a0a;" onclick="chkFD('fd2','The conch and Piggy were destroyed simultaneously at Castle Rock.','fdr2')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr2"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#5aff9a;color:#0a1a0a;">C1</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#5aff9a;color:#0a1a0a;" data-speak="The darkness of man's heart is not an exception but the rule." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#5aff9a;border-color:#5aff9a;background:#0a1a00;">"not an exception"</span>
+        <span class="fd-hint-tag" style="color:#5aff9a;border-color:#5aff9a;background:#0a1a00;">"but the rule"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd3" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd3','The darkness of man's heart is not an exception but the rule.','fdr3')">
+      <button class="fd-check" style="background:#5aff9a;color:#0a1a0a;" onclick="chkFD('fd3','The darkness of man's heart is not an exception but the rule.','fdr3')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑫ 이해 문제 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">이해 문제</div></div>
+  <div class="quiz-tabs">
+    <button class="qtab qb1" onclick="showQuiz('qb1',this)">🟡 B1</button>
+    <button class="qtab" onclick="showQuiz('qc1',this)">🟢 C1 심화</button>
+  </div>
+  <div id="qb1" class="quiz-set active">
+    <div class="quiz-item"><div class="quiz-q">Q1. What does the conch shell represent?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) The boys' desire to return home</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Democratic order and the right to speak</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Jack's authority over the hunters</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. Why does Ralph insist on keeping the signal fire lit?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) To keep the boys warm at night</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) To frighten away wild animals</button>
+        <button class="qopt" onclick="qChk(this,'ok')">c) It is the only way passing ships or planes might see them and rescue them</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. "Ralph wept for the end of innocence and the darkness of man's heart." What grammatical feature does this use?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">a) Inversion — Only + adverbial phrase triggers subject-verb inversion</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) Passive voice — the fire is being kept lit by someone else</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Conditional — this is an if-then structure in disguise</button>
+      </div>
+    </div>
+  </div>
+  <div id="qc1" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">Q1. Golding removes adults from the island deliberately. What does this narrative choice allow him to explore?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) The practical difficulties children face when left alone</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Whether social order is natural to humans or whether it requires the constant enforcement of external authority</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) The superiority of democratic systems over authoritarian ones</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. "Not until the first pig eludes him does Jack understand what he truly wants." What does this reveal about Jack?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Jack is incompetent as a hunter and becomes frustrated easily</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Failure awakens in Jack not hunger but the desire for domination — the hunt is really about power, not survival</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Jack realises that hunting is less important than building shelters</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑬ 에세이 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">에세이 쓰기 — 5단락 논증</div></div>
+  <div class="essay-struct">
+    <div class="essay-struct-title">📌 고등학교 에세이 구조 (5단락)</div>
+    <div class="ep"><div class="ep-num" style="color:#5aff9a;">① Hook + Thesis</div><div class="ep-hint">예) "Golding\'s island is a laboratory. I argue that the conch demonstrates..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:#7ab3ff;">② 근거 1 + 텍스트 근거</div><div class="ep-hint">예) "First, the conch creates a democratic system. The text shows that..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:#7ab3ff;">③ 근거 2 + 텍스트 근거</div><div class="ep-hint">예) "Furthermore, this system is fragile. When Jack..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:#b48aff;">④ 반론 + 재반박</div><div class="ep-hint">예) "Some argue that children naturally cooperate. However..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:var(--gold);">⑤ 결론 + 확장</div><div class="ep-hint">예) "In conclusion, Golding suggests that civilisation is not natural but..."</div></div>
+  </div>
+  <div style="font-size:0.84rem;font-weight:700;color:white;margin-bottom:12px;">💬 주제: <strong>"Does the ending of Lord of the Flies offer any hope for humanity, or is Golding's vision entirely pessimistic?"</strong></div>
+  <div class="essay-line"><span class="essay-num">①</span><input class="essay-input" id="es1" placeholder="Hook + Thesis: I argue that..."></div>
+  <div class="essay-line"><span class="essay-num">②</span><input class="essay-input" id="es2" placeholder="First, the text shows that..."></div>
+  <div class="essay-line"><span class="essay-num">③</span><input class="essay-input" id="es3" placeholder="Furthermore,..."></div>
+  <div class="essay-line"><span class="essay-num">④</span><input class="essay-input" id="es4" placeholder="Some argue that... However,..."></div>
+  <div class="essay-line"><span class="essay-num">⑤</span><input class="essay-input" id="es5" placeholder="In conclusion,..."></div>
+  <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
+</div>
+
+<!-- ⑭ 디베이트 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">⚖️</div><div class="sh-title">디베이트 — 정식 3라운드</div></div>
+  <div class="debate-box">
+    <div class="debate-topic">
+      <div class="debate-topic-en">"The naval officer's arrival proves that external authority is the only reliable check on human savagery."</div>
+      <div class="debate-topic-kr">해군 장교의 도착은 외부 권위만이 인간 야만성에 대한 유일하게 신뢰할 수 있는 견제임을 증명한다.</div>
+    </div>
+    <div class="debate-round">
+      <div class="debate-round-label">🎤 ROUND 1 — OPENING STATEMENT</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">핵심 표현을 활용하여 입장과 논거 2가지를 제시하세요.</div>
+      <textarea class="debate-textarea" id="round1" rows="4" placeholder='예) "I argue that without rules, humans do become violent, as Golding demonstrates through Jack\'s transformation..."'></textarea>
+    </div>
+    <div class="debate-round">
+      <div class="debate-round-label">⚔️ ROUND 2 — REBUTTAL</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">상대방 논리를 인정하면서 더 강하게 반박하세요.</div>
+      <textarea class="debate-textarea" id="round2" rows="4" placeholder="예) I concede that some boys, like Ralph and Piggy, maintain their humanity. However, this overlooks..."></textarea>
+    </div>
+    <div class="debate-round">
+      <div class="debate-round-label">🏁 ROUND 3 — CLOSING</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">핵심 논거를 강화하고 마무리하세요.</div>
+      <textarea class="debate-textarea" id="round3" rows="4" placeholder="예) In conclusion, I maintain that... Only by acknowledging this human tendency can we..."></textarea>
+    </div>
+    <div style="font-size:0.75rem;font-weight:900;color:var(--gold);margin-bottom:6px;margin-top:4px;">💡 유용한 표현</div>
+    <div class="phrase-row">
+      <span class="phrase" style="background:#1a2a1a;color:var(--gold);border-color:#3a6a3a;" onclick="addPhrase('round1','I argue that...')">I argue that...</span>
+      <span class="phrase" style="background:#1a2a1a;color:var(--gold);border-color:#3a6a3a;" onclick="addPhrase('round1','Golding demonstrates through Ralph...')">Golding demonstrates...</span>
+      <span class="phrase" style="background:#1a2a1a;color:var(--gold);border-color:#3a6a3a;" onclick="addPhrase('round2','I concede that... however...')">I concede that...</span>
+      <span class="phrase" style="background:#1a2a1a;color:var(--gold);border-color:#3a6a3a;" onclick="addPhrase('round2','This overlooks the fact that...')">This overlooks...</span>
+      <span class="phrase" style="background:#1a2a1a;color:var(--gold);border-color:#3a6a3a;" onclick="addPhrase('round3','I maintain that...')">I maintain that...</span>
+      <span class="phrase" style="background:#1a2a1a;color:var(--gold);border-color:#3a6a3a;" onclick="addPhrase('round3','Only by acknowledging...')">Only by acknowledging...</span>
+    </div>
+    <div style="font-size:0.78rem;color:var(--sub);margin-top:8px;min-height:16px;" id="debate-result"></div>
+  </div>
+</div>
+
+<!-- 완료 -->
+<div class="complete-card" id="complete-card">
+  <div style="font-size:2.8rem;margin-bottom:10px;">🐚</div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);margin-bottom:6px;">Week 1 완료!</div>
+  <div style="font-size:0.86rem;color:var(--sub);margin-bottom:16px;line-height:1.7;">Lord of the Flies W1~W7 완료!<br>순수함의 끝, 인간 마음의 어둠을 직면했습니다.</div>
+  <button onclick="location.href='week07.html'" style="background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0a1a0a;border:none;border-radius:20px;padding:10px 28px;font-size:0.9rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;">Week 7 시작하기 →</button>
+</div>
+
+</main>
+
+<script>
+const gramData = {
+  g1:{tag:'G48',title:'조동사 can — can no longer',desc:'can no longer + 동사원형\n= 더 이상 ~할 수 없다\n"can no longer make fire"\n부정 변화를 표현\n수능 어법 no longer 위치 주의',ex:'Ralph\'s group can no longer make fire.',gnum:'G48',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g2:{tag:'G62',title:'분사구문 — attempts to speak',desc:'attempt + to 부정사\n= ~하려고 시도하다\n"attempts to speak"\nholding the conch는 동시 동작\nwhile holding... 생략된 분사구문',ex:'Piggy holds the conch and attempts to speak.',gnum:'G62',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g3:{tag:'G71',title:'that절 보어 — is not accidental',desc:'be동사 + 형용사 보어\n"is not accidental"\n= 우연이 아니다\nnot accidental = deliberate (의도적)\n이중 부정 구조',ex:'The destruction of both is not accidental.',gnum:'G71',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g4:{tag:'G62',title:'접속사 but — weeps but',desc:'but + 주어 + 동사\n= 하지만 ~한다\n"rescued, but Ralph weeps"\n역접 접속사로 기대와 반전 표현\n수능 역접 구조 포인트',ex:'They are rescued, but Ralph weeps for the end of innocence.',gnum:'G62',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g5:{tag:'G71',title:'that절 — signals that',desc:'signal + that절\n= ~임을 신호하다\n"signals that reason is not merely defeated"\n동사 signal이 that절을 목적어로 취함',ex:'Their destruction signals that reason and order are abolished.',gnum:'G71',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g6:{tag:'G52',title:'관계절 — what has been lost',desc:'what절 = 명사절\n"grief for what has been lost"\n= 잃어버린 것에 대한 슬픔\nwhat has been + 과거분사\n완료 수동 명사절',ex:'Ralph\'s tears are grief for what has been lost and what has been discovered.',gnum:'G52',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'}
+};
+
+let xp=0;
+function addXP(n){
+  xp+=n;
+  document.getElementById('xp-btn').textContent='⭐ '+xp+' XP';
+  document.getElementById('prog-bar').style.width=Math.min(100,xp*1.5)+'%';
+  if(xp>=60&&document.getElementById('complete-card').style.display!=='block'){
+    setTimeout(()=>{document.getElementById('complete-card').style.display='block';document.getElementById('complete-card').scrollIntoView({behavior:'smooth'});},500);
+  }
+}
+
+function speak(text){
+  if(!text)return;
+  speechSynthesis.cancel();
+  function doSpeak(){
+    const voices=speechSynthesis.getVoices();
+    const u=new SpeechSynthesisUtterance(text);
+    const prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
+    const exclude=['Alex','Fred','Daniel','Google UK English Male'];
+    const v=voices.find(v=>prefer.some(p=>v.name.includes(p))&&!exclude.some(e=>v.name.includes(e)));
+    if(v)u.voice=v;
+    u.lang='en-US';u.rate=0.85;u.pitch=1.0;u.volume=1.0;
+    speechSynthesis.speak(u);
+  }
+  if(speechSynthesis.getVoices().length>0){setTimeout(doSpeak,50);}
+  else{speechSynthesis.onvoiceschanged=()=>{setTimeout(doSpeak,50);};speechSynthesis.getVoices();}
+}
+
+function showStory(lv,btn){
+  ['b1','c1'].forEach(l=>{const el=document.getElementById('sb-'+l);if(el)el.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(b=>b.className='tab-btn');
+  document.getElementById('sb-'+lv).classList.add('active');
+  btn.classList.add('act-'+lv);
+}
+function readStory(){
+  const s=document.getElementById('sb-b1');
+  if(s)speak((s.innerText||s.textContent).replace(/\s+/g,' ').trim());
+}
+function toggleKr(){
+  const kr=document.getElementById('story-kr');
+  const btn=document.getElementById('kr-btn');
+  const show=kr.style.display!=='block';
+  kr.style.display=show?'block':'none';
+  btn.textContent=show?'🇰🇷 번역 숨기기':'🇰🇷 한국어 번역 보기';
+}
+
+document.querySelectorAll('.gram').forEach(el=>{
+  el.addEventListener('click',function(e){
+    e.stopPropagation();
+    const d=gramData[this.dataset.id];if(!d)return;
+    document.getElementById('tt-tag').textContent=d.tag;
+    document.getElementById('tt-title').textContent=d.title;
+    document.getElementById('tt-desc').textContent=d.desc;
+    document.getElementById('tt-ex').textContent=d.ex;
+    document.getElementById('tt-gram-link').textContent='📚 Grammar Base '+d.gnum+' →';
+    document.getElementById('tt-gram-link').href=d.glink;
+    const wrap=document.getElementById('tt-wrap');
+    const rect=this.getBoundingClientRect();
+    let top=rect.bottom+8,left=rect.left;
+    if(left+295>window.innerWidth)left=window.innerWidth-300;
+    if(top+220>window.innerHeight)top=rect.top-225;
+    wrap.style.top=top+'px';wrap.style.left=left+'px';
+    wrap.style.display='block';
+    document.getElementById('tt-overlay').style.display='block';
+  });
+});
+function closeTT(){document.getElementById('tt-wrap').style.display='none';document.getElementById('tt-overlay').style.display='none';}
+
+function snCheck(btn,correct){
+  document.querySelectorAll('.sn-opt').forEach(b=>{b.classList.remove('ok','no');b.style.pointerEvents='none';});
+  const res=document.getElementById('sn-result');
+  const explain=document.getElementById('sn-explain');
+  const aibtn=document.getElementById('ai-explain-btn');
+  if(correct){
+    btn.classList.add('ok');
+    document.getElementById('sn-blank').textContent='a revelation of what human beings are capable of when civilisation is removed';
+    res.innerHTML='✅ 정답!';res.style.color='var(--green)';
+    explain.classList.add('show');addXP(8);
+  }else{
+    btn.classList.add('no');
+    res.innerHTML='❌ 오답입니다. 해설을 확인하세요.';res.style.color='var(--red)';
+    explain.classList.add('show');aibtn.style.display='block';
+  }
+}
+function sendToAI(){
+  const prompt='[ESSAY] 안녕하세요! 수능 빈칸 추론 문제를 틀렸어요.\nLord of the Flies W07 수능 문제에서 오답을 골랐어요.\n정답이 "a revelation of what human beings are capable of when civilisation is removed"인 이유와\n이런 유형을 푸는 전략을 설명해줘.';
+}
+
+function chkFill(btn,val,ans,blId,resId){
+  btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('ok','no'));
+  const res=document.getElementById(resId);
+  if(val===ans){btn.classList.add('ok');document.getElementById(blId).textContent=val;res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(4);}
+  else{btn.classList.add('no');res.innerHTML='❌ 다시 해봐요!';res.style.color='var(--red)';}
+}
+function chkDict(inputId,ans,resId){
+  const val=document.getElementById(inputId).value.trim().toLowerCase();
+  const res=document.getElementById(resId);
+  if(val===ans.toLowerCase()){res.innerHTML='✅ 정답!';res.style.color='var(--green)';document.getElementById(inputId).style.borderColor='var(--green)';addXP(3);}
+  else{res.innerHTML='❌ 정답: <span style="color:var(--gold)">'+ans+'</span>';res.style.color='var(--red)';}
+}
+function lcCheck(btn,val){
+  btn.closest('.lc-opts').querySelectorAll('.lc-opt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  document.getElementById('lc-result').textContent=val==='ok'?'✅ 정답!':'❌ 다시 들어보세요!';
+  document.getElementById('lc-result').style.color=val==='ok'?'var(--green)':'var(--red)';
+  if(val==='ok')addXP(4);
+}
+function shuffleLcOpts(){
+  document.querySelectorAll('.lc-opts').forEach(container=>{
+    const btns=Array.from(container.querySelectorAll('.lc-opt'));
+    for(let i=btns.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[btns[i],btns[j]]=[btns[j],btns[i]];}
+    btns.forEach((btn,i)=>{
+      const labels=['①','②','③'];
+      const text=btn.textContent.replace(/^[①②③]\s*/,'').trim();
+      btn.textContent=labels[i]+' '+text;
+      container.appendChild(btn);
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded',shuffleLcOpts);
+
+function showQuiz(id,btn){
+  document.querySelectorAll('.quiz-set').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.qtab').forEach(b=>b.className='qtab');
+  document.getElementById(id).classList.add('active');
+  btn.classList.add(id==='qb1'?'qb1':'qc1');
+}
+function qChk(btn,val){
+  btn.closest('.quiz-opts').querySelectorAll('.qopt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  if(val==='ok')addXP(4);
+}
+
+const matchPairs=[["innocence", "순수함"], ["abolished", "폐지된"], ["grief", "슬픔"], ["simultaneously", "동시에"]];
+let matchSel=null,matchDone={};
+function initMatch(){
+  const left=document.getElementById('match-left');
+  const right=document.getElementById('match-right');
+  const rs=[...matchPairs].sort(()=>Math.random()-0.5);
+  left.innerHTML=matchPairs.map(([en])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${en}</button>`).join('');
+  right.innerHTML=rs.map(([en,kr])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${kr}</button>`).join('');
+}
+function matchClick(btn,key){
+  if(btn.classList.contains('matched'))return;
+  btn.classList.remove('wrong-flash');
+  if(!matchSel){matchSel={btn,key};btn.classList.add('selected');}
+  else{
+    if(matchSel.key===key&&matchSel.btn!==btn){
+      matchSel.btn.classList.remove('selected');matchSel.btn.classList.add('matched');
+      btn.classList.add('matched');matchDone[key]=true;matchSel=null;
+      if(Object.keys(matchDone).length===matchPairs.length){
+        document.getElementById('match-result').innerHTML='🎉 모두 맞췄어요!';
+        document.getElementById('match-result').style.color='var(--green)';addXP(8);
+      }
+    }else{
+      const prev=matchSel.btn;prev.classList.remove('selected');prev.classList.add('wrong-flash');
+      btn.classList.add('wrong-flash');matchSel=null;
+      setTimeout(()=>{prev.classList.remove('wrong-flash');btn.classList.remove('wrong-flash');},500);
+    }
+  }
+}
+initMatch();
+
+function chkFD(id,ans,resId){
+  const inp=document.getElementById(id);
+  const res=document.getElementById(resId);
+  const clean=s=>s.trim().toLowerCase().replace(/[.,!?;:—]/g,'').replace(/\s+/g,' ');
+  if(clean(inp.value)===clean(ans)){
+    res.innerHTML='✅ 정답!';res.style.color='var(--green)';
+    inp.style.borderColor='var(--green)';inp.style.background='#0d1f0d';addXP(5);
+  }else{
+    res.innerHTML='❌ 정답: <span style="color:var(--gold);font-weight:800">"'+ans+'"</span>';
+    res.style.color='var(--red)';inp.style.borderColor='var(--red)';
+  }
+}
+
+function addPhrase(id,text){const ta=document.getElementById(id);ta.value=ta.value?ta.value+' '+text:text;ta.focus();}
+
+function checkReproduce(){
+  const text=document.getElementById('reproduce-input').value.trim();
+  const res=document.getElementById('reproduce-result');
+  if(!text){res.textContent='문장을 먼저 써보세요!';return;}
+  const prompt='[ESSAY] 안녕하세요! 문장 구조 재생산 훈련을 했어요.\n\n원본 구조: "Only by + [동사-ing] + [조동사] + [주어] + [동사원형]"\n원본 문장: "Ralph wept for the end of innocence and the darkness of man\'s heart."\n\n내가 만든 문장:\n'+text+'\n\n이 구조를 제대로 사용했는지 피드백해줘.\n수능 어법(병렬 구조 + 전치사구) 관점에서도 체크해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.textContent='✅ 복사됐어요! ChatGPT에 붙여넣기하세요.';
+    addXP(5);
+  });
+}
+
+function checkExpand(){
+  const text=document.getElementById('expand-input').value.trim();
+  const res=document.getElementById('expand-result');
+  if(!text){res.textContent='문장을 먼저 써보세요!';return;}
+  const prompt='[ESSAY] 안녕하세요! 문장 확장 훈련을 했어요.\n원래 문장: "The conch was smashed."\n내가 확장한 문장: '+text+'\nB1 수준에 맞는지 피드백해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.textContent='✅ 복사됐어요! ChatGPT에 붙여넣기하세요.';
+    addXP(5);
+  });
+}
+
+function submitEssay(){
+  const vals=[1,2,3,4,5].map(i=>document.getElementById('es'+i).value.trim());
+  const res=document.getElementById('essay-result');
+  if(vals.some(v=>!v)){res.innerHTML='❗ 5단락을 모두 작성해주세요!';res.style.color='#c9a84c';return;}
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'고2'):'고2';
+  const essay=vals.map((v,i)=>['①','②','③','④','⑤'][i]+' '+v).join('\n');
+  const prompt='[ESSAY] 안녕하세요! 저는 '+name+', '+grade+'이에요.\nLord of the Flies W07 에세이를 썼는데 피드백 부탁드려요.\n주제: "Does the ending of Lord of the Flies offer any hope for humanity, or is Golding\'s vision entirely pessimistic?"\n\n'+essay;
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.innerHTML='✅ 에세이 복사 완료! ChatGPT에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
+  });
+}
+
+function sendDebate(){
+  const r1=document.getElementById('round1').value.trim();
+  const r2=document.getElementById('round2').value.trim();
+  const r3=document.getElementById('round3').value.trim();
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'고2'):'고2';
+  const prompt='[DEBATE] 안녕하세요! 저는 '+name+', '+grade+'이에요.\nLord of the Flies W07 디베이트 주제: "The naval officer\'s arrival proves that external authority is the only reliable check on human savagery."\n\n[Round 1 - Opening]\n'+(r1||'(아직 못 썼어요)')+'\n\n[Round 2 - Rebuttal]\n'+(r2||'(아직 못 썼어요)')+'\n\n[Round 3 - Closing]\n'+(r3||'(아직 못 썼어요)')+'\n\n피드백하고 AI 상대방으로 토론해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    document.getElementById('debate-result').innerHTML='✅ 복사 완료! ChatGPT에서 붙여넣기(Ctrl+V)하세요.';
+    document.getElementById('debate-result').style.color='var(--green)';
+  });
+}
+</script>
+<style>.wk-nav{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#000;border-top:1px solid rgba(201,168,76,0.2);z-index:50}.wk-nav a{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}.wk-nav a:hover{transform:translateY(-2px)}.wk-nav .wk-prev{background:#0C1428;color:#8A9AB0;border:1px solid rgba(201,168,76,0.2)}.wk-nav .wk-next{background:#34D399;color:#000}.wk-nav .wk-label{font-size:11px;color:#5A6A80;letter-spacing:1px}
+/* ── ChatGPT 회화 연습 버튼 ── */
+.chatgpt-practice-section {
+  margin: 40px auto 20px;
+  max-width: 860px;
+  padding: 0 20px;
+}
+.chatgpt-practice-wrap {
+  background: linear-gradient(135deg, #050e1f, #0a1628);
+  border: 2px solid rgba(0,210,255,0.4);
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.chatgpt-practice-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%,
+    rgba(0,210,255,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.chatgpt-practice-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.chatgpt-practice-desc {
+  color: #6a8fad;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.chatgpt-practice-desc strong { color: #00d2ff; }
+.chatgpt-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #00d2ff, #0055ff);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(0,210,255,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+.chatgpt-launch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(0,210,255,0.5);
+}
+.chatgpt-practice-note {
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: #3a5a7a;
+}
+
+</style>
+<div class="wk-nav"><a class="wk-prev" href="week06.html">← W6</a><span class="wk-label">WEEK 7</span><a class="wk-next" href="../prestep.html">목록으로 →</a></div>
+
+<div class="chatgpt-practice-section">
+  <div class="chatgpt-practice-wrap">
+    <div class="chatgpt-practice-title">🎉 수업 완료! 이제 회화 연습!</div>
+    <div class="chatgpt-practice-desc">
+      오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 영어로 대화해보세요!<br>
+      <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
+    </div>
+    <button class="chatgpt-launch-btn" onclick="launchChatGPTPractice()">
+      🎙️ ChatGPT 회화 연습 시작
+    </button>
+    <div class="chatgpt-practice-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
+  </div>
+
+<div style="text-align:center;margin:24px 0 12px;">
+  <a href="https://forms.gle/BUG01campB" target="_blank"
+     style="display:inline-block;padding:10px 24px;border-radius:100px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.4);font-size:0.78rem;text-decoration:none;transition:all 0.2s;"
+     onmouseover="this.style.borderColor='#00f2ff';this.style.color='#00f2ff'"
+     onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.color='rgba(255,255,255,0.4)'">
+    &#128027; BUG-01 &#183; &#50724;&#47448; &#49888;&#44256;
+  </a>
+</div>
+</div>
+
+<script>
+function getCampType() {
+  var path = window.location.pathname;
+  if (path.includes('camp-b') ||
+      path.includes('/m1/') || path.includes('/m2/') || path.includes('/m3/') ||
+      path.includes('/g1/') || path.includes('/g2/') || path.includes('/g3/')) return 'b';
+  if (path.includes('camp-c') || path.includes('mom-teacher')) return 'c';
+  return 'a';
+}
+
+function launchChatGPTPractice() {
+  // 단어 자동 수집
+  var words = [];
+  document.querySelectorAll(
+    '.word-en, .vocab-en, .key-word, [class*="word-en"], [class*="vocab"]'
+  ).forEach(function(el) {
+    var t = el.textContent.trim();
+    if (t && t.length < 30) words.push(t);
+  });
+
+  // 본문 첫 문장
+  var storyEl = document.querySelector(
+    '.story-content.active p, .reading-text p, .story p'
+  );
+  var firstLine = storyEl
+    ? storyEl.textContent.substring(0, 80) + '...'
+    : '';
+
+  var summary = [
+    '[' + document.title + ']',
+    words.length ? '배운 단어: ' + words.slice(0,8).join(', ') : '',
+    firstLine ? '오늘 이야기: ' + firstLine : '',
+    '위 내용으로 영어 회화 연습을 도와주세요!'
+  ].filter(Boolean).join('\n');
+
+  var camp = getCampType();
+
+  // cec_guide.html 경로: GitHub Pages 루트
+  var guideUrl = 'https://cecenglishcamp.github.io/cec_guide.html'
+    + '?camp=' + camp
+    + '&url=' + encodeURIComponent(window.location.href)
+    + '&summary=' + encodeURIComponent(summary);
+
+  window.location.href = guideUrl;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp B — M3 W07 · Marley's Ghost</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Black+Han+Sans&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1a2535;--card:#1e2e42;--card2:#192840;--border:#2a3a52;
+  --acc:#0ea5e9;--acc2:#0369a1;--green:#16a34a;--gold:#f59e0b;
+  --red:#dc2626;--text:#e8e8f0;--sub:#8899aa;
+  --a1c:#16a34a;--a1b:#0d2a1a;--a2c:#0ea5e9;--a2b:#0a1e30;--b1c:#7c3aed;--b1b:#1e0d4a;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+.hd{background:linear-gradient(135deg,#0a1a2e,#102030);padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.hd-left{display:flex;align-items:center;gap:10px;}
+.hd-logo{font-family: 'Cormorant Garamond', serif;font-size: 1.1rem;color:var(--acc);}
+.hd-sub{font-size:0.72rem;color:var(--sub);}
+.hd-badge{background:#4B1F79;color:white;font-size:0.7rem;font-weight:800;padding:3px 10px;border-radius:20px;}
+.xp-btn{background:linear-gradient(135deg,#f59e0b,#ef4444);color:white;border:none;border-radius:20px;padding:5px 14px;font-size:0.8rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;}
+.hero{background:linear-gradient(135deg,#0d0a1e,#1a0d2e,#0a1020);padding:20px 16px;text-align:center;border-bottom:1px solid var(--border);}
+.hero-week{font-size:0.72rem;color:var(--sub);font-weight:700;letter-spacing:2px;margin-bottom:6px;}
+.hero-title{ font-style: italic;font-family: 'Cormorant Garamond', serif;font-size: 2.2rem;color: #00f2ff;margin-bottom:4px;}
+.hero-author{font-size:0.8rem;color:var(--sub);margin-bottom:14px;}
+.hero-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.hb{padding:4px 12px;border-radius:20px;font-size:0.68rem;font-weight:800;}
+.key-card{background:linear-gradient(135deg,#0d0a1e,#1a0d2e);border:1px solid #3a1a5a;border-radius:16px;padding:16px;margin:12px 16px 8px;}
+.key-label{font-size:0.65rem;color:var(--sub);font-weight:700;letter-spacing:2px;margin-bottom:8px;}
+.key-en{font-size:1.05rem;font-weight:900;color:white;margin-bottom:4px;}
+.key-kr{font-size:0.82rem;color:#b48aff;margin-bottom:12px;}
+.key-play{background:#4B1F79;color:white;border:none;border-radius:25px;padding:8px 20px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.prog-row{display:flex;align-items:center;gap:8px;padding:8px 16px;}
+.prog-track{flex:1;background:#1a2a3a;border-radius:8px;height:6px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,#7c3aed,#4B1F79);border-radius:8px;transition:width 0.5s;}
+.prog-label{font-size:0.72rem;color:var(--sub);font-weight:700;white-space:nowrap;}
+.container{max-width:680px;margin:0 auto;padding:0 12px 60px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;}
+.sh{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sh-icon{font-size:1.1rem;}.sh-title{font-size:0.88rem;font-weight:900;color:white;}
+.tab-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.tab-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.15s;}
+.tab-btn.act-a1{background:var(--a1b);border-color:var(--a1c);color:#5aff9a;}
+.tab-btn.act-a2{background:var(--a2b);border-color:var(--a2c);color:#7ab3ff;}
+.tab-btn.act-b1{background:var(--b1b);border-color:var(--b1c);color:#b48aff;}
+.listen-row{display:flex;gap:8px;margin-bottom:10px;}
+.listen-btn{background:#4B1F79;color:white;border:none;border-radius:20px;padding:7px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.stop-btn{background:var(--card2);border:1.5px solid var(--border);color:var(--sub);border-radius:20px;padding:7px 12px;font-size:0.82rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.notice-box{background:#0d0a1e;border-left:3px solid #7c3aed;border-radius:0 8px 8px 0;padding:9px 14px;margin-bottom:10px;font-size:0.78rem;color:var(--sub);line-height:1.6;}
+.story-box{background:var(--card2);border-radius:10px;padding:14px;font-size:0.88rem;line-height:1.85;color:var(--text);display:none;}
+.story-box.active{display:block;}
+.story-box p{margin-bottom:10px;}
+.gram{border-bottom:2px dashed var(--gold);cursor:pointer;color:#fde68a;font-weight:700;}
+.story-kr{background:#0a0d1a;border-left:3px solid #7c3aed;border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.8;display:none;}
+.kr-toggle{background:transparent;border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:4px 12px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+#tt-overlay{position:fixed;inset:0;z-index:999;display:none;}
+.tt-wrap{position:fixed;z-index:1000;display:none;}
+.tt-box{background:#1a1a2e;border:1.5px solid var(--gold);border-radius:12px;padding:14px 16px;max-width:280px;box-shadow:0 8px 32px rgba(0,0,0,0.6);}
+.tt-tag{background:var(--gold);color:#1a1a00;font-size:0.65rem;font-weight:900;padding:2px 8px;border-radius:10px;margin-bottom:8px;display:inline-block;}
+.tt-title{font-size:0.88rem;font-weight:900;color:white;margin-bottom:6px;}
+.tt-desc{font-size:0.78rem;color:var(--sub);line-height:1.6;margin-bottom:8px;white-space:pre-line;}
+.tt-ex{background:var(--bg);border-radius:6px;padding:6px 10px;font-size:0.78rem;color:#b48aff;margin-bottom:10px;font-style:italic;}
+.tt-links{display:flex;gap:8px;flex-wrap:wrap;}
+.tt-gram-link{background:#1a0d3a;border:1px solid #7c3aed;color:#b48aff;border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;text-decoration:none;}
+.tt-close{position:absolute;top:8px;right:10px;background:transparent;border:none;color:var(--sub);font-size:1rem;cursor:pointer;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.vc{background:var(--card2);border-radius:10px;padding:10px 12px;border-left:3px solid #7c3aed;}
+.vc-w{font-size:0.88rem;font-weight:900;color:white;margin-bottom:2px;}
+.vc-m{font-size:0.75rem;color:var(--sub);margin-bottom:4px;}
+.vc-e{font-size:0.72rem;color:#b48aff;font-style:italic;}
+.fill-sent{font-size:0.9rem;font-weight:700;line-height:1.7;margin-bottom:12px;color:white;}
+.blank-span{display:inline-block;min-width:60px;border-bottom:2px solid #7c3aed;color:#b48aff;text-align:center;font-weight:900;}
+.choices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.cbtn{padding:7px 16px;background:var(--card2);border:1.5px solid var(--border);border-radius:20px;color:var(--text);font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.cbtn.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.cbtn.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.fill-res{font-size:0.82rem;font-weight:700;min-height:18px;}
+.dict-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:8px;}
+.dict-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.dict-play{background:#7c3aed;color:white;border:none;border-radius:50%;width:36px;height:36px;font-size:0.9rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.dict-label{font-size:0.75rem;color:var(--sub);font-weight:700;}
+.dict-hint{font-size:0.78rem;color:#b48aff;font-style:italic;}
+.dict-input-row{display:flex;gap:8px;}
+.dict-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.dict-input:focus{outline:none;border-color:#7c3aed;}
+.dict-btn{background:#7c3aed;color:white;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.dict-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.lc-play-btn{background:#4B1F79;color:white;border:none;border-radius:25px;padding:9px 22px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;}
+.lc-opts{display:flex;flex-direction:column;gap:8px;}
+.lc-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.lc-opt.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.lc-opt.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.lc-result{margin-top:8px;font-size:0.84rem;font-weight:700;min-height:18px;}
+.wo-wrap{background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;}
+.wo-q{font-size:0.8rem;color:var(--sub);margin-bottom:8px;font-weight:700;}
+.wo-box{min-height:44px;background:var(--bg);border-radius:8px;border:1.5px dashed #7c3aed;padding:6px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px;}
+.wo-pool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;}
+.wo-chip{padding:6px 13px;background:#4B1F79;color:white;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-chip.used{background:#2a2a4a;color:var(--sub);cursor:default;}
+.wo-placed{padding:6px 13px;background:#7c3aed;color:white;border-radius:20px;font-size:0.8rem;font-weight:700;cursor:pointer;border:none;font-family:'Nunito',sans-serif;}
+.wo-btns{display:flex;gap:8px;}
+.wo-check{background:#4B1F79;color:white;border:none;padding:8px 18px;border-radius:20px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-reset{background:transparent;color:var(--sub);border:1px solid var(--border);padding:8px 12px;border-radius:20px;font-size:0.8rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-result{font-size:0.8rem;font-weight:700;margin-top:6px;min-height:16px;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.match-col{display:flex;flex-direction:column;gap:6px;}
+.match-item{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;color:var(--text);transition:all 0.15s;}
+.match-item.selected{border-color:#7c3aed;background:#1e0d4a;color:#b48aff;}
+.match-item.matched{border-color:var(--green);background:#0d2a1a;color:#5aff9a;cursor:default;}
+.match-item.wrong-flash{border-color:var(--red);background:#3a0d0d;}
+.match-result{font-size:0.84rem;font-weight:700;min-height:18px;text-align:center;}
+.fd-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;}
+.fd-level-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fd-badge{color:white;font-size:0.7rem;font-weight:900;padding:2px 10px;border-radius:20px;}
+.fd-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.fd-play{color:white;border:none;border-radius:20px;padding:6px 14px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-hints{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.fd-hint-label{font-size:0.7rem;color:var(--sub);font-weight:700;}
+.fd-hint-tag{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid;}
+.fd-input-row{display:flex;gap:8px;}
+.fd-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.fd-input:focus{outline:none;border-color:#7c3aed;}
+.fd-check{color:white;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+.quiz-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.qtab{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.qa1{background:var(--a1b);border-color:var(--a1c);color:#5aff9a;}
+.qa2{background:var(--a2b);border-color:var(--a2c);color:#7ab3ff;}
+.qb1{background:var(--b1b);border-color:var(--b1c);color:#b48aff;}
+.quiz-set{display:none;}.quiz-set.active{display:block;}
+.quiz-item{margin-bottom:14px;}
+.quiz-q{font-size:0.86rem;font-weight:800;color:white;margin-bottom:8px;}
+.quiz-opts{display:flex;flex-direction:column;gap:6px;}
+.qopt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.qopt.ok{border-color:var(--green);background:#0d3320;color:#5aff9a;}
+.qopt.no{border-color:var(--red);background:#3a0d0d;color:#ff9a9a;}
+.essay-line{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.essay-num{font-size:0.72rem;font-weight:900;color:#b48aff;width:24px;flex-shrink:0;padding-top:10px;}
+.essay-label{font-size:0.7rem;font-weight:900;color:#b48aff;margin-bottom:4px;}
+.essay-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.essay-input:focus{outline:none;border-color:#7c3aed;}
+.essay-submit{background:linear-gradient(135deg,#7c3aed,#4B1F79);color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:4px;}
+.debate-box{background:linear-gradient(135deg,#0d0a1e,#1a0d2e);border-radius:12px;padding:14px;border:1px solid #3a1a5a;}
+.debate-topic{background:#0d0a1e;border-radius:10px;padding:12px;text-align:center;margin-bottom:12px;border:1px solid #7c3aed;}
+.debate-topic-en{font-size:0.95rem;font-weight:900;color:white;margin-bottom:4px;}
+.debate-topic-kr{font-size:0.78rem;color:#b48aff;}
+.debate-round{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;border-left:3px solid #7c3aed;}
+.debate-round-label{font-size:0.72rem;font-weight:900;color:#b48aff;margin-bottom:6px;}
+.debate-textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;resize:none;outline:none;line-height:1.6;margin-top:4px;}
+.debate-textarea:focus{border-color:#7c3aed;}
+.phrase-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.phrase{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:0.75rem;font-weight:700;cursor:pointer;color:var(--sub);}
+.owui-btn{background:linear-gradient(135deg,#7c3aed,#4B1F79);color:white;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:8px;}
+.complete-card{background:linear-gradient(135deg,#0d0a1e,#1a0d2e);border:2px solid #7c3aed;border-radius:20px;padding:24px;text-align:center;margin-bottom:20px;display:none;}
+</style>
+
+  <meta name="description" content="CEC English Camp B m3 Week 06 — 중고등 영어 수업">
+  <meta name="keywords" content="중학영어,고등영어,CEC English Camp B">
+  <meta property="og:title" content="Camp B m3 W07 | CEC English Camp">
+  <meta name="robots" content="index, follow">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+</head>
+<body data-camp="b" data-grade="m3" data-week="06">
+
+<div id="tt-overlay" onclick="closeTT()"></div>
+<div class="tt-wrap" id="tt-wrap">
+  <div class="tt-box" id="tt-box">
+    <button class="tt-close" onclick="closeTT()">✕</button>
+    <div class="tt-tag" id="tt-tag"></div>
+    <div class="tt-title" id="tt-title"></div>
+    <div class="tt-desc" id="tt-desc"></div>
+    <div class="tt-ex" id="tt-ex"></div>
+    <div class="tt-links">
+      <a class="tt-gram-link" id="tt-gram-link" href="https://cecenglishcamp.github.io/GrammarBaseCamp/index.html" target="_blank"></a>
+    </div>
+  </div>
+</div>
+
+<header class="hd" role="banner">
+  <div class="hd-left">
+    <div class="hd-logo">CEC Camp B</div>
+    <div class="hd-sub">중3 · W1 · Sherlock Holmes</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="hd-badge">중3</div>
+    <button class="xp-btn" id="xp-btn">⭐ 0 XP</button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-week">WEEK 06 / 36 · MIDDLE SCHOOL 3</div>
+  <div class="hero-title">Sherlock Holmes</div>
+  <div class="hero-author">Charles Dickens · Marley's Ghost</div>
+  <div class="hero-badges">
+    <span class="hb" style="background:#1e0d4a;color:#b48aff;border:1px solid #4a2a8e;">G52 관계절</span>
+    <span class="hb" style="background:#1e0d4a;color:#b48aff;border:1px solid #4a2a8e;">G62 분사구문</span>
+    <span class="hb" style="background:#1e0d4a;color:#b48aff;border:1px solid #4a2a8e;">G67 추측 조동사</span>
+    <span class="hb" style="background:#0a2a20;color:#5aff9a;border:1px solid #1a4a2a;">🎯 A2~B2</span>
+    <span class="hb" style="background:#2d1a4a;color:#b48aff;border:1px solid #4a2a8e;">⏱ W1~W7</span>
+  </div>
+</div>
+
+<div class="key-card">
+  <div class="key-label">KEY SENTENCE · 이번 주 핵심 표현</div>
+  <div class="key-en">"If I had been dead, the trap would never have worked."</div>
+  <div class="key-kr">만약 내가 죽었다면, 함정은 절대 작동하지 않았을 거예요.</div>
+  <button class="key-play" data-speak="If I had been dead, the trap would never have worked." onclick="speak(this.dataset.speak)">▶ 발음 듣기</button>
+</div>
+
+<div class="prog-row">
+  <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:18%;"></div></div>
+  <div class="prog-label">W7 / 36</div>
+</div>
+
+<main class="container" role="main">
+
+<!-- ① 이야기 읽기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📖</div><div class="sh-title">이야기 읽기</div></div>
+  <div class="tab-row">
+    <button class="tab-btn" onclick="showStory('a1',this)">🟡 입문 (A2)</button>
+    <button class="tab-btn act-a2" onclick="showStory('a2',this)">🔵 초급 B1 ★ 기준</button>
+    <button class="tab-btn" onclick="showStory('b1',this)">🟣 중급 (B2)</button>
+  </div>
+  <div class="listen-row">
+    <button class="listen-btn" onclick="readStory()">🔊 전체 듣기</button>
+    <button class="stop-btn" onclick="speechSynthesis.cancel()">⏹ 정지</button>
+  </div>
+  <div class="notice-box">🔊 <strong style="color:#b48aff">듣기는 초급 B1 기준</strong>으로 읽어드려요.<br><span style="font-size:0.72rem;">📌 초급(B1) = 이 학년의 평균 수준. 입문(A2)은 더 쉽게, 중급(B2)은 더 어렵게 조정된 버전이에요.</span></div>
+
+  <div id="sb-a1" class="story-box">
+    <p>Three years passed after the falls.<br>
+    Watson thought Holmes was dead.<br>
+    Then an old man came to his door.<br>
+    The old man was Holmes.<br>
+    He had pretended to be dead.<br>
+    He was still hunting Moriarty's men.<br>
+    One dangerous man was still free.<br>
+    Holmes needed Watson's help one more time.</p>
+  </div>
+
+  <div id="sb-a2" class="story-box active">
+    <p>Three years after the falls at Reichenbach, Watson received an unexpected visitor. The old bookseller <span class="gram" data-id="g1">who knocked</span> at his door was, in fact, Sherlock Holmes — alive and unchanged.</p>
+    <p>Watson, <span class="gram" data-id="g2">whose shock was so great</span> that he nearly fainted, could barely speak. Holmes, <span class="gram" data-id="g3">smiling calmly</span>, explained that his death had been staged deliberately.</p>
+    <p>"<span class="gram" data-id="g4">If the newspapers had not reported</span> my death," he said, "Moriarty's men would never have relaxed." He had spent three years watching from the shadows.</p>
+    <p>Now one last criminal remained — Colonel Moran, <span class="gram" data-id="g5">whose skill with a rifle</span> made him extremely dangerous. "<span class="gram" data-id="g6">If Moran had suspected</span> the trick," Holmes said, "the plan would have failed completely."</p>
+  </div>
+
+  <div id="sb-b1" class="story-box">
+    <p>Watson had not expected to feel angry. He had expected relief, joy — perhaps even tears. Instead, he found himself almost unable to speak from a kind of fury he could not quite explain.</p>
+    <p>Holmes waited for it to pass. He had seen Watson angry before. He also knew, better than Watson did, that the anger was only love with nowhere to go.</p>
+    <p>Holmes explained the plan carefully: a wax model of himself, placed in the window of 221B. Moran, who had been watching for three years, would see it. He would fire. And Holmes would be there, in the empty house across the road, to close the trap.</p>
+    <p>"It is a dangerous plan," Watson said.</p>
+    <p>"Yes," said Holmes. "Most good ones are."</p>
+    <p>Watson picked up his coat. He did not say another word. Holmes had known he would not need to ask twice.</p>
+  </div>
+
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+    <button class="kr-toggle" onclick="toggleKr()" id="kr-btn">🇰🇷 한국어 번역 보기</button>
+    <span style="font-size:0.7rem;color:var(--sub);">※ 번역은 초급 B1 기준</span>
+  </div>
+  <div class="story-kr" id="story-kr">
+    라이헨바흐 폭포에서 3년 후, 왓슨은 예상치 못한 방문객을 받았어요. 문을 두드린 늙은 책 판매상은 사실 셜록 홈즈였어요.<br><br>"신문이 내 죽음을 보도하지 않았다면, 모리아티의 부하들은 절대 긴장을 풀지 않았을 거야." 홈즈는 3년 동안 그림자 속에서 지켜봤어요.<br><br>이제 마지막 범죄자 모런 대령이 남아 있었어요. "만약 모런이 함정을 의심했다면, 계획은 완전히 실패했을 거야."
+  </div>
+</div>
+
+<!-- ② 단어 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📝</div><div class="sh-title">이번 주 단어</div></div>
+  <div class="vocab-grid">
+    <div class="vc"><div class="vc-w">deliberate </div><div class="vc-m">의도적인, 신중한</div><div class="vc-e">"His death was staged deliberately."</div></div>
+    <div class="vc"><div class="vc-w">relax </div><div class="vc-m">긴장을 풀다</div><div class="vc-e">"His men would never have relaxed."</div></div>
+    <div class="vc"><div class="vc-w">shadow </div><div class="vc-m">그림자, 그늘</div><div class="vc-e">"He watched from the shadows."</div></div>
+    <div class="vc"><div class="vc-w">suspect </div><div class="vc-m">의심하다</div><div class="vc-e">"If Moran had suspected the trick."</div></div>
+    <div class="vc"><div class="vc-w">fury </div><div class="vc-m">분노, 격분</div><div class="vc-e">"Watson felt a kind of fury."</div></div>
+    <div class="vc"><div class="vc-w">wax </div><div class="vc-m">밀랍, 왁스</div><div class="vc-e">"A wax model of himself."</div></div>
+  </div>
+</div>
+
+<!-- ③ 빈칸 채우기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">빈칸 채우기</div></div>
+  <div class="fill-sent">If the newspapers <span class="blank-span" id="bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span> my death, his men would not have relaxed.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'had reported','had reported','bl1','fr1')">had reported</button>
+    <button class="cbtn" onclick="chkFill(this,'reported','had reported','bl1','fr1')">reported</button>
+    <button class="cbtn" onclick="chkFill(this,'would report','had reported','bl1','fr1')">would report</button>
+  </div>
+  <div class="fill-res" id="fr1"></div>
+  <br>
+  <div class="fill-sent">If Moran <span class="blank-span" id="bl2">&nbsp;&nbsp;&nbsp;&nbsp;</span> the trick, the plan would have failed.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'had suspected','had suspected','bl2','fr2')">had suspected</button>
+    <button class="cbtn" onclick="chkFill(this,'suspected','had suspected','bl2','fr2')">suspected</button>
+    <button class="cbtn" onclick="chkFill(this,'would suspect','had suspected','bl2','fr2')">would suspect</button>
+  </div>
+  <div class="fill-res" id="fr2"></div>
+  <br>
+
+</div>
+
+<!-- ④ 단어 받아쓰기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🎧</div><div class="sh-title">단어 받아쓰기</div></div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="His death had been staged deliberately to fool everyone." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장 1</div><div class="dict-hint">"His death had been staged ___."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di1" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','deliberately','dr1')">
+      <button class="dict-btn" onclick="chkDict('di1','deliberately','dr1')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr1"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="He spent three years watching from the shadows." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장 2</div><div class="dict-hint">"He watched from the ___."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di2" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','shadows','dr2')">
+      <button class="dict-btn" onclick="chkDict('di2','shadows','dr2')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr2"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="Watson felt a kind of fury he could not explain." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장 3</div><div class="dict-hint">"Watson felt a kind of ___ he could not explain."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di3" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','fury','dr3')">
+      <button class="dict-btn" onclick="chkDict('di3','fury','dr3')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑤ 듣고 고르기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">👂</div><div class="sh-title">듣고 고르기</div></div>
+  <button class="lc-play-btn" data-speak="Holmes had faked his own death so that Moriarty men would relax and make themselves easier to catch." onclick="speak(this.dataset.speak)">🔊 듣기</button>
+  <div class="lc-opts">
+    <button class="lc-opt" data-correct="true" onclick="lcCheck(this,'ok')">Holmes had faked his own death so that Moriarty men would relax and make themselves easier to catch.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">Holmes had been hiding because he was afraid of Colonel Moran and needed time to recover.</button>
+    <button class="lc-opt" onclick="lcCheck(this,'no')">Watson had known all along that Holmes was alive but kept the secret for three years.</button>
+  </div>
+  <div class="lc-result" id="lc-result"></div>
+</div>
+
+<!-- ⑥ 단어 배열 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔤</div><div class="sh-title">단어 배열하기</div></div>
+  <div class="wo-wrap">
+    <div class="wo-q">🔵 초급 B1 — 관계대명사 whose를 포함한 문장을 배열하세요.</div>
+    <div class="wo-box" id="wo1-box"></div>
+    <div class="wo-pool" id="wo1-pool"></div>
+    <div class="wo-btns">
+      <button class="wo-check" onclick="woCheck('wo1','If he had been dead the trap would have failed','wr1')">확인 ✓</button>
+      <button class="wo-reset" onclick="woReset('wo1')">↺ 다시</button>
+    </div>
+    <div class="wo-result" id="wr1"></div>
+  </div>
+  <div class="wo-wrap">
+    <div class="wo-q">🟣 중급 B2 — 분사구문을 포함한 문장을 배열하세요.</div>
+    <div class="wo-box" id="wo2-box"></div>
+    <div class="wo-pool" id="wo2-pool"></div>
+    <div class="wo-btns">
+      <button class="wo-check" onclick="woCheck('wo2','Moran whose skill was great was still free','wr2')">확인 ✓</button>
+      <button class="wo-reset" onclick="woReset('wo2')">↺ 다시</button>
+    </div>
+    <div class="wo-result" id="wr2"></div>
+  </div>
+</div>
+
+<!-- ⑦ 짝맞추기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🃏</div><div class="sh-title">짝맞추기</div></div>
+  <div class="match-grid">
+    <div class="match-col" id="match-left"></div>
+    <div class="match-col" id="match-right"></div>
+  </div>
+  <div class="match-result" id="match-result"></div>
+</div>
+
+<!-- ⑧ 받아쓰기 도전 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">받아쓰기 도전!</div></div>
+  <div style="font-size:0.75rem;color:var(--sub);margin-bottom:14px;">🎙️ 듣고 전체 문장을 입력하세요.</div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#16a34a;">A2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 1</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#16a34a;" data-speak="Holmes was still alive." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#16a34a;border-color:#16a34a;background:#1e0d4a;">"Holmes"</span>
+        <span class="fd-hint-tag" style="color:#16a34a;border-color:#16a34a;background:#1e0d4a;">"alive"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd1" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd1','Holmes was still alive.','fdr1')">
+      <button class="fd-check" style="background:#16a34a;" onclick="chkFD('fd1','Holmes was still alive.','fdr1')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr1"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#7c3aed;">B1</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 2</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#7c3aed;" data-speak="If the newspapers had reported his death his men would have relaxed." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#7c3aed;border-color:#7c3aed;background:#1e0d4a;">"had reported"</span>
+        <span class="fd-hint-tag" style="color:#7c3aed;border-color:#7c3aed;background:#1e0d4a;">"would have relaxed"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd2" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd2','If the newspapers had reported his death his men would have relaxed.','fdr2')">
+      <button class="fd-check" style="background:#7c3aed;" onclick="chkFD('fd2','If the newspapers had reported his death his men would have relaxed.','fdr2')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr2"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#4B1F79;">B2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장 3</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#4B1F79;" data-speak="If Moran had suspected the plan would have failed." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#b48aff;border-color:#7c3aed;background:#1e0d4a;">"had suspected"</span>
+        <span class="fd-hint-tag" style="color:#b48aff;border-color:#7c3aed;background:#1e0d4a;">"would have failed"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd3" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd3','If Moran had suspected the plan would have failed.','fdr3')">
+      <button class="fd-check" style="background:#4B1F79;" onclick="chkFD('fd3','If Moran had suspected the plan would have failed.','fdr3')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑨ 이해 문제 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">이해 문제</div></div>
+  <div class="quiz-tabs">
+    <button class="qtab qa1" onclick="showQuiz('qa1',this)">🟡 입문</button>
+    <button class="qtab" onclick="showQuiz('qa2',this)">🔵 초급 B1</button>
+    <button class="qtab" onclick="showQuiz('qb1',this)">🟣 중급</button>
+  </div>
+  <div id="qa1" class="quiz-set active">
+    <div class="quiz-item"><div class="quiz-q">Q1. Where did Watson and Holmes first meet?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">a) In a laboratory at Barts Hospital</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) At 221B Baker Street</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) At a police station</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. What did Holmes say to Watson immediately?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) "Nice to meet you, doctor."</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) "If I had been dead, the trap would never have worked."</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) "I need your help with a case."</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. What did they decide to do after their first meeting?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Work at the hospital together</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Share rooms at 221B Baker Street</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Join the police force</button>
+      </div>
+    </div>
+  </div>
+  <div id="qa2" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">Q1. How did Holmes know Watson had been in Afghanistan?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Someone had told him about Watson before they met</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) He observed physical clues: the tan, the arm, the boots</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) He had read Watson's medical file at the hospital</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. "Which seemed meaningless to most people" — what does this relative clause tell us?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">b) Holmes sees significance where others see nothing — his genius is in what he notices</button>
+        <button class="qopt" onclick="qChk(this,'no')">a) Most people are stupid and miss obvious things</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) The details really were meaningless and Holmes was wrong</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. Why does Holmes call himself a "consulting detective"?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) He works for the police full-time</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Others come to him for advice — he is not employed but consulted when needed</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) He consults books and records to solve cases</button>
+      </div>
+    </div>
+  </div>
+  <div id="qb1" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">Q1. Holmes said it "the way another person might say good morning." What does this comparison reveal?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Holmes is rude and lacks social awareness</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) What is extraordinary to Watson is routine to Holmes — his deductive ability is so natural it requires no dramatic announcement</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Holmes was trying to impress Watson with a dramatic entrance</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. Watson "dismissed the clues as ordinary." What is the thematic significance of this?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">b) The difference between Watson and Holmes is not intelligence but habit of attention — Holmes trained himself to see what others trained themselves to ignore</button>
+        <button class="qopt" onclick="qChk(this,'no')">a) Watson was not intelligent enough to be a detective</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) The clues were genuinely too small to notice</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. Why is Watson useful to Holmes if Holmes is so much smarter?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Watson provides money and resources for the investigations</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Watson does the physical work while Holmes thinks</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Watson represents the ordinary reader — through his confusion and wonder, we experience Holmes. He also provides Holmes with human connection and a moral anchor.</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑩ 에세이 (중3: CER 논증) -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">에세이 쓰기 — CER 논증</div></div>
+  <div style="background:var(--bg);border-radius:10px;padding:14px;margin-bottom:14px;">
+    <div style="font-size:0.8rem;font-weight:900;color:#b48aff;margin-bottom:10px;">📌 중3 에세이 — CER 구조</div>
+    <div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:6px;">
+      <div style="font-size:0.7rem;font-weight:900;color:#b48aff;margin-bottom:3px;">C — Claim (주장)</div>
+      <div style="font-size:0.75rem;color:var(--sub);">예) "I argue that observation is more important than intelligence because..."</div>
+    </div>
+    <div style="background:var(--card);border-radius:8px;padding:10px;margin-bottom:6px;">
+      <div style="font-size:0.7rem;font-weight:900;color:#7ab3ff;margin-bottom:3px;">E — Evidence (근거)</div>
+      <div style="font-size:0.75rem;color:var(--sub);">예) "In the story, Holmes deduces Watson's past not through genius alone, but through careful observation of physical details that others ignored."</div>
+    </div>
+    <div style="background:var(--card);border-radius:8px;padding:10px;">
+      <div style="font-size:0.7rem;font-weight:900;color:#5aff9a;margin-bottom:3px;">R — Reasoning (추론)</div>
+      <div style="font-size:0.75rem;color:var(--sub);">예) "This demonstrates that the ability to notice what others dismiss is itself a form of intelligence — one that can be trained."</div>
+    </div>
+  </div>
+  <div style="font-size:0.84rem;font-weight:700;color:white;margin-bottom:12px;">💬 주제: <strong>"Is deception ever justified if it leads to justice?"</strong></div>
+  <div class="essay-line">
+    <span class="essay-num">C</span>
+    <input class="essay-input" id="es1" placeholder="I argue that... because...">
+  </div>
+  <div class="essay-line">
+    <span class="essay-num">E</span>
+    <input class="essay-input" id="es2" placeholder="In the story, Holmes... / For example,...">
+  </div>
+  <div class="essay-line">
+    <span class="essay-num">R</span>
+    <input class="essay-input" id="es3" placeholder="This demonstrates that... / This shows that...">
+  </div>
+  <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
+</div>
+
+<!-- ⑪ 디베이트 (중3: 정식 3라운드) -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">⚖️</div><div class="sh-title">디베이트 — 정식 3라운드</div></div>
+  <div class="debate-box">
+    <div class="debate-topic">
+      <div class="debate-topic-en">"Governments should be allowed to fake their own actions to catch criminals."</div>
+      <div class="debate-topic-kr">정부는 범죄자를 잡기 위해 자신의 행동을 속일 수 있어야 한다.</div>
+    </div>
+
+    <div class="debate-round">
+      <div class="debate-round-label">🎤 Round 1 — Opening Statement (주장)</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">내 입장(찬성/반대)과 주된 이유를 영어로 써보세요.</div>
+      <textarea class="debate-textarea" id="round1" rows="3" placeholder="I (agree / disagree) with this statement because..."></textarea>
+    </div>
+
+    <div class="debate-round">
+      <div class="debate-round-label">⚔️ Round 2 — Rebuttal (반론)</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">상대방 입장을 인정하면서 반박하세요.</div>
+      <textarea class="debate-textarea" id="round2" rows="3" placeholder="I understand that... However, this overlooks the fact that..."></textarea>
+    </div>
+
+    <div class="debate-round">
+      <div class="debate-round-label">🏁 Round 3 — Closing (마무리)</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">내 주장을 강화하며 마무리하세요.</div>
+      <textarea class="debate-textarea" id="round3" rows="3" placeholder="In conclusion, I maintain that... because..."></textarea>
+    </div>
+
+    <div style="font-size:0.75rem;font-weight:900;color:#b48aff;margin-bottom:6px;margin-top:4px;">💡 도움이 되는 표현</div>
+    <div class="phrase-row">
+      <span class="phrase" style="background:#1e0d4a;color:#b48aff;border-color:#7c3aed;" onclick="addPhrase('round1','I argue that...')">I argue that...</span>
+      <span class="phrase" style="background:#1e0d4a;color:#b48aff;border-color:#7c3aed;" onclick="addPhrase('round2','I understand your point, but...')">I understand, but...</span>
+      <span class="phrase" style="background:#1e0d4a;color:#b48aff;border-color:#7c3aed;" onclick="addPhrase('round2','This overlooks the fact that...')">This overlooks...</span>
+      <span class="phrase" style="background:#1e0d4a;color:#b48aff;border-color:#7c3aed;" onclick="addPhrase('round3','In conclusion, I maintain...')">In conclusion...</span>
+      <span class="phrase" style="background:#0a2a15;color:#5aff9a;border-color:#16a34a;" onclick="addPhrase('round1','Furthermore,...')">Furthermore,...</span>
+      <span class="phrase" style="background:#2a0a0a;color:#ff9a9a;border-color:#dc2626;" onclick="addPhrase('round2','On the contrary,...')">On the contrary,...</span>
+    </div>
+    <div style="font-size:0.78rem;color:var(--sub);margin-top:8px;min-height:16px;" id="debate-result"></div>
+  </div>
+</div>
+
+<!-- 회화 안내 -->
+<div class="card" style="background:linear-gradient(135deg,#0d0a1e,#1a0d2e);border:1px solid #3a1a5a;">
+  <div class="sh"><div class="sh-icon">💬</div><div class="sh-title">영어 회화 훈련</div></div>
+  <div style="font-size:0.84rem;color:var(--sub);line-height:1.8;text-align:center;padding:8px 0;">
+    디베이트가 끝나면<br>
+    <strong style="color:#b48aff">ChatGPT에서 자동으로 연결</strong>됩니다.<br>
+    <span style="font-size:0.75rem;">AI 선생님과 20분 영어 회화 훈련</span>
+  </div>
+</div>
+
+<!-- 완료 -->
+<div class="complete-card" id="complete-card">
+  <div style="font-size:2.8rem;margin-bottom:10px;">🔍</div>
+  <div style="font-size:1.2rem;font-weight:900;color:#b48aff;margin-bottom:6px;">Week 1 완료!</div>
+  <div style="font-size:0.86rem;color:var(--sub);margin-bottom:16px;line-height:1.7;">셜록 홈즈 W1~W7 완료!<br>다음은 Tale of Two Cities가 시작됩니다!</div>
+  <button onclick="location.href='week07.html'" style="background:#4B1F79;color:white;border:none;border-radius:20px;padding:10px 28px;font-size:0.9rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;">Week 7 시작하기 →</button>
+</div>
+
+</main>
+
+<script>
+const gramData = {
+  g1:{tag:'G31',title:'Relative Pronoun — who',desc:'who = 사람 관계대명사\n"the old bookseller who knocked"\n= 문을 두드린 늙은 책 판매상',ex:'The bookseller who knocked was Holmes.',gnum:'G31',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g2:{tag:'G52',title:'Non-defining Relative — whose shock',desc:'whose = 소유격\n"Watson, whose shock was great"\n= 왓슨 (그의 충격이 너무 컸던)',ex:'Watson, whose shock was so great, fainted.',gnum:'G52',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g3:{tag:'G62',title:'Participle Clause — smiling',desc:'smile → smiling\n"smiling calmly" = 침착하게 웃으면서\n분사구문: 동시 동작',ex:'Holmes, smiling calmly, explained everything.',gnum:'G62',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g4:{tag:'G47',title:'Third Conditional — had not reported',desc:'If + had + p.p., would have + p.p.\n가정법 과거완료: 과거 사실의 반대\n"If they had not reported" = 보도하지 않았다면\n현실: 그들은 보도했다',ex:'"If the newspapers had not reported, men would not have relaxed."',gnum:'G47',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g5:{tag:'G52',title:'Relative Clause — whose skill',desc:'whose + 명사\n"Moran, whose skill with a rifle"\n= 모런 (그의 소총 실력이)',ex:'Colonel Moran, whose skill with a rifle was deadly.',gnum:'G52',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g6:{tag:'G47',title:'Third Conditional — had suspected',desc:'가정법 과거완료\n"If Moran had suspected" = 모런이 의심했다면\n"would have failed" = 실패했을 것이다\n과거의 반사실적 가정',ex:'"If Moran had suspected, the plan would have failed."',gnum:'G47',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'}
+};
+
+let currentGramId='';
+let xp=0;
+
+function addXP(n){
+  xp+=n;
+  document.getElementById('xp-btn').textContent='⭐ '+xp+' XP';
+  document.getElementById('prog-bar').style.width=Math.min(100,xp*2)+'%';
+  if(xp>=50&&document.getElementById('complete-card').style.display!=='block'){
+    setTimeout(()=>{
+      document.getElementById('complete-card').style.display='block';
+      document.getElementById('complete-card').scrollIntoView({behavior:'smooth'});
+    },500);
+  }
+}
+
+function speak(text){
+  if(!text)return;
+  speechSynthesis.cancel();
+  function doSpeak(){
+    const voices=speechSynthesis.getVoices();
+    const u=new SpeechSynthesisUtterance(text);
+    const prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
+    const exclude=['Alex','Fred','Daniel','Google UK English Male'];
+    const v=voices.find(v=>prefer.some(p=>v.name.includes(p))&&!exclude.some(e=>v.name.includes(e)));
+    if(v)u.voice=v;
+    u.lang='en-US';u.rate=0.85;u.pitch=1.0;u.volume=1.0;
+    speechSynthesis.speak(u);
+  }
+  if(speechSynthesis.getVoices().length>0){setTimeout(doSpeak,50);}
+  else{speechSynthesis.onvoiceschanged=()=>{setTimeout(doSpeak,50);};speechSynthesis.getVoices();}
+}
+
+function showStory(lv,btn){
+  ['a1','a2','b1'].forEach(l=>{const el=document.getElementById('sb-'+l);if(el)el.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(b=>b.className='tab-btn');
+  document.getElementById('sb-'+lv).classList.add('active');
+  btn.classList.add('act-'+lv);
+}
+function readStory(){
+  const s=document.getElementById('sb-a2');
+  if(s)speak((s.innerText||s.textContent).replace(/\s+/g,' ').trim());
+}
+function toggleKr(){
+  const kr=document.getElementById('story-kr');
+  const btn=document.getElementById('kr-btn');
+  const show=kr.style.display!=='block';
+  kr.style.display=show?'block':'none';
+  btn.textContent=show?'🇰🇷 번역 숨기기':'🇰🇷 한국어 번역 보기';
+}
+
+document.querySelectorAll('.gram').forEach(el=>{
+  el.addEventListener('click',function(e){
+    e.stopPropagation();
+    const d=gramData[this.dataset.id];if(!d)return;
+    currentGramId=this.dataset.id;
+    document.getElementById('tt-tag').textContent=d.tag;
+    document.getElementById('tt-title').textContent=d.title;
+    document.getElementById('tt-desc').textContent=d.desc;
+    document.getElementById('tt-ex').textContent=d.ex;
+    document.getElementById('tt-gram-link').textContent='📚 Grammar Base '+d.gnum+' →';
+    document.getElementById('tt-gram-link').href=d.glink;
+    const wrap=document.getElementById('tt-wrap');
+    const rect=this.getBoundingClientRect();
+    let top=rect.bottom+8,left=rect.left;
+    if(left+290>window.innerWidth)left=window.innerWidth-295;
+    if(top+200>window.innerHeight)top=rect.top-210;
+    wrap.style.top=top+'px';wrap.style.left=left+'px';
+    wrap.style.display='block';
+    document.getElementById('tt-overlay').style.display='block';
+  });
+});
+function closeTT(){
+  document.getElementById('tt-wrap').style.display='none';
+  document.getElementById('tt-overlay').style.display='none';
+}
+
+function chkFill(btn,val,ans,blId,resId){
+  btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('ok','no'));
+  const res=document.getElementById(resId);
+  if(val===ans){btn.classList.add('ok');document.getElementById(blId).textContent=val;res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(4);}
+  else{btn.classList.add('no');res.innerHTML='❌ 다시 해봐요!';res.style.color='var(--red)';}
+}
+function chkDict(inputId,ans,resId){
+  const val=document.getElementById(inputId).value.trim().toLowerCase();
+  const res=document.getElementById(resId);
+  if(val===ans.toLowerCase()){res.innerHTML='✅ 정답!';res.style.color='var(--green)';document.getElementById(inputId).style.borderColor='var(--green)';addXP(3);}
+  else{res.innerHTML='❌ 정답: <span style="color:#b48aff">'+ans+'</span>';res.style.color='var(--red)';}
+}
+function lcCheck(btn,val){
+  btn.closest('.lc-opts').querySelectorAll('.lc-opt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  document.getElementById('lc-result').textContent=val==='ok'?'✅ 정답!':'❌ 다시 들어보세요!';
+  document.getElementById('lc-result').style.color=val==='ok'?'var(--green)':'var(--red)';
+  if(val==='ok')addXP(4);
+}
+function shuffleLcOpts(){
+  document.querySelectorAll('.lc-opts').forEach(container=>{
+    const btns=Array.from(container.querySelectorAll('.lc-opt'));
+    for(let i=btns.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[btns[i],btns[j]]=[btns[j],btns[i]];}
+    btns.forEach((btn,i)=>{
+      const labels=['①','②','③'];
+      const text=btn.textContent.replace(/^[①②③]\s*/,'').trim();
+      btn.textContent=labels[i]+' '+text;
+      container.appendChild(btn);
+    });
+  });
+}
+document.addEventListener('DOMContentLoaded',shuffleLcOpts);
+
+const woState={};
+function woAdd(id,btn,word){
+  if(btn.classList.contains('used'))return;
+  btn.classList.add('used');woState[id]=woState[id]||[];woState[id].push(word);
+  const box=document.getElementById(id+'-box');
+  const chip=document.createElement('button');
+  chip.className='wo-placed';chip.textContent=word;
+  chip.onclick=()=>{woState[id]=woState[id].filter(w=>w!==word);chip.remove();btn.classList.remove('used');};
+  box.appendChild(chip);
+}
+function woCheck(id,ans,resId){
+  const res=document.getElementById(resId);
+  if((woState[id]||[]).join(' ').trim()===ans){res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(5);}
+  else{res.innerHTML='❌ 정답: <span style="color:#b48aff">'+ans+'</span>';res.style.color='var(--red)';}
+}
+function woReset(id){
+  woState[id]=[];document.getElementById(id+'-box').innerHTML='';
+  document.getElementById(id+'-pool').querySelectorAll('.wo-chip').forEach(c=>c.classList.remove('used'));
+  const r=document.getElementById('wr'+id.replace('wo',''));if(r)r.innerHTML='';
+}
+function initWo(id,words){
+  const pool=document.getElementById(id+'-pool');
+  const sh=[...words].sort(()=>Math.random()-0.5);
+  pool.innerHTML=sh.map(w=>`<button class="wo-chip" onclick="woAdd('${id}',this,'${w}')">${w}</button>`).join('');
+}
+initWo('wo1', ["If", "he", "had", "been", "dead", "the", "trap", "would", "have", "failed"]);
+initWo('wo2', ["Moran", "whose", "skill", "was", "great", "was", "still", "free"]);
+
+const matchPairs=[["deliberate", "의도적인"], ["relax", "긴장을 풀다"], ["suspect", "의심하다"], ["fury", "분노"]];
+let matchSel=null,matchDone={};
+function initMatch(){
+  const left=document.getElementById('match-left');
+  const right=document.getElementById('match-right');
+  const rs=[...matchPairs].sort(()=>Math.random()-0.5);
+  left.innerHTML=matchPairs.map(([en])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${en}</button>`).join('');
+  right.innerHTML=rs.map(([en,kr])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${kr}</button>`).join('');
+}
+function matchClick(btn,key){
+  if(btn.classList.contains('matched'))return;
+  btn.classList.remove('wrong-flash');
+  if(!matchSel){matchSel={btn,key};btn.classList.add('selected');}
+  else{
+    if(matchSel.key===key&&matchSel.btn!==btn){
+      matchSel.btn.classList.remove('selected');matchSel.btn.classList.add('matched');
+      btn.classList.add('matched');matchDone[key]=true;matchSel=null;
+      if(Object.keys(matchDone).length===matchPairs.length){
+        document.getElementById('match-result').innerHTML='🎉 모두 맞췄어요!';
+        document.getElementById('match-result').style.color='var(--green)';addXP(8);
+      }
+    }else{
+      const prev=matchSel.btn;prev.classList.remove('selected');prev.classList.add('wrong-flash');
+      btn.classList.add('wrong-flash');matchSel=null;
+      setTimeout(()=>{prev.classList.remove('wrong-flash');btn.classList.remove('wrong-flash');},500);
+    }
+  }
+}
+initMatch();
+
+function chkFD(id,ans,resId){
+  const inp=document.getElementById(id);
+  const res=document.getElementById(resId);
+  const clean=s=>s.trim().toLowerCase().replace(/[.,!?;:—]/g,'').replace(/\s+/g,' ');
+  if(clean(inp.value)===clean(ans)){
+    res.innerHTML='✅ 정답!';res.style.color='var(--green)';
+    inp.style.borderColor='var(--green)';inp.style.background='#0d1f0d';addXP(5);
+  }else{
+    res.innerHTML='❌ 정답: <span style="color:#b48aff;font-weight:800">"'+ans+'"</span>';
+    res.style.color='var(--red)';inp.style.borderColor='var(--red)';
+  }
+}
+function showQuiz(id,btn){
+  document.querySelectorAll('.quiz-set').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.qtab').forEach(b=>b.className='qtab');
+  document.getElementById(id).classList.add('active');
+  if(id==='qa1')btn.classList.add('qa1');
+  else if(id==='qa2')btn.classList.add('qa2');
+  else btn.classList.add('qb1');
+}
+function qChk(btn,val){
+  btn.closest('.quiz-opts').querySelectorAll('.qopt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  if(val==='ok')addXP(4);
+}
+function addPhrase(id,text){
+  const ta=document.getElementById(id);
+  ta.value=ta.value?ta.value+' '+text:text;
+  ta.focus();
+}
+
+function submitEssay(){
+  const c=document.getElementById('es1').value.trim();
+  const e=document.getElementById('es2').value.trim();
+  const r=document.getElementById('es3').value.trim();
+  const res=document.getElementById('essay-result');
+  if(!c||!e||!r){res.innerHTML='❗ C/E/R 세 부분을 모두 작성해주세요!';res.style.color='var(--gold)';return;}
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'중3'):'중3';
+  const essay='[C] '+c+'\n[E] '+e+'\n[R] '+r;
+  const prompt='[ESSAY] 안녕하세요! 저는 '+name+', 중학교 '+grade+'학년이에요.\nSherlock Holmes W07 CER 에세이를 썼는데 피드백 부탁드려요.\n\n'+essay;
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.innerHTML='✅ 에세이 복사 완료! ChatGPT에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
+  });
+}
+
+function sendDebate(){
+  const r1=document.getElementById('round1').value.trim();
+  const r2=document.getElementById('round2').value.trim();
+  const r3=document.getElementById('round3').value.trim();
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'중3'):'중3';
+  const prompt='[DEBATE] 안녕하세요! 저는 '+name+', 중학교 '+grade+'학년이에요.\nSherlock Holmes W1 디베이트 주제: "Governments should be allowed to fake their own actions to catch criminals."\n\n[Round 1 — Opening]\n'+(r1||'(아직 못 썼어요)')+'\n\n[Round 2 — Rebuttal]\n'+(r2||'(아직 못 썼어요)')+'\n\n[Round 3 — Closing]\n'+(r3||'(아직 못 썼어요)')+'\n\n피드백하고 AI 상대방으로 토론해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    document.getElementById('debate-result').innerHTML='✅ 복사 완료! ChatGPT에서 붙여넣기(Ctrl+V)하세요.';
+    document.getElementById('debate-result').style.color='var(--green)';
+  });
+}
+</script>
+<style>.wk-nav{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#000;border-top:1px solid rgba(201,168,76,0.2);z-index:50}.wk-nav a{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}.wk-nav a:hover{transform:translateY(-2px)}.wk-nav .wk-prev{background:#0C1428;color:#8A9AB0;border:1px solid rgba(201,168,76,0.2)}.wk-nav .wk-next{background:#C9A84C;color:#000}.wk-nav .wk-label{font-size:11px;color:#5A6A80;letter-spacing:1px}
+/* ── ChatGPT 회화 연습 버튼 ── */
+.chatgpt-practice-section {
+  margin: 40px auto 20px;
+  max-width: 860px;
+  padding: 0 20px;
+}
+.chatgpt-practice-wrap {
+  background: linear-gradient(135deg, #050e1f, #0a1628);
+  border: 2px solid rgba(0,210,255,0.4);
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.chatgpt-practice-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%,
+    rgba(0,210,255,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.chatgpt-practice-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.chatgpt-practice-desc {
+  color: #6a8fad;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.chatgpt-practice-desc strong { color: #00d2ff; }
+.chatgpt-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #00d2ff, #0055ff);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(0,210,255,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+.chatgpt-launch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(0,210,255,0.5);
+}
+.chatgpt-practice-note {
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: #3a5a7a;
+}
+
+</style>
+<div class="wk-nav"><a class="wk-prev" href="week06.html">← W6</a><span class="wk-label">WEEK 7</span><a class="wk-next" href="prestep.html">목록으로 →</a></div>
+
+<div class="chatgpt-practice-section">
+  <div class="chatgpt-practice-wrap">
+    <div class="chatgpt-practice-title">🎉 수업 완료! 이제 회화 연습!</div>
+    <div class="chatgpt-practice-desc">
+      오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 영어로 대화해보세요!<br>
+      <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
+    </div>
+    <button class="chatgpt-launch-btn" onclick="launchChatGPTPractice()">
+      🎙️ ChatGPT 회화 연습 시작
+    </button>
+    <div class="chatgpt-practice-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
+  </div>
+</div>
+
+<script>
+function getCampType() {
+  var path = window.location.pathname;
+  if (path.includes('camp-b') ||
+      path.includes('/m1/') || path.includes('/m2/') || path.includes('/m3/') ||
+      path.includes('/g1/') || path.includes('/g2/') || path.includes('/g3/')) return 'b';
+  if (path.includes('camp-c') || path.includes('mom-teacher')) return 'c';
+  return 'a';
+}
+
+function launchChatGPTPractice() {
+  // 단어 자동 수집
+  var words = [];
+  document.querySelectorAll(
+    '.word-en, .vocab-en, .key-word, [class*="word-en"], [class*="vocab"]'
+  ).forEach(function(el) {
+    var t = el.textContent.trim();
+    if (t && t.length < 30) words.push(t);
+  });
+
+  // 본문 첫 문장
+  var storyEl = document.querySelector(
+    '.story-content.active p, .reading-text p, .story p'
+  );
+  var firstLine = storyEl
+    ? storyEl.textContent.substring(0, 80) + '...'
+    : '';
+
+  var summary = [
+    '[' + document.title + ']',
+    words.length ? '배운 단어: ' + words.slice(0,8).join(', ') : '',
+    firstLine ? '오늘 이야기: ' + firstLine : '',
+    '위 내용으로 영어 회화 연습을 도와주세요!'
+  ].filter(Boolean).join('\n');
+
+  var camp = getCampType();
+
+  // cec_guide.html 경로: GitHub Pages 루트
+  var guideUrl = 'https://cecenglishcamp.github.io/cec_guide.html'
+    + '?camp=' + camp
+    + '&url=' + encodeURIComponent(window.location.href)
+    + '&summary=' + encodeURIComponent(summary);
+
+  window.location.href = guideUrl;
+}
+</script>
+
+</body>
+</html>

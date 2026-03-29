@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp B HS — W7 · The Great Gatsby</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#09080f;--card:#100f1a;--card2:#0c0b16;--border:#1e1c2e;
+  --gold:#c9a84c;--gold2:#e8c97a;--acc:#00c8ff;
+  --green:#16a34a;--red:#dc2626;--text:#e8e4d8;--sub:#6e7490;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+
+/* NAV */
+.hd{background:rgba(9,8,15,0.97);padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.hd-logo{font-family:'Cormorant Garamond',serif;font-size: 1.1rem;color:var(--text);letter-spacing:1px;}
+.hd-badge{background:#1a1428;color:var(--gold);font-size:0.65rem;font-weight:900;padding:3px 10px;border-radius:20px;border:1px solid #2a2040;letter-spacing:2px;margin-left:10px;}
+.hd-sub{font-size:0.7rem;color:var(--sub);margin-left:8px;}
+.xp-btn{background:linear-gradient(135deg,#c9a84c,#e8c97a);color:#1a1000;border:none;border-radius:20px;padding:5px 14px;font-size:0.8rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#09080f 0%,#120a1e 50%,#09080f 100%);padding:28px 16px 20px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(201,168,76,0.08) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{font-size:0.62rem;color:var(--gold);font-weight:900;letter-spacing:4px;margin-bottom:10px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size: 2.2rem;font-weight:400;color:var(--text);margin-bottom:4px;font-style:italic;}
+.hero-author{font-size:0.78rem;color:var(--sub);margin-bottom:16px;letter-spacing:1px;}
+.hero-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.hb{padding:4px 12px;border-radius:20px;font-size:0.68rem;font-weight:800;}
+
+/* KEY CARD */
+.key-card{background:linear-gradient(135deg,#0d0b18,#120a1e);border:1px solid #2a1a4a;border-radius:16px;padding:18px;margin:12px 16px 8px;}
+.key-label{font-size:0.6rem;color:var(--sub);font-weight:700;letter-spacing:3px;margin-bottom:10px;}
+.key-en{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--text);font-style:italic;margin-bottom:6px;line-height:1.5;}
+.key-kr{font-size:0.8rem;color:var(--gold);margin-bottom:14px;}
+.key-play{background:transparent;color:var(--gold);border:1px solid #3a2a5a;border-radius:25px;padding:7px 20px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+
+/* PROGRESS */
+.prog-row{display:flex;align-items:center;gap:8px;padding:8px 16px;}
+.prog-track{flex:1;background:#1a1428;border-radius:8px;height:5px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:8px;transition:width 0.5s;}
+.prog-label{font-size:0.7rem;color:var(--sub);font-weight:700;white-space:nowrap;}
+
+/* CONTAINER */
+.container{max-width:680px;margin:0 auto;padding:0 12px 80px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;}
+.sh{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sh-icon{font-size:1.05rem;}.sh-title{font-size:0.88rem;font-weight:900;color:white;}
+
+/* STORY TABS */
+.tab-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.tab-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.tab-btn.act-b1{background:#1a1428;border-color:#3a2a5a;color:var(--gold);}
+.tab-btn.act-c1{background:#0d1a0d;border-color:#1a4a1a;color:#5aff9a;}
+.listen-row{display:flex;gap:8px;margin-bottom:10px;}
+.listen-btn{background:#2a1a4a;color:var(--gold);border:none;border-radius:20px;padding:7px 16px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.stop-btn{background:var(--card2);border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:7px 12px;font-size:0.8rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.notice-box{background:#0d0b18;border-left:3px solid #3a2a5a;border-radius:0 8px 8px 0;padding:9px 14px;margin-bottom:10px;font-size:0.76rem;color:var(--sub);line-height:1.6;}
+.story-box{background:var(--card2);border-radius:10px;padding:16px;font-size:0.88rem;line-height:1.95;color:var(--text);display:none;}
+.story-box.active{display:block;}
+.story-box p{margin-bottom:12px;}
+.gram{border-bottom:2px dashed var(--gold);cursor:pointer;color:#fde68a;font-weight:700;}
+.story-kr{background:#09080f;border-left:3px solid #2a1a4a;border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.8;display:none;}
+.kr-toggle{background:transparent;border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:4px 12px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+
+/* GRAMMAR TOOLTIP */
+#tt-overlay{position:fixed;inset:0;z-index:999;display:none;}
+.tt-wrap{position:fixed;z-index:1000;display:none;}
+.tt-box{background:#12101e;border:1.5px solid var(--gold);border-radius:12px;padding:14px 16px;max-width:290px;box-shadow:0 8px 32px rgba(0,0,0,0.7);}
+.tt-tag{background:var(--gold);color:#1a1000;font-size:0.65rem;font-weight:900;padding:2px 8px;border-radius:10px;margin-bottom:8px;display:inline-block;}
+.tt-title{font-size:0.88rem;font-weight:900;color:white;margin-bottom:6px;}
+.tt-desc{font-size:0.78rem;color:var(--sub);line-height:1.6;margin-bottom:8px;white-space:pre-line;}
+.tt-ex{background:var(--bg);border-radius:6px;padding:6px 10px;font-size:0.78rem;color:var(--gold);margin-bottom:10px;font-style:italic;}
+.tt-gram-link{background:#1a0d3a;border:1px solid #3a2a5a;color:var(--gold);border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;text-decoration:none;}
+.tt-close{position:absolute;top:8px;right:10px;background:transparent;border:none;color:var(--sub);font-size:1rem;cursor:pointer;}
+
+/* VOCAB */
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.vc{background:var(--card2);border-radius:10px;padding:10px 12px;border-left:3px solid var(--gold);}
+.vc-w{font-size:0.88rem;font-weight:900;color:white;margin-bottom:2px;}
+.vc-m{font-size:0.75rem;color:var(--sub);margin-bottom:4px;}
+.vc-e{font-size:0.72rem;color:var(--gold);font-style:italic;}
+
+/* SENTENCE ANALYSIS */
+.sa-box{background:var(--card2);border-radius:12px;padding:16px;margin-bottom:12px;}
+.sa-sentence{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:14px;border-left:3px solid var(--gold);padding-left:12px;}
+.sa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.sa-item{background:var(--bg);border-radius:8px;padding:10px 12px;}
+.sa-role{font-size:0.65rem;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:4px;}
+.sa-text{font-size:0.82rem;color:var(--text);}
+.sa-note{font-size:0.72rem;color:var(--sub);margin-top:2px;}
+
+/* SENTENCE EXPANSION */
+.exp-levels{display:flex;flex-direction:column;gap:10px;}
+.exp-item{background:var(--card2);border-radius:10px;padding:12px 14px;}
+.exp-level{font-size:0.65rem;font-weight:900;letter-spacing:2px;margin-bottom:6px;}
+.exp-sentence{font-size:0.84rem;line-height:1.7;color:var(--text);}
+.exp-input{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;margin-top:8px;}
+.exp-input:focus{outline:none;border-color:var(--gold);}
+.exp-btn{background:var(--gold);color:#1a1000;border:none;border-radius:8px;padding:7px 16px;font-size:0.78rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px;}
+
+/* SUNEUNG */
+.sn-passage{background:var(--card2);border-radius:10px;padding:14px;font-size:0.86rem;line-height:1.9;margin-bottom:14px;color:var(--text);border-left:3px solid var(--gold);}
+.sn-blank{display:inline-block;border-bottom:2px solid var(--gold);min-width:80px;text-align:center;color:var(--gold);font-weight:900;}
+.sn-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.sn-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.sn-opt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.sn-opt.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.sn-result{font-size:0.84rem;font-weight:700;min-height:18px;}
+.sn-explain{background:var(--card2);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:12px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.7;display:none;}
+.sn-explain.show{display:block;}
+.sn-explain strong{color:var(--gold);}
+.ai-btn{background:transparent;border:1px solid #2a1a4a;color:var(--gold);border-radius:20px;padding:6px 16px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+
+/* FILL */
+.fill-sent{font-size:0.9rem;font-weight:700;line-height:1.7;margin-bottom:12px;color:white;}
+.blank-span{display:inline-block;min-width:70px;border-bottom:2px solid var(--gold);color:var(--gold);text-align:center;font-weight:900;}
+.choices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.cbtn{padding:7px 16px;background:var(--card2);border:1.5px solid var(--border);border-radius:20px;color:var(--text);font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.cbtn.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.cbtn.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.fill-res{font-size:0.82rem;font-weight:700;min-height:18px;}
+
+/* DICT */
+.dict-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:8px;}
+.dict-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.dict-play{background:#2a1a4a;color:var(--gold);border:none;border-radius:50%;width:36px;height:36px;font-size:0.9rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.dict-label{font-size:0.75rem;color:var(--sub);font-weight:700;}
+.dict-hint{font-size:0.78rem;color:var(--gold);font-style:italic;}
+.dict-input-row{display:flex;gap:8px;}
+.dict-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.dict-input:focus{outline:none;border-color:var(--gold);}
+.dict-btn{background:#2a1a4a;color:var(--gold);border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.dict-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+
+/* LC */
+.lc-play-btn{background:#2a1a4a;color:var(--gold);border:none;border-radius:25px;padding:9px 22px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;}
+.lc-opts{display:flex;flex-direction:column;gap:8px;}
+.lc-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.lc-opt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.lc-opt.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.lc-result{margin-top:8px;font-size:0.84rem;font-weight:700;min-height:18px;}
+
+/* MATCH */
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.match-col{display:flex;flex-direction:column;gap:6px;}
+.match-item{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;color:var(--text);transition:all 0.15s;}
+.match-item.selected{border-color:var(--gold);background:#1a1428;color:var(--gold);}
+.match-item.matched{border-color:var(--green);background:#0d2a1a;color:#5aff9a;cursor:default;}
+.match-item.wrong-flash{border-color:var(--red);background:#2a0d0d;}
+.match-result{font-size:0.84rem;font-weight:700;min-height:18px;text-align:center;}
+
+/* DICTATION */
+.fd-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;}
+.fd-level-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fd-badge{color:#1a1000;font-size:0.7rem;font-weight:900;padding:2px 10px;border-radius:20px;}
+.fd-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.fd-play{color:#1a1000;border:none;border-radius:20px;padding:6px 14px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-hints{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.fd-hint-label{font-size:0.7rem;color:var(--sub);font-weight:700;}
+.fd-hint-tag{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid;}
+.fd-input-row{display:flex;gap:8px;}
+.fd-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.fd-input:focus{outline:none;border-color:var(--gold);}
+.fd-check{color:#1a1000;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+
+/* QUIZ */
+.quiz-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.qtab{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.qb1{background:#1a1428;border-color:#3a2a5a;color:var(--gold);}
+.qc1{background:#0d1a0d;border-color:#1a4a1a;color:#5aff9a;}
+.quiz-set{display:none;}.quiz-set.active{display:block;}
+.quiz-item{margin-bottom:14px;}
+.quiz-q{font-size:0.86rem;font-weight:800;color:white;margin-bottom:8px;}
+.quiz-opts{display:flex;flex-direction:column;gap:6px;}
+.qopt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.qopt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.qopt.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+
+/* ESSAY */
+.essay-struct{background:var(--bg);border-radius:10px;padding:14px;margin-bottom:14px;}
+.essay-struct-title{font-size:0.78rem;font-weight:900;color:var(--gold);margin-bottom:10px;}
+.ep{background:var(--card);border-radius:8px;padding:10px;margin-bottom:6px;}
+.ep-num{font-size:0.68rem;font-weight:900;margin-bottom:3px;}
+.ep-hint{font-size:0.73rem;color:var(--sub);}
+.essay-line{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.essay-num{font-size:0.7rem;font-weight:900;color:var(--gold);width:22px;flex-shrink:0;padding-top:10px;}
+.essay-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.essay-input:focus{outline:none;border-color:var(--gold);}
+.essay-submit{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1000;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:4px;}
+
+/* DEBATE */
+.debate-box{background:linear-gradient(135deg,#0d0b18,#120a1e);border-radius:12px;padding:14px;border:1px solid #2a1a4a;}
+.debate-topic{background:#09080f;border-radius:10px;padding:12px;text-align:center;margin-bottom:12px;border:1px solid #3a2a5a;}
+.debate-topic-en{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;font-weight:500;color:white;margin-bottom:4px;}
+.debate-topic-kr{font-size:0.78rem;color:var(--gold);}
+.debate-round{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;border-left:3px solid var(--gold);}
+.debate-round-label{font-size:0.7rem;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:6px;}
+.debate-textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;resize:none;outline:none;line-height:1.6;margin-top:4px;}
+.debate-textarea:focus{border-color:var(--gold);}
+.phrase-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.phrase{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:0.75rem;font-weight:700;cursor:pointer;color:var(--sub);}
+.owui-btn{background:linear-gradient(135deg,#2a1a4a,#1a0d3a);color:var(--gold);border:1px solid #3a2a5a;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:8px;}
+
+/* COMPLETE */
+.complete-card{background:linear-gradient(135deg,#0d0b18,#120a1e);border:2px solid var(--gold);border-radius:20px;padding:24px;text-align:center;margin-bottom:20px;display:none;}
+</style>
+
+  <meta name="description" content="CEC English Camp B hs Week 06 — 중고등 영어 수업">
+  <meta name="keywords" content="중학영어,고등영어,CEC English Camp B">
+  <meta property="og:title" content="Camp B hs W07 | CEC English Camp">
+  <meta name="robots" content="index, follow">
+</head>
+<body data-camp="b" data-grade="hs" data-week="06">
+
+<div id="tt-overlay" onclick="closeTT()"></div>
+<div class="tt-wrap" id="tt-wrap">
+  <div class="tt-box" id="tt-box">
+    <button class="tt-close" onclick="closeTT()">✕</button>
+    <div class="tt-tag" id="tt-tag"></div>
+    <div class="tt-title" id="tt-title"></div>
+    <div class="tt-desc" id="tt-desc"></div>
+    <div class="tt-ex" id="tt-ex"></div>
+    <div><a class="tt-gram-link" id="tt-gram-link" href="https://cecenglishcamp.github.io/GrammarBaseCamp/index.html" target="_blank"></a></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<header class="hd" role="banner">
+  <div style="display:flex;align-items:center;">
+    <div class="hd-logo">CEC Camp B</div>
+    <div class="hd-badge">HIGH SCHOOL</div>
+    <div class="hd-sub" style="margin-left:8px;">고1 · W07 · The Great Gatsby</div>
+  </div>
+  <button class="xp-btn" id="xp-btn">⭐ 0 XP</button>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">WEEK 06 / 36 · HIGH SCHOOL 1</div>
+  <div class="hero-title">The Great Gatsby</div>
+  <div class="hero-author">F. Scott Fitzgerald · The Dream and the Lie</div>
+  <div class="hero-badges">
+    <span class="hb" style="background:#1a1428;color:var(--gold);border:1px solid #3a2a5a;">G63 분사구문 심화</span>
+    <span class="hb" style="background:#1a1428;color:var(--gold);border:1px solid #3a2a5a;">G71 관계절 심화</span>
+    <span class="hb" style="background:#1a1428;color:var(--gold);border:1px solid #3a2a5a;">수능 빈칸 추론</span>
+    <span class="hb" style="background:#0d1a0d;color:#5aff9a;border:1px solid #1a4a1a;">🎯 B1~C1</span>
+    <span class="hb" style="background:#1a1428;color:var(--gold);border:1px solid #3a2a5a;">⏱ W1~W7</span>
+  </div>
+</div>
+
+<!-- KEY SENTENCE -->
+<div class="key-card">
+  <div class="key-label">KEY EXPRESSION · 이번 주 핵심 표현</div>
+  <div class="key-en">"So we beat on, boats against the current, borne back ceaselessly into the past."</div>
+  <div class="key-kr">그렇게 우리는 계속 나아간다, 조류를 거스르는 배처럼, 끊임없이 과거로 떠밀려.</div>
+  <button class="key-play" data-speak="So we beat on, boats against the current, borne back ceaselessly into the past." onclick="speak(this.dataset.speak)">▶ 발음 듣기</button>
+</div>
+
+<!-- PROGRESS -->
+<div class="prog-row">
+  <div class="prog-track"><div class="prog-bar" id="prog-bar" style="width:18%;"></div></div>
+  <div class="prog-label">W7 / 36</div>
+</div>
+
+<main class="container" role="main">
+
+<!-- ① 지문 읽기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📖</div><div class="sh-title">지문 읽기</div></div>
+  <div class="tab-row">
+    <button class="tab-btn act-b1" onclick="showStory('b1',this)">🟡 B1 ★ 기준</button>
+    <button class="tab-btn" onclick="showStory('c1',this)">🟢 C1 심화</button>
+  </div>
+  <div class="listen-row">
+    <button class="listen-btn" onclick="readStory()">🔊 전체 듣기</button>
+    <button class="stop-btn" onclick="speechSynthesis.cancel()">⏹ 정지</button>
+  </div>
+  <div class="notice-box">🔊 <strong style="color:var(--gold)">B1 기준</strong>으로 읽어드려요. C1은 수능 실전 수준이에요.</div>
+
+  <div id="sb-b1" class="story-box active">
+    <p>Tom confronted Gatsby in a hotel room in New York. He demanded to know <span class="gram" data-id="g1">where Gatsby's money had really come from</span>. Gatsby could not answer well. Daisy began to pull away.</p>
+    <p>On the drive home, Daisy was at the wheel of Gatsby's car <span class="gram" data-id="g2">when it struck Myrtle Wilson in the Valley of Ashes</span>. Myrtle was killed instantly. Gatsby told Nick he would protect Daisy.</p>
+    <p>He stood outside her house all night, <span class="gram" data-id="g3">watching to make sure she was safe</span>. But Daisy never came out. She and Tom sat together in the kitchen, eating cold chicken, as though nothing had happened.</p>
+    <p>Nick understood then that <span class="gram" data-id="g4">Gatsby's dream was not really about Daisy at all</span>. It was about the belief that you could reach across time, undo the past, and start again.</p>
+  </div>
+
+  <div id="sb-c1" class="story-box">
+    <p>The novel's final movement dismantles the dream with precise cruelty. Gatsby's fortune, <span class="gram" data-id="g5">built on illegal means, cannot survive scrutiny</span>. Daisy, given the choice, retreats without hesitation into the safety of old money.</p>
+    <p>And Gatsby — who is, Nick insists, worth the whole damned bunch of them — is left watching a dark window, still believing.</p>
+    <p>Nick's final vision of Gatsby reaching toward the green light becomes the novel's defining image: <span class="gram" data-id="g6">the boats against the current, borne back ceaselessly into the past</span>. It is both Gatsby's tragedy and America's — the dream that is always just ahead, always sufficient to justify the reaching, and always, in the end, already gone.</p>
+  </div>
+
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;">
+    <button class="kr-toggle" onclick="toggleKr()" id="kr-btn">🇰🇷 한국어 번역 보기</button>
+  </div>
+  <div class="story-kr" id="story-kr">
+    톰은 뉴욕 호텔 방에서 개츠비를 추궁했어요. 데이지는 물러서기 시작했어요. 귀가 길에 데이지가 개츠비의 차를 운전하다가 머틀을 치었어요. 개츠비는 닉에게 데이지를 보호할 것이라고 말했어요.<br><br>그는 밤새 그녀의 집 밖에 서 있었어요. 하지만 데이지는 나오지 않았어요. 닉은 개츠비의 꿈이 사실 데이지에 관한 것이 전혀 아니었음을 이해했어요.
+  </div>
+</div>
+
+<!-- ② 핵심 표현 분석 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔑</div><div class="sh-title">핵심 표현 분석</div></div>
+  <div class="sa-box">
+    <div style="font-size:0.75rem;color:var(--gold);font-weight:900;margin-bottom:8px;">이번 주 KEY EXPRESSION</div>
+    <div class="sa-sentence">"So we beat on, boats against the current, borne back ceaselessly into the past."</div>
+    <div style="font-size:0.8rem;color:var(--sub);line-height:1.7;margin-bottom:12px;">
+      이 문장은 단순한 물리적 동작이 아니에요.<br>
+      <strong style="color:var(--gold)">beat on</strong> = 계속 나아가다 → 인간의 노력과 의지<br>
+      <strong style="color:var(--gold)">boats against the current</strong> = 조류를 거스르는 배 → 시간의 불가역성<br>
+      <strong style="color:var(--gold)">borne back ceaselessly</strong> = 끊임없이 밀려 돌아가다 → 아메리칸 드림의 역설
+    </div>
+    <div style="font-size:0.78rem;color:var(--sub);">💡 이 표현을 에세이 thesis와 디베이트 opening에서 직접 써보세요.</div>
+  </div>
+</div>
+
+<!-- ③ 문장 구조 분석 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🔍</div><div class="sh-title">문장 구조 분석 → 재생산</div></div>
+  <div style="font-size:0.78rem;color:var(--sub);margin-bottom:12px;line-height:1.6;">
+    구조 분석은 해석이 목적이 아니에요.<br>
+    <strong style="color:var(--gold)">이해 → 구조 추출 → 내 문장으로 재생산</strong>하는 것이 목표예요.
+  </div>
+
+  <!-- STEP 1 -->
+  <div style="background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;border-left:3px solid var(--gold);">
+    <div style="font-size:0.65rem;font-weight:900;color:var(--gold);letter-spacing:3px;margin-bottom:10px;">STEP 1 — 분석 (Analyse)</div>
+    <div class="sa-sentence">"Gatsby believed in the green light, the orgastic future that year by year recedes before us."</div>
+    <div class="sa-grid" style="margin-top:10px;">
+      <div class="sa-item">
+        <div class="sa-role">주어</div>
+        <div class="sa-text">His arm</div>
+        <div class="sa-note">신체 부위로 감정을 표현</div>
+      </div>
+      <div class="sa-item">
+        <div class="sa-role">동사 (수동태)</div>
+        <div class="sa-text">was stretched out</div>
+        <div class="sa-note">뻗어진 상태 — 의지가 아닌 욕망</div>
+      </div>
+      <div class="sa-item">
+        <div class="sa-role">연결어</div>
+        <div class="sa-text">as though</div>
+        <div class="sa-note">마치 ~인 것처럼 (가정법)</div>
+      </div>
+      <div class="sa-item">
+        <div class="sa-role">가정절</div>
+        <div class="sa-text">he was trying to touch something far away</div>
+        <div class="sa-note">불가능한 시도 → 희망과 절망</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:0.76rem;color:var(--sub);line-height:1.7;">
+      💡 <strong style="color:var(--gold)">수능 어법 포인트:</strong> "as though + 가정법 과거"<br>
+      격식: "as though he <strong style="color:var(--gold)">were</strong> trying" / 구어: "as though he <strong style="color:var(--gold)">was</strong> trying"
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div style="background:var(--card2);border-radius:12px;padding:14px;margin-bottom:10px;border-left:3px solid #7ab3ff;">
+    <div style="font-size:0.65rem;font-weight:900;color:#7ab3ff;letter-spacing:3px;margin-bottom:10px;">STEP 2 — 구조 추출 (Extract)</div>
+    <div style="font-size:0.82rem;color:var(--text);line-height:1.8;margin-bottom:8px;">
+      이 문장의 구조를 공식으로 추출하면:
+    </div>
+    <div style="background:var(--bg);border-radius:8px;padding:12px;font-size:0.84rem;color:#7ab3ff;font-family:monospace;line-height:2;">
+      [주어] + was + [과거분사],<br>
+      as though + [주어] + was + [동사-ing] + [목적어/부사]
+    </div>
+    <div style="margin-top:10px;font-size:0.76rem;color:var(--sub);line-height:1.7;">
+      이 구조의 핵심: <strong style="color:#7ab3ff;">수동태 상태 + 가정법 비교</strong><br>
+      → 의도적 행동이 아닌 <strong style="color:#7ab3ff;">욕망의 상태</strong>를 표현할 때 사용
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div style="background:var(--card2);border-radius:12px;padding:14px;border-left:3px solid #5aff9a;">
+    <div style="font-size:0.65rem;font-weight:900;color:#5aff9a;letter-spacing:3px;margin-bottom:10px;">STEP 3 — 재생산 (Reproduce)</div>
+    <div style="font-size:0.8rem;color:var(--sub);margin-bottom:8px;">같은 구조로 내 문장을 만들어보세요.</div>
+    <div style="background:var(--bg);border-radius:8px;padding:10px;margin-bottom:10px;font-size:0.8rem;color:#5aff9a;line-height:1.7;">
+      예시: "Her eyes were fixed on the door,<br>
+      as though she was waiting for someone who would never come."
+    </div>
+    <div style="font-size:0.78rem;color:var(--gold);margin-bottom:6px;font-weight:900;">✏️ 직접 써보기:</div>
+    <textarea class="debate-textarea" id="reproduce-input" rows="3" placeholder="[주어] was [과거분사], as though [주어] was [동사-ing]..."></textarea>
+    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+      <div style="font-size:0.72rem;color:var(--sub);padding:8px 0;">→ 에세이 thesis에 이 구조를 활용하세요!</div>
+    </div>
+    <div id="reproduce-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
+  </div>
+</div>
+
+<!-- ④ 문장 확장 훈련 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">문장 확장 훈련</div></div>
+  <div style="font-size:0.78rem;color:var(--sub);margin-bottom:12px;">짧은 문장을 단계적으로 확장해보세요.</div>
+  <div class="exp-levels">
+    <div class="exp-item">
+      <div class="exp-level" style="color:#7ab3ff;">LEVEL 1 — A2</div>
+      <div class="exp-sentence">Gatsby looked at the green light.</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-level" style="color:var(--gold);">LEVEL 2 — B1 ★</div>
+      <div class="exp-sentence">Gatsby stood alone at the water's edge, reaching toward the green light across the bay.</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-level" style="color:#5aff9a;">LEVEL 3 — C1</div>
+      <div class="exp-sentence">Every night, Gatsby stood at the edge of the dark water, his arm outstretched toward the green light — that small, distant pulse of hope which represented not merely Daisy, but the belief that the past could be reclaimed and time itself reversed.</div>
+    </div>
+  </div>
+  <div style="margin-top:14px;">
+    <div style="font-size:0.78rem;color:var(--gold);font-weight:900;margin-bottom:8px;">✏️ 직접 써보기 — B1 수준으로 확장하세요:</div>
+    <div style="font-size:0.8rem;color:var(--sub);margin-bottom:6px;">시작 문장: "Nick watched Gatsby."</div>
+    <textarea class="debate-textarea" id="expand-input" rows="3" placeholder="Nick watched Gatsby standing alone, reaching toward..."></textarea>
+    <div id="expand-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
+  </div>
+</div>
+
+<!-- ⑤ 단어 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📝</div><div class="sh-title">수능 핵심 단어</div></div>
+  <div class="vocab-grid">
+    <div class="vc"><div class="vc-w">confront </div><div class="vc-m">맞서다, 직면하다</div><div class="vc-e">"Tom confronted Gatsby in the hotel"</div></div>
+    <div class="vc"><div class="vc-w">scrutiny </div><div class="vc-m">면밀한 조사</div><div class="vc-e">"cannot survive scrutiny"</div></div>
+    <div class="vc"><div class="vc-w">dismantle </div><div class="vc-m">해체하다</div><div class="vc-e">"dismantles the dream with cruelty"</div></div>
+    <div class="vc"><div class="vc-w">ceaselessly </div><div class="vc-m">끊임없이</div><div class="vc-e">"borne back ceaselessly into the past"</div></div>
+    <div class="vc"><div class="vc-w">recede </div><div class="vc-m">물러나다, 멀어지다</div><div class="vc-e">"the future that year by year recedes"</div></div>
+    <div class="vc"><div class="vc-w">justify </div><div class="vc-m">정당화하다</div><div class="vc-e">"sufficient to justify the reaching"</div></div>
+  </div>
+</div>
+
+<!-- ⑥ 수능 문제 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">수능 유형 — 빈칸 추론</div></div>
+  <div style="font-size:0.72rem;color:var(--gold);font-weight:900;letter-spacing:2px;margin-bottom:10px;">29번 유형</div>
+  <div class="sn-passage">
+    Gatsby believed in the green light, his arm stretched toward a green light across the bay. Gatsby had built his entire life around this moment — the parties, the mansion, the wealth — all of it directed toward one small point of light. Nick eventually understood that the green light was not really about Daisy. It was about the belief that the past could be recovered, that time itself could be reversed. This is why Fitzgerald calls Gatsby "great" despite his flaws: his capacity for hope was <span class="sn-blank" id="sn-blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> in its intensity, if not in its wisdom.
+  </div>
+  <div class="sn-opts" id="sn-opts">
+    <button class="sn-opt" data-correct="false" onclick="snCheck(this,false)">① realistic and carefully measured</button>
+    <button class="sn-opt" data-correct="false" onclick="snCheck(this,false)">② modest and socially appropriate</button>
+    <button class="sn-opt" data-correct="true" onclick="snCheck(this,true)">③ the impossibility of escaping the past while still reaching for the future</button>
+    <button class="sn-opt" data-correct="false" onclick="snCheck(this,false)">④ inherited from his privileged background</button>
+    <button class="sn-opt" data-correct="false" onclick="snCheck(this,false)">⑤ limited by his awareness of reality</button>
+  </div>
+  <div class="sn-result" id="sn-result"></div>
+  <div class="sn-explain" id="sn-explain">
+    <strong>정답 ③ — the impossibility of escaping the past while still reaching for the future</strong><br><br>
+    <strong>핵심 구조:</strong> "great despite his flaws" → 결점에도 불구하고 위대함<br>
+    "if not in its wisdom" → 지혜롭지는 않지만<br><br>
+    빈칸 = 지혜롭지는 않지만 그 강도에서는 위대한 것<br>
+    → <strong style="color:var(--gold);">"the impossibility of escaping the past while still reaching for the future"</strong> (비범하고 거의 비이성적인)<br><br>
+    <strong>오답 분석:</strong><br>
+    ① 현실적이고 신중 → 개츠비와 정반대<br>
+    ② 겸손하고 적절 → 개츠비의 희망은 과도함<br>
+    ④ 특권 배경에서 물려받은 → 개츠비는 자수성가<br>
+    ⑤ 현실 인식으로 제한 → 개츠비는 현실을 무시함
+  </div>
+  <button class="ai-btn" id="ai-explain-btn" style="display:none;" onclick="sendToAI()">🤖 AI에게 오답 분석 요청 ↗</button>
+</div>
+
+<!-- ⑦ 빈칸 채우기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">빈칸 채우기</div></div>
+  <div class="fill-sent">Gatsby's fortune could not survive <span class="blank-span" id="bl1">&nbsp;&nbsp;&nbsp;&nbsp;</span>.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'scrutiny','scrutiny','bl1','fr1')">scrutiny</button>
+    <button class="cbtn" onclick="chkFill(this,'success','scrutiny','bl1','fr1')">success</button>
+    <button class="cbtn" onclick="chkFill(this,'celebration','scrutiny','bl1','fr1')">celebration</button>
+  </div>
+  <div class="fill-res" id="fr1"></div>
+  <br>
+  <div class="fill-sent">The future <span class="blank-span" id="bl2">&nbsp;&nbsp;&nbsp;&nbsp;</span> before us year by year.</div>
+  <div class="choices">
+    <button class="cbtn" onclick="chkFill(this,'recedes','recedes','bl2','fr2')">recedes</button>
+    <button class="cbtn" onclick="chkFill(this,'advances','recedes','bl2','fr2')">advances</button>
+    <button class="cbtn" onclick="chkFill(this,'remains','recedes','bl2','fr2')">remains</button>
+  </div>
+  <div class="fill-res" id="fr2"></div>
+  <br>
+
+</div>
+
+<!-- ⑧ 받아쓰기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🎧</div><div class="sh-title">단어 받아쓰기</div></div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="Tom confronted Gatsby about his illegal past." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"Tom ___ Gatsby about his illegal past."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di1" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di1','confronted','dr1')">
+      <button class="dict-btn" onclick="chkDict('di1','confronted','dr1')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr1"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="The dream recedes before us ceaselessly." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"The dream ___ before us ceaselessly."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di2" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di2','recedes','dr2')">
+      <button class="dict-btn" onclick="chkDict('di2','recedes','dr2')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr2"></div>
+  </div>
+  <div class="dict-item">
+    <div class="dict-row">
+      <button class="dict-play" data-speak="Nothing could justify the way they behaved." onclick="speak(this.dataset.speak)">▶</button>
+      <div><div class="dict-label">문장</div><div class="dict-hint">"Nothing could ___ the way they behaved."</div></div>
+    </div>
+    <div class="dict-input-row">
+      <input class="dict-input" id="di3" placeholder="단어를 입력하세요..." onkeydown="if(event.key==='Enter')chkDict('di3','justify','dr3')">
+      <button class="dict-btn" onclick="chkDict('di3','justify','dr3')">확인 ✓</button>
+    </div>
+    <div class="dict-result" id="dr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑨ 짝맞추기 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">🃏</div><div class="sh-title">짝맞추기</div></div>
+  <div class="match-grid">
+    <div class="match-col" id="match-left"></div>
+    <div class="match-col" id="match-right"></div>
+  </div>
+  <div class="match-result" id="match-result"></div>
+</div>
+
+<!-- ⑩ 받아쓰기 도전 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✍️</div><div class="sh-title">받아쓰기 도전!</div></div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:var(--gold);color:#1a1000;">B1</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:var(--gold);color:#1a1000;" data-speak="Gatsby stood outside watching to make sure she was safe." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:var(--gold);border-color:var(--gold);background:#1a1000;">"stood outside"</span>
+        <span class="fd-hint-tag" style="color:var(--gold);border-color:var(--gold);background:#1a1000;">"make sure"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd1" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd1','Gatsby stood outside watching to make sure she was safe.','fdr1')">
+      <button class="fd-check" style="background:var(--gold);color:#1a1000;" onclick="chkFD('fd1','Gatsby stood outside watching to make sure she was safe.','fdr1')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr1"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#c9a84c;color:#1a1000;">B2</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#c9a84c;color:#1a1000;" data-speak="The dream dismantles itself when it finally meets reality." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#c9a84c;border-color:#c9a84c;background:#1a1000;">"dismantles"</span>
+        <span class="fd-hint-tag" style="color:#c9a84c;border-color:#c9a84c;background:#1a1000;">"meets reality"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd2" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd2','The dream dismantles itself when it finally meets reality.','fdr2')">
+      <button class="fd-check" style="background:#c9a84c;color:#1a1000;" onclick="chkFD('fd2','The dream dismantles itself when it finally meets reality.','fdr2')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr2"></div>
+  </div>
+  <div class="fd-item">
+    <div class="fd-level-row"><span class="fd-badge" style="background:#5aff9a;color:#0d1a0d;">C1</span><span style="font-size:0.75rem;color:var(--sub);font-weight:600;">문장</span></div>
+    <div class="fd-row">
+      <button class="fd-play" style="background:#5aff9a;color:#0d1a0d;" data-speak="We beat on ceaselessly, borne back into the past we cannot escape." onclick="speak(this.dataset.speak)">▶ 듣기</button>
+      <div class="fd-hints"><span class="fd-hint-label">힌트:</span>
+        <span class="fd-hint-tag" style="color:#5aff9a;border-color:#5aff9a;background:#1a1000;">"beat on"</span>
+        <span class="fd-hint-tag" style="color:#5aff9a;border-color:#5aff9a;background:#1a1000;">"borne back"</span>
+      </div>
+    </div>
+    <div class="fd-input-row">
+      <input id="fd3" class="fd-input" placeholder="전체 문장을 입력하세요..." onkeydown="if(event.key==='Enter')chkFD('fd3','We beat on ceaselessly, borne back into the past we cannot escape.','fdr3')">
+      <button class="fd-check" style="background:#5aff9a;color:#0d1a0d;" onclick="chkFD('fd3','We beat on ceaselessly, borne back into the past we cannot escape.','fdr3')">확인 ✓</button>
+    </div>
+    <div class="fd-result" id="fdr3"></div>
+  </div>
+
+</div>
+
+<!-- ⑪ 이해 문제 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">📋</div><div class="sh-title">이해 문제</div></div>
+  <div class="quiz-tabs">
+    <button class="qtab qb1" onclick="showQuiz('qb1',this)">🟡 B1</button>
+    <button class="qtab" onclick="showQuiz('qc1',this)">🟢 C1 심화</button>
+  </div>
+  <div id="qb1" class="quiz-set active">
+    <div class="quiz-item"><div class="quiz-q">Q1. What does the green light most likely symbolize?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) A warning from across the bay</button>
+        <button class="qopt" onclick="qChk(this,'no')">b) The wealth Gatsby had already achieved</button>
+        <button class="qopt" onclick="qChk(this,'ok')">c) An impossible dream that recedes as you approach</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. Why does Gatsby throw lavish parties?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) He genuinely enjoys entertaining guests</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) The parties are a means to an end — to attract Daisy</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) He wants to show West Egg society his wealth</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q3. "as though he was trying to touch something very far away" — what does this tell us?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) Gatsby is physically trying to reach the opposite shore</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) His desire is intense but the goal is out of reach — the gesture embodies hopeful futility</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) Nick misunderstands what Gatsby is doing</button>
+      </div>
+    </div>
+  </div>
+  <div id="qc1" class="quiz-set">
+    <div class="quiz-item"><div class="quiz-q">Q1. Fitzgerald describes West Egg as "new money — loud, ambitious, and slightly embarrassing." What does this distinction reveal about American class structure?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'no')">a) America is a true meritocracy where money alone determines status</button>
+        <button class="qopt" onclick="qChk(this,'ok')">b) Wealth without lineage is socially insufficient — old money carries cultural authority that new money cannot purchase</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) East Egg residents are simply more intelligent than those in West Egg</button>
+      </div>
+    </div>
+    <div class="quiz-item"><div class="quiz-q">Q2. "The idea that the past could be recovered, that time moved in a circle rather than a line." What is the fundamental flaw in Gatsby's worldview?</div>
+      <div class="quiz-opts">
+        <button class="qopt" onclick="qChk(this,'ok')">b) Time is irreversible — Gatsby's project of recovering the past is structurally impossible, making his greatness inseparable from his delusion</button>
+        <button class="qopt" onclick="qChk(this,'no')">a) Gatsby lacks the intelligence to understand that Daisy has changed</button>
+        <button class="qopt" onclick="qChk(this,'no')">c) His mistake is financial — he should have earned his money legally</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑫ 에세이 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">✏️</div><div class="sh-title">에세이 쓰기 — 5단락 논증</div></div>
+  <div class="essay-struct">
+    <div class="essay-struct-title">📌 고등학교 에세이 구조 (5단락)</div>
+    <div class="ep"><div class="ep-num" style="color:#5aff9a;">① Hook + Thesis</div><div class="ep-hint">예) "Gatsby's reach toward the green light is one of literature's most powerful images of human longing. I argue that..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:#7ab3ff;">② 근거 1 + 텍스트 근거</div><div class="ep-hint">예) "First, Fitzgerald shows that Gatsby's dream gives his life purpose... The text states..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:#7ab3ff;">③ 근거 2 + 텍스트 근거</div><div class="ep-hint">예) "Furthermore, the green light represents something beyond Daisy..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:#b48aff;">④ 반론 + 재반박</div><div class="ep-hint">예) "Some argue that Gatsby is simply delusional. However, this overlooks..."</div></div>
+    <div class="ep"><div class="ep-num" style="color:var(--gold);">⑤ 결론 + 확장</div><div class="ep-hint">예) "In conclusion, Gatsby's impossible dream is not foolish but fundamentally human..."</div></div>
+  </div>
+  <div style="font-size:0.84rem;font-weight:700;color:white;margin-bottom:12px;">💬 주제: <strong>"Is the American Dream a source of hope or a mechanism of self-destruction?"</strong></div>
+  <div class="essay-line"><span class="essay-num">①</span><input class="essay-input" id="es1" placeholder="Hook + Thesis: I argue that..."></div>
+  <div class="essay-line"><span class="essay-num">②</span><input class="essay-input" id="es2" placeholder="First, Fitzgerald shows that..."></div>
+  <div class="essay-line"><span class="essay-num">③</span><input class="essay-input" id="es3" placeholder="Furthermore,..."></div>
+  <div class="essay-line"><span class="essay-num">④</span><input class="essay-input" id="es4" placeholder="Some argue that... However,..."></div>
+  <div class="essay-line"><span class="essay-num">⑤</span><input class="essay-input" id="es5" placeholder="In conclusion,..."></div>
+  <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
+</div>
+
+<!-- ⑬ 디베이트 -->
+<div class="card">
+  <div class="sh"><div class="sh-icon">⚖️</div><div class="sh-title">디베이트 — 정식 3라운드</div></div>
+  <div class="debate-box">
+    <div class="debate-topic">
+      <div class="debate-topic-en">"Gatsby is "great" despite his flaws — his capacity for hope makes him worth admiring."</div>
+      <div class="debate-topic-kr">개츠비는 결점에도 불구하고 "위대하다" — 희망에 대한 그의 능력은 그를 존경할 만하게 한다.</div>
+    </div>
+    <div class="debate-round">
+      <div class="debate-round-label">🎤 ROUND 1 — OPENING STATEMENT</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">내 입장과 핵심 논거 2가지를 제시하세요. 핵심 표현을 활용하세요.</div>
+      <textarea class="debate-textarea" id="round1" rows="4" placeholder='예) "I argue that reaching for an impossible dream is noble because... Like Gatsby, who reached toward the green light..."'></textarea>
+    </div>
+    <div class="debate-round">
+      <div class="debate-round-label">⚔️ ROUND 2 — REBUTTAL</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">상대방 논리를 인정하면서 더 강하게 반박하세요.</div>
+      <textarea class="debate-textarea" id="round2" rows="4" placeholder="예) I understand that... However, this overlooks the fact that..."></textarea>
+    </div>
+    <div class="debate-round">
+      <div class="debate-round-label">🏁 ROUND 3 — CLOSING</div>
+      <div style="font-size:0.75rem;color:var(--sub);margin-bottom:6px;">핵심 논거를 강화하고 마무리하세요.</div>
+      <textarea class="debate-textarea" id="round3" rows="4" placeholder="예) In conclusion, I maintain that... because..."></textarea>
+    </div>
+    <div style="font-size:0.75rem;font-weight:900;color:var(--gold);margin-bottom:6px;margin-top:4px;">💡 유용한 표현</div>
+    <div class="phrase-row">
+      <span class="phrase" style="background:#1a1428;color:var(--gold);border-color:#3a2a5a;" onclick="addPhrase('round1','I argue that...')">I argue that...</span>
+      <span class="phrase" style="background:#1a1428;color:var(--gold);border-color:#3a2a5a;" onclick="addPhrase('round1','The text suggests that...')">The text suggests...</span>
+      <span class="phrase" style="background:#1a1428;color:var(--gold);border-color:#3a2a5a;" onclick="addPhrase('round2','I concede that... however...')">I concede that...</span>
+      <span class="phrase" style="background:#1a1428;color:var(--gold);border-color:#3a2a5a;" onclick="addPhrase('round2','This overlooks the fact that...')">This overlooks...</span>
+      <span class="phrase" style="background:#1a1428;color:var(--gold);border-color:#3a2a5a;" onclick="addPhrase('round3','I maintain that...')">I maintain that...</span>
+      <span class="phrase" style="background:#1a1428;color:var(--gold);border-color:#3a2a5a;" onclick="addPhrase('round3','Ultimately,...')">Ultimately,...</span>
+    </div>
+    <div style="font-size:0.78rem;color:var(--sub);margin-top:8px;min-height:16px;" id="debate-result"></div>
+  </div>
+</div>
+
+<!-- 완료 -->
+<div class="complete-card" id="complete-card">
+  <div style="font-size:2.8rem;margin-bottom:10px;">🟢</div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--gold);margin-bottom:6px;">Week 1 완료!</div>
+  <div style="font-size:0.86rem;color:var(--sub);margin-bottom:16px;line-height:1.7;">The Great Gatsby W1~W7 완료! 아메리칸 드림의 본질을 이해했어요!<br>초록빛 불빛의 의미를 깊이 이해했어요.</div>
+  <button onclick="location.href='week07.html'" style="background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1000;border:none;border-radius:20px;padding:10px 28px;font-size:0.9rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;">Week 7 시작하기 →</button>
+</div>
+
+</main>
+
+<script>
+const gramData = {
+  g1:{tag:'G71',title:'간접의문문 — where money had come from',desc:'의문사 + 주어 + 동사 (간접의문문)\n"where his money had come from"\n직접: "Where did his money come from?"\n간접: "where his money had come from"',ex:'to know where Gatsby\'s money had really come from',gnum:'G71',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g2:{tag:'G21',title:'과거진행 — when it struck',desc:'when + 과거진행\n"was driving when it struck"\n= 운전하던 중에 충돌했다\nwhen절로 동시 사건 표현',ex:'Daisy was at the wheel when it struck Myrtle',gnum:'G21',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g3:{tag:'G62',title:'분사구문 — watching',desc:'watching to make sure\n= 확인하기 위해 지켜보며\n목적의 분사구문\n수능 분사구문 어법 출제 포인트',ex:'standing outside, watching to make sure she was safe',gnum:'G62',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g4:{tag:'G71',title:'명사절 that — understood',desc:'that절 = understood의 목적어\n"understood that Gatsby\'s dream was not..."\n이해의 내용을 that절로 표현',ex:'understood that Gatsby\'s dream was not about Daisy',gnum:'G71',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g5:{tag:'G62',title:'과거분사구 — built on illegal means',desc:'built on... = 수식 과거분사구\n"fortune built on illegal means"\n= 불법적 수단으로 세워진 재산\n수동 의미의 과거분사 수식',ex:'fortune, built on illegal means, cannot survive',gnum:'G62',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'},
+  g6:{tag:'G62',title:'완료분사구문 — borne back',desc:'borne = bear의 과거분사\n"borne back ceaselessly"\n= (조류에) 끊임없이 밀려 돌아가며\n수동 완료분사구문\n소설 마지막 문장 — 수능 출제 1위',ex:'borne back ceaselessly into the past',gnum:'G62',glink:'https://cecenglishcamp.github.io/GrammarBaseCamp/index.html'}
+};
+
+let xp=0;
+function addXP(n){
+  xp+=n;
+  document.getElementById('xp-btn').textContent='⭐ '+xp+' XP';
+  document.getElementById('prog-bar').style.width=Math.min(100,xp*1.5)+'%';
+  if(xp>=60&&document.getElementById('complete-card').style.display!=='block'){
+    setTimeout(()=>{document.getElementById('complete-card').style.display='block';document.getElementById('complete-card').scrollIntoView({behavior:'smooth'});},500);
+  }
+}
+
+function speak(text){
+  if(!text)return;
+  speechSynthesis.cancel();
+  function doSpeak(){
+    const voices=speechSynthesis.getVoices();
+    const u=new SpeechSynthesisUtterance(text);
+    const prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
+    const exclude=['Alex','Fred','Daniel','Google UK English Male'];
+    const v=voices.find(v=>prefer.some(p=>v.name.includes(p))&&!exclude.some(e=>v.name.includes(e)));
+    if(v)u.voice=v;
+    u.lang='en-US';u.rate=0.85;u.pitch=1.0;u.volume=1.0;
+    speechSynthesis.speak(u);
+  }
+  if(speechSynthesis.getVoices().length>0){setTimeout(doSpeak,50);}
+  else{speechSynthesis.onvoiceschanged=()=>{setTimeout(doSpeak,50);};speechSynthesis.getVoices();}
+}
+
+function showStory(lv,btn){
+  ['b1','c1'].forEach(l=>{const el=document.getElementById('sb-'+l);if(el)el.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(b=>b.className='tab-btn');
+  document.getElementById('sb-'+lv).classList.add('active');
+  btn.classList.add('act-'+lv);
+}
+function readStory(){
+  const s=document.getElementById('sb-b1');
+  if(s)speak((s.innerText||s.textContent).replace(/\s+/g,' ').trim());
+}
+function toggleKr(){
+  const kr=document.getElementById('story-kr');
+  const btn=document.getElementById('kr-btn');
+  const show=kr.style.display!=='block';
+  kr.style.display=show?'block':'none';
+  btn.textContent=show?'🇰🇷 번역 숨기기':'🇰🇷 한국어 번역 보기';
+}
+
+document.querySelectorAll('.gram').forEach(el=>{
+  el.addEventListener('click',function(e){
+    e.stopPropagation();
+    const d=gramData[this.dataset.id];if(!d)return;
+    document.getElementById('tt-tag').textContent=d.tag;
+    document.getElementById('tt-title').textContent=d.title;
+    document.getElementById('tt-desc').textContent=d.desc;
+    document.getElementById('tt-ex').textContent=d.ex;
+    document.getElementById('tt-gram-link').textContent='📚 Grammar Base '+d.gnum+' →';
+    document.getElementById('tt-gram-link').href=d.glink;
+    const wrap=document.getElementById('tt-wrap');
+    const rect=this.getBoundingClientRect();
+    let top=rect.bottom+8,left=rect.left;
+    if(left+295>window.innerWidth)left=window.innerWidth-300;
+    if(top+220>window.innerHeight)top=rect.top-225;
+    wrap.style.top=top+'px';wrap.style.left=left+'px';
+    wrap.style.display='block';
+    document.getElementById('tt-overlay').style.display='block';
+  });
+});
+function closeTT(){document.getElementById('tt-wrap').style.display='none';document.getElementById('tt-overlay').style.display='none';}
+
+function snCheck(btn,correct){
+  document.querySelectorAll('.sn-opt').forEach(b=>{b.classList.remove('ok','no');b.style.pointerEvents='none';});
+  const res=document.getElementById('sn-result');
+  const explain=document.getElementById('sn-explain');
+  const aibtn=document.getElementById('ai-explain-btn');
+  if(correct){
+    btn.classList.add('ok');
+    document.getElementById('sn-blank').textContent='the impossibility of escaping the past while still reaching for the future';
+    res.innerHTML='✅ 정답!';res.style.color='var(--green)';
+    explain.classList.add('show');addXP(8);
+  }else{
+    btn.classList.add('no');
+    res.innerHTML='❌ 오답입니다. 해설을 확인하세요.';res.style.color='var(--red)';
+    explain.classList.add('show');aibtn.style.display='block';
+  }
+}
+function sendToAI(){
+  const prompt='[ESSAY] 안녕하세요! 수능 빈칸 추론 문제를 틀렸어요.\nThe Great Gatsby W1 수능 문제에서 오답을 골랐어요.\n정답이 "the impossibility of escaping the past while still reaching for the future"인 이유와\n이런 유형을 푸는 전략을 설명해줘.';
+  navigator.clipboard.writeText(prompt).then(()=>{
+  });
+}
+
+function chkFill(btn,val,ans,blId,resId){
+  btn.parentElement.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('ok','no'));
+  const res=document.getElementById(resId);
+  if(val===ans){btn.classList.add('ok');document.getElementById(blId).textContent=val;res.innerHTML='✅ 정답!';res.style.color='var(--green)';addXP(4);}
+  else{btn.classList.add('no');res.innerHTML='❌ 다시 해봐요!';res.style.color='var(--red)';}
+}
+function chkDict(inputId,ans,resId){
+  const val=document.getElementById(inputId).value.trim().toLowerCase();
+  const res=document.getElementById(resId);
+  if(val===ans.toLowerCase()){res.innerHTML='✅ 정답!';res.style.color='var(--green)';document.getElementById(inputId).style.borderColor='var(--green)';addXP(3);}
+  else{res.innerHTML='❌ 정답: <span style="color:var(--gold)">'+ans+'</span>';res.style.color='var(--red)';}
+}
+function lcCheck(btn,val){
+  btn.closest('.lc-opts').querySelectorAll('.lc-opt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  document.getElementById('lc-result').textContent=val==='ok'?'✅ 정답!':'❌ 다시 들어보세요!';
+  document.getElementById('lc-result').style.color=val==='ok'?'var(--green)':'var(--red)';
+  if(val==='ok')addXP(4);
+}
+function showQuiz(id,btn){
+  document.querySelectorAll('.quiz-set').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.qtab').forEach(b=>b.className='qtab');
+  document.getElementById(id).classList.add('active');
+  btn.classList.add(id==='qb1'?'qb1':'qc1');
+}
+function qChk(btn,val){
+  btn.closest('.quiz-opts').querySelectorAll('.qopt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val==='ok'?'ok':'no');
+  if(val==='ok')addXP(4);
+}
+
+const matchPairs=[["confront", "맞서다"], ["scrutiny", "면밀한조사"], ["recede", "멀어지다"], ["justify", "정당화하다"]];
+let matchSel=null,matchDone={};
+function initMatch(){
+  const left=document.getElementById('match-left');
+  const right=document.getElementById('match-right');
+  const rs=[...matchPairs].sort(()=>Math.random()-0.5);
+  left.innerHTML=matchPairs.map(([en])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${en}</button>`).join('');
+  right.innerHTML=rs.map(([en,kr])=>`<button class="match-item" onclick="matchClick(this,'${en}')">${kr}</button>`).join('');
+}
+function matchClick(btn,key){
+  if(btn.classList.contains('matched'))return;
+  btn.classList.remove('wrong-flash');
+  if(!matchSel){matchSel={btn,key};btn.classList.add('selected');}
+  else{
+    if(matchSel.key===key&&matchSel.btn!==btn){
+      matchSel.btn.classList.remove('selected');matchSel.btn.classList.add('matched');
+      btn.classList.add('matched');matchDone[key]=true;matchSel=null;
+      if(Object.keys(matchDone).length===matchPairs.length){
+        document.getElementById('match-result').innerHTML='🎉 모두 맞췄어요!';
+        document.getElementById('match-result').style.color='var(--green)';addXP(8);
+      }
+    }else{
+      const prev=matchSel.btn;prev.classList.remove('selected');prev.classList.add('wrong-flash');
+      btn.classList.add('wrong-flash');matchSel=null;
+      setTimeout(()=>{prev.classList.remove('wrong-flash');btn.classList.remove('wrong-flash');},500);
+    }
+  }
+}
+initMatch();
+
+function chkFD(id,ans,resId){
+  const inp=document.getElementById(id);
+  const res=document.getElementById(resId);
+  const clean=s=>s.trim().toLowerCase().replace(/[.,!?;:—]/g,'').replace(/\s+/g,' ');
+  if(clean(inp.value)===clean(ans)){
+    res.innerHTML='✅ 정답!';res.style.color='var(--green)';
+    inp.style.borderColor='var(--green)';inp.style.background='#0d1f0d';addXP(5);
+  }else{
+    res.innerHTML='❌ 정답: <span style="color:var(--gold);font-weight:800">"'+ans+'"</span>';
+    res.style.color='var(--red)';inp.style.borderColor='var(--red)';
+  }
+}
+
+function checkReproduce(){
+  const text=document.getElementById('reproduce-input').value.trim();
+  const res=document.getElementById('reproduce-result');
+  if(!text){res.textContent='문장을 먼저 써보세요!';return;}
+  const prompt='[ESSAY] 안녕하세요! 문장 구조 재생산 훈련을 했어요.\n\n원본 구조: "[주어] was [과거분사], as though [주어] was [동사-ing]"\n원본 문장: "Gatsby believed in the green light, the orgastic future that year by year recedes before us."\n\n내가 만든 문장:\n'+text+'\n\n이 구조를 제대로 사용했는지 피드백해줘.\n수능 어법 관점에서도 체크해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.textContent='✅ 복사됐어요! ChatGPT에 붙여넣기하세요.';
+    addXP(5);
+  });
+}
+function checkExpand(){
+  const text=document.getElementById('expand-input').value.trim();
+  const res=document.getElementById('expand-result');
+  if(!text){res.textContent='문장을 먼저 써보세요!';return;}
+  const prompt='[ESSAY] 안녕하세요! 문장 확장 훈련을 했어요.\n원래 문장: "Nick watched Gatsby."\n내가 확장한 문장: '+text+'\nB1 수준에 맞는지 피드백해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.textContent='✅ 복사됐어요! ChatGPT에 붙여넣기하세요.';
+    addXP(5);
+  });
+}
+
+function addPhrase(id,text){const ta=document.getElementById(id);ta.value=ta.value?ta.value+' '+text:text;ta.focus();}
+
+function submitEssay(){
+  const vals=[1,2,3,4,5].map(i=>document.getElementById('es'+i).value.trim());
+  const res=document.getElementById('essay-result');
+  if(vals.some(v=>!v)){res.innerHTML='❗ 5단락을 모두 작성해주세요!';res.style.color='var(--gold)';return;}
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'고1'):'고1';
+  const essay=vals.map((v,i)=>['①','②','③','④','⑤'][i]+' '+v).join('\n');
+  const prompt='[ESSAY] 안녕하세요! 저는 '+name+', '+grade+'이에요.\nThe Great Gatsby W07 에세이를 썼는데 피드백 부탁드려요.\n주제: "Is the American Dream a source of hope or a mechanism of self-destruction?"\n\n'+essay;
+  navigator.clipboard.writeText(prompt).then(()=>{
+    res.innerHTML='✅ 에세이 복사 완료! ChatGPT에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
+  });
+}
+
+function sendDebate(){
+  const r1=document.getElementById('round1').value.trim();
+  const r2=document.getElementById('round2').value.trim();
+  const r3=document.getElementById('round3').value.trim();
+  const auth=sessionStorage.getItem('cecAuthB');
+  const name=auth?(JSON.parse(auth).name||'학생'):'학생';
+  const grade=auth?(JSON.parse(auth).grade||'고1'):'고1';
+  const prompt='[DEBATE] 안녕하세요! 저는 '+name+', '+grade+'이에요.\nThe Great Gatsby W07 디베이트 주제: "Gatsby is "great" despite his flaws — his capacity for hope makes him worth admiring."\n\n[Round 1 - Opening]\n'+(r1||'(아직 못 썼어요)')+'\n\n[Round 2 - Rebuttal]\n'+(r2||'(아직 못 썼어요)')+'\n\n[Round 3 - Closing]\n'+(r3||'(아직 못 썼어요)')+'\n\n피드백하고 AI 상대방으로 토론해줘!';
+  navigator.clipboard.writeText(prompt).then(()=>{
+    document.getElementById('debate-result').innerHTML='✅ 복사 완료! ChatGPT에서 붙여넣기(Ctrl+V)하세요.';
+    document.getElementById('debate-result').style.color='var(--green)';
+  });
+}
+</script>
+<style>.wk-nav{position:sticky;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#000;border-top:1px solid rgba(201,168,76,0.2);z-index:50}.wk-nav a{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s}.wk-nav a:hover{transform:translateY(-2px)}.wk-nav .wk-prev{background:#0C1428;color:#8A9AB0;border:1px solid rgba(201,168,76,0.2)}.wk-nav .wk-next{background:#C9A84C;color:#000}.wk-nav .wk-label{font-size:11px;color:#5A6A80;letter-spacing:1px}
+/* ── ChatGPT 회화 연습 버튼 ── */
+.chatgpt-practice-section {
+  margin: 40px auto 20px;
+  max-width: 860px;
+  padding: 0 20px;
+}
+.chatgpt-practice-wrap {
+  background: linear-gradient(135deg, #050e1f, #0a1628);
+  border: 2px solid rgba(0,210,255,0.4);
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.chatgpt-practice-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%,
+    rgba(0,210,255,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.chatgpt-practice-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.chatgpt-practice-desc {
+  color: #6a8fad;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.chatgpt-practice-desc strong { color: #00d2ff; }
+.chatgpt-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #00d2ff, #0055ff);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(0,210,255,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+.chatgpt-launch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(0,210,255,0.5);
+}
+.chatgpt-practice-note {
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: #3a5a7a;
+}
+
+</style>
+<div class="wk-nav"><a class="wk-prev" href="week06.html">← W6</a><span class="wk-label">WEEK 7</span><a class="wk-next" href="../prestep.html">목록으로 →</a></div>
+
+<div class="chatgpt-practice-section">
+  <div class="chatgpt-practice-wrap">
+    <div class="chatgpt-practice-title">🎉 수업 완료! 이제 회화 연습!</div>
+    <div class="chatgpt-practice-desc">
+      오늘 배운 내용을 보면서 <strong>ChatGPT</strong>와 영어로 대화해보세요!<br>
+      <strong>왼쪽</strong>엔 오늘 수업, <strong>오른쪽</strong>엔 ChatGPT가 열립니다.
+    </div>
+    <button class="chatgpt-launch-btn" onclick="launchChatGPTPractice()">
+      🎙️ ChatGPT 회화 연습 시작
+    </button>
+    <div class="chatgpt-practice-note">※ 처음 한 번만 팝업 허용이 필요합니다</div>
+  </div>
+
+<div style="text-align:center;margin:24px 0 12px;">
+  <a href="https://forms.gle/BUG01campB" target="_blank"
+     style="display:inline-block;padding:10px 24px;border-radius:100px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.4);font-size:0.78rem;text-decoration:none;transition:all 0.2s;"
+     onmouseover="this.style.borderColor='#00f2ff';this.style.color='#00f2ff'"
+     onmouseout="this.style.borderColor='rgba(255,255,255,0.12)';this.style.color='rgba(255,255,255,0.4)'">
+    &#128027; BUG-01 &#183; &#50724;&#47448; &#49888;&#44256;
+  </a>
+</div>
+</div>
+
+<script>
+function getCampType() {
+  var path = window.location.pathname;
+  if (path.includes('camp-b') ||
+      path.includes('/m1/') || path.includes('/m2/') || path.includes('/m3/') ||
+      path.includes('/g1/') || path.includes('/g2/') || path.includes('/g3/')) return 'b';
+  if (path.includes('camp-c') || path.includes('mom-teacher')) return 'c';
+  return 'a';
+}
+
+function launchChatGPTPractice() {
+  // 단어 자동 수집
+  var words = [];
+  document.querySelectorAll(
+    '.word-en, .vocab-en, .key-word, [class*="word-en"], [class*="vocab"]'
+  ).forEach(function(el) {
+    var t = el.textContent.trim();
+    if (t && t.length < 30) words.push(t);
+  });
+
+  // 본문 첫 문장
+  var storyEl = document.querySelector(
+    '.story-content.active p, .reading-text p, .story p'
+  );
+  var firstLine = storyEl
+    ? storyEl.textContent.substring(0, 80) + '...'
+    : '';
+
+  var summary = [
+    '[' + document.title + ']',
+    words.length ? '배운 단어: ' + words.slice(0,8).join(', ') : '',
+    firstLine ? '오늘 이야기: ' + firstLine : '',
+    '위 내용으로 영어 회화 연습을 도와주세요!'
+  ].filter(Boolean).join('\n');
+
+  var camp = getCampType();
+
+  // cec_guide.html 경로: GitHub Pages 루트
+  var guideUrl = 'https://cecenglishcamp.github.io/cec_guide.html'
+    + '?camp=' + camp
+    + '&url=' + encodeURIComponent(window.location.href)
+    + '&summary=' + encodeURIComponent(summary);
+
+  window.location.href = guideUrl;
+}
+</script>
+
+</body>
+</html>
