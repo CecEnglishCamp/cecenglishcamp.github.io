@@ -381,7 +381,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
     <div style="font-size:0.78rem;color:var(--gold);margin-bottom:6px;font-weight:900;">✏️ 직접 써보기:</div>
     <textarea class="debate-textarea" id="reproduce-input" rows="3" placeholder="[주어] was [과거분사], as though [주어] was [동사-ing]..."></textarea>
     <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
-      <button class="exp-btn" onclick="checkReproduce()">📝 Open WebUI 피드백받기</button>
+      <button class="exp-btn" onclick="checkReproduce()">📝 ChatGPT 피드백받기</button>
       <div style="font-size:0.72rem;color:var(--sub);padding:8px 0;">→ 에세이 thesis에 이 구조를 활용하세요!</div>
     </div>
     <div id="reproduce-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
@@ -410,7 +410,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
     <div style="font-size:0.78rem;color:var(--gold);font-weight:900;margin-bottom:8px;">✏️ 직접 써보기 — B1 수준으로 확장하세요:</div>
     <div style="font-size:0.8rem;color:var(--sub);margin-bottom:6px;">시작 문장: "Nick watched Gatsby."</div>
     <textarea class="debate-textarea" id="expand-input" rows="3" placeholder="Nick watched Gatsby standing alone, reaching toward..."></textarea>
-    <button class="exp-btn" onclick="checkExpand()">📝 Open WebUI에서 피드백받기</button>
+    <button class="exp-btn" onclick="checkExpand()">📝 ChatGPT에서 피드백받기</button>
     <div id="expand-result" style="font-size:0.78rem;color:var(--gold);margin-top:6px;min-height:16px;"></div>
   </div>
 </div>
@@ -641,7 +641,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
   <div class="essay-line"><span class="essay-num">③</span><input class="essay-input" id="es3" placeholder="Furthermore,..."></div>
   <div class="essay-line"><span class="essay-num">④</span><input class="essay-input" id="es4" placeholder="Some argue that... However,..."></div>
   <div class="essay-line"><span class="essay-num">⑤</span><input class="essay-input" id="es5" placeholder="In conclusion,..."></div>
-  <button class="essay-submit" onclick="submitEssay()">📝 Open WebUI에서 피드백받기</button>
+  <button class="essay-submit" onclick="submitEssay()">📝 ChatGPT에서 피드백받기</button>
   <div style="font-size:0.8rem;color:var(--sub);margin-top:8px;min-height:16px;" id="essay-result"></div>
 </div>
 
@@ -677,7 +677,7 @@ body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-
       <span class="phrase" style="background:#1a1428;color:var(--gold);border-color:#3a2a5a;" onclick="addPhrase('round3','I maintain that...')">I maintain that...</span>
       <span class="phrase" style="background:#1a1428;color:var(--gold);border-color:#3a2a5a;" onclick="addPhrase('round3','Ultimately,...')">Ultimately,...</span>
     </div>
-    <button class="owui-btn" onclick="sendDebate()">⚔️ Open WebUI에서 AI와 토론하기</button>
+    <button class="owui-btn" onclick="sendDebate()">⚔️ ChatGPT에서 AI와 토론하기</button>
     <div style="font-size:0.78rem;color:var(--sub);margin-top:8px;min-height:16px;" id="debate-result"></div>
   </div>
 </div>
@@ -870,7 +870,7 @@ function checkReproduce(){
   if(!text){res.textContent='문장을 먼저 써보세요!';return;}
   const prompt='[ESSAY] 안녕하세요! 문장 구조 재생산 훈련을 했어요.\n\n원본 구조: "[주어] was [과거분사], as though [주어] was [동사-ing]"\n원본 문장: "His arm was stretched out, as though he was trying to touch something very far away."\n\n내가 만든 문장:\n'+text+'\n\n이 구조를 제대로 사용했는지 피드백해줘.\n수능 어법 관점에서도 체크해줘!';
   navigator.clipboard.writeText(prompt).then(()=>{
-    res.textContent='✅ 복사됐어요! Open WebUI에 붙여넣기하세요.';
+    res.textContent='✅ 복사됐어요! ChatGPT에 붙여넣기하세요.';
     setTimeout(()=>window.open('https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166','_blank'),300);
     addXP(5);
   });
@@ -881,7 +881,7 @@ function checkExpand(){
   if(!text){res.textContent='문장을 먼저 써보세요!';return;}
   const prompt='[ESSAY] 안녕하세요! 문장 확장 훈련을 했어요.\n원래 문장: "Nick watched Gatsby."\n내가 확장한 문장: '+text+'\nB1 수준에 맞는지 피드백해줘!';
   navigator.clipboard.writeText(prompt).then(()=>{
-    res.textContent='✅ 복사됐어요! Open WebUI에 붙여넣기하세요.';
+    res.textContent='✅ 복사됐어요! ChatGPT에 붙여넣기하세요.';
     setTimeout(()=>window.open('https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166','_blank'),300);
     addXP(5);
   });
@@ -899,7 +899,7 @@ function submitEssay(){
   const essay=vals.map((v,i)=>['①','②','③','④','⑤'][i]+' '+v).join('\n');
   const prompt='[ESSAY] 안녕하세요! 저는 '+name+', '+grade+'이에요.\nThe Great Gatsby W1 에세이를 썼는데 피드백 부탁드려요.\n주제: "Is it wise or foolish to pursue an impossible dream?"\n\n'+essay;
   navigator.clipboard.writeText(prompt).then(()=>{
-    res.innerHTML='✅ 에세이 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
+    res.innerHTML='✅ 에세이 복사 완료! ChatGPT에서 붙여넣기(Ctrl+V)하세요.';res.style.color='var(--green)';
     addXP(10);setTimeout(()=>window.open('https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166','_blank'),300);
   });
 }
@@ -913,7 +913,7 @@ function sendDebate(){
   const grade=auth?(JSON.parse(auth).grade||'고1'):'고1';
   const prompt='[DEBATE] 안녕하세요! 저는 '+name+', '+grade+'이에요.\nThe Great Gatsby W1 디베이트 주제: "Reaching for an impossible dream is noble, not foolish."\n\n[Round 1 - Opening]\n'+(r1||'(아직 못 썼어요)')+'\n\n[Round 2 - Rebuttal]\n'+(r2||'(아직 못 썼어요)')+'\n\n[Round 3 - Closing]\n'+(r3||'(아직 못 썼어요)')+'\n\n피드백하고 AI 상대방으로 토론해줘!';
   navigator.clipboard.writeText(prompt).then(()=>{
-    document.getElementById('debate-result').innerHTML='✅ 복사 완료! Open WebUI에서 붙여넣기(Ctrl+V)하세요.';
+    document.getElementById('debate-result').innerHTML='✅ 복사 완료! ChatGPT에서 붙여넣기(Ctrl+V)하세요.';
     document.getElementById('debate-result').style.color='var(--green)';
     addXP(8);setTimeout(()=>window.open('https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166','_blank'),300);
   });
