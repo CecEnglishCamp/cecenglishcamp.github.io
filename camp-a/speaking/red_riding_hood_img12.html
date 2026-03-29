@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Red Riding Hood - Picture Speaking 12</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#e0e0e0;font-family:'Segoe UI',Tahoma,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 0}
+.container{max-width:1200px;margin:0 auto;padding:16px;width:100%}
+h1{text-align:center;color:#00ffff;font-size:1.4rem;margin-bottom:14px;text-shadow:0 0 10px rgba(0,255,255,.3)}
+.main-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;align-items:start}
+@media(max-width:768px){.main-grid{grid-template-columns:1fr}body{align-items:flex-start;padding-top:16px}}
+.panel{background:#111;border-radius:12px;padding:16px;border:1px solid #222}
+.panel h2{color:#00ffff;font-size:1rem;margin-bottom:12px}
+.img-panel img{width:100%;border-radius:10px;border:2px solid #00ffff33;box-shadow:0 0 20px rgba(0,255,255,.12)}
+.sentence{display:flex;align-items:flex-start;gap:8px;padding:9px 10px;border-radius:8px;margin-bottom:4px;transition:all .3s;font-size:1rem;line-height:1.4}
+.sentence .num{color:#555;font-weight:700;min-width:22px;flex-shrink:0}
+.sentence .text{color:#666;transition:all .3s}
+.sentence.active{background:#00ffff0d;transform:scale(1.03)}
+.sentence.active .num{color:#00ffff}
+.sentence.active .text{color:#00ffff;font-size:1.08rem;font-weight:600}
+.sentence.done .num{color:#4ade80}
+.sentence.done .text{color:#4ade80}
+.sentence.done .check{color:#4ade80;margin-left:auto;flex-shrink:0}
+.sentence.hidden-text .text{color:transparent;background:#222;border-radius:4px;user-select:none}
+.ctrl-panel{display:flex;flex-direction:column;gap:12px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:10px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;transition:all .2s;width:100%}
+.btn:active{transform:scale(.97)}
+.btn-play{background:linear-gradient(135deg,#00ffff,#0088aa);color:#0a0a0a}
+.btn-play:hover{box-shadow:0 0 20px rgba(0,255,255,.4)}
+.btn-play.playing{background:linear-gradient(135deg,#ff6b6b,#cc3333);color:#fff}
+.btn-memo{background:#1a1a2e;color:#00ffff;border:1px solid #00ffff44}
+.btn-memo:hover{background:#00ffff15}
+.btn-memo.on{background:#00ffff22;border-color:#00ffff}
+.progress-box{background:#0a0a1a;border-radius:10px;padding:12px;border:1px solid #222}
+.progress-label{display:flex;justify-content:space-between;font-size:.85rem;color:#888;margin-bottom:6px}
+.progress-label span:first-child{color:#00ffff}
+.progress-track{height:8px;background:#222;border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#00ffff,#4ade80);border-radius:4px;transition:width .3s;width:0%}
+.phase{text-align:center;padding:10px;border-radius:8px;background:#0a0a1a;border:1px solid #00ffff22;font-size:.88rem;color:#aaa;min-height:52px;display:flex;align-items:center;justify-content:center;line-height:1.4}
+.phase b{color:#00ffff}.phase .en{color:#ffd700}
+.next-steps{display:none;margin-top:12px;flex-direction:column;gap:8px}
+.next-steps.show{display:flex}
+.btn-next{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 16px;border-radius:10px;border:none;cursor:pointer;font-size:.95rem;font-weight:600;width:100%;transition:all .2s}
+.btn-next:hover{transform:scale(1.02)}
+.btn-ai{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff}
+.tts-note{text-align:center;font-size:.75rem;color:#444;margin-top:8px;padding:6px;background:#0a0a1a;border-radius:6px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Red Riding Hood - Picture Speaking 12</h1>
+<div class="main-grid">
+  <div class="panel img-panel">
+    <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/red_riding_hood_img12.png" alt="Red Riding Hood - Picture Speaking 12"
+         onerror="this.style.display='none';document.getElementById('imgPH').style.display='flex'">
+    <div id="imgPH" style="display:none;width:100%;aspect-ratio:4/3;border-radius:10px;border:2px solid #00ffff33;background:#1a1a2e;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:#444">
+      <span style="font-size:3rem">🍎</span><p style="font-size:0.85rem">이미지 준비 중</p>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>Sentences</h2>
+    <div id="sentenceList"></div>
+    <button class="btn btn-memo" id="btnMemo" onclick="toggleMemo()" style="margin-top:12px">Memorize Mode</button>
+  </div>
+  <div class="panel ctrl-panel">
+    <button class="btn btn-play" id="btnPlay" onclick="handlePlay()">
+      <svg id="iconPlay" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+      <svg id="iconPause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="5" y="3" width="4" height="18"/><rect x="15" y="3" width="4" height="18"/></svg>
+      <span id="btnLabel">Play</span>
+    </button>
+    <div class="progress-box">
+      <div class="progress-label"><span id="chunkLabel">Ready</span><span id="stepLabel">0 / 0</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressBar"></div></div>
+    </div>
+    <div class="phase" id="phaseDisplay">Press Play to start</div>
+    <div class="next-steps" id="nextSteps">
+      <button class="btn-next btn-ai" onclick="goNext()">🤖 AI와 영어 공부하기</button>
+    </div>
+    <div class="tts-note">🔊 브라우저 TTS 샘플 버전<br>MP3 제작 후 교체 예정</div>
+  </div>
+</div>
+</div>
+<script>
+var SENTENCES = ["Red Riding Hood sees a big wolf.", "The wolf is in the forest.", "The wolf has big yellow eyes.", "He looks at Red Riding Hood.", "Red Riding Hood is surprised."];
+var SCRIPT = [
+  {type:"kr", text:'3번 장면이야! 이 그림 봐봐!', active:null},
+  {type:"kr", text:'어?! 숲에 누가 나타났어? 늑대야!! 엄청 크지?', active:null},
+  {type:"kr", text:'빨간 모자가 깜짝 놀랐어! 눈이 커다래졌어!', active:null},
+  {type:"kr", text:'5문장이야! 조금 늘었지만 할 수 있어!', active:null},
+  {type:"kr", text:'1번! 빨간 모자가 큰 늑대를 봤어! 들어봐!', active:0},
+  {type:"en", text:"Red Riding Hood sees a big wolf.", active:0},
+  {type:"kr", text:'따라해봐!', active:0},
+  {type:"silence", dur:3, active:0},
+  {type:"en", text:"Red Riding Hood sees a big wolf.", active:0},
+  {type:"kr", text:'2번! 늑대가 숲 안에 있어! 들어봐!', active:1},
+  {type:"en", text:"The wolf is in the forest.", active:1},
+  {type:"kr", text:'따라해봐!', active:1},
+  {type:"silence", dur:3, active:1},
+  {type:"en", text:"The wolf is in the forest.", active:1},
+  {type:"kr", text:'1번이랑 2번 같이!', active:null},
+  {type:"en", text:"Red Riding Hood sees a big wolf. The wolf is in the forest.", active:null},
+  {type:"kr", text:'혼자!', active:null},
+  {type:"silence", dur:5, active:null},
+  {type:"en", text:"Red Riding Hood sees a big wolf. The wolf is in the forest.", active:null},
+  {type:"kr", text:'3번! 늑대 눈이 노랗고 커! 들어봐!', active:2},
+  {type:"en", text:"The wolf has big yellow eyes.", active:2},
+  {type:"kr", text:'따라해봐!', active:2},
+  {type:"silence", dur:3, active:2},
+  {type:"en", text:"The wolf has big yellow eyes.", active:2},
+  {type:"kr", text:'4번! 늑대가 빨간 모자를 쳐다봐! 들어봐!', active:3},
+  {type:"en", text:"He looks at Red Riding Hood.", active:3},
+  {type:"kr", text:'따라해봐!', active:3},
+  {type:"silence", dur:3, active:3},
+  {type:"en", text:"He looks at Red Riding Hood.", active:3},
+  {type:"kr", text:'3번이랑 4번 같이!', active:null},
+  {type:"en", text:"The wolf has big yellow eyes. He looks at Red Riding Hood.", active:null},
+  {type:"kr", text:'혼자!', active:null},
+  {type:"silence", dur:5, active:null},
+  {type:"en", text:"The wolf has big yellow eyes. He looks at Red Riding Hood.", active:null},
+  {type:"kr", text:'5번! 빨간 모자가 깜짝 놀랐어! 들어봐!', active:4},
+  {type:"en", text:"Red Riding Hood is surprised.", active:4},
+  {type:"kr", text:'따라해봐!', active:4},
+  {type:"silence", dur:3, active:4},
+  {type:"en", text:"Red Riding Hood is surprised.", active:4},
+  {type:"kr", text:'이제 5문장 전부! 들어봐!', active:null},
+  {type:"en", text:"Red Riding Hood sees a big wolf. The wolf is in the forest. The wolf has big yellow eyes. He looks at Red Riding Hood. Red Riding Hood is surprised.", active:null},
+  {type:"kr", text:'혼자 말해봐! 10초!', active:null},
+  {type:"silence", dur:10, active:null},
+  {type:"en", text:"Red Riding Hood sees a big wolf. The wolf is in the forest. The wolf has big yellow eyes. He looks at Red Riding Hood. Red Riding Hood is surprised.", active:null},
+  {type:"kr", text:'대단해!! 5문장 완료!! 최고야!!', active:null}
+];
+var NGROK = "https://journey-bronzy-fruitily.ngrok-free.dev";
+var memoMode=false, stepIdx=0, running=false, timer=null;
+var listEl=document.getElementById("sentenceList");
+SENTENCES.forEach(function(s,i){
+  var d=document.createElement("div");
+  d.className="sentence";d.id="s"+i;
+  d.innerHTML='<span class="num">'+(i+1)+'.</span><span class="text">'+s+'</span><span class="check"></span>';
+  listEl.appendChild(d);
+});
+function setSentence(idx){
+  for(var i=0;i<SENTENCES.length;i++) document.getElementById("s"+i).classList.remove("active");
+  if(idx!==null&&idx>=0&&idx<SENTENCES.length) document.getElementById("s"+idx).classList.add("active");
+}
+function speak(text,isEn,cb){
+  if(!window.speechSynthesis){setTimeout(cb,500);return;}
+  speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(text);
+  if(isEn){u.lang="en-US";u.rate=0.78;u.pitch=1.0;}
+  else{u.lang="ko-KR";u.rate=0.92;u.pitch=1.15;}
+  u.onend=function(){setTimeout(cb,250);};
+  u.onerror=function(){setTimeout(cb,250);};
+  speechSynthesis.speak(u);
+}
+function runStep(){
+  if(!running||stepIdx>=SCRIPT.length){if(stepIdx>=SCRIPT.length)onComplete();return;}
+  var s=SCRIPT[stepIdx];
+  document.getElementById("progressBar").style.width=Math.round((stepIdx/SCRIPT.length)*100)+"%";
+  document.getElementById("stepLabel").textContent=(stepIdx+1)+" / "+SCRIPT.length;
+  document.getElementById("chunkLabel").textContent="Step "+(stepIdx+1);
+  if(s.active!==undefined) setSentence(s.active);
+  if(s.type==="kr"){
+    document.getElementById("phaseDisplay").innerHTML='<span style="font-size:.82rem">'+s.text.substring(0,60)+(s.text.length>60?"...":"")+'</span>';
+    stepIdx++;speak(s.text,false,runStep);
+  }else if(s.type==="en"){
+    document.getElementById("phaseDisplay").innerHTML='<span class="en" style="font-size:.85rem">'+s.text+'</span>';
+    stepIdx++;speak(s.text,true,runStep);
+  }else if(s.type==="silence"){
+    document.getElementById("phaseDisplay").innerHTML='<span style="color:#ffd700;font-size:1.1rem">🎤 Your turn!</span>';
+    speechSynthesis.cancel();stepIdx++;timer=setTimeout(runStep,(s.dur||4)*1000);
+  }
+}
+function handlePlay(){
+  if(!running){
+    running=true;
+    document.getElementById("btnLabel").textContent="Pause";
+    document.getElementById("iconPlay").style.display="none";
+    document.getElementById("iconPause").style.display="";
+    document.getElementById("btnPlay").classList.add("playing");
+    runStep();
+  }else{
+    running=false;clearTimeout(timer);speechSynthesis.cancel();
+    document.getElementById("btnLabel").textContent="Play";
+    document.getElementById("iconPlay").style.display="";
+    document.getElementById("iconPause").style.display="none";
+    document.getElementById("btnPlay").classList.remove("playing");
+  }
+}
+function onComplete(){
+  running=false;
+  document.getElementById("btnLabel").textContent="Play";
+  document.getElementById("iconPlay").style.display="";
+  document.getElementById("iconPause").style.display="none";
+  document.getElementById("btnPlay").classList.remove("playing");
+  document.getElementById("progressBar").style.width="100%";
+  document.getElementById("chunkLabel").textContent="Complete!";
+  document.getElementById("phaseDisplay").innerHTML="<b>🎉 미션 완료! "+SENTENCES.length+"문장 정복!</b>";
+  for(var i=0;i<SENTENCES.length;i++){
+    var el=document.getElementById("s"+i);
+    el.classList.remove("active");el.classList.add("done");
+    el.querySelector(".check").textContent="✅";
+  }
+  setTimeout(function(){document.getElementById("nextSteps").classList.add("show");},2000);
+}
+function toggleMemo(){
+  memoMode=!memoMode;
+  document.getElementById("btnMemo").classList.toggle("on",memoMode);
+  document.querySelectorAll(".sentence").forEach(function(el){el.classList.toggle("hidden-text",memoMode);});
+}
+function goNext(){
+  window.open(NGROK+"/static/auth-relay.html?sentences="+encodeURIComponent(SENTENCES.join("|")),"_blank");
+}
+</script>
+</body>
+</html>
