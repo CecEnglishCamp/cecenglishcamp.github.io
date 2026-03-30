@@ -496,76 +496,14 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
   <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif" class="pw-robo" onclick="toggleChat()" alt="Robo">
 </div>
 <script>
-var CHATGPT_URL = 'https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166';
+var CHATGPT_URL='https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166';
+function speak(t){if(!t)return;var u=new SpeechSynthesisUtterance(t.replace(/\uD83D\uDD0A/g,'').trim());u.lang='en-US';u.rate=0.85;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}
+function showLevel(lv,btn){document.getElementById('b1Story').style.display=lv==='b1'?'block':'none';document.getElementById('c1Story').style.display=lv==='c1'?'block':'none';document.querySelectorAll('.ltab').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');}
 function copyAndOpen(msg){window.open(CHATGPT_URL,'_blank');try{navigator.clipboard.writeText(msg);}catch(e){}}
-var voiceCache=null;
-function getVoice(){
-  if(voiceCache) return voiceCache;
-  var voices=speechSynthesis.getVoices();
-  var prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
-  var exclude=['Alex','Fred','Daniel','Google UK English Male'];
-  for(var i=0;i<prefer.length;i++){
-    var v=voices.find(function(v){return v.name.includes(prefer[i]);});
-    if(v){voiceCache=v;return v;}
-  }
-  voiceCache=voices.find(function(v){return v.lang==='en-US'&&!exclude.some(function(e){return v.name.includes(e);});})||voices[0];
-  return voiceCache;
-}
-var voiceCache=null;
-function getVoice(){
-  if(voiceCache) return voiceCache;
-  var voices=speechSynthesis.getVoices();
-  var prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
-  var exclude=['Alex','Fred','Daniel','Google UK English Male'];
-  for(var i=0;i<prefer.length;i++){
-    var v=voices.find(function(v){return v.name.includes(prefer[i]);});
-    if(v){voiceCache=v;return v;}
-  }
-  voiceCache=voices.find(function(v){return v.lang==='en-US'&&!exclude.some(function(e){return v.name.includes(e);});})||voices[0];
-  return voiceCache;
-}
-function speak(text){
-  if(!text) return;
-  text=text.replace(/\uD83D\uDD0A/g,'').trim();
-  speechSynthesis.cancel();
-  function doSpeak(){
-    var voices=speechSynthesis.getVoices();
-    var u=new SpeechSynthesisUtterance(text);
-    var prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
-    var exclude=['Alex','Fred','Daniel','Google UK English Male'];
-    var v=voices.find(function(v){return prefer.some(function(p){return v.name.includes(p);})&&!exclude.some(function(e){return v.name.includes(e);});});
-    if(v) u.voice=v;
-    u.lang='en-US';u.rate=0.85;u.pitch=1.0;u.volume=1.0;
-    speechSynthesis.speak(u);
-  }
-  if(speechSynthesis.getVoices().length>0){
-    setTimeout(doSpeak,50);
-  } else {
-    speechSynthesis.onvoiceschanged=function(){setTimeout(doSpeak,50);};
-    speechSynthesis.getVoices();
-  }
-}
-speechSynthesis.onvoiceschanged=function(){voiceCache=null;};
-function sendDebate() {
-  var txt = document.getElementById('debateInput').value;
-  var msg = '토론 연습을 하고 싶어요.\n내 주장:\n' + txt + '\n영어로 반박해주세요!';
-  copyAndOpen(msg);
-}
-function submitEssay() {
-  var e1=document.getElementById('es1').value;
-  var e2=document.getElementById('es2').value;
-  var e3=document.getElementById('es3').value;
-  var e4=document.getElementById('es4').value;
-  var msg = '에세이 피드백 부탁드려요!\n[Intro]\n'+e1+'\n[Body1]\n'+e2+'\n[Body2]\n'+e3+'\n[Conclusion]\n'+e4;
-  copyAndOpen(msg);
-}
-function launchChatGPTPractice() {
-  var msg = '안녕하세요! High School 2 수업이에요. Animal Farm W09 (복서의 비극 — 배신당한 충성심) 주제로 영어 회화 연습하고 싶어요!';
-  copyAndOpen(msg);
-}
-function toggleChat() {
-  window.open(CHATGPT_URL, '_blank');
-}
+function sendDebate(){var t=document.getElementById('debateInput').value;var m='\uc548\ub155\ud558\uc138\uc694! High School 1\uc774\uc5d0\uc694.\n\nOf Mice and Men W07\uc744 \uacf5\ubd80\ud588\uc5b4\uc694.\n\n\ud1a0\ub860 \uc8fc\uc81c: "The American Dream is an illusion that causes more suffering than hope."\n\n\ub0b4 \uc8fc\uc7a5:\n'+t+'\n\n\uc774 \uc8fc\uc7a5\uc5d0 \ubc18\ubc15\ud574\uc8fc\uc138\uc694!';copyAndOpen(m);}
+function submitEssay(){var e=[1,2,3,4].map(function(i){return document.getElementById('es'+i).value}).join('\n\n');var m='\uc548\ub155\ud558\uc138\uc694! High School 1\uc774\uc5d0\uc694.\n\n\uc5d0\uc138\uc774 \uc8fc\uc81c: "How does Steinbeck use George and Lennie\\u0027s friendship to critique the American Dream?"\n\n'+e+'\n\n\ud53c\ub4dc\ubc31 \ubd80\ud0c1\ub4dc\ub824\uc694!';copyAndOpen(m);}
+function launchChatGPTPractice(){var m='Of Mice and Men W07 (아메리칸 드림 — 조지와 레니) \uc8fc\uc81c\ub85c \uc601\uc5b4 \ud68c\ud654 \uc5f0\uc2b5\uc744 \ud558\uace0 \uc2f6\uc5b4\uc694!';copyAndOpen(m);}
+function toggleChat(){window.open(CHATGPT_URL,'_blank');}
 </script>
 </body>
 </html>
