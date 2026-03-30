@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Of Mice and Men W12 | CEC Camp B High School 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+:root{
+  --bg:#09080f;--card:#100f1a;--card2:#0c0b16;--border:#1e1c2e;
+  --gold:#c9a84c;--gold2:#e8c97a;--acc:#00c8ff;
+  --green:#16a34a;--red:#dc2626;--text:#e8e4d8;--sub:#6e7490;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+
+/* NAV */
+.hd{background:rgba(9,8,15,0.97);padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.hd-logo{font-family:'Cormorant Garamond',serif;font-size: 1.1rem;color:var(--text);letter-spacing:1px;}
+.hd-badge{background:#1a1428;color:var(--gold);font-size:0.65rem;font-weight:900;padding:3px 10px;border-radius:20px;border:1px solid #2a2040;letter-spacing:2px;margin-left:10px;}
+.hd-sub{font-size:0.7rem;color:var(--sub);margin-left:8px;}
+.xp-btn{background:linear-gradient(135deg,#c9a84c,#e8c97a);color:#1a1000;border:none;border-radius:20px;padding:5px 14px;font-size:0.8rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#09080f 0%,#120a1e 50%,#09080f 100%);padding:28px 16px 20px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(201,168,76,0.08) 0%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{font-size:0.62rem;color:var(--gold);font-weight:900;letter-spacing:4px;margin-bottom:10px;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size: 2.2rem;font-weight:400;color:var(--text);margin-bottom:4px;font-style:italic;}
+.hero-author{font-size:0.78rem;color:var(--sub);margin-bottom:16px;letter-spacing:1px;}
+.hero-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.hb{padding:4px 12px;border-radius:20px;font-size:0.68rem;font-weight:800;}
+
+/* KEY CARD */
+.key-card{background:linear-gradient(135deg,#0d0b18,#120a1e);border:1px solid #2a1a4a;border-radius:16px;padding:18px;margin:12px 16px 8px;}
+.key-label{font-size:0.6rem;color:var(--sub);font-weight:700;letter-spacing:3px;margin-bottom:10px;}
+.key-en{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--text);font-style:italic;margin-bottom:6px;line-height:1.5;}
+.key-kr{font-size:0.8rem;color:var(--gold);margin-bottom:14px;}
+.key-play{background:transparent;color:var(--gold);border:1px solid #3a2a5a;border-radius:25px;padding:7px 20px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+
+/* PROGRESS */
+.prog-row{display:flex;align-items:center;gap:8px;padding:8px 16px;}
+.prog-track{flex:1;background:#1a1428;border-radius:8px;height:5px;overflow:hidden;}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:8px;transition:width 0.5s;}
+.prog-label{font-size:0.7rem;color:var(--sub);font-weight:700;white-space:nowrap;}
+
+/* CONTAINER */
+.container{max-width:680px;margin:0 auto;padding:0 12px 80px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;}
+.sh{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sh-icon{font-size:1.05rem;}.sh-title{font-size:0.88rem;font-weight:900;color:white;}
+
+/* STORY TABS */
+.tab-row{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.tab-btn{padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.tab-btn.act-b1{background:#1a1428;border-color:#3a2a5a;color:var(--gold);}
+.tab-btn.act-c1{background:#0d1a0d;border-color:#1a4a1a;color:#5aff9a;}
+.listen-row{display:flex;gap:8px;margin-bottom:10px;}
+.listen-btn{background:#2a1a4a;color:var(--gold);border:none;border-radius:20px;padding:7px 16px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.stop-btn{background:var(--card2);border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:7px 12px;font-size:0.8rem;cursor:pointer;font-family:'Nunito',sans-serif;}
+.notice-box{background:#0d0b18;border-left:3px solid #3a2a5a;border-radius:0 8px 8px 0;padding:9px 14px;margin-bottom:10px;font-size:0.76rem;color:var(--sub);line-height:1.6;}
+.story-box{background:var(--card2);border-radius:10px;padding:16px;font-size:0.88rem;line-height:1.95;color:var(--text);display:none;}
+.story-box.active{display:block;}
+.story-box p{margin-bottom:12px;}
+.gram{border-bottom:2px dashed var(--gold);cursor:pointer;color:#fde68a;font-weight:700;}
+.story-kr{background:#09080f;border-left:3px solid #2a1a4a;border-radius:0 8px 8px 0;padding:10px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.8;display:none;}
+.kr-toggle{background:transparent;border:1px solid var(--border);color:var(--sub);border-radius:20px;padding:4px 12px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+
+/* GRAMMAR TOOLTIP */
+#tt-overlay{position:fixed;inset:0;z-index:999;display:none;}
+.tt-wrap{position:fixed;z-index:1000;display:none;}
+.tt-box{background:#12101e;border:1.5px solid var(--gold);border-radius:12px;padding:14px 16px;max-width:290px;box-shadow:0 8px 32px rgba(0,0,0,0.7);}
+.tt-tag{background:var(--gold);color:#1a1000;font-size:0.65rem;font-weight:900;padding:2px 8px;border-radius:10px;margin-bottom:8px;display:inline-block;}
+.tt-title{font-size:0.88rem;font-weight:900;color:white;margin-bottom:6px;}
+.tt-desc{font-size:0.78rem;color:var(--sub);line-height:1.6;margin-bottom:8px;white-space:pre-line;}
+.tt-ex{background:var(--bg);border-radius:6px;padding:6px 10px;font-size:0.78rem;color:var(--gold);margin-bottom:10px;font-style:italic;}
+.tt-gram-link{background:#1a0d3a;border:1px solid #3a2a5a;color:var(--gold);border-radius:20px;padding:3px 10px;font-size:0.7rem;font-weight:700;text-decoration:none;}
+.tt-close{position:absolute;top:8px;right:10px;background:transparent;border:none;color:var(--sub);font-size:1rem;cursor:pointer;}
+
+/* VOCAB */
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.vc{background:var(--card2);border-radius:10px;padding:10px 12px;border-left:3px solid var(--gold);}
+.vc-w{font-size:0.88rem;font-weight:900;color:white;margin-bottom:2px;}
+.vc-m{font-size:0.75rem;color:var(--sub);margin-bottom:4px;}
+.vc-e{font-size:0.72rem;color:var(--gold);font-style:italic;}
+
+/* SENTENCE ANALYSIS */
+.sa-box{background:var(--card2);border-radius:12px;padding:16px;margin-bottom:12px;}
+.sa-sentence{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--text);line-height:1.7;margin-bottom:14px;border-left:3px solid var(--gold);padding-left:12px;}
+.sa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.sa-item{background:var(--bg);border-radius:8px;padding:10px 12px;}
+.sa-role{font-size:0.65rem;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:4px;}
+.sa-text{font-size:0.82rem;color:var(--text);}
+.sa-note{font-size:0.72rem;color:var(--sub);margin-top:2px;}
+
+/* SENTENCE EXPANSION */
+.exp-levels{display:flex;flex-direction:column;gap:10px;}
+.exp-item{background:var(--card2);border-radius:10px;padding:12px 14px;}
+.exp-level{font-size:0.65rem;font-weight:900;letter-spacing:2px;margin-bottom:6px;}
+.exp-sentence{font-size:0.84rem;line-height:1.7;color:var(--text);}
+.exp-input{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;margin-top:8px;}
+.exp-input:focus{outline:none;border-color:var(--gold);}
+.exp-btn{background:var(--gold);color:#1a1000;border:none;border-radius:8px;padding:7px 16px;font-size:0.78rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:6px;}
+
+/* SUNEUNG */
+.sn-passage{background:var(--card2);border-radius:10px;padding:14px;font-size:0.86rem;line-height:1.9;margin-bottom:14px;color:var(--text);border-left:3px solid var(--gold);}
+.sn-blank{display:inline-block;border-bottom:2px solid var(--gold);min-width:80px;text-align:center;color:var(--gold);font-weight:900;}
+.sn-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.sn-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.sn-opt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.sn-opt.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.sn-result{font-size:0.84rem;font-weight:700;min-height:18px;}
+.sn-explain{background:var(--card2);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:12px 14px;margin-top:10px;font-size:0.8rem;color:var(--sub);line-height:1.7;display:none;}
+.sn-explain.show{display:block;}
+.sn-explain strong{color:var(--gold);}
+.ai-btn{background:transparent;border:1px solid #2a1a4a;color:var(--gold);border-radius:20px;padding:6px 16px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:8px;}
+
+/* FILL */
+.fill-sent{font-size:0.9rem;font-weight:700;line-height:1.7;margin-bottom:12px;color:white;}
+.blank-span{display:inline-block;min-width:70px;border-bottom:2px solid var(--gold);color:var(--gold);text-align:center;font-weight:900;}
+.choices{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.cbtn{padding:7px 16px;background:var(--card2);border:1.5px solid var(--border);border-radius:20px;color:var(--text);font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.cbtn.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.cbtn.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.fill-res{font-size:0.82rem;font-weight:700;min-height:18px;}
+
+/* DICT */
+.dict-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:8px;}
+.dict-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.dict-play{background:#2a1a4a;color:var(--gold);border:none;border-radius:50%;width:36px;height:36px;font-size:0.9rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.dict-label{font-size:0.75rem;color:var(--sub);font-weight:700;}
+.dict-hint{font-size:0.78rem;color:var(--gold);font-style:italic;}
+.dict-input-row{display:flex;gap:8px;}
+.dict-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.dict-input:focus{outline:none;border-color:var(--gold);}
+.dict-btn{background:#2a1a4a;color:var(--gold);border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.dict-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+
+/* LC */
+.lc-play-btn{background:#2a1a4a;color:var(--gold);border:none;border-radius:25px;padding:9px 22px;font-size:0.88rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-bottom:14px;}
+.lc-opts{display:flex;flex-direction:column;gap:8px;}
+.lc-opt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.lc-opt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.lc-opt.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+.lc-result{margin-top:8px;font-size:0.84rem;font-weight:700;min-height:18px;}
+
+/* MATCH */
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.match-col{display:flex;flex-direction:column;gap:6px;}
+.match-item{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:10px;font-size:0.84rem;font-weight:700;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;color:var(--text);transition:all 0.15s;}
+.match-item.selected{border-color:var(--gold);background:#1a1428;color:var(--gold);}
+.match-item.matched{border-color:var(--green);background:#0d2a1a;color:#5aff9a;cursor:default;}
+.match-item.wrong-flash{border-color:var(--red);background:#2a0d0d;}
+.match-result{font-size:0.84rem;font-weight:700;min-height:18px;text-align:center;}
+
+/* DICTATION */
+.fd-item{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;}
+.fd-level-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fd-badge{color:#1a1000;font-size:0.7rem;font-weight:900;padding:2px 10px;border-radius:20px;}
+.fd-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.fd-play{color:#1a1000;border:none;border-radius:20px;padding:6px 14px;font-size:0.8rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-hints{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.fd-hint-label{font-size:0.7rem;color:var(--sub);font-weight:700;}
+.fd-hint-tag{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid;}
+.fd-input-row{display:flex;gap:8px;}
+.fd-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.fd-input:focus{outline:none;border-color:var(--gold);}
+.fd-check{color:#1a1000;border:none;border-radius:8px;padding:9px 14px;font-size:0.78rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.fd-result{font-size:0.78rem;font-weight:700;min-height:16px;margin-top:4px;}
+
+/* QUIZ */
+.quiz-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.qtab{padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--sub);font-size:0.75rem;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;}
+.qb1{background:#1a1428;border-color:#3a2a5a;color:var(--gold);}
+.qc1{background:#0d1a0d;border-color:#1a4a1a;color:#5aff9a;}
+.quiz-set{display:none;}.quiz-set.active{display:block;}
+.quiz-item{margin-bottom:14px;}
+.quiz-q{font-size:0.86rem;font-weight:800;color:white;margin-bottom:8px;}
+.quiz-opts{display:flex;flex-direction:column;gap:6px;}
+.qopt{background:var(--card2);border:1.5px solid var(--border);border-radius:10px;padding:9px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);}
+.qopt.ok{border-color:var(--green);background:#0d2a1a;color:#5aff9a;}
+.qopt.no{border-color:var(--red);background:#2a0d0d;color:#ff9a9a;}
+
+/* ESSAY */
+.essay-struct{background:var(--bg);border-radius:10px;padding:14px;margin-bottom:14px;}
+.essay-struct-title{font-size:0.78rem;font-weight:900;color:var(--gold);margin-bottom:10px;}
+.ep{background:var(--card);border-radius:8px;padding:10px;margin-bottom:6px;}
+.ep-num{font-size:0.68rem;font-weight:900;margin-bottom:3px;}
+.ep-hint{font-size:0.73rem;color:var(--sub);}
+.essay-line{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.essay-num{font-size:0.7rem;font-weight:900;color:var(--gold);width:22px;flex-shrink:0;padding-top:10px;}
+.essay-input{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 12px;color:white;font-size:0.82rem;font-family:'Nunito',sans-serif;}
+.essay-input:focus{outline:none;border-color:var(--gold);}
+.essay-submit{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1a1000;border:none;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:4px;}
+
+/* DEBATE */
+.debate-box{background:linear-gradient(135deg,#0d0b18,#120a1e);border-radius:12px;padding:14px;border:1px solid #2a1a4a;}
+.debate-topic{background:#09080f;border-radius:10px;padding:12px;text-align:center;margin-bottom:12px;border:1px solid #3a2a5a;}
+.debate-topic-en{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;font-weight:500;color:white;margin-bottom:4px;}
+.debate-topic-kr{font-size:0.78rem;color:var(--gold);}
+.debate-round{background:var(--card2);border-radius:10px;padding:12px;margin-bottom:10px;border-left:3px solid var(--gold);}
+.debate-round-label{font-size:0.7rem;font-weight:900;color:var(--gold);letter-spacing:2px;margin-bottom:6px;}
+.debate-textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-size:0.82rem;font-family:'Nunito',sans-serif;resize:none;outline:none;line-height:1.6;margin-top:4px;}
+.debate-textarea:focus{border-color:var(--gold);}
+.phrase-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.phrase{background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:0.75rem;font-weight:700;cursor:pointer;color:var(--sub);}
+.owui-btn{background:linear-gradient(135deg,#2a1a4a,#1a0d3a);color:var(--gold);border:1px solid #3a2a5a;border-radius:20px;padding:10px 24px;font-size:0.86rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;margin-top:8px;}
+
+/* COMPLETE */
+.complete-card{background:linear-gradient(135deg,#0d0b18,#120a1e);border:2px solid var(--gold);border-radius:20px;padding:24px;text-align:center;margin-bottom:20px;display:none;}
+
+.debate-q-box{background:linear-gradient(135deg,#1a2f1a,#0a1628);border:1px solid #4a6741;border-radius:12px;padding:20px 24px;margin-bottom:20px;}
+.debate-q{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1.1rem;color:#00f2ff;line-height:1.6;margin-bottom:8px;}
+.debate-q-ko{font-size:0.9rem;color:rgba(255,255,255,0.6);}
+.debate-sides{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+.debate-agree,.debate-disagree{background:rgba(255,255,255,0.04);border-radius:12px;padding:16px;}
+.debate-agree{border-top:3px solid #4a6741;}.debate-disagree{border-top:3px solid #c0392b;}
+.debate-agree strong{color:#4a6741;}.debate-disagree strong{color:#e74c3c;}
+.debate-agree ul,.debate-disagree ul{margin-top:10px;padding-left:16px;color:rgba(255,255,255,0.75);font-size:0.9rem;line-height:1.8;}
+.essay-topic-box{background:rgba(255,255,255,0.04);border-radius:12px;padding:20px 24px;margin-bottom:16px;border-left:4px solid #00f2ff;}
+.essay-input{width:100%;min-height:100px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:14px;color:#fff;font-size:0.9rem;resize:vertical;margin-top:6px;font-family:"Noto Sans KR",sans-serif;}
+.essay-input::placeholder{color:rgba(255,255,255,0.35);}
+.btn-submit{background:#00f2ff;color:#0a1628;border:none;padding:12px 28px;border-radius:100px;font-size:0.95rem;font-weight:700;cursor:pointer;margin-top:12px;}
+.btn-submit:hover{background:#00d4e0;}
+.btn-ai-debate{display:inline-block;background:#4a6741;color:#fff;padding:12px 28px;border-radius:100px;border:none;font-size:0.95rem;font-weight:700;cursor:pointer;margin-top:12px;}
+.btn-ai-debate:hover{background:#3d5636;}
+.gram-box{background:rgba(255,255,255,0.04);border-radius:12px;padding:20px 24px;}
+.gram-label{font-size:1rem;font-weight:700;color:#00f2ff;margin-bottom:14px;}
+.grammar-examples{padding-left:20px;margin-top:8px;}
+.grammar-examples li{color:rgba(255,255,255,0.8);font-size:0.9rem;line-height:1.9;margin-bottom:4px;}
+.key-expr-box{background:linear-gradient(135deg,#1a3a1a,#0a1628);border:1px solid #4a6741;border-radius:12px;padding:24px;}
+.ke-en{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1.3rem;color:#00f2ff;line-height:1.7;margin-bottom:10px;cursor:pointer;}
+.ke-ko{font-size:0.9rem;color:rgba(255,255,255,0.65);}
+.level-tabs{display:flex;gap:8px;margin-bottom:16px;}
+.ltab{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);border:none;padding:8px 20px;border-radius:100px;cursor:pointer;font-size:0.85rem;}
+.ltab.active{background:#4a6741;color:#fff;}
+.story-box{background:rgba(255,255,255,0.04);border-radius:12px;padding:20px 24px;line-height:1.85;color:rgba(255,255,255,0.85);font-size:0.95rem;}
+.sp-btn{background:rgba(255,255,255,0.1);color:#fff;border:none;padding:6px 16px;border-radius:100px;cursor:pointer;font-size:0.8rem;margin-top:12px;}
+.sp-btn:hover{background:rgba(255,255,255,0.2);}
+@media(max-width:600px){.debate-sides{grid-template-columns:1fr;}}
+
+</style>
+</head>
+<body>
+<div class="hd-wrap">
+  <div class="hd-inner">
+    <a href="/camp-b/" class="hd-logo">CEC English Camp B</a>
+    <span class="hd-badge">High School 1</span>
+  </div>
+</div>
+<div class="hero-wrap">
+  <div class="hero-inner">
+    <div class="hero-meta">Of Mice and Men · W12 / 16</div>
+    <h1 class="hero-title">Of Mice and Men</h1>
+    <p class="hero-sub">꿈의 죽음 — John Steinbeck · B2~C1</p>
+  </div>
+</div>
+<div class="content-wrap">
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">1</span><h2>핵심 표현 <span class="sh-en">KEY EXPRESSION</span></h2></div>
+    <div class="key-expr-box">
+      <div class="ke-en" id="keyEn" onclick="speak(this.textContent)">Lennie begged, "Le's do it now. Le's get that place now." 🔊</div>
+      <div class="ke-ko">레니가 간청했다. "지금 해요. 지금 그 농장을 가져요."</div>
+    </div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">2</span><h2>지문 읽기 <span class="sh-en">READING</span></h2></div>
+    <div class="level-tabs">
+      <button class="ltab active" onclick="showLevel('b1',this)">B1 기본</button>
+      <button class="ltab" onclick="showLevel('c1',this)">C1 심화</button>
+    </div>
+    <div id="b1Story" class="story-box" style="display:block;">
+      <p id="b1Text">Lennie accidentally kills Curley's wife. He did not mean to hurt her. George finds out. He knows Curley will kill Lennie painfully. George finds Lennie by the river. He tells him the dream one last time. Then George makes his terrible but loving choice.</p>
+      <button class="sp-btn" onclick="speak(document.getElementById('b1Text').textContent)">🔊 듣기</button>
+    </div>
+    <div id="c1Story" class="story-box" style="display:none;">
+      <p id="c1Text">The novel's tragic conclusion raises profound questions about determinism versus free will. Was Lennie's death inevitable from page one — written into the structure of a world that has no place for the innocent and the gentle? Or could different choices have led to different outcomes?</p>
+      <button class="sp-btn" onclick="speak(document.getElementById('c1Text').textContent)">🔊 듣기</button>
+    </div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">3</span><h2>핵심 어휘 <span class="sh-en">VOCABULARY</span></h2></div>
+    <div class="vocab-grid">
+      <div class="vc">
+        <div class="vc-en" onclick="speak(this.textContent)">determinism 🔊</div>
+        <div class="vc-ko">결정론</div>
+        <div class="vc-ex">"The ending raises questions about determinism."</div>
+      </div>
+      <div class="vc">
+        <div class="vc-en" onclick="speak(this.textContent)">inevitable 🔊</div>
+        <div class="vc-ko">불가피한</div>
+        <div class="vc-ex">"Was the tragedy truly inevitable?"</div>
+      </div>
+      <div class="vc">
+        <div class="vc-en" onclick="speak(this.textContent)">profound 🔊</div>
+        <div class="vc-ko">깊은, 심오한</div>
+        <div class="vc-ex">"The ending raises profound philosophical questions."</div>
+      </div>
+      <div class="vc">
+        <div class="vc-en" onclick="speak(this.textContent)">innocent 🔊</div>
+        <div class="vc-ko">순수한, 결백한</div>
+        <div class="vc-ex">"The world had no place for the innocent."</div>
+      </div>
+      <div class="vc">
+        <div class="vc-en" onclick="speak(this.textContent)">bittersweet 🔊</div>
+        <div class="vc-ko">쓸쓸하고도 달콤한</div>
+        <div class="vc-ex">"The ending was bittersweet and heartbreaking."</div>
+      </div>
+      <div class="vc">
+        <div class="vc-en" onclick="speak(this.textContent)">predetermined 🔊</div>
+        <div class="vc-ko">미리 결정된</div>
+        <div class="vc-ex">"Some argue the tragedy was predetermined."</div>
+      </div>
+    </div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">4</span><h2>문법 포인트 <span class="sh-en">GRAMMAR</span></h2></div>
+    <div class="gram-box">
+      <div class="gram-label">Perfect Aspect Review (G24)</div>
+      <ul class="grammar-examples"><li><em>"By the time George found him, Lennie had already done what he had feared." — 대과거</em></li><li><em>"George had been dreading this moment for years." — 과거완료진행</em></li><li><em>"If only they had found the farm before tragedy struck." — wish + 과거완료</em></li></ul>
+    </div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">5</span><h2>토론 주제 <span class="sh-en">DEBATE TOPIC</span></h2></div>
+    <div class="debate-q-box">
+      <div class="debate-q">💬 "Steinbeck suggests that the American Dream is structurally impossible for the powerless."</div>
+      <div class="debate-q-ko">Steinbeck는 아메리칸 드림이 힘없는 자들에게는 구조적으로 불가능하다고 시사한다.</div>
+    </div>
+    <div class="debate-sides">
+      <div class="debate-agree"><strong>✅ 찬성 (Agree)</strong><ul><li>Every character's dream in the novel is destroyed by forces beyond their control</li><li>The economic system of the 1930s made the dream inaccessible to workers</li><li>Steinbeck deliberately makes the dream impossible to critique capitalism</li></ul></div>
+      <div class="debate-disagree"><strong>❌ 반대 (Disagree)</strong><ul><li>The tragedy results from specific events, not an inherently broken system</li><li>Some individuals do escape poverty — the system is not always rigged</li><li>Steinbeck shows the dream is fragile, not impossible</li></ul></div>
+    </div>
+    <div style="margin-top:20px;">
+      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-bottom:8px;">내 주장을 영어로 써보세요:</p>
+      <textarea class="essay-input" id="debateInput" placeholder="I argue that... because..."></textarea>
+      <button class="btn-ai-debate" onclick="sendDebate()">⚔️ ChatGPT에서 AI와 토론하기</button>
+    </div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">6</span><h2>에세이 쓰기 <span class="sh-en">ESSAY WRITING</span></h2></div>
+    <div class="essay-topic-box">
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:#00f2ff;margin-bottom:8px;">"Is the tragedy of Of Mice and Men the result of fate, character flaws, or an unjust society? Argue your position."</div>
+      <div style="font-size:0.9rem;color:rgba(255,255,255,0.6);">미국의 꿈의 비극은 운명, 성격적 결함, 또는 불공정한 사회의 결과인가? 입장을 논하라.</div>
+    </div>
+    <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-bottom:6px;">📝 Introduction</p>
+    <textarea class="essay-input" id="es1" placeholder="Introduce the topic and state your thesis..."></textarea>
+    <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin:12px 0 6px;">📝 Body 1</p>
+    <textarea class="essay-input" id="es2" placeholder="First argument with evidence..."></textarea>
+    <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin:12px 0 6px;">📝 Body 2</p>
+    <textarea class="essay-input" id="es3" placeholder="Second argument with evidence..."></textarea>
+    <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin:12px 0 6px;">📝 Conclusion</p>
+    <textarea class="essay-input" id="es4" placeholder="Summarize and restate your thesis..."></textarea>
+    <button class="btn-submit" onclick="submitEssay()">✍️ ChatGPT에서 에세이 피드백 받기</button>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">7</span><h2>ChatGPT 회화 연습 <span class="sh-en">AI PRACTICE</span></h2></div>
+    <div style="text-align:center;padding:20px 0;">
+      <p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">ChatGPT Camp B와 함께 이번 주 내용을 영어로 대화해보세요!</p>
+      <button class="btn-submit" onclick="launchChatGPTPractice()">🤖 ChatGPT와 50:50 회화 연습</button>
+    </div>
+  </section>
+</div>
+<div class="wk-nav">
+  <a href="week11.html" class="wk-btn">← W11</a>
+  <span class="wk-current">W12</span>
+  <a href="week13.html" class="wk-btn">W13 →</a>
+</div>
+<div class="pw-wrap" style="bottom:80px;">
+  <div class="pw-bubble">Of Mice and Men 질문 있으세요?</div>
+  <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif" class="pw-robo" onclick="toggleChat()" alt="Robo">
+</div>
+<script>
+const CHATGPT_URL = 'https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166';
+function speak(t) {
+  if (!t) return;
+  var u = new SpeechSynthesisUtterance(t.replace(/[\uD800-\uDFFF\U0001f50a]/g,'').trim());
+  u.lang = 'en-US'; u.rate = 0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(u);
+}
+function showLevel(lv, btn) {
+  document.getElementById('b1Story').style.display = lv==='b1'?'block':'none';
+  document.getElementById('c1Story').style.display = lv==='c1'?'block':'none';
+  document.querySelectorAll('.ltab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+}
+function sendDebate() {
+  var txt = document.getElementById('debateInput').value;
+  var msg = '토론 연습을 하고 싶어요.\n내 주장:\n' + txt + '\n영어로 반박해주세요!';
+  window.open(CHATGPT_URL, '_blank');
+  try { navigator.clipboard.writeText(msg); } catch(e) {}
+}
+function submitEssay() {
+  var e1=document.getElementById('es1').value;
+  var e2=document.getElementById('es2').value;
+  var e3=document.getElementById('es3').value;
+  var e4=document.getElementById('es4').value;
+  var msg = '에세이 피드백 부탁드려요!\n[Intro]\n'+e1+'\n[Body1]\n'+e2+'\n[Body2]\n'+e3+'\n[Conclusion]\n'+e4;
+  window.open(CHATGPT_URL, '_blank');
+  try { navigator.clipboard.writeText(msg); } catch(e) {}
+}
+function launchChatGPTPractice() {
+  var msg = '안녕하세요! High School 1 수업이에요. Of Mice and Men W12 (꿈의 죽음 — 불가피한 비극) 주제로 영어 회화 연습하고 싶어요!';
+  window.open(CHATGPT_URL, '_blank');
+  try { navigator.clipboard.writeText(msg); } catch(e) {}
+}
+function toggleChat() {
+  window.open(CHATGPT_URL, '_blank');
+}
+</script>
+</body>
+</html>
