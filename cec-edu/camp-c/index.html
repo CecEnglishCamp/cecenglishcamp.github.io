@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp C | CEC English Camp</title>
+<meta name="description" content="주부영어 + 엄마교사">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--point:#00f2ff;--bg:#000;--card:#111;--border:#222;--border2:#333;--text:#fff;--sub:#ddd;--muted:#888;}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Apple SD Gothic Neo','Noto Sans KR',sans-serif;line-height:1.6;}
+header{position:sticky;top:0;z-index:100;background:rgba(0,0,0,0.98);border-bottom:1px solid var(--border);backdrop-filter:blur(10px);}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);font-size:1rem;font-weight:900;letter-spacing:-0.5px;}
+.nav-logo img{width:38px;height:38px;border-radius:8px;}
+.nav-logo span{color:var(--point);}
+.nav-menu{display:flex;align-items:center;gap:6px;list-style:none;}
+.nav-menu a{color:var(--sub);text-decoration:none;font-size:0.88rem;font-weight:700;padding:8px 14px;border-radius:8px;transition:all 0.2s;}
+.nav-menu a:hover,.nav-menu a.active{color:var(--point);}
+.nav-dropdown{position:relative;}
+.nav-dropdown>a::after{content:" \25be";}
+.dropdown-menu{display:none;position:absolute;top:100%;left:0;background:var(--card);border:2px solid var(--point);border-radius:12px;padding:8px;min-width:180px;z-index:200;}
+.nav-dropdown:hover .dropdown-menu{display:block;}
+.dropdown-menu a{display:block;padding:10px 16px;border-radius:8px;font-size:0.85rem;color:var(--sub);}
+.dropdown-menu a:hover{background:#1a1a1a;color:var(--point);}
+.btn-reg{background:var(--point);color:#000;padding:8px 20px;border-radius:50px;font-size:0.85rem;font-weight:700;text-decoration:none;transition:opacity 0.2s;white-space:nowrap;}
+.btn-reg:hover{opacity:0.85;color:#000;}
+.hero{padding:120px 24px 80px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(0,242,255,0.08) 0%,transparent 70%);}
+.hero-tag{display:inline-block;border:1px solid var(--point);color:var(--point);padding:4px 16px;border-radius:50px;font-size:0.78rem;font-weight:700;letter-spacing:1px;margin-bottom:24px;}
+.hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:900;line-height:1.2;margin-bottom:20px;letter-spacing:-1px;}
+.hero h1 span{color:var(--point);}
+.hero p{font-size:1rem;color:var(--sub);max-width:560px;margin:0 auto 36px;line-height:1.8;}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.btn-primary{background:var(--point);color:#000;padding:14px 32px;border-radius:50px;font-weight:700;text-decoration:none;font-size:0.95rem;transition:opacity 0.2s;}
+.btn-primary:hover{opacity:0.85;}
+.btn-secondary{border:1px solid var(--border2);color:var(--text);padding:14px 32px;border-radius:50px;font-weight:700;text-decoration:none;font-size:0.95rem;transition:all 0.2s;}
+.btn-secondary:hover{border-color:var(--point);color:var(--point);}
+.section{padding:80px 24px;}
+.section-inner{max-width:1200px;margin:0 auto;}
+.section-tag{display:inline-block;border:1px solid var(--point);color:var(--point);padding:3px 14px;border-radius:50px;font-size:0.75rem;font-weight:700;letter-spacing:1px;margin-bottom:16px;}
+.section h2{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:900;margin-bottom:12px;letter-spacing:-0.5px;}
+.section h2 span{color:var(--point);}
+.section-desc{color:var(--muted);font-size:0.9rem;margin-bottom:48px;max-width:500px;}
+.camp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
+.camp-box{background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:28px 24px;text-decoration:none;color:var(--text);transition:all 0.25s;display:block;}
+.camp-box:hover{border-color:var(--point);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,242,255,0.12);}
+.camp-emoji{font-size:2.2rem;margin-bottom:14px;}
+.camp-title{font-size:1.05rem;font-weight:800;margin-bottom:6px;}
+.camp-title span{color:var(--point);}
+.camp-desc{font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.camp-badge{display:inline-block;border:1px solid var(--point);color:var(--point);padding:2px 12px;border-radius:50px;font-size:0.72rem;font-weight:700;}
+.week-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;}
+.week-card{background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:14px 8px;text-align:center;text-decoration:none;color:var(--text);font-weight:700;font-size:0.9rem;transition:all 0.2s;}
+.week-card:hover{border-color:var(--point);color:var(--point);}
+.week-card small{display:block;font-size:0.7rem;color:var(--muted);font-weight:400;margin-top:3px;}
+.breadcrumb{max-width:1200px;margin:28px auto 0;padding:0 24px;}
+.breadcrumb ol{display:flex;gap:8px;list-style:none;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;}
+.breadcrumb li+li::before{content:"\203a";margin-right:8px;}
+.breadcrumb a{color:var(--point);text-decoration:none;}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
+.feature-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px 24px;}
+.feature-icon{font-size:2rem;margin-bottom:12px;}
+.feature-title{font-size:1rem;font-weight:800;margin-bottom:8px;}
+.feature-desc{font-size:0.83rem;color:var(--muted);line-height:1.7;}
+.game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;}
+.game-box{background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:32px 24px;text-align:center;text-decoration:none;color:var(--text);transition:all 0.25s;}
+.game-box:hover{border-color:var(--point);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,242,255,0.12);}
+.game-emoji{font-size:3rem;margin-bottom:14px;}
+.game-title{font-size:1rem;font-weight:800;margin-bottom:6px;}
+.game-desc{font-size:0.8rem;color:var(--muted);}
+.cta-banner{background:linear-gradient(135deg,#00f2ff11,#00f2ff05);border:1px solid var(--point);border-radius:20px;padding:48px 32px;text-align:center;}
+.cta-banner h2{font-size:1.8rem;font-weight:900;margin-bottom:12px;}
+.cta-banner p{color:var(--muted);margin-bottom:28px;font-size:0.9rem;}
+footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center;color:var(--muted);font-size:0.8rem;}
+@media(max-width:1024px){.nav-menu{gap:2px;}.nav-menu a{padding:6px 10px;font-size:0.82rem;}}
+@media(max-width:768px){.hero{padding:80px 20px 60px;}.camp-grid{grid-template-columns:1fr 1fr;}.week-grid{grid-template-columns:repeat(5,1fr);}}
+@media(max-width:480px){.camp-grid{grid-template-columns:1fr;}.week-grid{grid-template-columns:repeat(4,1fr);}.nav-menu .hide-mobile{display:none;}}
+</style>
+</head>
+<body>
+<header><div class="nav-inner">
+  <a href="/cec-edu/" class="nav-logo"><img src="/assets/img/robo2.png" alt="CEC" onerror="this.style.display='none'">CEC <span>Edu</span></a>
+  <ul class="nav-menu"><li class="nav-dropdown"><a href="#" class=" active">📚 학습</a><div class="dropdown-menu"><a href="/cec-edu/grammar-base/">📐 Grammar Base</a><a href="/cec-edu/camp-a/">🌱 Camp A — 초등</a><a href="/cec-edu/camp-b/">📘 Camp B — 중고등</a><a href="/cec-edu/camp-c/">👩 Camp C — 주부</a></div></li><li><a href="/cec-edu/games/" class="">🎮 Games</a></li><li><a href="/cec-edu/register/" class="btn-reg">📝 등록</a></li></ul>
+</div></header>
+<nav class="breadcrumb" aria-label="breadcrumb"><ol><li><a href="/cec-edu/">홈</a></li><li>Camp C</li></ol></nav>
+<main>
+
+<section class="hero"><span class="hero-tag">👩 CAMP C</span><h1>Camp C<br><span>주부 · 엄마교사</span></h1><p>미국 일상생활 영어 60 에피소드 · 엄마교사 가이드</p></section>
+<section class="section"><div class="section-inner">
+  <span class="section-tag">주부영어</span><h2>영자 아줌마의 <span>미국 생활</span></h2>
+  <p class="section-desc">EP01~60 · A2~B1 · 실생활 밀착 영어</p>
+  <div class="week-grid"><a href="/camp-c/ep01.html" class="week-card">EP01<small>Ep 1</small></a>
+<a href="/camp-c/ep02.html" class="week-card">EP02<small>Ep 2</small></a>
+<a href="/camp-c/ep03.html" class="week-card">EP03<small>Ep 3</small></a>
+<a href="/camp-c/ep04.html" class="week-card">EP04<small>Ep 4</small></a>
+<a href="/camp-c/ep05.html" class="week-card">EP05<small>Ep 5</small></a>
+<a href="/camp-c/ep06.html" class="week-card">EP06<small>Ep 6</small></a>
+<a href="/camp-c/ep07.html" class="week-card">EP07<small>Ep 7</small></a>
+<a href="/camp-c/ep08.html" class="week-card">EP08<small>Ep 8</small></a>
+<a href="/camp-c/ep09.html" class="week-card">EP09<small>Ep 9</small></a>
+<a href="/camp-c/ep10.html" class="week-card">EP10<small>Ep 10</small></a>
+<a href="/camp-c/ep11.html" class="week-card">EP11<small>Ep 11</small></a>
+<a href="/camp-c/ep12.html" class="week-card">EP12<small>Ep 12</small></a>
+<a href="/camp-c/ep13.html" class="week-card">EP13<small>Ep 13</small></a>
+<a href="/camp-c/ep14.html" class="week-card">EP14<small>Ep 14</small></a>
+<a href="/camp-c/ep15.html" class="week-card">EP15<small>Ep 15</small></a>
+<a href="/camp-c/ep16.html" class="week-card">EP16<small>Ep 16</small></a>
+<a href="/camp-c/ep17.html" class="week-card">EP17<small>Ep 17</small></a>
+<a href="/camp-c/ep18.html" class="week-card">EP18<small>Ep 18</small></a>
+<a href="/camp-c/ep19.html" class="week-card">EP19<small>Ep 19</small></a>
+<a href="/camp-c/ep20.html" class="week-card">EP20<small>Ep 20</small></a>
+<a href="/camp-c/ep21.html" class="week-card">EP21<small>Ep 21</small></a>
+<a href="/camp-c/ep22.html" class="week-card">EP22<small>Ep 22</small></a>
+<a href="/camp-c/ep23.html" class="week-card">EP23<small>Ep 23</small></a>
+<a href="/camp-c/ep24.html" class="week-card">EP24<small>Ep 24</small></a>
+<a href="/camp-c/ep25.html" class="week-card">EP25<small>Ep 25</small></a>
+<a href="/camp-c/ep26.html" class="week-card">EP26<small>Ep 26</small></a>
+<a href="/camp-c/ep27.html" class="week-card">EP27<small>Ep 27</small></a>
+<a href="/camp-c/ep28.html" class="week-card">EP28<small>Ep 28</small></a>
+<a href="/camp-c/ep29.html" class="week-card">EP29<small>Ep 29</small></a>
+<a href="/camp-c/ep30.html" class="week-card">EP30<small>Ep 30</small></a>
+<a href="/camp-c/ep31.html" class="week-card">EP31<small>Ep 31</small></a>
+<a href="/camp-c/ep32.html" class="week-card">EP32<small>Ep 32</small></a>
+<a href="/camp-c/ep33.html" class="week-card">EP33<small>Ep 33</small></a>
+<a href="/camp-c/ep34.html" class="week-card">EP34<small>Ep 34</small></a>
+<a href="/camp-c/ep35.html" class="week-card">EP35<small>Ep 35</small></a>
+<a href="/camp-c/ep36.html" class="week-card">EP36<small>Ep 36</small></a>
+<a href="/camp-c/ep37.html" class="week-card">EP37<small>Ep 37</small></a>
+<a href="/camp-c/ep38.html" class="week-card">EP38<small>Ep 38</small></a>
+<a href="/camp-c/ep39.html" class="week-card">EP39<small>Ep 39</small></a>
+<a href="/camp-c/ep40.html" class="week-card">EP40<small>Ep 40</small></a>
+<a href="/camp-c/ep41.html" class="week-card">EP41<small>Ep 41</small></a>
+<a href="/camp-c/ep42.html" class="week-card">EP42<small>Ep 42</small></a>
+<a href="/camp-c/ep43.html" class="week-card">EP43<small>Ep 43</small></a>
+<a href="/camp-c/ep44.html" class="week-card">EP44<small>Ep 44</small></a>
+<a href="/camp-c/ep45.html" class="week-card">EP45<small>Ep 45</small></a>
+<a href="/camp-c/ep46.html" class="week-card">EP46<small>Ep 46</small></a>
+<a href="/camp-c/ep47.html" class="week-card">EP47<small>Ep 47</small></a>
+<a href="/camp-c/ep48.html" class="week-card">EP48<small>Ep 48</small></a>
+<a href="/camp-c/ep49.html" class="week-card">EP49<small>Ep 49</small></a>
+<a href="/camp-c/ep50.html" class="week-card">EP50<small>Ep 50</small></a>
+<a href="/camp-c/ep51.html" class="week-card">EP51<small>Ep 51</small></a>
+<a href="/camp-c/ep52.html" class="week-card">EP52<small>Ep 52</small></a>
+<a href="/camp-c/ep53.html" class="week-card">EP53<small>Ep 53</small></a>
+<a href="/camp-c/ep54.html" class="week-card">EP54<small>Ep 54</small></a>
+<a href="/camp-c/ep55.html" class="week-card">EP55<small>Ep 55</small></a>
+<a href="/camp-c/ep56.html" class="week-card">EP56<small>Ep 56</small></a>
+<a href="/camp-c/ep57.html" class="week-card">EP57<small>Ep 57</small></a>
+<a href="/camp-c/ep58.html" class="week-card">EP58<small>Ep 58</small></a>
+<a href="/camp-c/ep59.html" class="week-card">EP59<small>Ep 59</small></a>
+<a href="/camp-c/ep60.html" class="week-card">EP60<small>Ep 60</small></a>
+</div>
+  <span class="section-tag" style="margin-top:48px;display:inline-block;">엄마교사</span><h2 style="margin-top:16px;">학년별 <span>엄마교사 가이드</span></h2>
+  <div class="camp-grid">
+    <a href="/cec-edu/camp-c/mom/grade3/" class="camp-box"><div class="camp-emoji">📗</div><div class="camp-title"><span>Grade 3</span></div><div class="camp-desc">EP01~15</div><span class="camp-badge">Grade 3</span></a>
+    <a href="/cec-edu/camp-c/mom/grade4/" class="camp-box"><div class="camp-emoji">📘</div><div class="camp-title"><span>Grade 4</span></div><div class="camp-desc">EP01~15</div><span class="camp-badge">Grade 4</span></a>
+    <a href="/cec-edu/camp-c/mom/grade5/" class="camp-box"><div class="camp-emoji">📙</div><div class="camp-title"><span>Grade 5</span></div><div class="camp-desc">EP01~15</div><span class="camp-badge">Grade 5</span></a>
+    <a href="/cec-edu/camp-c/mom/grade6/" class="camp-box"><div class="camp-emoji">📕</div><div class="camp-title"><span>Grade 6</span></div><div class="camp-desc">EP01~15</div><span class="camp-badge">Grade 6</span></a>
+  </div>
+</div></section>
+</main>
+<footer>© 2026 CEC English Camp</footer>
+</body>
+</html>
