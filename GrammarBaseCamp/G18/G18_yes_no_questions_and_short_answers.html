@@ -1,352 +1,526 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G18 Part 1: Yes/No Questions and Short Answers</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G18. Yes/No Questions & Short Answers</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Sans+KR:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --white: #ffffff;
+    --green-dark: #4a6741;
+    --green-mid: #5a7a50;
+    --green-light: #e8f0e5;
+    --green-card: #3d5c35;
+    --gold: #c8972a;
+    --gold-light: #fdf3e0;
+    --cream: #faf7f0;
+    --brown: #6b5c3e;
+    --brown-light: #f0e8d8;
+    --text: #2d2d2d;
+    --muted: #7a7a7a;
+    --border: #ddd6c8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; line-height: 1.7; padding-bottom: 80px; }
 
-        :root {
-            --blue-light: #e3f2fd;
-            --blue-medium: #bbdefb;
-            --green: #e8f5e9;
-            --orange: #fff3e0;
-            --purple: #f3e5f5;
-            --teal: #e0f2f1;
-            --gray-light: #f5f5f5;
-            --gray-dark: #bdbdbd;
-            --point-color: #00897b; /* Teal for Questions */
-            --blue-main: #3498db;
-        }
+  /* HEADER */
+  .lesson-header { background: #0a1628; padding: 36px 24px 32px; text-align: center; }
+  .gbc-badge { display: inline-block; border: 1px solid rgba(0,242,255,0.5); color: rgba(0,242,255,0.8); font-family: 'Poppins', sans-serif; font-size: 11px; letter-spacing: 2px; padding: 4px 14px; border-radius: 20px; margin-bottom: 16px; }
+  .lesson-num-title { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+  .lesson-main-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 44px; font-weight: 500; color: #00f2ff; line-height: 1.15; margin-bottom: 10px; }
+  .lesson-sub { font-size: 14px; color: rgba(255,255,255,0.5); }
 
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #1a2a1a;
-            margin: 0;
-            padding: 20px;
-        }
-            margin: 0;
-            padding: 20px;
-        }
+  /* TOC */
+  .toc { background: var(--green-dark); padding: 12px 20px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .toc a { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.75); text-decoration: none; }
+  .toc a:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
+  /* LAYOUT */
+  .content { max-width: 740px; margin: 0 auto; padding: 0 20px; }
 
-                /* 제목 스타일 */
-                /* 제목 스타일 */
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #33ddff;
-        }
-        
-                .title-en {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-weight: 500;
-            font-size: 50px;
-            letter-spacing: 2px;
-            color: #55eeff;
-            line-height: 1.2;
-            text-align: center;
-        }
-        
-                .title-ko {
-            font-family: 'NanumSquareRound', sans-serif;
-            font-weight: 800;
-            font-size: 22px;
-            letter-spacing: 3px;
-            color: #55eeff;
-            opacity: 0.9;
-            margin-top: 5px;
-            line-height: 1.2;
-            text-align: center;
-        }
+  /* SECTION */
+  .section { margin-top: 28px; background: var(--white); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+  .section-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+  .section-num { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; flex-shrink: 0; color: #fff; }
+  .section-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .section-en { font-size: 11px; color: var(--muted); font-family: 'Poppins', sans-serif; letter-spacing: 1px; margin-left: 6px; }
+  .section-body { padding: 20px; }
 
-        .toc {
-            background-color: #f8f9fa;
-            border-left: 5px solid var(--blue-main);
-            padding: 1rem 1.5rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-        }
+  /* KEY CARD */
+  .key-card { background: var(--green-card); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .key-label { font-size: 11px; font-family: 'Poppins', sans-serif; letter-spacing: 2px; color: var(--gold); margin-bottom: 10px; }
+  .key-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 30px; font-weight: 500; color: #fff; margin-bottom: 6px; }
+  .key-kr { font-size: 13px; color: rgba(255,255,255,0.65); }
 
-        .toc h2 {
-            margin-top: 0;
-            color: #2980b9;
-        }
+  /* CONCEPT BOX */
+  .concept-box { background: var(--green-light); border-radius: 10px; padding: 16px; margin-bottom: 12px; border-left: 4px solid var(--green-mid); }
+  .concept-box p { font-size: 14px; margin-bottom: 8px; }
+  .concept-box p:last-child { margin-bottom: 0; }
 
-        .toc ol {
-            padding-left: 20px;
-        }
+  /* RULE GRID */
+  .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .rule-card { padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); }
+  .rule-label { font-size: 10px; font-family: 'Poppins', sans-serif; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 8px; }
+  .rule-example { font-family: 'Poppins', sans-serif; font-size: 13px; }
+  .rule-example strong { font-weight: 700; }
+  .r-is { background: var(--green-light); border-color: #b8d4b0; }
+  .r-is .rule-label { color: var(--green-dark); }
+  .r-is .rule-example strong { color: var(--green-dark); }
+  .r-are { background: #e8f4e8; border-color: #a8ccaa; }
+  .r-are .rule-label { color: #3a6640; }
+  .r-are .rule-example strong { color: #3a6640; }
+  .r-neg { background: #fdf0e0; border-color: #e8c88a; }
+  .r-neg .rule-label { color: #8a5a1a; }
+  .r-neg .rule-example strong { color: #8a5a1a; }
+  .r-q { background: var(--brown-light); border-color: #d4c0a0; }
+  .r-q .rule-label { color: var(--brown); }
+  .r-q .rule-example strong { color: var(--brown); }
 
-        .toc li a {
-            text-decoration: none;
-            color: #34495e;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
+  /* BULLET LIST */
+  .rule-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .rule-list li { font-size: 14px; padding: 8px 12px; background: var(--cream); border-radius: 8px; border-left: 3px solid var(--green-mid); }
+  .rule-list li strong { color: var(--green-dark); font-family: 'Poppins', sans-serif; }
 
-        .toc li a:hover {
-            color: #1a6496;
-            text-decoration: underline;
-        }
+  /* EXAMPLE LIST */
+  .ex-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .ex-list li { padding: 12px 16px; background: var(--cream); border-radius: 10px; border-left: 4px solid var(--green-mid); font-size: 14px; }
+  .ex-list li .en { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
+  .ex-list li .kr { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+  .ex-q { border-left-color: var(--brown) !important; }
+  .ex-q .en { color: var(--brown) !important; }
 
-        .section {
-            padding: 2rem 0;
-            border-bottom: 1px solid #eee;
-        }
+  /* DIALOGUE */
+  .dialogue { background: var(--cream); border-radius: 12px; padding: 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+  .d-title { font-size: 10px; font-family: 'Poppins', sans-serif; letter-spacing: 1.5px; color: var(--gold); font-weight: 700; margin-bottom: 10px; }
+  .d-line { font-size: 14px; margin-bottom: 5px; }
+  .d-line .sp { color: var(--green-dark); font-weight: 700; margin-right: 6px; }
+  .d-line .key { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
 
-        .section h2 {
-            font-size: 1.8rem;
-            color: #34495e;
-            border-left: 4px solid var(--blue-main);
-            padding-left: 15px;
-        }
+  /* PRACTICE */
+  .practice-item { padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 8px; font-size: 14px; background: var(--cream); }
+  .practice-item .original { color: var(--muted); margin-bottom: 4px; font-size: 13px; }
+  .practice-item .result { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
 
-        .concept-card {
-            background-color: var(--blue-light);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            position: relative;
-            overflow: hidden;
-        }
+  /* PATTERN BOX */
+  .pattern-box { background: var(--gold-light); border: 1px solid #e8c88a; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .pattern-box .p-label { font-size: 11px; color: var(--gold); font-family: 'Poppins', sans-serif; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+  .pattern-box .p-text { font-size: 14px; color: var(--brown); }
+  .pattern-box .p-text strong { color: #7a5010; font-family: 'Poppins', sans-serif; }
 
-        .concept-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background-color: var(--point-color); /* Question Color */
-        }
+  /* MISTAKE BOX */
+  .mistake-box { background: #fff5f5; border: 1px solid #f4c0c0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .mistake-box .wrong { color: #c0392b; font-size: 13px; text-decoration: line-through; margin-bottom: 4px; }
+  .mistake-box .right { color: var(--green-dark); font-size: 14px; font-weight: 700; font-family: 'Poppins', sans-serif; }
+  .mistake-box .reason { color: var(--muted); font-size: 12px; margin-top: 4px; }
 
-        .concept-card h4 {
-            color: #1f3a5f;
-            margin-top: 0;
-            display: flex;
-            align-items: center;
-        }
+  /* TIP BOX */
+  .tip-box { background: #e8f0ff; border: 1px solid #b8c8f0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .tip-box .tip-label { font-size: 11px; color: #3050a0; font-family: 'Poppins', sans-serif; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+  .tip-box .tip-text { font-size: 14px; color: #1a2a60; }
 
-        .concept-icon {
-            font-size: 1.5rem;
-            color: var(--point-color);
-            margin-right: 10px;
-            font-weight: bold;
-        }
+  /* CHECKLIST */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .checklist li { display: flex; align-items: center; gap: 12px; font-size: 14px; padding: 10px 14px; background: var(--cream); border-radius: 10px; cursor: pointer; }
+  .chk { width: 20px; height: 20px; border: 2px solid var(--green-mid); border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: #fff; }
+  .chk.on { background: var(--green-mid); border-color: var(--green-dark); }
+  .chk.on::after { content: '✓'; color: #fff; font-size: 12px; font-weight: 700; }
 
-        .concept-meaning strong, .concept-examples strong {
-            color: var(--point-color);
-        }
+  /* FOOTER */
+  .footer-nav { background: var(--green-dark); display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; margin-top: 32px; }
+  .fnav-btn { padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; border: none; font-family: 'Poppins', sans-serif; }
+  .fnav-prev { background: rgba(255,255,255,0.15); color: #fff; }
+  .fnav-center { color: rgba(255,255,255,0.6); font-size: 12px; letter-spacing: 1px; font-family: 'Poppins', sans-serif; }
+  .fnav-next { background: var(--gold); color: #000; }
+</style>
 
-        .grammar ul, .positive ul, .question ul, .dialogue p, .sentence_combining ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .grammar li, .positive li, .question li, .dialogue p, .sentence_combining li {
-            background-color: #f9f9f9;
-            padding: 12px 20px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        
-        .grammar li:hover, .positive li:hover, .question li:hover, .dialogue p:hover, .sentence_combining li:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .section.concept { background-color: var(--blue-light); }
-        .section.grammar { background-color: var(--blue-medium); }
-        .section.positive { background-color: var(--green); }
-        .section.question { background-color: var(--orange); }
-        .section.dialogue { background-color: var(--purple); }
-        .section.sentence_combining { background-color: var(--teal); }
-        
-        .section.concept h2 { border-color: var(--point-color); color: var(--point-color); }
-        .section.grammar h2 { border-color: #2c3e50; color: #2c3e50; }
-        .section.positive h2 { border-color: #27ae60; color: #27ae60; }
-        .section.question h2 { border-color: #e67e22; color: #e67e22; }
-        .section.dialogue h2 { border-color: #8e44ad; color: #8e44ad; }
-        .section.sentence_combining h2 { border-color: #3498db; color: #3498db; }
-        
-        .positive strong, .question strong, .dialogue strong, .sentence_combining strong { color: var(--point-color); }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 1rem;
-            }
-            .section h2 {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=NanumSquareRound:wght@800&display=swap" rel="stylesheet">
+  <meta name="description" content="CEC Grammar BaseCamp G18 — G18 영어 문법 무료 학습">
+  <meta name="keywords" content="영어문법,G18,G18,CEC English Camp">
+  <meta property="og:title" content="G18 G18 | CEC Grammar BaseCamp">
+  <meta property="og:url" content="https://cecenglishcamp.github.io/GrammarBaseCamp/G18/G18_new.html">
+  <meta name="robots" content="index, follow">
 </head>
 <body data-grammar-id="G18">
 
-    <div class="container">
-        <h1>
-  <div class="title-en">G18. yes no questions and short answers</div>
-  <div class="title-ko">( Yes/No 질문과 짧은 대답 )</div>
-</h1>
+<header class="lesson-header" role="banner">
+  <div class="gbc-badge">CEC GRAMMAR BASECAMP</div>
+  <div class="lesson-num-title">G18 · Basic Grammar</div>
+  <div class="lesson-main-title">Yes/No Questions & Short Answers</div>
+  <div class="lesson-sub">Yes/No 의문문과 짧은 대답</div>
+</header>
 
-	<div style="text-align:right; margin-bottom:10px;">
-  <img src="E:/CEC_CAMP STORAGE/CampA_Images/robo_jump.png" style="height:120px;">
-</div>
+<nav class="toc" aria-label="문법 섹션 메뉴">
+  <a href="#concept">기본 개념</a>
+  <a href="#grammar">문법 규칙</a>
+  <a href="#positive">긍정문</a>
+  <a href="#question">의문문</a>
+  <a href="#dialogue">대화 흐름</a>
+  <a href="#combining">문장 결합</a>
+  <a href="#reallife">실생활</a>
+  <a href="#patterns">패턴</a>
+  <a href="#mistakes">흔한 실수</a>
+  <a href="#tips">레벨업 팁</a>
+  <a href="#practice">연습문제</a>
+  <a href="#check">자가진단</a>
+</nav>
 
-        <div class="toc">
-            <h2>📚 목차 (Table of Contents)</h2>
-            <ol>
-                <li><a href="#concept">기본 개념 (Basic Concept)</a></li>
-                <li><a href="#grammar">문법 규칙 (Grammar Rules)</a></li>
-                <li><a href="#positive">긍정 대답 예시 (Positive Examples)</a></li>
-                <li><a href="#question">의문문 예시 (Question Examples)</a></li>
-                <li><a href="#dialogue">상황별 대화 (Situational Dialogues)</a></li>
-                <li><a href="#sentence_combining">문장 결합 연습 (Sentence Combining)</a></li>
-            </ol>
-        </div>
+<main class="content" role="main">
 
-        <hr>
-        
-        <div class="section concept" id="concept">
-            <h2>1. 기본 개념 (Basic Concept)</h2>
-            <div class="concept-card">
-                <h4><span class="concept-icon">ASK</span>Yes/No Questions and Short Answers</h4>
-                <div class="concept-meaning">
-                    **Yes/No 질문:** 응답이 **Yes** 또는 **No**로 가능한 질문입니다. 문장의 맨 앞에 **Be동사**, **조동사**, 또는 **Do동사**를 사용하여 만듭니다.<br>
-                    **Short Answer (짧은 대답):** 간단하게 긍정이나 부정을 응답하는 방식입니다. **Yes/No + 주어 + 동사**의 구조를 가집니다.<br>
-                    **규칙:** 질문에 사용된 동사 종류(Be동사, Do동사, 조동사)에 따라 대답에 사용하는 동사도 달라집니다.
-                </div>
-                <div class="concept-examples">
-                    <p>일반동사: **Do** you like pizza? $\rightarrow$ **Yes, I do.**</p>
-                    <p>Be동사: **Is** she happy? $\rightarrow$ **No, she isn’t.**</p>
-                    <p>조동사: **Can** he swim? $\rightarrow$ **Yes, he can.**</p>
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="section grammar" id="grammar">
-            <h2>2. 문법 규칙 (Grammar Rules)</h2>
-            <ul>
-                <li>**Be동사 질문/대답:** Is/Are/Am + 주어? $\rightarrow$ Yes, 주어 + is/am/are. / No, 주어 + isn’t/aren’t/am not.
-                    <br> (예: Is she happy? $\rightarrow$ Yes, she is. / No, she isn’t.)</li>
-                <li>**조동사 질문/대답:** Can/Will/Should + 주어 + 동사원형? $\rightarrow$ Yes, 주어 + can/will/should. / No, 주어 + can’t/won’t/shouldn’t.
-                    <br> (예: Can he swim? $\rightarrow$ Yes, he can. / No, he can’t.)</li>
-                <li>**일반동사 질문/대답:** Do/Does + 주어 + 동사원형? $\rightarrow$ Yes, 주어 + do/does. / No, 주어 + don’t/doesn’t.
-                    <br> (예: Do you like pizza? $\rightarrow$ Yes, I do. / No, I don’t.)</li>
-                <li>**Short Answer 구조:** **Yes/No + 주어(대명사) + 질문에 사용된 동사(Be/조/Do)**</li>
-                <li>**주의:** 질문에 사용된 주어에 따라 Do/Does, Is/Are의 형태가 달라지므로 **주어 일치**가 필수입니다.</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section positive" id="positive">
-            <h2>3. 긍정 대답 예시 (Positive Examples)</h2>
-            <ul>
-                <li>**Do** you like music? $\rightarrow$ **Yes, I do.** (응, 나 음악 좋아해.)</li>
-                <li>**Does** she play tennis? $\rightarrow$ **Yes, she does.** (응, 그녀는 테니스를 쳐.)</li>
-                <li>**Is** he a student? $\rightarrow$ **Yes, he is.** (응, 그는 학생이야.)</li>
-                <li>**Are** they ready? $\rightarrow$ **Yes, they are.** (응, 그들은 준비됐어.)</li>
-                <li>**Can** you swim? $\rightarrow$ **Yes, I can.** (응, 나 수영할 수 있어.)</li>
-                <li>**Will** she come? $\rightarrow$ **Yes, she will.** (응, 그녀는 올 거야.)</li>
-                <li>**Should** we start? $\rightarrow$ **Yes, we should.** (응, 우리는 시작해야 해.)</li>
-                <li>**Is** it cold? $\rightarrow$ **Yes, it is.** (응, 추워.)</li>
-                <li>**Do** they work here? $\rightarrow$ **Yes, they do.** (응, 그들은 여기서 일해.)</li>
-                <li>**Does** he drive? $\rightarrow$ **Yes, he does.** (응, 그는 운전해.)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section question" id="question">
-            <h2>4. 의문문 예시 (Question Examples)</h2>
-            <ul>
-                <li>**Do** you like music? (너 음악 좋아하니?)</li>
-                <li>**Does** she play tennis? (그녀는 테니스를 치니?)</li>
-                <li>**Is** he a student? (그는 학생이니?)</li>
-                <li>**Are** they ready? (그들은 준비됐니?)</li>
-                <li>**Can** you swim? (너 수영할 수 있니?)</li>
-                <li>**Will** she come? (그녀는 올까?)</li>
-                <li>**Should** we start? (우리가 시작해야 할까?)</li>
-                <li>**Is** it cold? (추우니?)</li>
-                <li>**Do** they work here? (그들은 여기서 일하니?)</li>
-                <li>**Does** he drive? (그는 운전하니?)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section dialogue" id="dialogue">
-            <h2>5. 상황별 대화 흐름 (Situational Dialogues)</h2>
-
-            <p><strong>학교 상황</strong><br />
-            A: **Do** you study English?<br />
-            B: **Yes, I do.**<br />
-            A: Great!</p>
-
-            <p><strong>여행 상황</strong><br />
-            A: **Can** you speak Korean?<br />
-            B: **No, I can’t.**<br />
-            A: That’s okay.</p>
-
-            <p><strong>직장 상황</strong><br />
-            A: **Is** she in the meeting?<br />
-            B: **Yes, she is.**<br />
-            A: Let’s join her.</p>
-
-            <p><strong>온라인 상황</strong><br />
-            A: **Will** you send the file?<br />
-            B: **Yes, I will.**<br />
-            A: Thanks!</p>
-
-            <p><strong>가족 상황</strong><br />
-            A: **Does** he like pizza?<br />
-            B: **No, he doesn’t.**<br />
-            A: More for us!</p>
-
-            <p><strong>병원 상황</strong><br />
-            A: **Is** she feeling better?<br />
-            B: **Yes, she is.**<br />
-            A: That’s good to hear.</p>
-        </div>
-
-        <hr>
-
-        <div class="section sentence_combining" id="sentence_combining">
-            <h2>6. 문장 결합 연습 (Sentence Combining)</h2>
-            <p>(평서문을 질문과 짧은 긍정 대답으로 바꾸어 연습하세요.)</p>
-            <ul>
-                <li>You like music. $\rightarrow$ **Do** you like music? $\rightarrow$ **Yes, I do.**</li>
-                <li>She plays tennis. $\rightarrow$ **Does** she play tennis? $\rightarrow$ **Yes, she does.**</li>
-                <li>He is a student. $\rightarrow$ **Is** he a student? $\rightarrow$ **Yes, he is.**</li>
-                <li>They are ready. $\rightarrow$ **Are** they ready? $\rightarrow$ **Yes, they are.**</li>
-                <li>You can swim. $\rightarrow$ **Can** you swim? $\rightarrow$ **Yes, I can.**</li>
-                <li>She will come. $\rightarrow$ **Will** she come? $\rightarrow$ **Yes, she will.**</li>
-                <li>We should start. $\rightarrow$ **Should** we start? $\rightarrow$ **Yes, we should.**</li>
-                <li>It is cold. $\rightarrow$ **Is** it cold? $\rightarrow$ **Yes, it is.**</li>
-                <li>They work here. $\rightarrow$ **Do** they work here? $\rightarrow$ **Yes, they do.**</li>
-                <li>He drives. $\rightarrow$ **Does** he drive? $\rightarrow$ **Yes, he does.**</li>
-            </ul>
-        </div>
+  <!-- 1. 기본 개념 -->
+  <div class="section" id="concept" aria-label="기본 개념">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">1</div>
+      <div><span class="section-title">기본 개념</span><span class="section-en">BASIC CONCEPT</span></div>
     </div>
+    <div class="section-body">
+      <div class="key-card">
+        <div class="key-label">⭐ TODAY'S KEY GRAMMAR</div>
+        <div class="key-text">Yes/No Questions & Short Answers</div>
+        <div class="key-kr">Yes/No 의문문과 짧은 대답</div>
+      </div>
+      <div class="concept-box">
+        <p><strong style="color:var(--green-dark)">Yes/No 질문:</strong> 응답이 <strong>Yes</strong> 또는 <strong>No</strong>로 가능한 질문입니다. 문장의 맨 앞에 <strong>Be동사</strong>, <strong>조동사</strong>, 또는 <strong>Do동사</strong>를 사용하여 만듭니다.</p>
+        <p><strong style="color:#3a6640">Short Answer (짧은 대답):</strong> 간단하게 긍정이나 부정을 응답하는 방식입니다. <strong>Yes/No + 주어 + 동사</strong>의 구조를 가집니다.</p>
+        <p><strong style="color:#8a5a1a">규칙:</strong> 질문에 사용된 동사 종류(Be동사, Do동사, 조동사)에 따라 대답에 사용하는 동사도 달라집니다.</p>
+      </div>
+      <ul class="ex-list">
+        <li><span class="en"><strong>Do</strong> you like pizza? → <strong>Yes, I do.</strong></span><span class="kr">일반동사 질문과 짧은 대답</span></li>
+        <li><span class="en"><strong>Is</strong> she happy? → <strong>No, she isn't.</strong></span><span class="kr">Be동사 질문과 짧은 대답</span></li>
+        <li><span class="en"><strong>Can</strong> he swim? → <strong>Yes, he can.</strong></span><span class="kr">조동사 질문과 짧은 대답</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2. 문법 규칙 -->
+  <div class="section" id="grammar" aria-label="문법 규칙">
+    <div class="section-header">
+      <div class="section-num" style="background:#3a6640;">2</div>
+      <div><span class="section-title">문법 규칙</span><span class="section-en">GRAMMAR RULES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="rule-grid">
+        <div class="rule-card r-is">
+          <div class="rule-label">BE VERB</div>
+          <div class="rule-example"><strong>Is</strong> he ready? → Yes, he <strong>is</strong>.</div>
+        </div>
+        <div class="rule-card r-are">
+          <div class="rule-label">DO / DOES</div>
+          <div class="rule-example"><strong>Do</strong> you like it? → Yes, I <strong>do</strong>.</div>
+        </div>
+        <div class="rule-card r-neg">
+          <div class="rule-label">CAN / WILL</div>
+          <div class="rule-example"><strong>Can</strong> she swim? → Yes, she <strong>can</strong>.</div>
+        </div>
+        <div class="rule-card r-q">
+          <div class="rule-label">SHORT ANSWER</div>
+          <div class="rule-example">Yes/No + Subject + <strong>Verb</strong></div>
+        </div>
+      </div>
+      <ul class="rule-list">
+        <li><strong>Be동사 질문/대답:</strong> Is/Are/Am + 주어? → Yes, 주어 + is/am/are. / No, 주어 + isn't/aren't/am not.</li>
+        <li><strong>조동사 질문/대답:</strong> Can/Will/Should + 주어 + 동사원형? → Yes, 주어 + can/will/should. / No, 주어 + can't/won't/shouldn't.</li>
+        <li><strong>일반동사 질문/대답:</strong> Do/Does + 주어 + 동사원형? → Yes, 주어 + do/does. / No, 주어 + don't/doesn't.</li>
+        <li><strong>Short Answer 구조:</strong> Yes/No + 주어(대명사) + 질문에 사용된 동사(Be/조/Do)</li>
+        <li><strong>주의:</strong> 질문에 사용된 주어에 따라 Do/Does, Is/Are의 형태가 달라지므로 주어 일치가 필수입니다.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3. 긍정문 -->
+  <div class="section" id="positive" aria-label="긍정문">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--gold); color:#000;">3</div>
+      <div><span class="section-title">긍정문 예시</span><span class="section-en">POSITIVE EXAMPLES</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en"><strong>Do</strong> you like music? → <strong>Yes, I do.</strong></span><span class="kr">응, 나 음악 좋아해.</span></li>
+        <li><span class="en"><strong>Does</strong> she play tennis? → <strong>Yes, she does.</strong></span><span class="kr">응, 그녀는 테니스를 쳐.</span></li>
+        <li><span class="en"><strong>Is</strong> he a student? → <strong>Yes, he is.</strong></span><span class="kr">응, 그는 학생이야.</span></li>
+        <li><span class="en"><strong>Are</strong> they ready? → <strong>Yes, they are.</strong></span><span class="kr">응, 그들은 준비됐어.</span></li>
+        <li><span class="en"><strong>Can</strong> you swim? → <strong>Yes, I can.</strong></span><span class="kr">응, 나 수영할 수 있어.</span></li>
+        <li><span class="en"><strong>Will</strong> she come? → <strong>Yes, she will.</strong></span><span class="kr">응, 그녀는 올 거야.</span></li>
+        <li><span class="en"><strong>Should</strong> we start? → <strong>Yes, we should.</strong></span><span class="kr">응, 우리는 시작해야 해.</span></li>
+        <li><span class="en"><strong>Is</strong> it cold? → <strong>Yes, it is.</strong></span><span class="kr">응, 추워.</span></li>
+        <li><span class="en"><strong>Do</strong> they work here? → <strong>Yes, they do.</strong></span><span class="kr">응, 그들은 여기서 일해.</span></li>
+        <li><span class="en"><strong>Does</strong> he drive? → <strong>Yes, he does.</strong></span><span class="kr">응, 그는 운전해.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. 의문문 -->
+  <div class="section" id="question" aria-label="부정문">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">4</div>
+      <div><span class="section-title">의문문 예시</span><span class="section-en">QUESTION EXAMPLES</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li class="ex-q"><span class="en"><strong>Do</strong> you like music?</span><span class="kr">너 음악 좋아하니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Does</strong> she play tennis?</span><span class="kr">그녀는 테니스를 치니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Is</strong> he a student?</span><span class="kr">그는 학생이니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Are</strong> they ready?</span><span class="kr">그들은 준비됐니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Can</strong> you swim?</span><span class="kr">너 수영할 수 있니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Will</strong> she come?</span><span class="kr">그녀는 올까?</span></li>
+        <li class="ex-q"><span class="en"><strong>Should</strong> we start?</span><span class="kr">우리가 시작해야 할까?</span></li>
+        <li class="ex-q"><span class="en"><strong>Is</strong> it cold?</span><span class="kr">추우니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Do</strong> they work here?</span><span class="kr">그들은 여기서 일하니?</span></li>
+        <li class="ex-q"><span class="en"><strong>Does</strong> he drive?</span><span class="kr">그는 운전하니?</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5. 대화 흐름 -->
+  <div class="section" id="dialogue" aria-label="의문문">
+    <div class="section-header">
+      <div class="section-num" style="background:#5a7a50;">5</div>
+      <div><span class="section-title">상황별 대화 흐름</span><span class="section-en">SITUATIONAL DIALOGUES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="dialogue">
+        <div class="d-title">🏫 학교 상황 · SCHOOL</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Do</span> you study English?</div>
+        <div class="d-line"><span class="sp">B:</span> <span class="key">Yes, I do.</span></div>
+        <div class="d-line"><span class="sp">A:</span> Great!</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">✈️ 여행 상황 · TRAVEL</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Can</span> you speak Korean?</div>
+        <div class="d-line"><span class="sp">B:</span> <span class="key">No, I can't.</span></div>
+        <div class="d-line"><span class="sp">A:</span> That's okay.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">💼 직장 상황 · OFFICE</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Is</span> she in the meeting?</div>
+        <div class="d-line"><span class="sp">B:</span> <span class="key">Yes, she is.</span></div>
+        <div class="d-line"><span class="sp">A:</span> Let's join her.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">💻 온라인 상황 · ONLINE</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Will</span> you send the file?</div>
+        <div class="d-line"><span class="sp">B:</span> <span class="key">Yes, I will.</span></div>
+        <div class="d-line"><span class="sp">A:</span> Thanks!</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">🏠 가족 상황 · FAMILY</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Does</span> he like pizza?</div>
+        <div class="d-line"><span class="sp">B:</span> <span class="key">No, he doesn't.</span></div>
+        <div class="d-line"><span class="sp">A:</span> More for us!</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">🏥 병원 상황 · HOSPITAL</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Is</span> she feeling better?</div>
+        <div class="d-line"><span class="sp">B:</span> <span class="key">Yes, she is.</span></div>
+        <div class="d-line"><span class="sp">A:</span> That's good to hear.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 문장 결합 -->
+  <div class="section" id="combining" aria-label="대화">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">6</div>
+      <div><span class="section-title">문장 결합 연습</span><span class="section-en">SENTENCE COMBINING</span></div>
+    </div>
+    <div class="section-body">
+      <div class="practice-item">
+        <div class="original">You like music.</div>
+        <div class="result">→ <strong>Do</strong> you like music? → <strong>Yes, I do.</strong></div>
+      </div>
+      <div class="practice-item">
+        <div class="original">She plays tennis.</div>
+        <div class="result">→ <strong>Does</strong> she play tennis? → <strong>Yes, she does.</strong></div>
+      </div>
+      <div class="practice-item">
+        <div class="original">He is a student.</div>
+        <div class="result">→ <strong>Is</strong> he a student? → <strong>Yes, he is.</strong></div>
+      </div>
+      <div class="practice-item">
+        <div class="original">They are ready.</div>
+        <div class="result">→ <strong>Are</strong> they ready? → <strong>Yes, they are.</strong></div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You can swim.</div>
+        <div class="result">→ <strong>Can</strong> you swim? → <strong>Yes, I can.</strong></div>
+      </div>
+      <div class="practice-item">
+        <div class="original">She will come.</div>
+        <div class="result">→ <strong>Will</strong> she come? → <strong>Yes, she will.</strong></div>
+      </div>
+      <div class="practice-item">
+        <div class="original">We should start.</div>
+        <div class="result">→ <strong>Should</strong> we start? → <strong>Yes, we should.</strong></div>
+      </div>
+      <div class="practice-item">
+        <div class="original">It is cold.</div>
+        <div class="result">→ <strong>Is</strong> it cold? → <strong>Yes, it is.</strong></div>
+      </div>
+      <div class="practice-item">
+        <div class="original">They work here.</div>
+        <div class="result">→ <strong>Do</strong> they work here? → <strong>Yes, they do.</strong></div>
+      </div>
+      <div class="practice-item">
+        <div class="original">He drives.</div>
+        <div class="result">→ <strong>Does</strong> he drive? → <strong>Yes, he does.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 실생활 사용 -->
+  <div class="section" id="reallife" aria-label="문장 결합">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--gold); color:#000;">7</div>
+      <div><span class="section-title">실생활 사용 예시</span><span class="section-en">REAL-LIFE USAGE</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en"><strong>Do</strong> you have homework? → <strong>Yes, I do.</strong></span><span class="kr">🏫 학교 — 숙제 있니? → 응, 있어.</span></li>
+        <li><span class="en"><strong>Is</strong> the report ready? → <strong>No, it isn't.</strong></span><span class="kr">💼 직장 — 보고서 준비됐나요? → 아니요, 안 됐습니다.</span></li>
+        <li><span class="en"><strong>Does</strong> he like rice? → <strong>Yes, he does.</strong></span><span class="kr">🏠 가족 — 그는 밥 좋아하니? → 응, 좋아해.</span></li>
+        <li><span class="en"><strong>Will</strong> you join the call? → <strong>Yes, I will.</strong></span><span class="kr">💻 온라인 — 통화에 참여할 건가요? → 네, 할게요.</span></li>
+        <li><span class="en"><strong>Is</strong> she sick? → <strong>No, she isn't.</strong></span><span class="kr">🏥 병원 — 그녀가 아픈가요? → 아니요, 그렇지 않아요.</span></li>
+        <li><span class="en"><strong>Can</strong> you carry this? → <strong>No, I can't.</strong></span><span class="kr">✈️ 여행 — 이거 들어줄 수 있니? → 아니, 못 해.</span></li>
+        <li><span class="en"><strong>Should</strong> we begin now? → <strong>Yes, we should.</strong></span><span class="kr">📋 회의 — 지금 시작해야 할까요? → 네, 해야죠.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 8. 자주 쓰이는 패턴 -->
+  <div class="section" id="patterns" aria-label="실생활">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">8</div>
+      <div><span class="section-title">자주 쓰이는 패턴</span><span class="section-en">COMMON PATTERNS</span></div>
+    </div>
+    <div class="section-body">
+      <div class="pattern-box">
+        <div class="p-label">BE동사 질문/응답 · BE VERB Q&A</div>
+        <div class="p-text"><strong>Is</strong> he ready? → <strong>Yes, he is.</strong> / <strong>No, he isn't.</strong><br><span style="font-size:13px;">주어의 상태나 신분을 물을 때 사용</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">조동사 질문/응답 · MODAL Q&A</div>
+        <div class="p-text"><strong>Can</strong> you help? → <strong>Yes, I can.</strong> / <strong>No, I can't.</strong><br><span style="font-size:13px;">능력이나 미래를 물을 때 사용</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">일반동사 질문/응답 · DO VERB Q&A</div>
+        <div class="p-text"><strong>Do</strong> they like it? → <strong>Yes, they do.</strong> / <strong>No, they don't.</strong><br><span style="font-size:13px;">행동이나 습관을 물을 때 사용</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">3인칭 단수 · THIRD PERSON SINGULAR</div>
+        <div class="p-text"><strong>Does</strong> she drive? → <strong>Yes, she does.</strong> / <strong>No, she doesn't.</strong><br><span style="font-size:13px;">3인칭 단수 주어에는 Does를 사용</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. 흔한 실수 -->
+  <div class="section" id="mistakes" aria-label="패턴">
+    <div class="section-header">
+      <div class="section-num" style="background:#c0392b;">9</div>
+      <div><span class="section-title">흔한 실수</span><span class="section-en">COMMON MISTAKES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="mistake-box">
+        <div class="wrong">✗ You like music?</div>
+        <div class="right">✓ Do you like music?</div>
+        <div class="reason">일반동사 질문에는 Do/Does를 문장 앞에 사용해야 합니다.</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ She play tennis?</div>
+        <div class="right">✓ Does she play tennis?</div>
+        <div class="reason">3인칭 단수 주어에는 Does를 사용하고 동사는 원형으로 씁니다.</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ He student?</div>
+        <div class="right">✓ Is he a student?</div>
+        <div class="reason">Be동사를 생략하면 안 됩니다.</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ Yes, I like.</div>
+        <div class="right">✓ Yes, I do.</div>
+        <div class="reason">짧은 대답에는 본동사 대신 Do/Does를 사용합니다.</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ No, she is not. (구어체에서 잘 안 쓰는 형태)</div>
+        <div class="right">✓ No, she isn't.</div>
+        <div class="reason">구어체에서는 줄임말(isn't, aren't, don't 등)을 사용하는 것이 자연스럽습니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. 레벨업 팁 -->
+  <div class="section" id="tips" aria-label="흔한 실수">
+    <div class="section-header">
+      <div class="section-num" style="background:#185fa5;">10</div>
+      <div><span class="section-title">레벨업 팁</span><span class="section-en">LEVEL-UP TIPS</span></div>
+    </div>
+    <div class="section-body">
+      <div class="tip-box">
+        <div class="tip-label">TIP 1 · 질문 억양 (Intonation)</div>
+        <div class="tip-text">Yes/No 질문은 문장 끝을 올려서 발음해야 합니다. (e.g., Do you like music?) 이는 질문임을 명확히 합니다.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 2 · Short Answer의 의미</div>
+        <div class="tip-text">짧은 대답은 문장 전체를 반복하는 것보다 훨씬 자연스럽고 효율적입니다. (e.g., "Yes, I do"는 "Yes, I like music"을 의미합니다.)</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 3 · Be동사/Do동사 구분</div>
+        <div class="tip-text">Be동사는 주어의 상태나 신분을 물을 때, Do동사는 주어의 행동이나 습관을 물을 때 사용한다는 원리를 이해하면 질문 형태를 쉽게 결정할 수 있습니다.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 4 · 부정 질문 주의</div>
+        <div class="tip-text">Don't you like coffee? (너 커피 안 좋아하니?)와 같이 부정 질문도 가능하며, 이때 대답은 Yes (아니, 좋아해) / No (응, 안 좋아해)로 한국어와 헷갈리지 않도록 주의해야 합니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. 연습문제 -->
+  <div class="section" id="practice" aria-label="레벨업 팁">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">11</div>
+      <div><span class="section-title">연습문제</span><span class="section-en">PRACTICE EXERCISES</span></div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">올바른 질문 형태와 짧은 대답을 선택하세요.</p>
+      <ul class="rule-list">
+        <li>그녀는 요리할 수 있니? → ___ <strong style="color:var(--green-dark)">(Can she cook?)</strong></li>
+        <li>Do they live here? (긍정) → ___ <strong style="color:var(--green-dark)">(Yes, they do.)</strong></li>
+        <li>Is John a doctor? (부정) → No, ___ <strong style="color:var(--green-dark)">(he isn't.)</strong></li>
+        <li>❌ He works here? → ✅ ___ <strong style="color:var(--green-dark)">(Does he work here?)</strong></li>
+        <li>❌ No, I am not. (Is it ready?) → ✅ ___ <strong style="color:var(--green-dark)">(No, it isn't.)</strong></li>
+        <li>너는 한국어를 말하니? → ___ <strong style="color:var(--green-dark)">(Do you speak Korean?)</strong></li>
+        <li>응, 나는 할 수 있어. (Can you help?) → ___ <strong style="color:var(--green-dark)">(Yes, I can.)</strong></li>
+        <li>아니, 그들은 가지 않아. (Do they go?) → ___ <strong style="color:var(--brown)">(No, they don't.)</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 12. 자가진단 -->
+  <div class="section" id="check" aria-label="레벨업 팁">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">12</div>
+      <div><span class="section-title">자가진단 체크리스트</span><span class="section-en">SELF-CHECK</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> Do/Does 질문을 만들 수 있다. (일반동사)</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> Is/Are 질문을 만들 수 있다. (상태/신분)</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> Can/Will 질문을 만들 수 있다. (능력/미래)</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 올바른 짧은 대답(Yes/No + 주어 + 동사)을 할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 짧은 대답의 동사가 질문의 동사와 일치하는 것을 이해한다. (Do → do, Is → is)</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 구어체에서 줄임말(isn't, don't, can't)을 자연스럽게 사용할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 일상 대화에서 Yes/No 질문과 짧은 대답을 자연스럽게 주고받을 수 있다.</li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer-nav" role="contentinfo">
+  <a href="../G17/G17_new.html" class="fnav-btn fnav-prev">← G17</a>
+  <span class="fnav-center">G18 · YES/NO QUESTIONS & SHORT ANSWERS</span>
+  <a href="../G19/G19_new.html" class="fnav-btn fnav-next">G19 →</a>
+</footer>
+
 
 
 
@@ -668,468 +842,3 @@
 </script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G18 Part 2: Yes/No Questions and Short Answers</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
-
-        :root {
-            --yellow-light: #fffde7;
-            --pink-light: #fce4ec;
-            --orange-light: #ffecb3;
-            --green: #e8f5e9;
-            --gray: #e0e0e0;
-            --gray-dark: #bdbdbd;
-            --red-strong: #c0392b;
-            --blue-main: #3498db;
-            --point-color: #00897b; /* Teal for Questions */
-        }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #1a2a1a;
-            margin: 0;
-            padding: 20px;
-        }
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-                /* 제목 스타일 */
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #33ddff;
-        }
-
-        .toc {
-            background-color: #f8f9fa;
-            border-left: 5px solid var(--blue-main);
-            padding: 1rem 1.5rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-        }
-
-        .toc h2 {
-            margin-top: 0;
-            color: #2980b9;
-        }
-
-        .toc ol {
-            padding-left: 20px;
-        }
-
-        .toc li a {
-            text-decoration: none;
-            color: #34495e;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .toc li a:hover {
-            color: #1a6496;
-            text-decoration: underline;
-        }
-
-        .section {
-            padding: 2rem 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .section h2 {
-            font-size: 1.8rem;
-            color: #34495e;
-            border-left: 4px solid var(--blue-main);
-            padding-left: 15px;
-        }
-
-        .real_life_usage.section { background-color: var(--yellow-light); }
-        .common_patterns.section { background-color: var(--pink-light); }
-        .mistakes.section { background-color: var(--orange-light); }
-        .tips.section { background-color: var(--green); }
-        .practice.section { background-color: var(--gray); }
-        .checklist.section { background-color: var(--gray-dark); }
-        
-        .section.real_life_usage h2 { border-color: #f1c40f; color: #f1c40f; }
-        .section.common_patterns h2 { border-color: #e91e63; color: #e91e63; }
-        .section.mistakes h2 { border-color: #f39c12; color: #f39c12; }
-        .section.tips h2 { border-color: #2ecc71; color: #2ecc71; }
-        .section.practice h2 { border-color: #7f8c8d; color: #7f8c8d; }
-        .section.checklist h2 { border-color: #95a5a6; color: #95a5a6; }
-
-        .section ul, .section ol {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .section li {
-            background-color: #f9f9f9;
-            padding: 12px 20px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .section li:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .mistakes li .correct { color: #2ecc71; font-weight: bold; }
-        .mistakes li .incorrect { color: var(--red-strong); font-weight: bold; text-decoration: line-through; }
-        .section li strong { color: var(--point-color); }
-
-        .practice h4 {
-            margin-top: 2rem;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-        }
-
-        .practice ol {
-            padding-left: 20px;
-        }
-
-        .practice li {
-            margin-bottom: 15px;
-            background-color: #fff;
-        }
-        
-        .practice .options {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-top: 10px;
-        }
-
-        .practice .option {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.2s;
-        }
-        
-        .practice .option:hover {
-            background-color: #f0f0f0;
-            transform: scale(1.01);
-        }
-
-        .practice .option.correct {
-            background-color: #e8f5e9;
-            border-color: #27ae60;
-        }
-
-        .practice input[type="text"] {
-            width: 90%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-top: 5px;
-        }
-        
-        #progress-container {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        #progress-bar {
-            width: 0;
-            height: 20px;
-            background-color: var(--point-color);
-            border-radius: 10px;
-            text-align: center;
-            color: white;
-            line-height: 20px;
-            transition: width 0.4s ease-in-out;
-        }
-
-        .checklist-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .checklist-item input[type="checkbox"] {
-            transform: scale(1.5);
-            margin-right: 15px;
-            cursor: pointer;
-        }
-        
-        .checklist h4 {
-            margin-top: 2rem;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-        }
-
-        .submit-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: var(--blue-main);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s;
-            margin-top: 2rem;
-        }
-
-        .submit-btn:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-        }
-
-        .hidden { display: none; }
-    </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=NanumSquareRound:wght@800&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <div class="container">
-        <h1>
-  <div class="title-en">G18. yes no questions and short answers</div>
-  <div class="title-ko">( Yes/No 질문과 짧은 대답 )</div>
-</h1>
-
-        <div class="toc">
-            <h2>📚 목차 (Table of Contents)</h2>
-            <ol start="7">
-                <li><a href="#real_life_usage">실생활 사용 예시 (Real-Life Usage)</a></li>
-                <li><a href="#common_patterns">자주 쓰이는 패턴 (Common Patterns)</a></li>
-                <li><a href="#mistakes">흔한 실수 (Common Mistakes)</a></li>
-                <li><a href="#tips">레벨업 팁 (Level-Up Tips)</a></li>
-                <li><a href="#practice">연습문제 (Practice Exercises)</a></li>
-                <li><a href="#checklist">자가진단 체크리스트 (Self-Check)</a></li>
-            </ol>
-        </div>
-
-        <hr>
-
-        <div class="section real_life_usage" id="real_life_usage">
-            <h2>7. 실생활 사용 예시 (Real-Life Usage)</h2>
-            <p>(질문과 짧은 대답은 일상 대화에서 빠르게 정보를 주고받는 데 필수적입니다.)</p>
-            <ul>
-                <li>**학교 상황:** **Do** you have homework? $\rightarrow$ **Yes, I do.** (숙제 있니? $\rightarrow$ 응, 있어.)</li>
-                <li>**직장 상황:** **Is** the report ready? $\rightarrow$ **No, it isn’t.** (보고서 준비됐나요? $\rightarrow$ 아니요, 안 됐습니다.)</li>
-                <li>**가족 상황:** **Does** he like rice? $\rightarrow$ **Yes, he does.** (그는 밥 좋아하니? $\rightarrow$ 응, 좋아해.)</li>
-                <li>**온라인 상황:** **Will** you join the call? $\rightarrow$ **Yes, I will.** (통화에 참여할 건가요? $\rightarrow$ 네, 할게요.)</li>
-                <li>**병원 상황:** **Is** she sick? $\rightarrow$ **No, she isn’t.** (그녀가 아픈가요? $\rightarrow$ 아니요, 그렇지 않아요.)</li>
-                <li>**여행 상황:** **Can** you carry this? $\rightarrow$ **No, I can’t.** (이거 들어줄 수 있니? $\rightarrow$ 아니, 못 해.)</li>
-                <li>**회의 상황:** **Should** we begin now? $\rightarrow$ **Yes, we should.** (지금 시작해야 할까요? $\rightarrow$ 네, 해야죠.)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section common_patterns" id="common_patterns">
-            <h2>8. 자주 쓰이는 패턴 (Common Patterns)</h2>
-            <ul>
-                <li>**Be동사 질문/응답:** **Is** he ready? $\rightarrow$ **Yes, he is.** / **No, he isn't.**</li>
-                <li>**조동사 질문/응답:** **Can** you help? $\rightarrow$ **Yes, I can.** / **No, I can't.**</li>
-                <li>**일반동사 질문/응답:** **Do** they like it? $\rightarrow$ **Yes, they do.** / **No, they don't.**</li>
-                <li>**3인칭 단수 일반동사:** **Does** she drive? $\rightarrow$ **Yes, she does.** / **No, she doesn't.**</li>
-                <li>**주어 대명사 사용:** 짧은 대답에서는 명사 주어 대신 **대명사(he, she, it, they 등)**를 사용합니다. (e.g., Is John ready? $\rightarrow$ Yes, **he** is.)</li>
-                <li>**부정형 줄임말:** 부정 대답은 주로 **isn't, aren't, doesn't, don't, can't**와 같은 줄임말을 사용합니다.</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section mistakes" id="mistakes">
-            <h2>9. 흔한 실수 (Common Mistakes)</h2>
-            <ul>
-                <li><span class="incorrect">❌ You like music? (동사 없이 질문)</span> → <span class="correct">✅ **Do** you like music?</span> (Do동사 사용)</li>
-                <li><span class="incorrect">❌ She play tennis? (Does 없이 3인칭 단수 동사원형 사용)</span> → <span class="correct">✅ **Does** she play tennis?</span> (Does 사용)</li>
-                <li><span class="incorrect">❌ He student? (Be동사 누락)</span> → <span class="correct">✅ **Is** he a student?</span> (Be동사 사용)</li>
-                <li><span class="incorrect">❌ Yes, I like. (짧은 대답에 본동사 사용)</span> → <span class="correct">✅ **Yes, I do.**</span> (Do동사만 사용)</li>
-                <li><span class="incorrect">❌ No, she is not. (구어체에서 잘 안 쓰는 형태)</span> → <span class="correct">✅ **No, she isn’t.**</span> (줄임말 사용)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section tips" id="tips">
-            <h2>10. 레벨업 팁 (Level-Up Tips)</h2>
-            <ul>
-                <li>**질문 억양 (Intonation):** Yes/No 질문은 문장 끝을 **올려서** 발음해야 합니다. (e.g., Do you like **music**? ⬆️) 이는 질문임을 명확히 합니다.</li>
-                <li>**Short Answer의 의미:** 짧은 대답은 문장 전체를 반복하는 것보다 훨씬 자연스럽고 효율적입니다. (e.g., "Yes, I do"는 "Yes, I like music"을 의미합니다.)</li>
-                <li>**Be동사/Do동사 구분:** **Be동사**는 주어의 상태나 신분을 물을 때, **Do동사**는 주어의 행동이나 습관을 물을 때 사용한다는 원리를 이해하면 질문 형태를 쉽게 결정할 수 있습니다.</li>
-                <li>**부정 질문:** **Don't** you like coffee? (너 커피 안 좋아하니?)와 같이 부정 질문도 가능하며, 이때 대답은 **Yes** (아니, 좋아해) / **No** (응, 안 좋아해)로 한국어와 헷갈리지 않도록 주의해야 합니다. (대답은 사실을 기준으로 합니다.)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section practice" id="practice">
-            <h2>11. 연습문제 (Practice Exercises)</h2>
-
-            <h4>객관식</h4>
-            <ol>
-                <li id="q1">Choose the correct question form:
-                    <div class="question">그녀는 요리할 수 있니?</div>
-                    <div class="options" data-correct="B">
-                        <div class="option" data-value="A">A. She can cook?</div>
-                        <div class="option" data-value="B">B. **Can she cook?**</div>
-                    </div>
-                </li>
-                <li id="q2">Choose the correct short answer:
-                    <div class="question">Do they live here? (긍정)</div>
-                    <div class="options" data-correct="A">
-                        <div class="option" data-value="A">A. **Yes, they do.**</div>
-                        <div class="option" data-value="B">B. Yes, they live.</div>
-                    </div>
-                </li>
-                <li id="q3">Fill in the blank with the correct negative short answer:
-                    <div class="question">Is John a doctor? (부정) $\rightarrow$ No, ___.</div>
-                    <div class="options" data-correct="B">
-                        <div class="option" data-value="A">A. he not is.</div>
-                        <div class="option" data-value="B">B. **he isn't.**</div>
-                    </div>
-                </li>
-            </ol>
-            
-            <button class="submit-btn" onclick="checkAnswers()">정답 확인하기</button>
-            <div id="answers" class="hidden">
-                <p><strong>1. B</strong>. 조동사 **Can**을 주어 앞으로 이동하여 질문합니다.</p>
-                <p><strong>2. A</strong>. 일반동사 질문에 대한 짧은 대답은 **Yes, 주어 + do**입니다.</p>
-                <p><strong>3. B</strong>. Be동사 질문에 대한 부정 짧은 대답은 **No, 주어 + isn't**이며, 명사(John)는 대명사(he)로 바꿉니다.</p>
-            </div>
-            
-            <h4>오류 수정 및 번역 (정답 예시 제공)</h4>
-            <ol start="4">
-                <li>❌ He works here? $\rightarrow$ ✅ **Does he work here?** <input type="text" id="q4" placeholder="Does he work here?"/></li>
-                <li>❌ No, I am not. (Is it ready?) $\rightarrow$ ✅ **No, it isn’t.** <input type="text" id="q5" placeholder="No, it isn’t."/></li>
-                <li>Translate: 너는 한국어를 말하니? $\rightarrow$ ✅ **Do you speak Korean?** <input type="text" id="q6" placeholder="Do you speak Korean?"/></li>
-                <li>Translate: 응, 나는 할 수 있어. (Can you help?) $\rightarrow$ ✅ **Yes, I can.** <input type="text" id="q7" placeholder="Yes, I can."/></li>
-                <li>Translate: 아니, 그들은 가지 않아. (Do they go?) $\rightarrow$ ✅ **No, they don’t.** <input type="text" id="q8" placeholder="No, they don’t."/></li>
-            </ol>
-        </div>
-
-        <hr>
-
-        <div class="section checklist" id="checklist">
-            <h2>12. 자가진단 체크리스트 (Self-Check)</h2>
-
-            <h4>학습 완료 체크</h4>
-            <div id="progress-container">
-                <div id="progress-bar">0%</div>
-            </div>
-            <ul>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can form **Do/Does** questions for general actions.</li>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can form **Is/Are** questions for status/identity.</li>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can form **Can/Will** questions for ability/future.</li>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can provide the correct **short answer** (Yes/No + Subject + Verb).</li>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I ensure the short answer verb matches the question verb (Do $\rightarrow$ do, Is $\rightarrow$ is).</li>
-            </ul>
-
-            <h4>자가진단 문항</h4>
-            <ol>
-                <li class="checklist-question">Can you explain the three main ways to start a Yes/No question?</li>
-                <li class="checklist-question">Can you provide the short answer to "Does he drive?" (Negative)?</li>
-                <li class="checklist-question">Can you correctly ask if someone is a teacher?</li>
-                <li class="checklist-question">Can you translate the sentence: "너는 영어를 공부했니?" (Past tense)</li>
-                <li class="checklist-question">Can you create a short conversation using at least two different question forms (Be/Do/Can)?</li>
-            </ol>
-
-            <h4>다음 단계 학습 가이드</h4>
-            <ul>
-                <li>Practice creating questions and answers in the **past tense** (Did/Was/Were). (Next Level)</li>
-                <li>Try creating negative questions (e.g., **Don't** you like it?).</li>
-                <li>Use flashcards to quickly test your knowledge of question starters (Do, Does, Is, Are, Can, Will).</li>
-            </ul>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const progressBar = document.getElementById('progress-bar');
-            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
-            const answersBox = document.getElementById('answers');
-
-            // Progress Bar and Checklist Logic
-            if (progressBar && checkboxes.length > 0) {
-                checkboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', updateProgress);
-                });
-            }
-
-            function updateProgress() {
-                const totalCheckboxes = checkboxes.length;
-                const checkedCheckboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').length;
-                
-                if (totalCheckboxes > 0 && progressBar) {
-                    const progress = (checkedCheckboxes / totalCheckboxes) * 100;
-                    progressBar.style.width = progress + '%';
-                    progressBar.textContent = Math.round(progress) + '%';
-                    if (progress > 50) {
-                        progressBar.style.backgroundColor = '#2ecc71'; /* Change color for good progress */
-                    } else {
-                        progressBar.style.backgroundColor = 'var(--point-color)';
-                    }
-                }
-            }
-
-            // Multiple Choice Question Logic
-            const mcqOptions = document.querySelectorAll('.practice .option');
-
-            if (mcqOptions.length > 0) {
-                mcqOptions.forEach(option => {
-                    option.addEventListener('click', function() {
-                        const parentOptions = this.parentElement.querySelectorAll('.option');
-                        parentOptions.forEach(opt => {
-                            opt.classList.remove('correct', 'incorrect');
-                        });
-
-                        const parentDiv = this.closest('.options');
-                        const correctAnswer = parentDiv.getAttribute('data-correct');
-
-                        if (this.getAttribute('data-value') === correctAnswer) {
-                            this.classList.add('correct');
-                        } else {
-                            this.classList.add('incorrect');
-                        }
-                    });
-                });
-            }
-            
-            // Show Answers Button Logic
-            const showAnswersBtn = document.querySelector('.submit-btn');
-            if (showAnswersBtn) {
-                showAnswersBtn.addEventListener('click', function() {
-                    answersBox.classList.toggle('hidden');
-                    if (!answersBox.classList.contains('hidden')) {
-                         this.textContent = '정답 숨기기';
-                    } else {
-                         this.textContent = '정답 확인하기';
-                    }
-                });
-            }
-        });
-    </script>
-</body>
-</html>
-
-
-
-

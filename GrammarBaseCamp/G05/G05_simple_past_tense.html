@@ -1,353 +1,529 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G05 Part 1: Simple Past Tense</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G05. Simple Past Tense</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Sans+KR:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --white: #ffffff;
+    --green-dark: #4a6741;
+    --green-mid: #5a7a50;
+    --green-light: #e8f0e5;
+    --green-card: #3d5c35;
+    --gold: #c8972a;
+    --gold-light: #fdf3e0;
+    --cream: #faf7f0;
+    --brown: #6b5c3e;
+    --brown-light: #f0e8d8;
+    --text: #2d2d2d;
+    --muted: #7a7a7a;
+    --border: #ddd6c8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; line-height: 1.7; padding-bottom: 80px; }
 
-        :root {
-            --blue-light: #e3f2fd;
-            --blue-medium: #bbdefb;
-            --green: #e8f5e9;
-            --orange: #fff3e0;
-            --purple: #f3e5f5;
-            --sky: #e0f7fa;
-            --gray-light: #f5f5f5;
-            --gray-dark: #bdbdbd;
-            --red-strong: #c0392b;
-            --blue-main: #3498db;
-        }
+  /* HEADER */
+  .lesson-header { background: #0a1628; padding: 36px 24px 32px; text-align: center; }
+  .gbc-badge { display: inline-block; border: 1px solid rgba(0,242,255,0.5); color: rgba(0,242,255,0.8); font-family: 'Poppins', sans-serif; font-size: 11px; letter-spacing: 2px; padding: 4px 14px; border-radius: 20px; margin-bottom: 16px; }
+  .lesson-num-title { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+  .lesson-main-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 44px; font-weight: 500; color: #00f2ff; line-height: 1.15; margin-bottom: 10px; }
+  .lesson-sub { font-size: 14px; color: rgba(255,255,255,0.5); }
 
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #1a2a1a;
-            margin: 0;
-            padding: 20px;
-        }
-            margin: 0;
-            padding: 20px;
-        }
+  /* TOC */
+  .toc { background: var(--green-dark); padding: 12px 20px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .toc a { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.75); text-decoration: none; }
+  .toc a:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
+  /* LAYOUT */
+  .content { max-width: 740px; margin: 0 auto; padding: 0 20px; }
 
-                /* 제목 스타일 */
-                /* 제목 스타일 */
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #33ddff;
-        }
-        
-                .title-en {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-weight: 500;
-            font-size: 50px;
-            letter-spacing: 2px;
-            color: #55eeff;
-            line-height: 1.2;
-            text-align: center;
-        }
-        
-                .title-ko {
-            font-family: 'NanumSquareRound', sans-serif;
-            font-weight: 800;
-            font-size: 22px;
-            letter-spacing: 3px;
-            color: #55eeff;
-            opacity: 0.9;
-            margin-top: 5px;
-            line-height: 1.2;
-            text-align: center;
-        }
+  /* SECTION */
+  .section { margin-top: 28px; background: var(--white); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+  .section-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+  .section-num { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; flex-shrink: 0; color: #fff; }
+  .section-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .section-en { font-size: 11px; color: var(--muted); font-family: 'Poppins', sans-serif; letter-spacing: 1px; margin-left: 6px; }
+  .section-body { padding: 20px; }
 
-        .toc {
-            background-color: #f8f9fa;
-            border-left: 5px solid var(--blue-main);
-            padding: 1rem 1.5rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-        }
+  /* KEY CARD */
+  .key-card { background: var(--green-card); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .key-label { font-size: 11px; font-family: 'Poppins', sans-serif; letter-spacing: 2px; color: var(--gold); margin-bottom: 10px; }
+  .key-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 30px; font-weight: 500; color: #fff; margin-bottom: 6px; }
+  .key-kr { font-size: 13px; color: rgba(255,255,255,0.65); }
 
-        .toc h2 {
-            margin-top: 0;
-            color: #2980b9;
-        }
+  /* CONCEPT BOX */
+  .concept-box { background: var(--green-light); border-radius: 10px; padding: 16px; margin-bottom: 12px; border-left: 4px solid var(--green-mid); }
+  .concept-box p { font-size: 14px; margin-bottom: 8px; }
+  .concept-box p:last-child { margin-bottom: 0; }
 
-        .toc ol {
-            padding-left: 20px;
-        }
+  /* RULE GRID */
+  .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .rule-card { padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); }
+  .rule-label { font-size: 10px; font-family: 'Poppins', sans-serif; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 8px; }
+  .rule-example { font-family: 'Poppins', sans-serif; font-size: 13px; }
+  .rule-example strong { font-weight: 700; }
+  .r-is { background: var(--green-light); border-color: #b8d4b0; }
+  .r-is .rule-label { color: var(--green-dark); }
+  .r-is .rule-example strong { color: var(--green-dark); }
+  .r-are { background: #e8f4e8; border-color: #a8ccaa; }
+  .r-are .rule-label { color: #3a6640; }
+  .r-are .rule-example strong { color: #3a6640; }
+  .r-neg { background: #fdf0e0; border-color: #e8c88a; }
+  .r-neg .rule-label { color: #8a5a1a; }
+  .r-neg .rule-example strong { color: #8a5a1a; }
+  .r-q { background: var(--brown-light); border-color: #d4c0a0; }
+  .r-q .rule-label { color: var(--brown); }
+  .r-q .rule-example strong { color: var(--brown); }
 
-        .toc li a {
-            text-decoration: none;
-            color: #34495e;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
+  /* BULLET LIST */
+  .rule-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .rule-list li { font-size: 14px; padding: 8px 12px; background: var(--cream); border-radius: 8px; border-left: 3px solid var(--green-mid); }
+  .rule-list li strong { color: var(--green-dark); font-family: 'Poppins', sans-serif; }
 
-        .toc li a:hover {
-            color: #1a6496;
-            text-decoration: underline;
-        }
+  /* EXAMPLE LIST */
+  .ex-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .ex-list li { padding: 12px 16px; background: var(--cream); border-radius: 10px; border-left: 4px solid var(--green-mid); font-size: 14px; }
+  .ex-list li .en { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
+  .ex-list li .kr { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+  .ex-q { border-left-color: var(--brown) !important; }
+  .ex-q .en { color: var(--brown) !important; }
 
-        .section {
-            padding: 2rem 0;
-            border-bottom: 1px solid #eee;
-        }
+  /* DIALOGUE */
+  .dialogue { background: var(--cream); border-radius: 12px; padding: 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+  .d-title { font-size: 10px; font-family: 'Poppins', sans-serif; letter-spacing: 1.5px; color: var(--gold); font-weight: 700; margin-bottom: 10px; }
+  .d-line { font-size: 14px; margin-bottom: 5px; }
+  .d-line .sp { color: var(--green-dark); font-weight: 700; margin-right: 6px; }
+  .d-line .key { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
 
-        .section h2 {
-            font-size: 1.8rem;
-            color: #34495e;
-            border-left: 4px solid var(--blue-main);
-            padding-left: 15px;
-        }
+  /* PRACTICE */
+  .practice-item { padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 8px; font-size: 14px; background: var(--cream); }
+  .practice-item .original { color: var(--muted); margin-bottom: 4px; font-size: 13px; }
+  .practice-item .result { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
 
-        .concept-card {
-            background-color: var(--blue-light);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            position: relative;
-            overflow: hidden;
-        }
+  /* PATTERN BOX */
+  .pattern-box { background: var(--gold-light); border: 1px solid #e8c88a; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .pattern-box .p-label { font-size: 11px; color: var(--gold); font-family: 'Poppins', sans-serif; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+  .pattern-box .p-text { font-size: 14px; color: var(--brown); }
+  .pattern-box .p-text strong { color: #7a5010; font-family: 'Poppins', sans-serif; }
 
-        .concept-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background-color: var(--red-strong); /* Past Tense Color */
-        }
+  /* MISTAKE BOX */
+  .mistake-box { background: #fff5f5; border: 1px solid #f4c0c0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .mistake-box .wrong { color: #c0392b; font-size: 13px; text-decoration: line-through; margin-bottom: 4px; }
+  .mistake-box .right { color: var(--green-dark); font-size: 14px; font-weight: 700; font-family: 'Poppins', sans-serif; }
+  .mistake-box .reason { color: var(--muted); font-size: 12px; margin-top: 4px; }
 
-        .concept-card h4 {
-            color: #1f3a5f;
-            margin-top: 0;
-            display: flex;
-            align-items: center;
-        }
+  /* TIP BOX */
+  .tip-box { background: #e8f0ff; border: 1px solid #b8c8f0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .tip-box .tip-label { font-size: 11px; color: #3050a0; font-family: 'Poppins', sans-serif; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+  .tip-box .tip-text { font-size: 14px; color: #1a2a60; }
 
-        .concept-icon {
-            font-size: 1.5rem;
-            color: var(--red-strong);
-            margin-right: 10px;
-            font-weight: bold;
-        }
+  /* CHECKLIST */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .checklist li { display: flex; align-items: center; gap: 12px; font-size: 14px; padding: 10px 14px; background: var(--cream); border-radius: 10px; cursor: pointer; }
+  .chk { width: 20px; height: 20px; border: 2px solid var(--green-mid); border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: #fff; }
+  .chk.on { background: var(--green-mid); border-color: var(--green-dark); }
+  .chk.on::after { content: '\2713'; color: #fff; font-size: 12px; font-weight: 700; }
 
-        .concept-meaning strong, .concept-examples strong {
-            color: var(--red-strong);
-        }
+  /* FOOTER */
+  .footer-nav { background: var(--green-dark); display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; margin-top: 32px; }
+  .fnav-btn { padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; border: none; font-family: 'Poppins', sans-serif; }
+  .fnav-prev { background: rgba(255,255,255,0.15); color: #fff; }
+  .fnav-center { color: rgba(255,255,255,0.6); font-size: 12px; letter-spacing: 1px; font-family: 'Poppins', sans-serif; }
+  .fnav-next { background: var(--gold); color: #000; }
+</style>
 
-        .grammar ul, .positive ul, .question ul, .dialogue p, .sentence_combining ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .grammar li, .positive li, .question li, .dialogue p, .sentence_combining li {
-            background-color: #f9f9f9;
-            padding: 12px 20px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        
-        .grammar li:hover, .positive li:hover, .question li:hover, .dialogue p:hover, .sentence_combining li:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .section.concept { background-color: var(--blue-light); }
-        .section.grammar { background-color: var(--blue-medium); }
-        .section.positive { background-color: var(--green); }
-        .section.question { background-color: var(--orange); }
-        .section.dialogue { background-color: var(--purple); }
-        .section.sentence_combining { background-color: var(--sky); }
-        
-        .section.concept h2 { border-color: var(--red-strong); color: var(--red-strong); }
-        .section.grammar h2 { border-color: #2c3e50; color: #2c3e50; }
-        .section.positive h2 { border-color: #27ae60; color: #27ae60; }
-        .section.question h2 { border-color: #e67e22; color: #e67e22; }
-        .section.dialogue h2 { border-color: #8e44ad; color: #8e44ad; }
-        .section.sentence_combining h2 { border-color: #3498db; color: #3498db; }
-        
-        .dialogue strong { color: var(--red-strong); }
-        .sentence_combining strong { color: #2980b9; }
-        .positive strong { color: #2980b9; }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 1rem;
-            }
-            .section h2 {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=NanumSquareRound:wght@800&display=swap" rel="stylesheet">
+  <meta name="description" content="CEC Grammar BaseCamp G05 — G05 영어 문법 무료 학습">
+  <meta name="keywords" content="영어문법,G05,G05,CEC English Camp">
+  <meta property="og:title" content="G05 G05 | CEC Grammar BaseCamp">
+  <meta property="og:url" content="https://cecenglishcamp.github.io/GrammarBaseCamp/G05/G05_new.html">
+  <meta name="robots" content="index, follow">
 </head>
 <body data-grammar-id="G05">
 
-    <div class="container">
-        <h1>
-  <div class="title-en">G05. Simple Past Tense</div>
-  <div class="title-ko">( 과거 일반 시제 )</div>
-</h1>
+<header class="lesson-header" role="banner">
+  <div class="gbc-badge">CEC GRAMMAR BASECAMP</div>
+  <div class="lesson-num-title">G05 · Basic Grammar</div>
+  <div class="lesson-main-title">Simple Past Tense</div>
+  <div class="lesson-sub">단순 과거 시제 — 과거에 일어난 일</div>
+</header>
 
-        <div style="text-align:right; margin-bottom:10px;">
-  <img src="E:/CEC_CAMP STORAGE/CampA_Images/robo.png" style="height:120px;">
-</div>
+<nav class="toc" aria-label="문법 섹션 메뉴">
+  <a href="#concept">기본 개념</a>
+  <a href="#grammar">문법 규칙</a>
+  <a href="#positive">긍정문</a>
+  <a href="#question">의문문</a>
+  <a href="#dialogue">대화 흐름</a>
+  <a href="#combining">문장 결합</a>
+  <a href="#reallife">실생활</a>
+  <a href="#patterns">패턴</a>
+  <a href="#mistakes">흔한 실수</a>
+  <a href="#tips">레벨업 팁</a>
+  <a href="#practice">연습문제</a>
+  <a href="#check">자가진단</a>
+</nav>
 
-        <div class="toc">
-            <h2>📚 목차 (Table of Contents)</h2>
-            <ol>
-                <li><a href="#concept">기본 개념 (Basic Concept)</a></li>
-                <li><a href="#grammar">문법 규칙 (Grammar Rules)</a></li>
-                <li><a href="#positive">긍정문 예시 (Positive Examples)</a></li>
-                <li><a href="#question">의문문 예시 (Question Examples)</a></li>
-                <li><a href="#dialogue">상황별 대화 (Situational Dialogues)</a></li>
-                <li><a href="#sentence_combining">문장 결합 연습 (Sentence Combining)</a></li>
-            </ol>
-        </div>
+<main class="content" role="main">
 
-        <hr>
-        
-        <div class="section concept" id="concept">
-            <h2>1. 기본 개념 (Basic Concept)</h2>
-            <div class="concept-card">
-                <h4><span class="concept-icon">PAST</span>Simple Past Tense</h4>
-                <div class="concept-meaning">
-                    <strong>과거 일반 시제:</strong> **과거**에 일어난 일, 완료된 행동, 과거의 습관을 표현<br>
-                    <strong>형태:</strong> 주어 + **과거형 동사** (규칙: -ed / 불규칙: 변화형)<br>
-                    부정문과 의문문은 조동사 **do**의 과거형인 **did**를 사용하며 동사원형으로 돌아감
-                </div>
-                <div class="concept-examples">
-                    <p>I **played** soccer yesterday. (규칙 과거형)</p>
-                    <p>She **went** to school. (불규칙 과거형: go → went)</p>
-                    <p>**Did** you **eat** lunch? (Did 사용 시 동사원형)</p>
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="section grammar" id="grammar">
-            <h2>2. 문법 규칙 (Grammar Rules)</h2>
-            <ul>
-                <li><strong>긍정문:</strong> 주어 + **과거형 동사** (주어 인칭에 상관없이 동일)</li>
-                <li><strong>부정문:</strong> 주어 + **did not** + **동사원형**</li>
-                <li><strong>의문문:</strong> **Did** + 주어 + **동사원형**?</li>
-                <li><strong>규칙 동사:</strong> play → **played** / work → **worked** / clean → **cleaned**</li>
-                <li><strong>불규칙 동사:</strong> go → **went** / eat → **ate** / have → **had** / see → **saw** (암기 필수)</li>
-                <li><strong>부정문 예:</strong> She **did not go** to school. (did 사용으로 go는 원형)</li>
-                <li><strong>의문문 예:</strong> **Did** you **see** the movie? (Did 사용으로 see는 원형)</li>
-                <li>**시간 표현:** yesterday, last night, two days ago, in 2020 (과거 시점을 명확히 함)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section positive" id="positive">
-            <h2>3. 긍정문 예시 (Positive Examples)</h2>
-            <ul>
-                <li>I **played** soccer yesterday. (규칙)</li>
-                <li>You **watched** a movie last night. (규칙)</li>
-                <li>He **went** to the park. (불규칙: go-went)</li>
-                <li>She **ate** lunch at noon. (불규칙: eat-ate)</li>
-                <li>It **rained** last weekend. (규칙)</li>
-                <li>We **visited** the museum. (규칙)</li>
-                <li>They **had** a meeting. (불규칙: have-had)</li>
-                <li>I **studied** English last night. (규칙: y → ied)</li>
-                <li>She **cleaned** her room. (규칙)</li>
-                <li>We **saw** a rainbow. (불규칙: see-saw)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section question" id="question">
-            <h2>4. 의문문 예시 (Question Examples)</h2>
-            <ul>
-                <li>**Did** you **play** soccer? (Did + 동사원형)</li>
-                <li>**Did** she **go** to school?</li>
-                <li>**Did** they **watch** the movie?</li>
-                <li>**Did** he **eat** lunch?</li>
-                <li>**Did** it **rain** yesterday?</li>
-                <li>**Did** we **visit** the museum?</li>
-                <li>**Did** your friend **study** English?</li>
-                <li>**Did** she **clean** her room?</li>
-                <li>**Did** you **see** the rainbow?</li>
-                <li>**Did** they **have** a meeting?</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section dialogue" id="dialogue">
-            <h2>5. 상황별 대화 흐름 (Situational Dialogues)</h2>
-
-            <p><strong>학교 상황</strong><br />
-            A: **Did** you **study** last night?<br />
-            B: Yes, I **studied** for two hours.<br />
-            A: Good job!</p>
-
-            <p><strong>여행 상황</strong><br />
-            A: **Did** she **go** to Paris?<br />
-            B: Yes, she **went** last summer.<br />
-            A: Lucky!</p>
-
-            <p><strong>직장 상황</strong><br />
-            A: **Did** he **have** a meeting?<br />
-            B: Yes, he **had** one at 3 PM.<br />
-            A: Okay.</p>
-
-            <p><strong>온라인 상황</strong><br />
-            A: **Did** you **watch** the video?<br />
-            B: Yes, I **watched** it yesterday.<br />
-            A: Nice!</p>
-
-            <p><strong>가족 상황</strong><br />
-            A: **Did** mom **cook** dinner?<br />
-            B: Yes, she **made** pasta. (make-made)<br />
-            A: Yum!</p>
-
-            <p><strong>병원 상황</strong><br />
-            A: **Did** the doctor **come** in?<br />
-            B: Yes, he **came** 10 minutes ago. (come-came)<br />
-            A: Great.</p>
-        </div>
-
-        <hr>
-
-        <div class="section sentence_combining" id="sentence_combining">
-            <h2>6. 문장 결합 연습 (Sentence Combining)</h2>
-            <ul>
-                <li>I play soccer. → I **played** soccer. (규칙)</li>
-                <li>She go to school. → She **went** to school. (불규칙)</li>
-                <li>They eat lunch. → They **ate** lunch. (불규칙)</li>
-                <li>We visit the museum. → We **visited** the museum. (규칙)</li>
-                <li>He have a meeting. → He **had** a meeting. (불규칙)</li>
-                <li>I study English. → I **studied** English. (규칙)</li>
-                <li>She clean her room. → She **cleaned** her room. (규칙)</li>
-                <li>We see a rainbow. → We **saw** a rainbow. (불규칙)</li>
-                <li>You watch a movie. → You **watched** a movie. (규칙)</li>
-                <li>It rain yesterday. → It **rained** yesterday. (규칙)</li>
-            </ul>
-        </div>
+  <!-- 1. 기본 개념 -->
+  <div class="section" id="concept" aria-label="기본 개념">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">1</div>
+      <div><span class="section-title">기본 개념</span><span class="section-en">BASIC CONCEPT</span></div>
     </div>
+    <div class="section-body">
+      <div class="key-card">
+        <div class="key-label">⭐ TODAY'S KEY GRAMMAR</div>
+        <div class="key-text">Simple Past Tense</div>
+        <div class="key-kr">단순 과거 시제 — 과거에 일어난 일</div>
+      </div>
+      <div class="concept-box">
+        <p><strong style="color:var(--green-dark)">과거 일반 시제:</strong> <strong>과거</strong>에 일어난 일, 완료된 행동, 과거의 습관을 표현합니다.</p>
+        <p><strong style="color:#3a6640">형태:</strong> 주어 + <strong>과거형 동사</strong> (규칙: -ed / 불규칙: 변화형). 부정문과 의문문은 조동사 <strong>did</strong>를 사용하며 동사원형으로 돌아갑니다.</p>
+      </div>
+      <ul class="ex-list">
+        <li><span class="en">I played soccer yesterday.</span><span class="kr">어제 축구를 했다. (규칙 과거형)</span></li>
+        <li><span class="en">She went to school.</span><span class="kr">그녀는 학교에 갔다. (불규칙 과거형: go → went)</span></li>
+        <li><span class="en">Did you eat lunch?</span><span class="kr">점심 먹었니? (Did 사용 시 동사원형)</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2. 문법 규칙 -->
+  <div class="section" id="grammar" aria-label="문법 규칙">
+    <div class="section-header">
+      <div class="section-num" style="background:#3a6640;">2</div>
+      <div><span class="section-title">문법 규칙</span><span class="section-en">GRAMMAR RULES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="rule-grid">
+        <div class="rule-card r-is">
+          <div class="rule-label">규칙 동사 · REGULAR</div>
+          <div class="rule-example"><strong>주어 + 동사-ed</strong><br><span style="font-size:12px;color:var(--muted)">I played / She worked</span></div>
+        </div>
+        <div class="rule-card r-are">
+          <div class="rule-label">불규칙 동사 · IRREGULAR</div>
+          <div class="rule-example"><strong>주어 + 변화형</strong><br><span style="font-size:12px;color:var(--muted)">He went / They had</span></div>
+        </div>
+        <div class="rule-card r-neg">
+          <div class="rule-label">부정문 · NEGATIVE</div>
+          <div class="rule-example"><strong>did not</strong> + 동사원형<br><span style="font-size:12px;color:var(--muted)">She did not go.</span></div>
+        </div>
+        <div class="rule-card r-q">
+          <div class="rule-label">의문문 · QUESTION</div>
+          <div class="rule-example"><strong>Did</strong> + 주어 + 동사원형?<br><span style="font-size:12px;color:var(--muted)">Did you see it?</span></div>
+        </div>
+      </div>
+      <ul class="rule-list">
+        <li><strong>규칙 동사:</strong> play → <strong>played</strong> / work → <strong>worked</strong> / clean → <strong>cleaned</strong></li>
+        <li><strong>불규칙 동사:</strong> go → <strong>went</strong> / eat → <strong>ate</strong> / have → <strong>had</strong> / see → <strong>saw</strong> (암기 필수)</li>
+        <li><strong>부정문 예:</strong> She <strong>did not go</strong> to school. (did 사용으로 go는 원형)</li>
+        <li><strong>의문문 예:</strong> <strong>Did</strong> you <strong>see</strong> the movie? (Did 사용으로 see는 원형)</li>
+        <li><strong>시간 표현:</strong> yesterday, last night, two days ago, in 2020 (과거 시점을 명확히 함)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3. 긍정문 -->
+  <div class="section" id="positive" aria-label="긍정문">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--gold); color:#000;">3</div>
+      <div><span class="section-title">긍정문 예시</span><span class="section-en">POSITIVE EXAMPLES</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en">I played soccer yesterday.</span><span class="kr">어제 축구를 했다. (규칙)</span></li>
+        <li><span class="en">You watched a movie last night.</span><span class="kr">어젯밤에 영화를 봤다. (규칙)</span></li>
+        <li><span class="en">He went to the park.</span><span class="kr">그는 공원에 갔다. (불규칙: go-went)</span></li>
+        <li><span class="en">She ate lunch at noon.</span><span class="kr">그녀는 정오에 점심을 먹었다. (불규칙: eat-ate)</span></li>
+        <li><span class="en">It rained last weekend.</span><span class="kr">지난 주말에 비가 왔다. (규칙)</span></li>
+        <li><span class="en">We visited the museum.</span><span class="kr">우리는 박물관을 방문했다. (규칙)</span></li>
+        <li><span class="en">They had a meeting.</span><span class="kr">그들은 회의를 했다. (불규칙: have-had)</span></li>
+        <li><span class="en">I studied English last night.</span><span class="kr">어젯밤에 영어를 공부했다. (규칙: y → ied)</span></li>
+        <li><span class="en">She cleaned her room.</span><span class="kr">그녀는 방을 청소했다. (규칙)</span></li>
+        <li><span class="en">We saw a rainbow.</span><span class="kr">우리는 무지개를 봤다. (불규칙: see-saw)</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. 의문문 -->
+  <div class="section" id="question" aria-label="부정문">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">4</div>
+      <div><span class="section-title">의문문 예시</span><span class="section-en">QUESTION EXAMPLES</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li class="ex-q"><span class="en">Did you play soccer?</span><span class="kr">축구 했니? (Did + 동사원형)</span></li>
+        <li class="ex-q"><span class="en">Did she go to school?</span><span class="kr">그녀는 학교에 갔니?</span></li>
+        <li class="ex-q"><span class="en">Did they watch the movie?</span><span class="kr">그들은 영화를 봤니?</span></li>
+        <li class="ex-q"><span class="en">Did he eat lunch?</span><span class="kr">그는 점심을 먹었니?</span></li>
+        <li class="ex-q"><span class="en">Did it rain yesterday?</span><span class="kr">어제 비가 왔니?</span></li>
+        <li class="ex-q"><span class="en">Did we visit the museum?</span><span class="kr">우리 박물관 방문했니?</span></li>
+        <li class="ex-q"><span class="en">Did your friend study English?</span><span class="kr">네 친구는 영어를 공부했니?</span></li>
+        <li class="ex-q"><span class="en">Did she clean her room?</span><span class="kr">그녀는 방을 청소했니?</span></li>
+        <li class="ex-q"><span class="en">Did you see the rainbow?</span><span class="kr">무지개를 봤니?</span></li>
+        <li class="ex-q"><span class="en">Did they have a meeting?</span><span class="kr">그들은 회의를 했니?</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5. 대화 흐름 -->
+  <div class="section" id="dialogue" aria-label="의문문">
+    <div class="section-header">
+      <div class="section-num" style="background:#5a7a50;">5</div>
+      <div><span class="section-title">상황별 대화 흐름</span><span class="section-en">SITUATIONAL DIALOGUES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="dialogue">
+        <div class="d-title">🏫 학교 상황 · SCHOOL</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Did</span> you <span class="key">study</span> last night?</div>
+        <div class="d-line"><span class="sp">B:</span> Yes, I <span class="key">studied</span> for two hours.</div>
+        <div class="d-line"><span class="sp">A:</span> Good job!</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">✈️ 여행 상황 · TRAVEL</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Did</span> she <span class="key">go</span> to Paris?</div>
+        <div class="d-line"><span class="sp">B:</span> Yes, she <span class="key">went</span> last summer.</div>
+        <div class="d-line"><span class="sp">A:</span> Lucky!</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">💼 직장 상황 · OFFICE</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Did</span> he <span class="key">have</span> a meeting?</div>
+        <div class="d-line"><span class="sp">B:</span> Yes, he <span class="key">had</span> one at 3 PM.</div>
+        <div class="d-line"><span class="sp">A:</span> Okay.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">💻 온라인 상황 · ONLINE</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Did</span> you <span class="key">watch</span> the video?</div>
+        <div class="d-line"><span class="sp">B:</span> Yes, I <span class="key">watched</span> it yesterday.</div>
+        <div class="d-line"><span class="sp">A:</span> Nice!</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">🏠 가족 상황 · FAMILY</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Did</span> mom <span class="key">cook</span> dinner?</div>
+        <div class="d-line"><span class="sp">B:</span> Yes, she <span class="key">made</span> pasta.</div>
+        <div class="d-line"><span class="sp">A:</span> Yum!</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">🏥 병원 상황 · HOSPITAL</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Did</span> the doctor <span class="key">come</span> in?</div>
+        <div class="d-line"><span class="sp">B:</span> Yes, he <span class="key">came</span> 10 minutes ago.</div>
+        <div class="d-line"><span class="sp">A:</span> Great.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 문장 결합 -->
+  <div class="section" id="combining" aria-label="대화">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">6</div>
+      <div><span class="section-title">문장 결합 연습</span><span class="section-en">SENTENCE COMBINING</span></div>
+    </div>
+    <div class="section-body">
+      <div class="practice-item">
+        <div class="original">I play soccer.</div>
+        <div class="result">→ I played soccer. (규칙)</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">She go to school.</div>
+        <div class="result">→ She went to school. (불규칙)</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">They eat lunch.</div>
+        <div class="result">→ They ate lunch. (불규칙)</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">We visit the museum.</div>
+        <div class="result">→ We visited the museum. (규칙)</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">He have a meeting.</div>
+        <div class="result">→ He had a meeting. (불규칙)</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">I study English.</div>
+        <div class="result">→ I studied English. (규칙)</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">She clean her room.</div>
+        <div class="result">→ She cleaned her room. (규칙)</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">We see a rainbow.</div>
+        <div class="result">→ We saw a rainbow. (불규칙)</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You watch a movie.</div>
+        <div class="result">→ You watched a movie. (규칙)</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">It rain yesterday.</div>
+        <div class="result">→ It rained yesterday. (규칙)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 실생활 사용 -->
+  <div class="section" id="reallife" aria-label="문장 결합">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--gold); color:#000;">7</div>
+      <div><span class="section-title">실생활 사용 예시</span><span class="section-en">REAL-LIFE USAGE</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en">I studied math last night.</span><span class="kr">🏫 학교 — 어제 완료된 행동</span></li>
+        <li><span class="en">He had a meeting at 3 PM.</span><span class="kr">💼 직장 — 과거 특정 시점에 완료</span></li>
+        <li><span class="en">Mom cooked dinner yesterday.</span><span class="kr">🏠 가족 — 어제 완료된 행동</span></li>
+        <li><span class="en">We watched a video together.</span><span class="kr">💻 온라인 — 과거 완료된 행동</span></li>
+        <li><span class="en">The doctor came in 10 minutes ago.</span><span class="kr">🏥 병원 — 10분 전 완료된 행동</span></li>
+        <li><span class="en">They went to Paris last summer.</span><span class="kr">✈️ 여행 — 지난 여름 완료된 행동</span></li>
+        <li><span class="en">I presented my idea last week.</span><span class="kr">📋 회의 — 지난주 완료된 행동</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 8. 자주 쓰이는 패턴 -->
+  <div class="section" id="patterns" aria-label="실생활">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">8</div>
+      <div><span class="section-title">자주 쓰이는 패턴</span><span class="section-en">COMMON PATTERNS</span></div>
+    </div>
+    <div class="section-body">
+      <div class="pattern-box">
+        <div class="p-label">규칙동사 · REGULAR VERB</div>
+        <div class="p-text"><strong>주어 + 동사-ed</strong><br><span style="font-size:13px;">I played, She worked (규칙적인 과거형)</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">불규칙동사 · IRREGULAR VERB</div>
+        <div class="p-text"><strong>주어 + 변화형 동사</strong><br><span style="font-size:13px;">He went, They had (암기 필수 불규칙 과거형)</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">의문문 · QUESTION</div>
+        <div class="p-text"><strong>Did + 주어 + 동사원형?</strong><br><span style="font-size:13px;">Did you eat lunch?</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">부정문 · NEGATIVE</div>
+        <div class="p-text"><strong>주어 + did not + 동사원형</strong><br><span style="font-size:13px;">She did not go to school. / I didn't see it.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. 흔한 실수 -->
+  <div class="section" id="mistakes" aria-label="패턴">
+    <div class="section-header">
+      <div class="section-num" style="background:#c0392b;">9</div>
+      <div><span class="section-title">흔한 실수</span><span class="section-en">COMMON MISTAKES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="mistake-box">
+        <div class="wrong">✗ She go to school.</div>
+        <div class="right">✓ She went to school.</div>
+        <div class="reason">과거형 사용 누락 — go의 과거형은 went</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ Did he ate lunch?</div>
+        <div class="right">✓ Did he eat lunch?</div>
+        <div class="reason">Did 사용 시 동사원형 사용</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ I not studied yesterday.</div>
+        <div class="right">✓ I did not study yesterday.</div>
+        <div class="reason">부정문 조동사 did not 누락 및 동사원형 복구</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ They have a meeting yesterday.</div>
+        <div class="right">✓ They had a meeting yesterday.</div>
+        <div class="reason">have의 과거형 had 사용</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ We saw a rainbow. Did you saw it?</div>
+        <div class="right">✓ We saw a rainbow. Did you see it?</div>
+        <div class="reason">Did 사용 시 동사원형 사용</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. 레벨업 팁 -->
+  <div class="section" id="tips" aria-label="흔한 실수">
+    <div class="section-header">
+      <div class="section-num" style="background:#185fa5;">10</div>
+      <div><span class="section-title">레벨업 팁</span><span class="section-en">LEVEL-UP TIPS</span></div>
+    </div>
+    <div class="section-body">
+      <div class="tip-box">
+        <div class="tip-label">TIP 1 · 규칙 vs. 불규칙</div>
+        <div class="tip-text">규칙 동사(-ed)와 불규칙 동사(변화형)를 분리하여 목록화하고 불규칙 동사만 집중적으로 암기하세요.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 2 · Did의 역할</div>
+        <div class="tip-text">과거 일반 시제의 부정문과 의문문에서 Did는 시제를 나타내는 핵심 조동사입니다. Did가 등장하면 본동사는 무조건 동사원형으로 돌아갑니다.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 3 · 시간 부사</div>
+        <div class="tip-text">yesterday, last week, ago와 같은 명확한 과거 시간 부사를 적극적으로 사용하여 문장을 더욱 자연스럽게 만드세요.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 4 · 구어체 팁</div>
+        <div class="tip-text">부정문에서는 didn't를 사용하여 유창성을 높이고, 긍정문에서는 과거형 동사를 명확히 발음하는 연습을 하세요.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 5 · Be동사 vs 일반동사</div>
+        <div class="tip-text">Be동사 과거형(was/were)과 일반동사 과거형(did + 원형 또는 과거형 동사)을 혼동하지 않도록 주의하세요.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. 연습문제 -->
+  <div class="section" id="practice" aria-label="레벨업 팁">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">11</div>
+      <div><span class="section-title">연습문제</span><span class="section-en">PRACTICE EXERCISES</span></div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">빈칸에 알맞은 과거형을 선택하세요.</p>
+      <ul class="rule-list">
+        <li>They ___ to the cinema last night. (go) <strong style="color:var(--green-dark)">(went)</strong></li>
+        <li>She ___ dinner. (eat) → 의문문: ___ she ___ dinner? <strong style="color:var(--green-dark)">(ate / Did, eat)</strong></li>
+        <li>I ___ the news this morning. (watch, 부정) <strong style="color:var(--green-dark)">(did not watch)</strong></li>
+        <li>He ___ a dog before. (have, 부정) <strong style="color:var(--green-dark)">(did not have)</strong></li>
+        <li>We ___ new furniture last week. (buy) <strong style="color:var(--green-dark)">(bought)</strong></li>
+        <li>Did you ___ the movie? (see, 오류수정: saw → ?) <strong style="color:var(--green-dark)">(see)</strong></li>
+        <li>I ___ there. (go, 부정) <strong style="color:var(--green-dark)">(did not go)</strong></li>
+        <li>Did she ___ it? (finish) <strong style="color:var(--green-dark)">(finish)</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 12. 자가진단 -->
+  <div class="section" id="check" aria-label="레벨업 팁">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">12</div>
+      <div><span class="section-title">자가진단 체크리스트</span><span class="section-en">SELF-CHECK</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 규칙 과거 시제 동사(-ed)를 올바르게 사용할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 주요 불규칙 동사의 과거형(go, eat, have, see)을 기억한다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> "did not" + 동사원형으로 부정문을 만들 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> "Did" + 주어 + 동사원형으로 의문문을 만들 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 과거 시간 표현(yesterday, last week, ago)을 적절히 사용한다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 일상 대화에서 자연스럽게 과거 시제를 사용할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 흔한 실수 5가지를 이해했다.</li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer-nav" role="contentinfo">
+  <a href="../G04/G04_new.html" class="fnav-btn fnav-prev">← G04</a>
+  <span class="fnav-center">G05 · SIMPLE PAST TENSE</span>
+  <a href="../G06/G06_new.html" class="fnav-btn fnav-next">G06 →</a>
+</footer>
+
 
 
 
@@ -669,468 +845,3 @@
 </script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G05 Part 2: Simple Past Tense</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
-
-        :root {
-            --yellow-light: #fffde7;
-            --pink-light: #fce4ec;
-            --orange-light: #ffecb3;
-            --green: #e8f5e9;
-            --gray: #e0e0e0;
-            --gray-dark: #bdbdbd;
-            --red-strong: #c0392b;
-            --blue-main: #3498db;
-        }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #1a2a1a;
-            margin: 0;
-            padding: 20px;
-        }
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-                /* 제목 스타일 */
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #33ddff;
-        }
-
-        .toc {
-            background-color: #f8f9fa;
-            border-left: 5px solid var(--blue-main);
-            padding: 1rem 1.5rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-        }
-
-        .toc h2 {
-            margin-top: 0;
-            color: #2980b9;
-        }
-
-        .toc ol {
-            padding-left: 20px;
-        }
-
-        .toc li a {
-            text-decoration: none;
-            color: #34495e;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .toc li a:hover {
-            color: #1a6496;
-            text-decoration: underline;
-        }
-
-        .section {
-            padding: 2rem 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .section h2 {
-            font-size: 1.8rem;
-            color: #34495e;
-            border-left: 4px solid var(--blue-main);
-            padding-left: 15px;
-        }
-
-        .real_life_usage.section { background-color: var(--yellow-light); }
-        .common_patterns.section { background-color: var(--pink-light); }
-        .mistakes.section { background-color: var(--orange-light); }
-        .tips.section { background-color: var(--green); }
-        .practice.section { background-color: var(--gray); }
-        .checklist.section { background-color: var(--gray-dark); }
-        
-        .section.real_life_usage h2 { border-color: #f1c40f; color: #f1c40f; }
-        .section.common_patterns h2 { border-color: #e91e63; color: #e91e63; }
-        .section.mistakes h2 { border-color: #f39c12; color: #f39c12; }
-        .section.tips h2 { border-color: #2ecc71; color: #2ecc71; }
-        .section.practice h2 { border-color: #7f8c8d; color: #7f8c8d; }
-        .section.checklist h2 { border-color: #95a5a6; color: #95a5a6; }
-
-        .section ul, .section ol {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .section li {
-            background-color: #f9f9f9;
-            padding: 12px 20px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .section li:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .mistakes li .correct { color: #2ecc71; font-weight: bold; }
-        .mistakes li .incorrect { color: var(--red-strong); font-weight: bold; text-decoration: line-through; }
-        .section li strong { color: var(--red-strong); }
-
-        .practice h4 {
-            margin-top: 2rem;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-        }
-
-        .practice ol {
-            padding-left: 20px;
-        }
-
-        .practice li {
-            margin-bottom: 15px;
-            background-color: #fff;
-        }
-        
-        .practice .options {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-top: 10px;
-        }
-
-        .practice .option {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.2s;
-        }
-        
-        .practice .option:hover {
-            background-color: #f0f0f0;
-            transform: scale(1.01);
-        }
-
-        .practice .option.correct {
-            background-color: #e8f5e9;
-            border-color: #27ae60;
-        }
-
-        .practice input[type="text"] {
-            width: 90%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-top: 5px;
-        }
-        
-        #progress-container {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        #progress-bar {
-            width: 0;
-            height: 20px;
-            background-color: var(--red-strong);
-            border-radius: 10px;
-            text-align: center;
-            color: white;
-            line-height: 20px;
-            transition: width 0.4s ease-in-out;
-        }
-
-        .checklist-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .checklist-item input[type="checkbox"] {
-            transform: scale(1.5);
-            margin-right: 15px;
-            cursor: pointer;
-        }
-        
-        .checklist h4 {
-            margin-top: 2rem;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-        }
-
-        .submit-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: var(--blue-main);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s;
-            margin-top: 2rem;
-        }
-
-        .submit-btn:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-        }
-
-        .hidden { display: none; }
-    </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=NanumSquareRound:wght@800&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <div class="container">
-        <h1>
-  <div class="title-en">G05. Simple Past Tense</div>
-  <div class="title-ko">( 과거 일반 시제 )</div>
-</h1>
-
-        <div class="toc">
-            <h2>📚 목차 (Table of Contents)</h2>
-            <ol start="7">
-                <li><a href="#real_life_usage">실생활 사용 예시 (Real-Life Usage)</a></li>
-                <li><a href="#common_patterns">자주 쓰이는 패턴 (Common Patterns)</a></li>
-                <li><a href="#mistakes">흔한 실수 (Common Mistakes)</a></li>
-                <li><a href="#tips">레벨업 팁 (Level-Up Tips)</a></li>
-                <li><a href="#practice">연습문제 (Practice Exercises)</a></li>
-                <li><a href="#checklist">자가진단 체크리스트 (Self-Check)</a></li>
-            </ol>
-        </div>
-
-        <hr>
-
-        <div class="section real_life_usage" id="real_life_usage">
-            <h2>7. 실생활 사용 예시 (Real-Life Usage)</h2>
-            <ul>
-                <li><strong>학교 상황:</strong> I **studied** math last night. (어제 완료된 행동)</li>
-                <li><strong>직장 상황:</strong> He **had** a meeting at 3 PM. (과거 특정 시점에 완료)</li>
-                <li><strong>가족 상황:</strong> Mom **cooked** dinner yesterday. (어제 완료된 행동)</li>
-                <li><strong>온라인 상황:</strong> We **watched** a video together. (과거 완료된 행동)</li>
-                <li><strong>병원 상황:</strong> The doctor **came** in 10 minutes ago. (10분 전 완료된 행동)</li>
-                <li><strong>여행 상황:</strong> They **went** to Paris last summer. (지난 여름 완료된 행동)</li>
-                <li><strong>회의 상황:</strong> I **presented** my idea last week. (지난주 완료된 행동)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section common_patterns" id="common_patterns">
-            <h2>8. 자주 쓰이는 패턴 (Common Patterns)</h2>
-            <ul>
-                <li>**주어 + 규칙동사-ed:** I **played**, She **worked** (규칙적인 과거형)</li>
-                <li>**주어 + 불규칙동사:** He **went**, They **had** (암기 필수 불규칙 과거형)</li>
-                <li>**Did + 주어 + 동사원형? (의문):** Did you **eat** lunch?</li>
-                <li>**주어 + did not + 동사원형 (부정):** She **did not go** to school.</li>
-                <li>**과거 시간 표현 + 동사:** I **studied** yesterday. / We **visited** last week.</li>
-                <li>**동사 + 장소/목적어:** He **watched** a movie. / They **lived** there.</li>
-                <li>**did** 사용 시: 동사는 **반드시 원형**으로 돌아간다. (Did you **see**?)</li>
-                <li>**축약형 부정문:** didn’t + 동사원형 (I **didn’t see** it.)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section mistakes" id="mistakes">
-            <h2>9. 흔한 실수 (Common Mistakes)</h2>
-            <ul>
-                <li><span class="incorrect">❌ She go to school.</span> → <span class="correct">✅ She **went** to school.</span> (과거형 사용 누락)</li>
-                <li><span class="incorrect">❌ Did he ate lunch?</span> → <span class="correct">✅ Did he **eat** lunch?</span> (Did 사용 시 동사원형 사용)</li>
-                <li><span class="incorrect">❌ I not studied yesterday.</span> → <span class="correct">✅ I **did not study** yesterday.</span> (부정문 조동사 did not 누락 및 동사원형 복구)</li>
-                <li><span class="incorrect">❌ They have a meeting yesterday.</span> → <span class="correct">✅ They **had** a meeting yesterday.</span> (have의 과거형 had 사용)</li>
-                <li><span class="incorrect">❌ We saw a rainbow. Did you saw it?</span> → <span class="correct">✅ We saw a rainbow. Did you **see** it?</span> (Did 사용 시 동사원형 사용)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section tips" id="tips">
-            <h2>10. 레벨업 팁 (Level-Up Tips)</h2>
-            <ul>
-                <li>**규칙 vs. 불규칙:** 규칙 동사(-ed)와 불규칙 동사(변화형)를 분리하여 목록화하고 불규칙 동사만 집중적으로 암기하세요.</li>
-                <li>**Did의 역할:** 과거 일반 시제의 부정문과 의문문에서 **Did**는 시제를 나타내는 핵심 조동사입니다. **Did**가 등장하면 본동사는 무조건 **동사원형**으로 돌아갑니다.</li>
-                <li>**시간 부사:** **yesterday, last week, ago**와 같은 명확한 과거 시간 부사를 적극적으로 사용하여 문장을 더욱 자연스럽게 만드세요.</li>
-                <li>**구어체:** 부정문에서는 **didn't**를 사용하여 유창성을 높이고, 긍정문에서는 과거형 동사를 명확히 발음하는 연습을 하세요.</li>
-                <li>**Be동사 과거형** (**was/were**)과 **일반동사 과거형** (**did** + 원형 또는 과거형 동사)을 혼동하지 않도록 주의하세요. (G01 & G05 비교)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section practice" id="practice">
-            <h2>11. 연습문제 (Practice Exercises)</h2>
-
-            <h4>객관식</h4>
-            <ol>
-                <li id="q1">Choose the correct verb form:
-                    <div class="question">They ___ to the cinema last night. (go)</div>
-                    <div class="options" data-correct="B">
-                        <div class="option" data-value="A">A. goed</div>
-                        <div class="option" data-value="B">B. went</div>
-                        <div class="option" data-value="C">C. did go</div>
-                    </div>
-                </li>
-                <li id="q2">Which is the correct question form?
-                    <div class="question">She ate dinner. (Question)</div>
-                    <div class="options" data-correct="A">
-                        <div class="option" data-value="A">A. Did she eat dinner?</div>
-                        <div class="option" data-value="B">B. Did she ate dinner?</div>
-                        <div class="option" data-value="C">C. Does she eat dinner?</div>
-                    </div>
-                </li>
-                <li id="q3">Fill in the blank for a negative sentence:
-                    <div class="question">I ___ the news this morning. (watch)</div>
-                    <div class="options" data-correct="C">
-                        <div class="option" data-value="A">A. not watched</div>
-                        <div class="option" data-value="B">B. do not watch</div>
-                        <div class="option" data-value="C">C. did not watch</div>
-                    </div>
-                </li>
-            </ol>
-            
-            <button class="submit-btn" onclick="checkAnswers()">정답 확인하기</button>
-            <div id="answers" class="hidden">
-                <p><strong>1. B</strong>. go의 불규칙 과거형은 **went**입니다.</p>
-                <p><strong>2. A</strong>. 의문문은 **Did + 주어 + 동사원형(eat)** 형태를 사용합니다.</p>
-                <p><strong>3. C</strong>. 과거 부정문은 **did not + 동사원형(watch)** 형태를 사용합니다.</p>
-            </div>
-            
-            <h4>문장 완성 및 오류 수정 (정답 예시 제공)</h4>
-            <ol start="4">
-                <li><label>He **did not have** a dog before. (부정문 완성) <input type="text" id="q4" placeholder="He did not have a dog before."/></label></li>
-                <li><label>We **bought** new furniture last week. (buy의 과거형 완성) <input type="text" id="q5" placeholder="We bought new furniture last week."/></label></li>
-                <li><label>❌ Did you saw the movie? → ✅ Did you **see** the movie? (오류 수정: Did 사용 시 원형) <input type="text" id="q6" placeholder="Did you see the movie?"/></label></li>
-                <li><label>❌ I not went there. → ✅ I **did not go** there. (오류 수정: did not + 원형) <input type="text" id="q7" placeholder="I did not go there."/></label></li>
-                <li><label>❌ She finished her homework. Did she finished it? → ✅ She finished her homework. Did she **finish** it? (오류 수정: Did 사용 시 원형) <input type="text" id="q8" placeholder="She finished her homework. Did she finish it?"/></label></li>
-            </ol>
-        </div>
-
-        <hr>
-
-        <div class="section checklist" id="checklist">
-            <h2>12. 자가진단 체크리스트 (Self-Check)</h2>
-            
-            <h4>학습 완료 체크</h4>
-            <div id="progress-container">
-                <div id="progress-bar">0%</div>
-            </div>
-            <ul>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can use regular past tense verbs (-ed) correctly.</li>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can recall the past tense of common irregular verbs (go, eat, have, see).</li>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can form negative sentences using "did not" + base verb.</li>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can form questions using "Did" + subject + base verb.</li>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I use past time expressions (yesterday, last week, ago) appropriately.</li>
-            </ul>
-
-            <h4>자가진단 문항</h4>
-            <ol>
-                <li class="checklist-question">Can you describe three things you did last weekend using the simple past tense?</li>
-                <li class="checklist-question">Can you ask a question about your friend’s activities last night using "Did you..."?</li>
-                <li class="checklist-question">Can you write a sentence using the irregular verb "take" (past tense)?</li>
-                <li class="checklist-question">Can you explain why "Did he went" is wrong and what the correction is?</li>
-                <li class="checklist-question">Can you use the past tense of "be" and a general verb in separate sentences and explain the difference?</li>
-            </ol>
-            
-            <h4>다음 단계 학습 가이드</h4>
-            <ul>
-                <li>Review the list of the top **30 Irregular Verbs** (불규칙 동사 30개) for memorization.</li>
-                <li>Practice creating short narratives (past stories) that require you to switch quickly between positive, negative, and question forms.</li>
-                <li>Focus on the **pronunciation** of -ed endings (e.g., played vs. wanted vs. watched).</li>
-                <li>Compare the use of **Simple Past** (G05) with **Present Perfect** (not yet covered) to prepare for advanced usage.</li>
-            </ul>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const progressBar = document.getElementById('progress-bar');
-            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
-            const answersBox = document.getElementById('answers');
-
-            // Progress Bar and Checklist Logic
-            if (progressBar && checkboxes.length > 0) {
-                checkboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', updateProgress);
-                });
-            }
-
-            function updateProgress() {
-                const totalCheckboxes = checkboxes.length;
-                const checkedCheckboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').length;
-                
-                if (totalCheckboxes > 0 && progressBar) {
-                    const progress = (checkedCheckboxes / totalCheckboxes) * 100;
-                    progressBar.style.width = progress + '%';
-                    progressBar.textContent = Math.round(progress) + '%';
-                }
-            }
-
-            // Multiple Choice Question Logic
-            const mcqOptions = document.querySelectorAll('.practice .option');
-
-            if (mcqOptions.length > 0) {
-                mcqOptions.forEach(option => {
-                    option.addEventListener('click', function() {
-                        const parentOptions = this.parentElement.querySelectorAll('.option');
-                        parentOptions.forEach(opt => {
-                            opt.classList.remove('correct', 'incorrect');
-                        });
-
-                        const parentDiv = this.closest('.options');
-                        const correctAnswer = parentDiv.getAttribute('data-correct');
-
-                        if (this.getAttribute('data-value') === correctAnswer) {
-                            this.classList.add('correct');
-                        } else {
-                            this.classList.add('incorrect');
-                        }
-                    });
-                });
-            }
-            
-            // Show Answers Button Logic
-            const showAnswersBtn = document.querySelector('.submit-btn');
-            if (showAnswersBtn) {
-                showAnswersBtn.addEventListener('click', function() {
-                    answersBox.classList.toggle('hidden');
-                    if (!answersBox.classList.contains('hidden')) {
-                         this.textContent = '정답 숨기기';
-                    } else {
-                         this.textContent = '정답 확인하기';
-                    }
-                });
-            }
-        });
-    </script>
-</body>
-</html>
-
-
-
-
