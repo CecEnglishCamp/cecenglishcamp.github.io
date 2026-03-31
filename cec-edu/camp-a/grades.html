@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp A — Grades — CEC English Camp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:'Outfit',sans-serif}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 36px;height:68px;background:#000;border-bottom:1px solid rgba(0,255,255,0.13);position:fixed;top:0;left:0;right:0;z-index:1000}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo img{width:38px;height:38px;object-fit:contain;border-radius:8px}
+.nav-logo-text{font-size:1.1rem;font-weight:800;color:#fff;white-space:nowrap}
+.nav-links{display:flex;align-items:center;gap:6px;list-style:none;position:absolute;left:50%;transform:translateX(-50%)}
+.nav-sep{color:#00ffff;font-size:.38rem;opacity:.4;padding:0 2px}
+.nav-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.88rem;font-weight:500;padding:5px 8px;white-space:nowrap;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:#00ffff}
+.nav-register a{background:#00ffff;color:#000;text-decoration:none;font-size:.85rem;font-weight:800;padding:9px 24px;border-radius:50px;display:block}
+.nav-register a:hover{opacity:.82}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,.35);text-decoration:none;font-size:.82rem;font-weight:500;padding:88px 40px 0;transition:color .2s}
+.back-link:hover{color:#00ffff}
+.hero{padding:24px 40px 40px;text-align:center}
+.hero-badge{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:50px;padding:7px 22px;margin-bottom:28px}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(2.8rem,6vw,5rem);color:#fff;line-height:1;margin-bottom:8px}
+.hero h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;font-size:clamp(1.2rem,2.5vw,2rem);color:#00f2ff}
+.grade-tabs{display:flex;justify-content:center;gap:12px;padding:32px 40px 44px;flex-wrap:wrap}
+.grade-tab{padding:10px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;border:1.5px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.55);transition:all .2s;letter-spacing:.03em}
+.grade-tab:hover{border-color:rgba(255,255,255,.35);color:#fff}
+.grade-tab.active{color:#000;border-color:transparent}
+.grade-section{display:none;padding:0 40px 80px;max-width:1200px;margin:0 auto}
+.grade-section.active{display:block}
+.grade-header{margin-bottom:36px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.07)}
+.grade-header h3{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;margin-bottom:4px}
+.grade-header span{font-size:.82rem;color:rgba(255,255,255,.35);font-weight:400}
+.book-group{margin-bottom:36px}
+.book-title{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.book-title h4{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;color:#fff;font-weight:600;white-space:nowrap}
+.book-line{flex:1;height:1px;background:rgba(255,255,255,.07)}
+.book-badge{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.3);white-space:nowrap}
+.week-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.week-card{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;text-decoration:none;color:rgba(255,255,255,.65);font-size:.77rem;font-weight:500;gap:4px;transition:all .2s}
+.week-card .wnum{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;line-height:1;color:#fff;transition:color .2s}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/cec-edu/" class="nav-logo">
+    <img src="/cec-edu/assets/robo.png" alt="Robo" onerror="this.style.display='none'">
+    <span class="nav-logo-text">CEC English Camp</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cec-edu/about/">About</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/camp-a/" class="active">Camp A</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/camp-b/">Camp B</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/camp-c/">Camp C</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/grammar-base/">Grammar Base Camp</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/games/">Game</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="#">Programs</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="#">AI Tools</a></li>
+  </ul>
+  <div class="nav-register"><a href="/cec-edu/register/">Register</a></div>
+</nav>
+
+<a class="back-link" href="/cec-edu/camp-a/">← Camp A</a>
+
+<div class="hero">
+  <span class="hero-badge">Camp A · Elementary School</span>
+  <h1>Camp A</h1>
+  <h2>Select Your Grade</h2>
+</div>
+<div class="grade-tabs">
+  <button class="grade-tab active" style="background:#4ade80;color:#000;border-color:transparent" data-grade="grade3" data-color="#4ade80">Grade 3</button>
+  <button class="grade-tab"  data-grade="grade4" data-color="#60a5fa">Grade 4</button>
+  <button class="grade-tab"  data-grade="grade5" data-color="#f59e0b">Grade 5</button>
+  <button class="grade-tab"  data-grade="grade6" data-color="#f472b6">Grade 6</button>
+</div>
+<div class="grade-section active" id="grade3">
+  <div class="grade-header"><h3 style="color:#4ade80">Grade 3</h3><span>Elementary School · Year 3</span></div>
+  <div class="book-group">
+    <div class="book-title"><h4>Peter Rabbit</h4><div class="book-line"></div><span class="book-badge">W01 – W04</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade3/week01.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W01</span><span>Week 1</span></a>
+      <a class="week-card" href="lessons/grade3/week02.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W02</span><span>Week 2</span></a>
+      <a class="week-card" href="lessons/grade3/week03.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W03</span><span>Week 3</span></a>
+      <a class="week-card" href="lessons/grade3/week04.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W04</span><span>Week 4</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Red Riding Hood</h4><div class="book-line"></div><span class="book-badge">W05 – W08</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade3/week05.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W05</span><span>Week 5</span></a>
+      <a class="week-card" href="lessons/grade3/week06.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W06</span><span>Week 6</span></a>
+      <a class="week-card" href="lessons/grade3/week07.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W07</span><span>Week 7</span></a>
+      <a class="week-card" href="lessons/grade3/week08.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W08</span><span>Week 8</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Jack & the Beanstalk</h4><div class="book-line"></div><span class="book-badge">W09 – W12</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade3/week09.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W09</span><span>Week 9</span></a>
+      <a class="week-card" href="lessons/grade3/week10.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W10</span><span>Week 10</span></a>
+      <a class="week-card" href="lessons/grade3/week11.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W11</span><span>Week 11</span></a>
+      <a class="week-card" href="lessons/grade3/week12.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W12</span><span>Week 12</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>The Frog Prince</h4><div class="book-line"></div><span class="book-badge">W13 – W16</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade3/week13.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W13</span><span>Week 13</span></a>
+      <a class="week-card" href="lessons/grade3/week14.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W14</span><span>Week 14</span></a>
+      <a class="week-card" href="lessons/grade3/week15.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W15</span><span>Week 15</span></a>
+      <a class="week-card" href="lessons/grade3/week16.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W16</span><span>Week 16</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>The Elves</h4><div class="book-line"></div><span class="book-badge">W17 – W20</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade3/week17.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W17</span><span>Week 17</span></a>
+      <a class="week-card" href="lessons/grade3/week18.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W18</span><span>Week 18</span></a>
+      <a class="week-card" href="lessons/grade3/week19.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W19</span><span>Week 19</span></a>
+      <a class="week-card" href="lessons/grade3/week20.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W20</span><span>Week 20</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Thumbelina</h4><div class="book-line"></div><span class="book-badge">W21 – W24</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade3/week21.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W21</span><span>Week 21</span></a>
+      <a class="week-card" href="lessons/grade3/week22.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W22</span><span>Week 22</span></a>
+      <a class="week-card" href="lessons/grade3/week23.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W23</span><span>Week 23</span></a>
+      <a class="week-card" href="lessons/grade3/week24.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W24</span><span>Week 24</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Emperor's New Clothes</h4><div class="book-line"></div><span class="book-badge">W25 – W28</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade3/week25.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W25</span><span>Week 25</span></a>
+      <a class="week-card" href="lessons/grade3/week26.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W26</span><span>Week 26</span></a>
+      <a class="week-card" href="lessons/grade3/week27.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W27</span><span>Week 27</span></a>
+      <a class="week-card" href="lessons/grade3/week28.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W28</span><span>Week 28</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Lucky Hans</h4><div class="book-line"></div><span class="book-badge">W29 – W32</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade3/week29.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W29</span><span>Week 29</span></a>
+      <a class="week-card" href="lessons/grade3/week30.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W30</span><span>Week 30</span></a>
+      <a class="week-card" href="lessons/grade3/week31.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W31</span><span>Week 31</span></a>
+      <a class="week-card" href="lessons/grade3/week32.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W32</span><span>Week 32</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>The Velveteen Rabbit</h4><div class="book-line"></div><span class="book-badge">W33 – W36</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade3/week33.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W33</span><span>Week 33</span></a>
+      <a class="week-card" href="lessons/grade3/week34.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W34</span><span>Week 34</span></a>
+      <a class="week-card" href="lessons/grade3/week35.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W35</span><span>Week 35</span></a>
+      <a class="week-card" href="lessons/grade3/week36.html" onmouseover="this.style.background='#4ade8015';this.style.borderColor='#4ade8050';this.querySelector('.wnum').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W36</span><span>Week 36</span></a>
+    </div>
+  </div>
+</div>
+<div class="grade-section" id="grade4">
+  <div class="grade-header"><h3 style="color:#60a5fa">Grade 4</h3><span>Elementary School · Year 4</span></div>
+  <div class="book-group">
+    <div class="book-title"><h4>The Wind in the Willows</h4><div class="book-line"></div><span class="book-badge">W01 – W04</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade4/week01.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W01</span><span>Week 1</span></a>
+      <a class="week-card" href="lessons/grade4/week02.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W02</span><span>Week 2</span></a>
+      <a class="week-card" href="lessons/grade4/week03.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W03</span><span>Week 3</span></a>
+      <a class="week-card" href="lessons/grade4/week04.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W04</span><span>Week 4</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>The Wizard of Oz</h4><div class="book-line"></div><span class="book-badge">W05 – W08</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade4/week05.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W05</span><span>Week 5</span></a>
+      <a class="week-card" href="lessons/grade4/week06.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W06</span><span>Week 6</span></a>
+      <a class="week-card" href="lessons/grade4/week07.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W07</span><span>Week 7</span></a>
+      <a class="week-card" href="lessons/grade4/week08.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W08</span><span>Week 8</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Pollyanna</h4><div class="book-line"></div><span class="book-badge">W09 – W12</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade4/week09.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W09</span><span>Week 9</span></a>
+      <a class="week-card" href="lessons/grade4/week10.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W10</span><span>Week 10</span></a>
+      <a class="week-card" href="lessons/grade4/week11.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W11</span><span>Week 11</span></a>
+      <a class="week-card" href="lessons/grade4/week12.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W12</span><span>Week 12</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>The Railway Children</h4><div class="book-line"></div><span class="book-badge">W13 – W16</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade4/week13.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W13</span><span>Week 13</span></a>
+      <a class="week-card" href="lessons/grade4/week14.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W14</span><span>Week 14</span></a>
+      <a class="week-card" href="lessons/grade4/week15.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W15</span><span>Week 15</span></a>
+      <a class="week-card" href="lessons/grade4/week16.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W16</span><span>Week 16</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Black Beauty</h4><div class="book-line"></div><span class="book-badge">W17 – W20</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade4/week17.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W17</span><span>Week 17</span></a>
+      <a class="week-card" href="lessons/grade4/week18.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W18</span><span>Week 18</span></a>
+      <a class="week-card" href="lessons/grade4/week19.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W19</span><span>Week 19</span></a>
+      <a class="week-card" href="lessons/grade4/week20.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W20</span><span>Week 20</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>The Secret Garden</h4><div class="book-line"></div><span class="book-badge">W21 – W24</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade4/week21.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W21</span><span>Week 21</span></a>
+      <a class="week-card" href="lessons/grade4/week22.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W22</span><span>Week 22</span></a>
+      <a class="week-card" href="lessons/grade4/week23.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W23</span><span>Week 23</span></a>
+      <a class="week-card" href="lessons/grade4/week24.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W24</span><span>Week 24</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>A Christmas Carol</h4><div class="book-line"></div><span class="book-badge">W25 – W28</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade4/week25.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W25</span><span>Week 25</span></a>
+      <a class="week-card" href="lessons/grade4/week26.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W26</span><span>Week 26</span></a>
+      <a class="week-card" href="lessons/grade4/week27.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W27</span><span>Week 27</span></a>
+      <a class="week-card" href="lessons/grade4/week28.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W28</span><span>Week 28</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Alice in Wonderland</h4><div class="book-line"></div><span class="book-badge">W29 – W32</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade4/week29.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W29</span><span>Week 29</span></a>
+      <a class="week-card" href="lessons/grade4/week30.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W30</span><span>Week 30</span></a>
+      <a class="week-card" href="lessons/grade4/week31.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W31</span><span>Week 31</span></a>
+      <a class="week-card" href="lessons/grade4/week32.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W32</span><span>Week 32</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Tom Sawyer</h4><div class="book-line"></div><span class="book-badge">W33 – W36</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade4/week33.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W33</span><span>Week 33</span></a>
+      <a class="week-card" href="lessons/grade4/week34.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W34</span><span>Week 34</span></a>
+      <a class="week-card" href="lessons/grade4/week35.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W35</span><span>Week 35</span></a>
+      <a class="week-card" href="lessons/grade4/week36.html" onmouseover="this.style.background='#60a5fa15';this.style.borderColor='#60a5fa50';this.querySelector('.wnum').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W36</span><span>Week 36</span></a>
+    </div>
+  </div>
+</div>
+<div class="grade-section" id="grade5">
+  <div class="grade-header"><h3 style="color:#f59e0b">Grade 5</h3><span>Elementary School · Year 5</span></div>
+  <div class="book-group">
+    <div class="book-title"><h4>Treasure Island</h4><div class="book-line"></div><span class="book-badge">W01 – W09</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade5/week01.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W01</span><span>Week 1</span></a>
+      <a class="week-card" href="lessons/grade5/week02.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W02</span><span>Week 2</span></a>
+      <a class="week-card" href="lessons/grade5/week03.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W03</span><span>Week 3</span></a>
+      <a class="week-card" href="lessons/grade5/week04.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W04</span><span>Week 4</span></a>
+      <a class="week-card" href="lessons/grade5/week05.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W05</span><span>Week 5</span></a>
+      <a class="week-card" href="lessons/grade5/week06.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W06</span><span>Week 6</span></a>
+      <a class="week-card" href="lessons/grade5/week07.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W07</span><span>Week 7</span></a>
+      <a class="week-card" href="lessons/grade5/week08.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W08</span><span>Week 8</span></a>
+      <a class="week-card" href="lessons/grade5/week09.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W09</span><span>Week 9</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Around the World in 80 Days</h4><div class="book-line"></div><span class="book-badge">W10 – W18</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade5/week10.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W10</span><span>Week 10</span></a>
+      <a class="week-card" href="lessons/grade5/week11.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W11</span><span>Week 11</span></a>
+      <a class="week-card" href="lessons/grade5/week12.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W12</span><span>Week 12</span></a>
+      <a class="week-card" href="lessons/grade5/week13.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W13</span><span>Week 13</span></a>
+      <a class="week-card" href="lessons/grade5/week14.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W14</span><span>Week 14</span></a>
+      <a class="week-card" href="lessons/grade5/week15.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W15</span><span>Week 15</span></a>
+      <a class="week-card" href="lessons/grade5/week16.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W16</span><span>Week 16</span></a>
+      <a class="week-card" href="lessons/grade5/week17.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W17</span><span>Week 17</span></a>
+      <a class="week-card" href="lessons/grade5/week18.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W18</span><span>Week 18</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>The Call of the Wild</h4><div class="book-line"></div><span class="book-badge">W19 – W27</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade5/week19.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W19</span><span>Week 19</span></a>
+      <a class="week-card" href="lessons/grade5/week20.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W20</span><span>Week 20</span></a>
+      <a class="week-card" href="lessons/grade5/week21.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W21</span><span>Week 21</span></a>
+      <a class="week-card" href="lessons/grade5/week22.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W22</span><span>Week 22</span></a>
+      <a class="week-card" href="lessons/grade5/week23.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W23</span><span>Week 23</span></a>
+      <a class="week-card" href="lessons/grade5/week24.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W24</span><span>Week 24</span></a>
+      <a class="week-card" href="lessons/grade5/week25.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W25</span><span>Week 25</span></a>
+      <a class="week-card" href="lessons/grade5/week26.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W26</span><span>Week 26</span></a>
+      <a class="week-card" href="lessons/grade5/week27.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W27</span><span>Week 27</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Anne of Green Gables</h4><div class="book-line"></div><span class="book-badge">W28 – W32</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade5/week28.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W28</span><span>Week 28</span></a>
+      <a class="week-card" href="lessons/grade5/week29.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W29</span><span>Week 29</span></a>
+      <a class="week-card" href="lessons/grade5/week30.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W30</span><span>Week 30</span></a>
+      <a class="week-card" href="lessons/grade5/week31.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W31</span><span>Week 31</span></a>
+      <a class="week-card" href="lessons/grade5/week32.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W32</span><span>Week 32</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>The Jungle Book</h4><div class="book-line"></div><span class="book-badge">W33 – W36</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade5/week33.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W33</span><span>Week 33</span></a>
+      <a class="week-card" href="lessons/grade5/week34.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W34</span><span>Week 34</span></a>
+      <a class="week-card" href="lessons/grade5/week35.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W35</span><span>Week 35</span></a>
+      <a class="week-card" href="lessons/grade5/week36.html" onmouseover="this.style.background='#f59e0b15';this.style.borderColor='#f59e0b50';this.querySelector('.wnum').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W36</span><span>Week 36</span></a>
+    </div>
+  </div>
+</div>
+<div class="grade-section" id="grade6">
+  <div class="grade-header"><h3 style="color:#f472b6">Grade 6</h3><span>Elementary School · Year 6</span></div>
+  <div class="book-group">
+    <div class="book-title"><h4>A Little Princess</h4><div class="book-line"></div><span class="book-badge">W01 – W08</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade6/week01.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W01</span><span>Week 1</span></a>
+      <a class="week-card" href="lessons/grade6/week02.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W02</span><span>Week 2</span></a>
+      <a class="week-card" href="lessons/grade6/week03.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W03</span><span>Week 3</span></a>
+      <a class="week-card" href="lessons/grade6/week04.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W04</span><span>Week 4</span></a>
+      <a class="week-card" href="lessons/grade6/week05.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W05</span><span>Week 5</span></a>
+      <a class="week-card" href="lessons/grade6/week06.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W06</span><span>Week 6</span></a>
+      <a class="week-card" href="lessons/grade6/week07.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W07</span><span>Week 7</span></a>
+      <a class="week-card" href="lessons/grade6/week08.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W08</span><span>Week 8</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Five Children and It</h4><div class="book-line"></div><span class="book-badge">W09 – W16</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade6/week09.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W09</span><span>Week 9</span></a>
+      <a class="week-card" href="lessons/grade6/week10.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W10</span><span>Week 10</span></a>
+      <a class="week-card" href="lessons/grade6/week11.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W11</span><span>Week 11</span></a>
+      <a class="week-card" href="lessons/grade6/week12.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W12</span><span>Week 12</span></a>
+      <a class="week-card" href="lessons/grade6/week13.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W13</span><span>Week 13</span></a>
+      <a class="week-card" href="lessons/grade6/week14.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W14</span><span>Week 14</span></a>
+      <a class="week-card" href="lessons/grade6/week15.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W15</span><span>Week 15</span></a>
+      <a class="week-card" href="lessons/grade6/week16.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W16</span><span>Week 16</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>The Jungle Book</h4><div class="book-line"></div><span class="book-badge">W17 – W20</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade6/week17.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W17</span><span>Week 17</span></a>
+      <a class="week-card" href="lessons/grade6/week18.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W18</span><span>Week 18</span></a>
+      <a class="week-card" href="lessons/grade6/week19.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W19</span><span>Week 19</span></a>
+      <a class="week-card" href="lessons/grade6/week20.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W20</span><span>Week 20</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Pinocchio</h4><div class="book-line"></div><span class="book-badge">W21 – W24</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade6/week21.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W21</span><span>Week 21</span></a>
+      <a class="week-card" href="lessons/grade6/week22.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W22</span><span>Week 22</span></a>
+      <a class="week-card" href="lessons/grade6/week23.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W23</span><span>Week 23</span></a>
+      <a class="week-card" href="lessons/grade6/week24.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W24</span><span>Week 24</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>The Princess and the Goblin</h4><div class="book-line"></div><span class="book-badge">W25 – W28</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade6/week25.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W25</span><span>Week 25</span></a>
+      <a class="week-card" href="lessons/grade6/week26.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W26</span><span>Week 26</span></a>
+      <a class="week-card" href="lessons/grade6/week27.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W27</span><span>Week 27</span></a>
+      <a class="week-card" href="lessons/grade6/week28.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W28</span><span>Week 28</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Eight Cousins</h4><div class="book-line"></div><span class="book-badge">W29 – W32</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade6/week29.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W29</span><span>Week 29</span></a>
+      <a class="week-card" href="lessons/grade6/week30.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W30</span><span>Week 30</span></a>
+      <a class="week-card" href="lessons/grade6/week31.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W31</span><span>Week 31</span></a>
+      <a class="week-card" href="lessons/grade6/week32.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W32</span><span>Week 32</span></a>
+    </div>
+  </div>
+  <div class="book-group">
+    <div class="book-title"><h4>Little Men</h4><div class="book-line"></div><span class="book-badge">W33 – W36</span></div>
+    <div class="week-grid">
+      <a class="week-card" href="lessons/grade6/week33.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W33</span><span>Week 33</span></a>
+      <a class="week-card" href="lessons/grade6/week34.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W34</span><span>Week 34</span></a>
+      <a class="week-card" href="lessons/grade6/week35.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W35</span><span>Week 35</span></a>
+      <a class="week-card" href="lessons/grade6/week36.html" onmouseover="this.style.background='#f472b615';this.style.borderColor='#f472b650';this.querySelector('.wnum').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W36</span><span>Week 36</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.grade-tab').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const color = this.dataset.color;
+    document.querySelectorAll('.grade-tab').forEach(b => {
+      b.classList.remove('active');
+      b.style.background='transparent'; b.style.color='rgba(255,255,255,.55)'; b.style.borderColor='rgba(255,255,255,.15)';
+    });
+    this.classList.add('active');
+    this.style.background=color; this.style.color='#000'; this.style.borderColor='transparent';
+    document.querySelectorAll('.grade-section').forEach(s => s.classList.remove('active'));
+    document.getElementById(this.dataset.grade).classList.add('active');
+  });
+});
+</script>
+</body></html>
