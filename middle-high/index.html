@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camp B — CEC English Camp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:'Outfit',sans-serif}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 36px;height:68px;background:#000;border-bottom:1px solid rgba(0,255,255,0.13);position:fixed;top:0;left:0;right:0;z-index:1000}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo img{width:38px;height:38px;object-fit:contain;border-radius:8px}
+.nav-logo-text{font-size:1.1rem;font-weight:800;color:#fff;white-space:nowrap}
+.nav-links{display:flex;align-items:center;gap:6px;list-style:none;position:absolute;left:50%;transform:translateX(-50%)}
+.nav-sep{color:#00ffff;font-size:.38rem;opacity:.4;padding:0 2px}
+.nav-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.88rem;font-weight:500;padding:5px 8px;white-space:nowrap;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:#00ffff}
+.nav-register a{background:#00ffff;color:#000;text-decoration:none;font-size:.85rem;font-weight:800;padding:9px 24px;border-radius:50px;display:block}
+.nav-register a:hover{opacity:.82}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 20px 60px}
+.camp-label{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:32px;animation:fadeUp .7s ease forwards}
+.camp-badge{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:50px;padding:6px 20px}
+.camp-title{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(3rem,6vw,5rem);color:#fff;line-height:1}
+.image-wrap{position:relative;animation:fadeUp .9s .15s ease both}
+.camp-image{width:min(580px,78vw);border-radius:18px;display:block;box-shadow:0 0 0 1px rgba(0,255,255,0.08),0 24px 70px rgba(0,0,0,0.55);will-change:transform;transition:box-shadow .4s}
+.desc-section{background:#000;border-top:1px solid rgba(255,255,255,.06);padding:90px 40px 60px}
+.desc-inner{max-width:1100px;margin:0 auto}
+.desc-intro{text-align:center;margin-bottom:60px}
+.desc-intro p{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,2vw,1.5rem);font-style:italic;color:rgba(255,255,255,.7);line-height:1.75;max-width:720px;margin:0 auto}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:70px}
+.feature-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:32px 28px;transition:border-color .25s,background .25s}
+.feature-card:hover{background:rgba(0,255,255,.04);border-color:rgba(0,255,255,.18)}
+.feature-icon{font-size:1.8rem;margin-bottom:14px;display:block}
+.feature-title{font-size:1rem;font-weight:700;color:#fff;margin-bottom:10px}
+.feature-body{font-size:.88rem;font-weight:300;color:rgba(255,255,255,.5);line-height:1.75}
+.grade-tabs{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:44px}
+.grade-tab{padding:10px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;border:1.5px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.55);transition:all .2s}
+.grade-tab:hover{border-color:rgba(255,255,255,.35);color:#fff}
+.grade-section{display:none;max-width:1100px;margin:0 auto}
+.grade-section.active{display:block}
+.grade-header{margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.07)}
+.grade-header h3{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;margin-bottom:4px}
+.grade-header span{font-size:.82rem;color:rgba(255,255,255,.35)}
+.book-group{margin-bottom:32px}
+.book-title{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.book-title h4{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:#fff;font-weight:600;white-space:nowrap}
+.book-line{flex:1;height:1px;background:rgba(255,255,255,.07)}
+.book-badge{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.3);white-space:nowrap}
+.week-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px}
+.week-card{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:13px 6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;text-decoration:none;color:rgba(255,255,255,.65);font-size:.75rem;font-weight:500;gap:3px;transition:all .2s}
+.week-card .wnum{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;line-height:1;color:#fff;transition:color .2s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){.features-grid{grid-template-columns:1fr}.nav-links{display:none}}
+
+.school-toggle{display:flex;justify-content:center;gap:14px;margin-bottom:36px;flex-wrap:wrap}
+.school-btn{padding:11px 40px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;border:1.5px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.55);transition:all .2s}
+.school-section{display:none;max-width:1100px;margin:0 auto}
+.school-section.active{display:block}
+.year-tabs{display:flex;gap:10px;margin-bottom:32px;flex-wrap:wrap}
+.year-tab{padding:9px 24px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;border:1.5px solid rgba(255,255,255,.12);background:transparent;color:rgba(255,255,255,.5);transition:all .2s}
+.year-content{display:none}
+.year-content.active{display:block}
+.year-header{margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.year-header h3{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:700;margin-bottom:4px}
+.year-header span{font-size:.82rem;color:rgba(255,255,255,.35)}
+.week-card.soon{opacity:.35;cursor:default;pointer-events:none}
+.week-card.soon .wnum{color:rgba(255,255,255,.3)}
+.soon-badge{font-size:.6rem;color:rgba(255,255,255,.3);letter-spacing:.06em}
+
+.image-overlay{position:absolute;inset:0;border-radius:18px;background:rgba(0,0,0,0);display:flex;align-items:flex-end;justify-content:center;padding-bottom:26px;transition:background .35s;pointer-events:none}
+div:hover>.image-overlay{background:rgba(0,0,0,0.22)}
+.overlay-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.35rem;font-weight:600;color:#00f2ff;letter-spacing:.06em;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;text-shadow:0 2px 20px rgba(0,0,0,.9)}
+div:hover>.image-overlay>.overlay-label{opacity:1;transform:translateY(0)}
+
+.nav-dropdown{position:relative}
+.nav-dropdown-btn{color:rgba(255,255,255,.85);text-decoration:none;font-size:.88rem;font-weight:500;padding:5px 8px;white-space:nowrap;transition:color .2s;cursor:pointer}
+.nav-dropdown:hover .nav-dropdown-btn{color:#00ffff}
+.nav-dropdown-menu{display:none;position:absolute;top:100%;padding-top:8px;left:50%;transform:translateX(-50%);background:#080808;border:1px solid rgba(0,255,255,0.22);border-radius:10px;min-width:160px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.7);z-index:200}
+.nav-dropdown:hover .nav-dropdown-menu{display:block}
+.nav-dropdown-menu a{display:block;padding:10px 18px;color:rgba(255,255,255,.78);text-decoration:none;font-size:.87rem;font-weight:500;transition:background .15s,color .15s;white-space:nowrap}
+.nav-dropdown-menu a:hover{background:rgba(0,255,255,.08);color:#00ffff}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/cec-edu/" class="nav-logo">
+    <img src="/cec-edu/assets/robo.png" alt="Robo" onerror="this.style.display='none'">
+    <span class="nav-logo-text">CEC English Camp</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cec-edu/about/">About</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/elementary/">Camp A</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/middle-high/" class="active">Camp B</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/adult/">Camp C</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/grammar/">Grammar Base Camp</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/speaking/">Speaking</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/mom-teacher/">Mom Teacher</a></li>
+    <li class="nav-sep">•</li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-btn">Programs ▾</a>
+      <div class="nav-dropdown-menu">
+        <a href="/cec-edu/games/">Game</a>
+      </div>
+    </li>
+    <li class="nav-sep">•</li>
+    <li><a href="#">AI Tools</a></li>
+  </ul>
+  <div class="nav-register"><a href="/cec-edu/register/">Register</a></div>
+</nav>
+<section class="hero">
+  <div class="camp-label">
+    <span class="camp-badge">CAMP B · MIDDLE &amp; HIGH SCHOOL</span>
+    <h1 class="camp-title">Camp B</h1>
+  </div>
+  <div class="image-wrap">
+    <div style="position:relative;display:inline-block;cursor:pointer" onclick="const _el=document.getElementById('school-toggle'); window.scrollTo({top:_el.getBoundingClientRect().top+window.scrollY-90,behavior:'smooth'})">
+    <img class="camp-image" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/covers/Camp_B.png" alt="Camp B">
+    <div class="image-overlay"><span class="overlay-label">Select Your School ↓</span></div>
+  </div>
+  </div>
+</section>
+<section class="desc-section">
+  <div class="desc-inner">
+    <div class="desc-intro">
+      <p>Essay writing, structured debate, and critical thinking — built for students ready to argue and write confidently in English at secondary school level and beyond.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card"><span class="feature-icon">📝</span><div class="feature-title">Essay Writing Workshop</div><p class="feature-body">Write a structured essay and get line-by-line AI feedback covering grammar, logic, and expression at your exact grade level.</p></div>
+      <div class="feature-card"><span class="feature-icon">⚔️</span><div class="feature-title">Debate Training</div><p class="feature-body">Year 2 argues pros & cons; Year 3 runs full three-round debates with opening, rebuttal, and closing.</p></div>
+      <div class="feature-card"><span class="feature-icon">💬</span><div class="feature-title">Discussion & Wrap-Up</div><p class="feature-body">Every session closes with guided discussion and a ChatGPT link for open-ended conversation practice.</p></div>
+      <div class="feature-card"><span class="feature-icon">📊</span><div class="feature-title">Grade-Differentiated Feedback</div><p class="feature-body">AI feedback calibrated per grade — middle school gets accessible corrections; high school receives college-level critique.</p></div>
+    </div>
+    <div class="school-toggle" id="school-toggle">
+      <button class="school-btn active" style="background:#a78bfa;color:#000;border-color:transparent" data-school="middle">Middle School</button>
+      <button class="school-btn" data-school="high">High School</button>
+    </div>
+    <div class="school-section active" id="middle">
+      <div class="year-tabs">
+        <button class="year-tab active" style="background:#a78bfa;color:#000;border-color:transparent" data-year="middle-m1" data-color="#a78bfa">Middle School — Year 1</button>
+        <button class="year-tab"  data-year="middle-m2" data-color="#a78bfa">Middle School — Year 2</button>
+        <button class="year-tab"  data-year="middle-m3" data-color="#a78bfa">Middle School — Year 3</button>
+      </div>
+      <div class="year-content active" id="middle-m1">
+        <div class="year-header"><h3 style="color:#a78bfa">Middle School — Year 1</h3><span>W01 – W06</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/cec-edu/middle-high/m1/w01/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W01</span><span>Week 1</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m1/w02/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W02</span><span>Week 2</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m1/w03/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W03</span><span>Week 3</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m1/w04/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W04</span><span>Week 4</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m1/w05/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W05</span><span>Week 5</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m1/w06/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W06</span><span>Week 6</span></a>
+        </div>
+      </div>
+      <div class="year-content" id="middle-m2">
+        <div class="year-header"><h3 style="color:#a78bfa">Middle School — Year 2</h3><span>W01 – W06</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/cec-edu/middle-high/m2/w01/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W01</span><span>Week 1</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m2/w02/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W02</span><span>Week 2</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m2/w03/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W03</span><span>Week 3</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m2/w04/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W04</span><span>Week 4</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m2/w05/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W05</span><span>Week 5</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m2/w06/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W06</span><span>Week 6</span></a>
+        </div>
+      </div>
+      <div class="year-content" id="middle-m3">
+        <div class="year-header"><h3 style="color:#a78bfa">Middle School — Year 3</h3><span>W01 – W06</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/cec-edu/middle-high/m3/w01/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W01</span><span>Week 1</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m3/w02/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W02</span><span>Week 2</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m3/w03/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W03</span><span>Week 3</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m3/w04/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W04</span><span>Week 4</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m3/w05/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W05</span><span>Week 5</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/m3/w06/" onmouseover="this.style.background='#a78bfa15';this.style.borderColor='#a78bfa55';this.querySelector('.wnum').style.color='#a78bfa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W06</span><span>Week 6</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="school-section" id="high">
+      <div class="year-tabs">
+        <button class="year-tab active" style="background:#34d399;color:#000;border-color:transparent" data-year="high-g1" data-color="#34d399">High School — Year 1</button>
+        <button class="year-tab"  data-year="high-g2" data-color="#34d399">High School — Year 2</button>
+        <button class="year-tab"  data-year="high-g3" data-color="#34d399">High School — Year 3</button>
+      </div>
+      <div class="year-content active" id="high-g1">
+        <div class="year-header"><h3 style="color:#34d399">High School — Year 1</h3><span>W01 – W06</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/cec-edu/middle-high/hs/g1/w01/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W01</span><span>Week 1</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g1/w02/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W02</span><span>Week 2</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g1/w03/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W03</span><span>Week 3</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g1/w04/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W04</span><span>Week 4</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g1/w05/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W05</span><span>Week 5</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g1/w06/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W06</span><span>Week 6</span></a>
+        </div>
+      </div>
+      <div class="year-content" id="high-g2">
+        <div class="year-header"><h3 style="color:#34d399">High School — Year 2</h3><span>W01 – W06</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/cec-edu/middle-high/hs/g2/w01/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W01</span><span>Week 1</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g2/w02/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W02</span><span>Week 2</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g2/w03/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W03</span><span>Week 3</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g2/w04/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W04</span><span>Week 4</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g2/w05/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W05</span><span>Week 5</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g2/w06/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W06</span><span>Week 6</span></a>
+        </div>
+      </div>
+      <div class="year-content" id="high-g3">
+        <div class="year-header"><h3 style="color:#34d399">High School — Year 3</h3><span>W01 – W06</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/cec-edu/middle-high/hs/g3/w01/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W01</span><span>Week 1</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g3/w02/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W02</span><span>Week 2</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g3/w03/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W03</span><span>Week 3</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g3/w04/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W04</span><span>Week 4</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g3/w05/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W05</span><span>Week 5</span></a>
+          <a class="week-card" href="/cec-edu/middle-high/hs/g3/w06/" onmouseover="this.style.background='#34d39915';this.style.borderColor='#34d39955';this.querySelector('.wnum').style.color='#34d399'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.wnum').style.color=''"><span class="wnum">W06</span><span>Week 6</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+document.querySelectorAll('.school-btn').forEach((btn,i)=>{
+  btn.addEventListener('click',function(){
+    const colors=['#a78bfa','#34d399'];
+    document.querySelectorAll('.school-btn').forEach((b,j)=>{b.classList.remove('active');b.style.background='transparent';b.style.color='rgba(255,255,255,.55)';b.style.borderColor='rgba(255,255,255,.15)';});
+    this.classList.add('active');this.style.background=colors[i];this.style.color='#000';
+    document.querySelectorAll('.school-section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(this.dataset.school).classList.add('active');
+  });
+});
+document.querySelectorAll('.year-tab').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const c=this.dataset.color,p=this.closest('.school-section');
+    p.querySelectorAll('.year-tab').forEach(b=>{b.classList.remove('active');b.style.background='transparent';b.style.color='rgba(255,255,255,.5)';});
+    this.classList.add('active');this.style.background=c;this.style.color='#000';
+    p.querySelectorAll('.year-content').forEach(s=>s.classList.remove('active'));
+    document.getElementById(this.dataset.year).classList.add('active');
+  });
+});
+</script>
+<script>
+const img=document.querySelector('.camp-image');
+if(img){document.addEventListener('mousemove',e=>{const cx=window.innerWidth/2,cy=window.innerHeight/2;const dx=(e.clientX-cx)/cx,dy=(e.clientY-cy)/cy;img.style.transform=`perspective(800px) rotateX(${dy*-5}deg) rotateY(${dx*6}deg) translateY(-2px)`;});document.addEventListener('mouseleave',()=>{img.style.transform='';});}
+</script>
+</body></html>
