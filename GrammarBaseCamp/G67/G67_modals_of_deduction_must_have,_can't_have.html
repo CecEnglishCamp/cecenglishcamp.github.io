@@ -1,741 +1,232 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modals of Deduction - Part 1 (기초 학습)</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G67. Modals of Deduction</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Sans+KR:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f5f0e8;--white:#ffffff;--green-dark:#4a6741;--green-mid:#5a7a50;--green-light:#e8f0e5;--green-card:#3d5c35;--gold:#c8972a;--gold-light:#fdf3e0;--cream:#faf7f0;--brown:#6b5c3e;--brown-light:#f0e8d8;--text:#2d2d2d;--muted:#7a7a7a;--border:#ddd6c8}
+  *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;line-height:1.7;padding-bottom:80px}
+  .lesson-header{background:#0a1628;padding:36px 24px 32px;text-align:center}.gbc-badge{display:inline-block;border:1px solid rgba(0,242,255,0.5);color:rgba(0,242,255,0.8);font-family:'Poppins',sans-serif;font-size:11px;letter-spacing:2px;padding:4px 14px;border-radius:20px;margin-bottom:16px}.lesson-num-title{font-family:'Poppins',sans-serif;font-size:15px;font-weight:400;color:rgba(255,255,255,0.6);margin-bottom:6px}.lesson-main-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:44px;font-weight:500;color:#00f2ff;line-height:1.15;margin-bottom:10px}.lesson-sub{font-size:14px;color:rgba(255,255,255,0.5)}
+  .toc{background:var(--green-dark);padding:12px 20px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.toc a{font-size:12px;padding:4px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.75);text-decoration:none}.toc a:hover{background:rgba(255,255,255,0.1);color:#fff}
+  .content{max-width:740px;margin:0 auto;padding:0 20px}
+  .section{margin-top:28px;background:var(--white);border-radius:16px;overflow:hidden;border:1px solid var(--border)}.section-header{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border)}.section-num{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;flex-shrink:0;color:#fff}.section-title{font-size:15px;font-weight:700;color:var(--text)}.section-en{font-size:11px;color:var(--muted);font-family:'Poppins',sans-serif;letter-spacing:1px;margin-left:6px}.section-body{padding:20px}
+  .key-card{background:var(--green-card);border-radius:12px;padding:20px;margin-bottom:16px}.key-label{font-size:11px;font-family:'Poppins',sans-serif;letter-spacing:2px;color:var(--gold);margin-bottom:10px}.key-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;font-weight:500;color:#fff;margin-bottom:6px}.key-kr{font-size:13px;color:rgba(255,255,255,0.65)}
+  .concept-box{background:var(--green-light);border-radius:10px;padding:16px;margin-bottom:12px;border-left:4px solid var(--green-mid)}.concept-box p{font-size:14px;margin-bottom:8px}.concept-box p:last-child{margin-bottom:0}
+  .rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.rule-card{padding:14px 16px;border-radius:12px;border:1px solid var(--border)}.rule-label{font-size:10px;font-family:'Poppins',sans-serif;letter-spacing:1.5px;font-weight:700;margin-bottom:8px}.rule-example{font-family:'Poppins',sans-serif;font-size:13px}.rule-example strong{font-weight:700}.r-is{background:var(--green-light);border-color:#b8d4b0}.r-is .rule-label{color:var(--green-dark)}.r-is .rule-example strong{color:var(--green-dark)}.r-are{background:#e8f4e8;border-color:#a8ccaa}.r-are .rule-label{color:#3a6640}.r-are .rule-example strong{color:#3a6640}.r-neg{background:#fdf0e0;border-color:#e8c88a}.r-neg .rule-label{color:#8a5a1a}.r-neg .rule-example strong{color:#8a5a1a}.r-q{background:var(--brown-light);border-color:#d4c0a0}.r-q .rule-label{color:var(--brown)}.r-q .rule-example strong{color:var(--brown)}
+  .rule-list{list-style:none;display:flex;flex-direction:column;gap:6px}.rule-list li{font-size:14px;padding:8px 12px;background:var(--cream);border-radius:8px;border-left:3px solid var(--green-mid)}.rule-list li strong{color:var(--green-dark);font-family:'Poppins',sans-serif}
+  .ex-list{list-style:none;display:flex;flex-direction:column;gap:8px}.ex-list li{padding:12px 16px;background:var(--cream);border-radius:10px;border-left:4px solid var(--green-mid);font-size:14px}.ex-list li .en{color:var(--green-dark);font-weight:700;font-family:'Poppins',sans-serif}.ex-list li .kr{color:var(--muted);font-size:12px;display:block;margin-top:2px}.ex-q{border-left-color:var(--brown)!important}.ex-q .en{color:var(--brown)!important}
+  .dialogue{background:var(--cream);border-radius:12px;padding:16px;margin-bottom:10px;border:1px solid var(--border)}.d-title{font-size:10px;font-family:'Poppins',sans-serif;letter-spacing:1.5px;color:var(--gold);font-weight:700;margin-bottom:10px}.d-line{font-size:14px;margin-bottom:5px}.d-line .sp{color:var(--green-dark);font-weight:700;margin-right:6px}.d-line .key{color:var(--green-dark);font-weight:700;font-family:'Poppins',sans-serif}
+  .practice-item{padding:12px 16px;border-radius:10px;border:1px solid var(--border);margin-bottom:8px;font-size:14px;background:var(--cream)}.practice-item .original{color:var(--muted);margin-bottom:4px;font-size:13px}.practice-item .result{color:var(--green-dark);font-weight:700;font-family:'Poppins',sans-serif}
+  .pattern-box{background:var(--gold-light);border:1px solid #e8c88a;border-radius:10px;padding:14px 16px;margin-bottom:8px}.pattern-box .p-label{font-size:11px;color:var(--gold);font-family:'Poppins',sans-serif;letter-spacing:1px;font-weight:700;margin-bottom:6px}.pattern-box .p-text{font-size:14px;color:var(--brown)}.pattern-box .p-text strong{color:#7a5010;font-family:'Poppins',sans-serif}
+  .mistake-box{background:#fff5f5;border:1px solid #f4c0c0;border-radius:10px;padding:14px 16px;margin-bottom:8px}.mistake-box .wrong{color:#c0392b;font-size:13px;text-decoration:line-through;margin-bottom:4px}.mistake-box .right{color:var(--green-dark);font-size:14px;font-weight:700;font-family:'Poppins',sans-serif}.mistake-box .reason{color:var(--muted);font-size:12px;margin-top:4px}
+  .tip-box{background:#e8f0ff;border:1px solid #b8c8f0;border-radius:10px;padding:14px 16px;margin-bottom:8px}.tip-box .tip-label{font-size:11px;color:#3050a0;font-family:'Poppins',sans-serif;letter-spacing:1px;font-weight:700;margin-bottom:6px}.tip-box .tip-text{font-size:14px;color:#1a2a60}
+  .checklist{list-style:none;display:flex;flex-direction:column;gap:8px}.checklist li{display:flex;align-items:center;gap:12px;font-size:14px;padding:10px 14px;background:var(--cream);border-radius:10px;cursor:pointer}.chk{width:20px;height:20px;border:2px solid var(--green-mid);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;background:#fff}.chk.on{background:var(--green-mid);border-color:var(--green-dark)}.chk.on::after{content:'✓';color:#fff;font-size:12px;font-weight:700}
+  .footer-nav{background:var(--green-dark);display:flex;justify-content:space-between;align-items:center;padding:14px 24px;margin-top:32px}.fnav-btn{padding:8px 20px;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;border:none;font-family:'Poppins',sans-serif}.fnav-prev{background:rgba(255,255,255,0.15);color:#fff}.fnav-center{color:rgba(255,255,255,0.6);font-size:12px;letter-spacing:1px;font-family:'Poppins',sans-serif}.fnav-next{background:var(--gold);color:#000}
+</style>
 
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #1e1a2e;
-            margin: 0;
-            padding: 20px;
-        }
-            min-height: 100vh;
-            line-height: 1.6;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .header         /* 제목 스타일 */
-                /* 제목 스타일 */
-                /* 제목 스타일 */
-                /* 제목 스타일 */
-                /* 제목 스타일 */
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #33ddff;
-        }
-        
-                                        .title-en {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-weight: 500;
-            font-size: 50px;
-            letter-spacing: 2px;
-            color: #55eeff;
-            line-height: 1.2;
-            text-align: center;
-        }
-        
-                                        .title-ko {
-            font-family: 'NanumSquareRound', sans-serif;
-            font-weight: 800;
-            font-size: 22px;
-            letter-spacing: 3px;
-            color: #55eeff;
-            opacity: 0.9;
-            margin-top: 5px;
-            line-height: 1.2;
-            text-align: center;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .toc {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .toc h2 {
-            color: #4a5568;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .toc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 10px;
-        }
-
-        .toc-item {
-            padding: 12px 15px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .toc-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .section {
-            background: rgba(255, 255, 255, 0.95);
-            margin-bottom: 30px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .section:hover {
-            transform: translateY(-5px);
-        }
-
-        .section h2 {
-            padding: 20px 30px;
-            margin: 0;
-            font-size: 1.8rem;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-        }
-
-        .section-content {
-            padding: 30px;
-        }
-
-        /* Section specific colors */
-        .concept h2 { background: linear-gradient(135deg, #3182ce, #2c5aa0); }
-        .grammar h2 { background: linear-gradient(135deg, #4299e1, #3182ce); }
-        .positive h2 { background: linear-gradient(135deg, #38a169, #2f855a); }
-        .question h2 { background: linear-gradient(135deg, #ed8936, #dd6b20); }
-        .dialogue h2 { background: linear-gradient(135deg, #9f7aea, #805ad5); }
-        .sentence_combining h2 { background: linear-gradient(135deg, #63b3ed, #4299e1); }
-
-        .concept-card {
-            background: linear-gradient(135deg, #e6fffa, #b2f5ea);
-            border-left: 5px solid #3182ce;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .concept-icon {
-            background: #3182ce;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .concept-meaning {
-            margin: 15px 0;
-            font-size: 1.1rem;
-        }
-
-        .concept-examples {
-            margin-top: 15px;
-        }
-
-        .concept-examples p {
-            margin: 8px 0;
-            padding: 8px 12px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 5px;
-        }
-
-        .section-content ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .section-content li {
-            margin: 12px 0;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 8px;
-            border-left: 4px solid #4299e1;
-            transition: all 0.3s ease;
-        }
-
-        .section-content li:hover {
-            background: rgba(255, 255, 255, 0.9);
-            transform: translateX(5px);
-        }
-
-        .deduction-group {
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 10px;
-        }
-
-        .deduction-group h4 {
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-
-        .must-have {
-            border-left: 4px solid #38a169;
-        }
-
-        .must-have h4 {
-            color: #2f855a;
-        }
-
-        .cant-have {
-            border-left: 4px solid #e53e3e;
-        }
-
-        .cant-have h4 {
-            color: #c53030;
-        }
-
-        .dialogue-example {
-            background: rgba(159, 122, 234, 0.1);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            border-left: 4px solid #9f7aea;
-        }
-
-        .dialogue-example strong {
-            color: #553c9a;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .transform-example {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(99, 179, 237, 0.1);
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .transform-arrow {
-            color: #4299e1;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .certainty-level {
-            color: #38a169;
-            font-weight: bold;
-        }
-
-        .negative-certainty {
-            color: #e53e3e;
-            font-weight: bold;
-        }
-
-        strong {
-            color: #2d3748;
-            background: rgba(255, 235, 59, 0.3);
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-
-        .highlight {
-            background: rgba(255, 193, 7, 0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            color: #d69e2e;
-        }
-
-        .part-info {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            border: 2px dashed #667eea;
-        }
-
-        .part-info h3 {
-            color: #4a5568;
-            margin-bottom: 10px;
-        }
-
-        .part-info p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        .structure-formula {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 15px 0;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .deduction-types {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            .header         /* 제목 스타일 */
-                /* 제목 스타일 */
-                /* 제목 스타일 */
-                /* 제목 스타일 */
-                /* 제목 스타일 */
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #33ddff;
-        }
-        
-                                        .title-en {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-weight: 500;
-            font-size: 50px;
-            letter-spacing: 2px;
-            color: #55eeff;
-            line-height: 1.2;
-            text-align: center;
-        }
-        
-                                        .title-ko {
-            font-family: 'NanumSquareRound', sans-serif;
-            font-weight: 800;
-            font-size: 22px;
-            letter-spacing: 3px;
-            color: #55eeff;
-            opacity: 0.9;
-            margin-top: 5px;
-            line-height: 1.2;
-            text-align: center;
-        }
-
-            .header p {
-                font-size: 1rem;
-            }
-
-            .toc-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-content {
-                padding: 20px;
-            }
-
-            .transform-example {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .transform-arrow {
-                align-self: center;
-            }
-
-            .structure-formula {
-                font-size: 1rem;
-            }
-
-            .deduction-types {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Focus styles for accessibility */
-        .toc-item:focus {
-            outline: 3px solid #fff;
-            outline-offset: 2px;
-        }
-    </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=NanumSquareRound:wght@800&display=swap" rel="stylesheet">
+  <meta name="description" content="CEC Grammar BaseCamp G67 — G67 영어 문법 무료 학습">
+  <meta name="keywords" content="영어문법,G67,G67,CEC English Camp">
+  <meta property="og:title" content="G67 G67 | CEC Grammar BaseCamp">
+  <meta property="og:url" content="https://cecenglishcamp.github.io/GrammarBaseCamp/G67/G67_new.html">
+  <meta name="robots" content="index, follow">
 </head>
 <body data-grammar-id="G67">
-    <div class="container">
-        <header class="header">
-            <h1>
-  <div class="title-en">G67. 🎯 Modals of Deduction</div>
-  <div class="title-ko">( 복합 명사구 )</div>
-</h1>
 
-<div style="text-align:right; margin-bottom:10px;">
-  <img src="E:/CEC_CAMP STORAGE/CampA_Images/robo.png" style="height:120px;">
-</div>
+<header class="lesson-header" role="banner">
+  <div class="gbc-badge">CEC GRAMMAR BASECAMP</div>
+  <div class="lesson-num-title">G67 · Advanced Grammar</div>
+  <div class="lesson-main-title">Modals of Deduction</div>
+  <div class="lesson-sub">추론 조동사 — must have, can't have</div>
+</header>
 
-            <p><strong>추측 조동사 (Modals of Deduction)</strong> - 과거 상황에 대한 논리적 추측</p>
-        </header>
+<nav class="toc" aria-label="문법 섹션 메뉴">
+  <a href="#concept">기본 개념</a> <a href="#grammar">문법 규칙</a> <a href="#positive">긍정문</a> <a href="#question">의문문</a> <a href="#dialogue">대화 흐름</a> <a href="#combining">문장 결합</a> <a href="#reallife">실생활</a> <a href="#patterns">패턴</a> <a href="#mistakes">흔한 실수</a> <a href="#tips">레벨업 팁</a> <a href="#practice">연습문제</a> <a href="#check">자가진단</a>
+</nav>
 
-        <div class="part-info">
-            <h3>📚 Part 1: 기초 학습 (섹션 1-6)</h3>
-            <p>기본 개념부터 문장 결합까지 체계적으로 학습해보세요!</p>
-        </div>
+<main class="content" role="main">
 
-        <nav class="toc" aria-label="문법 섹션 메뉴">
-            <h2>📋 목차 (Table of Contents)</h2>
-            <div class="toc-grid">
-                <a href="#concept" class="toc-item">1. 기본 개념</a>
-                <a href="#grammar" class="toc-item">2. 문법 규칙</a>
-                <a href="#positive" class="toc-item">3. 긍정문 예시</a>
-                <a href="#question" class="toc-item">4. 의문문 예시</a>
-                <a href="#dialogue" class="toc-item">5. 상황별 대화</a>
-                <a href="#sentence_combining" class="toc-item">6. 문장 결합</a>
-            </div>
-        </nav>
-
-        <section class="section concept" id="concept">
-            <h2>1. 기본 개념 (Basic Concept)</h2>
-            <div class="section-content">
-                <div class="concept-card">
-                    <h4><span class="concept-icon">MODAL</span>Modals of Deduction</h4>
-                    <div class="concept-meaning">
-                        <strong>추측 조동사(Modals of Deduction): 과거 상황에 대한 확신 또는 부정 추측을 표현하는 구조</strong><br>
-                        must have + p.p. → 분명 ~했을 거야 (강한 확신)<br>
-                        can't have + p.p. → 절대 ~하지 않았을 거야 (강한 부정)<br>
-                        논리적 단서나 정황을 바탕으로 과거를 추론함
-                    </div>
-                    <div class="deduction-types">
-                        <div class="structure-formula">
-                            must have + 과거분사
-                            <br><small>강한 확신 (90% 이상)</small>
-                        </div>
-                        <div class="structure-formula" style="background: linear-gradient(135deg, #e53e3e, #c53030);">
-                            can't have + 과거분사
-                            <br><small>강한 부정 (거의 0%)</small>
-                        </div>
-                    </div>
-                    <div class="concept-examples">
-                        <p><strong>확신:</strong> He <span class="highlight">must have left</span> early. <span class="certainty-level">(불이 꺼져 있어)</span></p>
-                        <p><strong>부정:</strong> She <span class="highlight">can't have forgotten</span>. <span class="negative-certainty">(메모를 했으니까)</span></p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section grammar" id="grammar">
-            <h2>2. 문법 규칙 (Grammar Rules)</h2>
-            <div class="section-content">
-                <ul>
-                    <li><strong>기본 구조:</strong> 주어 + must/can't + have + 과거분사(p.p.)</li>
-                    <li><strong>must have + p.p.</strong> → 과거에 분명히 일어난 일에 대한 확신</li>
-                    <li><strong>can't have + p.p.</strong> → 과거에 일어나지 않았을 것이라는 강한 부정</li>
-                    <li>시제는 항상 <strong>과거</strong>를 가리킴</li>
-                    <li>논리적 단서나 정황을 바탕으로 사용</li>
-                    <li>의문문에서는 거의 사용되지 않음 (주로 진술문)</li>
-                    <li>구어체와 글쓰기 모두에서 사용 가능</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="section positive" id="positive">
-            <h2>3. 긍정문 예시 (Positive Examples)</h2>
-            <div class="section-content">
-                <div class="deduction-group must-have">
-                    <h4>must have + p.p. (확신)</h4>
-                    <ul>
-                        <li>He <span class="highlight">must have left</span> early. <em>(불이 꺼져 있어)</em></li>
-                        <li>She <span class="highlight">must have studied</span> hard. <em>(시험을 잘 봤어)</em></li>
-                        <li>They <span class="highlight">must have arrived</span> by now. <em>(길이 막히지 않았어)</em></li>
-                        <li>You <span class="highlight">must have been tired</span>. <em>(늦게까지 일했잖아)</em></li>
-                        <li>We <span class="highlight">must have missed</span> the bus. <em>(정류장에 아무도 없어)</em></li>
-                        <li>He <span class="highlight">must have forgotten</span> his keys. <em>(문 앞에 서 있어)</em></li>
-                        <li>She <span class="highlight">must have worked</span> overtime. <em>(사무실 불이 켜져 있었어)</em></li>
-                        <li>They <span class="highlight">must have enjoyed</span> the movie. <em>(웃으면서 나왔어)</em></li>
-                        <li>You <span class="highlight">must have been</span> hungry. <em>(음식을 다 먹었네)</em></li>
-                        <li>We <span class="highlight">must have taken</span> the wrong turn. <em>(여기가 어디지?)</em></li>
-                    </ul>
-                </div>
-
-                <div class="deduction-group cant-have">
-                    <h4>can't have + p.p. (부정)</h4>
-                    <ul>
-                        <li>He <span class="highlight">can't have forgotten</span> the meeting. <em>(캘린더에 적혀 있어)</em></li>
-                        <li>She <span class="highlight">can't have gone</span> home. <em>(가방이 여기 있어)</em></li>
-                        <li>They <span class="highlight">can't have finished</span> already. <em>(너무 빨라)</em></li>
-                        <li>You <span class="highlight">can't have seen</span> him. <em>(그는 해외에 있어)</em></li>
-                        <li>We <span class="highlight">can't have made</span> that mistake. <em>(다시 확인했어)</em></li>
-                        <li>He <span class="highlight">can't have left</span> without saying goodbye. <em>(그는 예의바른 사람이야)</em></li>
-                        <li>She <span class="highlight">can't have known</span> about this. <em>(아무도 말하지 않았어)</em></li>
-                        <li>They <span class="highlight">can't have arrived</span> yet. <em>(비행기가 지연됐어)</em></li>
-                        <li>You <span class="highlight">can't have eaten</span> all of that. <em>(양이 너무 많아)</em></li>
-                        <li>We <span class="highlight">can't have been</span> wrong. <em>(증거가 명확해)</em></li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section class="section question" id="question">
-            <h2>4. 의문문 예시 (Question Examples)</h2>
-            <div class="section-content">
-                <ul>
-                    <li>Why do we say "must have gone" instead of "must went"?</li>
-                    <li>Can you explain "can't have seen him"?</li>
-                    <li>What does "must have been tired" mean?</li>
-                    <li>Can you use "must have" in a sentence about exams?</li>
-                    <li>Why is "have + p.p." used after modals?</li>
-                    <li>Can you show the difference between "must be" and "must have been"?</li>
-                    <li>What clues help us use modals of deduction?</li>
-                    <li>Can you use "can't have" to explain a mystery?</li>
-                    <li>How do modals of deduction show logic?</li>
-                    <li>Can you write your own example of this structure?</li>
-                    <li>What's the difference between "must have" and "might have"?</li>
-                    <li>When do we use "can't have" instead of "didn't"?</li>
-                    <li>Can you explain why we need evidence for deduction?</li>
-                    <li>How certain are we when using "must have"?</li>
-                    <li>What situations require modals of deduction?</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="section dialogue" id="dialogue">
-            <h2>5. 상황별 대화 흐름 (Situational Dialogues)</h2>
-            <div class="section-content">
-                <div class="dialogue-example">
-                    <strong>학교 상황</strong><br>
-                    A: She got full marks again.<br>
-                    B: She <span class="highlight">must have studied</span> a lot.<br>
-                    A: Definitely, her dedication shows.
-                </div>
-
-                <div class="dialogue-example">
-                    <strong>여행 상황</strong><br>
-                    A: They're not at the train station.<br>
-                    B: They <span class="highlight">must have taken</span> a taxi instead.<br>
-                    A: That makes perfect sense.
-                </div>
-
-                <div class="dialogue-example">
-                    <strong>직장 상황</strong><br>
-                    A: He didn't reply to my email.<br>
-                    B: He <span class="highlight">must have missed</span> it somehow.<br>
-                    A: I'll resend it with high priority.
-                </div>
-
-                <div class="dialogue-example">
-                    <strong>온라인 상황</strong><br>
-                    A: She posted that at 3 a.m.<br>
-                    B: She <span class="highlight">must have stayed</span> up all night.<br>
-                    A: That's dedication to her work.
-                </div>
-
-                <div class="dialogue-example">
-                    <strong>가족 상황</strong><br>
-                    A: Dad's shoes are missing from the entrance.<br>
-                    B: He <span class="highlight">must have gone</span> for his morning walk.<br>
-                    A: Let's wait for him to come back.
-                </div>
-
-                <div class="dialogue-example">
-                    <strong>병원 상황</strong><br>
-                    A: She's not in her hospital room.<br>
-                    B: She <span class="highlight">can't have left</span> without permission.<br>
-                    A: Let's check with the nurse's station.
-                </div>
-
-                <div class="dialogue-example">
-                    <strong>쇼핑 상황</strong><br>
-                    A: The store is completely empty.<br>
-                    B: They <span class="highlight">must have had</span> a big sale.<br>
-                    A: We missed all the good deals.
-                </div>
-
-                <div class="dialogue-example">
-                    <strong>파티 상황</strong><br>
-                    A: John isn't here yet.<br>
-                    B: He <span class="highlight">can't have forgotten</span> about the party.<br>
-                    A: Maybe he's stuck in traffic.
-                </div>
-            </div>
-        </section>
-
-        <section class="section sentence_combining" id="sentence_combining">
-            <h2>6. 문장 결합 연습 (Sentence Combining)</h2>
-            <div class="section-content">
-                <div class="transform-example">
-                    <span class="certainty-level">I'm sure he left early.</span>
-                    <span class="transform-arrow">→</span>
-                    <span>He <span class="highlight">must have left</span> early.</span>
-                </div>
-                <div class="transform-example">
-                    <span class="certainty-level">I'm sure she studied hard.</span>
-                    <span class="transform-arrow">→</span>
-                    <span>She <span class="highlight">must have studied</span> hard.</span>
-                </div>
-                <div class="transform-example">
-                    <span class="certainty-level">I'm sure they arrived.</span>
-                    <span class="transform-arrow">→</span>
-                    <span>They <span class="highlight">must have arrived</span>.</span>
-                </div>
-                <div class="transform-example">
-                    <span class="certainty-level">I'm sure you were tired.</span>
-                    <span class="transform-arrow">→</span>
-                    <span>You <span class="highlight">must have been tired</span>.</span>
-                </div>
-                <div class="transform-example">
-                    <span class="certainty-level">I'm sure we missed the bus.</span>
-                    <span class="transform-arrow">→</span>
-                    <span>We <span class="highlight">must have missed</span> the bus.</span>
-                </div>
-                <div class="transform-example">
-                    <span class="negative-certainty">It's impossible he forgot.</span>
-                    <span class="transform-arrow">→</span>
-                    <span>He <span class="highlight">can't have forgotten</span>.</span>
-                </div>
-                <div class="transform-example">
-                    <span class="negative-certainty">It's impossible she went home.</span>
-                    <span class="transform-arrow">→</span>
-                    <span>She <span class="highlight">can't have gone</span> home.</span>
-                </div>
-                <div class="transform-example">
-                    <span class="negative-certainty">It's impossible they finished.</span>
-                    <span class="transform-arrow">→</span>
-                    <span>They <span class="highlight">can't have finished</span>.</span>
-                </div>
-                <div class="transform-example">
-                    <span class="negative-certainty">It's impossible you saw him.</span>
-                    <span class="transform-arrow">→</span>
-                    <span>You <span class="highlight">can't have seen</span> him.</span>
-                </div>
-                <div class="transform-example">
-                    <span class="negative-certainty">It's impossible we made that mistake.</span>
-                    <span class="transform-arrow">→</span>
-                    <span>We <span class="highlight">can't have made</span> that mistake.</span>
-                </div>
-                <div class="transform-example">
-                    <span class="certainty-level">I'm sure he worked late.</span>
-                    <span class="transform-arrow">→</span>
-                    <span>He <span class="highlight">must have worked</span> late.</span>
-                </div>
-                <div class="transform-example">
-                    <span class="negative-certainty">It's impossible she knew about this.</span>
-                    <span class="transform-arrow">→</span>
-                    <span>She <span class="highlight">can't have known</span> about this.</span>
-                </div>
-            </div>
-        </section>
+  <div class="section" id="concept" aria-label="기본 개념">
+    <div class="section-header"><div class="section-num" style="background:var(--green-dark);">1</div><div><span class="section-title">기본 개념</span><span class="section-en">BASIC CONCEPT</span></div></div>
+    <div class="section-body">
+      <div class="key-card"><div class="key-label">⭐ TODAY'S KEY GRAMMAR</div><div class="key-text">Modals of Deduction</div><div class="key-kr">과거 상황에 대한 확신 또는 부정 추측을 표현하는 구조</div></div>
+      <div class="concept-box">
+        <p><strong style="color:var(--green-dark)">must have + p.p.</strong> → 분명 ~했을 거야 (강한 확신, 90% 이상)</p>
+        <p><strong style="color:#3a6640">can't have + p.p.</strong> → 절대 ~하지 않았을 거야 (강한 부정, 거의 0%)</p>
+        <p>논리적 단서나 정황을 바탕으로 과거를 추론합니다.</p>
+      </div>
+      <ul class="ex-list">
+        <li><span class="en">He must have left early.</span> (불이 꺼져 있어)<span class="kr">그는 분명 일찍 떠났을 거야.</span></li>
+        <li><span class="en">She can't have forgotten.</span> (메모를 했으니까)<span class="kr">그녀가 잊었을 리가 없어.</span></li>
+      </ul>
     </div>
+  </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Smooth scrolling for navigation links
-            const tocLinks = document.querySelectorAll('.toc-item');
-            
-            tocLinks.forEach(function(link) {
-                if (!link) return;
-                
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (!targetId) return;
-                    
-                    const targetSection = document.querySelector(targetId);
-                    if (!targetSection) return;
-                    
-                    targetSection.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                });
-            });
+  <div class="section" id="grammar" aria-label="문법 규칙">
+    <div class="section-header"><div class="section-num" style="background:#3a6640;">2</div><div><span class="section-title">문법 규칙</span><span class="section-en">GRAMMAR RULES</span></div></div>
+    <div class="section-body">
+      <div class="rule-grid">
+        <div class="rule-card r-is"><div class="rule-label">강한 확신 · MUST HAVE</div><div class="rule-example"><strong>must have + p.p.</strong><br><span style="font-size:12px;color:var(--muted)">He must have left.</span></div></div>
+        <div class="rule-card r-are"><div class="rule-label">강한 부정 · CAN'T HAVE</div><div class="rule-example"><strong>can't have + p.p.</strong><br><span style="font-size:12px;color:var(--muted)">She can't have forgotten.</span></div></div>
+        <div class="rule-card r-neg"><div class="rule-label">과거 추론 · PAST ONLY</div><div class="rule-example">시제는 항상 <strong>과거</strong><br><span style="font-size:12px;color:var(--muted)">논리적 단서 기반</span></div></div>
+        <div class="rule-card r-q"><div class="rule-label">진술문 위주 · STATEMENTS</div><div class="rule-example">의문문에서는 거의 불사용<br><span style="font-size:12px;color:var(--muted)">주로 진술문에서 사용</span></div></div>
+      </div>
+      <ul class="rule-list">
+        <li><strong>기본 구조:</strong> 주어 + must/can't + have + 과거분사(p.p.)</li>
+        <li><strong>must have + p.p.</strong> → 과거에 분명히 일어난 일에 대한 확신</li>
+        <li><strong>can't have + p.p.</strong> → 과거에 일어나지 않았을 것이라는 강한 부정</li>
+        <li><strong>논리적 단서</strong>나 정황을 바탕으로 사용</li>
+        <li><strong>구어체와 글쓰기</strong> 모두에서 사용 가능</li>
+      </ul>
+    </div>
+  </div>
 
-            // Add animation on scroll
-            const sections = document.querySelectorAll('.section');
-            
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
+  <div class="section" id="positive" aria-label="긍정문">
+    <div class="section-header"><div class="section-num" style="background:var(--gold); color:#000;">3</div><div><span class="section-title">긍정문 예시</span><span class="section-en">POSITIVE EXAMPLES</span></div></div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en">He must have left early.</span><span class="kr">불이 꺼져 있어 — 분명 일찍 떠났을 거야.</span></li>
+        <li><span class="en">She must have studied hard.</span><span class="kr">시험을 잘 봤어 — 분명 열심히 공부했을 거야.</span></li>
+        <li><span class="en">They must have arrived by now.</span><span class="kr">길이 막히지 않았어 — 지금쯤 도착했을 거야.</span></li>
+        <li><span class="en">You must have been tired.</span><span class="kr">늦게까지 일했잖아 — 분명 피곤했을 거야.</span></li>
+        <li><span class="en">He must have forgotten his keys.</span><span class="kr">문 앞에 서 있어 — 열쇠를 잊었나 봐.</span></li>
+        <li><span class="en">He can't have forgotten the meeting.</span><span class="kr">캘린더에 적혀 있어 — 잊었을 리가 없어.</span></li>
+        <li><span class="en">She can't have gone home.</span><span class="kr">가방이 여기 있어 — 집에 갔을 리가 없어.</span></li>
+        <li><span class="en">They can't have finished already.</span><span class="kr">너무 빨라 — 벌써 끝났을 리가 없어.</span></li>
+        <li><span class="en">You can't have seen him.</span><span class="kr">그는 해외에 있어 — 그를 봤을 리가 없어.</span></li>
+        <li><span class="en">We can't have made that mistake.</span><span class="kr">다시 확인했어 — 그런 실수를 했을 리가 없어.</span></li>
+      </ul>
+    </div>
+  </div>
 
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                    if (!entry.target) return;
-                    
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
+  <div class="section" id="question" aria-label="부정문">
+    <div class="section-header"><div class="section-num" style="background:var(--brown);">4</div><div><span class="section-title">의문문 예시</span><span class="section-en">QUESTION EXAMPLES</span></div></div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li class="ex-q"><span class="en">Why do we say "must have gone" instead of "must went"?</span><span class="kr">왜 "must went"가 아니라 "must have gone"이라고 하나요?</span></li>
+        <li class="ex-q"><span class="en">Can you explain "can't have seen him"?</span><span class="kr">"can't have seen him"을 설명해 줄 수 있나요?</span></li>
+        <li class="ex-q"><span class="en">What does "must have been tired" mean?</span><span class="kr">"must have been tired"는 무슨 뜻인가요?</span></li>
+        <li class="ex-q"><span class="en">What clues help us use modals of deduction?</span><span class="kr">추론 조동사를 사용하는 데 어떤 단서가 도움이 되나요?</span></li>
+        <li class="ex-q"><span class="en">What's the difference between "must have" and "might have"?</span><span class="kr">"must have"와 "might have"의 차이는?</span></li>
+        <li class="ex-q"><span class="en">When do we use "can't have" instead of "didn't"?</span><span class="kr">언제 "didn't" 대신 "can't have"를 사용하나요?</span></li>
+        <li class="ex-q"><span class="en">How certain are we when using "must have"?</span><span class="kr">"must have"를 사용할 때 얼마나 확신하나요?</span></li>
+        <li class="ex-q"><span class="en">Can you show the difference between "must be" and "must have been"?</span><span class="kr">"must be"와 "must have been"의 차이를 보여줄 수 있나요?</span></li>
+      </ul>
+    </div>
+  </div>
 
-            sections.forEach(function(section) {
-                if (!section) return;
-                section.style.opacity = '0';
-                section.style.transform = 'translateY(20px)';
-                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(section);
-            });
+  <div class="section" id="dialogue" aria-label="의문문">
+    <div class="section-header"><div class="section-num" style="background:#5a7a50;">5</div><div><span class="section-title">상황별 대화 흐름</span><span class="section-en">SITUATIONAL DIALOGUES</span></div></div>
+    <div class="section-body">
+      <div class="dialogue"><div class="d-title">🏫 학교 상황 · SCHOOL</div><div class="d-line"><span class="sp">A:</span> She got full marks again.</div><div class="d-line"><span class="sp">B:</span> She <span class="key">must have studied</span> a lot.</div><div class="d-line"><span class="sp">A:</span> Definitely, her dedication shows.</div></div>
+      <div class="dialogue"><div class="d-title">✈️ 여행 상황 · TRAVEL</div><div class="d-line"><span class="sp">A:</span> They're not at the train station.</div><div class="d-line"><span class="sp">B:</span> They <span class="key">must have taken</span> a taxi instead.</div><div class="d-line"><span class="sp">A:</span> That makes perfect sense.</div></div>
+      <div class="dialogue"><div class="d-title">💼 직장 상황 · OFFICE</div><div class="d-line"><span class="sp">A:</span> He didn't reply to my email.</div><div class="d-line"><span class="sp">B:</span> He <span class="key">must have missed</span> it somehow.</div><div class="d-line"><span class="sp">A:</span> I'll resend it with high priority.</div></div>
+      <div class="dialogue"><div class="d-title">💻 온라인 상황 · ONLINE</div><div class="d-line"><span class="sp">A:</span> She posted that at 3 a.m.</div><div class="d-line"><span class="sp">B:</span> She <span class="key">must have stayed</span> up all night.</div><div class="d-line"><span class="sp">A:</span> That's dedication to her work.</div></div>
+      <div class="dialogue"><div class="d-title">🏠 가족 상황 · FAMILY</div><div class="d-line"><span class="sp">A:</span> Dad's shoes are missing from the entrance.</div><div class="d-line"><span class="sp">B:</span> He <span class="key">must have gone</span> for his morning walk.</div><div class="d-line"><span class="sp">A:</span> Let's wait for him to come back.</div></div>
+      <div class="dialogue"><div class="d-title">🏥 병원 상황 · HOSPITAL</div><div class="d-line"><span class="sp">A:</span> She's not in her hospital room.</div><div class="d-line"><span class="sp">B:</span> She <span class="key">can't have left</span> without permission.</div><div class="d-line"><span class="sp">A:</span> Let's check with the nurse's station.</div></div>
+    </div>
+  </div>
 
-            // Keyboard navigation support
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Tab') {
-                    const focusedElement = document.activeElement;
-                    if (focusedElement && focusedElement.classList.contains('toc-item')) {
-                        focusedElement.style.outline = '3px solid #fff';
-                        focusedElement.style.outlineOffset = '2px';
-                    }
-                }
-            });
+  <div class="section" id="combining" aria-label="대화">
+    <div class="section-header"><div class="section-num" style="background:var(--green-dark);">6</div><div><span class="section-title">문장 결합 연습</span><span class="section-en">SENTENCE COMBINING</span></div></div>
+    <div class="section-body">
+      <div class="practice-item"><div class="original">I'm sure he left early.</div><div class="result">→ He must have left early.</div></div>
+      <div class="practice-item"><div class="original">I'm sure she studied hard.</div><div class="result">→ She must have studied hard.</div></div>
+      <div class="practice-item"><div class="original">I'm sure they arrived.</div><div class="result">→ They must have arrived.</div></div>
+      <div class="practice-item"><div class="original">I'm sure you were tired.</div><div class="result">→ You must have been tired.</div></div>
+      <div class="practice-item"><div class="original">It's impossible he forgot.</div><div class="result">→ He can't have forgotten.</div></div>
+      <div class="practice-item"><div class="original">It's impossible she went home.</div><div class="result">→ She can't have gone home.</div></div>
+      <div class="practice-item"><div class="original">It's impossible they finished.</div><div class="result">→ They can't have finished.</div></div>
+      <div class="practice-item"><div class="original">It's impossible you saw him.</div><div class="result">→ You can't have seen him.</div></div>
+      <div class="practice-item"><div class="original">It's impossible we made that mistake.</div><div class="result">→ We can't have made that mistake.</div></div>
+    </div>
+  </div>
 
-            console.log('Modals of Deduction Part 1 initialized successfully!');
-        });
-    </script>
+  <div class="section" id="reallife" aria-label="문장 결합">
+    <div class="section-header"><div class="section-num" style="background:var(--gold); color:#000;">7</div><div><span class="section-title">실생활 사용 예시</span><span class="section-en">REAL-LIFE USAGE</span></div></div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en">She must have studied all night.</span><span class="kr">🏫 학교 — 밤새 공부했나 봐.</span></li>
+        <li><span class="en">He must have missed the email.</span><span class="kr">💼 직장 — 이메일을 놓쳤나 봐.</span></li>
+        <li><span class="en">They must have taken a taxi.</span><span class="kr">✈️ 여행 — 택시를 탔나 봐.</span></li>
+        <li><span class="en">He must have gone for a walk.</span><span class="kr">🏠 가족 — 산책 갔나 봐.</span></li>
+        <li><span class="en">She can't have left without permission.</span><span class="kr">🏥 병원 — 허락 없이 갔을 리가 없어.</span></li>
+        <li><span class="en">They must have had a big sale.</span><span class="kr">🛒 쇼핑 — 큰 세일이 있었나 봐.</span></li>
+        <li><span class="en">He can't have forgotten about the party.</span><span class="kr">🎉 파티 — 파티를 잊었을 리가 없어.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" id="patterns" aria-label="실생활">
+    <div class="section-header"><div class="section-num" style="background:var(--brown);">8</div><div><span class="section-title">자주 쓰이는 패턴</span><span class="section-en">COMMON PATTERNS</span></div></div>
+    <div class="section-body">
+      <div class="pattern-box"><div class="p-label">강한 확신 · MUST HAVE + P.P.</div><div class="p-text"><strong>He must have left</strong> early.<br><span style="font-size:13px;">단서: 불이 꺼져 있어 → 분명 떠났을 거야</span></div></div>
+      <div class="pattern-box"><div class="p-label">강한 부정 · CAN'T HAVE + P.P.</div><div class="p-text"><strong>She can't have forgotten.</strong><br><span style="font-size:13px;">단서: 메모를 했어 → 잊었을 리가 없어</span></div></div>
+      <div class="pattern-box"><div class="p-label">상태 추론 · MUST HAVE BEEN</div><div class="p-text"><strong>You must have been tired.</strong><br><span style="font-size:13px;">단서: 늦게까지 일했어 → 분명 피곤했을 거야</span></div></div>
+      <div class="pattern-box"><div class="p-label">불가능 추론 · CAN'T HAVE BEEN</div><div class="p-text"><strong>We can't have been wrong.</strong><br><span style="font-size:13px;">단서: 증거가 명확해 → 틀렸을 리가 없어</span></div></div>
+    </div>
+  </div>
+
+  <div class="section" id="mistakes" aria-label="패턴">
+    <div class="section-header"><div class="section-num" style="background:#c0392b;">9</div><div><span class="section-title">흔한 실수</span><span class="section-en">COMMON MISTAKES</span></div></div>
+    <div class="section-body">
+      <div class="mistake-box"><div class="wrong">✗ He must went home.</div><div class="right">✓ He must have gone home.</div><div class="reason">must 뒤에 have + p.p. 구조 필수</div></div>
+      <div class="mistake-box"><div class="wrong">✗ She can't forgot.</div><div class="right">✓ She can't have forgotten.</div><div class="reason">can't 뒤에 have + p.p. 구조 필수</div></div>
+      <div class="mistake-box"><div class="wrong">✗ They must have arrive.</div><div class="right">✓ They must have arrived.</div><div class="reason">have 뒤에 과거분사(p.p.) 필수</div></div>
+      <div class="mistake-box"><div class="wrong">✗ He must been tired.</div><div class="right">✓ He must have been tired.</div><div class="reason">must와 been 사이에 have 필수</div></div>
+    </div>
+  </div>
+
+  <div class="section" id="tips" aria-label="흔한 실수">
+    <div class="section-header"><div class="section-num" style="background:#185fa5;">10</div><div><span class="section-title">레벨업 팁</span><span class="section-en">LEVEL-UP TIPS</span></div></div>
+    <div class="section-body">
+      <div class="tip-box"><div class="tip-label">TIP 1 · 단서 찾기</div><div class="tip-text">추론 조동사를 사용하려면 논리적 단서가 필요합니다. "불이 꺼져 있어" → must have left</div></div>
+      <div class="tip-box"><div class="tip-label">TIP 2 · must have vs might have</div><div class="tip-text">must have는 90% 이상 확신, might have는 50% 정도 추측입니다.</div></div>
+      <div class="tip-box"><div class="tip-label">TIP 3 · 현재 vs 과거</div><div class="tip-text">must be = 현재 추론 ("He must be tired"), must have been = 과거 추론 ("He must have been tired")</div></div>
+      <div class="tip-box"><div class="tip-label">TIP 4 · 미스터리 풀기</div><div class="tip-text">추리 소설이나 뉴스에서 자주 등장합니다. 일상에서도 단서를 보고 추론하는 연습을 해보세요.</div></div>
+    </div>
+  </div>
+
+  <div class="section" id="practice" aria-label="레벨업 팁">
+    <div class="section-header"><div class="section-num" style="background:var(--green-dark);">11</div><div><span class="section-title">연습문제</span><span class="section-en">PRACTICE EXERCISES</span></div></div>
+    <div class="section-body">
+      <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">빈칸에 must have 또는 can't have를 넣어 문장을 완성하세요.</p>
+      <ul class="rule-list">
+        <li>He ___ left early. (불이 꺼져 있어) <strong style="color:var(--green-dark)">(must have)</strong></li>
+        <li>She ___ forgotten. (메모를 했어) <strong style="color:var(--brown)">(can't have)</strong></li>
+        <li>They ___ arrived by now. <strong style="color:var(--green-dark)">(must have)</strong></li>
+        <li>You ___ seen him. (그는 해외에 있어) <strong style="color:var(--brown)">(can't have)</strong></li>
+        <li>She ___ studied hard. (만점이야) <strong style="color:var(--green-dark)">(must have)</strong></li>
+        <li>He ___ gone home. (가방이 여기 있어) <strong style="color:var(--brown)">(can't have)</strong></li>
+        <li>We ___ missed the bus. (정류장에 아무도 없어) <strong style="color:var(--green-dark)">(must have)</strong></li>
+        <li>They ___ finished already. (너무 빨라) <strong style="color:var(--brown)">(can't have)</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" id="check" aria-label="레벨업 팁">
+    <div class="section-header"><div class="section-num" style="background:var(--brown);">12</div><div><span class="section-title">자가진단 체크리스트</span><span class="section-en">SELF-CHECK</span></div></div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> must have + p.p.가 강한 확신임을 안다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> can't have + p.p.가 강한 부정 추측임을 안다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 논리적 단서를 바탕으로 추론 문장을 만들 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> must be(현재)와 must have been(과거)의 차이를 안다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> must have와 might have의 확신도 차이를 안다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 일상 대화에서 추론 표현을 자연스럽게 사용할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 흔한 실수 4가지를 이해했다.</li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer-nav" role="contentinfo">
+  <a href="../G66/G66_new.html" class="fnav-btn fnav-prev">← G66</a>
+  <span class="fnav-center">G67 · MODALS OF DEDUCTION</span>
+  <a href="../G68/G68_new.html" class="fnav-btn fnav-next">G68 →</a>
+</footer>
 
 
 
@@ -1056,986 +547,4 @@
 })();
 </script>
 </body>
-</html> class="highlight">must have left</span> early. <em>(불이 꺼져 있어)</em></li>
-                        <li>She <span class="highlight">must have studied</span> hard. <em>(시험을 잘 봤어)</em></li>
-                        <li>They <span class="highlight">must have arrived</span> by now. <em>(길이 막히지 않았어)</em></li>
-                        <li>You <span class="highlight">must have been tired</span>. <em>(늦게까지 일했잖아)</em></li>
-                        <li>We <span class="highlight">must have missed</span> the bus. <em>(정류장에 아무도 없어)</em></li>
-                        <li>He <span
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Passive Voice - Part 2 (실전 활용)</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #1e1a2e;
-            margin: 0;
-            padding: 20px;
-        }
-            min-height: 100vh;
-            line-height: 1.6;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .header         /* 제목 스타일 */
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #33ddff;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .toc {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .toc h2 {
-            color: #4a5568;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .toc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 10px;
-        }
-
-        .toc-item {
-            padding: 12px 15px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .toc-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .section {
-            background: rgba(255, 255, 255, 0.95);
-            margin-bottom: 30px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-        }
-
-        .section:hover {
-            transform: translateY(-5px);
-        }
-
-        .section h2 {
-            padding: 20px 30px;
-            margin: 0;
-            font-size: 1.8rem;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-        }
-
-        .section-content {
-            padding: 30px;
-        }
-
-        /* Section specific colors */
-        .real_life_usage h2 { background: linear-gradient(135deg, #fbb040, #f6931e); }
-        .common_patterns h2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
-        .mistakes h2 { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
-        .tips h2 { background: linear-gradient(135deg, #38a169, #2f855a); }
-        .practice h2 { background: linear-gradient(135deg, #718096, #4a5568); }
-        .checklist h2 { background: linear-gradient(135deg, #cbd5e0, #a0aec0); }
-
-        .section-content ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .section-content li {
-            margin: 12px 0;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 8px;
-            border-left: 4px solid #4299e1;
-            transition: all 0.3s ease;
-        }
-
-        .section-content li:hover {
-            background: rgba(255, 255, 255, 0.9);
-            transform: translateX(5px);
-        }
-
-        .highlight {
-            background: rgba(255, 193, 7, 0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            color: #d69e2e;
-        }
-
-        .mistake-example {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(255, 154, 158, 0.1);
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            flex-wrap: wrap;
-            gap: 10px;
-            border-left: 4px solid #ff9a9e;
-        }
-
-        .mistake-wrong {
-            color: #e53e3e;
-            text-decoration: line-through;
-        }
-
-        .mistake-correct {
-            color: #38a169;
-            font-weight: bold;
-        }
-
-        .mistake-arrow {
-            color: #4299e1;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .quiz-container {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .quiz-question {
-            margin-bottom: 15px;
-            font-weight: bold;
-            color: #2d3748;
-        }
-
-        .quiz-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .quiz-option {
-            padding: 10px 15px;
-            background: rgba(255, 255, 255, 0.8);
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .quiz-option:hover {
-            background: rgba(66, 153, 225, 0.1);
-            border-color: #4299e1;
-        }
-
-        .quiz-option.correct {
-            background: rgba(56, 161, 105, 0.2);
-            border-color: #38a169;
-            color: #2f855a;
-        }
-
-        .quiz-option.incorrect {
-            background: rgba(229, 62, 62, 0.2);
-            border-color: #e53e3e;
-            color: #c53030;
-        }
-
-        .quiz-result {
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            display: none;
-        }
-
-        .quiz-result.show {
-            display: block;
-        }
-
-        .quiz-result.correct {
-            background: rgba(56, 161, 105, 0.2);
-            color: #2f855a;
-            border-left: 4px solid #38a169;
-        }
-
-        .quiz-result.incorrect {
-            background: rgba(229, 62, 62, 0.2);
-            color: #c53030;
-            border-left: 4px solid #e53e3e;
-        }
-
-        .show-answers-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            margin: 20px 0;
-            transition: all 0.3s ease;
-        }
-
-        .show-answers-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .self-check-container {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .self-check-item {
-            display: flex;
-            align-items: center;
-            margin: 10px 0;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .self-check-item:hover {
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        .self-check-input {
-            margin-right: 15px;
-            transform: scale(1.2);
-        }
-
-        .progress-container {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #e2e8f0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(135deg, #38a169, #2f855a);
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        .progress-text {
-            font-weight: bold;
-            color: #2d3748;
-            margin-top: 10px;
-        }
-
-        .part-info {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            border: 2px dashed #667eea;
-        }
-
-        .part-info h3 {
-            color: #4a5568;
-            margin-bottom: 10px;
-        }
-
-        .part-info p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-
-            .header         /* 제목 스타일 */
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #33ddff;
-        }
-
-            .header p {
-                font-size: 1rem;
-            }
-
-            .toc-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-content {
-                padding: 20px;
-            }
-
-            .mistake-example {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .mistake-arrow {
-                align-self: center;
-            }
-
-            .quiz-options {
-                gap: 8px;
-            }
-
-            .quiz-option {
-                padding: 8px 12px;
-            }
-        }
-
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Focus styles for accessibility */
-        .toc-item:focus,
-        .quiz-option:focus,
-        .show-answers-btn:focus {
-            outline: 3px solid #fff;
-            outline-offset: 2px;
-        }
-
-        strong {
-            color: #2d3748;
-            background: rgba(255, 235, 59, 0.3);
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-    </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=NanumSquareRound:wght@800&display=swap" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <header class="header">
-            <h1>🎯 Passive Voice</h1>
-            <p><strong>수동태 (Passive Voice)</strong> - 주어가 동작을 받는 문장 구조</p>
-        </header>
-
-        <div class="part-info">
-            <h3>🚀 Part 2: 실전 활용 (섹션 7-12)</h3>
-            <p>실생활 활용부터 완벽한 마스터까지!</p>
-        </div>
-
-        <nav class="toc" aria-label="문법 섹션 메뉴">
-            <h2>📋 목차 (Table of Contents)</h2>
-            <div class="toc-grid">
-                <a href="#real_life_usage" class="toc-item">7. 실생활 사용</a>
-                <a href="#common_patterns" class="toc-item">8. 자주 쓰는 패턴</a>
-                <a href="#mistakes" class="toc-item">9. 흔한 실수</a>
-                <a href="#tips" class="toc-item">10. 레벨업 팁</a>
-                <a href="#practice" class="toc-item">11. 연습문제</a>
-                <a href="#checklist" class="toc-item">12. 자가진단</a>
-            </div>
-        </nav>
-
-        <section class="section real_life_usage" id="real_life_usage">
-            <h2>7. 실생활 사용 예시 (Real-Life Usage)</h2>
-            <div class="section-content">
-                <ul>
-                    <li><strong>학교 상황:</strong> The homework <span class="highlight">is checked</span> every morning.</li>
-                    <li><strong>직장 상황:</strong> The report <span class="highlight">has been submitted</span> to the manager.</li>
-                    <li><strong>온라인 상황:</strong> The results <span class="highlight">will be posted</span> on the website.</li>
-                    <li><strong>가족 상황:</strong> The dishes <span class="highlight">were washed</span> by Mom.</li>
-                    <li><strong>병원 상황:</strong> The medicine <span class="highlight">must be taken</span> before meals.</li>
-                    <li><strong>여행 상황:</strong> The room <span class="highlight">is being cleaned</span> now.</li>
-                    <li><strong>회의 상황:</strong> The agenda <span class="highlight">was prepared</span> yesterday.</li>
-                    <li><strong>쇼핑 상황:</strong> This product <span class="highlight">is made</span> in Korea.</li>
-                    <li><strong>은행 상황:</strong> Your account <span class="highlight">has been updated</span> successfully.</li>
-                    <li><strong>레스토랑:</strong> The food <span class="highlight">is being prepared</span> in the kitchen.</li>
-                    <li><strong>도서관:</strong> Books <span class="highlight">should be returned</span> on time.</li>
-                    <li><strong>공항 상황:</strong> The flight <span class="highlight">has been delayed</span> by weather.</li>
-                    <li><strong>공사 현장:</strong> The building <span class="highlight">will be completed</span> next year.</li>
-                    <li><strong>IT 지원:</strong> The software <span class="highlight">is being updated</span> automatically.</li>
-                    <li><strong>언론 보도:</strong> The news <span class="highlight">was reported</span> this morning.</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="section common_patterns" id="common_patterns">
-            <h2>8. 자주 쓰이는 패턴 (Common Patterns)</h2>
-            <div class="section-content">
-                <ul>
-                    <li><strong>현재:</strong> is/are + p.p. → The book <span class="highlight">is read</span>.</li>
-                    <li><strong>과거:</strong> was/were + p.p. → The book <span class="highlight">was read</span>.</li>
-                    <li><strong>현재완료:</strong> has/have been + p.p. → The book <span class="highlight">has been read</span>.</li>
-                    <li><strong>과거완료:</strong> had been + p.p. → The book <span class="highlight">had been read</span>.</li>
-                    <li><strong>미래:</strong> will be + p.p. → The book <span class="highlight">will be read</span>.</li>
-                    <li><strong>진행형:</strong> is/was being + p.p. → The book <span class="highlight">is being read</span>.</li>
-                    <li><strong>조동사:</strong> can/must/should be + p.p. → The book <span class="highlight">must be read</span>.</li>
-                    <li><strong>의문문:</strong> Is the report <span class="highlight">finished</span>?</li>
-                    <li><strong>부정문:</strong> The task <span class="highlight">wasn't completed</span> on time.</li>
-                    <li><strong>행위자 표시:</strong> The letter <span class="highlight">was written</span> by John.</li>
-                    <li><strong>현재진행 수동:</strong> The problem <span class="highlight">is being solved</span>.</li>
-                    <li><strong>과거진행 수동:</strong> The room <span class="highlight">was being cleaned</span>.</li>
-                    <li><strong>미래완료 수동:</strong> The work <span class="highlight">will have been done</span>.</li>
-                    <li><strong>조건문 수동:</strong> If it <span class="highlight">is completed</span>, we can proceed.</li>
-                    <li><strong>명령문 수동:</strong> Let the door <span class="highlight">be opened</span>.</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="section mistakes" id="mistakes">
-            <h2>9. 흔한 실수 (Common Mistakes)</h2>
-            <div class="section-content">
-                <div class="mistake-example">
-                    <span class="mistake-wrong">❌ The room cleaned</span>
-                    <span class="mistake-arrow">→</span>
-                    <span class="mistake-correct">✅ The room <span class="highlight">was cleaned</span></span>
-                </div>
-                <div class="mistake-example">
-                    <span class="mistake-wrong">❌ The report is write</span>
-                    <span class="mistake-arrow">→</span>
-                    <span class="mistake-correct">✅ The report <span class="highlight">is written</span></span>
-                </div>
-                <div class="mistake-example">
-                    <span class="mistake-wrong">❌ The homework has been check</span>
-                    <span class="mistake-arrow">→</span>
-                    <span class="mistake-correct">✅ The homework <span class="highlight">has been checked</span></span>
-                </div>
-                <div class="mistake-example">
-                    <span class="mistake-wrong">❌ The email will sent</span>
-                    <span class="mistake-arrow">→</span>
-                    <span class="mistake-correct">✅ The email <span class="highlight">will be sent</span></span>
-                </div>
-                <div class="mistake-example">
-                    <span class="mistake-wrong">❌ The task should complete</span>
-                    <span class="mistake-arrow">→</span>
-                    <span class="mistake-correct">✅ The task <span class="highlight">should be completed</span></span>
-                </div>
-                <div class="mistake-example">
-                    <span class="mistake-wrong">❌ The book is reading</span>
-                    <span class="mistake-arrow">→</span>
-                    <span class="mistake-correct">✅ The book <span class="highlight">is being read</span></span>
-                </div>
-                <div class="mistake-example">
-                    <span class="mistake-wrong">❌ The work will finished</span>
-                    <span class="mistake-arrow">→</span>
-                    <span class="mistake-correct">✅ The work <span class="highlight">will be finished</span></span>
-                </div>
-                <div class="mistake-example">
-                    <span class="mistake-wrong">❌ The letter was wrote</span>
-                    <span class="mistake-arrow">→</span>
-                    <span class="mistake-correct">✅ The letter <span class="highlight">was written</span></span>
-                </div>
-            </div>
-        </section>
-
-        <section class="section tips" id="tips">
-            <h2>10. 레벨업 팁 (Level-Up Tips)</h2>
-            <div class="section-content">
-                <ul>
-                    <li>수동태는 <strong>be + p.p.</strong> 구조가 핵심</li>
-                    <li>시제에 따라 <strong>be동사 형태</strong>가 달라짐</li>
-                    <li>행위자(by + 사람)는 생략 가능, 강조할 때만 사용</li>
-                    <li>진행형 수동태는 <strong>is/was being + p.p.</strong></li>
-                    <li>완료형 수동태는 <strong>has/have/had been + p.p.</strong></li>
-                    <li>조동사 수동태는 <strong>can/must/should be + p.p.</strong></li>
-                    <li>문장 결합 연습을 통해 <strong>시제별 수동태에 익숙해지기</strong></li>
-                    <li><strong>과거분사 형태</strong> 정확히 기억하기 (regular vs irregular verbs)</li>
-                    <li>수동태는 <strong>객관적이고 정중한 표현</strong>에 유용</li>
-                    <li><strong>공식 문서나 학술 글</strong>에서 자주 사용됨</li>
-                    <li>행위자를 모르거나 <strong>결과에 집중</strong>할 때 효과적</li>
-                    <li><strong>비즈니스 영어</strong>에서 책임을 돌리지 않으려 할 때 사용</li>
-                    <li><strong>뉴스나 보고서</strong>에서 객관성을 유지하려 할 때 활용</li>
-                    <li>수동태로 <strong>문장의 주어를 바꿔</strong> 강조점 변경 가능</li>
-                    <li><strong>과정이나 절차</strong>를 설명할 때 수동태가 자연스러움</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="section practice" id="practice">
-            <h2>11. 연습문제 (Practice Exercises)</h2>
-            <div class="section-content">
-                
-                <button class="show-answers-btn" id="show-answers-btn">📝 정답 보기</button>
-                
-                <h3>객관식 문제</h3>
-                
-                <div class="quiz-container">
-                    <div class="quiz-question">1. Which is correct?</div>
-                    <div class="quiz-options">
-                        <div class="quiz-option" data-correct="false" data-question="0">A. The report was write.</div>
-                        <div class="quiz-option" data-correct="true" data-question="0">B. The report was written.</div>
-                    </div>
-                    <div class="quiz-result" id="result-0">
-                        <strong>정답:</strong> B. "The report was written." - 수동태에서는 과거분사(written)를 사용해야 합니다.
-                    </div>
-                </div>
-
-                <div class="quiz-container">
-                    <div class="quiz-question">2. Choose the correct form: The homework ___ every day.</div>
-                    <div class="quiz-options">
-                        <div class="quiz-option" data-correct="true" data-question="1">A. is checked</div>
-                        <div class="quiz-option" data-correct="false" data-question="1">B. checks</div>
-                    </div>
-                    <div class="quiz-result" id="result-1">
-                        <strong>정답:</strong> A. "is checked" - 수동태 구조 "be + 과거분사"를 사용합니다.
-                    </div>
-                </div>
-
-                <div class="quiz-container">
-                    <div class="quiz-question">3. Fill in: The email ___ before noon.</div>
-                    <div class="quiz-options">
-                        <div class="quiz-option" data-correct="true" data-question="2">A. had been sent</div>
-                        <div class="quiz-option" data-correct="false" data-question="2">B. has sent</div>
-                    </div>
-                    <div class="quiz-result" id="result-2">
-                        <strong>정답:</strong> A. "had been sent" - 과거완료 수동태로 "had been + 과거분사"를 사용합니다.
-                    </div>
-                </div>
-
-                <div class="quiz-container">
-                    <div class="quiz-question">4. Which sentence shows correct passive voice?</div>
-                    <div class="quiz-options">
-                        <div class="quiz-option" data-correct="false" data-question="3">A. The room is cleaning now.</div>
-                        <div class="quiz-option" data-correct="true" data-question="3">B. The room is being cleaned now.</div>
-                    </div>
-                    <div class="quiz-result" id="result-3">
-                        <strong>정답:</strong> B. "The room is being cleaned now." - 현재진행 수동태는 "is/are being + 과거분사"입니다.
-                    </div>
-                </div>
-
-                <div class="quiz-container">
-                    <div class="quiz-question">5. Complete the sentence: The task ___ by tomorrow.</div>
-                    <div class="quiz-options">
-                        <div class="quiz-option" data-correct="false" data-question="4">A. will complete</div>
-                        <div class="quiz-option" data-correct="true" data-question="4">B. will be completed</div>
-                    </div>
-                    <div class="quiz-result" id="result-4">
-                        <strong>정답:</strong> B. "will be completed" - 미래 수동태는 "will be + 과거분사"입니다.
-                    </div>
-                </div>
-
-                <h3>문장 완성 연습</h3>
-                <div class="quiz-container">
-                    <p><strong>6-10. 다음 능동문을 수동문으로 바꾸세요:</strong></p>
-                    <ul>
-                        <li>6. They clean the room. → The room <strong>is cleaned</strong>.</li>
-                        <li>7. She wrote the report. → The report <strong>was written</strong>.</li>
-                        <li>8. He has completed the task. → The task <strong>has been completed</strong>.</li>
-                        <li>9. We will finish the project. → The project <strong>will be finished</strong>.</li>
-                        <li>10. She is writing the letter. → The letter <strong>is being written</strong>.</li>
-                    </ul>
-                </div>
-
-                <h3>오류 수정 연습</h3>
-                <div class="quiz-container">
-                    <p><strong>11-15. 다음 문장의 오류를 수정하세요:</strong></p>
-                    <ul>
-                        <li>11. ❌ The room clean → ✅ The room <strong>was cleaned</strong></li>
-                        <li>12. ❌ The report is write → ✅ The report <strong>is written</strong></li>
-                        <li>13. ❌ The homework has been check → ✅ The homework <strong>has been checked</strong></li>
-                        <li>14. ❌ The email will sent → ✅ The email <strong>will be sent</strong></li>
-                        <li>15. ❌ The task should complete → ✅ The task <strong>should be completed</strong></li>
-                    </ul>
-                </div>
-
-                <h3>실전 응용 연습</h3>
-                <div class="quiz-container">
-                    <p><strong>16-20. 다음 상황에 맞는 수동태 문장을 작성하세요:</strong></p>
-                    <ul>
-                        <li>16. 학교 상황: "The homework <strong>is checked</strong> every morning."</li>
-                        <li>17. 직장 상황: "The report <strong>has been submitted</strong> to the manager."</li>
-                        <li>18. 온라인 상황: "The results <strong>will be posted</strong> on the website."</li>
-                        <li>19. 병원 상황: "The medicine <strong>must be taken</strong> before meals."</li>
-                        <li>20. 여행 상황: "The room <strong>is being cleaned</strong> right now."</li>
-                    </ul>
-                </div>
-
-                <h3>종합 연습</h3>
-                <div class="quiz-container">
-                    <p><strong>21-25. 고급 수동태 표현:</strong></p>
-                    <ul>
-                        <li>21. "The decision <strong>was made</strong> after careful consideration."</li>
-                        <li>22. "All documents <strong>have been reviewed</strong> by the legal team."</li>
-                        <li>23. "The system <strong>is being upgraded</strong> to improve performance."</li>
-                        <li>24. "The issue <strong>will be resolved</strong> as soon as possible."</li>
-                        <li>25. "The presentation <strong>had been prepared</strong> before the meeting."</li>
-                    </ul>
-                </div>
-
-                <div class="progress-container">
-                    <h4>📊 학습 진행률</h4>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progress-fill"></div>
-                    </div>
-                    <div class="progress-text" id="progress-text">완료된 문제: 0/25 (0%)</div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section checklist" id="checklist">
-            <h2>12. 자가진단 체크리스트 (Self-Check)</h2>
-            <div class="section-content">
-
-                <div class="self-check-container">
-                    <h4>✅ 학습 완료 체크</h4>
-                    <div class="self-check-item">
-                        <input type="checkbox" class="self-check-input" onchange="updateProgress()">
-                        <span>I understand what passive voice means.</span>
-                    </div>
-                    <div class="self-check-item">
-                        <input type="checkbox" class="self-check-input" onchange="updateProgress()">
-                        <span>I can use be + p.p. correctly in all tenses.</span>
-                    </div>
-                    <div class="self-check-item">
-                        <input type="checkbox" class="self-check-input" onchange="updateProgress()">
-                        <span>I can transform active sentences into passive ones.</span>
-                    </div>
-                    <div class="self-check-item">
-                        <input type="checkbox" class="self-check-input" onchange="updateProgress()">
-                        <span>I can correct common passive voice mistakes.</span>
-                    </div>
-                    <div class="self-check-item">
-                        <input type="checkbox" class="self-check-input" onchange="updateProgress()">
-                        <span>I can use passive voice to describe actions and results.</span>
-                    </div>
-                </div>
-
-                <div class="self-check-container">
-                    <h4>🎯 자가진단 문항 (15개)</h4>
-                    <ol>
-                        <li>Can you explain why we say "The report was written"?</li>
-                        <li>Can you write a sentence using present passive?</li>
-                        <li>Can you correct "The homework has been check"?</li>
-                        <li>Can you describe a situation using "is being cleaned"?</li>
-                        <li>Can you translate "그 이메일은 오전 전에 보내졌어"?</li>
-                        <li>Can you use "will be finished" in context?</li>
-                        <li>Can you write a short story using passive voice?</li>
-                        <li>Can you explain how passive voice improves formal writing?</li>
-                        <li>Can you use passive voice naturally in conversation?</li>
-                        <li>Can you describe a completed action using "has been…"?</li>
-                        <li>Can you teach someone how to form passive sentences?</li>
-                        <li>Can you compare passive and active voice?</li>
-                        <li>Can you use passive voice to express emotion and logic?</li>
-                        <li>Can you identify which part of the sentence is passive?</li>
-                        <li>Can you use passive voice with clarity and fluency?</li>
-                    </ol>
-                </div>
-
-                <div class="self-check-container">
-                    <h4>🚀 다음 단계 학습 가이드</h4>
-                    <ul>
-                        <li>Review passive structures across all tenses.</li>
-                        <li>Practice transforming active sentences into passive voice.</li>
-                        <li>Use passive voice to improve writing style and formality.</li>
-                        <li>Compare with active voice to understand impact.</li>
-                        <li>Record and review your own sentences to improve fluency and clarity.</li>
-                    </ul>
-                </div>
-
-                <div class="progress-container">
-                    <h4>🏆 최종 완성도 체크</h4>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="final-progress"></div>
-                    </div>
-                    <div class="progress-text" id="final-progress-text">체크된 항목: 0/5 (0%)</div>
-                    <p style="margin-top: 15px; color: #666; text-align: center;">
-                        모든 항목을 체크하면 수동태 마스터 완료! 🎉
-                    </p>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Smooth scrolling for navigation links
-            const tocLinks = document.querySelectorAll('.toc-item');
-            
-            tocLinks.forEach(function(link) {
-                if (!link) return;
-                
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (!targetId) return;
-                    
-                    const targetSection = document.querySelector(targetId);
-                    if (!targetSection) return;
-                    
-                    targetSection.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                });
-            });
-
-            // Add quiz option click listeners
-            const quizOptions = document.querySelectorAll('.quiz-option');
-            quizOptions.forEach(function(option) {
-                if (!option) return;
-                
-                option.addEventListener('click', function() {
-                    const isCorrect = this.getAttribute('data-correct') === 'true';
-                    const questionIndex = this.getAttribute('data-question');
-                    selectOption(this, isCorrect, parseInt(questionIndex));
-                });
-            });
-
-            // Add show answers button listener
-            const showAnswersBtn = document.getElementById('show-answers-btn');
-            if (showAnswersBtn) {
-                showAnswersBtn.addEventListener('click', showAllAnswers);
-            }
-
-            // Add animation on scroll
-            const sections = document.querySelectorAll('.section');
-            
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                    if (!entry.target) return;
-                    
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-
-            sections.forEach(function(section) {
-                if (!section) return;
-                section.style.opacity = '0';
-                section.style.transform = 'translateY(20px)';
-                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(section);
-            });
-
-            console.log('Passive Voice Part 2 initialized successfully!');
-        });
-
-        // Quiz functionality
-        function selectOption(element, isCorrect, questionIndex) {
-            if (!element) return;
-            
-            const options = element.parentNode.querySelectorAll('.quiz-option');
-            const result = document.getElementById('result-' + questionIndex);
-            
-            if (!options || !result) return;
-            
-            // Clear previous selections
-            options.forEach(function(option) {
-                if (!option || !option.classList) return;
-                option.classList.remove('correct', 'incorrect');
-            });
-            
-            // Mark selected option
-            if (isCorrect) {
-                element.classList.add('correct');
-                result.classList.remove('incorrect');
-                result.classList.add('correct');
-            } else {
-                element.classList.add('incorrect');
-                result.classList.remove('correct');
-                result.classList.add('incorrect');
-            }
-            
-            result.classList.add('show');
-            updateQuizProgress();
-        }
-
-        function updateQuizProgress() {
-            try {
-                const totalQuestions = 5;
-                const answeredQuestions = document.querySelectorAll('.quiz-result.show').length;
-                const percentage = Math.round((answeredQuestions / totalQuestions) * 100);
-                
-                const progressFill = document.getElementById('progress-fill');
-                const progressText = document.getElementById('progress-text');
-                
-                if (progressFill && progressFill.style) {
-                    progressFill.style.width = percentage + '%';
-                }
-                
-                if (progressText) {
-                    progressText.textContent = `완료된 문제: ${answeredQuestions}/25 (${Math.round(percentage * 5)}%)`;
-                }
-            } catch (error) {
-                console.log('Progress update error:', error);
-            }
-        }
-
-        function showAllAnswers() {
-            try {
-                // Show all quiz results
-                const allResults = document.querySelectorAll('.quiz-result');
-                allResults.forEach(function(result) {
-                    if (result && result.classList) {
-                        result.classList.add('show');
-                        result.classList.add('correct');
-                    }
-                });
-                
-                // Highlight all correct answers
-                const quizContainers = document.querySelectorAll('.quiz-container');
-                quizContainers.forEach(function(container, index) {
-                    if (!container || index >= 5) return; // Only for first 5 quiz questions
-                    
-                    const options = container.querySelectorAll('.quiz-option');
-                    if (!options || options.length < 2) return;
-                    
-                    // Clear all previous selections
-                    options.forEach(function(option) {
-                        if (option && option.classList) {
-                            option.classList.remove('correct', 'incorrect');
-                        }
-                    });
-                    
-                    // Mark correct answer - Question specific answers
-                    const correctAnswers = [1, 0, 0, 1, 1]; // B, A, A, B, B
-                    const correctIndex = correctAnswers[index];
-                    
-                    if (options[correctIndex] && options[correctIndex].classList) {
-                        options[correctIndex].classList.add('correct');
-                    }
-                });
-                
-                // Update progress
-                updateQuizProgress();
-                
-                // Change button text and disable
-                const button = document.getElementById('show-answers-btn');
-                if (button) {
-                    button.textContent = '✅ 정답 확인 완료';
-                    button.disabled = true;
-                    button.style.opacity = '0.6';
-                    button.style.cursor = 'not-allowed';
-                }
-                
-            } catch (error) {
-                console.log('Show answers error:', error);
-            }
-        }
-
-        function updateProgress() {
-            try {
-                const checkboxes = document.querySelectorAll('.self-check-input');
-                if (!checkboxes) return;
-                
-                let checkedCount = 0;
-                checkboxes.forEach(function(checkbox) {
-                    if (checkbox && checkbox.checked) {
-                        checkedCount++;
-                    }
-                });
-                
-                const totalItems = checkboxes.length;
-                const percentage = Math.round((checkedCount / totalItems) * 100);
-                
-                const progressFill = document.getElementById('final-progress');
-                const progressText = document.getElementById('final-progress-text');
-                
-                if (progressFill && progressFill.style) {
-                    progressFill.style.width = percentage + '%';
-                }
-                
-                if (progressText) {
-                    progressText.textContent = `체크된 항목: ${checkedCount}/${totalItems} (${percentage}%)`;
-                }
-                
-                // Celebration when complete
-                if (percentage === 100) {
-                    setTimeout(function() {
-                        alert('🎉 축하합니다! 수동태 마스터 완료! 🎉');
-                    }, 500);
-                }
-            } catch (error) {
-                console.log('Progress update error:', error);
-            }
-        }
-
-        // Keyboard navigation support
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Tab') {
-                const focusedElement = document.activeElement;
-                if (focusedElement && focusedElement.classList) {
-                    if (focusedElement.classList.contains('toc-item') ||
-                        focusedElement.classList.contains('quiz-option') ||
-                        focusedElement.classList.contains('show-answers-btn')) {
-                        focusedElement.style.outline = '3px solid #fff';
-                        focusedElement.style.outlineOffset = '2px';
-                    }
-                }
-            }
-        });
-    </script>
-</body>
 </html>
-
-
-
-
-
-
-

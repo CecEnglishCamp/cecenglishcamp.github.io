@@ -1,354 +1,549 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G09 Part 1: WH-Questions</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>G09. Question Formation: Wh-Questions</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Sans+KR:wght@300;400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --white: #ffffff;
+    --green-dark: #4a6741;
+    --green-mid: #5a7a50;
+    --green-light: #e8f0e5;
+    --green-card: #3d5c35;
+    --gold: #c8972a;
+    --gold-light: #fdf3e0;
+    --cream: #faf7f0;
+    --brown: #6b5c3e;
+    --brown-light: #f0e8d8;
+    --text: #2d2d2d;
+    --muted: #7a7a7a;
+    --border: #ddd6c8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif; line-height: 1.7; padding-bottom: 80px; }
 
-        :root {
-            --blue-light: #e3f2fd;
-            --blue-medium: #bbdefb;
-            --green: #e8f5e9;
-            --orange: #fff3e0;
-            --purple: #f3e5f5;
-            --sky: #e0f7fa;
-            --gray-light: #f5f5f5;
-            --gray-dark: #bdbdbd;
-            --wh-color: #9c27b0; /* Purple for WH-Questions */
-            --blue-main: #3498db;
-        }
+  /* HEADER */
+  .lesson-header { background: #0a1628; padding: 36px 24px 32px; text-align: center; }
+  .gbc-badge { display: inline-block; border: 1px solid rgba(0,242,255,0.5); color: rgba(0,242,255,0.8); font-family: 'Poppins', sans-serif; font-size: 11px; letter-spacing: 2px; padding: 4px 14px; border-radius: 20px; margin-bottom: 16px; }
+  .lesson-num-title { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+  .lesson-main-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 44px; font-weight: 500; color: #00f2ff; line-height: 1.15; margin-bottom: 10px; }
+  .lesson-sub { font-size: 14px; color: rgba(255,255,255,0.5); }
 
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #1a2a1a;
-            margin: 0;
-            padding: 20px;
-        }
-            margin: 0;
-            padding: 20px;
-        }
+  /* TOC */
+  .toc { background: var(--green-dark); padding: 12px 20px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .toc a { font-size: 12px; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.75); text-decoration: none; }
+  .toc a:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
+  /* LAYOUT */
+  .content { max-width: 740px; margin: 0 auto; padding: 0 20px; }
 
-                /* 제목 스타일 */
-                /* 제목 스타일 */
-                /* 제목 스타일 */
-                /* 제목 스타일 */
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #33ddff;
-        }
-        
-                        .title-en {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-weight: 500;
-            font-size: 50px;
-            letter-spacing: 2px;
-            color: #55eeff;
-            line-height: 1.2;
-            text-align: center;
-        }
-        
-                        .title-ko {
-            font-family: 'NanumSquareRound', sans-serif;
-            font-weight: 800;
-            font-size: 22px;
-            letter-spacing: 3px;
-            color: #55eeff;
-            opacity: 0.9;
-            margin-top: 5px;
-            line-height: 1.2;
-            text-align: center;
-        }
+  /* SECTION */
+  .section { margin-top: 28px; background: var(--white); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+  .section-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); }
+  .section-num { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; flex-shrink: 0; color: #fff; }
+  .section-title { font-size: 15px; font-weight: 700; color: var(--text); }
+  .section-en { font-size: 11px; color: var(--muted); font-family: 'Poppins', sans-serif; letter-spacing: 1px; margin-left: 6px; }
+  .section-body { padding: 20px; }
 
-        .toc {
-            background-color: #f8f9fa;
-            border-left: 5px solid var(--blue-main);
-            padding: 1rem 1.5rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-        }
+  /* KEY CARD */
+  .key-card { background: var(--green-card); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .key-label { font-size: 11px; font-family: 'Poppins', sans-serif; letter-spacing: 2px; color: var(--gold); margin-bottom: 10px; }
+  .key-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 30px; font-weight: 500; color: #fff; margin-bottom: 6px; }
+  .key-kr { font-size: 13px; color: rgba(255,255,255,0.65); }
 
-        .toc h2 {
-            margin-top: 0;
-            color: #2980b9;
-        }
+  /* CONCEPT BOX */
+  .concept-box { background: var(--green-light); border-radius: 10px; padding: 16px; margin-bottom: 12px; border-left: 4px solid var(--green-mid); }
+  .concept-box p { font-size: 14px; margin-bottom: 8px; }
+  .concept-box p:last-child { margin-bottom: 0; }
 
-        .toc ol {
-            padding-left: 20px;
-        }
+  /* RULE GRID */
+  .rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .rule-card { padding: 14px 16px; border-radius: 12px; border: 1px solid var(--border); }
+  .rule-label { font-size: 10px; font-family: 'Poppins', sans-serif; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 8px; }
+  .rule-example { font-family: 'Poppins', sans-serif; font-size: 13px; }
+  .rule-example strong { font-weight: 700; }
+  .r-is { background: var(--green-light); border-color: #b8d4b0; }
+  .r-is .rule-label { color: var(--green-dark); }
+  .r-is .rule-example strong { color: var(--green-dark); }
+  .r-are { background: #e8f4e8; border-color: #a8ccaa; }
+  .r-are .rule-label { color: #3a6640; }
+  .r-are .rule-example strong { color: #3a6640; }
+  .r-neg { background: #fdf0e0; border-color: #e8c88a; }
+  .r-neg .rule-label { color: #8a5a1a; }
+  .r-neg .rule-example strong { color: #8a5a1a; }
+  .r-q { background: var(--brown-light); border-color: #d4c0a0; }
+  .r-q .rule-label { color: var(--brown); }
+  .r-q .rule-example strong { color: var(--brown); }
 
-        .toc li a {
-            text-decoration: none;
-            color: #34495e;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
+  /* BULLET LIST */
+  .rule-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .rule-list li { font-size: 14px; padding: 8px 12px; background: var(--cream); border-radius: 8px; border-left: 3px solid var(--green-mid); }
+  .rule-list li strong { color: var(--green-dark); font-family: 'Poppins', sans-serif; }
 
-        .toc li a:hover {
-            color: #1a6496;
-            text-decoration: underline;
-        }
+  /* EXAMPLE LIST */
+  .ex-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .ex-list li { padding: 12px 16px; background: var(--cream); border-radius: 10px; border-left: 4px solid var(--green-mid); font-size: 14px; }
+  .ex-list li .en { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
+  .ex-list li .kr { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+  .ex-q { border-left-color: var(--brown) !important; }
+  .ex-q .en { color: var(--brown) !important; }
 
-        .section {
-            padding: 2rem 0;
-            border-bottom: 1px solid #eee;
-        }
+  /* DIALOGUE */
+  .dialogue { background: var(--cream); border-radius: 12px; padding: 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+  .d-title { font-size: 10px; font-family: 'Poppins', sans-serif; letter-spacing: 1.5px; color: var(--gold); font-weight: 700; margin-bottom: 10px; }
+  .d-line { font-size: 14px; margin-bottom: 5px; }
+  .d-line .sp { color: var(--green-dark); font-weight: 700; margin-right: 6px; }
+  .d-line .key { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
 
-        .section h2 {
-            font-size: 1.8rem;
-            color: #34495e;
-            border-left: 4px solid var(--blue-main);
-            padding-left: 15px;
-        }
+  /* PRACTICE */
+  .practice-item { padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 8px; font-size: 14px; background: var(--cream); }
+  .practice-item .original { color: var(--muted); margin-bottom: 4px; font-size: 13px; }
+  .practice-item .result { color: var(--green-dark); font-weight: 700; font-family: 'Poppins', sans-serif; }
 
-        .concept-card {
-            background-color: var(--blue-light);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            position: relative;
-            overflow: hidden;
-        }
+  /* PATTERN BOX */
+  .pattern-box { background: var(--gold-light); border: 1px solid #e8c88a; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .pattern-box .p-label { font-size: 11px; color: var(--gold); font-family: 'Poppins', sans-serif; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+  .pattern-box .p-text { font-size: 14px; color: var(--brown); }
+  .pattern-box .p-text strong { color: #7a5010; font-family: 'Poppins', sans-serif; }
 
-        .concept-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background-color: var(--wh-color); /* WH Color */
-        }
+  /* MISTAKE BOX */
+  .mistake-box { background: #fff5f5; border: 1px solid #f4c0c0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .mistake-box .wrong { color: #c0392b; font-size: 13px; text-decoration: line-through; margin-bottom: 4px; }
+  .mistake-box .right { color: var(--green-dark); font-size: 14px; font-weight: 700; font-family: 'Poppins', sans-serif; }
+  .mistake-box .reason { color: var(--muted); font-size: 12px; margin-top: 4px; }
 
-        .concept-card h4 {
-            color: #1f3a5f;
-            margin-top: 0;
-            display: flex;
-            align-items: center;
-        }
+  /* TIP BOX */
+  .tip-box { background: #e8f0ff; border: 1px solid #b8c8f0; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
+  .tip-box .tip-label { font-size: 11px; color: #3050a0; font-family: 'Poppins', sans-serif; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+  .tip-box .tip-text { font-size: 14px; color: #1a2a60; }
 
-        .concept-icon {
-            font-size: 1.5rem;
-            color: var(--wh-color);
-            margin-right: 10px;
-            font-weight: bold;
-        }
+  /* CHECKLIST */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .checklist li { display: flex; align-items: center; gap: 12px; font-size: 14px; padding: 10px 14px; background: var(--cream); border-radius: 10px; cursor: pointer; }
+  .chk { width: 20px; height: 20px; border: 2px solid var(--green-mid); border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: #fff; }
+  .chk.on { background: var(--green-mid); border-color: var(--green-dark); }
+  .chk.on::after { content: '\2713'; color: #fff; font-size: 12px; font-weight: 700; }
 
-        .concept-meaning strong, .concept-examples strong {
-            color: var(--wh-color);
-        }
+  /* FOOTER */
+  .footer-nav { background: var(--green-dark); display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; margin-top: 32px; }
+  .fnav-btn { padding: 8px 20px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; border: none; font-family: 'Poppins', sans-serif; }
+  .fnav-prev { background: rgba(255,255,255,0.15); color: #fff; }
+  .fnav-center { color: rgba(255,255,255,0.6); font-size: 12px; letter-spacing: 1px; font-family: 'Poppins', sans-serif; }
+  .fnav-next { background: var(--gold); color: #000; }
+</style>
 
-        .grammar ul, .positive ul, .question ul, .dialogue p, .sentence_combining ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .grammar li, .positive li, .question li, .dialogue p, .sentence_combining li {
-            background-color: #f9f9f9;
-            padding: 12px 20px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        
-        .grammar li:hover, .positive li:hover, .question li:hover, .dialogue p:hover, .sentence_combining li:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .section.concept { background-color: var(--blue-light); }
-        .section.grammar { background-color: var(--blue-medium); }
-        .section.positive { background-color: var(--green); }
-        .section.question { background-color: var(--orange); }
-        .section.dialogue { background-color: var(--purple); }
-        .section.sentence_combining { background-color: var(--sky); }
-        
-        .section.concept h2 { border-color: var(--wh-color); color: var(--wh-color); }
-        .section.grammar h2 { border-color: #2c3e50; color: #2c3e50; }
-        .section.positive h2 { border-color: #27ae60; color: #27ae60; }
-        .section.question h2 { border-color: #e67e22; color: #e67e22; }
-        .section.dialogue h2 { border-color: #8e44ad; color: #8e44ad; }
-        .section.sentence_combining h2 { border-color: #3498db; color: #3498db; }
-        
-        .positive strong, .question strong, .dialogue strong, .sentence_combining strong { color: #8e44ad; }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 1rem;
-            }
-            .section h2 {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=NanumSquareRound:wght@800&display=swap" rel="stylesheet">
+  <meta name="description" content="CEC Grammar BaseCamp G09 — G09 영어 문법 무료 학습">
+  <meta name="keywords" content="영어문법,G09,G09,CEC English Camp">
+  <meta property="og:title" content="G09 G09 | CEC Grammar BaseCamp">
+  <meta property="og:url" content="https://cecenglishcamp.github.io/GrammarBaseCamp/G09/G09_new.html">
+  <meta name="robots" content="index, follow">
 </head>
 <body data-grammar-id="G09">
 
-    <div class="container">
-        <h1>
-  <div class="title-en">G09. Questions - WH-Questions</div>
-  <div class="title-ko">( 의문문 )</div>
-</h1>
+<header class="lesson-header" role="banner">
+  <div class="gbc-badge">CEC GRAMMAR BASECAMP</div>
+  <div class="lesson-num-title">G09 · Basic Grammar</div>
+  <div class="lesson-main-title">Question Formation: Wh-Questions</div>
+  <div class="lesson-sub">의문문 만들기 — who, what, where, when, why, how</div>
+</header>
 
-	<div style="text-align:right; margin-bottom:10px;">
-  <img src="E:/CEC_CAMP STORAGE/CampA_Images/robo.png" style="height:120px;">
-</div>
+<nav class="toc" aria-label="문법 섹션 메뉴">
+  <a href="#concept">기본 개념</a>
+  <a href="#grammar">문법 규칙</a>
+  <a href="#positive">긍정문</a>
+  <a href="#question">의문문</a>
+  <a href="#dialogue">대화 흐름</a>
+  <a href="#combining">문장 결합</a>
+  <a href="#reallife">실생활</a>
+  <a href="#patterns">패턴</a>
+  <a href="#mistakes">흔한 실수</a>
+  <a href="#tips">레벨업 팁</a>
+  <a href="#practice">연습문제</a>
+  <a href="#check">자가진단</a>
+</nav>
 
-        <div class="toc">
-            <h2>📚 목차 (Table of Contents)</h2>
-            <ol>
-                <li><a href="#concept">기본 개념 (Basic Concept)</a></li>
-                <li><a href="#grammar">문법 규칙 (Grammar Rules)</a></li>
-                <li><a href="#positive">질문 예시 (WH-Question Examples)</a></li>
-                <li><a href="#question">의문문 변환 연습 (Question Formation)</a></li>
-                <li><a href="#dialogue">상황별 대화 (Situational Dialogues)</a></li>
-                <li><a href="#sentence_combining">문장 결합 연습 (Sentence Combining)</a></li>
-            </ol>
-        </div>
+<main class="content" role="main">
 
-        <hr>
-        
-        <div class="section concept" id="concept">
-            <h2>1. 기본 개념 (Basic Concept)</h2>
-            <div class="concept-card">
-                <h4><span class="concept-icon">WH?</span>Question Formation – WH-Questions</h4>
-                <div class="concept-meaning">
-                    <strong>WH-의문문:</strong> **구체적인 정보**를 묻는 질문으로, 의문사 (**what, where, when, who, why, how** 등)를 사용합니다.<br>
-                    **형태:** **WH** + 조동사(**be/do/does/did**) + 주어 + 동사원형<br>
-                    Yes/No로 답할 수 없으며, 반드시 그 질문에 해당하는 구체적인 내용을 답해야 합니다.
-                </div>
-                <div class="concept-examples">
-                    <p>**What** do you eat?</p>
-                    <p>**Where** is she?</p>
-                    <p>**Why** are they late?</p>
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="section grammar" id="grammar">
-            <h2>2. 문법 규칙 (Grammar Rules)</h2>
-            <ul>
-                <li>**WH + be동사 + 주어:** Where **is** she? / Why **are** they late? (상태나 위치 질문)</li>
-                <li>**WH + do/does + 주어 + 동사원형:** What **do** you eat? / What **does** he want? (현재 일반동사 질문)</li>
-                <li>**WH + did + 주어 + 동사원형:** What **did** you do yesterday? (과거 일반동사 질문)</li>
-                <li>**의문사 종류:** **What** (무엇), **Where** (어디), **When** (언제), **Who** (누구), **Why** (왜), **How** (어떻게/얼마나)</li>
-                <li>**핵심 어순:** **의문사** → **조동사** 또는 **be동사** → **주어** → **동사원형** (일반동사일 경우)</li>
-                <li>**주의:** **do/does/did** 뒤에는 **반드시** 동사원형을 사용합니다. (❌ What does he wants?)</li>
-                <li>**주어 역할 의문사:** **Who**나 **What**이 주어 역할을 할 때는 조동사(do/does/did) 없이 바로 동사를 사용합니다. (예: **Who** came?) - *심화 내용*</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section positive" id="positive">
-            <h2>3. 질문 예시 (WH-Question Examples)</h2>
-            <ul>
-                <li>**What** do you **eat**? (무엇을 먹니?)</li>
-                <li>**Where** **is** she? (그녀는 어디에 있니?)</li>
-                <li>**When** do we **start**? (우리는 언제 시작하니?)</li>
-                <li>**Who** **is** your teacher? (너의 선생님은 누구니?)</li>
-                <li>**Why** are they **late**? (그들은 왜 늦었니?)</li>
-                <li>**How** do you **spell** your name? (네 이름을 어떻게 철자하니?)</li>
-                <li>**What** does he **want**? (그는 무엇을 원하니?)</li>
-                <li>**Where** do you **live**? (너는 어디에 사니?)</li>
-                <li>**When** did you **arrive**? (너는 언제 도착했니? - 과거)</li>
-                <li>**How** **is** your mom? (너희 엄마는 어떠시니?)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section question" id="question">
-            <h2>4. 의문문 변환 연습 (Question Formation)</h2>
-            <p>(굵은 글씨 부분이 질문의 대상이 됩니다.)</p>
-            <ul>
-                <li>You eat **lunch**. → **What** do you eat?</li>
-                <li>She is **in the kitchen**. → **Where** is she?</li>
-                <li>We start **at 9**. → **When** do we start?</li>
-                <li>He wants **pizza**. → **What** does he want?</li>
-                <li>They are **late**. → **Why** are they late?</li>
-                <li>You spell your name **by saying each letter**. → **How** do you spell your name?</li>
-                <li>You arrived **yesterday**. → **When** did you arrive?</li>
-                <li>She is **fine**. → **How** is she?</li>
-                <li>You live **in Seoul**. → **Where** do you live?</li>
-                <li>**He** is your teacher. → **Who** is your teacher?</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section dialogue" id="dialogue">
-            <h2>5. 상황별 대화 흐름 (Situational Dialogues)</h2>
-
-            <p><strong>학교 상황 (What)</strong><br />
-            A: **What** do you study?<br />
-            B: I study English.<br />
-            A: Nice!</p>
-
-            <p><strong>여행 상황 (Where)</strong><br />
-            A: **Where** are we?<br />
-            B: We are in Paris.<br />
-            A: Wow!</p>
-
-            <p><strong>직장 상황 (When)</strong><br />
-            A: **When** do we start the meeting?<br />
-            B: At 10 AM.<br />
-            A: Got it.</p>
-
-            <p><strong>온라인 상황 (How)</strong><br />
-            A: **How** do you join the class?<br />
-            B: Click the link and enter your name.<br />
-            A: Thanks!</p>
-
-            <p><strong>가족 상황 (Who)</strong><br />
-            A: **Who** is cooking dinner?<br />
-            B: Mom is.<br />
-            A: Smells good!</p>
-
-            <p><strong>병원 상황 (Why)</strong><br />
-            A: **Why** is he here?<br />
-            B: He has a fever.<br />
-            A: I hope he feels better.</p>
-        </div>
-
-        <hr>
-
-        <div class="section sentence_combining" id="sentence_combining">
-            <h2>6. 문장 결합 연습 (Sentence Combining)</h2>
-            <p>(일반 문장을 올바른 WH-질문으로 만드세요.)</p>
-            <ul>
-                <li>You eat lunch. (What) → **What do you eat?**</li>
-                <li>She is in the kitchen. (Where) → **Where is she?**</li>
-                <li>We start at 9. (When) → **When do we start?**</li>
-                <li>He wants pizza. (What) → **What does he want?**</li>
-                <li>They are late. (Why) → **Why are they late?**</li>
-                <li>You spell your name. (How) → **How do you spell your name?**</li>
-                <li>You arrived yesterday. (When) → **When did you arrive?**</li>
-                <li>She is fine. (How) → **How is she?**</li>
-                <li>You live in Seoul. (Where) → **Where do you live?**</li>
-                <li>He is your teacher. (Who) → **Who is your teacher?**</li>
-            </ul>
-        </div>
+  <!-- 1. 기본 개념 -->
+  <div class="section" id="concept" aria-label="기본 개념">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">1</div>
+      <div><span class="section-title">기본 개념</span><span class="section-en">BASIC CONCEPT</span></div>
     </div>
+    <div class="section-body">
+      <div class="key-card">
+        <div class="key-label">⭐ TODAY'S KEY GRAMMAR</div>
+        <div class="key-text">Question Formation: Wh-Questions</div>
+        <div class="key-kr">의문문 만들기 — who, what, where, when, why, how</div>
+      </div>
+      <div class="concept-box">
+        <p><strong style="color:var(--green-dark)">WH-의문문</strong> → <strong>구체적인 정보</strong>를 묻는 질문으로, 의문사 (<strong>what, where, when, who, why, how</strong> 등)를 사용합니다.</p>
+        <p><strong style="color:#3a6640">형태</strong> → <strong>WH</strong> + 조동사(<strong>be/do/does/did</strong>) + 주어 + 동사원형</p>
+        <p>Yes/No로 답할 수 없으며, 반드시 그 질문에 해당하는 구체적인 내용을 답해야 합니다.</p>
+      </div>
+      <ul class="ex-list">
+        <li><span class="en">What</span> do you eat?<span class="kr">무엇을 먹니?</span></li>
+        <li><span class="en">Where</span> is she?<span class="kr">그녀는 어디에 있니?</span></li>
+        <li><span class="en">Why</span> are they late?<span class="kr">그들은 왜 늦었니?</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2. 문법 규칙 -->
+  <div class="section" id="grammar" aria-label="문법 규칙">
+    <div class="section-header">
+      <div class="section-num" style="background:#3a6640;">2</div>
+      <div><span class="section-title">문법 규칙</span><span class="section-en">GRAMMAR RULES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="rule-grid">
+        <div class="rule-card r-is">
+          <div class="rule-label">BE동사 질문 · BE VERB</div>
+          <div class="rule-example"><strong>WH + be + 주어</strong><br><span style="font-size:12px;color:var(--muted)">Where is she?</span></div>
+        </div>
+        <div class="rule-card r-are">
+          <div class="rule-label">일반동사 현재 · PRESENT</div>
+          <div class="rule-example"><strong>WH + do/does + 주어 + 동사원형</strong><br><span style="font-size:12px;color:var(--muted)">What do you eat?</span></div>
+        </div>
+        <div class="rule-card r-neg">
+          <div class="rule-label">일반동사 과거 · PAST</div>
+          <div class="rule-example"><strong>WH + did + 주어 + 동사원형</strong><br><span style="font-size:12px;color:var(--muted)">What did you do?</span></div>
+        </div>
+        <div class="rule-card r-q">
+          <div class="rule-label">주어 역할 · SUBJECT WH</div>
+          <div class="rule-example"><strong>Who/What + 동사</strong> (조동사 없음)<br><span style="font-size:12px;color:var(--muted)">Who came?</span></div>
+        </div>
+      </div>
+      <ul class="rule-list">
+        <li><strong>의문사 종류:</strong> What (무엇), Where (어디), When (언제), Who (누구), Why (왜), How (어떻게/얼마나)</li>
+        <li><strong>핵심 어순:</strong> 의문사 → 조동사 또는 be동사 → 주어 → 동사원형 (일반동사일 경우)</li>
+        <li><strong>주의:</strong> do/does/did 뒤에는 반드시 동사원형을 사용합니다.</li>
+        <li><strong>주어 역할 의문사:</strong> Who나 What이 주어 역할을 할 때는 조동사(do/does/did) 없이 바로 동사를 사용합니다. (심화 내용)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 3. 긍정문 예시 -->
+  <div class="section" id="positive" aria-label="긍정문">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--gold); color:#000;">3</div>
+      <div><span class="section-title">긍정문 예시</span><span class="section-en">POSITIVE EXAMPLES</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en">What</span> do you eat?<span class="kr">무엇을 먹니?</span></li>
+        <li><span class="en">Where</span> is she?<span class="kr">그녀는 어디에 있니?</span></li>
+        <li><span class="en">When</span> do we start?<span class="kr">우리는 언제 시작하니?</span></li>
+        <li><span class="en">Who</span> is your teacher?<span class="kr">너의 선생님은 누구니?</span></li>
+        <li><span class="en">Why</span> are they late?<span class="kr">그들은 왜 늦었니?</span></li>
+        <li><span class="en">How</span> do you spell your name?<span class="kr">네 이름을 어떻게 철자하니?</span></li>
+        <li><span class="en">What</span> does he want?<span class="kr">그는 무엇을 원하니?</span></li>
+        <li><span class="en">Where</span> do you live?<span class="kr">너는 어디에 사니?</span></li>
+        <li><span class="en">When</span> did you arrive?<span class="kr">너는 언제 도착했니? (과거)</span></li>
+        <li><span class="en">How</span> is your mom?<span class="kr">너희 엄마는 어떠시니?</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4. 의문문 예시 -->
+  <div class="section" id="question" aria-label="부정문">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">4</div>
+      <div><span class="section-title">의문문 예시</span><span class="section-en">QUESTION EXAMPLES</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li class="ex-q"><span class="en">What</span> do you eat?<span class="kr">You eat lunch. → 굵은 부분(lunch)을 묻는 질문</span></li>
+        <li class="ex-q"><span class="en">Where</span> is she?<span class="kr">She is in the kitchen. → 장소를 묻는 질문</span></li>
+        <li class="ex-q"><span class="en">When</span> do we start?<span class="kr">We start at 9. → 시간을 묻는 질문</span></li>
+        <li class="ex-q"><span class="en">What</span> does he want?<span class="kr">He wants pizza. → 대상을 묻는 질문</span></li>
+        <li class="ex-q"><span class="en">Why</span> are they late?<span class="kr">They are late. → 이유를 묻는 질문</span></li>
+        <li class="ex-q"><span class="en">How</span> do you spell your name?<span class="kr">방법을 묻는 질문</span></li>
+        <li class="ex-q"><span class="en">When</span> did you arrive?<span class="kr">You arrived yesterday. → 과거 시간을 묻는 질문</span></li>
+        <li class="ex-q"><span class="en">How</span> is she?<span class="kr">She is fine. → 상태를 묻는 질문</span></li>
+        <li class="ex-q"><span class="en">Where</span> do you live?<span class="kr">You live in Seoul. → 장소를 묻는 질문</span></li>
+        <li class="ex-q"><span class="en">Who</span> is your teacher?<span class="kr">He is your teacher. → 사람을 묻는 질문</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5. 상황별 대화 흐름 -->
+  <div class="section" id="dialogue" aria-label="의문문">
+    <div class="section-header">
+      <div class="section-num" style="background:#5a7a50;">5</div>
+      <div><span class="section-title">상황별 대화 흐름</span><span class="section-en">SITUATIONAL DIALOGUES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="dialogue">
+        <div class="d-title">🏫 학교 상황 · SCHOOL (WHAT)</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">What</span> do you study?</div>
+        <div class="d-line"><span class="sp">B:</span> I study English.</div>
+        <div class="d-line"><span class="sp">A:</span> Nice!</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">✈️ 여행 상황 · TRAVEL (WHERE)</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Where</span> are we?</div>
+        <div class="d-line"><span class="sp">B:</span> We are in Paris.</div>
+        <div class="d-line"><span class="sp">A:</span> Wow!</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">💼 직장 상황 · OFFICE (WHEN)</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">When</span> do we start the meeting?</div>
+        <div class="d-line"><span class="sp">B:</span> At 10 AM.</div>
+        <div class="d-line"><span class="sp">A:</span> Got it.</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">💻 온라인 상황 · ONLINE (HOW)</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">How</span> do you join the class?</div>
+        <div class="d-line"><span class="sp">B:</span> Click the link and enter your name.</div>
+        <div class="d-line"><span class="sp">A:</span> Thanks!</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">🏠 가족 상황 · FAMILY (WHO)</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Who</span> is cooking dinner?</div>
+        <div class="d-line"><span class="sp">B:</span> Mom is.</div>
+        <div class="d-line"><span class="sp">A:</span> Smells good!</div>
+      </div>
+      <div class="dialogue">
+        <div class="d-title">🏥 병원 상황 · HOSPITAL (WHY)</div>
+        <div class="d-line"><span class="sp">A:</span> <span class="key">Why</span> is he here?</div>
+        <div class="d-line"><span class="sp">B:</span> He has a fever.</div>
+        <div class="d-line"><span class="sp">A:</span> I hope he feels better.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 문장 결합 연습 -->
+  <div class="section" id="combining" aria-label="대화">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">6</div>
+      <div><span class="section-title">문장 결합 연습</span><span class="section-en">SENTENCE COMBINING</span></div>
+    </div>
+    <div class="section-body">
+      <div class="practice-item">
+        <div class="original">You eat lunch. (What)</div>
+        <div class="result">→ What do you eat?</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">She is in the kitchen. (Where)</div>
+        <div class="result">→ Where is she?</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">We start at 9. (When)</div>
+        <div class="result">→ When do we start?</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">He wants pizza. (What)</div>
+        <div class="result">→ What does he want?</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">They are late. (Why)</div>
+        <div class="result">→ Why are they late?</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You spell your name. (How)</div>
+        <div class="result">→ How do you spell your name?</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You arrived yesterday. (When)</div>
+        <div class="result">→ When did you arrive?</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">She is fine. (How)</div>
+        <div class="result">→ How is she?</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">You live in Seoul. (Where)</div>
+        <div class="result">→ Where do you live?</div>
+      </div>
+      <div class="practice-item">
+        <div class="original">He is your teacher. (Who)</div>
+        <div class="result">→ Who is your teacher?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 실생활 사용 예시 -->
+  <div class="section" id="reallife" aria-label="문장 결합">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--gold); color:#000;">7</div>
+      <div><span class="section-title">실생활 사용 예시</span><span class="section-en">REAL-LIFE USAGE</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="ex-list">
+        <li><span class="en">What</span> do you study in class?<span class="kr">🏫 학교 — 무엇을 공부하니?</span></li>
+        <li><span class="en">When</span> does the meeting start?<span class="kr">💼 직장 — 회의는 언제 시작하니?</span></li>
+        <li><span class="en">Who</span> is cooking dinner today?<span class="kr">🏠 가족 — 오늘 누가 저녁을 만드니?</span></li>
+        <li><span class="en">How</span> do you join the video call?<span class="kr">💻 온라인 — 화상 통화에 어떻게 참여하니?</span></li>
+        <li><span class="en">Why</span> is he feeling sick?<span class="kr">🏥 병원 — 그는 왜 아프니?</span></li>
+        <li><span class="en">Where</span> are we going tomorrow?<span class="kr">✈️ 여행 — 우리는 내일 어디에 가니?</span></li>
+        <li><span class="en">What</span> does she want to buy?<span class="kr">🛒 쇼핑 — 그녀는 무엇을 사고 싶어 하니?</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 8. 자주 쓰이는 패턴 -->
+  <div class="section" id="patterns" aria-label="실생활">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">8</div>
+      <div><span class="section-title">자주 쓰이는 패턴</span><span class="section-en">COMMON PATTERNS</span></div>
+    </div>
+    <div class="section-body">
+      <div class="pattern-box">
+        <div class="p-label">WHAT + DO/DOES</div>
+        <div class="p-text"><strong>What</strong> + do/does + 주어 + 동사<br><span style="font-size:13px;">What do you eat?</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">WHERE + IS/ARE</div>
+        <div class="p-text"><strong>Where</strong> + is/are + 주어<br><span style="font-size:13px;">Where is she? / Where are they?</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">WHEN + DO/DOES</div>
+        <div class="p-text"><strong>When</strong> + do/does + 주어 + 동사<br><span style="font-size:13px;">When does he arrive?</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">WHO + IS</div>
+        <div class="p-text"><strong>Who</strong> + is + 주어<br><span style="font-size:13px;">Who is your teacher?</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">WHY + IS/ARE</div>
+        <div class="p-text"><strong>Why</strong> + is/are + 주어 + 형용사/동사ing<br><span style="font-size:13px;">Why are they late? / Why are you leaving?</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">HOW + DO/DOES</div>
+        <div class="p-text"><strong>How</strong> + do/does + 주어 + 동사<br><span style="font-size:13px;">How do you spell your name?</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">WHAT + DID (과거)</div>
+        <div class="p-text"><strong>What</strong> + did + 주어 + 동사원형<br><span style="font-size:13px;">What did you do yesterday?</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">WHERE + DO + LIVE</div>
+        <div class="p-text"><strong>Where</strong> + do + 주어 + live (가장 흔한 질문 중 하나)<br><span style="font-size:13px;">Where do you live?</span></div>
+      </div>
+      <div class="pattern-box">
+        <div class="p-label">HOW + IS</div>
+        <div class="p-text"><strong>How</strong> + is + 주어<br><span style="font-size:13px;">How is your mom? / How is the weather?</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. 흔한 실수 -->
+  <div class="section" id="mistakes" aria-label="패턴">
+    <div class="section-header">
+      <div class="section-num" style="background:#c0392b;">9</div>
+      <div><span class="section-title">흔한 실수</span><span class="section-en">COMMON MISTAKES</span></div>
+    </div>
+    <div class="section-body">
+      <div class="mistake-box">
+        <div class="wrong">✗ What you eat?</div>
+        <div class="right">✓ What do you eat?</div>
+        <div class="reason">do 조동사 누락</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ Where she is?</div>
+        <div class="right">✓ Where is she?</div>
+        <div class="reason">주어/동사 순서 오류 — be동사가 주어 앞에 와야 합니다</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ When we start?</div>
+        <div class="right">✓ When do we start?</div>
+        <div class="reason">do 조동사 누락</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ What does he wants?</div>
+        <div class="right">✓ What does he want?</div>
+        <div class="reason">조동사 does 뒤에는 동사원형 사용</div>
+      </div>
+      <div class="mistake-box">
+        <div class="wrong">✗ Why they are late?</div>
+        <div class="right">✓ Why are they late?</div>
+        <div class="reason">주어/동사 순서 오류 — be동사가 주어 앞에 와야 합니다</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. 레벨업 팁 -->
+  <div class="section" id="tips" aria-label="흔한 실수">
+    <div class="section-header">
+      <div class="section-num" style="background:#185fa5;">10</div>
+      <div><span class="section-title">레벨업 팁</span><span class="section-en">LEVEL-UP TIPS</span></div>
+    </div>
+    <div class="section-body">
+      <div class="tip-box">
+        <div class="tip-label">TIP 1 · WHO/WHAT이 주어일 때</div>
+        <div class="tip-text">Who broke the window? / What happened? 이 경우 조동사(do/does/did)를 사용하지 않고 일반 긍정문처럼 동사를 주어 바로 뒤에 씁니다.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 2 · 어순의 반복 연습</div>
+        <div class="tip-text">모든 WH-질문은 WH + 조동사/be동사 + 주어 + 동사원형 이라는 어순을 유지해야 합니다. 반복하여 자연스럽게 만드세요.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 3 · HOW의 확장</div>
+        <div class="tip-text">How much (가격/불가산 수량), How many (가산 수량), How often (빈도) 등 'How'가 들어간 복합 의문사를 활용하여 질문을 구체화하세요.</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 4 · 과거 질문 연습</div>
+        <div class="tip-text">did를 사용하는 과거 질문을 꾸준히 연습하세요. (did 뒤에는 항상 동사원형: What did you eat?)</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-label">TIP 5 · 실생활 적용</div>
+        <div class="tip-text">하루에 5개의 WH-질문을 스스로 만들고 답하는 연습을 하세요.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. 연습문제 -->
+  <div class="section" id="practice" aria-label="레벨업 팁">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--green-dark);">11</div>
+      <div><span class="section-title">연습문제</span><span class="section-en">PRACTICE EXERCISES</span></div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:13px; color:var(--muted); margin-bottom:14px;">빈칸에 알맞은 의문사 또는 조동사를 넣어 올바른 질문을 완성하세요.</p>
+      <ul class="rule-list">
+        <li>___ you eat? → <strong style="color:var(--green-dark)">What do you eat?</strong></li>
+        <li>___ is she? → <strong style="color:var(--green-dark)">Where is she?</strong></li>
+        <li>___ do we start? → <strong style="color:var(--green-dark)">When do we start?</strong></li>
+        <li>___ does he want? → <strong style="color:var(--green-dark)">What does he want?</strong></li>
+        <li>___ are they late? → <strong style="color:var(--green-dark)">Why are they late?</strong></li>
+        <li>___ do you spell your name? → <strong style="color:var(--green-dark)">How do you spell your name?</strong></li>
+        <li>___ did you arrive? → <strong style="color:var(--green-dark)">When did you arrive?</strong></li>
+        <li>___ is your teacher? → <strong style="color:var(--green-dark)">Who is your teacher?</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 12. 자가진단 체크리스트 -->
+  <div class="section" id="check" aria-label="레벨업 팁">
+    <div class="section-header">
+      <div class="section-num" style="background:var(--brown);">12</div>
+      <div><span class="section-title">자가진단 체크리스트</span><span class="section-en">SELF-CHECK</span></div>
+    </div>
+    <div class="section-body">
+      <ul class="checklist">
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> WH + 조동사 + 주어 + 동사 기본 구조를 이해했다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> do/does/did를 일반동사 질문에서 올바르게 사용할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> be동사(is/are) 질문에서 주어/동사 순서를 올바르게 쓸 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 조동사 누락 등 흔한 실수를 교정할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> what, where, when, who, why, how를 사용한 질문을 만들 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> 일상 대화에서 WH-질문을 자연스럽게 사용할 수 있다.</li>
+        <li onclick="this.querySelector('.chk').classList.toggle('on')"><div class="chk"></div> Who/What이 주어일 때 조동사 없이 쓰는 것을 이해했다.</li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer-nav" role="contentinfo">
+  <a href="../G08/G08_new.html" class="fnav-btn fnav-prev">← G08</a>
+  <span class="fnav-center">G09 · QUESTION FORMATION: WH-QUESTIONS</span>
+  <a href="../G10/G10_new.html" class="fnav-btn fnav-next">G10 →</a>
+</footer>
+
 
 
 
@@ -670,476 +865,3 @@
 </script>
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G09 Part 2: WH-Questions</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
-
-        :root {
-            --yellow-light: #fffde7;
-            --pink-light: #fce4ec;
-            --orange-light: #ffecb3;
-            --green: #e8f5e9;
-            --gray: #e0e0e0;
-            --gray-dark: #bdbdbd;
-            --red-strong: #c0392b;
-            --blue-main: #3498db;
-            --wh-color: #9c27b0; /* Purple for WH-Questions */
-        }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #1a2a1a;
-            margin: 0;
-            padding: 20px;
-        }
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background-color: #fff;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-                /* 제목 스타일 */
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #33ddff;
-        }
-
-        .toc {
-            background-color: #f8f9fa;
-            border-left: 5px solid var(--blue-main);
-            padding: 1rem 1.5rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-        }
-
-        .toc h2 {
-            margin-top: 0;
-            color: #2980b9;
-        }
-
-        .toc ol {
-            padding-left: 20px;
-        }
-
-        .toc li a {
-            text-decoration: none;
-            color: #34495e;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .toc li a:hover {
-            color: #1a6496;
-            text-decoration: underline;
-        }
-
-        .section {
-            padding: 2rem 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .section h2 {
-            font-size: 1.8rem;
-            color: #34495e;
-            border-left: 4px solid var(--blue-main);
-            padding-left: 15px;
-        }
-
-        .real_life_usage.section { background-color: var(--yellow-light); }
-        .common_patterns.section { background-color: var(--pink-light); }
-        .mistakes.section { background-color: var(--orange-light); }
-        .tips.section { background-color: var(--green); }
-        .practice.section { background-color: var(--gray); }
-        .checklist.section { background-color: var(--gray-dark); }
-        
-        .section.real_life_usage h2 { border-color: #f1c40f; color: #f1c40f; }
-        .section.common_patterns h2 { border-color: #e91e63; color: #e91e63; }
-        .section.mistakes h2 { border-color: #f39c12; color: #f39c12; }
-        .section.tips h2 { border-color: #2ecc71; color: #2ecc71; }
-        .section.practice h2 { border-color: #7f8c8d; color: #7f8c8d; }
-        .section.checklist h2 { border-color: #95a5a6; color: #95a5a6; }
-
-        .section ul, .section ol {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .section li {
-            background-color: #f9f9f9;
-            padding: 12px 20px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .section li:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .mistakes li .correct { color: #2ecc71; font-weight: bold; }
-        .mistakes li .incorrect { color: var(--red-strong); font-weight: bold; text-decoration: line-through; }
-        .section li strong { color: var(--wh-color); }
-
-        .practice h4 {
-            margin-top: 2rem;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-        }
-
-        .practice ol {
-            padding-left: 20px;
-        }
-
-        .practice li {
-            margin-bottom: 15px;
-            background-color: #fff;
-        }
-        
-        .practice .options {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-top: 10px;
-        }
-
-        .practice .option {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.2s;
-        }
-        
-        .practice .option:hover {
-            background-color: #f0f0f0;
-            transform: scale(1.01);
-        }
-
-        .practice .option.correct {
-            background-color: #e8f5e9;
-            border-color: #27ae60;
-        }
-
-        .practice input[type="text"] {
-            width: 90%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-top: 5px;
-        }
-        
-        #progress-container {
-            width: 100%;
-            background-color: #e0e0e0;
-            border-radius: 10px;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        #progress-bar {
-            width: 0;
-            height: 20px;
-            background-color: var(--wh-color);
-            border-radius: 10px;
-            text-align: center;
-            color: white;
-            line-height: 20px;
-            transition: width 0.4s ease-in-out;
-        }
-
-        .checklist-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .checklist-item input[type="checkbox"] {
-            transform: scale(1.5);
-            margin-right: 15px;
-            cursor: pointer;
-        }
-        
-        .checklist h4 {
-            margin-top: 2rem;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-        }
-
-        .submit-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: var(--blue-main);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s;
-            margin-top: 2rem;
-        }
-
-        .submit-btn:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-        }
-
-        .hidden { display: none; }
-    </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=NanumSquareRound:wght@800&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <div class="container">
-        <h1>
-  <div class="title-en">G09. Questions - WH-Questions</div>
-  <div class="title-ko">( 의문문 )</div>
-</h1>
-
-        <div class="toc">
-            <h2>📚 목차 (Table of Contents)</h2>
-            <ol start="7">
-                <li><a href="#real_life_usage">실생활 사용 예시 (Real-Life Usage)</a></li>
-                <li><a href="#common_patterns">자주 쓰이는 패턴 (Common Patterns)</a></li>
-                <li><a href="#mistakes">흔한 실수 (Common Mistakes)</a></li>
-                <li><a href="#tips">레벨업 팁 (Level-Up Tips)</a></li>
-                <li><a href="#practice">연습문제 (Practice Exercises)</a></li>
-                <li><a href="#checklist">자가진단 체크리스트 (Self-Check)</a></li>
-            </ol>
-        </div>
-
-        <hr>
-
-        <div class="section real_life_usage" id="real_life_usage">
-            <h2>7. 실생활 사용 예시 (Real-Life Usage)</h2>
-            <ul>
-                <li>**학교 상황:** **What** do you study in class? (무엇을 공부하니?)</li>
-                <li>**직장 상황:** **When** does the meeting start? (회의는 언제 시작하니?)</li>
-                <li>**가족 상황:** **Who** is cooking dinner today? (오늘 누가 저녁을 만드니?)</li>
-                <li>**온라인 상황:** **How** do you join the video call? (화상 통화에 어떻게 참여하니?)</li>
-                <li>**병원 상황:** **Why** is he feeling sick? (그는 왜 아프니?)</li>
-                <li>**여행 상황:** **Where** are we going tomorrow? (우리는 내일 어디에 가니?)</li>
-                <li>**쇼핑 상황:** **What** does she want to buy? (그녀는 무엇을 사고 싶어 하니?)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section common_patterns" id="common_patterns">
-            <h2>8. 자주 쓰이는 패턴 (Common Patterns)</h2>
-            <ul>
-                <li>**What + do/does + 주어 + 동사:** **What** do you eat?</li>
-                <li>**Where + is/are + 주어:** **Where** is she? / **Where** are they?</li>
-                <li>**When + do/does + 주어 + 동사:** **When** does he arrive?</li>
-                <li>**Who + is + 주어:** **Who** is your teacher?</li>
-                <li>**Why + is/are + 주어 + 형용사/동사ing:** **Why** are they late? / **Why** are you leaving?</li>
-                <li>**How + do/does + 주어 + 동사:** **How** do you spell your name?</li>
-                <li>**What + did + 주어 + 동사원형:** **What** did you do yesterday? (과거 질문)</li>
-                <li>**Where + do + 주어 + live:** **Where** do you live? (가장 흔한 질문 중 하나)</li>
-                <li>**How + is + 주어:** **How** is your mom? / **How** is the weather?</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section mistakes" id="mistakes">
-            <h2>9. 흔한 실수 (Common Mistakes)</h2>
-            <ul>
-                <li><span class="incorrect">❌ What you eat?</span> → <span class="correct">✅ **What do you eat?**</span> (**do** 조동사 누락)</li>
-                <li><span class="incorrect">❌ Where she is?</span> → <span class="correct">✅ **Where is she?**</span> (주어/동사 순서 오류)</li>
-                <li><span class="incorrect">❌ When we start?</span> → <span class="correct">✅ **When do we start?**</span> (**do** 조동사 누락)</li>
-                <li><span class="incorrect">❌ What does he wants?</span> → <span class="correct">✅ **What does he want?**</span> (조동사 **does** 뒤에는 동사원형)</li>
-                <li><span class="incorrect">❌ Why they are late?</span> → <span class="correct">✅ **Why are they late?**</span> (주어/동사 순서 오류)</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section tips" id="tips">
-            <h2>10. 레벨업 팁 (Level-Up Tips)</h2>
-            <ul>
-                <li>**Who/What이 주어일 때:** **Who** broke the window? / **What** happened? 이 경우 조동사(do/does/did)를 사용하지 않고 일반 긍정문처럼 동사를 주어 바로 뒤에 씁니다. (*Who/What이 목적어일 때만 조동사 사용*)</li>
-                <li>**어순의 반복 연습:** 모든 WH-질문은 **WH + 조동사/be동사 + 주어 + 동사원형** 이라는 어순을 유지해야 합니다. 반복하여 자연스럽게 만드세요.</li>
-                <li>**How의 확장:** **How much** (가격/불가산 수량), **How many** (가산 수량), **How often** (빈도) 등 'How'가 들어간 복합 의문사를 활용하여 질문을 구체화하세요.</li>
-                <li>**과거 질문 연습:** **did**를 사용하는 과거 질문을 꾸준히 연습하세요. (**did** 뒤에는 항상 동사원형: **What did you eat**?)</li>
-                <li>**실생활 적용:** 하루에 5개의 WH-질문을 스스로 만들고 답하는 연습을 하세요.</li>
-            </ul>
-        </div>
-
-        <hr>
-
-        <div class="section practice" id="practice">
-            <h2>11. 연습문제 (Practice Exercises)</h2>
-
-            <h4>객관식</h4>
-            <ol>
-                <li id="q1">Which is correct?
-                    <div class="question">A. What you eat? B. **What do you eat?**</div>
-                    <div class="options" data-correct="B">
-                        <div class="option" data-value="A">A. What you eat?</div>
-                        <div class="option" data-value="B">B. **What do you eat?**</div>
-                    </div>
-                </li>
-                <li id="q2">Choose the correct question:
-                    <div class="question">She is in the kitchen. → ___</div>
-                    <div class="options" data-correct="B">
-                        <div class="option" data-value="A">A. Where she is?</div>
-                        <div class="option" data-value="B">B. **Where is she?**</div>
-                    </div>
-                </li>
-                <li id="q3">Fill in: **What** ___ he want?
-                    <div class="options" data-correct="A">
-                        <div class="option" data-value="A">A. **does**</div>
-                        <div class="option" data-value="B">B. do</div>
-                    </div>
-                </li>
-            </ol>
-            
-            <button class="submit-btn" onclick="checkAnswers()">정답 확인하기</button>
-            <div id="answers" class="hidden">
-                <p><strong>1. B</strong>. 일반동사 질문이므로 조동사 **do**가 필요합니다.</p>
-                <p><strong>2. B</strong>. be동사 질문은 **Where + is + 주어** 순서입니다.</p>
-                <p><strong>3. A</strong>. 주어가 3인칭 단수(**he**)이므로 조동사 **does**가 필요합니다.</p>
-            </div>
-            
-            <h4>문장 결합 및 오류 수정 (정답 예시 제공)</h4>
-            <ol start="4">
-                <li>You eat lunch. → **What do you eat?** <input type="text" id="q4" placeholder="What do you eat?"/></li>
-                <li>She is in the kitchen. → **Where is she?** <input type="text" id="q5" placeholder="Where is she?"/></li>
-                <li>❌ What you eat? → ✅ **What do you eat?** <input type="text" id="q6" placeholder="What do you eat?"/></li>
-                <li>❌ Where she is? → ✅ **Where is she?** <input type="text" id="q7" placeholder="Where is she?"/></li>
-                <li>❌ What does he wants? → ✅ **What does he want?** <input type="text" id="q8" placeholder="What does he want?"/></li>
-            </ol>
-            
-            <h4>표현 연습 (모범 답안)</h4>
-            <ol start="9">
-                <li>Write 3 questions using “What…” (예: **What** did you see? / **What** is your name? / **What** do you do?)</li>
-                <li>Write 3 questions using “Where…” (예: **Where** do you live? / **Where** are my keys? / **Where** is the bus stop?)</li>
-                <li>Write 3 questions using “When…” (예: **When** do we leave? / **When** did it start? / **When** is your birthday?)</li>
-            </ol>
-        </div>
-
-        <hr>
-
-        <div class="section checklist" id="checklist">
-            <h2>12. 자가진단 체크리스트 (Self-Check)</h2>
-
-            <h4>학습 완료 체크</h4>
-            <div id="progress-container">
-                <div id="progress-bar">0%</div>
-            </div>
-            <ul>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I understand the basic structure: WH + Auxiliary + Subject + Verb.</li>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can use **do/does/did** correctly with general verbs.</li>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can use **be** verbs (**is/are**) correctly for status and location.</li>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can correct common mistakes like missing the auxiliary verb (do/does).</li>
-                <li class="checklist-item"><input type="checkbox" data-points="1" /> I can form questions using **what, where, when, who, why, and how**.</li>
-            </ul>
-
-            <h4>자가진단 문항</h4>
-            <ol>
-                <li class="checklist-question">Can you explain why “What do you eat?” requires **do**?</li>
-                <li class="checklist-question">Can you write a question using a past tense WH-question (did)?</li>
-                <li class="checklist-question">Can you correct “What does he wants?”?</li>
-                <li class="checklist-question">Can you ask for information about someone’s routine using **when** and **where**?</li>
-                <li class="checklist-question">Can you translate “너는 왜 늦었니?”?</li>
-                <li class="checklist-question">Can you use a **WH-question** naturally in a conversation?</li>
-            </ol>
-
-            <h4>다음 단계 학습 가이드</h4>
-            <ul>
-                <li>Review the special case of **Who/What as Subject** questions (Who called?).</li>
-                <li>Practice answering WH-questions with full, detailed sentences, not just short answers.</li>
-                <li>Focus on using the correct **intonation** when asking WH-questions (voice usually falls at the end).</li>
-                <li>Combine WH-questions with modal verbs (e.g., **Where should** we go? / **What can** I do?).</li>
-            </ul>
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const progressBar = document.getElementById('progress-bar');
-            const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
-            const answersBox = document.getElementById('answers');
-
-            // Progress Bar and Checklist Logic
-            if (progressBar && checkboxes.length > 0) {
-                checkboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', updateProgress);
-                });
-            }
-
-            function updateProgress() {
-                const totalCheckboxes = checkboxes.length;
-                const checkedCheckboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]:checked').length;
-                
-                if (totalCheckboxes > 0 && progressBar) {
-                    const progress = (checkedCheckboxes / totalCheckboxes) * 100;
-                    progressBar.style.width = progress + '%';
-                    progressBar.textContent = Math.round(progress) + '%';
-                }
-            }
-
-            // Multiple Choice Question Logic
-            const mcqOptions = document.querySelectorAll('.practice .option');
-
-            if (mcqOptions.length > 0) {
-                mcqOptions.forEach(option => {
-                    option.addEventListener('click', function() {
-                        const parentOptions = this.parentElement.querySelectorAll('.option');
-                        parentOptions.forEach(opt => {
-                            opt.classList.remove('correct', 'incorrect');
-                        });
-
-                        const parentDiv = this.closest('.options');
-                        const correctAnswer = parentDiv.getAttribute('data-correct');
-
-                        if (this.getAttribute('data-value') === correctAnswer) {
-                            this.classList.add('correct');
-                        } else {
-                            this.classList.add('incorrect');
-                        }
-                    });
-                });
-            }
-            
-            // Show Answers Button Logic
-            const showAnswersBtn = document.querySelector('.submit-btn');
-            if (showAnswersBtn) {
-                showAnswersBtn.addEventListener('click', function() {
-                    answersBox.classList.toggle('hidden');
-                    if (!answersBox.classList.contains('hidden')) {
-                         this.textContent = '정답 숨기기';
-                    } else {
-                         this.textContent = '정답 확인하기';
-                    }
-                });
-            }
-        });
-    </script>
-</body>
-</html>
-
-
-
-
-
-
