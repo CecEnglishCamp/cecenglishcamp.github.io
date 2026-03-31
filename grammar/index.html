@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Base Camp — CEC English Camp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:'Outfit',sans-serif;min-height:100vh}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 36px;height:68px;background:#000;border-bottom:1px solid rgba(0,255,255,0.13);position:fixed;top:0;left:0;right:0;z-index:1000}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo img{width:38px;height:38px;object-fit:contain;border-radius:8px}
+.nav-logo-text{font-size:1.1rem;font-weight:800;color:#fff;white-space:nowrap}
+.nav-links{display:flex;align-items:center;gap:6px;list-style:none;position:absolute;left:50%;transform:translateX(-50%)}
+.nav-sep{color:#00ffff;font-size:.38rem;opacity:.4;padding:0 2px}
+.nav-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.88rem;font-weight:500;padding:5px 8px;white-space:nowrap;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:#00ffff}
+.nav-register a{background:#00ffff;color:#000;text-decoration:none;font-size:.85rem;font-weight:800;padding:9px 24px;border-radius:50px;display:block}
+.nav-register a:hover{opacity:.82}
+#hero{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:0 20px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(2.6rem,6.5vw,5.2rem);color:#fff;line-height:1;letter-spacing:-.02em;margin-bottom:10px}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-weight:600;font-style:italic;font-size:clamp(1.2rem,2.8vw,2.1rem);color:#00f2ff}
+@media(max-width:700px){.nav-links{display:none}}
+
+.nav-dropdown{position:relative}
+.nav-dropdown-btn{color:rgba(255,255,255,.85);text-decoration:none;font-size:.88rem;font-weight:500;padding:5px 8px;white-space:nowrap;transition:color .2s;cursor:pointer}
+.nav-dropdown:hover .nav-dropdown-btn{color:#00ffff}
+.nav-dropdown-menu{display:none;position:absolute;top:100%;padding-top:8px;left:50%;transform:translateX(-50%);background:#080808;border:1px solid rgba(0,255,255,0.22);border-radius:10px;min-width:160px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.7);z-index:200}
+.nav-dropdown:hover .nav-dropdown-menu{display:block}
+.nav-dropdown-menu a{display:block;padding:10px 18px;color:rgba(255,255,255,.78);text-decoration:none;font-size:.87rem;font-weight:500;transition:background .15s,color .15s;white-space:nowrap}
+.nav-dropdown-menu a:hover{background:rgba(0,255,255,.08);color:#00ffff}
+
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:100px 20px 60px;
+  text-align:center;
+}
+.camp-label{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:32px}
+.camp-badge{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:50px;padding:6px 20px}
+.camp-title{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(3rem,6vw,5rem);color:#fff;line-height:1}
+
+/* ── IMAGE ── */
+.hero-img-wrap{
+  position:relative;
+  cursor:pointer;
+  display:inline-block;
+}
+.hero-img-wrap img{
+  width:min(580px,78vw);
+  border-radius:18px;
+  display:block;
+  box-shadow:0 0 0 1px rgba(0,255,255,0.08),0 24px 70px rgba(0,0,0,0.55);
+  will-change:transform;
+  transition:box-shadow .4s;
+}
+.hero-img-wrap:hover img{
+  box-shadow:0 0 0 1.5px rgba(0,255,255,0.3),0 36px 90px rgba(0,0,0,0.65);
+}
+.img-overlay{
+  position:absolute;inset:0;border-radius:18px;
+  background:rgba(0,0,0,0);
+  display:flex;align-items:flex-end;justify-content:center;
+  padding-bottom:26px;
+  transition:background .35s;
+  pointer-events:none;
+}
+.hero-img-wrap:hover .img-overlay{background:rgba(0,0,0,0.22)}
+.img-overlay span{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:1.35rem;font-weight:600;
+  color:#00f2ff;letter-spacing:.06em;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .3s,transform .3s;
+  text-shadow:0 2px 20px rgba(0,0,0,.9);
+}
+.hero-img-wrap:hover .img-overlay span{opacity:1;transform:translateY(0)}
+
+/* ── DESC ── */
+.desc-section{background:#000;border-top:1px solid rgba(255,255,255,.06);padding:80px 40px 60px}
+.desc-inner{max-width:1100px;margin:0 auto}
+.desc-intro{text-align:center;margin-bottom:60px}
+.desc-intro p{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2vw,1.5rem);font-style:italic;color:rgba(255,255,255,.7);line-height:1.75;max-width:720px;margin:0 auto}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:60px}
+.feature-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:28px;transition:border-color .25s,background .25s}
+.feature-card:hover{background:rgba(0,255,255,.04);border-color:rgba(0,255,255,.18)}
+.feature-icon{font-size:1.7rem;margin-bottom:12px;display:block}
+.feature-title{font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px}
+.feature-body{font-size:.87rem;font-weight:300;color:rgba(255,255,255,.5);line-height:1.75}
+
+/* ── STATS ── */
+.stats{display:flex;justify-content:center;gap:60px;padding:0 0 60px;flex-wrap:wrap}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:#00f2ff;line-height:1;display:block}
+.stat-label{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:4px;display:block;text-align:center}
+
+/* ── STAGE TABS ── */
+.stage-tabs{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;padding:0 40px 44px;max-width:1200px;margin:0 auto}
+.stage-tab{padding:10px 28px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;border:1.5px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.55);transition:all .2s}
+.stage-tab:hover{border-color:rgba(255,255,255,.35);color:#fff}
+
+/* ── UNIT GRID ── */
+.stage-section{display:none;max-width:1200px;margin:0 auto;padding:0 40px 80px}
+.stage-section.active{display:block}
+.stage-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.stage-header h3{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700}
+.stage-header span{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.stage-line{flex:1;height:1px;background:rgba(255,255,255,.07)}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.unit-card{display:flex;flex-direction:column;padding:16px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;text-decoration:none;color:rgba(255,255,255,.7);font-size:.78rem;font-weight:500;gap:6px;transition:all .2s}
+.unit-card:hover{transform:translateY(-2px)}
+.unit-num{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;line-height:1}
+.unit-topic{font-size:.74rem;color:rgba(255,255,255,.4);line-height:1.4}
+
+@media(max-width:700px){
+  .features-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/cec-edu/" class="nav-logo">
+    <img src="/cec-edu/assets/robo.png" alt="Robo" onerror="this.style.display='none'">
+    <span class="nav-logo-text">CEC English Camp</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/cec-edu/about/">About</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/elementary/">Camp A</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/middle-high/">Camp B</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/adult/">Camp C</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/grammar/" class="active">Grammar Base Camp</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/speaking/">Speaking</a></li>
+    <li class="nav-sep">•</li>
+    <li><a href="/cec-edu/mom-teacher/">Mom Teacher</a></li>
+    <li class="nav-sep">•</li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-btn">Programs ▾</a>
+      <div class="nav-dropdown-menu">
+        <a href="/cec-edu/games/">Game</a>
+      </div>
+    </li>
+    <li class="nav-sep">•</li>
+    <li><a href="#">AI Tools</a></li>
+  </ul>
+  <div class="nav-register"><a href="/cec-edu/register/">Register</a></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="camp-label">
+    <span class="camp-badge">GRAMMAR BASE CAMP · G01 – G80</span>
+    <h1 class="camp-title">Grammar Base Camp</h1>
+  </div>
+  <div class="hero-img-wrap" onclick="const el=document.getElementById('stage-tabs');window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-90,behavior:'smooth'})">
+    <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/covers/Grammar_Camp.png" alt="Grammar Base Camp">
+    <div class="img-overlay"><span>Select Your Stage ↓</span></div>
+  </div>
+</section>
+
+<!-- DESC -->
+<section class="desc-section">
+  <div class="desc-inner">
+    <div class="desc-intro">
+      <p>80 carefully sequenced units take students from the very first building blocks of English grammar all the way to advanced structures — guided every step by Robo.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card"><span class="feature-icon">🏗️</span><div class="feature-title">80 Units · 4 Stages</div><p class="feature-body">From basic nouns and verbs to complex clauses — every unit builds on the last in a clear, logical sequence.</p></div>
+      <div class="feature-card"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif" alt="Robo" style="width:48px;height:48px;object-fit:contain;margin-bottom:12px;display:block"><div class="feature-title">Robo-Guided Lessons</div><p class="feature-body">Robo explains every rule, gives examples, and walks students through practice with a consistent, friendly voice.</p></div>
+      <div class="feature-card"><span class="feature-icon">🎮</span><div class="feature-title">Grammar Games</div><p class="feature-body">Battery-charging quizzes and interactive exercises at A1, A2, B1, and B2 difficulty levels.</p></div>
+      <div class="feature-card"><span class="feature-icon">🔊</span><div class="feature-title">AI Conversation Support</div><p class="feature-body">An AI-powered chat window supports every lesson — answering questions, checking answers, and guiding students through each unit in real time.</p></div>
+    </div>
+    <div class="stats">
+      <div><span class="stat-num">80</span><span class="stat-label">Total Units</span></div>
+      <div><span class="stat-num">4</span><span class="stat-label">Stages</span></div>
+      <div><span class="stat-num">G01</span><span class="stat-label">Start Here</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STAGE TABS -->
+<div class="stage-tabs" id="stage-tabs">
+  <button class="stage-tab active" style="background:#4ade80;color:#000;border-color:transparent" data-stage="s1" data-color="#4ade80">Stage 1 · Beginner</button>
+  <button class="stage-tab"  data-stage="s2" data-color="#60a5fa">Stage 2 · Elementary</button>
+  <button class="stage-tab"  data-stage="s3" data-color="#f59e0b">Stage 3 · Intermediate</button>
+  <button class="stage-tab"  data-stage="s4" data-color="#f472b6">Stage 4 · Advanced</button>
+</div>
+<div class="stage-section active" id="s1">
+  <div class="stage-header"><h3 style="color:#4ade80">Stage 1</h3><span>Beginner</span><div class="stage-line"></div><span>G01 – G20</span></div>
+  <div class="unit-grid">
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G01/G01_be_verb_present_tense.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G01</span><span class="unit-topic">Be Verb Present Tense</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G02/G02_articles_a,_an,_the.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G02</span><span class="unit-topic">Articles A An The</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G03/G03_simple_present_tense.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G03</span><span class="unit-topic">Simple Present Tense</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G04/G04_present_continuous_tense.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G04</span><span class="unit-topic">Present Continuous Tense</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G05/G05_simple_past_tense.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G05</span><span class="unit-topic">Simple Past Tense</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G06/G06_future_tense_will_going_to.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G06</span><span class="unit-topic">Future Tense Will Going To</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G07/G07_modal_verbs_can,_could,_should.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G07</span><span class="unit-topic">Modal Verbs Can Could Should</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G08/G08_countable_vs_uncountable_nouns.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G08</span><span class="unit-topic">Countable Vs Uncountable Nouns</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G09/G09_question_formation_wh-questions.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G09</span><span class="unit-topic">Question Formation Wh-Questions</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G10/G10_comparative_and_superlative.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G10</span><span class="unit-topic">Comparative And Superlative</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G11/G11_possessive_forms_my,_your,_his,_her.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G11</span><span class="unit-topic">Possessive Forms My Your His Her</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G12/G12_there_is___there_are.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G12</span><span class="unit-topic">There Is There Are</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G13/G13_prepositions_of_place_in,_on,_at.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G13</span><span class="unit-topic">Prepositions Of Place In On At</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G14/G14_prepositions_of_time.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G14</span><span class="unit-topic">Prepositions Of Time</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G15/G15_demonstratives_this,_that,_these,_those.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G15</span><span class="unit-topic">Demonstratives This That These Those</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G16/G16_plural_nouns_regular_and_irregular.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G16</span><span class="unit-topic">Plural Nouns Regular And Irregular</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G17/G17_object_pronouns_me,_you,_him,_her.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G17</span><span class="unit-topic">Object Pronouns Me You Him Her</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G18/G18_yes_no_questions_and_short_answers.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G18</span><span class="unit-topic">Yes No Questions And Short Answers</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G19/G19_frequency_adverbs_always,_sometimes,_never.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G19</span><span class="unit-topic">Frequency Adverbs Always Sometimes Never</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G20/G20_basic_imperative_commands.html" onmouseover="this.style.background='#4ade8012';this.style.borderColor='#4ade8055';this.querySelector('.unit-num').style.color='#4ade80'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G20</span><span class="unit-topic">Basic Imperative Commands</span></a>
+  </div>
+</div>
+<div class="stage-section" id="s2">
+  <div class="stage-header"><h3 style="color:#60a5fa">Stage 2</h3><span>Elementary</span><div class="stage-line"></div><span>G21 – G40</span></div>
+  <div class="unit-grid">
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G21/G21_past_continuous_tense.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G21</span><span class="unit-topic">Past Continuous Tense</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G22/G22_present_perfect_simple_introduction.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G22</span><span class="unit-topic">Present Perfect Simple Introduction</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G23/G23_modal_verbs_must,_have_to,_need_to.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G23</span><span class="unit-topic">Modal Verbs Must Have To Need To</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G24/G24_some,_any,_no,_none.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G24</span><span class="unit-topic">Some Any No None</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G25/G25_adverbs_of_manner_-ly_adverbs.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G25</span><span class="unit-topic">Adverbs Of Manner</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G26/G26_conjunctions_and,_but,_or,_so.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G26</span><span class="unit-topic">Conjunctions And But Or So</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G27/G27_like_vs_would_like.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G27</span><span class="unit-topic">Like Vs Would Like</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G28/G28_too_vs_enough.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G28</span><span class="unit-topic">Too Vs Enough</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G29/G29_first_conditional_if_+_will.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G29</span><span class="unit-topic">First Conditional If Will</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G30/G30_gerunds_vs_infinitives_basic.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G30</span><span class="unit-topic">Gerunds Vs Infinitives Basic</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G31/G31_relative_pronouns_who,_which,_that.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G31</span><span class="unit-topic">Relative Pronouns Who Which That</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G32/G32_past_simple_vs_past_continuous.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G32</span><span class="unit-topic">Past Simple Vs Past Continuous</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G33/G33_used_to_vs_be_used_to.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G33</span><span class="unit-topic">Used To Vs Be Used To</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G34/G34_question_tags.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G34</span><span class="unit-topic">Question Tags</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G35/G35_reflexive_pronouns_myself,_yourself.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G35</span><span class="unit-topic">Reflexive Pronouns Myself Yourself</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G36/G36_each_vs_every.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G36</span><span class="unit-topic">Each Vs Every</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G37/G37_both,_either,_neither.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G37</span><span class="unit-topic">Both Either Neither</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G38/G38_so_vs_such.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G38</span><span class="unit-topic">So Vs Such</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G39/G39_still,_yet,_already.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G39</span><span class="unit-topic">Still Yet Already</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G40/G40_direct_vs_indirect_speech_basic.html" onmouseover="this.style.background='#60a5fa12';this.style.borderColor='#60a5fa55';this.querySelector('.unit-num').style.color='#60a5fa'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G40</span><span class="unit-topic">Direct Vs Indirect Speech Basic</span></a>
+  </div>
+</div>
+<div class="stage-section" id="s3">
+  <div class="stage-header"><h3 style="color:#f59e0b">Stage 3</h3><span>Intermediate</span><div class="stage-line"></div><span>G41 – G60</span></div>
+  <div class="unit-grid">
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G41/G41_present_perfect_vs_past_simple.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G41</span><span class="unit-topic">Present Perfect Vs Past Simple</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G42/G42_present_perfect_continuous.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G42</span><span class="unit-topic">Present Perfect Continuous</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G43/G43_past_perfect_simple.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G43</span><span class="unit-topic">Past Perfect Simple</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G44/G44_future_perfect.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G44</span><span class="unit-topic">Future Perfect</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G45/G45_modal_verbs_might,_may,_could_for_possibility.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G45</span><span class="unit-topic">Modal Verbs Might May Could</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G46/G46_second_conditional_if_+_would.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G46</span><span class="unit-topic">Second Conditional If Would</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G47/G47_third_conditional_if_+_had_+_would_have.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G47</span><span class="unit-topic">Third Conditional</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G48/G48_passive_voice_present_and_past.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G48</span><span class="unit-topic">Passive Voice Present And Past</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G49/G49_causative_verbs_have,_get,_make,_let.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G49</span><span class="unit-topic">Causative Verbs Have Get Make Let</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G50/G50_gerunds_and_infinitives_advanced.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G50</span><span class="unit-topic">Gerunds And Infinitives Advanced</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G51/G51_phrasal_verbs_separable_and_inseparable.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G51</span><span class="unit-topic">Phrasal Verbs</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G52/G52_relative_clauses_defining_and_non-defining.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G52</span><span class="unit-topic">Relative Clauses Defining Non-Defining</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G53/G53_reported_speech_statements_and_questions.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G53</span><span class="unit-topic">Reported Speech</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G54/G54_wish_and_if_only.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G54</span><span class="unit-topic">Wish And If Only</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G55/G55_articles_advanced_usage.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G55</span><span class="unit-topic">Articles Advanced Usage</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G56/G56_quantifiers_much_many_few_little.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G56</span><span class="unit-topic">Quantifiers Much Many Few Little</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G57/G57_linking_words_however,_therefore,_although.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G57</span><span class="unit-topic">Linking Words However Therefore</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G58/G58_emphasis_do_does_did_for_emphasis.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G58</span><span class="unit-topic">Emphasis Do Does Did</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G59/G59_cleft_sentences_it_is..._who_that.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G59</span><span class="unit-topic">Cleft Sentences</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G60/G60_mixed_conditionals.html" onmouseover="this.style.background='#f59e0b12';this.style.borderColor='#f59e0b55';this.querySelector('.unit-num').style.color='#f59e0b'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G60</span><span class="unit-topic">Mixed Conditionals</span></a>
+  </div>
+</div>
+<div class="stage-section" id="s4">
+  <div class="stage-header"><h3 style="color:#f472b6">Stage 4</h3><span>Advanced</span><div class="stage-line"></div><span>G61 – G80</span></div>
+  <div class="unit-grid">
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G61/G61_future_in_the_past_was_going_to.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G61</span><span class="unit-topic">Future In The Past</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G62/G62_participle_clauses.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G62</span><span class="unit-topic">Participle Clauses</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G63/G63_inversion_advanced_word_order.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G63</span><span class="unit-topic">Inversion Advanced Word Order</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G64/G64_subjunctive_mood.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G64</span><span class="unit-topic">Subjunctive Mood</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G65/G65_double_comparatives_the_more..._the_more.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G65</span><span class="unit-topic">Double Comparatives</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G66/G66_advanced_passive_voice_all_tenses.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G66</span><span class="unit-topic">Advanced Passive Voice</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G67/G67_modals_of_deduction_must_have,_can't_have.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G67</span><span class="unit-topic">Modals Of Deduction</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G68/G68_advanced_conditionals_unless,_provided_that.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G68</span><span class="unit-topic">Advanced Conditionals</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G69/G69_nominal_clauses_that-clauses.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G69</span><span class="unit-topic">Nominal Clauses</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G70/G70_advanced_relative_clauses.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G70</span><span class="unit-topic">Advanced Relative Clauses</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G71/G71_complex_phrasal_verbs.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G71</span><span class="unit-topic">Complex Phrasal Verbs</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G72/G72_advanced_reported_speech.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G72</span><span class="unit-topic">Advanced Reported Speech</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G73/G73_ellipsis_and_substitution.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G73</span><span class="unit-topic">Ellipsis And Substitution</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G74/G74_advanced_linking_devices.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G74</span><span class="unit-topic">Advanced Linking Devices</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G75/G75_hedging_language_seems,_appears,_tend_to.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G75</span><span class="unit-topic">Hedging Language</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G76/G76_fronting_and_inversion.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G76</span><span class="unit-topic">Fronting And Inversion</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G77/G77_complex_sentence_structures.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G77</span><span class="unit-topic">Complex Sentence Structures</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G78/G78_advanced_gerunds_and_infinitives.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G78</span><span class="unit-topic">Advanced Gerunds And Infinitives</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G79/G79_nominalization.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G79</span><span class="unit-topic">Nominalization</span></a>
+    <a class="unit-card" href="/cec-edu/GrammarBaseCamp/G80/G80_advanced_articles_and_determiners.html" onmouseover="this.style.background='#f472b612';this.style.borderColor='#f472b655';this.querySelector('.unit-num').style.color='#f472b6'" onmouseout="this.style.background='';this.style.borderColor='';this.querySelector('.unit-num').style.color=''"><span class="unit-num">G80</span><span class="unit-topic">Advanced Articles And Determiners</span></a>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.stage-tab').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const c=this.dataset.color;
+    document.querySelectorAll('.stage-tab').forEach(b=>{
+      b.classList.remove('active');
+      b.style.background='transparent';b.style.color='rgba(255,255,255,.55)';b.style.borderColor='rgba(255,255,255,.15)';
+    });
+    this.classList.add('active');
+    this.style.background=c;this.style.color='#000';this.style.borderColor='transparent';
+    document.querySelectorAll('.stage-section').forEach(s=>s.classList.remove('active'));
+    document.getElementById(this.dataset.stage).classList.add('active');
+  });
+});
+const img=document.querySelector('.hero-img-wrap img');
+if(img){
+  document.addEventListener('mousemove',e=>{
+    const cx=window.innerWidth/2,cy=window.innerHeight/2;
+    const dx=(e.clientX-cx)/cx,dy=(e.clientY-cy)/cy;
+    img.style.transform=`perspective(800px) rotateX(${dy*-5}deg) rotateY(${dx*6}deg) translateY(-2px)`;
+  });
+  document.addEventListener('mouseleave',()=>{img.style.transform='';});
+}
+</script>
+</body></html>
