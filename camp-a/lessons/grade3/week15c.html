@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>G3 W15 Day3 — The Frog Prince | CEC Camp A</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Nunito:wght@400;600;700;800;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#0a1628;--cyan:#00f2ff;--gold:#c9a96e;--cream:#f7f4ee;
+  --green:#1D9E75;--lgreen:#E1F5EE;--dgreen:#085041;
+  --red:#E24B4A;--lred:#FFE0E0;--dred:#A32D2D;
+  --yellow:#FFF3CD;--dyellow:#854F0B;
+  --blue:#E6F1FB;--dblue:#185FA5;
+  --gray:#F5F5F5;--text:#1a1a2e;--muted:#5a5a72;
+  --r:14px;--sh:0 3px 16px rgba(0,0,0,0.07);
+}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--cream);color:var(--text);}
+nav{background:var(--navy);padding:0 4vw;height:52px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;}
+.nav-logo{color:var(--cyan);font-family:'Nunito',sans-serif;font-weight:900;font-size:1.05rem;}
+.nav-links{display:flex;gap:1.5rem;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.55);text-decoration:none;font-size:0.78rem;}
+.sec{padding:10px 4vw;}
+.sec-lbl{font-size:0.65rem;font-weight:700;letter-spacing:0.18em;color:var(--muted);
+  text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.sec-num{background:var(--navy);color:var(--cyan);font-family:'Nunito',sans-serif;
+  font-weight:900;font-size:0.6rem;padding:2px 7px;border-radius:20px;}
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;}
+.key-card{background:var(--navy);border-radius:var(--r);padding:18px;box-shadow:var(--sh);margin:0 4vw;}
+.key-lbl{font-size:0.6rem;letter-spacing:0.22em;color:var(--cyan);font-weight:700;margin-bottom:7px;}
+.key-eng{font-family:'Nunito',sans-serif;font-size:clamp(1rem,2.8vw,1.4rem);
+  font-weight:800;color:#fff;line-height:1.4;margin-bottom:5px;}
+.key-eng em{color:var(--gold);font-style:normal;}
+.key-kr{font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:10px;}
+.key-why{font-size:0.74rem;color:rgba(255,255,255,0.3);border-top:1px solid rgba(255,255,255,0.07);
+  padding-top:9px;line-height:1.65;}
+.key-why b{color:var(--gold);}
+.q2l{color:var(--cyan);font-size:0.66rem;margin-top:5px;display:block;}
+.spk{display:inline-flex;align-items:center;gap:5px;background:rgba(0,242,255,0.1);
+  border:1px solid rgba(0,242,255,0.25);color:var(--cyan);border-radius:8px;
+  padding:6px 12px;font-size:0.76rem;cursor:pointer;font-family:'Nunito',sans-serif;
+  font-weight:700;transition:all 0.2s;margin-top:9px;}
+.spk:hover{background:rgba(0,242,255,0.2);}
+.story-tabs{display:flex;border-bottom:1px solid rgba(0,0,0,0.06);}
+.story-tab{flex:1;padding:10px;text-align:center;font-size:0.76rem;font-weight:700;
+  cursor:pointer;color:var(--muted);transition:all 0.2s;}
+.story-tab.active{color:var(--dblue);border-bottom:2px solid var(--dblue);margin-bottom:-1px;}
+.story-pane{padding:16px;display:none;}
+.story-pane.active{display:block;}
+.story-text{font-size:0.9rem;line-height:2.1;color:var(--text);}
+.hl{background:rgba(201,169,110,0.15);border-radius:4px;padding:1px 3px;cursor:pointer;}
+.hl:hover{background:rgba(201,169,110,0.35);}
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;padding:12px;}
+.v-card{background:var(--gray);border-radius:11px;padding:11px 9px;text-align:center;
+  cursor:pointer;transition:all 0.22s;border:2px solid transparent;}
+.v-card:hover,.v-card.playing{transform:translateY(-2px);border-color:var(--cyan);background:var(--lgreen);}
+.v-emoji{font-size:1.4rem;margin-bottom:4px;}
+.v-eng{font-family:'Nunito',sans-serif;font-weight:800;font-size:0.9rem;}
+.v-kr{font-size:0.72rem;color:var(--muted);margin:2px 0;}
+.v-ex{font-size:0.66rem;color:var(--dblue);font-style:italic;line-height:1.4;}
+.game-in{padding:13px;}
+.game-title{font-size:0.83rem;font-weight:700;margin-bottom:11px;}
+.game-q{font-family:'Nunito',sans-serif;font-size:0.92rem;font-weight:700;line-height:1.5;margin-bottom:9px;}
+.opts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:7px;}
+.qo{padding:8px 15px;border-radius:9px;background:var(--gray);font-size:0.83rem;
+  font-weight:600;cursor:pointer;transition:all 0.22s;border:2px solid transparent;
+  font-family:'Nunito',sans-serif;}
+.qo:hover{background:var(--blue);border-color:var(--dblue);}
+.qo.correct{background:var(--lgreen)!important;border-color:var(--dgreen)!important;color:var(--dgreen);animation:pop .4s ease;}
+.qo.wrong{background:var(--lred)!important;border-color:var(--red)!important;color:var(--red);animation:shk .4s ease;}
+.qo:disabled{cursor:default;}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.wo-bank{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;min-height:36px;background:var(--gray);border-radius:9px;padding:7px;}
+.wo-word{padding:6px 12px;border-radius:8px;background:#fff;border:1.5px solid rgba(0,0,0,0.1);font-size:0.83rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;}
+.wo-word:hover{background:var(--blue);border-color:var(--dblue);}
+.wo-word.used{opacity:0.3;pointer-events:none;}
+.wo-ans{min-height:38px;background:var(--blue);border-radius:9px;padding:7px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:7px;border:1.5px dashed var(--dblue);}
+.wo-placed{padding:6px 12px;border-radius:8px;background:#fff;border:1.5px solid var(--dblue);font-size:0.83rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wo-ph{font-size:0.78rem;color:var(--dblue);opacity:0.5;}
+.wo-btn{padding:7px 15px;border-radius:8px;background:var(--navy);color:#fff;border:none;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-right:6px;}
+.wo-res{font-size:0.8rem;margin-top:6px;padding:5px 9px;border-radius:7px;display:none;font-weight:600;}
+.wo-res.ok{background:var(--lgreen);color:var(--dgreen);display:block;}
+.wo-res.fail{background:var(--lred);color:var(--dred);display:block;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:13px;}
+.match-col{display:flex;flex-direction:column;gap:6px;}
+.mi{padding:9px 12px;border-radius:9px;background:var(--gray);font-size:0.83rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.22s;border:2px solid transparent;font-family:'Nunito',sans-serif;}
+.mi:hover{background:var(--blue);border-color:var(--dblue);}
+.mi.selected{background:var(--blue);border-color:var(--dblue);color:var(--dblue);}
+.mi.matched{background:var(--lgreen);border-color:var(--dgreen);color:var(--dgreen);pointer-events:none;}
+.mi.wf{animation:shk .4s ease;}
+.ms{text-align:center;font-size:0.8rem;color:var(--muted);padding:5px 13px;}
+.listen-play{display:flex;align-items:center;gap:10px;background:var(--navy);border-radius:10px;padding:13px 14px;margin-bottom:11px;cursor:pointer;}
+.listen-play:hover{background:#122040;}
+.listen-icon{font-size:1.5rem;}
+.listen-text{color:rgba(255,255,255,0.6);font-size:0.8rem;line-height:1.5;}
+.listen-text b{color:var(--cyan);}
+.dw{padding:7px 13px;background:var(--blue);border-radius:8px;font-size:0.83rem;font-weight:700;color:var(--dblue);cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;display:inline-block;margin:3px;}
+.dw:hover{background:var(--navy);color:var(--cyan);}
+.dict-row{display:flex;align-items:center;gap:9px;margin-bottom:7px;}
+.dict-num{font-family:'Nunito',sans-serif;font-weight:700;color:var(--muted);font-size:0.78rem;min-width:18px;}
+.dict-inp{flex:1;border:1.5px solid rgba(0,0,0,0.12);border-radius:8px;padding:7px 11px;font-size:0.88rem;font-family:'Nunito',sans-serif;outline:none;}
+.dict-inp:focus{border-color:var(--dblue);}
+.dict-inp.ok{border-color:var(--dgreen);background:var(--lgreen);color:var(--dgreen);}
+.dict-inp.fail{border-color:var(--red);background:var(--lred);color:var(--dred);}
+.dict-btn{padding:8px 17px;border-radius:8px;background:var(--navy);color:#fff;border:none;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:7px;}
+.ai-section{background:var(--navy);border-radius:var(--r);margin:0 4vw;padding:20px;box-shadow:var(--sh);}
+.ai-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.ai-icon-big{font-size:2rem;}
+.ai-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;color:#fff;margin-bottom:3px;}
+.ai-desc{font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.6;}
+.ai-goal-box{background:rgba(0,242,255,0.08);border:1px solid rgba(0,242,255,0.2);border-radius:10px;padding:12px;margin-bottom:14px;}
+.ai-goal-lbl{font-size:0.6rem;letter-spacing:0.18em;color:var(--cyan);font-weight:700;margin-bottom:6px;}
+.ai-goal-item{font-size:0.78rem;color:rgba(255,255,255,0.65);display:flex;align-items:flex-start;gap:6px;line-height:1.5;margin-bottom:3px;}
+.ai-goal-item::before{content:'→';color:var(--cyan);flex-shrink:0;}
+.prompt-block{background:rgba(0,0,0,0.3);border-radius:10px;padding:14px;margin-bottom:14px;}
+.prompt-lbl{font-size:0.6rem;letter-spacing:0.18em;color:var(--gold);font-weight:700;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+.copy-btn{background:rgba(201,169,110,0.2);border:1px solid rgba(201,169,110,0.4);color:var(--gold);border-radius:6px;padding:3px 10px;font-size:0.65rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;}
+.copy-btn:hover{background:var(--gold);color:var(--navy);}
+.prompt-text{font-family:monospace;font-size:0.76rem;color:rgba(255,255,255,0.7);line-height:1.75;white-space:pre-wrap;}
+.ai-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+.ai-step{display:flex;gap:10px;align-items:flex-start;}
+.step-num{background:rgba(0,242,255,0.15);color:var(--cyan);font-family:'Nunito',sans-serif;font-weight:900;font-size:0.7rem;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.step-text{font-size:0.78rem;color:rgba(255,255,255,0.6);line-height:1.6;}
+.ai-btn-row{display:flex;gap:8px;flex-wrap:wrap;}
+.ai-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:10px;font-size:0.82rem;font-weight:700;text-decoration:none;font-family:'Nunito',sans-serif;transition:all 0.2s;cursor:pointer;border:none;}
+.ai-btn.primary{background:linear-gradient(135deg,#19c37d,#0f9d58);color:#fff;}
+.ai-btn.secondary{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);}
+.ai-notice{font-size:0.7rem;color:rgba(255,255,255,0.25);margin-top:10px;line-height:1.6;border-top:1px solid rgba(255,255,255,0.07);padding-top:10px;}
+#robo-msg{text-align:center;font-size:0.83rem;font-weight:700;min-height:24px;color:var(--dgreen);padding:3px 0;}
+.check-card{background:#fff;border-radius:var(--r);padding:15px;box-shadow:var(--sh);}
+.check-title{font-size:0.83rem;font-weight:700;margin-bottom:11px;}
+.check-item{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.05);font-size:0.81rem;}
+.check-item:last-child{border-bottom:none;}
+.chk{width:22px;height:22px;border-radius:6px;border:2px solid rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:0.78rem;transition:all 0.2s;}
+.chk.done{background:var(--green);border-color:var(--green);color:#fff;}
+.q2t{font-size:0.6rem;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--yellow);color:var(--dyellow);margin-left:auto;flex-shrink:0;}
+.done-card{background:var(--navy);border-radius:var(--r);margin:12px 4vw;padding:20px;text-align:center;box-shadow:var(--sh);display:none;}
+.done-card.show{display:block;animation:fu .5s ease;}
+@keyframes fu{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.done-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.15rem;color:var(--cyan);margin-bottom:5px;}
+.done-sub{font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.7;}
+.xp{display:inline-block;background:var(--gold);color:var(--navy);font-family:'Nunito',sans-serif;font-weight:900;padding:5px 15px;border-radius:20px;margin-top:9px;font-size:0.8rem;}
+.bnav{display:flex;justify-content:space-between;padding:12px 4vw 28px;}
+.bl{padding:9px 18px;border-radius:9px;border:1px solid rgba(0,0,0,0.13);font-size:0.8rem;font-weight:600;text-decoration:none;color:var(--muted);background:#fff;transition:all 0.2s;}
+.bl:hover,.bl.next{background:var(--navy);color:#fff;border-color:var(--navy);}
+@media(max-width:600px){.vocab-grid{grid-template-columns:repeat(3,1fr);}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">CEC Camp A · Grade 3</div>
+  <ul class="nav-links"><li><a href="/cec-edu/">홈</a></li><li><a href="/camp-a/lessons/grade3/">Grade 3</a></li></ul>
+</nav>
+
+<div style="background:var(--navy);padding:18px 4vw 14px;position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 50% 80% at 90% 50%,rgba(0,242,255,0.06),transparent);pointer-events:none;"></div>
+  <div style="display:flex;align-items:center;gap:5px;margin-bottom:10px;flex-wrap:wrap;">
+    <span style="font-size:0.58rem;color:rgba(255,255,255,0.25);font-family:Nunito,sans-serif;font-weight:700;letter-spacing:0.1em;">마스터 커리큘럼</span>
+    <span style="color:rgba(255,255,255,0.15);">→</span>
+    <span style="background:rgba(201,169,110,0.15);border:1px solid rgba(201,169,110,0.3);color:#c9a96e;font-size:0.58rem;font-weight:700;padding:2px 7px;border-radius:20px;font-family:Nunito,sans-serif;">고1: 수능 1등급 + 에세이</span>
+    <span style="color:rgba(255,255,255,0.15);">→</span>
+    <span style="background:rgba(74,103,65,0.2);border:1px solid rgba(74,103,65,0.35);color:#9FE1CB;font-size:0.58rem;font-weight:700;padding:2px 7px;border-radius:20px;font-family:Nunito,sans-serif;">G3 연간: A2 행동·감정 말하기</span>
+    <span style="color:rgba(255,255,255,0.15);">→</span>
+    <span style="background:rgba(255,165,0,0.12);border:1px solid rgba(255,165,0,0.3);color:#ffd080;font-size:0.58rem;font-weight:700;padding:2px 7px;border-radius:20px;font-family:Nunito,sans-serif;">Q2: 감정+이유 말하기</span>
+    <span style="color:rgba(255,255,255,0.15);">→</span>
+    <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;font-size:0.58rem;font-weight:700;padding:2px 7px;border-radius:20px;font-family:Nunito,sans-serif;">W15 Day3</span>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div style="font-family:Nunito,sans-serif;font-size:0.65rem;font-weight:800;letter-spacing:0.18em;padding:3px 10px;border-radius:20px;background:rgba(255,165,0,0.15);color:#ffd080;border:1px solid rgba(255,165,0,0.3);">2분기 · W15/09</div>
+      <div style="font-size:0.65rem;color:rgba(255,255,255,0.3);font-family:Nunito,sans-serif;">Grade 3 · Frog Prince · A2</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;"><div style="display:flex;flex-direction:column;align-items:center;gap:3px;"><div style="width:14px;height:14px;border-radius:50%;background:rgba(0,242,255,0.7);"></div><div style="font-size:0.55rem;color:rgba(0,242,255,0.8);font-family:Nunito,sans-serif;font-weight:700;">Day1</div></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;"><div style="width:14px;height:14px;border-radius:50%;background:rgba(0,242,255,0.7);"></div><div style="font-size:0.55rem;color:rgba(0,242,255,0.8);font-family:Nunito,sans-serif;font-weight:700;">Day2</div></div><div style="display:flex;flex-direction:column;align-items:center;gap:3px;"><div style="width:14px;height:14px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(201,169,110,0.6);animation:pulse 1.5s ease-in-out infinite;"></div><div style="font-size:0.55rem;color:var(--gold);font-family:Nunito,sans-serif;font-weight:700;">Day3</div></div></div>
+  </div>
+  <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:10px 12px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.07);">
+    <div style="font-size:0.58rem;color:rgba(255,255,255,0.28);font-family:Nunito,sans-serif;font-weight:700;letter-spacing:0.12em;margin-bottom:6px;">마스터 커리큘럼 확정 핵심 문장</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;"><span style="background:rgba(255,68,68,0.25);color:#ff9999;font-size:0.6rem;padding:2px 9px;border-radius:20px;font-family:Nunito,sans-serif;font-weight:700;">Day1 (월) ●○○: "She dropped her ball." </span><span style="background:rgba(255,165,0,0.25);color:#ffc060;font-size:0.6rem;padding:2px 9px;border-radius:20px;font-family:Nunito,sans-serif;font-weight:700;">Day2 (수) ●●○: "She dropped her golden ball." </span><span style="background:rgba(29,158,117,0.3);color:#9FE1CB;font-size:0.6rem;padding:2px 9px;border-radius:20px;font-family:Nunito,sans-serif;font-weight:700;">Day3 (금) ●●●: "The princess dropped her golden ball into the well." ✅ 오늘</span></div>
+  </div>
+  <div style="color:#fff;font-size:clamp(0.88rem,2vw,1.1rem);font-weight:700;line-height:1.35;margin-bottom:5px;">
+    오늘 목표: <span style="color:var(--cyan);">"The princess dropped her golden ball into the well." — 이번 주 완성!</span>
+  </div>
+  <div style="color:rgba(255,255,255,0.4);font-size:0.78rem;line-height:1.7;font-weight:300;">Q2 목표(3개월 후): 감정 형용사로 인물을 묘사하고 because 구조로 이유를 연결할 수 있다</div>
+  <div style="margin-top:10px;background:rgba(255,255,255,0.07);border-radius:99px;height:5px;overflow:hidden;">
+    <div style="height:100%;border-radius:99px;background:linear-gradient(90deg,rgba(255,165,0,0.8),var(--gold));width:66%;"></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;margin-top:4px;">
+    <span style="font-size:0.6rem;color:rgba(255,255,255,0.22);font-family:Nunito,sans-serif;">Q2 · Week 6/9</span>
+    <span style="font-size:0.6rem;color:rgba(255,255,255,0.22);font-family:Nunito,sans-serif;">Q2 완료까지 4주</span>
+  </div>
+</div>
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+<div style="background:#fff;border-left:4px solid var(--gold);margin:10px 4vw;padding:12px 14px;border-radius:0 var(--r) var(--r) 0;box-shadow:var(--sh);">
+  <div style="font-size:0.6rem;font-weight:700;color:var(--gold);letter-spacing:0.12em;margin-bottom:5px;">🔄 Day 1·2 복습 (5분) — 오늘 완성!</div>
+  <div style="font-size:0.82rem;color:var(--muted);line-height:1.9;">Day 1: <strong>"She dropped her ball."</strong> ✅<br>Day 2: <strong>"She dropped her golden ball."</strong> ✅<br>오늘: <strong style="color:var(--dgreen);">"The princess dropped her golden ball into the well."</strong> ← 완성!</div>
+</div>
+
+<div style="background:#fff;border-left:4px solid var(--dyellow);margin:10px 4vw;padding:12px 14px;border-radius:0 var(--r) var(--r) 0;box-shadow:var(--sh);">
+  <div style="font-size:0.6rem;font-weight:700;color:var(--dyellow);letter-spacing:0.12em;margin-bottom:5px;">왜 오늘 이 공부를 하는가</div>
+  <div style="font-size:0.82rem;color:var(--muted);line-height:1.75;">황금 공이 우물에 빠졌어요! <strong>drop(떨어뜨리다)</strong>와 <strong>well(우물)</strong>을 배워요. Q2 목표인 감정 표현의 첫 이야기가 시작됩니다.</div>
+  <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap;"><span style="font-size:0.66rem;padding:2px 8px;border-radius:20px;background:var(--yellow);color:var(--dyellow);font-weight:600;">Q2 목표: 감정 어휘 준비</span><span style="font-size:0.66rem;padding:2px 8px;border-radius:20px;background:var(--yellow);color:var(--dyellow);font-weight:600;">drop 과거형: dropped</span><span style="font-size:0.66rem;padding:2px 8px;border-radius:20px;background:var(--yellow);color:var(--dyellow);font-weight:600;">well 명사 첫 경험</span></div>
+</div>
+
+<!-- ① 핵심 표현 -->
+<div class="sec"><div class="sec-lbl"><span class="sec-num">①</span> 오늘의 핵심 표현 ⭐</div>
+  <div class="key-card">
+    <div class="key-lbl">TODAY'S KEY SENTENCE · Day 3 · A2 · Q2</div>
+    <div class="key-eng">"The princess dropped her golden ball into the well."</div>
+    <div class="key-kr">그녀는 공을 떨어뜨렸어요.</div>
+    <div class="key-why"><b>drop → dropped 불규칙 변화 아님 (규칙 동사)</b>
+      <span class="q2l">🎯 Q2 목표: 감정+이유 표현 → Day3 완성 문장: "The princess dropped her golden ball into the well."</span>
+    </div>
+    <button class="spk" onclick="speak('The princess dropped her golden ball into the well.','en')">🔊 발음 듣기</button>
+  </div>
+</div>
+
+<!-- ② 이야기 -->
+<div class="sec"><div class="sec-lbl"><span class="sec-num">②</span> 오늘의 이야기 📖</div>
+  <div class="card">
+    <div class="story-tabs" data-g="s1">
+      <div class="story-tab active" data-t="ko" onclick="tab('ko','s1')">🇰🇷 한국어로</div>
+      <div class="story-tab" data-t="en" onclick="tab('en','s1')">🇬🇧 영어로</div>
+    </div>
+    <div class="story-pane active" data-p="ko" data-g="s1"><div class="story-text">옛날에 공주님이 살았어요. 👸<br><br>
+공주님은 예쁜 황금 공으로 놀기를 좋아했어요. 🌟<br><br>
+어느 날, 공주님이 공을 던지다가<br>
+공이 <strong>우물 속으로 빠져버렸어요!</strong> 😱<br><br>
+공주님은 너무 슬퍼서 울기 시작했어요. 😢<br><br>
+그때 갑자기 — <strong>개구리 한 마리가 나타났어요!</strong> 🐸<br><br>
+"공주님, 왜 우세요?"<br>
+"내 황금 공이 우물에 빠졌어요."<br><br>
+개구리가 말했어요:<br>
+<strong>"제가 꺼내드릴게요! 대신 친구가 되어주세요!"</strong><br><br>
+공주님은 약속했어요.<br>
+개구리가 공을 꺼내주었어요. 🎉<br><br>
+그리고 마지막에... 개구리는 <strong>잘생긴 왕자님이 됐어요!</strong> 👑</div></div>
+    <div class="story-pane" data-p="en" data-g="s1"><div class="story-text">Once upon a time, there was a princess. 👸<br><br>
+She loved to play with her beautiful golden ball. 🌟<br><br>
+One day, she threw it too hard —<br>
+<span class="hl" onclick="speak('The princess dropped her golden ball into the well','en')"><strong>The princess dropped her golden ball into the well!</strong></span> 😱<br><br>
+<span class="hl" onclick="speak('She dropped her ball','en')">She dropped her ball</span> deep into the dark water.</div></div>
+  </div>
+</div>
+
+<!-- ③ 단어 -->
+<div class="sec"><div class="sec-lbl"><span class="sec-num">③</span> 핵심 단어 5개 🔤</div>
+  <div class="card"><div class="vocab-grid"><div class="v-card" onclick="speak('well','en');this.classList.toggle('playing');setTimeout(()=>this.classList.remove('playing'),800)">
+        <div class="v-emoji">💧</div><div class="v-eng">well</div>
+        <div class="v-kr">우물</div><div class="v-ex">The ball fell into the well.</div></div><div class="v-card" onclick="speak('golden','en');this.classList.toggle('playing');setTimeout(()=>this.classList.remove('playing'),800)">
+        <div class="v-emoji">✨</div><div class="v-eng">golden</div>
+        <div class="v-kr">황금빛의</div><div class="v-ex">She had a golden ball.</div></div><div class="v-card" onclick="speak('drop','en');this.classList.toggle('playing');setTimeout(()=>this.classList.remove('playing'),800)">
+        <div class="v-emoji">😱</div><div class="v-eng">drop</div>
+        <div class="v-kr">떨어뜨리다</div><div class="v-ex">She dropped the ball.</div></div><div class="v-card" onclick="speak('princess','en');this.classList.toggle('playing');setTimeout(()=>this.classList.remove('playing'),800)">
+        <div class="v-emoji">👸</div><div class="v-eng">princess</div>
+        <div class="v-kr">공주</div><div class="v-ex">The princess was sad.</div></div><div class="v-card" onclick="speak('ball','en');this.classList.toggle('playing');setTimeout(()=>this.classList.remove('playing'),800)">
+        <div class="v-emoji">⚽</div><div class="v-eng">ball<span style="font-size:0.65rem;color:var(--dyellow);font-weight:700;margin-left:4px;">🆕</span></div>
+        <div class="v-kr">공</div><div class="v-ex">She loved her ball.</div></div></div>
+    
+  </div>
+</div>
+
+<!-- ④ 게임1 -->
+<div class="sec"><div class="sec-lbl"><span class="sec-num">④</span> 게임 1: 단어 고르기 🎮</div>
+  <div class="card">
+    <div class="game-in" data-g="g1"><div class="game-title">🐸 빈칸에 알맞은 단어를 골라요!</div>
+      <div class="game-q">The princess ___ her golden ball.</div>
+      <div class="opts"><button class="qo" onclick="chk(this,'dropped','g1')">dropped</button><button class="qo" onclick="chk(this,'dropped','g1')">threw</button><button class="qo" onclick="chk(this,'dropped','g1')">lost</button></div>
+    </div>
+    <div class="game-in" data-g="g2" style="border-top:1px solid var(--gray);padding-top:11px;">
+      <div class="game-q">The ball fell into the ___.</div>
+      <div class="opts"><button class="qo" onclick="chk(this,'well','g2')">well</button><button class="qo" onclick="chk(this,'well','g2')">river</button><button class="qo" onclick="chk(this,'well','g2')">box</button></div>
+    </div>
+    <div id="robo-msg" style="padding:5px 13px;"></div>
+  </div>
+</div>
+
+<!-- ⑤ 게임2 -->
+<div class="sec"><div class="sec-lbl"><span class="sec-num">⑤</span> 게임 2: 문장 만들기 🧩</div>
+  <div class="card"><div class="game-in">
+    <div class="game-title">🧩 오늘 문장을 만들어봐요!</div>
+    <div class="game-q">목표: "The princess dropped her golden ball into the well."</div>
+    <div class="wo-ans" id="wa1"><span class="wo-ph">단어를 눌러 문장을 만들어요!</span></div>
+    <div class="wo-bank" id="wb1"></div>
+    <div><button class="wo-btn" onclick="checkWO(1)">✅ 확인</button>
+    <button class="wo-btn" style="background:var(--muted)" onclick="resetWO(1)">🔄 다시</button></div>
+    <div class="wo-res" id="wr1"></div>
+  </div></div>
+</div>
+
+<!-- ⑥ 게임3 -->
+<div class="sec"><div class="sec-lbl"><span class="sec-num">⑥</span> 게임 3: 짝맞추기 🃏</div>
+  <div class="card"><div class="game-in">
+    <div class="game-title">🃏 영어 ↔ 한국어 짝을 맞춰요! (4쌍)</div>
+    <div class="match-grid"><div class="match-col" id="ml1"></div><div class="match-col" id="mr1"></div></div>
+    <div class="ms" id="ms1">0/4 맞혔어요!</div>
+  </div></div>
+</div>
+
+<!-- ⑦ 들어보자 -->
+<div class="sec"><div class="sec-lbl"><span class="sec-num">⑦</span> 들어보자 👂</div>
+  <div class="card"><div class="game-in">
+    <div class="game-title">👂 듣고 맞는 것을 골라요!</div>
+    <div class="listen-play" onclick="listenPlay(1,'The princess dropped her golden ball into the well.')">
+      <div class="listen-icon">▶️</div>
+      <div class="listen-text"><b>버튼을 눌러 재생!</b><br>The princess ___ her ball into the well.</div>
+    </div>
+    <div id="lh1" style="display:none;font-size:0.76rem;color:var(--dblue);padding:5px 0;font-weight:600;">들었나요? 정답을 골라요!</div>
+    <div data-g="g3">
+      <div class="game-q">The princess ___ her ball into the well.</div>
+      <div class="opts"><button class="qo" onclick="chk(this,'dropped','g3')">dropped</button><button class="qo" onclick="chk(this,'dropped','g3')">threw</button><button class="qo" onclick="chk(this,'dropped','g3')">kicked</button></div>
+    </div>
+  </div></div>
+</div>
+
+<!-- ⑧ 써보자 -->
+<div class="sec"><div class="sec-lbl"><span class="sec-num">⑧</span> 써보자 ✍️</div>
+  <div class="card"><div class="game-in">
+    <div class="game-title">🔊 단어를 듣고 써봐요! (3개)</div>
+    <div style="margin-bottom:10px;"><span class="dw" onclick="speak('well','en')">well 🔊</span><span class="dw" onclick="speak('golden','en')">golden 🔊</span><span class="dw" onclick="speak('drop','en')">drop 🔊</span></div>
+    <div class="dict-row"><div class="dict-num">1.</div><input id="di10" class="dict-inp" placeholder="듣고 써보세요..."></div><div class="dict-row"><div class="dict-num">2.</div><input id="di11" class="dict-inp" placeholder="듣고 써보세요..."></div><div class="dict-row"><div class="dict-num">3.</div><input id="di12" class="dict-inp" placeholder="듣고 써보세요..."></div>
+    <button class="dict-btn" onclick="checkDict(1,['well', 'golden', 'drop'])">✅ 확인</button>
+  </div></div>
+</div>
+
+<!-- ⑨ AI 튜터 -->
+<div class="sec"><div class="sec-lbl"><span class="sec-num">⑨</span> AI 튜터 ChatGPT와 영어 연습 🤖</div>
+  <div class="ai-section">
+    <div class="ai-header">
+      <div class="ai-icon-big">🤖</div>
+      <div class="ai-header-text">
+        <div class="ai-title">AI 튜터 ChatGPT — Day 3 맞춤 연습</div>
+        <div class="ai-desc">오늘 Day 3 범위에 딱 맞춘 AI 선생님이에요. 전달사항을 복사해서 ChatGPT에 붙여넣어요!</div>
+      </div>
+    </div>
+    <div class="ai-goal-box">
+      <div class="ai-goal-lbl">오늘 AI 튜터 목표</div>
+      <div class="ai-goal-item">오늘 문장 The princess dropped her golden ball into the well. 타이핑 연습</div><div class="ai-goal-item">단어 퀴즈: well, golden, drop, princess</div><div class="ai-goal-item">Q2 because 구조 연습</div><div class="ai-goal-item">이번 주 복습 완성</div>
+    </div>
+    <div class="prompt-block">
+      <div class="prompt-lbl">
+        ChatGPT 전달사항 (전체 복사 → ChatGPT에 붙여넣기)
+        <button class="copy-btn" id="copybtn-1" onclick="copyPrompt(1)">📋 복사</button>
+      </div>
+      <div class="prompt-text" id="prompt-1">[CEC English Camp — G3 W15 Day3 수업 전달사항]
+
+안녕하세요! 저는 CEC English Camp Grade 3 W15 Day3 수업을 마쳤어요.
+
+━━━━━━━━━━━━━━━━━━
+📚 오늘 배운 내용
+━━━━━━━━━━━━━━━━━━
+책: The Frog Prince
+레벨: A2 (Grade 3) / 2분기(Q2) — 감정 표현 주간
+이번 주 완성 문장: "The princess dropped her golden ball into the well."
+오늘 단어: well, golden, drop, princess
+
+━━━━━━━━━━━━━━━━━━
+📅 회차 범위 제한 (중요!)
+━━━━━━━━━━━━━━━━━━
+오늘은 Day3입니다. Day1·Day2 복습 후 'The princess dropped her golden ball into the well.' 전체를 완성합니다. 전체 자유 대화 가능.
+
+━━━━━━━━━━━━━━━━━━
+🗣 오늘 AI 튜터 미션
+━━━━━━━━━━━━━━━━━━
+1. Day1·Day2 빠른 복습 (3분): 두 문장 말하게 해주세요
+2. 오늘 완성 문장 "The princess dropped her golden ball into the well." 타이핑 + 발음 연습
+3. 단어 퀴즈: well, golden, drop, princess, ball 전체 확인
+4. 자유 대화: "Why was the princess sad?" / "What did the frog do?" 질문해주세요
+5. Q2 연결: "She felt sad because..." 구조로 1문장 말하게 해주세요
+6. 마무리: "이번 주 완성! 다음 주  배울 거예요! 🎉" 
+
+━━━━━━━━━━━━━━━━━━
+📋 선생님 지침
+━━━━━━━━━━━━━━━━━━
+- Grade 3 (9세) 학생입니다
+- 전체 복습 + 자유 대화. 한국어 30%. because 구조 유도해주세요.
+- 틀린 표현: "Good try! The correct way is..." 로 교정
+- 절대 오늘 범위를 넘어가지 마세요
+
+시작해볼까요? 먼저 인사해봐요! 🐸</div>
+    </div>
+    <div class="ai-steps">
+      <div style="font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.4);letter-spacing:0.12em;margin-bottom:4px;">사용 방법</div>
+      <div class="ai-step"><div class="step-num">1</div><div class="step-text">📋 <b>복사 버튼</b> 클릭 → 전달사항 전체 복사</div></div>
+      <div class="ai-step"><div class="step-num">2</div><div class="step-text"><b>ChatGPT 열기</b> → 붙여넣기(Ctrl+V) → Enter</div></div>
+      <div class="ai-step"><div class="step-num">3</div><div class="step-text">AI 선생님이 <b>Day 3 범위</b>에 맞게 시작해요!</div></div>
+    </div>
+    <div class="ai-btn-row">
+      <a href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b" target="_blank" class="ai-btn primary">🚀 ChatGPT 열기</a>
+      <button class="ai-btn secondary" onclick="copyPrompt(1)">📋 전달사항 복사</button>
+    </div>
+    <div class="ai-notice">💡 복사 → ChatGPT 붙여넣기 → AI 선생님이 Day 3 수업을 시작합니다!<br>⚠️ 틀려도 괜찮아요! AI 선생님이 친절하게 고쳐줘요.</div>
+  </div>
+</div>
+
+<!-- 체크리스트 -->
+<div class="sec"><div class="sec-lbl">✅ Day 3 체크리스트</div>
+  <div class="check-card">
+    <div class="check-title">🐸 ●●● 완료 확인!</div>
+    <div class="check-item"><div class="chk" onclick="toggleChk(this)"></div><span>"The princess dropped her golden ball into the well." 3번 소리 내어 말했다</span><span class="q2t">오늘 핵심</span></div>
+    <div class="check-item"><div class="chk" onclick="toggleChk(this)"></div><span>단어 5개 뜻을 말할 수 있다 (well, golden, drop, princess, ball)</span><span class="q2t">Q2 목표①</span></div>
+    <div class="check-item"><div class="chk" onclick="toggleChk(this)"></div><span>게임 1·2·3을 완료했다</span><span class="q2t">Q2 목표②</span></div>
+    <div class="check-item"><div class="chk" onclick="toggleChk(this)"></div><span>받아쓰기 3개를 완성했다</span><span class="q2t">Q2 목표③</span></div>
+    <div class="check-item"><div class="chk" onclick="toggleChk(this)"></div><span>AI 튜터 전달사항을 복사해서 ChatGPT에 붙여넣었다</span><span class="q2t">Q2 목표④</span></div>
+  </div>
+</div>
+
+<div class="done-card" id="done-card">
+  <div class="done-title">🎉 Day 3 ●●● 완료!</div>
+  <div class="done-sub">공주님의 황금 공 이야기 Week 1 완성! 다음엔 슬픈 공주님을 만나요 😢</div>
+  <div class="xp">+10 XP!</div>
+</div>
+<div class="bnav"><a href="week15b.html" class="bl">← 이전</a><a href="week16a.html" class="bl next">W16 Day1 →</a></div>
+
+<script>
+const SY=window.speechSynthesis;
+function speak(t,l){const u=new SpeechSynthesisUtterance(t);u.lang=l==='ko'?'ko-KR':'en-US';u.rate=l==='ko'?0.9:0.8;SY.cancel();SY.speak(u);}
+const RM={ok:['완벽해요! 🎉','훌륭해요! ⭐','맞아요! 🌟'],no:['한 번 더! 💪','괜찮아요! 🔥','조금만 더! 😊']};
+function robo(t){const a=RM[t],m=a[Math.floor(Math.random()*a.length)];const e=document.getElementById('robo-msg');if(e){e.textContent=m;}}
+function chk(b,a,g){const all=document.querySelectorAll(`[data-g="${g}"] .qo`);all.forEach(x=>x.disabled=true);const ok=b.textContent.trim()===a;b.classList.add(ok?'correct':'wrong');if(!ok)all.forEach(x=>{if(x.textContent.trim()===a)x.classList.add('correct');});robo(ok?'ok':'no');tryDone();}
+const WO={};
+function initWO(id,words,answer){WO[id]={answer,placed:[]};const bk=document.getElementById('wb'+id);words.forEach((w,i)=>{const b=document.createElement('button');b.className='wo-word';b.textContent=w;b.dataset.i=i;b.onclick=()=>{WO[id].placed.push({w,idx:i});b.classList.add('used');renderWO(id);};bk.appendChild(b);});}
+function renderWO(id){const d=document.getElementById('wa'+id);d.innerHTML='';if(!WO[id].placed.length){d.innerHTML='<span class="wo-ph">단어를 눌러 문장을 만들어요!</span>';return;}WO[id].placed.forEach((item,i)=>{const s=document.createElement('span');s.className='wo-placed';s.textContent=item.w;s.onclick=()=>{WO[id].placed.splice(i,1);document.getElementById('wb'+id).querySelectorAll('.wo-word').forEach(b=>{if(parseInt(b.dataset.i)===item.idx)b.classList.remove('used');});renderWO(id);};d.appendChild(s);});}
+function checkWO(id){const placed=WO[id].placed.map(i=>i.w).join(' ');const r=document.getElementById('wr'+id);if(placed===WO[id].answer){r.className='wo-res ok';r.textContent='✅ 정확해요!';robo('ok');tryDone();}else{r.className='wo-res fail';r.textContent='❌ 다시! 정답: "'+WO[id].answer+'"';robo('no');}}
+function resetWO(id){WO[id].placed=[];document.getElementById('wb'+id).querySelectorAll('.wo-word').forEach(b=>b.classList.remove('used'));renderWO(id);document.getElementById('wr'+id).className='wo-res';}
+const MT={};
+function initMatch(id,pairs){MT[id]={pairs,sel:null,done:0};const lc=document.getElementById('ml'+id);const rc=document.getElementById('mr'+id);[...pairs].sort(()=>Math.random()-.5).forEach(p=>{const d=document.createElement('div');d.className='mi';d.textContent=p[0];d.dataset.k=p[0];d.dataset.s='L';d.onclick=()=>pickM(id,d);lc.appendChild(d);});[...pairs].sort(()=>Math.random()-.5).forEach(p=>{const d=document.createElement('div');d.className='mi';d.textContent=p[1];d.dataset.k=p[0];d.dataset.s='R';d.onclick=()=>pickM(id,d);rc.appendChild(d);});}
+function pickM(id,el){const m=MT[id];if(m.sel===null){m.sel=el;el.classList.add('selected');return;}const prev=m.sel;m.sel=null;prev.classList.remove('selected');if(prev.dataset.s===el.dataset.s){el.classList.add('selected');MT[id].sel=el;return;}if(prev.dataset.k===el.dataset.k){prev.classList.add('matched');el.classList.add('matched');m.done++;document.getElementById('ms'+id).textContent='✅ '+m.done+'/'+m.pairs.length+' 맞혔어요!';robo('ok');if(m.done===m.pairs.length)tryDone();}else{prev.classList.add('wf');el.classList.add('wf');setTimeout(()=>{prev.classList.remove('wf');el.classList.remove('wf');},500);robo('no');}}
+function tab(t,g){document.querySelectorAll(`[data-g="${g}"] .story-tab`).forEach(x=>x.classList.remove('active'));document.querySelectorAll(`[data-g="${g}"] .story-pane`).forEach(x=>x.classList.remove('active'));document.querySelector(`[data-g="${g}"] [data-t="${t}"]`).classList.add('active');document.querySelector(`[data-g="${g}"] [data-p="${t}"]`).classList.add('active');}
+function checkDict(id,ans){ans.forEach((a,i)=>{const inp=document.getElementById('di'+id+i);if(inp)inp.classList.add(inp.value.trim().toLowerCase()===a.toLowerCase()?'ok':'fail');});robo('ok');tryDone();}
+function tryDone(){const checks=document.querySelectorAll('.chk');let all=true;checks.forEach(c=>{if(!c.classList.contains('done'))all=false;});if(all){const dc=document.getElementById('done-card');if(dc)dc.classList.add('show');let xp=parseInt(localStorage.getItem('cec_xp')||0)+10;localStorage.setItem('cec_xp',xp);}}
+function toggleChk(el){el.classList.toggle('done');el.textContent=el.classList.contains('done')?'✓':'';tryDone();}
+function listenPlay(id,text){speak(text,'en');const el=document.getElementById('lh'+id);if(el)el.style.display='block';}
+function copyPrompt(id){const el=document.getElementById('prompt-'+id);navigator.clipboard.writeText(el.innerText||el.textContent).then(()=>{const btn=document.getElementById('copybtn-'+id);btn.textContent='✅ 복사됨!';setTimeout(()=>btn.textContent='📋 복사',2000);});}
+</script>
+<script>
+window.addEventListener('DOMContentLoaded',()=>{
+  initWO(1,['The', 'princess', 'dropped', 'her', 'golden', 'ball', 'into', 'the', 'well'],'The princess dropped her golden ball into the well');
+  initMatch(1,[('well', '우물'), ('golden', '황금빛'), ('drop', '떨어뜨리다'), ('princess', '공주')]);
+});
+</script>
+</body></html>
