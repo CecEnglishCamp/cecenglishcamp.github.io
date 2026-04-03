@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sage:#4a7c59;--sage-light:#e8f5e9;--gold:#c9a028;--gold-light:#fdf6e3;
+  --coral:#e8714a;--coral-light:#fdf0eb;--sky:#2196f3;--sky-light:#e3f2fd;
+  --brown:#795548;--brown-light:#efebe9;--text:#2d3748;--text2:#4a5568;
+  --text3:#718096;--bg:#f7f4ee;--card:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);font-size:16px;}
+.topbar{position:sticky;top:0;z-index:100;background:var(--sage);padding:10px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+.top-left{display:flex;align-items:center;gap:10px;}
+.top-title{font-weight:900;font-size:0.95rem;color:#fff;}
+.top-sub{font-size:0.72rem;color:rgba(255,255,255,0.75);}
+.xp-pill{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);
+  color:#fff;padding:5px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;}
+.ai-tutor-btn{background:#00f2ff;color:#000;border:none;padding:7px 14px;
+  border-radius:20px;font-size:0.8rem;font-weight:900;cursor:pointer;
+  font-family:'Nunito',sans-serif;}
+.container{max-width:680px;margin:0 auto;padding:16px;}
+.hero-wrap{border-radius:18px;overflow:hidden;margin-bottom:16px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.12);}
+.hero-img-wrap{position:relative;}
+.scene-img{width:100%;display:block;object-fit:cover;}
+.hero-overlay{position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,0.65));
+  padding:20px 20px 16px;color:#fff;}
+.hero-overlay h2{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;margin-bottom:4px;}
+.hero-overlay p{font-size:0.82rem;opacity:0.85;}
+.day-badge{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.day-pill{padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:700;
+  font-family:'Nunito',sans-serif;border:2px solid transparent;}
+.day-pill.done{background:rgba(255,255,255,0.2);color:#fff;border-color:rgba(255,255,255,0.3);}
+.day-pill.today{background:#fff;color:var(--sage);border-color:#fff;}
+.day-pill.future{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);border-color:rgba(255,255,255,0.1);}
+.book-intro{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.07);}
+.book-inner{display:flex;gap:14px;align-items:flex-start;}
+.book-img-side img{width:80px;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,0.15);}
+.book-eyebrow{font-size:0.68rem;font-weight:700;color:var(--sage);margin-bottom:5px;}
+.book-badge-parent{background:var(--gold-light);color:var(--gold);border:1px solid rgba(201,160,40,0.3);
+  padding:2px 8px;border-radius:10px;font-size:0.65rem;margin-left:6px;}
+.book-title-en{font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;color:var(--text);margin-bottom:2px;}
+.book-author{font-size:0.7rem;color:var(--text3);margin-bottom:8px;}
+.book-body p{font-size:0.8rem;line-height:1.7;color:var(--text2);margin-bottom:6px;}
+.book-body .accent{color:var(--sage);font-weight:700;}
+.book-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.book-tag{background:var(--sage-light);color:var(--sage);font-size:0.68rem;font-weight:700;padding:3px 9px;border-radius:10px;}
+.card{background:#fff;border-radius:16px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,0.07);overflow:hidden;}
+.sec-hdr{display:flex;align-items:center;gap:12px;padding:14px 16px 0;}
+.sec-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:0.9rem;color:#fff;flex-shrink:0;}
+.sec-title{font-weight:900;font-size:1rem;color:var(--text);}
+.sec-sub{font-size:0.7rem;color:var(--text3);margin-top:2px;}
+.sec-body{padding:14px 16px;}
+.key-card{background:linear-gradient(135deg,var(--sage),#3d6b4a);border-radius:14px;padding:18px;color:#fff;margin-bottom:14px;}
+.key-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;color:rgba(255,255,255,0.7);margin-bottom:8px;}
+.key-eng{font-family:'Nunito',sans-serif;font-size:1.6rem;font-weight:900;margin-bottom:6px;line-height:1.2;}
+.key-kr{font-size:0.95rem;color:rgba(255,255,255,0.8);margin-bottom:12px;}
+.key-play-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.12);
+  border-radius:10px;padding:10px 14px;cursor:pointer;}
+.play-btn{width:40px;height:40px;border-radius:50%;background:#fff;color:var(--sage);
+  border:none;font-size:1.1rem;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-weight:900;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.2s;}
+.play-btn:hover{transform:scale(1.1);}
+.play-label{font-size:0.82rem;font-weight:700;color:#fff;}
+.play-hint{font-size:0.68rem;color:rgba(255,255,255,0.6);margin-top:2px;}
+.robo{display:flex;align-items:flex-start;gap:10px;background:var(--sage-light);
+  border:1px solid rgba(74,124,89,0.2);border-radius:12px;padding:12px;margin-bottom:12px;}
+.robo-av img{width:36px;height:36px;border-radius:50%;border:2px solid var(--sage);object-fit:cover;}
+.robo-nm{font-size:0.68rem;font-weight:700;color:var(--sage);margin-bottom:3px;}
+.robo-msg{font-size:0.82rem;line-height:1.65;color:var(--text2);}
+/* ── 스토리 플레이어 ── */
+.story-player-row{display:flex;align-items:center;gap:12px;margin:12px 0 10px;}
+.story-label{font-size:0.75rem;font-weight:800;color:var(--sage);background:var(--sage-light);padding:4px 12px;border-radius:12px;}
+.story-ctrl-btn{width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
+  font-size:1.1rem;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;box-shadow:0 3px 10px rgba(0,0,0,0.15);font-weight:900;}
+.story-play-btn{background:var(--sage);color:#fff;}
+.story-play-btn:hover{background:#3d6b4a;transform:scale(1.08);}
+.story-stop-btn{background:#fff;color:var(--sage);border:2px solid var(--sage)!important;}
+.story-stop-btn:hover{background:var(--sage-light);transform:scale(1.08);}
+.story-en{background:var(--sky-light);border-radius:10px;padding:14px;font-size:0.88rem;line-height:1.9;margin-bottom:10px;}
+.story-kr{background:var(--gold-light);border-radius:10px;padding:14px;font-size:0.88rem;line-height:1.9;margin-bottom:10px;}
+.hl{background:rgba(201,160,40,0.2);border-radius:4px;padding:1px 3px;font-weight:700;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+.v-card{background:var(--bg);border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.2s;border:2px solid transparent;}
+.v-card:hover{border-color:var(--sage);background:var(--sage-light);transform:translateY(-2px);}
+.v-emoji{font-size:1.8rem;margin-bottom:6px;}
+.v-eng{font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;color:var(--text);}
+.v-kr{font-size:0.78rem;color:var(--text3);margin:4px 0;}
+.v-ex{font-size:0.7rem;color:var(--sage);font-style:italic;}
+.v-play{margin-top:8px;background:var(--sage);color:#fff;border:none;padding:4px 12px;border-radius:10px;font-size:0.72rem;cursor:pointer;}
+.game-box{background:var(--bg);border-radius:12px;padding:14px;margin-bottom:12px;}
+.game-q{font-size:0.88rem;font-weight:700;color:var(--text);margin-bottom:12px;line-height:1.6;}
+.blank{display:inline-block;min-width:60px;border-bottom:3px solid var(--sage);
+  padding:0 4px;font-family:'Nunito',sans-serif;font-weight:900;color:var(--sage);text-align:center;transition:all 0.3s;}
+.choices{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.ch{padding:9px 18px;border-radius:10px;background:#fff;border:2px solid rgba(0,0,0,0.1);
+  font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif;}
+.ch:hover{border-color:var(--sage);background:var(--sage-light);}
+.ch.ok{background:var(--sage-light);border-color:var(--sage);color:var(--sage);}
+.ch.no{background:#ffeaea;border-color:#e53935;color:#e53935;}
+.fb{font-size:0.82rem;font-weight:700;margin-top:6px;min-height:20px;}
+.build-zone{min-height:48px;background:#fff;border:2px dashed rgba(74,124,89,0.3);
+  border-radius:10px;padding:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px;}
+.build-ph{font-size:0.8rem;color:var(--text3);}
+.placed{padding:7px 14px;background:var(--sage);color:#fff;border-radius:8px;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.wpool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;}
+.wchip{padding:8px 16px;background:#fff;border:2px solid rgba(0,0,0,0.1);border-radius:10px;
+  font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;}
+.wchip:hover{border-color:var(--sage);}
+.wchip.used{opacity:0.3;pointer-events:none;}
+.game-btns{display:flex;gap:8px;margin-bottom:8px;}
+.btn-ok{padding:9px 20px;background:var(--sage);color:#fff;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.btn-rst{padding:9px 16px;background:var(--bg);color:var(--text2);border:1px solid rgba(0,0,0,0.1);border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.match-col{display:flex;flex-direction:column;gap:7px;}
+.m-btn{padding:10px;background:#fff;border:2px solid rgba(0,0,0,0.1);border-radius:10px;
+  font-size:0.85rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.2s;font-family:'Nunito',sans-serif;}
+.m-btn:hover{border-color:var(--sage);}
+.m-btn.sel{background:var(--sage-light);border-color:var(--sage);color:var(--sage);}
+.m-btn.ok{background:var(--sage-light);border-color:var(--sage);color:var(--sage);pointer-events:none;}
+.m-btn.no{background:#ffeaea;border-color:#e53935;animation:shk .3s ease;}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.listen-box{padding:4px 0 8px;}
+.listen-play{width:100%;padding:14px;background:var(--sage);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:12px;font-family:'Nunito',sans-serif;}
+.listen-opts{display:flex;gap:8px;flex-wrap:wrap;}
+.listen-opt{flex:1;min-width:80px;padding:12px 8px;background:#fff;border:2px solid rgba(0,0,0,0.08);border-radius:12px;cursor:pointer;text-align:center;transition:all 0.2s;font-family:'Nunito',sans-serif;}
+.listen-opt:hover{border-color:var(--sage);}
+.lo-emoji{font-size:1.5rem;margin-bottom:5px;}
+.lo-label{font-size:0.75rem;font-weight:700;color:var(--text2);}
+.listen-opt.ok{border-color:var(--sage);background:var(--sage-light);}
+.listen-opt.no{border-color:#e53935;background:#ffeaea;}
+.dict-box{padding:4px 0;}
+.dict-play{padding:10px 20px;background:var(--sky);color:#fff;border:none;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;margin-bottom:10px;font-family:'Nunito',sans-serif;}
+.dict-hint{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;letter-spacing:0.2em;color:var(--text3);margin-bottom:10px;}
+.dict-input{width:100%;padding:12px 14px;border:2px solid rgba(0,0,0,0.1);border-radius:10px;font-size:1rem;font-family:'Nunito',sans-serif;font-weight:700;outline:none;margin-bottom:8px;}
+.dict-input:focus{border-color:var(--sage);}
+.dict-check{padding:9px 20px;background:var(--sage);color:#fff;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.quiz-box{background:var(--bg);border-radius:12px;padding:14px;margin-bottom:10px;}
+.quiz-q{font-size:0.9rem;font-weight:700;line-height:1.6;margin-bottom:10px;}
+.quiz-opts{display:flex;flex-direction:column;gap:7px;}
+.qo{padding:10px 14px;background:#fff;border:2px solid rgba(0,0,0,0.08);border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.2s;font-family:'Nunito',sans-serif;}
+.qo:hover{border-color:var(--sage);}
+.qo.ok{background:var(--sage-light);border-color:var(--sage);color:var(--sage);}
+.qo.no{background:#ffeaea;border-color:#e53935;color:#e53935;}
+.write-box{background:var(--bg);border-radius:12px;padding:14px;}
+.write-prompt{font-size:0.82rem;color:var(--text3);margin-bottom:8px;}
+.write-input{width:100%;padding:12px;border:2px solid rgba(0,0,0,0.1);border-radius:10px;font-size:0.95rem;font-family:'Nunito',sans-serif;outline:none;margin-bottom:8px;}
+.write-input:focus{border-color:var(--sage);}
+.write-btn{padding:9px 20px;background:var(--gold);color:#fff;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.prog{height:5px;background:rgba(0,0,0,0.06);margin-top:4px;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--sage),var(--gold));border-radius:0 3px 3px 0;}
+.complete{background:linear-gradient(135deg,var(--sage),#2d5a3a);color:#fff;border-radius:16px;padding:24px;margin-bottom:14px;text-align:center;display:none;box-shadow:0 4px 20px rgba(74,124,89,0.3);}
+.complete.show{display:block;}
+.complete-emoji{font-size:2.5rem;margin-bottom:10px;}
+.complete-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;margin-bottom:8px;}
+.complete-sub{font-size:0.88rem;line-height:1.75;opacity:0.9;margin-bottom:14px;}
+.xp-big{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:900;background:rgba(255,255,255,0.15);border-radius:10px;padding:10px;margin-bottom:14px;}
+.next-card{background:rgba(255,255,255,0.12);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;text-align:left;}
+.next-label{font-size:0.68rem;font-weight:700;opacity:0.7;margin-bottom:3px;}
+.next-title{font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:900;}
+.next-hint{font-size:0.75rem;opacity:0.7;margin-top:2px;}
+.next-btn{background:#fff;color:var(--sage);border:none;padding:10px 18px;border-radius:10px;font-size:0.85rem;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap;text-decoration:none;display:inline-block;}
+/* ── AI 튜터 (공통) ── */
+.ai-box{background:linear-gradient(135deg,#1a2a3a,#0d1b2a);border-radius:16px;padding:20px;color:#fff;}
+.ai-box-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.ai-box-icon{font-size:2rem;}
+.ai-box-title{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:900;margin-bottom:3px;}
+.ai-box-desc{font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.6;}
+.prompt-block{background:rgba(0,0,0,0.3);border-radius:10px;padding:14px;margin-bottom:14px;}
+.prompt-lbl{font-size:0.62rem;letter-spacing:0.15em;color:#c9a028;font-weight:700;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+.copy-btn{background:rgba(201,160,40,0.2);border:1px solid rgba(201,160,40,0.4);color:#c9a028;border-radius:6px;padding:4px 12px;font-size:0.68rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all 0.2s;}
+.copy-btn:hover{background:#c9a028;color:#000;}
+.copy-btn.copied{background:#19c37d;border-color:#19c37d;color:#fff;}
+.prompt-text{font-family:monospace;font-size:0.76rem;color:rgba(255,255,255,0.7);line-height:1.8;white-space:pre-wrap;}
+.ai-steps{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+.ai-step{display:flex;gap:10px;align-items:flex-start;font-size:0.8rem;color:rgba(255,255,255,0.6);}
+.step-num{background:rgba(0,242,255,0.15);color:#00f2ff;font-family:'Nunito',sans-serif;font-weight:900;font-size:0.7rem;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ai-btn-row{display:flex;gap:8px;flex-wrap:wrap;}
+.ai-btn-primary{display:inline-flex;align-items:center;gap:6px;padding:11px 20px;background:linear-gradient(135deg,#19c37d,#0f9d58);color:#fff;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;text-decoration:none;}
+.ai-btn-sec{padding:11px 16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);border-radius:10px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.bnav{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 28px;max-width:680px;margin:0 auto;}
+.bp{font-size:0.82rem;font-weight:700;color:var(--text3);}
+.bl{font-size:0.82rem;font-weight:700;color:var(--text3);}
+.bn{padding:10px 20px;background:var(--sage);color:#fff;border-radius:12px;font-size:0.85rem;font-weight:700;text-decoration:none;font-family:'Nunito',sans-serif;}
+.fill-wrap{background:var(--bg);border-radius:12px;padding:14px;margin-bottom:12px;}
+@media(max-width:480px){.vocab-grid{grid-template-columns:repeat(2,1fr);}.key-eng{font-size:1.3rem;}.listen-opts{flex-direction:column;}}
+</style>
+</head>
+<title>G3 Week 1 Day 2 | CEC Camp A</title>
+<body data-camp="a" data-grade="3" data-week="01">
+<header class="topbar">
+  <div class="top-left">
+    <video src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.mp4" autoplay loop muted playsinline style="width:40px;height:40px;border-radius:12px;object-fit:cover;flex-shrink:0;"></video>
+    <div><div class="top-title">CEC Camp A 초등3</div><div class="top-sub">Peter Rabbit · Week 1 Day 2 ●●○</div></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="xp-pill">⭐ <span id="xp">0</span> XP</div>
+    <button class="ai-tutor-btn" onclick="window.open('https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b','_blank')">🤖 AI 튜터</button>
+  </div>
+</header>
+<main class="container">
+<div class="hero-wrap"><div class="hero-img-wrap">
+  <img class="scene-img" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/peter-rabbit/w01_new.png" alt="Peter Rabbit">
+  <div class="hero-overlay">
+    <h2>🐰 Peter Rabbit — Week 1 Day 2 ●●○</h2>
+    <p>오늘의 목표: fast 추가! 'He ran away fast.'</p>
+    <div class="day-badge">
+      <span class="day-pill done">● Day 1 (월) "He ran away."</span>
+      <span class="day-pill today">● Day 2 (수) "He ran away fast."</span>
+      <span class="day-pill future">○ Day 3 (금) 완성!</span>
+    </div>
+  </div>
+</div></div>
+<div class="book-intro">
+  <div class="book-inner">
+    <div class="book-img-side">
+      <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/peter-rabbit/w01_new.png" alt="The Tale of Peter Rabbit">
+    </div>
+    <div class="book-text-side">
+      <div class="book-eyebrow">📚 오늘의 책 소개 <span class="book-badge-parent">엄마도 읽어보세요!</span></div>
+      <div class="book-title-en">The Tale of Peter Rabbit</div>
+      <div class="book-author">글 · 그림: Beatrix Potter (1902, England)</div>
+      <div class="book-body">
+        <p>이 책은 <strong>1902년</strong> 영국 작가 <span class="accent">베아트릭스 포터</span>가 쓰고 그린 세계적인 고전 그림책이에요.</p>
+        <p>🐰 주인공 <span class="accent">피터 래빗</span>은 파란 재킷을 입은 장난꾸러기 토끼예요.</p>
+      </div>
+      <div class="book-tags">
+        <span class="book-tag">✨ 난이도: A1~A2</span>
+        <span class="book-tag">👶 추천 연령: 6~10세</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="robo">
+  <div class="robo-av"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+  <div><div class="robo-nm">Robo 선생님</div><div class="robo-msg">Day 1 기억나? 'He ran away.' 🐰<br>오늘은 여기에 <b>fast (빠르게)</b>를 추가해봐! ⚡</div></div>
+</div>
+<div class="card">
+  <div class="sec-hdr"><div class="sec-num" style="background:var(--gold);">1</div>
+    <div><div class="sec-title">오늘의 핵심 표현</div><div class="sec-sub">KEY SENTENCE · 이것만 기억하면 돼!</div></div>
+  </div>
+  <div class="sec-body">
+    <div class="key-card">
+      <div class="key-eyebrow">⭐ TODAY'S KEY SENTENCE · Day 2</div>
+      <div class="key-eng">"He ran away fast."</div>
+      <div class="key-kr">그는 빠르게 도망쳤어요.</div>
+      <div class="key-play-row" onclick="speak('He ran away fast.')">
+        <button class="play-btn" onclick="event.stopPropagation();speak('He ran away fast.')">▶</button>
+        <div><div class="play-label">🔊 발음 듣기 — 따라 해봐! (여자 선생님 목소리)</div><div class="play-hint">버튼을 누르면 영어 발음이 나와요</div></div>
+      </div>
+    </div>
+    <div class="robo" style="margin-top:14px;margin-bottom:0;">
+      <div class="robo-av"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+      <div><div class="robo-nm">Robo</div><div class="robo-msg">Day1 기억나? 'He ran away.'<br>오늘은 여기에 <strong>fast (빠르게)</strong>를 추가해! ⚡</div></div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:10%;"></div></div>
+</div>
+<div class="card">
+  <div class="sec-hdr"><div class="sec-num" style="background:var(--coral);">2</div>
+    <div><div class="sec-title">오늘의 이야기 📖</div><div class="sec-sub">SHORT STORY · 짧고 쉬운 이야기예요!</div></div>
+  </div>
+  <div style="position:relative;overflow:hidden;">
+    <img class="scene-img" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/peter-rabbit/w01_new.png" alt="Peter Rabbit story" style="max-height:260px;">
+    <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 20px;background:linear-gradient(transparent,rgba(61,90,64,0.8));">
+      <div style="color:white;font-size:0.9rem;font-weight:800;">🐰 엄마: "정원에 가지 마!" ← 하지만 피터는... 🏃💨</div>
+    </div>
+  </div>
+  <div class="sec-body">
+    <div class="robo" style="background:linear-gradient(135deg,#fdf6e3,#fdf8f0);border-color:rgba(218,165,32,0.25);">
+      <div class="robo-av" style="border-color:var(--gold);"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+      <div><div class="robo-nm" style="color:var(--gold);">먼저 한국어로 읽어봐!</div>
+      <div class="robo-msg">토끼 엄마에게 아이가 네 명 있었어요. 🐰🐰🐰🐰<br>세 자매는 착했지만, 피터는 말을 안 들었어요!<br>엄마가 말했어요: "정원에 가지 마!"<br>하지만 피터는... <strong>도망쳤어요!</strong> 🏃💨</div>
+      </div>
+    </div>
+    <div class="story-player-row">
+      <span class="story-label">🔤 English Story</span>
+      <button class="story-ctrl-btn story-play-btn" id="story-play-btn" onclick="storyPlay('Mrs. Rabbit had four children. Three sisters were good. But Peter did not listen. Do not go to the garden, said Mother. But Peter ran away fast. He went to the garden.')" title="재생">▶</button>
+      <button class="story-ctrl-btn story-stop-btn" id="story-stop-btn" onclick="storyStopped()" title="정지" style="display:none;">⏹</button>
+      <span style="font-size:0.72rem;color:var(--text3);">재생 / 정지</span>
+    </div>
+    <div class="story-en">
+      Mrs. Rabbit had four children. 🐰<br>
+      Three sisters were good. ✨<br>
+      But Peter did not listen. 😤<br>
+      "Do not go to the garden!" said Mother. 🚫<br>
+      But <span class="hl">Peter ran away.</span> 🏃💨<br>
+      He went to the garden! 🌿🥕
+    </div>
+    <div class="story-kr">
+      토끼 엄마에게 아이가 네 명이 있었어요.<br>세 자매는 착했어요. ✨<br>
+      하지만 피터는 말을 안 들었어요. 😤<br>
+      "정원에 가지 마!" 엄마가 말했어요. 🚫<br>
+      하지만 <strong>피터는 도망쳤어요.</strong> 🏃💨
+    </div>
+    <div class="robo" style="margin-top:10px;margin-bottom:0;">
+      <div class="robo-av"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+      <div><div class="robo-nm">Robo</div><div class="robo-msg">잘 읽었어! 👏 핵심 문장: <strong>"He ran away fast."</strong> 기억나지?</div></div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:20%;"></div></div>
+</div>
+<div class="card">
+  <div class="sec-hdr"><div class="sec-num" style="background:var(--sky);">3</div>
+    <div><div class="sec-title">핵심 단어 4개!</div><div class="sec-sub">KEY WORDS · 눌러서 발음도 들어봐!</div></div>
+  </div>
+  <div class="sec-body">
+    <div class="vocab-grid"><div class="v-card" onclick="speak('rabbit')">
+      <div class="v-emoji">🐰</div><div class="v-eng">rabbit</div>
+      <div class="v-kr">토끼</div><div class="v-ex">"Peter is a rabbit."</div>
+      <button class="v-play" onclick="event.stopPropagation();speak('rabbit')">🔊 듣기</button>
+    </div><div class="v-card" onclick="speak('garden')">
+      <div class="v-emoji">🌿</div><div class="v-eng">garden</div>
+      <div class="v-kr">정원</div><div class="v-ex">"Do not go to the garden."</div>
+      <button class="v-play" onclick="event.stopPropagation();speak('garden')">🔊 듣기</button>
+    </div><div class="v-card" onclick="speak('ran')">
+      <div class="v-emoji">🏃</div><div class="v-eng">ran</div>
+      <div class="v-kr">달렸다</div><div class="v-ex">"He ran away."</div>
+      <button class="v-play" onclick="event.stopPropagation();speak('ran')">🔊 듣기</button>
+    </div><div class="v-card" onclick="speak('fast')">
+      <div class="v-emoji">⚡</div><div class="v-eng">fast</div>
+      <div class="v-kr">빠르게 🆕</div><div class="v-ex">"He ran away fast."</div>
+      <button class="v-play" onclick="event.stopPropagation();speak('fast')">🔊 듣기</button>
+    </div></div>
+    <div class="robo" style="margin-bottom:0;">
+      <div class="robo-av"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+      <div><div class="robo-nm">Robo</div><div class="robo-msg">이 단어들 다 기억해봐! 눌러서 발음도 들어봐! 🔊</div></div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:35%;"></div></div>
+</div>
+<div class="card">
+  <div class="sec-hdr"><div class="sec-num" style="background:var(--sage);">4</div>
+    <div><div class="sec-title">게임 1: 단어 고르기! 🎮</div><div class="sec-sub">WORD PICK · 맞는 단어를 골라봐!</div></div>
+  </div>
+  <div class="sec-body"><div class="game-box" style="">
+      <div class="game-q">🐰 피터가 빠르게 도망쳤어요! fast의 뜻은?</div>
+      <div style="text-align:center;font-size:1.25rem;font-weight:900;margin-bottom:14px;line-height:2;">
+        fast = <span class="blank" id="b1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      </div>
+      <div class="choices"><button class="ch" onclick="pick(this,'빠르게','빠르게','b1','f1')">빠르게</button><button class="ch" onclick="pick(this,'느리게','빠르게','b1','f1')">느리게</button><button class="ch" onclick="pick(this,'높이','빠르게','b1','f1')">높이</button></div>
+      <div class="fb" id="f1"></div>
+    </div><div class="game-box" style="border-top:1px solid rgba(0,0,0,0.06);padding-top:12px;">
+      <div class="game-q">🏃 He ran away ___. 빠르게 = ?</div>
+      <div style="text-align:center;font-size:1.25rem;font-weight:900;margin-bottom:14px;line-height:2;">
+        "He ran away <span class="blank" id="b2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>."
+      </div>
+      <div class="choices"><button class="ch" onclick="pick(this,'fast','fast','b2','f2')">fast</button><button class="ch" onclick="pick(this,'slow','fast','b2','f2')">slow</button><button class="ch" onclick="pick(this,'high','fast','b2','f2')">high</button></div>
+      <div class="fb" id="f2"></div>
+    </div>
+    <div class="robo" style="margin-bottom:0;">
+      <div class="robo-av"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+      <div><div class="robo-nm">Robo</div><div class="robo-msg">자, 게임 시작! 맞는 단어를 골라봐 🎮</div></div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:50%;"></div></div>
+</div>
+<div class="card">
+  <div class="sec-hdr"><div class="sec-num" style="background:var(--brown);">5</div>
+    <div><div class="sec-title">게임 2: 문장 만들기! 🧩</div><div class="sec-sub">WORD ORDER · 순서대로 놓아봐!</div></div>
+  </div>
+  <div class="sec-body">
+    <div class="game-box" style="background:linear-gradient(135deg,#fdf6e3,#fdf8f0);">
+      <div class="game-q">🐰 "그는 빠르게 도망쳤어요."를 영어로 만들어봐!</div>
+      <div class="build-zone" id="wo1-zone"><span class="build-ph" id="wo1-ph">👆 아래 단어를 눌러봐!</span></div>
+      <div class="wpool" id="wo1-pool"><button class="wchip" onclick="woAdd('wo1',this,'He')">He</button><button class="wchip" onclick="woAdd('wo1',this,'ran')">ran</button><button class="wchip" onclick="woAdd('wo1',this,'away')">away</button><button class="wchip" onclick="woAdd('wo1',this,'fast')">fast</button></div>
+      <div class="game-btns">
+        <button class="btn-ok" onclick="woChk('wo1','He ran away fast','wo1-fb')">✓ 확인!</button>
+        <button class="btn-rst" onclick="woRst('wo1')">↩ 다시</button>
+      </div>
+      <div class="fb" id="wo1-fb"></div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:65%;"></div></div>
+</div>
+<div class="card">
+  <div class="sec-hdr"><div class="sec-num" style="background:var(--coral);">6</div>
+    <div><div class="sec-title">게임 3: 짝맞추기! 🃏</div><div class="sec-sub">MATCHING · 영어와 뜻을 연결해봐!</div></div>
+  </div>
+  <div class="sec-body">
+    <div class="game-box">
+      <div style="text-align:center;font-size:0.85rem;color:var(--text2);font-weight:700;margin-bottom:12px;">👆 왼쪽 누르고 → 오른쪽 뜻을 눌러봐!</div>
+      <div class="match-grid"><div class="match-col" id="ml"><button class="m-btn" onclick="mClick(this,'rabbit')">🐰 rabbit</button><button class="m-btn" onclick="mClick(this,'garden')">🌿 garden</button><button class="m-btn" onclick="mClick(this,'ran')">🏃 ran</button><button class="m-btn" onclick="mClick(this,'fast')">⚡ fast</button></div><div class="match-col" id="mr"><button class="m-btn" onclick="mClick(this,'rabbit')">토끼</button><button class="m-btn" onclick="mClick(this,'ran')">달렸다</button><button class="m-btn" onclick="mClick(this,'fast')">빠르게</button><button class="m-btn" onclick="mClick(this,'garden')">정원</button></div></div>
+      <div class="fb" id="mfb"></div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:75%;"></div></div>
+</div>
+<div class="card">
+  <div class="sec-hdr"><div class="sec-num" style="background:#e91e63;">♪</div>
+    <div><div class="sec-title">👂 들어보자!</div><div class="sec-sub">LISTENING · 듣고 맞는 그림을 골라봐!</div></div>
+  </div>
+  <div class="sec-body">
+    <div class="listen-box">
+      <button class="listen-play" onclick="speak('He ran away fast.')">🔊 듣기 (여자 선생님 목소리)</button>
+      <div class="listen-opts"><button class="listen-opt" onclick="listenChk(this,'ok')"><div class="lo-emoji">🐰💨</div><div class="lo-label">피터가 달린다</div></button><button class="listen-opt" onclick="listenChk(this,'no')"><div class="lo-emoji">🐰🥕</div><div class="lo-label">피터가 먹는다</div></button><button class="listen-opt" onclick="listenChk(this,'no')"><div class="lo-emoji">🐰😴</div><div class="lo-label">피터가 잔다</div></button></div>
+      <div class="fb" id="listen-fb" style="margin-top:10px;"></div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:78%;"></div></div>
+</div>
+<div class="card">
+  <div class="sec-hdr"><div class="sec-num" style="background:var(--gold);">✎</div>
+    <div><div class="sec-title">✍️ 써보자!</div><div class="sec-sub">DICTATION · 들리는 단어를 써봐!</div></div>
+  </div>
+  <div class="sec-body">
+    <div class="dict-box">
+      <button class="dict-play" onclick="speak('fast')">🔊 단어 듣기</button>
+      <div class="dict-hint">f _ _ t</div>
+      <input class="dict-input" id="dictIn" data-ans="fast" placeholder="단어를 써봐!" onkeydown="if(event.key==='Enter')chkDict()">
+      <button class="dict-check" onclick="chkDict()">✓ 확인</button>
+      <div class="fb" id="dict-fb" style="margin-top:10px;"></div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:82%;"></div></div>
+</div>
+<div class="card">
+  <div class="sec-hdr"><div class="sec-num" style="background:var(--sky);">7</div>
+    <div><div class="sec-title">이해 문제! ❓</div><div class="sec-sub">QUIZ · 이야기 기억나?</div></div>
+  </div>
+  <div class="sec-body">
+    <div class="quiz-box">
+      <div class="quiz-q">Q1. 🐰 피터는 어디로 갔나요?<br><span style="font-size:0.8rem;color:var(--sage);">Where did Peter go?</span></div>
+      <div class="quiz-opts">
+        <button class="qo" onclick="qChk(this,'ok')">🌿 정원 (garden)</button>
+        <button class="qo" onclick="qChk(this,'no')">🏫 학교 (school)</button>
+        <button class="qo" onclick="qChk(this,'no')">🏠 집 (home)</button>
+      </div>
+    </div>
+    <div class="quiz-box">
+      <div class="quiz-q">Q2. 🐰 세 자매는 어땠나요?<br><span style="font-size:0.8rem;color:var(--sage);">How were the three sisters?</span></div>
+      <div class="quiz-opts">
+        <button class="qo" onclick="qChk(this,'ok')">😊 착했어요 (good)</button>
+        <button class="qo" onclick="qChk(this,'no')">😤 말 안 들었어요</button>
+        <button class="qo" onclick="qChk(this,'no')">😢 슬펐어요 (sad)</button>
+      </div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:85%;"></div></div>
+</div>
+<div class="card">
+  <div class="sec-hdr"><div class="sec-num" style="background:var(--gold);">8</div>
+    <div><div class="sec-title">한 줄 쓰기! ✍️</div><div class="sec-sub">WRITING · 한 줄만 완성해봐!</div></div>
+  </div>
+  <div class="sec-body">
+    <div class="fill-wrap">
+      <div class="game-q">📝 맞는 말을 골라봐!</div>
+      <div style="text-align:center;font-size:1.1rem;font-weight:900;margin-bottom:12px;line-height:2;">"Peter ran ___ the garden."</div>
+      <div class="choices">
+        <button class="ch" onclick="fillChk(this,'ok')">away from</button>
+        <button class="ch" onclick="fillChk(this,'no')">into</button>
+        <button class="ch" onclick="fillChk(this,'no')">around</button>
+      </div>
+      <div class="fb" id="fill-fb"></div>
+    </div>
+    <div class="write-box">
+      <div class="write-prompt">🐰 피터가 도망친 이유를 완성해봐!</div>
+      <div style="font-size:1.1rem;font-weight:900;margin-bottom:10px;color:var(--brown);">"Peter ran because ___________"</div>
+      <div style="font-size:0.8rem;color:var(--text3);margin-bottom:8px;">힌트: he did not listen / he wanted to see the garden</div>
+      <input class="write-input" id="wInput" placeholder="여기에 영어로 써봐!">
+      <button class="write-btn" onclick="chkWrite()">✓ 제출!</button>
+      <div class="fb" id="wfb" style="margin-top:8px;color:var(--brown);"></div>
+    </div>
+  </div>
+  <div class="prog"><div class="prog-fill" style="width:95%;"></div></div>
+</div>
+<div class="card">
+  <div class="sec-hdr"><div class="sec-num" style="background:#00b894;">9</div>
+    <div><div class="sec-title">AI 튜터 ChatGPT 🤖</div><div class="sec-sub">오늘 배운 것을 복사해서 ChatGPT에 붙여넣어봐!</div></div>
+  </div>
+  <div class="sec-body"><div class="ai-box">
+  <div class="ai-box-header">
+    <div class="ai-box-icon">🤖</div>
+    <div>
+      <div class="ai-box-title">AI 튜터 ChatGPT — Day 2 영어 연습</div>
+      <div class="ai-box-desc">오늘 배운 내용을 ChatGPT 선생님과 연습해봐요!</div>
+    </div>
+  </div>
+  <div class="prompt-block">
+    <div class="prompt-lbl">📋 ChatGPT 전달사항 (복사 후 붙여넣기!)
+      <button class="copy-btn" id="copybtn-1" onclick="copyPrompt(1)">📋 복사</button>
+    </div>
+    <div class="prompt-text" id="prompt-1">[CEC English Camp — Grade 3 · Week 1 · Day 2 (수요일) · Peter Rabbit]
+
+안녕하세요 선생님! 오늘 Day 2 수업을 마쳤어요.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📚 오늘 수업 정보
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+학년: Grade 3 (초등 3학년, 9세)  레벨: A2
+책: The Tale of Peter Rabbit (Beatrix Potter)
+Day 1 표현: "He ran away."
+오늘 핵심 표현: "He ran away fast." ← fast 추가!
+오늘 단어: rabbit, garden, ran + fast(빠르게) 신규
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎯 수업 계획 (이 순서대로 진행해주세요!)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[STEP 1 — 1분] Day 1 복습
+  → "Do you remember Day 1? Type: He ran away."
+  → 확인 후 칭찬
+
+[STEP 2 — 2분] 오늘 새 표현
+  → "Today we add FAST! Type: He ran away fast."
+  → "What does fast mean?" → 빠르게
+  → "Can you use fast in another sentence?"
+
+[STEP 3 — 2분] 단어 퀴즈
+  → rabbit / garden / ran / fast 4개 뜻 확인
+  → 각각 영어로 예문 만들기 도전
+
+[STEP 4 — 3분] 대화 연습
+  → "Tell me what Peter did. Use 'fast'!"
+  → "Why did Peter run away fast?"
+  → "Was Mother happy or sad?"
+  → 학생 답변에 맞춤 피드백
+
+[STEP 5 — 2분] 마무리 & 예고
+  → Day 1~2 표현 비교: "He ran away." → "He ran away fast."
+  → "Next time (Day 3): He ran away AS FAST AS HE COULD! 💪"
+  → "Amazing work today! 🌟"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 선생님 지침 (필수!)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ 반드시 5단계를 모두 진행해주세요
+✅ 학생이 답하기 전에 절대 먼저 끝내지 마세요
+✅ 영어 60% / 한국어 40% 혼합 사용
+✅ 틀린 표현: "Good try! The correct way is..." 로 고쳐주세요
+✅ STEP 5까지 완료되기 전에 수업을 끝내지 마세요!
+
+시작해볼까요! 먼저 인사해주세요 😊</div>
+  </div>
+  <div class="ai-steps">
+    <div class="ai-step"><div class="step-num">1</div><div><b style="color:#fff">📋 복사</b> 버튼을 눌러요</div></div>
+    <div class="ai-step"><div class="step-num">2</div><div><b style="color:#fff">ChatGPT 열기</b>를 눌러요</div></div>
+    <div class="ai-step"><div class="step-num">3</div><div>채팅창에 <b style="color:#fff">붙여넣기(Ctrl+V)</b> 후 Enter!</div></div>
+    <div class="ai-step"><div class="step-num">4</div><div>AI 선생님 질문에 <b style="color:#fff">영어로 짧게</b> 답해봐요 😊</div></div>
+  </div>
+  <div class="ai-btn-row">
+    <a href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b" target="_blank" class="ai-btn-primary">🚀 ChatGPT 열기</a>
+    <button class="ai-btn-sec" onclick="copyPrompt(1)">📋 전달사항 복사</button>
+  </div>
+</div></div>
+  <div class="prog"><div class="prog-fill" style="width:100%;"></div></div>
+</div>
+<div class="complete" id="done-card">
+  <div class="complete-emoji">🐰🎉🏆</div>
+  <div class="complete-title">Day 2 완료! ●●○</div>
+  <div class="complete-sub">⭐ 핵심 표현: 'He ran away fast.' ✅<br>⭐ Day1 복습 + fast 추가 ✅<br>⭐ AI 튜터와 대화 완료! ✅</div>
+  <div class="xp-big">🏆 총 <span id="fxp">0</span> XP 획득!</div>
+  <div class="robo" style="text-align:left;">
+    <div class="robo-av"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+    <div><div class="robo-nm">Robo</div><div class="robo-msg">훌륭해! 🌟 금요일 Day 3에서 완성 문장 도전!</div></div>
+  </div>
+  <div style="margin-top:14px;"><div class="next-card"><div style="flex:1;"><div class="next-label">📅 다음 수업</div><div class="next-title">Day 3 (금) — 완성 문장!</div><div class="next-hint">이번 주 마지막! 💪</div></div><a href="week01c.html" class="next-btn">Day 3 →</a></div></div>
+</div>
+</main>
+<div class="bnav">
+  <a class='bp' href='week01a.html'>← Day 1</a>
+  <span class="bl">WEEK 1 · Day 2</span>
+  <a class="bn" href="week01c.html">Day 3 →</a>
+</div>
+<script>
+let femaleVoice = null;
+function loadVoices(){
+  const vs = speechSynthesis.getVoices();
+  // 여자 목소리 우선순위: Samantha(Mac) > Zira(Win) > en-US female
+  femaleVoice = vs.find(v=>v.name==='Samantha')
+    || vs.find(v=>v.name.includes('Zira'))
+    || vs.find(v=>v.name.includes('Google US English'))
+    || vs.find(v=>v.lang==='en-US' && v.name.toLowerCase().includes('female'))
+    || vs.find(v=>v.lang==='en-US')
+    || null;
+}
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+function speak(t){
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(t);
+  u.lang = 'en-US'; u.rate = 0.82; u.pitch = 1.1;
+  if(femaleVoice) u.voice = femaleVoice;
+  speechSynthesis.speak(u);
+}
+
+// ② 스토리 재생/정지
+let storyUtterance = null;
+let storyPlaying = false;
+function storyPlay(text){
+  if(storyPlaying){storyStopped();return;}
+  speechSynthesis.cancel();
+  storyUtterance = new SpeechSynthesisUtterance(text);
+  storyUtterance.lang = 'en-US'; storyUtterance.rate = 0.78; storyUtterance.pitch = 1.1;
+  if(femaleVoice) storyUtterance.voice = femaleVoice;
+  storyUtterance.onend = ()=>storyStopped();
+  speechSynthesis.speak(storyUtterance);
+  storyPlaying = true;
+  document.getElementById('story-play-btn').textContent = '⏸';
+  document.getElementById('story-stop-btn').style.display = 'flex';
+}
+function storyStopped(){
+  speechSynthesis.cancel();
+  storyPlaying = false;
+  if(document.getElementById('story-play-btn'))
+    document.getElementById('story-play-btn').textContent = '▶';
+  if(document.getElementById('story-stop-btn'))
+    document.getElementById('story-stop-btn').style.display = 'none';
+}
+
+let xp=0;
+function addXP(n){xp+=n;document.getElementById('xp').textContent=xp;if(document.getElementById('fxp'))document.getElementById('fxp').textContent=xp;}
+function pick(btn,val,ans,bid,fid){
+  const par=btn.closest('.game-box');par.querySelectorAll('.ch').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(val===ans?'ok':'no');
+  document.getElementById(bid).textContent=val===ans?ans:'';
+  const fb=document.getElementById(fid);
+  if(val===ans){fb.innerHTML='<span style="color:var(--sage)">✅ 맞아! 정말 잘했어! 🎉</span>';addXP(10);}
+  else{fb.innerHTML='<span style="color:#e53935">❌ 다시 해봐! 힌트: "'+ans+'"</span>';}
+}
+const wo={};
+function woAdd(id,btn,w){if(!wo[id])wo[id]=[];btn.classList.add('used');wo[id].push({w,btn});
+  const z=document.getElementById(id+'-zone');const ph=document.getElementById(id+'-ph');
+  if(ph)ph.style.display='none';
+  const s=document.createElement('span');s.className='placed';s.textContent=w;
+  s.onclick=()=>{wo[id]=wo[id].filter(x=>x.btn!==btn);btn.classList.remove('used');s.remove();
+    if(!wo[id].length&&ph)ph.style.display='';};
+  z.appendChild(s);}
+function woChk(id,ans,fid){
+  const res=wo[id]?wo[id].map(x=>x.w).join(' '):'';
+  const fb=document.getElementById(fid);
+  if(res===ans){fb.innerHTML='<span style="color:var(--sage)">✅ 완벽해! "'+ans+'" 🎉</span>';addXP(15);}
+  else{fb.innerHTML='<span style="color:#e53935">❌ 다시 해봐! 정답: "'+ans+'"</span>';}
+}
+function woRst(id){if(wo[id])wo[id].forEach(x=>{x.btn.classList.remove('used');});
+  wo[id]=[];const z=document.getElementById(id+'-zone');
+  const ph=document.getElementById(id+'-ph');
+  z.querySelectorAll('.placed').forEach(s=>s.remove());if(ph)ph.style.display='';}
+let mSel=null;const mDone={};
+function mClick(btn,key){
+  if(mDone[key])return;
+  if(!mSel){mSel={btn,key};btn.classList.add('sel');return;}
+  if(mSel.key===key&&mSel.btn!==btn){
+    mSel.btn.classList.remove('sel');mSel.btn.classList.add('ok');
+    btn.classList.add('ok');mDone[key]=true;
+    document.getElementById('mfb').innerHTML='<span style="color:var(--sage)">✅ 맞아! 계속해봐! 🎯</span>';
+    addXP(5);mSel=null;
+  }else{
+    const prev=mSel.btn;mSel=null;prev.classList.remove('sel');
+    prev.classList.add('no');btn.classList.add('no');
+    setTimeout(()=>{prev.classList.remove('no');btn.classList.remove('no');},600);
+    document.getElementById('mfb').innerHTML='<span style="color:#e53935">❌ 다시 해봐!</span>';
+  }
+}
+function listenChk(btn,res){
+  document.querySelectorAll('.listen-opt').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(res);
+  const fb=document.getElementById('listen-fb');
+  if(res==='ok'){fb.innerHTML='<span style="color:var(--sage)">✅ 맞아! 피터가 달려 도망쳤어! 🏃💨</span>';addXP(10);}
+  else{fb.innerHTML='<span style="color:#e53935">❌ 다시 들어봐! 🎧</span>';}
+}
+function chkDict(){
+  const inp=document.getElementById('dictIn');
+  const v=inp.value.trim().toLowerCase();
+  const ans=inp.dataset.ans||'away';
+  const fb=document.getElementById('dict-fb');
+  if(v===ans){fb.innerHTML='<span style="color:var(--sage)">✅ 완벽해! "'+ans+'" 맞아! ✨</span>';addXP(10);}
+  else{fb.innerHTML='<span style="color:#e53935">❌ 다시 해봐! 힌트를 봐!</span>';}
+}
+function qChk(btn,res){
+  const box=btn.closest('.quiz-box');
+  box.querySelectorAll('.qo').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(res);if(res==='ok')addXP(10);
+}
+function fillChk(btn,res){
+  document.querySelectorAll('[onclick*="fillChk"]').forEach(b=>b.classList.remove('ok','no'));
+  btn.classList.add(res);
+  const fb=document.getElementById('fill-fb');
+  if(res==='ok'){fb.innerHTML='<span style="color:var(--sage)">✅ 맞아! 🎉</span>';addXP(10);}
+  else{fb.innerHTML='<span style="color:#e53935">❌ 다시 해봐!</span>';}
+}
+function chkWrite(){
+  const v=document.getElementById('wInput').value.trim();
+  const fb=document.getElementById('wfb');
+  if(v.length>3){fb.innerHTML='<span style="color:var(--sage)">✅ 잘 썼어! 멋진 영어 문장이야! 🌟 +20 XP!</span>';addXP(20);showDone();}
+  else{fb.innerHTML='<span style="color:#e53935">조금 더 써봐! 힌트를 참고해봐 😊</span>';}
+}
+function copyPrompt(id){
+  const el=document.getElementById('prompt-'+id);
+  const text=el.textContent;
+  const btn=document.getElementById('copybtn-'+id);
+  // 팝업 textarea로 복사 (로컬 파일에서도 확실하게 작동)
+  const modal=document.createElement('div');
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  const box=document.createElement('div');
+  box.style.cssText='background:#1a2a3a;border-radius:16px;padding:20px;width:100%;max-width:560px;';
+  box.innerHTML=`<div style="color:#c9a028;font-size:0.8rem;font-weight:700;margin-bottom:8px;">📋 아래 전체를 선택(Ctrl+A) 후 복사(Ctrl+C)하세요!</div>
+    <textarea id="copy-ta" style="width:100%;height:200px;background:#0d1b2a;color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px;font-family:monospace;font-size:0.75rem;line-height:1.7;resize:none;">${text}</textarea>
+    <div style="display:flex;gap:8px;margin-top:12px;">
+      <button onclick="const ta=document.getElementById('copy-ta');ta.select();document.execCommand('copy');this.textContent='✅ 복사됨!';setTimeout(()=>this.textContent='📋 복사',1500);" style="flex:1;padding:10px;background:#19c37d;color:#fff;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;">📋 복사</button>
+      <button onclick="this.closest('[style*=fixed]').remove();" style="padding:10px 18px;background:rgba(255,255,255,0.1);color:#fff;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;">닫기</button>
+    </div>`;
+  modal.appendChild(box);
+  document.body.appendChild(modal);
+  // 자동 선택
+  setTimeout(()=>{const ta=document.getElementById('copy-ta');if(ta){ta.focus();ta.select();}},100);
+  modal.addEventListener('click',(e)=>{if(e.target===modal)modal.remove();});
+}
+function showDone(){const d=document.getElementById('done-card');if(d)d.classList.add('show');}
+</script>
+</body></html>
