@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peter Rabbit — Picture Speaks!</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;700;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#1a0f0a;font-family:'Nunito',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+
+.stage{position:relative;width:100%;max-width:900px;margin:0 auto;}
+
+/* Header */
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:.6rem 1rem;background:#2d1810;}
+.hdr-title{font-family:'Patrick Hand',cursive;font-size:18px;color:#f9a825;}
+.scene-dots{display:flex;gap:8px;}
+.sdot{width:12px;height:12px;border-radius:50%;background:#ffffff22;transition:all .4s;}
+.sdot.done{background:#4caf50;}
+.sdot.active{background:#f9a825;box-shadow:0 0 8px #f9a82588;}
+
+/* Picture area */
+.pic-area{position:relative;width:100%;overflow:hidden;background:#000;}
+.pic-area img{width:100%;display:block;transition:opacity .5s;}
+.pic-area img.fade{opacity:0;}
+
+/* Speech bubbles */
+.bubble{
+  position:absolute;
+  background:#fffde7;
+  border-radius:18px;
+  padding:10px 16px;
+  font-family:'Patrick Hand',cursive;
+  font-size:clamp(13px,2.2vw,17px);
+  color:#3e2723;
+  max-width:220px;
+  line-height:1.4;
+  border:2.5px solid #f9a825;
+  pointer-events:none;
+  z-index:10;
+  opacity:0;
+  transform:scale(.6) translateY(8px);
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+}
+.bubble.show{opacity:1;transform:scale(1) translateY(0);}
+.bubble::after{
+  content:'';position:absolute;
+  width:14px;height:14px;
+  background:#fffde7;
+  border-right:2.5px solid #f9a825;
+  border-bottom:2.5px solid #f9a825;
+}
+.bubble.bl::after{bottom:-8px;left:24px;transform:rotate(45deg);}
+.bubble.br::after{bottom:-8px;right:24px;transform:rotate(45deg);}
+.bubble.bt::after{top:-8px;left:24px;transform:rotate(-135deg);}
+
+.bubble.green{background:#f1f8e9;border-color:#66bb6a;}
+.bubble.green::after{background:#f1f8e9;border-color:#66bb6a;}
+.bubble.red{background:#fce4ec;border-color:#ef9a9a;}
+.bubble.red::after{background:#fce4ec;border-color:#ef9a9a;}
+
+/* Praise overlay */
+.praise{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  background:#ffffffee;
+  border-radius:20px;
+  padding:16px 28px;
+  font-family:'Patrick Hand',cursive;
+  font-size:clamp(18px,3.5vw,28px);
+  color:#2e7d32;
+  font-weight:700;
+  text-align:center;
+  z-index:30;
+  border:3px solid #4caf50;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+  pointer-events:none;
+}
+.praise.show{transform:translate(-50%,-50%) scale(1);}
+
+/* Bottom bar */
+.bar{background:#2d1810;padding:.75rem 1rem;display:flex;align-items:center;gap:12px;}
+.mic-blob{
+  width:44px;height:44px;border-radius:50%;
+  background:#ef5350;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  transition:all .3s;
+}
+.mic-blob.active{background:#ef5350;animation:blob 1s infinite;}
+.mic-blob.off{background:#555;}
+@keyframes blob{0%,100%{box-shadow:0 0 0 0 #ef535055;}50%{box-shadow:0 0 0 12px #ef535000;}}
+
+.heard-text{flex:1;font-size:13px;color:#bcaaa4;font-style:italic;min-height:20px;}
+.heard-text.match{color:#a5d6a7;font-style:normal;font-weight:700;}
+
+.star-row{font-size:22px;letter-spacing:2px;min-width:80px;text-align:right;}
+
+/* Complete screen */
+.complete-screen{
+  display:none;
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:#1a0f0aee;
+  z-index:50;
+  align-items:center;justify-content:center;
+  flex-direction:column;
+  gap:16px;
+}
+.complete-screen.show{display:flex;}
+.c-stars{font-size:48px;}
+.c-msg{font-family:'Patrick Hand',cursive;font-size:28px;color:#f9a825;text-align:center;}
+.c-sub{font-size:14px;color:#bcaaa4;text-align:center;line-height:1.8;}
+.retry-btn{
+  margin-top:8px;padding:10px 28px;border-radius:24px;
+  background:#f9a825;color:#3e2723;
+  font-family:'Patrick Hand',cursive;font-size:16px;
+  border:none;cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- Header -->
+  <div class="hdr">
+    <div class="hdr-title">Peter Rabbit — Picture Speaks!</div>
+    <div class="scene-dots">
+      <div class="sdot active" id="sd0"></div>
+      <div class="sdot" id="sd1"></div>
+      <div class="sdot" id="sd2"></div>
+      <div class="sdot" id="sd3"></div>
+      <div class="sdot" id="sd4"></div>
+    </div>
+  </div>
+
+  <!-- Picture -->
+  <div class="pic-area" id="picArea">
+    <img id="mainImg" src="" alt="Peter Rabbit">
+    <div class="bubble bl" id="bA"></div>
+    <div class="bubble bl green" id="bB"></div>
+    <div class="bubble red bt" id="bC"></div>
+    <div class="praise" id="praise"></div>
+  </div>
+
+  <!-- Bar -->
+  <div class="bar">
+    <div class="mic-blob off" id="micBlob">🎤</div>
+    <div class="heard-text" id="heardText">페이지를 로드하는 중...</div>
+    <div class="star-row" id="starRow"></div>
+  </div>
+
+  <!-- Complete -->
+  <div class="complete-screen" id="completeScreen">
+    <div class="c-stars">⭐⭐⭐⭐⭐</div>
+    <div class="c-msg">Amazing! All done!</div>
+    <div class="c-sub">피터 래빗 5장면을 모두 말했어요!<br>정말 잘했어요!</div>
+    <button class="retry-btn" onclick="startOver()">다시 처음부터</button>
+  </div>
+
+</div>
+
+<script>
+const R2='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/';
+const TTS_URL='https://journey-bronzy-fruitily.ngrok-free.dev/api/tts';
+const TTS_TOKEN='cec-speaking-2026';
+
+/* -- SCENE DATA -- */
+const scenes=[
+  {
+    img: R2+'peter_speak_1.jpg',
+    steps:[
+      {who:'bA', pos:{top:'8%',left:'5%'}, dir:'bl',
+       say:"Hello! Look at the picture. What do you see?",
+       keywords:['mother','rabbit','bunny','see','four'],
+       praise:"Great! I see a mother rabbit!"},
+      {who:'bA', pos:{top:'8%',left:'5%'}, dir:'bl',
+       say:"Good! What is she wearing?",
+       keywords:['apron','white','dress','wearing'],
+       praise:"Yes! She has a white apron!"},
+      {who:'bB', pos:{top:'55%',left:'38%'}, dir:'bl',
+       say:"How many rabbits are there?",
+       keywords:['four','4','three'],
+       praise:"There are four rabbits!"},
+      {who:'bA', pos:{top:'8%',left:'5%'}, dir:'bl',
+       say:"What is the mother doing?",
+       keywords:['talking','talk','children','speaking'],
+       praise:"The mother is talking to her children!"},
+    ]
+  },
+  {
+    img: R2+'peter_speak_2.jpg',
+    steps:[
+      {who:'bB', pos:{top:'38%',left:'30%'}, dir:'bl',
+       say:"Look! Where is Peter going?",
+       keywords:['gate','under','garden','going','through'],
+       praise:"He is going under the gate!"},
+      {who:'bB', pos:{top:'38%',left:'30%'}, dir:'bl',
+       say:"What is Peter wearing?",
+       keywords:['blue','jacket','coat'],
+       praise:"He is wearing a blue jacket!"},
+      {who:'bB', pos:{top:'38%',left:'30%'}, dir:'bl',
+       say:"What do you see on the ground?",
+       keywords:['carrot','carrots','vegetable'],
+       praise:"There are carrots on the ground!"},
+    ]
+  },
+  {
+    img: R2+'peter_speak_3.jpg',
+    steps:[
+      {who:'bB', pos:{top:'18%',left:'35%'}, dir:'bl',
+       say:"Yum yum! What is Peter doing?",
+       keywords:['eating','eat','carrot','biting'],
+       praise:"Peter is eating a carrot!"},
+      {who:'bB', pos:{top:'18%',left:'35%'}, dir:'bl',
+       say:"What else can you see?",
+       keywords:['basket','vegetables','cabbage','tomato'],
+       praise:"There is a basket of vegetables!"},
+      {who:'bB', pos:{top:'18%',left:'35%'}, dir:'bl',
+       say:"Where is Peter?",
+       keywords:['garden','outside','field'],
+       praise:"Peter is in the garden!"},
+    ]
+  },
+  {
+    img: R2+'peter_speak_4.jpg',
+    steps:[
+      {who:'bC', pos:{top:'5%',left:'3%'}, dir:'bt',
+       say:"Uh oh! Who do you see?",
+       keywords:['farmer','man','mcgregor','old','peter','rabbit'],
+       praise:"It is Mr. McGregor and Peter!"},
+      {who:'bC', pos:{top:'5%',left:'3%'}, dir:'bt',
+       say:"How does Mr. McGregor look?",
+       keywords:['angry','mad','upset','mean','pointing'],
+       praise:"He looks very angry!"},
+      {who:'bB', pos:{top:'45%',left:'55%'}, dir:'bl',
+       say:"What is Peter doing?",
+       keywords:['scared','afraid','running','frightened','looking'],
+       praise:"Peter looks very scared!"},
+    ]
+  },
+  {
+    img: R2+'peter_speak_5.jpg',
+    steps:[
+      {who:'bB', pos:{top:'52%',left:'28%'}, dir:'bl',
+       say:"Shh! Where is Peter hiding?",
+       keywords:['pot','under','hiding','flower','inside'],
+       praise:"Peter is hiding under a flower pot!"},
+      {who:'bB', pos:{top:'52%',left:'28%'}, dir:'bl',
+       say:"What is Mr. McGregor doing?",
+       keywords:['looking','searching','watching','finding'],
+       praise:"Mr. McGregor is looking for Peter!"},
+      {who:'bB', pos:{top:'52%',left:'28%'}, dir:'bl',
+       say:"Is Peter safe?",
+       keywords:['no','hiding','scared','not'],
+       praise:"Peter is hiding! He is very scared!"},
+    ]
+  }
+];
+
+let sceneIdx=0, stepIdx=0, stars=0;
+let rec=null, listening=false, speaking=false;
+
+/* -- TTS -- */
+async function speak(text){
+  speaking=true;
+  setMic('off');
+  document.getElementById('heardText').textContent='';
+  document.getElementById('heardText').className='heard-text';
+  try{
+    const res=await fetch(TTS_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+TTS_TOKEN},
+      body:JSON.stringify({text,voice:'coral',speed:0.8})
+    });
+    if(!res.ok)throw new Error();
+    const blob=await res.blob(),url=URL.createObjectURL(blob),audio=new Audio(url);
+    return new Promise(r=>{
+      audio.onended=()=>{URL.revokeObjectURL(url);speaking=false;r();};
+      audio.onerror=()=>{speaking=false;r();};
+      audio.play();
+    });
+  }catch(e){
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US';u.rate=0.85;u.pitch=1.1;
+    const voices=speechSynthesis.getVoices();
+    const samantha=voices.find(v=>v.name.includes('Samantha')||v.name.includes('Google US')||v.name.includes('Zira'));
+    if(samantha)u.voice=samantha;
+    return new Promise(r=>{u.onend=()=>{speaking=false;r();};speechSynthesis.speak(u);});
+  }
+}
+
+/* -- MIC -- */
+function setMic(state){
+  const b=document.getElementById('micBlob');
+  b.className='mic-blob '+(state==='active'?'active':'off');
+}
+
+function startListening(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return;
+  rec=new SR();
+  rec.lang='en-US';
+  rec.continuous=true;
+  rec.interimResults=true;
+  listening=true;
+  setMic('active');
+  document.getElementById('heardText').textContent='듣고 있어요... 말해보세요!';
+
+  rec.onresult=e=>{
+    let final='',interim='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      if(e.results[i].isFinal)final+=e.results[i][0].transcript;
+      else interim+=e.results[i][0].transcript;
+    }
+    const heard=final||interim;
+    if(heard) document.getElementById('heardText').textContent=heard;
+    if(final&&!speaking) checkAnswer(final.toLowerCase().trim());
+  };
+  rec.onerror=()=>{listening=false;setMic('off');};
+  rec.onend=()=>{if(listening&&!speaking){try{rec.start();}catch(e){}}};
+  rec.start();
+}
+
+function stopListening(){
+  listening=false;
+  if(rec){try{rec.stop();}catch(e){}rec=null;}
+  setMic('off');
+}
+
+/* -- ANSWER CHECK -- */
+async function checkAnswer(text){
+  const scene=scenes[sceneIdx];
+  const step=scene.steps[stepIdx];
+  const hit=step.keywords.some(k=>text.includes(k));
+  if(!hit)return;
+
+  stopListening();
+  document.getElementById('heardText').className='heard-text match';
+  document.getElementById('heardText').textContent='"'+step.keywords.find(k=>text.includes(k))+'" — 정답!';
+
+  stars++;
+  document.getElementById('starRow').textContent='⭐'.repeat(Math.min(stars,5));
+
+  hideBubbles();
+  const pr=document.getElementById('praise');
+  pr.textContent=step.praise;
+  pr.classList.add('show');
+  await speak(step.praise);
+  pr.classList.remove('show');
+
+  await new Promise(r=>setTimeout(r,300));
+
+  stepIdx++;
+  if(stepIdx>=scene.steps.length){
+    sceneIdx++;
+    stepIdx=0;
+    if(sceneIdx>=scenes.length){
+      document.getElementById('completeScreen').classList.add('show');
+      await speak("Amazing! You finished all five pictures! You are a superstar!");
+      return;
+    }
+    await loadScene(sceneIdx);
+  } else {
+    await runStep();
+  }
+}
+
+/* -- BUBBLE -- */
+function showBubble(id,pos,dir,text){
+  const b=document.getElementById(id);
+  b.className='bubble '+dir+(id==='bC'?' red':'')+(id==='bB'?' green':'');
+  Object.assign(b.style,{top:pos.top,left:pos.left,right:'auto',bottom:'auto'});
+  b.textContent=text;
+  setTimeout(()=>b.classList.add('show'),50);
+}
+function hideBubbles(){
+  ['bA','bB','bC'].forEach(id=>document.getElementById(id).classList.remove('show'));
+}
+
+/* -- SCENE LOAD -- */
+async function loadScene(idx){
+  const img=document.getElementById('mainImg');
+  img.classList.add('fade');
+  await new Promise(r=>setTimeout(r,400));
+
+  document.querySelectorAll('.sdot').forEach((d,i)=>{
+    d.className='sdot'+(i<idx?' done':i===idx?' active':'');
+  });
+
+  img.src=scenes[idx].img;
+  img.onload=async()=>{
+    img.classList.remove('fade');
+    await new Promise(r=>setTimeout(r,400));
+    await runStep();
+  };
+  img.onerror=async()=>{
+    img.classList.remove('fade');
+    await runStep();
+  };
+}
+
+async function runStep(){
+  const scene=scenes[sceneIdx];
+  const step=scene.steps[stepIdx];
+  hideBubbles();
+  showBubble(step.who, step.pos, step.dir, step.say);
+  await speak(step.say);
+  startListening();
+}
+
+function startOver(){
+  sceneIdx=0;stepIdx=0;stars=0;
+  document.getElementById('starRow').textContent='';
+  document.getElementById('completeScreen').classList.remove('show');
+  hideBubbles();
+  loadScene(0);
+}
+
+/* -- INIT -- */
+window.addEventListener('load',async()=>{
+  await new Promise(r=>setTimeout(r,600));
+  loadScene(0);
+});
+</script>
+</body>
+</html>
