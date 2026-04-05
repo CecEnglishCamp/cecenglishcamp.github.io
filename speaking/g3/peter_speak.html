@@ -286,7 +286,13 @@ async function speak(text){
     const voices=speechSynthesis.getVoices();
     const samantha=voices.find(v=>v.name.includes('Samantha')||v.name.includes('Google US')||v.name.includes('Zira'));
     if(samantha)u.voice=samantha;
-    return new Promise(r=>{u.onend=()=>{speaking=false;r();};speechSynthesis.speak(u);});
+    return new Promise(r=>{
+  const done=()=>{speaking=false;r();};
+  u.onend=done;
+  u.onerror=done;
+  speechSynthesis.speak(u);
+  setTimeout(done, Math.max(text.length*90, 3000));
+});
   }
 }
 
