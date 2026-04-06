@@ -794,13 +794,20 @@ body::before{
         <div class="mp3-content">
           <div class="mp3-title">🟣 B1 Listening Script — 중급</div>
           <div class="mp3-text">
-            <p>Young-ja lands in L.A. after a long flight.</p>
-            <p>She's nervous and can't read the English signs.</p>
-            <p>She checks her note: Terminal 2, Exit 5.</p>
-            <p>She asks a worker: <span class="spoken">"Can you help me?"</span></p>
-            <p>The worker says: <span class="spoken">"Go straight, turn left, near the coffee shop."</span></p>
-            <p>She follows the directions and sees her daughter.</p>
-            <p>She smiles with relief.</p>
+            <p>Young-ja steps out of the terminal after a long and tiring flight from Korea.</p>
+            <p>She feels nervous but also excited — she is finally in Los Angeles.</p>
+            <p>The airport is crowded and noisy. All the signs are in English.</p>
+            <p>She doesn't know which way to go, so she checks her note.</p>
+            <p>It says: Terminal 2, Exit 5. Her daughter will meet her there.</p>
+            <p>She takes a deep breath and looks around.</p>
+            <p>She spots a staff member in a yellow vest and walks over.</p>
+            <p><span class="spoken">"Excuse me, can you help me?"</span> she asks carefully.</p>
+            <p>She shows her note and adds, <span class="spoken">"My daughter is waiting at Terminal 2."</span></p>
+            <p>The staff member smiles and says clearly, <span class="spoken">"Go straight, then turn left. It's near the coffee shop."</span></p>
+            <p>Young-ja doesn't understand every word, but she catches "straight" and "left."</p>
+            <p>That's enough. She thanks him and follows the directions.</p>
+            <p>Soon she sees a familiar face — her daughter, waving and smiling.</p>
+            <p>Young-ja feels a wave of relief. She made it.</p>
           </div>
         </div>
       </div>
@@ -1249,7 +1256,7 @@ function speakMain() {
 const scripts = {
   a1: `Young-ja is at the airport. She comes from Korea. She has a paper. It says: Terminal 2, Exit 5. She sees a worker. Excuse me. Can you help me? He says: Go straight. Turn left. She walks. She sees her daughter. She smiles.`,
   a2: `Young-ja arrives in Los Angeles. She is nervous and doesn't know where to go. She has a note: Terminal 2, Exit 5. She sees a worker. Excuse me, can you help me? She shows the note. The worker says: Go straight, then turn left. Near the coffee shop. She walks and finds her daughter. She feels safe.`,
-  b1: `Young-ja lands in L.A. after a long flight. She's nervous and can't read the English signs. She checks her note: Terminal 2, Exit 5. She asks a worker: Can you help me? The worker says: Go straight, turn left, near the coffee shop. She follows the directions and sees her daughter. She smiles with relief.`
+  b1: `Young-ja steps out of the terminal after a long and tiring flight from Korea. She feels nervous but also excited — she is finally in Los Angeles. The airport is crowded and noisy. All the signs are in English. She doesn't know which way to go, so she checks her note. It says: Terminal 2, Exit 5. Her daughter will meet her there. She takes a deep breath and looks around. She spots a staff member in a yellow vest and walks over. "Excuse me, can you help me?" she asks carefully. She shows her note and adds, "My daughter is waiting at Terminal 2." The staff member smiles and says clearly, "Go straight, then turn left. It's near the coffee shop." Young-ja doesn't understand every word, but she catches "straight" and "left." That's enough. She thanks him and follows the directions. Soon she sees a familiar face — her daughter, waving and smiling. Young-ja feels a wave of relief. She made it.`
 };
 let activeMp3 = null;
 
@@ -1485,5 +1492,18 @@ document.addEventListener('DOMContentLoaded',function(){g2init();});
 
 
 
+<script>
+/* ── PARENT TTS SCROLL BRIDGE ── */
+window.addEventListener('message', function(e) {
+  if (!e.data || !e.data.type) return;
+  if (e.data.type === 'scrollTo') {
+    var el = document.querySelector(e.data.selector);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  if (e.data.type === 'showTab' && typeof showTab === 'function') {
+    showTab(e.data.prefix, e.data.level, null);
+  }
+});
+</script>
 </body>
 </html>
