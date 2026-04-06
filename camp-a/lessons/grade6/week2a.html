@@ -206,8 +206,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
         <div class="key-eyebrow">⭐ Q1 · Week 2 · Day 1 (월) · B2</div>
         <div class="key-eng">"Dignity comes from within."</div>
         <div class="key-kr">존엄은 내면에서 나와요.</div>
-        <div class="key-play-row" onclick="speak('Dignity comes from within.')">
-          <button class="play-btn" onclick="event.stopPropagation();speak('Dignity comes from within.')">▶</button>
+        <div class="key-play-row" data-speak="Dignity comes from within." onclick="speakEl(this)">
+          <button class="play-btn" data-speak="Dignity comes from within." onclick="event.stopPropagation();speakEl(this)">▶</button>
           <div><div class="play-label">🔊 발음 듣기 — 따라 해봐!</div><div class="play-hint">버튼을 누르면 영어 발음이 나와요</div></div>
         </div>
       </div>
@@ -234,7 +234,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
       </div>
       <div class="story-player-row">
         <span class="story-label">🔤 English Story</span>
-        <button class="story-ctrl-btn story-play-btn" id="story-play-btn" onclick="storyPlay('Sara had lost everything that money could buy. She had no fine clothes, no warm bed, no toys. But she had something that money cannot give — her dignity. Every morning, she stood up straight before the mirror. She told herself: I am still a princess inside. The other girls had prettier dresses, but Sara had something better. She had kindness, imagination, and unshakeable self-respect. No one could take that away from her. Dignity does not come from wealth. Dignity comes from within.')">▶</button>
+        <button class="story-ctrl-btn story-play-btn" id="story-play-btn" onclick="storyPlayData()">▶</button>
+        <div id="story-data" data-text="Sara had lost everything that money could buy. She had no fine clothes, no warm bed, no toys. But she had something that money cannot give — her dignity. Every morning, she stood up straight before the mirror. She told herself: I am still a princess inside. The other girls had prettier dresses, but Sara had something better. She had kindness, imagination, and unshakeable self-respect. No one could take that away from her. Dignity does not come from wealth. Dignity comes from within." style="display:none"></div>
         <button class="story-ctrl-btn story-stop-btn" id="story-stop-btn" onclick="storyStopped()">⏹</button>
         <span style="font-size:0.72rem;color:var(--text3);">재생 / 정지</span>
       </div>
@@ -251,33 +252,33 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
     </header>
     <div class="sec-body">
       <div class="vocab-grid">
-        <div class="v-card" onclick="speak('dignity')">
+        <div class="v-card" data-speak="dignity" onclick="speakEl(this)">
           <div class="v-emoji">🌟</div>
           <div class="v-eng">dignity</div>
           <div class="v-kr">존엄, 품위</div>
           <div class="v-ex">"She kept her dignity."</div>
-          <button class="v-play" onclick="event.stopPropagation();speak('dignity')">듣기</button>
+          <button class="v-play" data-speak="dignity" onclick="event.stopPropagation();speakEl(this)">듣기</button>
         </div>
-        <div class="v-card" onclick="speak('within')">
+        <div class="v-card" data-speak="within" onclick="speakEl(this)">
           <div class="v-emoji">🫀</div>
           <div class="v-eng">within</div>
           <div class="v-kr">내면에, 안에</div>
           <div class="v-ex">"It comes from within."</div>
-          <button class="v-play" onclick="event.stopPropagation();speak('within')">듣기</button>
+          <button class="v-play" data-speak="within" onclick="event.stopPropagation();speakEl(this)">듣기</button>
         </div>
-        <div class="v-card" onclick="speak('wealth')">
+        <div class="v-card" data-speak="wealth" onclick="speakEl(this)">
           <div class="v-emoji">💰</div>
           <div class="v-eng">wealth</div>
           <div class="v-kr">재산, 부</div>
           <div class="v-ex">"Wealth is not everything."</div>
-          <button class="v-play" onclick="event.stopPropagation();speak('wealth')">듣기</button>
+          <button class="v-play" data-speak="wealth" onclick="event.stopPropagation();speakEl(this)">듣기</button>
         </div>
-        <div class="v-card" onclick="speak('poverty')">
+        <div class="v-card" data-speak="poverty" onclick="speakEl(this)">
           <div class="v-emoji">😔</div>
           <div class="v-eng">poverty</div>
           <div class="v-kr">가난</div>
           <div class="v-ex">"Poverty cannot break her spirit."</div>
-          <button class="v-play" onclick="event.stopPropagation();speak('poverty')">듣기</button>
+          <button class="v-play" data-speak="poverty" onclick="event.stopPropagation();speakEl(this)">듣기</button>
         </div></div>
       <div class="grammar-link">
         <div class="grammar-link-label">📚 오늘의 문법 포인트 — <strong>수동태 (Passive Voice)</strong></div>
@@ -353,7 +354,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
       <div><div class="sec-title">👂 들어보자!</div><div class="sec-sub">LISTENING</div></div>
     </header>
     <div class="sec-body">
-      <button class="listen-play" onclick="speak('Dignity comes from within.')">🔊 듣기!</button>
+      <button class="listen-play" data-speak="Dignity comes from within." onclick="speakEl(this)">🔊 듣기!</button>
       <div class="listen-opts">
         <button class="listen-opt" onclick="listenChk(this,'ok')">
           <div class="lo-emoji">🌟</div>
@@ -379,10 +380,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
       <div><div class="sec-title">✍️ 써보자!</div><div class="sec-sub">DICTATION</div></div>
     </header>
     <div class="sec-body">
-      <button class="dict-play" onclick="speak('dignity')">🔊 단어 듣기</button>
+      <button class="dict-play" data-speak="dignity" onclick="speakEl(this)">🔊 단어 듣기</button>
       <div class="dict-hint">d i g n i _ _</div>
-      <input class="dict-input" id="dictIn" placeholder="단어를 써봐!" onkeydown="if(event.key==='Enter')chkDict('dignity')">
-      <button class="dict-check" onclick="chkDict('dignity')">확인</button>
+      <input class="dict-input" id="dictIn" placeholder="단어를 써봐!" onkeydown="if(event.key==='Enter')chkDictData(this.nextElementSibling)">
+      <button class="dict-check" data-word="dignity" onclick="chkDictData(this)">확인</button>
       <div class="fb" id="dict-fb" style="margin-top:10px;"></div>
     </div>
     <div class="prog"><div class="prog-fill" style="width:78%;"></div></div>
@@ -646,6 +647,19 @@ function csPick(btn,v,blankId,fId){
     fb.style.color='#e53935';fb.textContent='\u274C 다시 생각해봐!';
     csDone=true;if(duoDone)checkComplete();
   }
+}
+function speakEl(el){
+  var text=el.getAttribute('data-speak')||'';
+  if(text)speak(text);
+}
+function chkDictData(btn){
+  var ans=btn.getAttribute('data-word')||'';
+  chkDict(ans);
+}
+function storyPlayData(){
+  var el=document.getElementById('story-data');
+  var text=el?el.getAttribute('data-text'):'';
+  storyPlay(text);
 }
 function copyPrompt(){
   var el=document.getElementById('promptBody'),text=el?el.textContent:'';

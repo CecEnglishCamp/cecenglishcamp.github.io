@@ -206,8 +206,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
         <div class="key-eyebrow">⭐ Q1 · Week 1 · Day 3 (금) · B2</div>
         <div class="key-eng">"Whatever comes — if I am a princess in rags, I am still a princess."</div>
         <div class="key-kr">무슨 일이 있어도 — 누더기를 입고 있어도 나는 여전히 공주예요.</div>
-        <div class="key-play-row" onclick="speak('Whatever comes — if I am a princess in rags, I am still a princess.')">
-          <button class="play-btn" onclick="event.stopPropagation();speak('Whatever comes — if I am a princess in rags, I am still a princess.')">▶</button>
+        <div class="key-play-row" data-speak="Whatever comes — if I am a princess in rags, I am still a princess." onclick="speakEl(this)">
+          <button class="play-btn" data-speak="Whatever comes — if I am a princess in rags, I am still a princess." onclick="event.stopPropagation();speakEl(this)">▶</button>
           <div><div class="play-label">🔊 발음 듣기 — 따라 해봐!</div><div class="play-hint">버튼을 누르면 영어 발음이 나와요</div></div>
         </div>
       </div>
@@ -234,7 +234,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
       </div>
       <div class="story-player-row">
         <span class="story-label">🔤 English Story</span>
-        <button class="story-ctrl-btn story-play-btn" id="story-play-btn" onclick="storyPlay('One cold winter evening, Sara sat alone in the attic. She had no fire, no food, and no warm clothes. Miss Minchin had scolded her harshly all day long. The other girls had laughed at her torn, dirty dress. Sara looked out the small, frosted window at the dark street below. She took a deep breath and closed her eyes. She thought of her father, who had always called her his little princess. Then she sat up straight and said quietly to herself: "Whatever comes — if I am a princess in rags, I am still a princess." And in that cold, dark attic, Sara felt warm inside. Whatever comes — if I am a princess in rags, I am still a princess.')">▶</button>
+        <button class="story-ctrl-btn story-play-btn" id="story-play-btn" onclick="storyPlayData()">▶</button>
+        <div id="story-data" data-text="One cold winter evening, Sara sat alone in the attic. She had no fire, no food, and no warm clothes. Miss Minchin had scolded her harshly all day long. The other girls had laughed at her torn, dirty dress. Sara looked out the small, frosted window at the dark street below. She took a deep breath and closed her eyes. She thought of her father, who had always called her his little princess. Then she sat up straight and said quietly to herself: &quot;Whatever comes — if I am a princess in rags, I am still a princess.&quot; And in that cold, dark attic, Sara felt warm inside. Whatever comes — if I am a princess in rags, I am still a princess." style="display:none"></div>
         <button class="story-ctrl-btn story-stop-btn" id="story-stop-btn" onclick="storyStopped()">⏹</button>
         <span style="font-size:0.72rem;color:var(--text3);">재생 / 정지</span>
       </div>
@@ -251,33 +252,33 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
     </header>
     <div class="sec-body">
       <div class="vocab-grid">
-        <div class="v-card" onclick="speak('whatever')">
+        <div class="v-card" data-speak="whatever" onclick="speakEl(this)">
           <div class="v-emoji">🌀</div>
           <div class="v-eng">whatever</div>
           <div class="v-kr">무엇이든, 무슨 일이 있어도</div>
           <div class="v-ex">"Whatever comes, I am ready."</div>
-          <button class="v-play" onclick="event.stopPropagation();speak('whatever')">듣기</button>
+          <button class="v-play" data-speak="whatever" onclick="event.stopPropagation();speakEl(this)">듣기</button>
         </div>
-        <div class="v-card" onclick="speak('still')">
+        <div class="v-card" data-speak="still" onclick="speakEl(this)">
           <div class="v-emoji">⏳</div>
           <div class="v-eng">still</div>
           <div class="v-kr">여전히</div>
           <div class="v-ex">"I am still a princess."</div>
-          <button class="v-play" onclick="event.stopPropagation();speak('still')">듣기</button>
+          <button class="v-play" data-speak="still" onclick="event.stopPropagation();speakEl(this)">듣기</button>
         </div>
-        <div class="v-card" onclick="speak('rags')">
+        <div class="v-card" data-speak="rags" onclick="speakEl(this)">
           <div class="v-emoji">👘</div>
           <div class="v-eng">rags</div>
           <div class="v-kr">누더기</div>
           <div class="v-ex">"She wore rags."</div>
-          <button class="v-play" onclick="event.stopPropagation();speak('rags')">듣기</button>
+          <button class="v-play" data-speak="rags" onclick="event.stopPropagation();speakEl(this)">듣기</button>
         </div>
-        <div class="v-card" onclick="speak('dignity')">
+        <div class="v-card" data-speak="dignity" onclick="speakEl(this)">
           <div class="v-emoji">🌟</div>
           <div class="v-eng">dignity</div>
           <div class="v-kr">존엄, 품위</div>
           <div class="v-ex">"She kept her dignity always."</div>
-          <button class="v-play" onclick="event.stopPropagation();speak('dignity')">듣기</button>
+          <button class="v-play" data-speak="dignity" onclick="event.stopPropagation();speakEl(this)">듣기</button>
         </div></div>
       <div class="grammar-link">
         <div class="grammar-link-label">📚 오늘의 문법 포인트 — <strong>First Conditional 조건절</strong></div>
@@ -353,7 +354,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
       <div><div class="sec-title">👂 들어보자!</div><div class="sec-sub">LISTENING</div></div>
     </header>
     <div class="sec-body">
-      <button class="listen-play" onclick="speak('Whatever comes — if I am a princess in rags, I am still a princess.')">🔊 듣기!</button>
+      <button class="listen-play" data-speak="Whatever comes — if I am a princess in rags, I am still a princess." onclick="speakEl(this)">🔊 듣기!</button>
       <div class="listen-opts">
         <button class="listen-opt" onclick="listenChk(this,'ok')">
           <div class="lo-emoji">👑</div>
@@ -379,10 +380,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
       <div><div class="sec-title">✍️ 써보자!</div><div class="sec-sub">DICTATION</div></div>
     </header>
     <div class="sec-body">
-      <button class="dict-play" onclick="speak('whatever')">🔊 단어 듣기</button>
+      <button class="dict-play" data-speak="whatever" onclick="speakEl(this)">🔊 단어 듣기</button>
       <div class="dict-hint">w h a t e v _ _</div>
-      <input class="dict-input" id="dictIn" placeholder="단어를 써봐!" onkeydown="if(event.key==='Enter')chkDict('whatever')">
-      <button class="dict-check" onclick="chkDict('whatever')">확인</button>
+      <input class="dict-input" id="dictIn" placeholder="단어를 써봐!" onkeydown="if(event.key==='Enter')chkDictData(this.nextElementSibling)">
+      <button class="dict-check" data-word="whatever" onclick="chkDictData(this)">확인</button>
       <div class="fb" id="dict-fb" style="margin-top:10px;"></div>
     </div>
     <div class="prog"><div class="prog-fill" style="width:78%;"></div></div>
@@ -646,6 +647,19 @@ function csPick(btn,v,blankId,fId){
     fb.style.color='#e53935';fb.textContent='\u274C 다시 생각해봐!';
     csDone=true;if(duoDone)checkComplete();
   }
+}
+function speakEl(el){
+  var text=el.getAttribute('data-speak')||'';
+  if(text)speak(text);
+}
+function chkDictData(btn){
+  var ans=btn.getAttribute('data-word')||'';
+  chkDict(ans);
+}
+function storyPlayData(){
+  var el=document.getElementById('story-data');
+  var text=el?el.getAttribute('data-text'):'';
+  storyPlay(text);
 }
 function copyPrompt(){
   var el=document.getElementById('promptBody'),text=el?el.textContent:'';
