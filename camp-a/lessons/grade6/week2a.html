@@ -626,26 +626,26 @@ function chkDict(ans){
 }
 function duoPick(btn,t,fId){
   var fb=document.getElementById(fId);
-  btn.parentElement.querySelectorAll('.duo-ch').forEach(function(b){b.disabled=true;});
   if(t==='ok'){
     btn.classList.add('ok');
+    btn.parentElement.querySelectorAll('.duo-ch').forEach(function(b){b.disabled=true;});
     setTimeout(function(){fb.style.color='var(--sage)';fb.textContent='\u2705 정답! +25 XP';addXP(25);duoDone=true;if(csDone)checkComplete();},400);
   }else{
     btn.classList.add('no');
-    fb.style.color='#e53935';fb.textContent='\u274C 다시 생각해봐! 정답은 A번이야.';
-    duoDone=true;if(csDone)checkComplete();
+    fb.style.color='#e53935';fb.textContent='\u274C 다시 생각해봐!';
+    setTimeout(function(){btn.classList.remove('no');fb.textContent='';},1200);
   }
 }
 function csPick(btn,v,blankId,fId){
   var bl=document.getElementById(blankId),fb=document.getElementById(fId);
-  btn.parentElement.querySelectorAll('.cs-opt').forEach(function(b){b.disabled=true;});
   if(btn.dataset.ans==='ok'){
     btn.classList.add('ok');bl.textContent=v;
+    btn.parentElement.querySelectorAll('.cs-opt').forEach(function(b){b.disabled=true;});
     setTimeout(function(){fb.style.color='var(--sage)';fb.textContent='\u2705 정답! +25 XP';addXP(25);csDone=true;if(duoDone)checkComplete();},400);
   }else{
     btn.classList.add('no');
     fb.style.color='#e53935';fb.textContent='\u274C 다시 생각해봐!';
-    csDone=true;if(duoDone)checkComplete();
+    setTimeout(function(){btn.classList.remove('no');fb.textContent='';},1200);
   }
 }
 function speakEl(el){
