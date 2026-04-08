@@ -178,7 +178,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
   </div>
   <div class="story-player-row">
     <span class="story-label">🔤 English Story</span>
-    <button class="story-ctrl-btn story-play-btn" id="story-play-btn" onclick="storyPlay('Week 14 complete! What did Mary Poppins teach? The children finally understood. Having rules does not mean there is no love! Thanks to Mary Poppins rules, the room was always tidy. They learned to be on time. At the same time, Mary told them stories every night. There was warm love inside her strictness. They learned that rules and love can exist together! She was strict but kind because rules and love can exist together.')">▶</button>
+    <button class="story-ctrl-btn story-play-btn" id="story-play-btn" onclick="storyPlay('Week 14 complete! What did Mary Poppins teach? The children finally understood. Having rules does not mean there is no love! Thanks to Mary Poppins rules, the room was always tidy. They learned to be on time. At the same time, Mary told them stories every night. There was warm love inside her strictness. They learned that rules and love can exist together! She was strict but kind because rules and love can exist together.',this)">▶</button>
     <button class="story-ctrl-btn story-stop-btn" id="story-stop-btn" onclick="storyStopped()">⏹</button>
     <span style="font-size:0.72rem;color:var(--text3);">재생 / 정지</span>
   </div>
@@ -373,9 +373,18 @@ _loadVoices();
 if(window.speechSynthesis.onvoiceschanged!==undefined){window.speechSynthesis.onvoiceschanged=_loadVoices;}
 function _getBestVoice(){if(!_voices.length)_voices=window.speechSynthesis.getVoices();var prefer=['Samantha','Microsoft Zira Desktop - English (United States)','Microsoft Jenny Online (Natural) - English (United States)','Google US English','Karen'];for(var i=0;i<prefer.length;i++){var f=_voices.find(function(v){return v.name===prefer[i];});if(f)return f;}return _voices.find(function(v){return v.lang==='en-US';})||null;}
 function speak(text){window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.78;u.pitch=1.05;var v=_getBestVoice();if(v)u.voice=v;window.speechSynthesis.speak(u);}
-var _sp=false;
-function storyPlay(text){if(_sp){storyStopped();return;}window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.75;u.pitch=1.05;var v=_getBestVoice();if(v)u.voice=v;u.onend=function(){storyStopped();};window.speechSynthesis.speak(u);_sp=true;var pb=document.getElementById('story-play-btn'),sb=document.getElementById('story-stop-btn');if(pb)pb.textContent='\u23F8';if(sb)sb.style.display='flex';}
-function storyStopped(){window.speechSynthesis.cancel();_sp=false;var pb=document.getElementById('story-play-btn'),sb=document.getElementById('story-stop-btn');if(pb)pb.textContent='\u25B6';if(sb)sb.style.display='none';}
+var _storyState='idle',_storyBtn=null;
+function storyPlay(text,btn){
+  if(!btn)btn=event.currentTarget;
+  if(_storyState==='playing'&&_storyBtn===btn){window.speechSynthesis.pause();_storyState='paused';btn.textContent='\u25B6';return;}
+  if(_storyState==='paused'&&_storyBtn===btn){window.speechSynthesis.resume();_storyState='playing';btn.textContent='\u23F8';return;}
+  storyReset();window.speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.75;u.pitch=1.05;var v=_getBestVoice();if(v)u.voice=v;
+  u.onend=function(){storyReset();};
+  window.speechSynthesis.speak(u);_storyState='playing';_storyBtn=btn;btn.textContent='\u23F8';
+}
+function storyReset(){window.speechSynthesis.cancel();_storyState='idle';document.querySelectorAll('.story-play-btn').forEach(function(b){b.textContent='\u25B6';});_storyBtn=null;}
+function storyStopped(){storyReset();}
 function addXP(n){xp+=n;var el=document.getElementById('xp');if(el)el.textContent=xp;}
 function pick(btn,v,a,bId,fId){var bl=document.getElementById(bId),fb=document.getElementById(fId);if(v===a){btn.classList.add('ok');if(bl)bl.textContent=v;btn.parentElement.querySelectorAll('.ch').forEach(function(b){b.disabled=true;});setTimeout(function(){fb.style.color='var(--sage)';fb.textContent='\u2705 정답! +20 XP';addXP(20);},400);}else{btn.classList.add('no');fb.style.color='#e53935';fb.textContent='\u274C 다시 해봐!';setTimeout(function(){btn.classList.remove('no');fb.textContent='';},1200);}}
 function woAdd(id,btn,w){if(btn.classList.contains('used'))return;btn.classList.add('used');if(!woPools[id])woPools[id]=[];woPools[id].push(w);var z=document.getElementById(id+'-zone'),ph=document.getElementById(id+'-ph');if(ph)ph.style.display='none';var c=document.createElement('button');c.className='placed';c.textContent=w;c.onclick=function(){var i=woPools[id].indexOf(w);if(i>-1)woPools[id].splice(i,1);btn.classList.remove('used');c.remove();if(!woPools[id].length&&ph)ph.style.display='';};z.appendChild(c);}
