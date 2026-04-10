@@ -236,6 +236,30 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .rfh-modal-send{width:38px;height:38px;border-radius:50%;background:#1a472a;color:#fff;border:none;
   cursor:pointer;font-size:1.1rem;flex-shrink:0;font-weight:700;}
 .rfh-modal-send:hover{background:#0f3019;}
+/* Word click bubble (G03-style — asymmetric border-radius, sage border) */
+.rfh-wb{position:absolute;z-index:9997;background:#fff;border:1.5px solid #c8d8b8;
+  border-radius:14px;padding:14px 16px 14px;width:240px;
+  box-shadow:0 6px 24px rgba(74,103,65,0.3);display:none;
+  font-family:'Noto Sans KR',sans-serif;transform:translate(-50%,-100%);}
+.rfh-wb.show{display:block;}
+.rfh-wb-arrow{position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);
+  width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;
+  border-top:12px solid #c8d8b8;}
+.rfh-wb-arrow::after{content:'';position:absolute;top:-13px;left:-10px;
+  width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;
+  border-top:10px solid #fff;}
+.rfh-wb-word{font-family:'Nunito',sans-serif;font-weight:900;font-size:1.05rem;
+  color:#1a472a;margin-bottom:6px;padding-right:24px;}
+.rfh-wb-body{font-size:0.78rem;line-height:1.65;color:#2d4a25;white-space:pre-wrap;
+  margin-bottom:10px;max-height:200px;overflow-y:auto;}
+.rfh-wb-play{background:#1a472a;color:#fff;border:none;border-radius:8px;
+  padding:6px 14px;font-size:0.75rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.rfh-wb-play:hover{background:#0f3019;}
+.rfh-wb-close{position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.06);border:none;
+  width:22px;height:22px;border-radius:50%;font-size:0.7rem;cursor:pointer;color:#555;
+  display:flex;align-items:center;justify-content:center;font-weight:700;}
+.rfh-wb-close:hover{background:rgba(0,0,0,0.15);}
+@media(max-width:480px){.rfh-wb{width:88vw;max-width:280px;}}
 </style>
 </head>
 <body data-camp="a" data-grade="3" data-week="01" data-quarter="Q1">
@@ -596,15 +620,72 @@ var RFH_API_URL='https://journey-bronzy-fruitily.ngrok-free.dev/api/chat/complet
 var RFH_MODEL='camp-a';
 var RFH_KEY_SENTENCE=(function(){var el=document.querySelector('.key-eng');return el?el.textContent.replace(/["\u201C\u201D]/g,'').trim():'He ran away.';})();
 var RFH_CHATGPT_URL='https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b';
+var RFH_CURRENT_SECTION='key';
+var RFH_LAST_WORD='';
+var RFH_LAST_STORY='';
+function rfhEsc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function rfhToggleMenu(){var menu=document.getElementById('rfhMenu');var hint=document.getElementById('rfhHint');if(menu)menu.classList.toggle('show');if(hint)hint.style.display=menu&&menu.classList.contains('show')?'none':'';}
 function rfhCloseMenu(){var menu=document.getElementById('rfhMenu');var hint=document.getElementById('rfhHint');if(menu)menu.classList.remove('show');if(hint)hint.style.display='';}
 function rfhOpenModal(text){var m=document.getElementById('rfhModal');var b=document.getElementById('rfhModalBubble');if(b)b.textContent=text||'\uC0DD\uAC01 \uC911... \uD83E\uDD14';if(m)m.classList.add('show');rfhCloseMenu();}
 function rfhCloseModal(){var m=document.getElementById('rfhModal');if(m)m.classList.remove('show');if(window.speechSynthesis)window.speechSynthesis.cancel();}
-function rfhFetch(messages){var b=document.getElementById('rfhModalBubble');return fetch(RFH_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:RFH_MODEL,messages:messages,stream:false})}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(data){var reply=(data&&data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||'(\uC751\uB2F5 \uC5C6\uC74C)';if(b)b.textContent=reply;}).catch(function(e){if(b)b.textContent='\u26A0\uFE0F \uC5F0\uACB0 \uC2E4\uD328: '+e.message;});}
-function rfhAsk(buttonText){rfhOpenModal('\uC0DD\uAC01 \uC911... \uD83E\uDD14');var userMsg='\uC624\uB298 \uBC30\uC6B4 \uBB38\uC7A5: '+RFH_KEY_SENTENCE+'\n'+buttonText+' \uB3C4\uC640\uC918!';rfhFetch([{role:'user',content:userMsg}]);}
-function rfhSendInput(){var inp=document.getElementById('rfhModalInput');if(!inp)return;var text=inp.value.trim();if(!text)return;inp.value='';var b=document.getElementById('rfhModalBubble');if(b)b.textContent='\uC0DD\uAC01 \uC911... \uD83E\uDD14';rfhFetch([{role:'system',content:'\uD559\uC0DD\uC774 \uC624\uB298 \uBC30\uC6B4 \uBB38\uC7A5: '+RFH_KEY_SENTENCE+'. \uCD08\uB4F1\uD559\uC0DD\uC5D0\uAC8C \uCE5C\uC808\uD558\uACE0 \uC9E7\uAC8C \uB2F5\uD574\uC918.'},{role:'user',content:text}]);}
-function rfhReadAgain(){if(typeof speak==='function')speak(RFH_KEY_SENTENCE);rfhOpenModal('\uD83D\uDD0A \uB2E4\uC2DC \uC77D\uC5C8\uC5B4!\n"'+RFH_KEY_SENTENCE+'"');}
-function rfhReadSlow(){if(window.speechSynthesis){window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(RFH_KEY_SENTENCE);u.lang='en-US';u.rate=0.5;u.pitch=1.05;if(typeof _getBestVoice==='function'){var v=_getBestVoice();if(v)u.voice=v;}window.speechSynthesis.speak(u);}rfhOpenModal('\uD83D\uDC22 \uCC9C\uCC9C\uD788 \uB2E4\uC2DC \uC77D\uC5C8\uC5B4!\n"'+RFH_KEY_SENTENCE+'"');}
+function rfhFetch(messages,targetEl){return fetch(RFH_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:RFH_MODEL,messages:messages,stream:false})}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(data){var reply=(data&&data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||'(\uC751\uB2F5 \uC5C6\uC74C)';if(targetEl)targetEl.textContent=reply;}).catch(function(e){if(targetEl)targetEl.textContent='\u26A0\uFE0F \uC5F0\uACB0 \uC2E4\uD328: '+e.message;});}
+function rfhAsk(buttonText){rfhOpenModal('\uC0DD\uAC01 \uC911... \uD83E\uDD14');var userMsg='\uC624\uB298 \uBC30\uC6B4 \uBB38\uC7A5: '+RFH_KEY_SENTENCE+'\n'+buttonText+' \uB3C4\uC640\uC918!';rfhFetch([{role:'user',content:userMsg}],document.getElementById('rfhModalBubble'));}
+function rfhSendInput(){var inp=document.getElementById('rfhModalInput');if(!inp)return;var text=inp.value.trim();if(!text)return;inp.value='';var b=document.getElementById('rfhModalBubble');if(b)b.textContent='\uC0DD\uAC01 \uC911... \uD83E\uDD14';rfhFetch([{role:'system',content:'\uD559\uC0DD\uC774 \uC624\uB298 \uBC30\uC6B4 \uBB38\uC7A5: '+RFH_KEY_SENTENCE+'. \uCD08\uB4F1\uD559\uC0DD\uC5D0\uAC8C \uCE5C\uC808\uD558\uACE0 \uC9E7\uAC8C \uB2F5\uD574\uC918.'},{role:'user',content:text}],b);}
+// Context-aware TTS — picks current section's text
+function rfhCurrentText(){if(RFH_CURRENT_SECTION==='vocab'&&RFH_LAST_WORD)return{text:RFH_LAST_WORD,label:'\uB2E8\uC5B4'};if(RFH_CURRENT_SECTION==='story'&&RFH_LAST_STORY)return{text:RFH_LAST_STORY,label:'\uC2A4\uD1A0\uB9AC'};return{text:RFH_KEY_SENTENCE,label:'\uD575\uC2EC \uBB38\uC7A5'};}
+function rfhReadAgain(){var ctx=rfhCurrentText();if(typeof speak==='function')speak(ctx.text);rfhOpenModal('\uD83D\uDD0A '+ctx.label+' \uB2E4\uC2DC \uC77D\uC5C8\uC5B4!\n"'+ctx.text+'"');}
+function rfhReadSlow(){var ctx=rfhCurrentText();if(window.speechSynthesis){window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(ctx.text);u.lang='en-US';u.rate=0.5;u.pitch=1.05;if(typeof _getBestVoice==='function'){var v=_getBestVoice();if(v)u.voice=v;}window.speechSynthesis.speak(u);}rfhOpenModal('\uD83D\uDC22 '+ctx.label+' \uCC9C\uCC9C\uD788 \uB2E4\uC2DC \uC77D\uC5C8\uC5B4!\n"'+ctx.text+'"');}
 function rfhGoChatGPT(){rfhCloseMenu();var overlay=document.createElement('div');overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';var box=document.createElement('div');box.style.cssText='background:linear-gradient(135deg,#1a472a,#2e7d4d);color:#fff;border-radius:20px;padding:30px 24px;max-width:480px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.5);';box.innerHTML='<div style="font-size:3rem;margin-bottom:10px;">\uD83C\uDF89</div><div style="font-family:Nunito,sans-serif;font-size:1.3rem;font-weight:900;margin-bottom:14px;">\uC7A0\uAE50!</div><div style="font-size:1rem;line-height:1.7;">\uC624\uB298 \uC815\uB9D0 \uC798\uD588\uC5B4! \uD83D\uDC4F<br><strong>'+RFH_KEY_SENTENCE+'</strong> \uC644\uC804\uD788 \uC775\uD614\uC9C0?<br><br>\uC774\uC81C ChatGPT \uC120\uC0DD\uB2D8\uD55C\uD14C \uAC00\uC11C<br>\uC624\uB298 \uBC30\uC6B4 \uAC78 \uC601\uC5B4\uB85C \uC9C1\uC811 \uB9D0\uD574\uBD10!<br><br>\uB10C \uBD84\uBA85\uD788 \uC798 \uD560 \uC218 \uC788\uC5B4! \uD83D\uDCAA</div><div style="margin-top:18px;font-size:0.85rem;opacity:0.8;">3\uCD08 \uD6C4 \uC790\uB3D9 \uC774\uB3D9...</div>';overlay.appendChild(box);document.body.appendChild(overlay);setTimeout(function(){window.location.href=RFH_CHATGPT_URL;},3000);}
+// ----- Word click bubble (G03 style popover above the v-card) -----
+function rfhCloseWordBubble(){var b=document.getElementById('rfhWordBubble');if(b)b.classList.remove('show');}
+function rfhWordBubbleAt(card,word){
+  var bubble=document.getElementById('rfhWordBubble');
+  if(!bubble){bubble=document.createElement('div');bubble.id='rfhWordBubble';bubble.className='rfh-wb';document.body.appendChild(bubble);}
+  RFH_CURRENT_SECTION='vocab';RFH_LAST_WORD=word;
+  var safeWord=rfhEsc(word);var jsWord=word.replace(/'/g,"\\'");
+  bubble.innerHTML='<button class="rfh-wb-close" onclick="rfhCloseWordBubble()">\u2715</button>'
+    +'<div class="rfh-wb-word">'+safeWord+'</div>'
+    +'<div class="rfh-wb-body" id="rfhWbBody">\uC0DD\uAC01 \uC911... \uD83E\uDD14</div>'
+    +'<button class="rfh-wb-play" onclick="event.stopPropagation();speak(\''+jsWord+'\')">\uD83D\uDD0A \uB4E3\uAE30</button>'
+    +'<div class="rfh-wb-arrow"></div>';
+  bubble.classList.add('show');
+  var rect=card.getBoundingClientRect();
+  bubble.style.left=(rect.left+window.scrollX+rect.width/2)+'px';
+  bubble.style.top=(rect.top+window.scrollY-12)+'px';
+  rfhFetch([{role:'user',content:'\uC624\uB298 \uBC30\uC6B4 \uB2E8\uC5B4: '+word+'\n\uC774 \uB2E8\uC5B4\uC758 \uB73B\uACFC \uC608\uBB38\uC744 \uCD08\uB4F1\uD559\uAD50 3\uD559\uB144 \uC218\uC900\uC73C\uB85C \uD55C\uAD6D\uC5B4\uB85C \uC9E7\uAC8C \uC124\uBA85\uD574\uC918. \uC601\uC5B4 \uC608\uBB38\uB3C4 1\uAC1C \uB9CC\uB4E4\uC5B4\uC918.'}],document.getElementById('rfhWbBody'));
+}
+// ----- Wire up DOM listeners -----
+function rfhInit(){
+  // Vocab card clicks → open word bubble (existing speak() onclick still fires)
+  document.querySelectorAll('.v-card').forEach(function(card){
+    card.addEventListener('click',function(e){
+      if(e.target.closest('.v-play'))return; // play button has its own handler
+      var wEl=card.querySelector('.v-eng');if(!wEl)return;
+      var word=wEl.textContent.trim();if(!word)return;
+      rfhWordBubbleAt(card,word);
+      e.stopPropagation(); // keep the document handler from closing it immediately
+    });
+  });
+  // Story play buttons → track current story for context-aware re-read
+  document.querySelectorAll('.story-play-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var attr=btn.getAttribute('onclick')||'';
+      var m=attr.match(/storyPlay\(['\"]([^'\"]+)['\"]/);
+      if(m){RFH_CURRENT_SECTION='story';RFH_LAST_STORY=m[1];}
+    });
+  });
+  // Key sentence area → set context to 'key'
+  document.querySelectorAll('.key-card,.key-play-row').forEach(function(el){
+    el.addEventListener('click',function(){RFH_CURRENT_SECTION='key';});
+  });
+  // Click outside word bubble → close it
+  document.addEventListener('click',function(e){
+    var b=document.getElementById('rfhWordBubble');
+    if(!b||!b.classList.contains('show'))return;
+    if(e.target.closest('#rfhWordBubble')||e.target.closest('.v-card'))return;
+    rfhCloseWordBubble();
+  });
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',rfhInit);}else{rfhInit();}
 </script>
 </body></html>
