@@ -1180,31 +1180,27 @@ function showTab(prefix, level, btn) {
   btn.classList.add('active');
 }
 
-/* ── R2 AUDIO — v2 (fixes mobile playback bugs) ────────────────────
-   Bugs fixed from v1:
-   · Double audio (prime blip leaked through on iOS)
-   · Auto-stop failure during buffering underrun
-   · Stale canplay listeners firing into new clicks
-   · UI/audio desync on play failure
-   Techniques:
-   · Generation counter — every click increments; all in-flight
-     callbacks check `myGen === r2Generation` before running.
-   · Fast/slow path — 2nd click onward, if audio is already loaded
-     (readyState≥2 AND canplay has fired once), skip priming entirely
-     and do seek+play directly. First click primes iOS with silent play.
-   · On slow path: pause FIRST, then seek (currentTime set while paused
-     takes effect immediately), then volume=1+muted=false, then play.
-     No muted→unmuted transition while audio is already rolling.
-   · Dual auto-stop: timeupdate range check + setTimeout watchdog.
-     Both funnel through r2FullStop() which cleans timers + listeners.
-   · r2FullStop() is idempotent and the ONLY way state is cleared. */
+/* ── R2 AUDIO — v3 (simple new-Audio-per-click, ended event) ──────
+   Each button plays its OWN pre-rendered MP3 file. No shared audio
+   element, no timeupdate range checks, no generation counters — just
+   "create new Audio, play it, ended fires, done."
 
-const R2_AUDIO_BASE = 'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-c/audio';
+   R2 layout: camp-c/audio/ep01/{key,a1,a2,b1}.mp3
 
-const r2Audio = new Audio();
-r2Audio.src = R2_AUDIO_BASE + '/ep01.mp3';
-r2Audio.preload = 'auto';
-r2Audio.volume  = 0;
+   Why this works reliably on iOS:
+   · new Audio(url) + play() inside click handler unlocks iOS
+   · ended event fires naturally at end of file (no seek math)
+   · stopAll() fully detaches the previous audio element before
+     creating a new one — no stale listeners possible
+   · No manifest dependency (URLs are hardcoded per button)        */
+
+const R2_EP_BASE = 'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-c/audio/ep01';
+const R2_URLS = {
+  main: R2_EP_BASE + '/key.mp3',
+  a1:   R2_EP_BASE + '/a1.mp3',
+  a2:   R2_EP_BASE + '/a2.mp3',
+  b1:   R2_EP_BASE + '/b1.mp3'
+};
 
 // Spinner CSS
 (function(){
@@ -1216,51 +1212,17 @@ r2Audio.volume  = 0;
   document.head.appendChild(st);
 })();
 
-// ─── State ─────────────────────────────────────────────────
-let r2Manifest         = null;
-let r2Current          = null;     // 'main' | 'a1' | 'a2' | 'b1' | null
-let r2Generation       = 0;        // bumped on every stop/click; stale callbacks check this
-let r2StopAt           = Infinity; // currentTime threshold for auto-pause
-let r2Watchdog         = null;     // safety setTimeout
-let r2PendingCanplay   = null;     // one-shot canplay/metadata listener
-let r2PendingManifest  = null;     // runs once manifest arrives
-let r2FirstLoadDone    = false;    // true after canplay has ever fired
-let mainSpeaking       = false;
-let activeMp3          = null;
+// ─── State ─────────────────────────────────────
+let r2Audio   = null;    // the CURRENTLY playing Audio element (or null)
+let r2Current = null;    // 'main' | 'a1' | 'a2' | 'b1' | null
+let mainSpeaking = false;
+let activeMp3    = null;
 
 let waveInt = null;
 const wvBars = document.querySelectorAll('#wf .wvb');
 const baseH  = [4,12,6,20,8,24,10,16,5,14,7,11];
 
-// ─── Manifest fetch (immediate) ────────────────────────────
-fetch(R2_AUDIO_BASE + '/ep01.json', { cache: 'no-store' })
-  .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-  .then(function(m){
-    r2Manifest = m;
-    const w = r2PendingManifest; r2PendingManifest = null;
-    if (w) w();
-  })
-  .catch(function(e){ console.warn('R2 manifest fetch failed:', e); });
-
-// ─── Single persistent listeners (registered ONCE) ─────────
-r2Audio.addEventListener('canplay', function(){
-  r2FirstLoadDone = true;
-}, { once: true });
-
-r2Audio.addEventListener('timeupdate', function(){
-  if (r2StopAt >= Infinity) return;
-  const t = r2Audio.currentTime;
-  // Range check avoids false-positive when seek hasn't completed
-  if (t >= r2StopAt && t <= r2StopAt + 1.5) {
-    r2FullStop();
-  }
-});
-
-r2Audio.addEventListener('ended', function(){
-  r2FullStop();
-});
-
-// ─── Visual helpers ────────────────────────────────────────
+// ─── Visual helpers ───────────────────────────
 function animWave(on){
   clearInterval(waveInt);
   if (on) {
@@ -1282,7 +1244,7 @@ function hlWords(on){
   }, 340);
 }
 
-// ─── Button state transitions ──────────────────────────────
+// ─── Button states ─────────────────────────────
 function setMainState(state){
   const btn  = document.getElementById('mainBtn');
   const icon = document.getElementById('mainIcon');
@@ -1323,143 +1285,86 @@ function setMp3State(level, state){
   }
 }
 
-// ─── FULL STOP — the ONLY way to clear state ───────────────
-function r2FullStop(){
-  r2Generation++;                  // invalidate all in-flight callbacks
-  r2StopAt = Infinity;
-  if (r2Watchdog) { clearTimeout(r2Watchdog); r2Watchdog = null; }
-  if (r2PendingCanplay) {
-    r2Audio.removeEventListener('canplay',        r2PendingCanplay);
-    r2Audio.removeEventListener('canplaythrough', r2PendingCanplay);
-    r2Audio.removeEventListener('loadedmetadata', r2PendingCanplay);
-    r2PendingCanplay = null;
+function setStateFor(key, state){
+  if (key === 'main') setMainState(state);
+  else setMp3State(key, state);
+}
+
+// ─── Full stop: tear down the current audio completely ───
+function r2StopAll(){
+  if (r2Audio) {
+    try { r2Audio.pause(); } catch(e){}
+    try { r2Audio.currentTime = 0; } catch(e){}
+    // Detach all listeners by replacing with a clean fn set
+    r2Audio.oncanplay = null;
+    r2Audio.onplaying = null;
+    r2Audio.onended   = null;
+    r2Audio.onerror   = null;
+    try { r2Audio.removeAttribute('src'); r2Audio.load(); } catch(e){}
+    r2Audio = null;
   }
-  r2PendingManifest = null;
-  try { r2Audio.pause(); } catch(e){}
-  r2Audio.volume = 0;
-  r2Audio.muted  = false;
   setMainState('idle');
   ['a1','a2','b1'].forEach(function(l){ setMp3State(l, 'idle'); });
   r2Current = null;
 }
 
-// ─── Core play routine ─────────────────────────────────────
-function r2PlaySection(key, sec, setState){
-  r2FullStop();                    // always start from a clean slate
-  const myGen = ++r2Generation;
+// ─── Core play routine: one clip = one new Audio element ──
+function r2PlayClip(key){
+  // Always tear down the previous audio before starting a new one
+  r2StopAll();
+
   r2Current = key;
+  setStateFor(key, 'loading');
 
-  const executePlay = function(){
-    if (myGen !== r2Generation) return;   // stale — user clicked something else
+  const a = new Audio();
+  a.preload = 'auto';
+  a.src = R2_URLS[key];
+  r2Audio = a;
 
-    // Remove any pending listeners first (prevents re-entry)
-    if (r2PendingCanplay) {
-      r2Audio.removeEventListener('canplay',        r2PendingCanplay);
-      r2Audio.removeEventListener('canplaythrough', r2PendingCanplay);
-      r2Audio.removeEventListener('loadedmetadata', r2PendingCanplay);
-      r2PendingCanplay = null;
-    }
+  // Track local reference so stale callbacks can detect they're stale
+  const myAudio = a;
+  const isCurrent = function(){ return r2Audio === myAudio; };
 
-    // Pause first — while paused, currentTime set takes effect immediately.
-    try { r2Audio.pause(); } catch(e){}
-    r2Audio.currentTime = sec.start + 0.02;
-    r2Audio.volume = 1;
-    r2Audio.muted  = false;
-    r2StopAt = sec.start + sec.dur + 0.15;
-
-    const p = r2Audio.play();
-    if (p && p.catch) {
-      p.catch(function(err){
-        if (myGen !== r2Generation) return;
-        console.warn('R2 play error:', err);
-        r2FullStop();
-      });
-    }
-    setState('playing');
-
-    // Watchdog: force stop if timeupdate misses the end (buffering, tab hidden, etc)
-    r2Watchdog = setTimeout(function(){
-      if (myGen !== r2Generation) return;
-      r2FullStop();
-    }, (sec.dur + 2) * 1000);
+  a.oncanplay = function(){
+    if (!isCurrent()) return;
+    // canplay may fire multiple times during buffering; only act once
+    a.oncanplay = null;
+  };
+  a.onplaying = function(){
+    if (!isCurrent()) return;
+    // Real playback has begun — switch UI from loading → playing
+    setStateFor(key, 'playing');
+  };
+  a.onended = function(){
+    if (!isCurrent()) return;
+    r2StopAll();
+  };
+  a.onerror = function(){
+    if (!isCurrent()) return;
+    console.warn('R2 audio error for', key);
+    r2StopAll();
   };
 
-  // FAST PATH: audio already loaded → seek+play directly, no prime
-  if (r2FirstLoadDone && r2Audio.readyState >= 2) {
-    executePlay();
-    return;
-  }
-
-  // SLOW PATH: first time (or buffer lost) → prime iOS + wait for canplay
-  setState('loading');
-  r2Audio.muted  = true;
-  r2Audio.volume = 0;
-  try {
-    const pp = r2Audio.play();
-    if (pp && pp.catch) pp.catch(function(){});
-  } catch(e){}
-
-  r2PendingCanplay = function(){
-    if (myGen !== r2Generation) return;
-    executePlay();
-  };
-  r2Audio.addEventListener('canplay',        r2PendingCanplay);
-  r2Audio.addEventListener('canplaythrough', r2PendingCanplay);
-  r2Audio.addEventListener('loadedmetadata', r2PendingCanplay);
-}
-
-// ─── Public handlers — SYNCHRONOUS ─────────────────────────
-function speakMain(){
-  if (r2Current === 'main') { r2FullStop(); return; }
-
-  const go = function(){
-    const sec = r2Manifest.sections.find(function(s){
-      return s.lang === 'en' && s.body.trim() === 'Excuse me. Can you help me?';
+  // Play synchronously inside the user gesture (iOS unlock)
+  const p = a.play();
+  if (p && p.catch) {
+    p.catch(function(err){
+      if (!isCurrent()) return;
+      console.warn('R2 play rejected for', key, err);
+      r2StopAll();
     });
-    if (!sec) { alert('핵심 표현 구간을 찾을 수 없습니다.'); return; }
-    r2PlaySection('main', sec, setMainState);
-  };
-
-  if (r2Manifest) {
-    go();
-  } else {
-    // Manifest not loaded yet: prime iOS now, run go() when manifest arrives
-    r2FullStop();
-    r2Current = 'main';
-    setMainState('loading');
-    r2Audio.muted = true;
-    r2Audio.volume = 0;
-    try { const pp = r2Audio.play(); if (pp && pp.catch) pp.catch(function(){}); } catch(e){}
-    r2PendingManifest = go;
   }
 }
 
-const STORY_MATCHERS = {
-  a1: function(s){ return s.lang === 'en' && s.body.indexOf('Young-ja is at the airport') === 0; },
-  a2: function(s){ return s.lang === 'en' && s.body.indexOf('Young-ja arrives at the Los Angeles') === 0; },
-  b1: function(s){ return s.lang === 'en' && s.body.indexOf('After a long flight from Korea') === 0; }
-};
-
+// ─── Public click handlers ─────────────────────
+function speakMain(){
+  if (r2Current === 'main') { r2StopAll(); return; }
+  r2PlayClip('main');
+}
 function playScript(level){
-  if (r2Current === level) { r2FullStop(); return; }
-
-  const go = function(){
-    const sec = r2Manifest.sections.find(STORY_MATCHERS[level]);
-    if (!sec) { alert(level.toUpperCase() + ' 스토리 구간을 찾을 수 없습니다.'); return; }
-    r2PlaySection(level, sec, function(state){ setMp3State(level, state); });
-  };
-
-  if (r2Manifest) {
-    go();
-  } else {
-    r2FullStop();
-    r2Current = level;
-    setMp3State(level, 'loading');
-    r2Audio.muted = true;
-    r2Audio.volume = 0;
-    try { const pp = r2Audio.play(); if (pp && pp.catch) pp.catch(function(){}); } catch(e){}
-    r2PendingManifest = go;
-  }
+  if (r2Current === level) { r2StopAll(); return; }
+  if (level !== 'a1' && level !== 'a2' && level !== 'b1') return;
+  r2PlayClip(level);
 }
 
 /* QUIZ */
