@@ -1180,24 +1180,33 @@ function showTab(prefix, level, btn) {
   btn.classList.add('active');
 }
 
-/* ── R2 AUDIO — mobile-friendly (iOS Safari + Android Chrome) ─────
-   Strategy:
-   1) Manifest fetched immediately at page load → cached in sync var
-   2) Click handlers are SYNCHRONOUS (no async/await); they call
-      r2Audio.play() synchronously to unlock iOS's autoplay policy
-   3) Audio is muted during "prime" playback so user hears nothing
-      until we've seeked to the target section
-   4) Wait for loadedmetadata/canplay before seeking; show spinner
-   5) Auto-pause via timeupdate + range check (robust for backward seeks),
-      not a wall-clock setTimeout                                      */
+/* ── R2 AUDIO — v2 (fixes mobile playback bugs) ────────────────────
+   Bugs fixed from v1:
+   · Double audio (prime blip leaked through on iOS)
+   · Auto-stop failure during buffering underrun
+   · Stale canplay listeners firing into new clicks
+   · UI/audio desync on play failure
+   Techniques:
+   · Generation counter — every click increments; all in-flight
+     callbacks check `myGen === r2Generation` before running.
+   · Fast/slow path — 2nd click onward, if audio is already loaded
+     (readyState≥2 AND canplay has fired once), skip priming entirely
+     and do seek+play directly. First click primes iOS with silent play.
+   · On slow path: pause FIRST, then seek (currentTime set while paused
+     takes effect immediately), then volume=1+muted=false, then play.
+     No muted→unmuted transition while audio is already rolling.
+   · Dual auto-stop: timeupdate range check + setTimeout watchdog.
+     Both funnel through r2FullStop() which cleans timers + listeners.
+   · r2FullStop() is idempotent and the ONLY way state is cleared. */
+
 const R2_AUDIO_BASE = 'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-c/audio';
 
 const r2Audio = new Audio();
 r2Audio.src = R2_AUDIO_BASE + '/ep01.mp3';
 r2Audio.preload = 'auto';
-r2Audio.muted   = true;   // stays muted until seeked to target
+r2Audio.volume  = 0;
 
-// Spinner CSS (injected so the <style> block above doesn't need edits)
+// Spinner CSS
 (function(){
   const st = document.createElement('style');
   st.textContent =
@@ -1207,53 +1216,51 @@ r2Audio.muted   = true;   // stays muted until seeked to target
   document.head.appendChild(st);
 })();
 
-// ── Synchronously-accessible state ────────────────────────────────
-let r2Manifest       = null;       // populated when fetch() resolves
-let r2Current        = null;       // 'main' | 'a1' | 'a2' | 'b1' | null
-let r2StopAt         = Infinity;   // currentTime threshold for auto-pause
-let r2FinalizeStopFn = null;
-let r2MetadataWaiter = null;       // pending loadedmetadata handler
-let r2ManifestWaiter = null;       // runs once manifest arrives
-let mainSpeaking     = false;
-let activeMp3        = null;
+// ─── State ─────────────────────────────────────────────────
+let r2Manifest         = null;
+let r2Current          = null;     // 'main' | 'a1' | 'a2' | 'b1' | null
+let r2Generation       = 0;        // bumped on every stop/click; stale callbacks check this
+let r2StopAt           = Infinity; // currentTime threshold for auto-pause
+let r2Watchdog         = null;     // safety setTimeout
+let r2PendingCanplay   = null;     // one-shot canplay/metadata listener
+let r2PendingManifest  = null;     // runs once manifest arrives
+let r2FirstLoadDone    = false;    // true after canplay has ever fired
+let mainSpeaking       = false;
+let activeMp3          = null;
 
 let waveInt = null;
 const wvBars = document.querySelectorAll('#wf .wvb');
 const baseH  = [4,12,6,20,8,24,10,16,5,14,7,11];
 
-// ── Kick off manifest fetch IMMEDIATELY ───────────────────────────
+// ─── Manifest fetch (immediate) ────────────────────────────
 fetch(R2_AUDIO_BASE + '/ep01.json', { cache: 'no-store' })
   .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
   .then(function(m){
     r2Manifest = m;
-    if (r2ManifestWaiter) { const w = r2ManifestWaiter; r2ManifestWaiter = null; w(); }
+    const w = r2PendingManifest; r2PendingManifest = null;
+    if (w) w();
   })
-  .catch(function(e){ console.warn('R2 manifest load failed:', e); });
+  .catch(function(e){ console.warn('R2 manifest fetch failed:', e); });
 
-// ── Audio events (registered once) ────────────────────────────────
+// ─── Single persistent listeners (registered ONCE) ─────────
+r2Audio.addEventListener('canplay', function(){
+  r2FirstLoadDone = true;
+}, { once: true });
+
 r2Audio.addEventListener('timeupdate', function(){
   if (r2StopAt >= Infinity) return;
   const t = r2Audio.currentTime;
-  // Only trigger stop if currentTime is within the expected playback zone,
-  // which prevents a false-positive when a backward seek hasn't completed yet.
+  // Range check avoids false-positive when seek hasn't completed
   if (t >= r2StopAt && t <= r2StopAt + 1.5) {
-    r2Audio.pause();
-    r2Audio.muted = true;
-    r2StopAt = Infinity;
-    const fn = r2FinalizeStopFn; r2FinalizeStopFn = null;
-    r2Current = null;
-    if (fn) fn();
+    r2FullStop();
   }
 });
+
 r2Audio.addEventListener('ended', function(){
-  r2StopAt = Infinity;
-  r2Audio.muted = true;
-  const fn = r2FinalizeStopFn; r2FinalizeStopFn = null;
-  r2Current = null;
-  if (fn) fn();
+  r2FullStop();
 });
 
-// ── Visual helpers (preserved from original) ──────────────────────
+// ─── Visual helpers ────────────────────────────────────────
 function animWave(on){
   clearInterval(waveInt);
   if (on) {
@@ -1268,14 +1275,14 @@ function hlWords(on){
   const ws = document.querySelectorAll('#kp .w');
   if (!on) { ws.forEach(function(w){ w.style.color=''; }); return; }
   let i=0;
-  const t = setInterval(function(){
+  const tmr = setInterval(function(){
     ws.forEach(function(w){ w.style.color=''; });
     if (i<ws.length) { ws[i].style.color='#fbbf24'; i++; }
-    else clearInterval(t);
+    else clearInterval(tmr);
   }, 340);
 }
 
-// ── Button state transitions ──────────────────────────────────────
+// ─── Button state transitions ──────────────────────────────
 function setMainState(state){
   const btn  = document.getElementById('mainBtn');
   const icon = document.getElementById('mainIcon');
@@ -1316,84 +1323,115 @@ function setMp3State(level, state){
   }
 }
 
-// ── Stop everything, clean state ──────────────────────────────────
-function r2StopAll(){
-  r2Audio.pause();
-  r2Audio.muted = true;
+// ─── FULL STOP — the ONLY way to clear state ───────────────
+function r2FullStop(){
+  r2Generation++;                  // invalidate all in-flight callbacks
   r2StopAt = Infinity;
-  r2FinalizeStopFn = null;
-  r2ManifestWaiter = null;
-  if (r2MetadataWaiter) {
-    r2Audio.removeEventListener('loadedmetadata', r2MetadataWaiter);
-    r2Audio.removeEventListener('canplay',        r2MetadataWaiter);
-    r2MetadataWaiter = null;
+  if (r2Watchdog) { clearTimeout(r2Watchdog); r2Watchdog = null; }
+  if (r2PendingCanplay) {
+    r2Audio.removeEventListener('canplay',        r2PendingCanplay);
+    r2Audio.removeEventListener('canplaythrough', r2PendingCanplay);
+    r2Audio.removeEventListener('loadedmetadata', r2PendingCanplay);
+    r2PendingCanplay = null;
   }
+  r2PendingManifest = null;
+  try { r2Audio.pause(); } catch(e){}
+  r2Audio.volume = 0;
+  r2Audio.muted  = false;
   setMainState('idle');
   ['a1','a2','b1'].forEach(function(l){ setMp3State(l, 'idle'); });
   r2Current = null;
 }
 
-// ── Wait for both manifest AND audio metadata, then run cb ────────
-function r2WhenReady(cb){
-  const check = function(){
-    if (!r2Manifest) return;
-    if (r2Audio.readyState < 1 /* HAVE_METADATA */) return;
-    if (r2MetadataWaiter) {
-      r2Audio.removeEventListener('loadedmetadata', r2MetadataWaiter);
-      r2Audio.removeEventListener('canplay',        r2MetadataWaiter);
-      r2MetadataWaiter = null;
+// ─── Core play routine ─────────────────────────────────────
+function r2PlaySection(key, sec, setState){
+  r2FullStop();                    // always start from a clean slate
+  const myGen = ++r2Generation;
+  r2Current = key;
+
+  const executePlay = function(){
+    if (myGen !== r2Generation) return;   // stale — user clicked something else
+
+    // Remove any pending listeners first (prevents re-entry)
+    if (r2PendingCanplay) {
+      r2Audio.removeEventListener('canplay',        r2PendingCanplay);
+      r2Audio.removeEventListener('canplaythrough', r2PendingCanplay);
+      r2Audio.removeEventListener('loadedmetadata', r2PendingCanplay);
+      r2PendingCanplay = null;
     }
-    r2ManifestWaiter = null;
-    cb();
+
+    // Pause first — while paused, currentTime set takes effect immediately.
+    try { r2Audio.pause(); } catch(e){}
+    r2Audio.currentTime = sec.start + 0.02;
+    r2Audio.volume = 1;
+    r2Audio.muted  = false;
+    r2StopAt = sec.start + sec.dur + 0.15;
+
+    const p = r2Audio.play();
+    if (p && p.catch) {
+      p.catch(function(err){
+        if (myGen !== r2Generation) return;
+        console.warn('R2 play error:', err);
+        r2FullStop();
+      });
+    }
+    setState('playing');
+
+    // Watchdog: force stop if timeupdate misses the end (buffering, tab hidden, etc)
+    r2Watchdog = setTimeout(function(){
+      if (myGen !== r2Generation) return;
+      r2FullStop();
+    }, (sec.dur + 2) * 1000);
   };
-  if (r2Manifest && r2Audio.readyState >= 1) { cb(); return; }
-  if (!r2Manifest) r2ManifestWaiter = check;
-  if (r2Audio.readyState < 1) {
-    r2MetadataWaiter = check;
-    r2Audio.addEventListener('loadedmetadata', r2MetadataWaiter);
-    r2Audio.addEventListener('canplay',        r2MetadataWaiter);
+
+  // FAST PATH: audio already loaded → seek+play directly, no prime
+  if (r2FirstLoadDone && r2Audio.readyState >= 2) {
+    executePlay();
+    return;
   }
+
+  // SLOW PATH: first time (or buffer lost) → prime iOS + wait for canplay
+  setState('loading');
+  r2Audio.muted  = true;
+  r2Audio.volume = 0;
+  try {
+    const pp = r2Audio.play();
+    if (pp && pp.catch) pp.catch(function(){});
+  } catch(e){}
+
+  r2PendingCanplay = function(){
+    if (myGen !== r2Generation) return;
+    executePlay();
+  };
+  r2Audio.addEventListener('canplay',        r2PendingCanplay);
+  r2Audio.addEventListener('canplaythrough', r2PendingCanplay);
+  r2Audio.addEventListener('loadedmetadata', r2PendingCanplay);
 }
 
-// ── Actual seek + play (runs only after manifest + metadata ready) ─
-function r2DoPlay(sec, setState){
-  r2Audio.currentTime = sec.start + 0.02;
-  r2StopAt = sec.start + sec.dur + 0.15;
-  r2FinalizeStopFn = function(){ setState('idle'); };
-  r2Audio.muted = false;
-  const p = r2Audio.play();
-  if (p && p.catch) {
-    p.catch(function(err){
-      console.warn('R2 play failed:', err);
-      setState('idle');
-      r2StopAt = Infinity;
-      r2FinalizeStopFn = null;
-      r2Current = null;
-    });
-  }
-  setState('playing');
-}
-
-// ── Public click handlers — SYNCHRONOUS (no async/await) ──────────
+// ─── Public handlers — SYNCHRONOUS ─────────────────────────
 function speakMain(){
-  if (r2Current === 'main') { r2StopAll(); return; }
-  r2StopAll();
-  r2Current = 'main';
-  setMainState('loading');
+  if (r2Current === 'main') { r2FullStop(); return; }
 
-  // CRITICAL for iOS: call r2Audio.play() synchronously inside the
-  // click handler to unlock autoplay policy. Audio is muted, so the
-  // brief playback from the old position is inaudible.
-  try { const pp = r2Audio.play(); if (pp && pp.catch) pp.catch(function(){}); } catch(e){}
-
-  r2WhenReady(function(){
-    if (r2Current !== 'main') return;  // user cancelled during loading
+  const go = function(){
     const sec = r2Manifest.sections.find(function(s){
       return s.lang === 'en' && s.body.trim() === 'Excuse me. Can you help me?';
     });
-    if (!sec) { alert('핵심 표현 구간을 찾을 수 없습니다.'); r2StopAll(); return; }
-    r2DoPlay(sec, setMainState);
-  });
+    if (!sec) { alert('핵심 표현 구간을 찾을 수 없습니다.'); return; }
+    r2PlaySection('main', sec, setMainState);
+  };
+
+  if (r2Manifest) {
+    go();
+  } else {
+    // Manifest not loaded yet: prime iOS now, run go() when manifest arrives
+    r2FullStop();
+    r2Current = 'main';
+    setMainState('loading');
+    r2Audio.muted = true;
+    r2Audio.volume = 0;
+    try { const pp = r2Audio.play(); if (pp && pp.catch) pp.catch(function(){}); } catch(e){}
+    r2PendingManifest = go;
+  }
 }
 
 const STORY_MATCHERS = {
@@ -1403,20 +1441,25 @@ const STORY_MATCHERS = {
 };
 
 function playScript(level){
-  if (r2Current === level) { r2StopAll(); return; }
-  r2StopAll();
-  r2Current = level;
-  setMp3State(level, 'loading');
+  if (r2Current === level) { r2FullStop(); return; }
 
-  // iOS unlock (sync, muted)
-  try { const pp = r2Audio.play(); if (pp && pp.catch) pp.catch(function(){}); } catch(e){}
-
-  r2WhenReady(function(){
-    if (r2Current !== level) return;  // user cancelled during loading
+  const go = function(){
     const sec = r2Manifest.sections.find(STORY_MATCHERS[level]);
-    if (!sec) { alert(level.toUpperCase() + ' 스토리 구간을 찾을 수 없습니다.'); r2StopAll(); return; }
-    r2DoPlay(sec, function(state){ setMp3State(level, state); });
-  });
+    if (!sec) { alert(level.toUpperCase() + ' 스토리 구간을 찾을 수 없습니다.'); return; }
+    r2PlaySection(level, sec, function(state){ setMp3State(level, state); });
+  };
+
+  if (r2Manifest) {
+    go();
+  } else {
+    r2FullStop();
+    r2Current = level;
+    setMp3State(level, 'loading');
+    r2Audio.muted = true;
+    r2Audio.volume = 0;
+    try { const pp = r2Audio.play(); if (pp && pp.catch) pp.catch(function(){}); } catch(e){}
+    r2PendingManifest = go;
+  }
 }
 
 /* QUIZ */
