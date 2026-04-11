@@ -1170,6 +1170,7 @@ window.addEventListener('load',function(){
 </div>
 
 <script>
+speechSynthesis.getVoices();if(speechSynthesis.onvoiceschanged!==undefined){speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices();};}
 /* ── TABS ──────────────────────────────────── */
 function showTab(prefix, level, btn) {
   const parent = btn.closest('.sec-body') || btn.closest('.hundred-body') || btn.parentElement.parentElement;
@@ -1180,191 +1181,103 @@ function showTab(prefix, level, btn) {
   btn.classList.add('active');
 }
 
-/* ── R2 AUDIO — v3 (simple new-Audio-per-click, ended event) ──────
-   Each button plays its OWN pre-rendered MP3 file. No shared audio
-   element, no timeupdate range checks, no generation counters — just
-   "create new Audio, play it, ended fires, done."
-
-   R2 layout: camp-c/audio/ep01/{key,a1,a2,b1}.mp3
-
-   Why this works reliably on iOS:
-   · new Audio(url) + play() inside click handler unlocks iOS
-   · ended event fires naturally at end of file (no seek math)
-   · stopAll() fully detaches the previous audio element before
-     creating a new one — no stale listeners possible
-   · No manifest dependency (URLs are hardcoded per button)        */
-
-const R2_EP_BASE = 'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-c/audio/ep01';
-const R2_URLS = {
-  main: R2_EP_BASE + '/key.mp3',
-  a1:   R2_EP_BASE + '/a1.mp3',
-  a2:   R2_EP_BASE + '/a2.mp3',
-  b1:   R2_EP_BASE + '/b1.mp3'
-};
-
-// Spinner CSS
-(function(){
-  const st = document.createElement('style');
-  st.textContent =
-    '@keyframes r2spin{to{transform:rotate(360deg)}}' +
-    '.play-btn.loading,.mp3-play.loading{pointer-events:none;opacity:.85}' +
-    '.play-btn.loading>span,.mp3-play.loading>span{display:inline-block;animation:r2spin .8s linear infinite}';
-  document.head.appendChild(st);
-})();
-
-// ─── State ─────────────────────────────────────
-let r2Audio   = null;    // the CURRENTLY playing Audio element (or null)
-let r2Current = null;    // 'main' | 'a1' | 'a2' | 'b1' | null
+/* ── SPEECH ────────────────────────────────── */
 let mainSpeaking = false;
-let activeMp3    = null;
-
 let waveInt = null;
 const wvBars = document.querySelectorAll('#wf .wvb');
-const baseH  = [4,12,6,20,8,24,10,16,5,14,7,11];
+const baseH = [4,12,6,20,8,24,10,16,5,14,7,11];
 
-// ─── Visual helpers ───────────────────────────
-function animWave(on){
+function animWave(on) {
   clearInterval(waveInt);
   if (on) {
-    waveInt = setInterval(function(){
-      wvBars.forEach(function(b){ b.style.height = (Math.random()*22+3)+'px'; b.classList.add('on'); });
+    waveInt = setInterval(() => {
+      wvBars.forEach(b => { b.style.height = (Math.random()*22+3)+'px'; b.classList.add('on'); });
     }, 80);
   } else {
-    wvBars.forEach(function(b,i){ b.style.height = baseH[i]+'px'; b.classList.remove('on'); });
+    wvBars.forEach((b,i) => { b.style.height = baseH[i]+'px'; b.classList.remove('on'); });
   }
 }
-function hlWords(on){
+function hlWords(on) {
   const ws = document.querySelectorAll('#kp .w');
-  if (!on) { ws.forEach(function(w){ w.style.color=''; }); return; }
+  if (!on) { ws.forEach(w => w.style.color=''); return; }
   let i=0;
-  const tmr = setInterval(function(){
-    ws.forEach(function(w){ w.style.color=''; });
+  const t = setInterval(() => {
+    ws.forEach(w => w.style.color='');
     if (i<ws.length) { ws[i].style.color='#fbbf24'; i++; }
-    else clearInterval(tmr);
+    else clearInterval(t);
   }, 340);
 }
 
-// ─── Button states ─────────────────────────────
-function setMainState(state){
-  const btn  = document.getElementById('mainBtn');
-  const icon = document.getElementById('mainIcon');
-  if (!btn || !icon) return;
-  btn.classList.remove('playing', 'loading');
-  if (state === 'loading') {
-    btn.classList.add('loading');
-    icon.textContent = '◐';
-    mainSpeaking = false;
-    animWave(false); hlWords(false);
-  } else if (state === 'playing') {
-    btn.classList.add('playing');
-    icon.textContent = '■';
-    mainSpeaking = true;
-    animWave(true); hlWords(true);
-  } else {
-    icon.textContent = '▶';
-    mainSpeaking = false;
-    animWave(false); hlWords(false);
+function getVoice() {
+  const vs = window.speechSynthesis.getVoices();
+  const femaleNames = [
+    'Samantha','Karen','Victoria','Moira','Fiona','Tessa','Alice','Allison',
+    'Google US English Female','Google UK English Female',
+    'Microsoft Zira','Zira','Microsoft Eva','Eva','Microsoft Jenny',
+    'Jenny Online (Natural)','Aria Online (Natural)','Aria'
+  ];
+  const maleAvoid = ['Alex','Fred','Daniel','Tom','Lee','Rishi','Google US English Male',
+                     'Microsoft David','Microsoft Mark','Microsoft Guy'];
+  for (const name of femaleNames) {
+    const v = vs.find(v => v.name === name || v.name.startsWith(name));
+    if (v) return v;
   }
+  return vs.find(v => v.lang==='en-US' && !maleAvoid.some(m => v.name.includes(m)))
+      || vs.find(v => v.lang==='en-US');
 }
-function setMp3State(level, state){
-  const btn  = document.getElementById('mp3btn-' + level);
-  const icon = document.getElementById('mp3icon-' + level);
-  if (!btn || !icon) return;
-  btn.classList.remove('playing', 'loading');
-  if (state === 'loading') {
-    btn.classList.add('loading');
-    icon.textContent = '◐';
-    if (activeMp3 === level) activeMp3 = null;
-  } else if (state === 'playing') {
-    btn.classList.add('playing');
-    icon.textContent = '■';
-    activeMp3 = level;
-  } else {
-    icon.textContent = '▶';
-    if (activeMp3 === level) activeMp3 = null;
+function speak(text, rate=0.86) {
+  if (!('speechSynthesis' in window)) return null;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='en-US'; u.rate=rate; u.pitch=1.15; u.volume=1.0;
+  const v = getVoice(); if (v) u.voice=v;
+  return u;
+}
+
+function speakMain() {
+  if (!('speechSynthesis' in window)) { alert('Chrome을 사용하시면 발음을 들을 수 있습니다!'); return; }
+  if (mainSpeaking) {
+    window.speechSynthesis.cancel(); mainSpeaking=false;
+    document.getElementById('mainBtn').classList.remove('playing');
+    document.getElementById('mainIcon').textContent='▶';
+    animWave(false); hlWords(false); return;
   }
-}
-
-function setStateFor(key, state){
-  if (key === 'main') setMainState(state);
-  else setMp3State(key, state);
-}
-
-// ─── Full stop: tear down the current audio completely ───
-function r2StopAll(){
-  if (r2Audio) {
-    try { r2Audio.pause(); } catch(e){}
-    try { r2Audio.currentTime = 0; } catch(e){}
-    // Detach all listeners by replacing with a clean fn set
-    r2Audio.oncanplay = null;
-    r2Audio.onplaying = null;
-    r2Audio.onended   = null;
-    r2Audio.onerror   = null;
-    try { r2Audio.removeAttribute('src'); r2Audio.load(); } catch(e){}
-    r2Audio = null;
+  function go() {
+    const u = speak('Excuse me. Can you help me?');
+    if(!u) return;
+    u.onstart=()=>{ mainSpeaking=true; document.getElementById('mainBtn').classList.add('playing'); document.getElementById('mainIcon').textContent='■'; animWave(true); hlWords(true); };
+    u.onend=u.onerror=()=>{ mainSpeaking=false; document.getElementById('mainBtn').classList.remove('playing'); document.getElementById('mainIcon').textContent='▶'; animWave(false); hlWords(false); };
+    window.speechSynthesis.speak(u);
   }
-  setMainState('idle');
-  ['a1','a2','b1'].forEach(function(l){ setMp3State(l, 'idle'); });
-  r2Current = null;
+  if(window.speechSynthesis.getVoices().length===0){ window.speechSynthesis.onvoiceschanged=go; window.speechSynthesis.getVoices(); } else go();
 }
 
-// ─── Core play routine: one clip = one new Audio element ──
-function r2PlayClip(key){
-  // Always tear down the previous audio before starting a new one
-  r2StopAll();
+/* MP3 SCRIPTS */
+const scripts = {
+  a1: `Young-ja is at the airport. She comes from Korea. She has a paper. It says: Terminal 2, Exit 5. She sees a worker. Excuse me. Can you help me? He says: Go straight. Turn left. She walks. She sees her daughter. She smiles.`,
+  a2: `Young-ja arrives in Los Angeles. She is nervous and doesn't know where to go. She has a note: Terminal 2, Exit 5. She sees a worker. Excuse me, can you help me? She shows the note. The worker says: Go straight, then turn left. Near the coffee shop. She walks and finds her daughter. She feels safe.`,
+  b1: `Young-ja steps out of the terminal after a long and tiring flight from Korea. She feels nervous but also excited — she is finally in Los Angeles. The airport is crowded and noisy. All the signs are in English. She doesn't know which way to go, so she checks her note. It says: Terminal 2, Exit 5. Her daughter will meet her there. She takes a deep breath and looks around. She spots a staff member in a yellow vest and walks over. "Excuse me, can you help me?" she asks carefully. She shows her note and adds, "My daughter is waiting at Terminal 2." The staff member smiles and says clearly, "Go straight, then turn left. It's near the coffee shop." Young-ja doesn't understand every word, but she catches "straight" and "left." That's enough. She thanks him and follows the directions. Soon she sees a familiar face — her daughter, waving and smiling. Young-ja feels a wave of relief. She made it.`
+};
+let activeMp3 = null;
 
-  r2Current = key;
-  setStateFor(key, 'loading');
-
-  const a = new Audio();
-  a.preload = 'auto';
-  a.src = R2_URLS[key];
-  r2Audio = a;
-
-  // Track local reference so stale callbacks can detect they're stale
-  const myAudio = a;
-  const isCurrent = function(){ return r2Audio === myAudio; };
-
-  a.oncanplay = function(){
-    if (!isCurrent()) return;
-    // canplay may fire multiple times during buffering; only act once
-    a.oncanplay = null;
-  };
-  a.onplaying = function(){
-    if (!isCurrent()) return;
-    // Real playback has begun — switch UI from loading → playing
-    setStateFor(key, 'playing');
-  };
-  a.onended = function(){
-    if (!isCurrent()) return;
-    r2StopAll();
-  };
-  a.onerror = function(){
-    if (!isCurrent()) return;
-    console.warn('R2 audio error for', key);
-    r2StopAll();
-  };
-
-  // Play synchronously inside the user gesture (iOS unlock)
-  const p = a.play();
-  if (p && p.catch) {
-    p.catch(function(err){
-      if (!isCurrent()) return;
-      console.warn('R2 play rejected for', key, err);
-      r2StopAll();
-    });
+function playScript(level) {
+  if (!('speechSynthesis' in window)) { alert('Chrome을 사용하시면 발음을 들을 수 있습니다!'); return; }
+  const btn = document.getElementById('mp3btn-'+level);
+  const icon = document.getElementById('mp3icon-'+level);
+  if (activeMp3===level) {
+    window.speechSynthesis.cancel(); activeMp3=null;
+    btn.classList.remove('playing'); icon.textContent='▶'; return;
   }
-}
-
-// ─── Public click handlers ─────────────────────
-function speakMain(){
-  if (r2Current === 'main') { r2StopAll(); return; }
-  r2PlayClip('main');
-}
-function playScript(level){
-  if (r2Current === level) { r2StopAll(); return; }
-  if (level !== 'a1' && level !== 'a2' && level !== 'b1') return;
-  r2PlayClip(level);
+  ['a1','a2','b1'].forEach(l => { document.getElementById('mp3btn-'+l).classList.remove('playing'); document.getElementById('mp3icon-'+l).textContent='▶'; });
+  window.speechSynthesis.cancel();
+  function go() {
+    const u = speak(scripts[level], 0.82);
+    if(!u) return;
+    u.onstart=()=>{ activeMp3=level; btn.classList.add('playing'); icon.textContent='■'; };
+    u.onend=u.onerror=()=>{ activeMp3=null; btn.classList.remove('playing'); icon.textContent='▶'; };
+    window.speechSynthesis.speak(u);
+  }
+  if(window.speechSynthesis.getVoices().length===0){ window.speechSynthesis.onvoiceschanged=go; window.speechSynthesis.getVoices(); } else go();
 }
 
 /* QUIZ */
@@ -1401,6 +1314,8 @@ setTimeout(()=>{
   document.getElementById('tbFill').style.width='1%';
   document.getElementById('progFill').style.width='1%';
 },700);
+
+window.addEventListener('load',()=>{ if('speechSynthesis' in window) window.speechSynthesis.getVoices(); });
 
 /* ── DUOLINGO SYSTEM ─────────────────────────────────── */
 let xp=0,wfDone=false,woDone=false,quizXPDone=false,woAnswer=[],episodeCompleted=false;
