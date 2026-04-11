@@ -1254,7 +1254,7 @@ function speakMain() {
     animWave(false); hlWords(false); return;
   }
   function go() {
-    const u = speak('I'd like to make an appointment.');
+    const u = speak('I\'d like to make an appointment.');
     if(!u) return;
     u.onstart=()=>{ mainSpeaking=true; document.getElementById('mainBtn').classList.add('playing'); document.getElementById('mainIcon').textContent='■'; animWave(true); hlWords(true); };
     u.onend=u.onerror=()=>{ mainSpeaking=false; document.getElementById('mainBtn').classList.remove('playing'); document.getElementById('mainIcon').textContent='▶'; animWave(false); hlWords(false); };
@@ -1332,8 +1332,8 @@ window.addEventListener('load',()=>{ if('speechSynthesis' in window) window.spee
 let xp=0,wfDone=false,woDone=false,quizXPDone=false,woAnswer=[],episodeCompleted=false;
 let quizCorrectCount=0;
 const TOTAL_QUIZ_QUESTIONS=3;
-const WO_CORRECT=['I'd','like','to','make','an','appointment.'];
-const WO_SHUFFLE=['an','make','I'd','appointment.','like','to'];
+const WO_CORRECT=['I\'d','like','to','make','an','appointment.'];
+const WO_SHUFFLE=['an','make','I\'d','appointment.','like','to'];
 
 (function initXP(){try{xp=parseInt(localStorage.getItem('cec_campc_xp')||'0');}catch(e){}updateXP();})();
 (function initStreak(){try{const last=localStorage.getItem('cec_campc_lastdate');let s=parseInt(localStorage.getItem('cec_campc_streak')||'1');const today=new Date().toDateString();if(last!==today){const y=new Date(Date.now()-86400000).toDateString();if(last===y)s++;else if(last)s=1;localStorage.setItem('cec_campc_lastdate',today);localStorage.setItem('cec_campc_streak',s);}}catch(e){}})();
@@ -1352,7 +1352,7 @@ function checkWF1(btn,word,hint){
   if(word==='appointment'){
     blank.style.borderColor='#10b981';blank.style.color='#10b981';
     fb.style.cssText='display:block;background:#f0fdf4;border:2px solid #86efac;color:#166534;border-radius:12px;padding:13px 17px;font-size:0.9rem;font-weight:600;line-height:1.6;';
-    fb.textContent='✅ 정답이에요! "appointment" = 예약. "I'd like to make an appointment." = 예약 하고 싶어요.';
+    fb.textContent='✅ 정답이에요! "appointment" = 예약. "I\'d like to make an appointment." = 예약 하고 싶어요.';
     yj.style.display='flex';yjTxt.textContent='맞아요! 이 한마디면 병원, 미용실, 은행 — 어디든 예약할 수 있어요! 👏';
     wfDone=true;addXP(5);
   } else {
@@ -1412,13 +1412,13 @@ function checkWO1(){
   if(attempt===correct){
     zone.style.borderColor='#10b981';zone.style.background='#f0fdf4';
     fb.style.cssText='display:block;background:#f0fdf4;border:2px solid #86efac;color:#166534;border-radius:12px;padding:13px 17px;font-size:0.9rem;font-weight:600;';
-    fb.textContent='✅ 완벽해요! "I'd like to make an appointment." 완성!';
+    fb.textContent='✅ 완벽해요! "I\'d like to make an appointment." 완성!';
     yj.style.display='flex';yjTxt.textContent='완벽해요! 이제 어떤 예약이든 자신 있게 할 수 있어요! 🌟';
     woDone=true;addXP(5);
   } else {
     zone.style.borderColor='#ef4444';zone.style.background='#fef2f2';
     fb.style.cssText='display:block;background:#fef2f2;border:2px solid #fca5a5;color:#991b1b;border-radius:12px;padding:13px 17px;font-size:0.9rem;font-weight:600;';
-    fb.innerHTML='❌ 순서가 달라요! 힌트: "I'd"로 시작하는 문장이에요. <button onclick="resetWO1()" style="background:#1e3a8a;color:#fff;border:none;border-radius:20px;padding:4px 14px;font-weight:800;font-size:0.8rem;cursor:pointer;margin-top:6px;">다시 해볼게요 ↩</button>';
+    fb.innerHTML='❌ 순서가 달라요! 힌트: "I\'d"로 시작하는 문장이에요. <button onclick="resetWO1()" style="background:#1e3a8a;color:#fff;border:none;border-radius:20px;padding:4px 14px;font-weight:800;font-size:0.8rem;cursor:pointer;margin-top:6px;">다시 해볼게요 ↩</button>';
     setTimeout(()=>{zone.style.borderColor='#cbd5e1';zone.style.background='#f8faff';},400);
   }
 }
@@ -1481,10 +1481,10 @@ function startTutorSession() {
 
 /* ── GAMES JS ─────────────────────── */
 function g1check(btn,val){var bl=document.getElementById('g1bl'),fb=document.getElementById('g1fb');if(val==='appointment'){bl.textContent='appointment';btn.style.background='#dcfce7';btn.style.borderColor='#16a34a';btn.style.color='#15803d';fb.style.color='#16a34a';fb.textContent='✅ 정답! +10 XP';addXP(10);btn.parentElement.querySelectorAll('button').forEach(function(b){b.disabled=true;});}else{btn.style.background='#fee2e2';btn.style.borderColor='#dc2626';fb.style.color='#dc2626';fb.textContent='❌ 다시 해보세요!';setTimeout(function(){btn.style.background='#f1f5f9';btn.style.borderColor='#e2e8f0';fb.textContent='';},1000);}}
-var g2arr=[],g2words=['to','I'd','like','an','make','appointment.'];
+var g2arr=[],g2words=['to','I\'d','like','an','make','appointment.'];
 function g2init(){var pool=document.getElementById('g2pool');var sh=g2words.slice().sort(function(){return Math.random()-0.5;});pool.innerHTML='';sh.forEach(function(w){var b=document.createElement('button');b.textContent=w;b.style.cssText='padding:8px 18px;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:25px;font-size:0.9rem;font-weight:700;cursor:pointer;border:none;font-family:inherit;';b.onclick=function(){g2add(b,w);};pool.appendChild(b);});}
 function g2add(btn,w){if(btn.classList.contains('used'))return;btn.classList.add('used');btn.style.opacity='0.4';g2arr.push(w);var z=document.getElementById('g2zone');var ph=document.getElementById('g2ph');if(ph)ph.style.display='none';var c=document.createElement('span');c.textContent=w;c.style.cssText='padding:6px 14px;background:#2563eb;color:#fff;border-radius:20px;font-size:0.85rem;font-weight:700;cursor:pointer;';c.onclick=function(){g2arr.splice(g2arr.indexOf(w),1);btn.classList.remove('used');btn.style.opacity='1';c.remove();if(!g2arr.length&&document.getElementById('g2ph'))document.getElementById('g2ph').style.display='';};z.appendChild(c);}
-function g2check(){var fb=document.getElementById('g2fb');if(g2arr.join(' ')==='I'd like to make an appointment.'){fb.style.color='#16a34a';fb.textContent='✅ 정답! +10 XP';addXP(10);}else{fb.style.color='#dc2626';fb.textContent='❌ I'd → like → to → make → an → appointment.';setTimeout(function(){fb.textContent='';},2000);}}
+function g2check(){var fb=document.getElementById('g2fb');if(g2arr.join(' ')==='I\'d like to make an appointment.'){fb.style.color='#16a34a';fb.textContent='✅ 정답! +10 XP';addXP(10);}else{fb.style.color='#dc2626';fb.textContent='❌ I\'d → like → to → make → an → appointment.';setTimeout(function(){fb.textContent='';},2000);}}
 function g2reset(){g2arr=[];document.getElementById('g2zone').innerHTML='<span id="g2ph" style="color:#cbd5e1;font-size:0.85rem;font-weight:600;">여기에 단어를 배열하세요...</span>';g2init();}
 var g3sel=null,g3done={};
 function g3click(btn,key){if(btn.classList.contains('g3matched'))return;btn.classList.remove('g3wrong');if(!g3sel){g3sel={btn:btn,key:key};btn.classList.add('g3sel');return;}if(g3sel.btn===btn){btn.classList.remove('g3sel');g3sel=null;return;}if(g3sel.key===key&&g3sel.btn!==btn){g3sel.btn.classList.remove('g3sel');g3sel.btn.classList.add('g3matched');btn.classList.add('g3matched');g3done[key]=true;g3sel=null;addXP(5);var cnt=Object.keys(g3done).length;var fb=document.getElementById('g3fb');if(cnt>=5){fb.innerHTML='🎉 모두 맞췄어요! +30 XP';fb.style.color='#16a34a';addXP(30);}else{fb.textContent=cnt+' / 5';}}else{var prev=g3sel.btn;prev.classList.remove('g3sel');prev.classList.add('g3wrong');btn.classList.add('g3wrong');g3sel=null;setTimeout(function(){prev.classList.remove('g3wrong');btn.classList.remove('g3wrong');},500);}}
