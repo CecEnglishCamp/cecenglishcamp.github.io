@@ -639,7 +639,62 @@
     if(e.key === 'Enter') gbSend();
   };
 
+  // ===== AI API (Gemma4 via ngrok) =====
+  var GB_API_URL='https://journey-bronzy-fruitily.ngrok-free.dev/api/chat/completions';
+  var GB_MODEL='gemma4:e2b';
+
+  function gbBuildSystemPrompt(){
+    var topic = data ? (gid+' '+data.title) : gid;
+    return '당신은 CEC English Camp 문법 선생님입니다.\n'
+      + '현재 학생이 보고 있는 문법: '+topic+'\n'
+      + '한국어로 친절하게 설명해주세요.\n'
+      + '문법 규칙, 예문, 활용법을 쉽게 알려주세요.';
+  }
+
+  window.gbFetch=function(userMsg){
+    var bubble=gbAddAI('생각 중... 🤔');
+    var c=document.getElementById('gbChat');
+    var body={
+      model:GB_MODEL,
+      messages:[
+        {role:'system',content:gbBuildSystemPrompt()},
+        {role:'user',content:userMsg}
+      ],
+      stream:false
+    };
+    fetch(GB_API_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    }).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+    .then(function(d){
+      var reply=(d&&d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||'(응답 없음)';
+      if(bubble)bubble.innerHTML=String(reply).replace(/\n/g,'<br>');
+      if(c)c.scrollTop=c.scrollHeight;
+    }).catch(function(e){
+      if(bubble)bubble.textContent='⚠️ 연결 실패: '+e.message;
+    });
+  };
+
   window.gbAnswer = function(msg){
+    // Legacy direct G## jump still supported for quick navigation
+    var directG = msg.match(/^\s*[Gg](\d{1,2})\s*$/);
+    if(directG){
+      var target='G'+('0'+directG[1]).slice(-2);
+      if(map[target]){
+        var d=map[target];
+        gbAddAIHtml(target+' — '+d.title+' 이에요! 📖<br><br>'+
+          '<small style="color:#4a6741">'+d.example+'</small><br><br>'+
+          '<a href="../'+target+'/'+target+'_new.html" style="color:#fff;background:#4a6741;padding:4px 10px;border-radius:8px;text-decoration:none;font-size:12px;">→ '+target+' 페이지로 이동</a>');
+        return;
+      }
+    }
+    // Otherwise → AI response
+    gbFetch(msg);
+  };
+
+  // Keep original keyword fallback code (unreachable now, preserved for reference)
+  var _legacyAnswer = function(msg){
     var lower = msg.toLowerCase().replace(/[?!\uff1f\uff01\uc740\ub294\uc774\uac00\uc744\ub97c\uc758\ub3c4]/g,'').trim();
 
     var searchTerms = {
