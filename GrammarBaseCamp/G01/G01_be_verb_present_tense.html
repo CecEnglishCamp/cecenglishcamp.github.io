@@ -684,119 +684,23 @@
   };
 
   window.gbAnswer = function(msg){
-    // Legacy direct G## jump still supported for quick navigation
+    // Pure G## (different page) navigation shortcut only
     var directG = msg.match(/^\s*[Gg](\d{1,2})\s*$/);
     if(directG){
       var target='G'+('0'+directG[1]).slice(-2);
-      if(map[target]){
+      if(map[target] && target !== gid){
         var d=map[target];
         gbAddAIHtml(target+' — '+d.title+' 이에요! 📖<br><br>'+
           '<small style="color:#4a6741">'+d.example+'</small><br><br>'+
           '<a href="../'+target+'/'+target+'_new.html" style="color:#fff;background:#4a6741;padding:4px 10px;border-radius:8px;text-decoration:none;font-size:12px;">→ '+target+' 페이지로 이동</a>');
         return;
       }
+      // Same-page G## → fall through to AI instead of showing broken link
     }
-    // Otherwise → AI response
+    // All other input → AI (Gemma4)
     gbFetch(msg);
   };
 
-  // Keep original keyword fallback code (unreachable now, preserved for reference)
-  var _legacyAnswer = function(msg){
-    var lower = msg.toLowerCase().replace(/[?!\uff1f\uff01\uc740\ub294\uc774\uac00\uc744\ub97c\uc758\ub3c4]/g,'').trim();
-
-    var searchTerms = {
-      'be\ub3d9\uc0ac':'G01','be verb':'G01',
-      '\uad00\uc0ac':'G02','articles':'G02',
-      '\ub2e8\uc21c\ud604\uc7ac':'G03','simple present':'G03',
-      '\ud604\uc7ac\uc9c4\ud589':'G04','present continuous':'G04',
-      '\ub2e8\uc21c\uacfc\uac70':'G05','simple past':'G05',
-      '\ubbf8\ub798\uc2dc\uc81c':'G06','future':'G06',
-      '\uc870\ub3d9\uc0ac':'G07','modal':'G07',
-      '\uac00\uc0b0':'G08','countable':'G08',
-      '\uc758\ubb38\ubb38':'G09','wh-question':'G09',
-      '\ube44\uad50\uae09':'G10','comparative':'G10','\ucd5c\uc0c1\uae09':'G10',
-      '\uc18c\uc720\uaca9':'G11','possessive':'G11',
-      'there is':'G12','there are':'G12',
-      '\uc7a5\uc18c \uc804\uce58\uc0ac':'G13','preposition place':'G13',
-      '\uc2dc\uac04 \uc804\uce58\uc0ac':'G14','preposition time':'G14',
-      '\uc9c0\uc2dc\ub300\uba85\uc0ac':'G15','demonstrative':'G15',
-      '\ubcf5\uc218\uba85\uc0ac':'G16','plural':'G16',
-      '\ubaa9\uc801\uaca9':'G17','object pronoun':'G17',
-      'yes no':'G18','short answer':'G18',
-      '\ube48\ub3c4\ubd80\uc0ac':'G19','frequency':'G19',
-      '\uba85\ub839\ubb38':'G20','imperative':'G20',
-      '\uacfc\uac70\uc9c4\ud589':'G21','past continuous':'G21',
-      '\ud604\uc7ac\uc644\ub8cc':'G22','present perfect':'G22',
-      'must':'G23','have to':'G23','need to':'G23','\uc758\ubb34':'G23',
-      'some any':'G24',
-      '\ubc29\ubc95\ubd80\uc0ac':'G25','adverb':'G25',
-      '\uc811\uc18d\uc0ac':'G26','conjunction':'G26',
-      'would like':'G27',
-      'too enough':'G28',
-      '\uc870\uac74\ubb38':'G29','conditional':'G29','1\ud615\uc2dd':'G29',
-      '\ub3d9\uba85\uc0ac':'G30','gerund':'G30','\ubd80\uc815\uc0ac':'G30',
-      '\uad00\uacc4\ub300\uba85\uc0ac':'G31','relative pronoun':'G31',
-      '\uacfc\uac70\ub2e8\uc21c':'G32','past simple':'G32',
-      'used to':'G33',
-      '\ubd80\uac00\uc758\ubb38\ubb38':'G34','question tag':'G34',
-      '\uc7ac\uadc0\ub300\uba85\uc0ac':'G35','reflexive':'G35',
-      'each every':'G36',
-      'both either':'G37',
-      'so such':'G38',
-      'still yet':'G39','already':'G39',
-      '\ud654\ubc95':'G40','direct indirect':'G40',
-      '\uacfc\uac70\uc644\ub8cc':'G43','past perfect':'G43',
-      '\ubbf8\ub798\uc644\ub8cc':'G44','future perfect':'G44',
-      '\uac00\ub2a5\uc131':'G45','possibility':'G45',
-      '2\ud615\uc2dd':'G46','second conditional':'G46',
-      '3\ud615\uc2dd':'G47','third conditional':'G47',
-      '\uc218\ub3d9\ud0dc':'G48','passive':'G48',
-      '\uc0ac\uc5ed\ub3d9\uc0ac':'G49','causative':'G49',
-      '\uad6c\ub3d9\uc0ac':'G51','phrasal':'G51',
-      '\uad00\uacc4\uc808':'G52','relative clause':'G52',
-      '\uac04\uc811\ud654\ubc95':'G53','reported speech':'G53',
-      'wish':'G54','if only':'G54',
-      '\uc218\ub7c9':'G56','quantifier':'G56',
-      '\uc5f0\uacb0\uc5b4':'G57','linking':'G57',
-      '\uac15\uc870 do':'G58','emphasis':'G58',
-      '\ubd84\uc5f4\ubb38':'G59','cleft':'G59',
-      '\ud63c\ud569\uac00\uc815\ubc95':'G60','mixed conditional':'G60',
-      '\ubd84\uc0ac\uad6c\ubb38':'G62','participle':'G62',
-      '\ub3c4\uce58':'G63','inversion':'G63',
-      '\uc774\uc911\ube44\uad50\uae09':'G65','double comparative':'G65',
-      '\uc218\ub3d9\ud0dc \uc2ec\ud654':'G66','advanced passive':'G66',
-      '\ucd94\uce21':'G67','deduction':'G67',
-      '\uace0\uae09 \uc870\uac74\ubb38':'G68','advanced conditional':'G68',
-      '\uba85\uc0ac\uc808':'G69','nominal':'G69',
-      '\uba85\uc0ac\ud654':'G79','nominalization':'G79'
-    };
-
-    var found = null;
-    for(var term in searchTerms){
-      if(lower.indexOf(term) !== -1){ found = searchTerms[term]; break; }
-    }
-
-    var directG = msg.match(/[Gg](\d+)/);
-    if(directG) found = 'G' + ('0' + directG[1]).slice(-2);
-
-    if(found && map[found]){
-      var d = map[found];
-      var reply = found + ' \u2014 ' + d.title + ' \uc774\uc5d0\uc694! \ud83d\udcd6<br><br>' +
-        '<small style="color:#4a6741">' + d.example + '</small><br><br>' +
-        '<a href="../' + found + '/' + found + '_new.html" ' +
-        'style="color:#fff;background:#4a6741;padding:4px 10px;border-radius:8px;text-decoration:none;font-size:12px;">' +
-        '\u2192 ' + found + ' \ud398\uc774\uc9c0\ub85c \uc774\ub3d9</a>';
-      gbAddAIHtml(reply);
-      return;
-    }
-
-    if(data && (lower.indexOf('\uc124\uba85') !== -1 || lower.indexOf('\uc608\ubb38') !== -1 || lower.indexOf('\ubb50\uc57c') !== -1)){
-      gbAddAI(gid + ' ' + data.title + ' \uc608\ubb38:\n' + data.example);
-      return;
-    }
-
-    gbAddAI('G01~G80 \uc911 \ucc3e\uc73c\uc2dc\ub294 \ubb38\ubc95\uc744 \ub9d0\uc500\ud574\uc8fc\uc138\uc694!\n\uc608: "\uc218\ub3d9\ud0dc" "\ud604\uc7ac\uc644\ub8cc" "\uc870\uac74\ubb38"');
-  };
 
   window.gbAsk = function(){
     var prompt = data ? data.prompt : '\ubb38\ubc95 \ud68c\ud654 \uc5f0\uc2b5\uc744 \ud558\uace0 \uc2f6\uc5b4\uc694!';
