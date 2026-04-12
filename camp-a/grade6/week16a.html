@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>G6 Q2 W16 Day1 - Peter Pan | CEC Camp A</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box;margin:0;padding:0;}
+:root{--sage:#4a7c59;--sage-light:#e8f5e9;--gold:#c9a028;--gold-light:#fdf6e3;--coral:#e8714a;--coral-light:#fdf0eb;--sky:#2196f3;--sky-light:#e3f2fd;--brown:#795548;--text:#2d3748;--text2:#4a5568;--text3:#718096;--bg:#f7f4ee;--card:#ffffff;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);font-size:16px;}
+.topbar{position:sticky;top:0;z-index:100;background:var(--sage);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+.top-left{display:flex;align-items:center;gap:10px;}
+.top-title{font-weight:900;font-size:0.95rem;color:#fff;}
+.top-sub{font-size:0.72rem;color:rgba(255,255,255,0.75);}
+.xp-pill{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:5px 12px;border-radius:20px;font-size:0.8rem;font-weight:700;}
+.ai-tutor-btn{background:#00f2ff;color:#000;border:none;padding:7px 14px;border-radius:20px;font-size:0.8rem;font-weight:900;cursor:pointer;}
+.container{max-width:680px;margin:0 auto;padding:16px;}
+.hero-wrap{border-radius:18px;overflow:hidden;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,0,0,0.12);}
+.hero-img-wrap{position:relative;}
+.scene-img{width:100%;display:block;object-fit:cover;}
+.hero-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.65));padding:20px 20px 16px;color:#fff;}
+.hero-overlay h2{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;margin-bottom:4px;}
+.hero-overlay p{font-size:0.82rem;opacity:0.85;}
+.day-badge{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.day-pill{padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:700;border:2px solid transparent;}
+.day-pill.done{background:rgba(255,255,255,0.2);color:#fff;border-color:rgba(255,255,255,0.3);}
+.day-pill.today{background:#fff;color:var(--sage);border-color:#fff;}
+.day-pill.future{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.4);border-color:rgba(255,255,255,0.1);}
+.robo{display:flex;align-items:flex-start;gap:10px;background:var(--sage-light);border:1px solid rgba(74,124,89,0.2);border-radius:12px;padding:12px;margin-bottom:12px;}
+.robo-av img{width:36px;height:36px;border-radius:50%;border:2px solid var(--sage);object-fit:cover;}
+.robo-nm{font-size:0.68rem;font-weight:700;color:var(--sage);margin-bottom:3px;}
+.robo-msg{font-size:0.82rem;line-height:1.65;color:var(--text2);}
+.card{background:#fff;border-radius:16px;margin-bottom:14px;box-shadow:0 2px 12px rgba(0,0,0,0.07);overflow:hidden;}
+.sec-hdr{display:flex;align-items:center;gap:12px;padding:14px 16px 0;}
+.sec-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:0.9rem;color:#fff;flex-shrink:0;}
+.sec-title{font-weight:900;font-size:1rem;color:var(--text);}
+.sec-sub{font-size:0.7rem;color:var(--text3);margin-top:2px;}
+.sec-body{padding:14px 16px;}
+.book-intro{background:linear-gradient(135deg,#1a2a1a,#2d4a2d);border-radius:14px;padding:18px;color:#fff;margin-bottom:14px;}
+.book-intro-tag{font-size:0.65rem;font-weight:700;letter-spacing:0.15em;color:#a8d5b5;margin-bottom:10px;}
+.book-intro h3{font-family:'Nunito',sans-serif;font-size:1.2rem;font-weight:900;margin-bottom:6px;}
+.book-intro-author{font-size:0.78rem;color:rgba(255,255,255,0.65);margin-bottom:12px;}
+.book-intro-body{font-size:0.82rem;line-height:1.8;color:rgba(255,255,255,0.85);}
+.book-intro-themes{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.theme-tag{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:#fff;padding:4px 10px;border-radius:20px;font-size:0.7rem;font-weight:700;}
+.key-card{background:linear-gradient(135deg,var(--sage),#3d6b4a);border-radius:14px;padding:18px;color:#fff;margin-bottom:14px;}
+.key-eyebrow{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;color:rgba(255,255,255,0.7);margin-bottom:8px;}
+.key-eng{font-family:'Nunito',sans-serif;font-size:1.35rem;font-weight:900;margin-bottom:6px;line-height:1.3;}
+.key-kr{font-size:0.95rem;color:rgba(255,255,255,0.8);margin-bottom:12px;}
+.key-play-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.12);border-radius:10px;padding:10px 14px;cursor:pointer;}
+.play-btn{width:40px;height:40px;border-radius:50%;background:#fff;color:var(--sage);border:none;font-size:1.1rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:900;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+.play-label{font-size:0.82rem;font-weight:700;color:#fff;}
+.play-hint{font-size:0.68rem;color:rgba(255,255,255,0.6);margin-top:2px;}
+.story-player-row{display:flex;align-items:center;gap:12px;margin:12px 0 10px;}
+.story-label{font-size:0.75rem;font-weight:800;color:var(--sage);background:var(--sage-light);padding:4px 12px;border-radius:12px;}
+.story-ctrl-btn{width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,0.15);font-weight:900;}
+.story-play-btn{background:var(--sage);color:#fff;}
+.story-stop-btn{background:#fff;color:var(--sage);border:2px solid var(--sage)!important;display:none;}
+.story-en{background:var(--sky-light);border-radius:10px;padding:14px;font-size:0.88rem;line-height:1.9;margin-bottom:10px;}
+.story-level{display:flex;align-items:center;gap:8px;margin:14px 0 4px;padding:8px 12px;border-radius:10px;font-size:0.75rem;font-weight:800;}
+.story-level.a1{background:#e8f5e9;color:#2e7d32;}
+.story-level.a2{background:#e3f2fd;color:#1565c0;}
+.story-level.b1{background:#fff3e0;color:#e65100;}
+.hl{background:rgba(201,160,40,0.2);border-radius:4px;padding:1px 3px;font-weight:700;}
+.vocab-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+.v-card{background:var(--bg);border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.2s;border:2px solid transparent;}
+.v-card:hover{border-color:var(--sage);background:var(--sage-light);}
+.v-emoji{font-size:1.8rem;margin-bottom:6px;}
+.v-eng{font-family:'Nunito',sans-serif;font-weight:900;font-size:1rem;color:var(--text);}
+.v-kr{font-size:0.78rem;color:var(--text3);margin:4px 0;}
+.v-ex{font-size:0.7rem;color:var(--sage);font-style:italic;}
+.v-play{margin-top:8px;background:var(--sage);color:#fff;border:none;padding:4px 12px;border-radius:10px;font-size:0.72rem;cursor:pointer;}
+.grammar-link{margin-top:10px;padding:10px;background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:1.5px solid var(--sage);border-radius:10px;text-align:center;}
+.grammar-link-label{font-size:0.72rem;color:var(--sage);font-weight:700;margin-bottom:6px;}
+.grammar-link a{display:inline-flex;align-items:center;gap:6px;background:var(--sage);color:#fff;padding:8px 16px;border-radius:20px;font-size:0.82rem;font-weight:700;text-decoration:none;}
+.game-box{background:var(--bg);border-radius:12px;padding:14px;margin-bottom:12px;}
+.game-q{font-size:0.88rem;font-weight:700;color:var(--text);margin-bottom:12px;line-height:1.6;}
+.blank{display:inline-block;min-width:60px;border-bottom:3px solid var(--sage);padding:0 4px;font-family:'Nunito',sans-serif;font-weight:900;color:var(--sage);text-align:center;}
+.choices{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.ch{padding:9px 18px;border-radius:10px;background:#fff;border:2px solid rgba(0,0,0,0.1);font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.ch:hover{border-color:var(--sage);background:var(--sage-light);}
+.ch.ok{background:var(--sage-light);border-color:var(--sage);color:var(--sage);}
+.ch.no{background:#ffeaea;border-color:#e53935;color:#e53935;}
+.fb{font-size:0.82rem;font-weight:700;margin-top:6px;min-height:20px;}
+.build-zone{min-height:48px;background:#fff;border:2px dashed rgba(74,124,89,0.3);border-radius:10px;padding:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px;}
+.build-ph{font-size:0.8rem;color:var(--text3);}
+.placed{padding:7px 14px;background:var(--sage);color:#fff;border-radius:8px;font-size:0.9rem;font-weight:700;cursor:pointer;}
+.wpool{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;}
+.wchip{padding:8px 16px;background:#fff;border:2px solid rgba(0,0,0,0.1);border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.wchip:hover{border-color:var(--sage);}
+.wchip.used{opacity:0.3;pointer-events:none;}
+.game-btns{display:flex;gap:8px;margin-bottom:8px;}
+.btn-ok{padding:9px 20px;background:var(--sage);color:#fff;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+.btn-rst{padding:9px 16px;background:var(--bg);color:var(--text2);border:1px solid rgba(0,0,0,0.1);border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.match-col{display:flex;flex-direction:column;gap:7px;}
+.m-btn{padding:10px;background:#fff;border:2px solid rgba(0,0,0,0.1);border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.2s;min-height:52px;display:flex;align-items:center;justify-content:center;}
+.m-btn:hover{border-color:var(--sage);}
+.m-btn.sel{background:var(--sage-light);border-color:var(--sage);color:var(--sage);}
+.m-btn.ok{background:var(--sage-light);border-color:var(--sage);color:var(--sage);pointer-events:none;}
+.m-btn.no{background:#ffeaea;border-color:#e53935;animation:shk .3s ease;}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.listen-play{width:100%;padding:14px;background:var(--sage);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;margin-bottom:12px;}
+.listen-opts{display:flex;gap:8px;flex-wrap:wrap;}
+.listen-opt{flex:1;min-width:80px;padding:12px 8px;background:#fff;border:2px solid rgba(0,0,0,0.08);border-radius:12px;cursor:pointer;text-align:center;transition:all 0.2s;}
+.listen-opt:hover{border-color:var(--sage);}
+.lo-emoji{font-size:1.5rem;margin-bottom:5px;}
+.lo-label{font-size:0.75rem;font-weight:700;color:var(--text2);}
+.listen-opt.ok{border-color:var(--sage);background:var(--sage-light);}
+.listen-opt.no{border-color:#e53935;background:#ffeaea;}
+.dict-play{padding:10px 20px;background:var(--sky);color:#fff;border:none;border-radius:10px;font-size:0.88rem;font-weight:700;cursor:pointer;margin-bottom:10px;}
+.dict-hint{font-family:'Nunito',sans-serif;font-size:1.3rem;font-weight:900;letter-spacing:0.2em;color:var(--text3);margin-bottom:10px;}
+.dict-input{width:100%;padding:12px 14px;border:2px solid rgba(0,0,0,0.1);border-radius:10px;font-size:1rem;font-weight:700;outline:none;margin-bottom:8px;}
+.dict-input:focus{border-color:var(--sage);}
+.dict-check{padding:9px 20px;background:var(--sage);color:#fff;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+.duo-prompt{background:linear-gradient(135deg,var(--sage-light),#f0faf2);border:2px solid var(--sage);border-radius:14px;padding:18px;text-align:center;margin-bottom:16px;}
+.duo-prompt-label{font-size:0.68rem;font-weight:700;color:var(--sage);letter-spacing:0.1em;margin-bottom:8px;}
+.duo-prompt-text{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:900;color:var(--text);line-height:1.4;}
+.duo-prompt-sub{font-size:0.78rem;color:var(--text3);margin-top:6px;}
+.duo-choices{display:flex;flex-direction:column;gap:10px;}
+.duo-ch{width:100%;padding:14px 18px;border-radius:12px;background:#fff;border:2px solid rgba(0,0,0,0.1);font-size:0.92rem;font-weight:700;cursor:pointer;text-align:left;transition:all 0.2s;display:flex;align-items:center;gap:12px;}
+.duo-ch:hover{border-color:var(--sage);background:var(--sage-light);}
+.duo-ch.ok{background:var(--sage-light);border-color:var(--sage);color:var(--sage);}
+.duo-ch.no{background:#ffeaea;border-color:#e53935;color:#e53935;}
+.duo-ch-num{width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:900;flex-shrink:0;}
+.complete-sentence-box{background:var(--gold-light);border:2px solid var(--gold);border-radius:14px;padding:18px;margin-bottom:16px;}
+.cs-label{font-size:0.68rem;font-weight:700;color:var(--gold);letter-spacing:0.1em;margin-bottom:10px;}
+.cs-sentence{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:900;color:var(--text);line-height:1.8;margin-bottom:14px;text-align:center;}
+.cs-blank{display:inline-block;min-width:100px;border-bottom:3px solid var(--gold);padding:0 8px;font-family:'Nunito',sans-serif;font-weight:900;color:var(--gold);text-align:center;}
+.cs-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.cs-opt{padding:12px;border-radius:12px;background:#fff;border:2px solid rgba(0,0,0,0.1);font-size:0.92rem;font-weight:700;cursor:pointer;text-align:center;transition:all 0.2s;}
+.cs-opt:hover{border-color:var(--gold);background:var(--gold-light);}
+.cs-opt.ok{background:#fff8e1;border-color:var(--gold);color:#b8860b;}
+.cs-opt.no{background:#ffeaea;border-color:#e53935;color:#e53935;}
+.ai-box{background:linear-gradient(135deg,#1a2a3a,#0d1b2a);border-radius:16px;padding:20px;color:#fff;}
+.ai-box-title{font-family:'Nunito',sans-serif;font-size:1rem;font-weight:900;margin-bottom:3px;}
+.ai-box-desc{font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.6;}
+.prompt-block{background:rgba(0,0,0,0.3);border-radius:10px;padding:14px;margin-bottom:14px;}
+.prompt-lbl{font-size:0.62rem;letter-spacing:0.15em;color:#c9a028;font-weight:700;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+.copy-btn{background:rgba(201,160,40,0.2);border:1px solid rgba(201,160,40,0.4);color:#c9a028;border-radius:6px;padding:4px 12px;font-size:0.68rem;font-weight:700;cursor:pointer;}
+.copy-btn:hover{background:#c9a028;color:#000;}
+.prompt-text{font-family:monospace;font-size:0.76rem;color:rgba(255,255,255,0.7);line-height:1.8;white-space:pre-wrap;}
+.ai-steps{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+.ai-step{display:flex;gap:10px;align-items:flex-start;font-size:0.8rem;color:rgba(255,255,255,0.6);}
+.step-num{background:rgba(0,242,255,0.15);color:#00f2ff;font-family:'Nunito',sans-serif;font-weight:900;font-size:0.7rem;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ai-btn-row{display:flex;gap:8px;flex-wrap:wrap;}
+.ai-btn-primary{display:inline-flex;align-items:center;gap:6px;padding:11px 20px;background:linear-gradient(135deg,#19c37d,#0f9d58);color:#fff;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;text-decoration:none;}
+.ai-btn-sec{padding:11px 16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);border-radius:10px;font-size:0.82rem;font-weight:700;cursor:pointer;}
+.complete{background:linear-gradient(135deg,var(--sage),#2d5a3a);color:#fff;border-radius:16px;padding:24px;margin-bottom:14px;text-align:center;display:none;box-shadow:0 4px 20px rgba(74,124,89,0.3);}
+.complete.show{display:block;}
+.complete-emoji{font-size:2.5rem;margin-bottom:10px;}
+.complete-title{font-family:'Nunito',sans-serif;font-size:1.5rem;font-weight:900;margin-bottom:8px;}
+.complete-sub{font-size:0.88rem;line-height:1.75;opacity:0.9;margin-bottom:14px;}
+.xp-big{font-family:'Nunito',sans-serif;font-size:1.1rem;font-weight:900;background:rgba(255,255,255,0.15);border-radius:10px;padding:10px;margin-bottom:14px;}
+.next-card{background:rgba(255,255,255,0.12);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;text-align:left;}
+.next-label{font-size:0.68rem;font-weight:700;opacity:0.7;margin-bottom:3px;}
+.next-title{font-family:'Nunito',sans-serif;font-size:0.95rem;font-weight:900;}
+.next-btn{background:#fff;color:var(--sage);border:none;padding:10px 18px;border-radius:10px;font-size:0.85rem;font-weight:900;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block;}
+.prog{height:5px;background:rgba(0,0,0,0.06);margin-top:4px;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--sage),var(--gold));border-radius:0 3px 3px 0;}
+.bnav{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 28px;max-width:680px;margin:0 auto;}
+.bn{padding:10px 20px;background:var(--sage);color:#fff;border-radius:12px;font-size:0.85rem;font-weight:700;text-decoration:none;}
+.bl{font-size:0.82rem;font-weight:700;color:var(--text3);}</style>
+<!-- ===== CEC Robo Helper styles ===== -->
+<style>
+.gb{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+.gb-hint{background:#4a6741;color:#fff;font-size:12px;padding:7px 14px;border-radius:20px 20px 4px 20px;cursor:pointer;white-space:nowrap;animation:gbFloat 3s ease-in-out infinite;font-family:sans-serif;}
+.gb-hint span{color:#c8e6a0;}
+@keyframes gbFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+.gb-robo{width:56px;height:56px;border-radius:50%;background:#4a6741;border:2px solid #a8d070;cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.gb-robo img{width:46px;height:46px;object-fit:cover;border-radius:50%;}
+.gb-panel{display:none;position:fixed;bottom:92px;right:24px;width:300px;background:#fff;border-radius:20px;border:0.5px solid #c8d8b8;box-shadow:0 4px 24px rgba(74,103,65,0.15);overflow:hidden;z-index:9998;}
+.gb-head{background:#4a6741;padding:12px 16px;display:flex;align-items:center;gap:10px;}
+.gb-head img{width:28px;height:28px;border-radius:50%;object-fit:cover;}
+.gb-ht{font-size:13px;font-weight:700;color:#fff;font-family:sans-serif;}
+.gb-hs{font-size:11px;color:#c8e6a0;font-family:sans-serif;}
+.gb-close{margin-left:auto;background:none;border:none;color:#a0c080;font-size:14px;cursor:pointer;}
+.gb-chat{padding:12px 14px;height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:#f8faf5;}
+.gb-ai-msg{display:flex;gap:8px;align-items:flex-start;}
+.gb-ai-msg img{width:22px;height:22px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+.gb-ai-bubble{background:#fff;border:0.5px solid #c8d8b8;border-radius:0 10px 10px 10px;padding:8px 12px;font-size:12px;color:#2d4a25;line-height:1.6;max-width:210px;white-space:pre-line;font-family:sans-serif;}
+.gb-user-msg{display:flex;justify-content:flex-end;}
+.gb-user-bubble{background:#4a6741;color:#fff;border-radius:10px 0 10px 10px;padding:8px 12px;font-size:12px;max-width:200px;line-height:1.5;white-space:pre-line;font-family:sans-serif;}
+.gb-input-row{padding:10px 12px;border-top:0.5px solid #d0e0c0;display:flex;gap:8px;background:#fff;}
+.gb-input{flex:1;padding:8px 12px;border-radius:20px;border:0.5px solid #c0d0b0;font-size:12px;font-family:sans-serif;outline:none;background:#f8faf5;}
+.gb-send{width:34px;height:34px;border-radius:50%;background:#4a6741;border:none;cursor:pointer;color:#fff;font-size:14px;flex-shrink:0;}
+.gb-btns{padding:10px 12px 12px;display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#fff;}
+.gb-btn{padding:8px 4px;background:#f0f8e8;border:0.5px solid #a8d070;color:#4a6741;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:sans-serif;text-align:center;line-height:1.3;}
+.gb-btn:hover{background:#e0f0d0;}
+</style>
+<!-- ===== /CEC Robo Helper styles ===== -->
+</head>
+<body data-camp="a" data-grade="6" data-week="16" data-quarter="Q2">
+<!-- ===== CEC Robo Helper ===== -->
+<div class="gb">
+  <div class="gb-hint" onclick="gbToggle()" id="gbHint"><span>Robo</span>한테 물어봐!</div>
+  <div class="gb-robo" onclick="gbToggle()"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif" alt="Robo"></div>
+</div>
+<div class="gb-panel" id="gbPanel">
+  <div class="gb-head">
+    <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif" alt="Robo">
+    <div>
+      <div class="gb-ht">Robo 선생님</div>
+      <div class="gb-hs">Camp A</div>
+    </div>
+    <button class="gb-close" onclick="gbToggle()">&#10005;</button>
+  </div>
+  <div class="gb-chat" id="gbChat"></div>
+  <div class="gb-input-row">
+    <input class="gb-input" id="gbInput" type="text" placeholder="질문을 입력하세요..." onkeydown="gbCheckEnter(event)">
+    <button class="gb-send" onclick="gbSend()">→</button>
+  </div>
+  <div class="gb-btns">
+    <button class="gb-btn" onclick="gbAsk('이 이야기가 뭐야?')">📖 이 이야기가 뭐야?</button>
+    <button class="gb-btn" onclick="gbAsk('교훈이 뭐야?')">💭 교훈이 뭐야?</button>
+    <button class="gb-btn" onclick="gbAsk('주인공이 누구야?')">🐰 주인공이 누구야?</button>
+    <button class="gb-btn" onclick="gbAsk('왜 그랬어?')">🤔 왜 그랬어?</button>
+  </div>
+</div>
+<script>
+(function(){
+  if(window.__gbRoboInit)return;window.__gbRoboInit=true;
+  var GB_API_URL='https://journey-bronzy-fruitily.ngrok-free.dev/api/chat/completions';
+  var GB_MODEL='camp-a';
+  var GB_IMG='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif';
+  var GB_KEY_SENTENCE='';
+  var GB_BOOK='Peter Rabbit';
+  var GB_CONTEXT=function(){return '오늘 배운 책: '+GB_BOOK+(GB_KEY_SENTENCE?'\n핵심 문장: '+GB_KEY_SENTENCE:'');};
+  var gbIsOpen=false;
+  window.gbToggle=function(){
+    gbIsOpen=!gbIsOpen;
+    var panel=document.getElementById('gbPanel');
+    var hint=document.getElementById('gbHint');
+    if(panel)panel.style.display=gbIsOpen?'block':'none';
+    if(hint)hint.style.opacity=gbIsOpen?'0':'1';
+    if(gbIsOpen)setTimeout(function(){var inp=document.getElementById('gbInput');if(inp)inp.focus();},100);
+  };
+  window.gbCheckEnter=function(e){if(e.key==='Enter')window.gbSend();};
+  window.gbAddAI=function(msg){
+    var c=document.getElementById('gbChat');if(!c)return null;
+    var d=document.createElement('div');d.className='gb-ai-msg';
+    d.innerHTML='<img src="'+GB_IMG+'" alt="Robo"><div class="gb-ai-bubble">'+String(msg).replace(/\n/g,'<br>')+'</div>';
+    c.appendChild(d);c.scrollTop=c.scrollHeight;
+    return d.querySelector('.gb-ai-bubble');
+  };
+  window.gbAddUser=function(msg){
+    var c=document.getElementById('gbChat');if(!c)return;
+    var d=document.createElement('div');d.className='gb-user-msg';
+    d.innerHTML='<div class="gb-user-bubble">'+msg+'</div>';
+    c.appendChild(d);c.scrollTop=c.scrollHeight;
+  };
+  window.gbFetch=function(userContent){
+    var bubble=window.gbAddAI('생각 중... 🤔');
+    var c=document.getElementById('gbChat');
+    fetch(GB_API_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:GB_MODEL,messages:[{role:'user',content:userContent}],stream:false})
+    }).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+    .then(function(data){
+      var reply=(data&&data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||'(응답 없음)';
+      if(bubble)bubble.innerHTML=String(reply).replace(/\n/g,'<br>');
+      if(c)c.scrollTop=c.scrollHeight;
+    }).catch(function(e){
+      if(bubble)bubble.textContent='⚠️ 연결 실패: '+e.message;
+    });
+  };
+  window.gbSend=function(){
+    var inp=document.getElementById('gbInput');if(!inp)return;
+    var msg=inp.value.trim();if(!msg)return;
+    window.gbAddUser(msg);inp.value='';
+    window.gbFetch(GB_CONTEXT()+'\n학생 질문: '+msg+'\n초등학생 수준으로 한국어로 친절하고 짧게 답해줘.');
+  };
+  window.gbAsk=function(buttonText){
+    if(!gbIsOpen)window.gbToggle();
+    window.gbAddUser(buttonText);
+    window.gbFetch(GB_CONTEXT()+'\n학생 질문: '+buttonText+'\n초등학생 수준으로 한국어로 친절하고 짧게 답해줘.');
+  };
+  function gbInit(){
+    var _ks=document.querySelector('.key-eng');
+    if(_ks&&_ks.textContent)GB_KEY_SENTENCE=_ks.textContent.replace(/["\u201C\u201D]/g,'').trim();
+    var _ts=document.querySelector('.top-sub');
+    if(_ts&&_ts.textContent){var _t=_ts.textContent.trim();var _i=_t.indexOf(' \u00b7 ');GB_BOOK=_i>0?_t.substring(0,_i).trim():_t;}
+    setTimeout(function(){
+      window.gbAddAI('안녕! 나는 Robo야! 🤖\n오늘 배운 책: '+GB_BOOK+(GB_KEY_SENTENCE?'\n핵심 문장: "'+GB_KEY_SENTENCE+'"':'')+'\n궁금한 거 있으면 아래 버튼을 눌러봐!');
+    },500);
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',gbInit);}else{gbInit();}
+})();
+</script>
+<!-- ===== /CEC Robo Helper ===== -->
+
+<header class="topbar">
+  <div class="top-left">
+    <video src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.mp4" autoplay loop muted playsinline style="width:40px;height:40px;border-radius:12px;object-fit:cover;flex-shrink:0;"></video>
+    <div><div class="top-title">CEC Camp A 초등6</div><div class="top-sub">Peter Pan · Q2 W16 Day 1 (월) ●○○</div></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="xp-pill">⭐ <span id="xp">0</span> XP</div>
+    <button class="ai-tutor-btn" onclick="window.open('https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b','_blank')">🤖 AI 튜터</button>
+  </div>
+</header>
+<main class="container">
+  <section class="hero-wrap">
+    <div class="hero-img-wrap">
+      <img class="scene-img" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/peter-pan/w07.png" alt="Peter Pan">
+      <div class="hero-overlay">
+        <h2>🧚 Peter Pan — Q2 Week 16 Day 1 (월)</h2>
+        <p>상상력은 우리를 젊게 유지시켜 준다.</p>
+        <div class="day-badge"><span class="day-pill today">● Day 1 (월)</span><span class="day-pill future">● Day 2 (수)</span><span class="day-pill future">● Day 3 (금) 완성!</span></div>
+      </div>
+    </div>
+  </section>
+  <div class="robo">
+    <div class="robo-av"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+    <div><div class="robo-nm">Robo 선생님</div><div class="robo-msg">Week 16 Day 1 (월)에 온 걸 환영해! 🎉<br>오늘의 핵심: <b>"Imagination keeps us young."</b></div></div>
+  </div>
+  <!-- 섹션 1 -->
+  <article class="card">
+    <header class="sec-hdr"><div class="sec-num" style="background:var(--gold);">1</div><div><div class="sec-title">오늘의 핵심 표현</div><div class="sec-sub">KEY SENTENCE · Q2 · B2 · Day 1 (월)</div></div></header>
+    <div class="sec-body">
+      <div class="key-card">
+        <div class="key-eyebrow">⭐ Q2 · Week 16 · Day 1 (월) · B2</div>
+        <div class="key-eng">&quot;Imagination keeps us young.&quot;</div>
+        <div class="key-kr">상상력은 우리를 젊게 유지시켜 준다.</div>
+        <div class="key-play-row" data-speak="Imagination keeps us young." onclick="speakEl(this)">
+          <button class="play-btn" data-speak="Imagination keeps us young." onclick="event.stopPropagation();speakEl(this)">▶</button>
+          <div><div class="play-label">🔊 발음 듣기 — 따라 해봐!</div><div class="play-hint">버튼을 누르면 영어 발음이 나와요</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="prog"><div class="prog-fill" style="width:8%;"></div></div>
+  </article>
+  <!-- 섹션 2 -->
+  <article class="card">
+    <header class="sec-hdr"><div class="sec-num" style="background:var(--coral);">2</div><div><div class="sec-title">오늘의 이야기 📖</div><div class="sec-sub">BOOK INTRO + SHORT STORY · B2 70% EN</div></div></header>
+    <div style="position:relative;overflow:hidden;"><img class="scene-img" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/peter-pan/w07.png" alt="Peter Pan" style="max-height:240px;"></div>
+    <div class="sec-body">
+      <div class="book-intro">
+        <div class="book-intro-tag">📚 Q2 새로운 책 시작</div>
+        <h3>🧚 Peter Pan (피터 팬)</h3>
+        <div class="book-intro-author">저자: J.M. Barrie · 1911년 출판</div>
+        <div class="book-intro-body">런던에 사는 웬디, 존, 마이클 세 남매에게 어느 날 밤 신비로운 소년 피터 팬이 찾아옵니다. 피터는 아이들을 네버랜드로 데려가고, 그곳에서 요정 팅커벨, 길 잃은 소년들, 그리고 무시무시한 후크 선장을 만나게 됩니다. 영원히 어른이 되지 않는 세계에서 벌어지는 마법 같은 모험! 하지만 집으로 돌아갈 것인가, 네버랜드에 남을 것인가?</div>
+        <div class="book-intro-themes"><span class="theme-tag">✨ 상상력 (Imagination)</span><span class="theme-tag">🦅 자유 (Freedom)</span><span class="theme-tag">🏠 가정 (Home)</span><span class="theme-tag">⚔️ 모험 (Adventure)</span></div>
+      </div>
+      <div class="robo" style="background:linear-gradient(135deg,#fdf6e3,#fdf8f0);border-color:rgba(218,165,32,0.25);">
+        <div class="robo-av" style="border-color:var(--gold);"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+        <div><div class="robo-nm" style="color:var(--gold);">먼저 한국어로 읽어봐!</div><div class="robo-msg">다섯 아이와 모래 요정 이야기의 첫째 날이에요!<br>이번 주의 주제는 'gifts alone'에 대한 것이에요.<br>어떤 선물은 사용하지 않는 것이 현명해요.<br>이 이야기는 깊은 의미를 담고 있어요.<br><br>등장인물들은 중요한 순간을 맞이해요.<br>힘을 사용하지 않을 때를 아는 것이 지혜예요.<br>우리도 비슷한 상황을 겪을 수 있어요.<br>그때 어떤 선택을 할 건가요?<br>이 이야기를 통해 함께 생각해 봐요.<br>오늘의 핵심 문장을 잘 기억하세요.<br>영어로도 이야기를 읽어 볼까요?<br><strong>아이들은 사미드에게 작별인사를 하며 소원보다 중요한 것을 배웠어요.</strong></div></div>
+  </div>
+  <!-- A1 -->
+  <div class="story-level a1">⭐ A1 쉬움</div>
+  <div class="story-player-row">
+    <span class="story-label">🔤 A1 Easy</span>
+    <button class="story-ctrl-btn story-play-btn" onclick="storyPlay('Peter Pan had lived in Neverland for longer than anyone around him could clearly remember or count. He had never aged a single day and his eyes were still as bright and clear as they had ever been. He still crowed with pure delight when he won a fight and still laughed when things went against him. The lost boys around him grew taller each year and eventually left the island one by one for good. But Peter remained exactly and completely the same as he had always been from the very beginning. His secret was not the island\'s air or Tinker Bell\'s dust but something that lived entirely inside him. Imagination keeps us young.',this)">▶</button>
+    <button class="story-ctrl-btn story-stop-btn" onclick="storyStopped()">⏹</button>
+  </div>
+  <div class="story-en">Peter Pan had lived in Neverland for longer than anyone around him could clearly remember or count.<br>He had never aged a single day and his eyes were still as bright and clear as they had ever been.<br>He still crowed with pure delight when he won a fight and still laughed when things went against him.<br>The lost boys around him grew taller each year and eventually left the island one by one for good.<br>But Peter remained exactly and completely the same as he had always been from the very beginning.<br>His secret was not the island's air or Tinker Bell's dust but something that lived entirely inside him.<br><span class="hl">Imagination keeps us young.</span></div>
+  <!-- A2 -->
+  <div class="story-level a2">⭐⭐ A2 보통</div>
+  <div class="story-player-row">
+    <span class="story-label">🔤 A2 Medium</span>
+    <button class="story-ctrl-btn story-play-btn" onclick="storyPlay('The most remarkable thing about Peter Pan was not that he could fly or fight or crow magnificently. It was that he woke up every single morning as curious and as delighted by the world as he had been the day before. Most people, as they accumulate experience, find that fewer and fewer things genuinely surprise or move them. But Peter approached each new day as if it might contain something he had never encountered or imagined before. This quality — the refusal to let experience become routine — was what the fairy dust was really made of. The lost boys could grow old because they had stopped asking what might happen next with genuine excitement and wonder. Peter could not grow old because he had never stopped asking that question and never intended to stop asking it ever. Imagination keeps us young.',this)">▶</button>
+    <button class="story-ctrl-btn story-stop-btn" onclick="storyStopped()">⏹</button>
+  </div>
+  <div class="story-en">The most remarkable thing about Peter Pan was not that he could fly or fight or crow magnificently.<br>It was that he woke up every single morning as curious and as delighted by the world as he had been the day before.<br>Most people, as they accumulate experience, find that fewer and fewer things genuinely surprise or move them.<br>But Peter approached each new day as if it might contain something he had never encountered or imagined before.<br>This quality — the refusal to let experience become routine — was what the fairy dust was really made of.<br>The lost boys could grow old because they had stopped asking what might happen next with genuine excitement and wonder.<br>Peter could not grow old because he had never stopped asking that question and never intended to stop asking it ever.<br><span class="hl">Imagination keeps us young.</span></div>
+  <!-- B1 -->
+  <div class="story-level b1">⭐⭐⭐ B1 도전</div>
+  <div class="story-player-row">
+    <span class="story-label">🔤 B1 Challenge</span>
+    <button class="story-ctrl-btn story-play-btn" onclick="storyPlay('Peter Pan\'s permanent youth is usually understood as a fantasy — a wish-fulfillment story about escaping the inevitable. But Barrie\'s treatment of it suggests something more interesting and more available than simple biological impossibility. The aging that matters most in the story is not physical but imaginative — the gradual dimming of curiosity and wonder. Characters grow old in Barrie\'s world not when their hair turns grey but when they stop being genuinely surprised by things. Peter\'s immortality is the immortality of a mind that has never agreed to find the world ordinary and predictable. This form of youth is not available to everyone — it requires a sustained and deliberate refusal to settle into routine. But Barrie suggests it is available to some people across the full span of their lives if they choose it consistently. The imagination that keeps Peter Pan young is the same imagination available to anyone willing to keep exercising it. Imagination keeps us young.',this)">▶</button>
+    <button class="story-ctrl-btn story-stop-btn" onclick="storyStopped()">⏹</button>
+  </div>
+  <div class="story-en">Peter Pan's permanent youth is usually understood as a fantasy — a wish-fulfillment story about escaping the inevitable.<br>But Barrie's treatment of it suggests something more interesting and more available than simple biological impossibility.<br>The aging that matters most in the story is not physical but imaginative — the gradual dimming of curiosity and wonder.<br>Characters grow old in Barrie's world not when their hair turns grey but when they stop being genuinely surprised by things.<br>Peter's immortality is the immortality of a mind that has never agreed to find the world ordinary and predictable.<br>This form of youth is not available to everyone — it requires a sustained and deliberate refusal to settle into routine.<br>But Barrie suggests it is available to some people across the full span of their lives if they choose it consistently.<br>The imagination that keeps Peter Pan young is the same imagination available to anyone willing to keep exercising it.<br><span class="hl">Imagination keeps us young.</span></div>
+</div>
+    <div class="prog"><div class="prog-fill" style="width:18%;"></div></div>
+  </article>
+  <!-- 섹션 3 -->
+  <article class="card">
+    <header class="sec-hdr"><div class="sec-num" style="background:var(--sky);">3</div><div><div class="sec-title">핵심 단어 4개!</div><div class="sec-sub">KEY WORDS · B2</div></div></header>
+    <div class="sec-body">
+      <div class="vocab-grid">
+        <div class="v-card" data-speak="imagination" onclick="speakEl(this)">
+          <div class="v-emoji">💭</div><div class="v-eng">imagination</div>
+          <div class="v-kr">상상력</div><div class="v-ex">&quot;Use your imagination.&quot;</div>
+          <button class="v-play" data-speak="imagination" onclick="event.stopPropagation();speakEl(this)">듣기</button>
+        </div>
+        <div class="v-card" data-speak="young" onclick="speakEl(this)">
+          <div class="v-emoji">🧒</div><div class="v-eng">young</div>
+          <div class="v-kr">젊은, 어린</div><div class="v-ex">&quot;Stay young at heart.&quot;</div>
+          <button class="v-play" data-speak="young" onclick="event.stopPropagation();speakEl(this)">듣기</button>
+        </div>
+        <div class="v-card" data-speak="shows" onclick="speakEl(this)">
+          <div class="v-emoji">📖</div><div class="v-eng">shows</div>
+          <div class="v-kr">보여주다</div><div class="v-ex">&quot;Peter Pan shows us.&quot;</div>
+          <button class="v-play" data-speak="shows" onclick="event.stopPropagation();speakEl(this)">듣기</button>
+        </div>
+        <div class="v-card" data-speak="no matter" onclick="speakEl(this)">
+          <div class="v-emoji">🎂</div><div class="v-eng">no matter</div>
+          <div class="v-kr">~에 상관없이</div><div class="v-ex">&quot;No matter how old.&quot;</div>
+          <button class="v-play" data-speak="no matter" onclick="event.stopPropagation();speakEl(this)">듣기</button>
+        </div>
+      </div>
+      <div class="grammar-link">
+        <div class="grammar-link-label">📚 오늘의 문법 포인트 — <strong>가정법 과거 (Second Conditional)</strong></div>
+        <a href="https://cecenglishcamp.github.io/GrammarBaseCamp/G46/G46_second_conditional_if_%2B_would.html" target="_blank">📖 문법 배우기 →</a>
+      </div>
+    </div>
+    <div class="prog"><div class="prog-fill" style="width:28%;"></div></div>
+  </article>
+  <!-- 섹션 4 -->
+  <article class="card">
+    <header class="sec-hdr"><div class="sec-num" style="background:var(--sage);">4</div><div><div class="sec-title">게임 1: 단어 고르기! 🎮</div><div class="sec-sub">WORD PICK</div></div></header>
+    <div class="sec-body">
+      <div class="game-box">
+        <div class="game-q">빈칸에 알맞은 단어를 골라봐!</div>
+        <div style="text-align:center;font-size:1.15rem;font-weight:900;margin-bottom:14px;line-height:2;">&quot;___ keeps us young.&quot;</div>
+        <div class="choices"><button class="ch" onclick="pick(this,'Imagination','Imagination','b1','f1')">Imagination</button><button class="ch" onclick="pick(this,'Money','Imagination','b1','f1')">Money</button><button class="ch" onclick="pick(this,'Sleep','Imagination','b1','f1')">Sleep</button></div>
+        <div class="fb" id="f1"></div>
+      </div>
+    </div>
+    <div class="prog"><div class="prog-fill" style="width:40%;"></div></div>
+  </article>
+  <!-- 섹션 5 -->
+  <article class="card">
+    <header class="sec-hdr"><div class="sec-num" style="background:var(--brown);">5</div><div><div class="sec-title">게임 2: 문장 만들기! 🧩</div><div class="sec-sub">WORD ORDER · B2</div></div></header>
+    <div class="sec-body">
+      <div class="game-box" style="background:linear-gradient(135deg,#fdf6e3,#fdf8f0);">
+        <div class="game-q">"상상력은 우리를 젊게 유지시켜 준다."를 영어로 만들어봐!</div>
+        <div class="build-zone" id="wo1-zone"><span class="build-ph" id="wo1-ph">👆 아래 단어를 눌러봐!</span></div>
+        <div class="wpool" id="wo1-pool"><button class="wchip" onclick="woAdd('wo1',this,'Imagination')">Imagination</button><button class="wchip" onclick="woAdd('wo1',this,'keeps')">keeps</button><button class="wchip" onclick="woAdd('wo1',this,'us')">us</button><button class="wchip" onclick="woAdd('wo1',this,'young')">young</button></div>
+        <div class="game-btns">
+          <button class="btn-ok" onclick="woChk('wo1','Imagination keeps us young','wo1-fb')">확인!</button>
+          <button class="btn-rst" onclick="woRst('wo1')">다시</button>
+        </div>
+        <div class="fb" id="wo1-fb"></div>
+      </div>
+    </div>
+    <div class="prog"><div class="prog-fill" style="width:52%;"></div></div>
+  </article>
+  <!-- 섹션 6 -->
+  <article class="card">
+    <header class="sec-hdr"><div class="sec-num" style="background:var(--coral);">6</div><div><div class="sec-title">게임 3: 짝맞추기! 🃏</div><div class="sec-sub">MATCHING</div></div></header>
+    <div class="sec-body">
+      <div class="game-box">
+        <div style="text-align:center;font-size:0.85rem;font-weight:700;margin-bottom:12px;">👆 왼쪽 → 오른쪽 뜻!</div>
+        <div class="match-grid">
+          <div class="match-col" id="ml"><button class="m-btn" onclick="mClick(this,'imagination')">imagination</button><button class="m-btn" onclick="mClick(this,'young')">young</button><button class="m-btn" onclick="mClick(this,'shows')">shows</button><button class="m-btn" onclick="mClick(this,'no matter')">no matter</button></div>
+          <div class="match-col" id="mr"><button class="m-btn" onclick="mClick(this,'no matter')">~에 상관없이</button><button class="m-btn" onclick="mClick(this,'shows')">보여주다</button><button class="m-btn" onclick="mClick(this,'young')">젊은, 어린</button><button class="m-btn" onclick="mClick(this,'imagination')">상상력</button></div>
+        </div>
+        <div class="fb" id="mfb"></div>
+      </div>
+    </div>
+    <div class="prog"><div class="prog-fill" style="width:62%;"></div></div>
+  </article>
+  <!-- 섹션 7 -->
+  <article class="card">
+    <header class="sec-hdr"><div class="sec-num" style="background:#e91e63;">♪</div><div><div class="sec-title">👂 들어보자!</div><div class="sec-sub">LISTENING</div></div></header>
+    <div class="sec-body">
+      <button class="listen-play" data-speak="Imagination keeps us young." onclick="speakEl(this)">🔊 듣기!</button>
+      <div class="listen-opts"><button class="listen-opt" onclick="listenChk(this,'ok')"><div class="lo-emoji">✅</div><div class="lo-label">상상력이 우리를 젊게 유지해줘</div></button><button class="listen-opt" onclick="listenChk(this,'no')"><div class="lo-emoji">❌</div><div class="lo-label">돈이 우리를 젊게 유지해줘</div></button><button class="listen-opt" onclick="listenChk(this,'no')"><div class="lo-emoji">❌</div><div class="lo-label">운동이 우리를 젊게 유지해줘</div></button></div>
+      <div class="fb" id="listen-fb" style="margin-top:10px;"></div>
+    </div>
+    <div class="prog"><div class="prog-fill" style="width:70%;"></div></div>
+  </article>
+  <!-- 섹션 8 -->
+  <article class="card">
+    <header class="sec-hdr"><div class="sec-num" style="background:var(--gold);">✎</div><div><div class="sec-title">✍️ 써보자!</div><div class="sec-sub">DICTATION</div></div></header>
+    <div class="sec-body">
+      <button class="dict-play" data-speak="imagination" onclick="speakEl(this)">🔊 단어 듣기</button>
+      <div class="dict-hint">i m a g i n a t i o _</div>
+      <input class="dict-input" id="dictIn" placeholder="단어를 써봐!" onkeydown="if(event.key==='Enter')chkDictData(this.nextElementSibling)">
+      <button class="dict-check" data-word="imagination" onclick="chkDictData(this)">확인</button>
+      <div class="fb" id="dict-fb" style="margin-top:10px;"></div>
+    </div>
+    <div class="prog"><div class="prog-fill" style="width:78%;"></div></div>
+  </article>
+  <!-- 섹션 9 -->
+  <article class="card">
+    <header class="sec-hdr"><div class="sec-num" style="background:#7b1fa2;">9</div><div><div class="sec-title">올바른 번역 고르기! 🌍</div><div class="sec-sub">TRANSLATE · DUOLINGO STYLE</div></div></header>
+    <div class="sec-body">
+      <div class="duo-prompt">
+        <div class="duo-prompt-label">🇬🇧 이 영어 문장의 뜻은?</div>
+        <div class="duo-prompt-text">"Imagination keeps us young."</div>
+        <div class="duo-prompt-sub">아래 보기 중 올바른 답을 골라봐!</div>
+      </div>
+      <div class="duo-choices"><button class="duo-ch" onclick="duoPick(this,'ok','duo-fb1')"><span class="duo-ch-num">A</span>상상력은 우리를 젊게 유지해준다.</button><button class="duo-ch" onclick="duoPick(this,'no','duo-fb1')"><span class="duo-ch-num">B</span>상상력은 우리를 늙게 만든다.</button><button class="duo-ch" onclick="duoPick(this,'no','duo-fb1')"><span class="duo-ch-num">C</span>상상력은 아이들에게만 있다.</button></div>
+      <div class="fb" id="duo-fb1" style="margin-top:10px;"></div>
+    </div>
+    <div class="prog"><div class="prog-fill" style="width:87%;"></div></div>
+  </article>
+  <!-- 섹션 10 -->
+  <article class="card">
+    <header class="sec-hdr"><div class="sec-num" style="background:#f57c00;">10</div><div><div class="sec-title">문장 완성하기! ✨</div><div class="sec-sub">COMPLETE THE SENTENCE · DUOLINGO STYLE</div></div></header>
+    <div class="sec-body">
+      <div class="complete-sentence-box">
+        <div class="cs-label">💡 빈칸에 들어갈 알맞은 단어는?</div>
+        <div class="cs-sentence">___ keeps us young.</div>
+      </div>
+      <div class="cs-options"><button class="cs-opt" data-ans="ok" onclick="csPick(this,'Imagination','cs1-blank','cs-fb1')">💭 Imagination<br><span style="font-size:0.72rem;color:var(--text3);">상상력</span></button><button class="cs-opt" data-ans="no" onclick="csPick(this,'Money','cs1-blank','cs-fb1')">💰 Money<br><span style="font-size:0.72rem;color:var(--text3);">돈</span></button><button class="cs-opt" data-ans="no" onclick="csPick(this,'Food','cs1-blank','cs-fb1')">🍕 Food<br><span style="font-size:0.72rem;color:var(--text3);">음식</span></button><button class="cs-opt" data-ans="no" onclick="csPick(this,'Sleep','cs1-blank','cs-fb1')">😴 Sleep<br><span style="font-size:0.72rem;color:var(--text3);">잠</span></button></div>
+      <div class="fb" id="cs-fb1" style="margin-top:12px;"></div>
+    </div>
+    <div class="prog"><div class="prog-fill" style="width:94%;"></div></div>
+  </article>
+  <!-- 섹션 11 -->
+  <article class="card">
+    <header class="sec-hdr"><div class="sec-num" style="background:#00b894;">11</div><div><div class="sec-title">AI 튜터 ChatGPT 🤖</div><div class="sec-sub">SPEAKING PRACTICE · 매일 활성화</div></div></header>
+    <div class="sec-body">
+      <div class="ai-box">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif" alt="Robo" style="width:48px;height:48px;object-fit:contain;">
+          <div><div class="ai-box-title">AI 튜터 — Q2 Week 16 Day 1 (월)</div><div class="ai-box-desc">오늘 배운 표현을 ChatGPT 선생님과 영어로 연습해봐요!</div></div>
+        </div>
+        <div class="prompt-block">
+          <div class="prompt-lbl">📋 ChatGPT 전달사항 <button class="copy-btn" onclick="copyPrompt()">📋 복사</button></div>
+          <div class="prompt-text" id="promptBody">Hello! I&#x27;m Robo, your CEC English tutor! 🤖
+
+Today&#x27;s key sentence:
+⭐ Imagination keeps us young.
+
+오늘 단어: imagination(상상력), young(젊은, 어린), shows(보여주다), no matter(~에 상관없이)
+📚 Book: Peter Pan
+🎯 Quarter goal: Counter-argument 80단어
+
+STEP 1 ✏️ Sentence mastery
+Write today&#x27;s sentence and explain its deeper meaning.
+
+STEP 2 🎮 Vocabulary in context
+Use each word in a meaningful sentence.
+
+STEP 3 📖 Philosophical analysis
+What philosophical concept does today&#x27;s sentence explore?
+
+STEP 4 💬 CREC paragraph
+Write a 50-word CREC paragraph about today&#x27;s theme.
+
+STEP 5 🌟 Before we finish:
+Any English homework or exams coming up?
+I&#x27;m here for anything you need! 😊</div>
+        </div>
+        <div class="ai-steps">
+          <div class="ai-step"><div class="step-num">1</div><div>📋 <b style="color:#fff">복사</b> 버튼 클릭</div></div>
+          <div class="ai-step"><div class="step-num">2</div><div><b style="color:#fff">ChatGPT 열기</b> 클릭</div></div>
+          <div class="ai-step"><div class="step-num">3</div><div>채팅창에 <b style="color:#fff">붙여넣기(Ctrl+V)</b> 후 Enter</div></div>
+          <div class="ai-step"><div class="step-num">4</div><div>오늘 배운 문장을 <b style="color:#fff">영어로 말해봐요!</b></div></div>
+        </div>
+        <div class="ai-btn-row">
+          <a href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b" target="_blank" class="ai-btn-primary">🚀 ChatGPT 열기</a>
+          <button class="ai-btn-sec" onclick="copyPrompt()">📋 전달사항 복사</button>
+        </div>
+      </div>
+    </div>
+    <div class="prog"><div class="prog-fill" style="width:100%;"></div></div>
+  </article>
+  <div class="complete" id="done-card">
+    <div class="complete-emoji">⭐🎉🧚</div>
+    <div class="complete-title">Day 1 (월) 완료! ●○○</div>
+    <div class="complete-sub">핵심 표현: <strong>"Imagination keeps us young."</strong> ✅<br>단어: imagination · young · shows · no matter 완료!</div>
+    <div class="xp-big">🏆 총 <span id="fxp">0</span> XP!</div>
+    <div class="robo" style="text-align:left;">
+      <div class="robo-av"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo.png" alt="Robo"></div>
+      <div><div class="robo-nm">Robo</div><div class="robo-msg">Day 1 (월) 완료! 다음 수업에 또 만나요! 🌟</div></div>
+    </div>
+    <div style="margin-top:14px;">
+      <div class="next-card">
+        <div style="flex:1;"><div class="next-label">📅 다음 수업</div><div class="next-title">피터 팬의 마지막 메시지!</div></div>
+        <a href="week16b.html" class="next-btn">다음 →</a>
+      </div>
+    </div>
+  </div>
+</main>
+<nav class="bnav">
+  <span class="bl">Peter Pan</span>
+  <span class="bl">Q2 · W16 · Day 1 (월)</span>
+  <a class="bn" href="week16b.html">다음 →</a>
+</nav>
+<script>var xp=0,woPools={},mSel=null,mPairs={},duoDone=false,csDone=false;
+var _voices=[];
+function _loadVoices(){_voices=window.speechSynthesis.getVoices();}
+_loadVoices();
+if(window.speechSynthesis.onvoiceschanged!==undefined){window.speechSynthesis.onvoiceschanged=_loadVoices;}
+function _getBestVoice(){
+  if(!_voices.length)_voices=window.speechSynthesis.getVoices();
+  var prefer=['Samantha','Microsoft Zira Desktop - English (United States)','Microsoft Jenny Online (Natural) - English (United States)','Google US English','Karen'];
+  for(var i=0;i<prefer.length;i++){var f=_voices.find(function(v){return v.name===prefer[i];});if(f)return f;}
+  return _voices.find(function(v){return v.lang==='en-US';})||null;
+}
+function speak(text){window.speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.78;u.pitch=1.05;var v=_getBestVoice();if(v)u.voice=v;window.speechSynthesis.speak(u);}
+function speakEl(el){var text=el.getAttribute('data-speak')||'';if(text)speak(text);}
+function chkDictData(btn){var ans=btn.getAttribute('data-word')||'';chkDict(ans);}
+var _storyState='idle',_storyBtn=null;
+function storyPlay(text,btn){
+  if(!btn)btn=event.currentTarget;
+  if(_storyState==='playing'&&_storyBtn===btn){window.speechSynthesis.pause();_storyState='paused';btn.textContent='\u25B6';return;}
+  if(_storyState==='paused'&&_storyBtn===btn){window.speechSynthesis.resume();_storyState='playing';btn.textContent='\u23F8';return;}
+  storyReset();window.speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=0.75;u.pitch=1.05;var v=_getBestVoice();if(v)u.voice=v;
+  u.onend=function(){storyReset();};
+  window.speechSynthesis.speak(u);_storyState='playing';_storyBtn=btn;btn.textContent='\u23F8';
+}
+function storyReset(){window.speechSynthesis.cancel();_storyState='idle';document.querySelectorAll('.story-play-btn').forEach(function(b){b.textContent='\u25B6';});_storyBtn=null;}
+function storyStopped(){storyReset();}
+function storyPlayData(btn){var el=document.getElementById('story-data');var text=el?el.getAttribute('data-text'):'';storyPlay(text,btn);}
+function addXP(n){xp+=n;var el=document.getElementById('xp');if(el)el.textContent=xp;}
+function checkComplete(){var fxp=document.getElementById('fxp');if(fxp)fxp.textContent=xp;var c=document.getElementById('done-card');if(c){c.classList.add('show');c.scrollIntoView({behavior:'smooth'});}}
+function pick(btn,v,a,bId,fId){var bl=document.getElementById(bId),fb=document.getElementById(fId);if(v===a){btn.classList.add('ok');bl.textContent=v;btn.parentElement.querySelectorAll('.ch').forEach(function(b){b.disabled=true;});setTimeout(function(){fb.style.color='var(--sage)';fb.textContent='\u2705 정답! +20 XP';addXP(20);},400);}else{btn.classList.add('no');fb.style.color='#e53935';fb.textContent='\u274C 다시 해봐!';setTimeout(function(){btn.classList.remove('no');fb.textContent='';},1200);}}
+function woAdd(id,btn,w){if(btn.classList.contains('used'))return;btn.classList.add('used');if(!woPools[id])woPools[id]=[];woPools[id].push(w);var z=document.getElementById(id+'-zone'),ph=document.getElementById(id+'-ph');if(ph)ph.style.display='none';var c=document.createElement('button');c.className='placed';c.textContent=w;c.onclick=function(){var i=woPools[id].indexOf(w);if(i>-1)woPools[id].splice(i,1);btn.classList.remove('used');c.remove();if(!woPools[id].length&&ph)ph.style.display='';};z.appendChild(c);}
+function woChk(id,ans,fId){var g=(woPools[id]||[]).join(' '),fb=document.getElementById(fId);if(g===ans){setTimeout(function(){fb.style.color='var(--sage)';fb.textContent='\u2705 완벽해! +30 XP';addXP(30);},400);}else{fb.style.color='#e53935';fb.textContent='\u274C 다시! 정답: "'+ans+'"';setTimeout(function(){fb.textContent='';},2500);}}
+function woRst(id){woPools[id]=[];var z=document.getElementById(id+'-zone');z.innerHTML='<span class="build-ph" id="'+id+'-ph">\uD83D\uDC46 아래 단어를 눌러봐!</span>';document.querySelectorAll('#'+id+'-pool .wchip').forEach(function(w){w.classList.remove('used');});}
+function mClick(el,k){if(el.classList.contains('ok'))return;if(!mSel){mSel=el;el.classList.add('sel');return;}if(mSel===el){el.classList.remove('sel');mSel=null;return;}var ak=mSel.getAttribute('onclick').match(/'([^']+)'/)[1];if(ak===k){mSel.classList.remove('sel');mSel.classList.add('ok');el.classList.add('ok');mPairs[ak]=true;var d=Object.keys(mPairs).length,fb=document.getElementById('mfb');fb.style.color='var(--sage)';if(d>=4){setTimeout(function(){fb.textContent='\uD83C\uDF89 모두 맞췄어! +20 XP';addXP(20);},400);}else fb.textContent='\uD83D\uDC4D '+d+'개!';mSel=null;}else{mSel.classList.remove('sel');mSel.classList.add('no');el.classList.add('no');var a=mSel;setTimeout(function(){a.classList.remove('no');el.classList.remove('no');},600);mSel=null;}}
+function listenChk(btn,t){var fb=document.getElementById('listen-fb');if(t==='ok'){btn.classList.add('ok');btn.parentElement.querySelectorAll('.listen-opt').forEach(function(b){b.disabled=true;b.style.pointerEvents='none';});setTimeout(function(){fb.style.color='var(--sage)';fb.textContent='\u2705 정답! +20 XP';addXP(20);},400);}else{btn.classList.add('no');fb.style.color='#e53935';fb.textContent='\u274C 다시 들어봐!';setTimeout(function(){btn.classList.remove('no');fb.textContent='';},1200);}}
+function chkDict(ans){var v=document.getElementById('dictIn').value.trim().toLowerCase();var fb=document.getElementById('dict-fb');if(v===ans.toLowerCase()){fb.style.color='var(--sage)';setTimeout(function(){fb.textContent='\u2705 정답! +25 XP';addXP(25);},400);document.getElementById('dictIn').style.borderColor='var(--sage)';}else if(!v.length){fb.textContent='\u270F\uFE0F 써봐!';}else{fb.style.color='#e53935';fb.textContent='\u274C 힌트: '+ans[0]+'...';}}
+function duoPick(btn,t,fId){var fb=document.getElementById(fId);if(t==='ok'){btn.classList.add('ok');btn.parentElement.querySelectorAll('.duo-ch').forEach(function(b){b.disabled=true;});setTimeout(function(){fb.style.color='var(--sage)';fb.textContent='\u2705 정답! +25 XP';addXP(25);duoDone=true;if(csDone)checkComplete();},400);}else{btn.classList.add('no');fb.style.color='#e53935';fb.textContent='\u274C 다시 생각해봐!';setTimeout(function(){btn.classList.remove('no');fb.textContent='';},1200);}}
+function csPick(btn,v,blankId,fId){var bl=document.getElementById(blankId),fb=document.getElementById(fId);if(btn.dataset.ans==='ok'){btn.classList.add('ok');bl.textContent=v;btn.parentElement.querySelectorAll('.cs-opt').forEach(function(b){b.disabled=true;});setTimeout(function(){fb.style.color='var(--sage)';fb.textContent='\u2705 정답! +25 XP';addXP(25);csDone=true;if(duoDone)checkComplete();},400);}else{btn.classList.add('no');fb.style.color='#e53935';fb.textContent='\u274C 다시 생각해봐!';setTimeout(function(){btn.classList.remove('no');fb.textContent='';},1200);}}
+function copyPrompt(){var el=document.getElementById('promptBody'),text=el?el.textContent:'';var modal=document.createElement('div');modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';var box=document.createElement('div');box.style.cssText='background:#1a2a3a;border-radius:16px;padding:20px;width:100%;max-width:560px;';var ta=document.createElement('textarea');ta.value=text;ta.style.cssText='width:100%;height:180px;background:#0d1b2a;color:rgba(255,255,255,0.8);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:12px;font-family:monospace;font-size:0.75rem;line-height:1.7;resize:none;';var hdr=document.createElement('div');hdr.style.cssText='color:#c9a028;font-size:0.8rem;font-weight:700;margin-bottom:8px;';hdr.textContent='\uD83D\uDCCB Ctrl+A \u2192 Ctrl+C';var btns=document.createElement('div');btns.style.cssText='display:flex;gap:8px;margin-top:12px;';var copyBtn=document.createElement('button');copyBtn.textContent='\uD83D\uDCCB 복사';copyBtn.style.cssText='flex:1;padding:10px;background:#19c37d;color:#fff;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;';copyBtn.onclick=function(){ta.select();try{document.execCommand('copy');}catch(e){}copyBtn.textContent='\u2705 복사됨!';setTimeout(function(){copyBtn.textContent='\uD83D\uDCCB 복사';},1500);};var closeBtn=document.createElement('button');closeBtn.textContent='닫기';closeBtn.style.cssText='padding:10px 18px;background:rgba(255,255,255,0.1);color:#fff;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;';closeBtn.onclick=function(){modal.remove();};btns.appendChild(copyBtn);btns.appendChild(closeBtn);box.appendChild(hdr);box.appendChild(ta);box.appendChild(btns);modal.appendChild(box);document.body.appendChild(modal);setTimeout(function(){ta.focus();ta.select();},100);modal.addEventListener('click',function(e){if(e.target===modal)modal.remove();});}
+</script>
+</body>
+</html>
