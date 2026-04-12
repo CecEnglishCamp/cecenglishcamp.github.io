@@ -3,147 +3,542 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CEC English Camp A</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+<title>Camp A — CEC English Camp</title>
+<meta name="description" content="초등 영어캠프 Camp A — Grade 3~6 문학 기반 영어 학습">
+<link rel="canonical" href="https://cecenglishcamp.github.io/camp-a/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Cormorant Garamond',serif;min-height:100vh;background:#000;color:#e0e0e0}
+body{background:#000;color:#fff;font-family:'Outfit',sans-serif;min-height:100vh}
 
 /* NAV */
-.nav{background:rgba(0,0,0,.9);backdrop-filter:blur(12px);border-bottom:1px solid #00f2ff22;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
-.nav-left{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo{width:36px;height:36px;border-radius:10px;border:2px solid #00f2ff66}
-.nav-brand{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:#fff}
-.nav-badge{background:transparent;color:#00f2ff;font-size:.65rem;font-weight:700;padding:2px 10px;border-radius:12px;margin-left:6px;border:1px solid #00f2ff}
-.nav-links{display:flex;gap:20px}
-.nav-links a{color:#888;text-decoration:none;font-family:'Noto Sans KR',sans-serif;font-size:.82rem;font-weight:400;transition:color .2s}
-.nav-links a:hover{color:#00f2ff}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:64px;background:#000;border-bottom:1px solid rgba(0,255,255,0.13);position:fixed;top:0;left:0;right:0;z-index:1000}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo img{width:34px;height:34px;object-fit:contain;border-radius:8px}
+.nav-logo-text{font-size:1rem;font-weight:800;color:#fff;white-space:nowrap}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none;margin:0 auto}
+.nav-sep{color:#00bcd4;font-size:.38rem;opacity:.4;padding:0 1px}
+.nav-links>li>a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.82rem;font-weight:500;padding:5px 7px;white-space:nowrap;transition:color .2s}
+.nav-links>li>a:hover,.nav-links>li>a.active{color:#00bcd4}
+.nav-register a{background:#00bcd4;color:#000;text-decoration:none;font-size:.82rem;font-weight:800;padding:9px 20px;border-radius:50px;display:block}
+.nav-register a:hover{opacity:.82}
+.nav-dropdown{position:relative}
+.nav-dropdown-btn{color:#00bcd4!important;text-decoration:none;font-size:.82rem;font-weight:600!important;padding:5px 7px;white-space:nowrap;cursor:pointer}
+.nav-dropdown:hover .nav-dropdown-btn{color:#4dd0e1!important}
+.nav-dropdown-menu{display:none;position:absolute;top:100%;padding-top:8px;left:50%;transform:translateX(-50%);min-width:170px;z-index:200}
+.nav-dropdown-menu-inner{background:#080808;border:1px solid rgba(0,188,212,0.22);border-radius:10px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.7)}
+.nav-dropdown:hover .nav-dropdown-menu{display:block}
+.nav-dropdown-menu a{display:block;padding:10px 18px;color:#00bcd4;text-decoration:none;font-size:.82rem;font-weight:500;white-space:nowrap}
+.nav-dropdown-menu a:hover{background:rgba(0,188,212,.08);color:#4dd0e1}
 
 /* HERO */
-.hero{text-align:center;padding:72px 20px 56px;background:#000}
-.hero-robo{width:100px;height:100px;border-radius:50%;border:3px solid #00f2ff55;box-shadow:0 0 40px #00f2ff22;margin-bottom:24px}
-.hero-badge{display:inline-block;border:1px solid #00f2ff;color:#00f2ff;background:transparent;font-family:'Cormorant Garamond',serif;font-size:.75rem;font-weight:700;letter-spacing:3px;padding:6px 20px;border-radius:30px;margin-bottom:28px}
-.hero-title-1{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;color:#fff;line-height:1.1;margin-bottom:0}
-.hero-title-2{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;font-style:italic;color:#00f2ff;line-height:1.1;margin-bottom:20px}
-.hero-sub{font-family:'Noto Sans KR',sans-serif;font-size:18px;color:#aaa;line-height:1.8}
-.hero-stats{display:flex;justify-content:center;gap:60px;margin-top:48px}
-.stat-num{font-family:'Cormorant Garamond',serif;font-size:56px;font-weight:700;color:#00f2ff;line-height:1}
-.stat-label{font-family:'Noto Sans KR',sans-serif;font-size:12px;color:#888;letter-spacing:4px;margin-top:4px}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 20px 60px;text-align:center}
+.camp-label{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:32px;animation:fadeUp .7s ease}
+.camp-badge{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:50px;padding:6px 20px}
+.camp-title{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(3rem,6vw,5rem);color:#fff;line-height:1}
+.hero-img-wrap{position:relative;cursor:pointer;display:inline-block;animation:fadeUp .9s .15s ease both}
+.hero-img-wrap img{width:min(520px,78vw);border-radius:18px;display:block;box-shadow:0 0 0 1px rgba(0,255,255,0.08),0 24px 70px rgba(0,0,0,0.55);transition:box-shadow .4s}
+.hero-img-wrap:hover img{box-shadow:0 0 0 1.5px rgba(0,255,255,0.3),0 36px 90px rgba(0,0,0,0.65)}
+.img-overlay{position:absolute;inset:0;border-radius:18px;background:rgba(0,0,0,0);display:flex;align-items:flex-end;justify-content:center;padding-bottom:26px;transition:background .35s;pointer-events:none}
+.hero-img-wrap:hover .img-overlay{background:rgba(0,0,0,0.22)}
+.img-overlay span{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;font-weight:600;color:#00f2ff;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;text-shadow:0 2px 20px rgba(0,0,0,.9)}
+.hero-img-wrap:hover .img-overlay span{opacity:1;transform:translateY(0)}
 
-@media(max-width:640px){
-  .hero-title-1,.hero-title-2{font-size:40px}
-  .hero-stats{gap:32px}
-  .stat-num{font-size:40px}
+/* DESC */
+.desc-section{background:#000;border-top:1px solid rgba(255,255,255,.06);padding:80px 24px 60px}
+.desc-inner{max-width:1100px;margin:0 auto}
+.desc-intro{text-align:center;margin-bottom:56px}
+.desc-intro p{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2vw,1.5rem);font-style:italic;color:rgba(255,255,255,.7);line-height:1.75;max-width:720px;margin:0 auto}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:48px}
+.feature-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:24px;transition:border-color .25s,background .25s}
+.feature-card:hover{background:rgba(0,255,255,.04);border-color:rgba(0,255,255,.18)}
+.feature-icon{font-size:1.6rem;margin-bottom:10px;display:block}
+.feature-title{font-size:.98rem;font-weight:700;color:#fff;margin-bottom:8px}
+.feature-body{font-size:.85rem;font-weight:300;color:rgba(255,255,255,.55);line-height:1.7}
+
+/* GRADE TABS */
+.grade-tabs{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+.grade-tab{padding:12px 26px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;border:2px solid transparent;color:#fff;letter-spacing:.02em;transition:all .2s;min-height:44px;touch-action:manipulation}
+.grade-tab[data-grade="grade3"]{background:#166534;border-color:#22c55e}
+.grade-tab[data-grade="grade4"]{background:#1e3a5f;border-color:#60a5fa}
+.grade-tab[data-grade="grade5"]{background:#78350f;border-color:#f59e0b}
+.grade-tab[data-grade="grade6"]{background:#831843;border-color:#f472b6}
+.grade-tab[data-grade="grade3"].active,.grade-tab[data-grade="grade3"]:hover{background:#16a34a;border-color:#4ade80;box-shadow:0 0 16px rgba(74,222,128,.4)}
+.grade-tab[data-grade="grade4"].active,.grade-tab[data-grade="grade4"]:hover{background:#2563eb;border-color:#93c5fd;box-shadow:0 0 16px rgba(96,165,250,.4)}
+.grade-tab[data-grade="grade5"].active,.grade-tab[data-grade="grade5"]:hover{background:#d97706;border-color:#fcd34d;box-shadow:0 0 16px rgba(245,158,11,.4)}
+.grade-tab[data-grade="grade6"].active,.grade-tab[data-grade="grade6"]:hover{background:#db2777;border-color:#f9a8d4;box-shadow:0 0 16px rgba(244,114,182,.4)}
+.grade-section{display:none}
+.grade-section.active{display:block}
+.grade-header{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07);flex-wrap:wrap}
+.grade-header h3{font-family:'Cormorant Garamond',serif;font-size:1.85rem;font-weight:700}
+.grade-header span{font-size:.78rem;color:rgba(255,255,255,.4);font-weight:500}
+
+/* BOOKS & WEEKS */
+.book-group{margin-bottom:32px}
+.book-title{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.book-title h4{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:#fff;white-space:nowrap}
+.book-line{flex:1;min-width:20px;height:1px;background:rgba(255,255,255,.08)}
+.book-badge{font-size:.66rem;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.3);white-space:nowrap}
+.week-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px}
+.week-card{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;text-decoration:none;color:rgba(255,255,255,.65);font-size:.72rem;font-weight:500;gap:3px;transition:all .2s;min-height:64px;touch-action:manipulation}
+.week-card:active{transform:scale(.97)}
+.wnum{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;line-height:1;color:#fff;transition:color .2s}
+
+/* Grade-specific hover colors */
+#grade3 .week-card:hover{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.45)}
+#grade3 .week-card:hover .wnum{color:#4ade80}
+#grade4 .week-card:hover{background:rgba(96,165,250,.1);border-color:rgba(96,165,250,.45)}
+#grade4 .week-card:hover .wnum{color:#60a5fa}
+#grade5 .week-card:hover{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.45)}
+#grade5 .week-card:hover .wnum{color:#f59e0b}
+#grade6 .week-card:hover{background:rgba(244,114,182,.1);border-color:rgba(244,114,182,.45)}
+#grade6 .week-card:hover .wnum{color:#f472b6}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .nav-links{display:none}
+  nav{padding:0 16px}
+  .desc-section{padding:60px 16px 40px}
+}
+@media(max-width:600px){
+  .features-grid{grid-template-columns:1fr;gap:12px}
+  .grade-tab{padding:11px 20px;font-size:.88rem;flex:1;min-width:0}
+  .camp-title{font-size:2.4rem}
+  .hero{padding:90px 20px 40px;min-height:auto}
+  .week-grid{grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:6px}
+  .week-card{padding:12px 4px;min-height:58px}
+  .wnum{font-size:1.1rem}
+  .book-title h4{font-size:1.05rem}
 }
 
-/* CONTAINER */
-.container{max-width:960px;margin:0 auto;padding:0 20px 80px}
-
-/* SPEAKING BANNER */
-.speaking-banner{display:block;text-decoration:none;background:#0a0a1a;border:1px solid #00f2ff33;border-radius:16px;padding:36px 32px;margin-bottom:40px;transition:all .3s;text-align:center}
-.speaking-banner:hover{border-color:#00f2ff;box-shadow:0 0 40px #00f2ff22;transform:translateY(-3px)}
-.speaking-icon{font-size:2.2rem;margin-bottom:10px}
-.speaking-title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;font-weight:700;color:#00f2ff;margin-bottom:6px}
-.speaking-desc{font-family:'Noto Sans KR',sans-serif;font-size:.85rem;color:#888}
-.speaking-arrow{display:inline-block;margin-top:12px;color:#00f2ff;font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:700;letter-spacing:2px}
-
-/* GRADE GRID */
-.grade-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-@media(max-width:640px){.grade-grid{grid-template-columns:repeat(2,1fr)}}
-.grade-card{display:block;text-decoration:none;color:inherit;border-radius:16px;overflow:hidden;transition:all .3s;cursor:pointer;padding:36px 20px;text-align:center}
-.grade-card:hover{transform:translateY(-5px)}
-.grade-num{font-family:'Cormorant Garamond',serif;font-size:72px;font-weight:700;line-height:1}
-.grade-label{font-size:12px;font-weight:700;letter-spacing:5px;margin-bottom:16px}
-.grade-book{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.3}
-.grade-sub{font-family:'Noto Sans KR',sans-serif;font-size:14px;color:#888}
-
-.g3{background:#0a1f0a;border:1px solid #4CAF5033}
-.g3:hover{border-color:#4CAF50;box-shadow:0 0 30px #4CAF5022}
-.g3 .grade-num,.g3 .grade-label{color:#4CAF50}
-
-.g4{background:#0a0f1f;border:1px solid #2196F333}
-.g4:hover{border-color:#2196F3;box-shadow:0 0 30px #2196F322}
-.g4 .grade-num,.g4 .grade-label{color:#2196F3}
-
-.g5{background:#1f1200;border:1px solid #FF980033}
-.g5:hover{border-color:#FF9800;box-shadow:0 0 30px #FF980022}
-.g5 .grade-num,.g5 .grade-label{color:#FF9800}
-
-.g6{background:#180a1f;border:1px solid #9C27B033}
-.g6:hover{border-color:#9C27B0;box-shadow:0 0 30px #9C27B022}
-.g6 .grade-num,.g6 .grade-label{color:#9C27B0}
-
-/* FOOTER */
-.footer{text-align:center;padding:32px 20px;font-family:'Noto Sans KR',sans-serif;font-size:.75rem;color:#444;border-top:1px solid #111;margin-top:20px}
+/* Footer */
+footer{background:#000;border-top:1px solid rgba(255,255,255,.06);padding:32px 20px;text-align:center;font-size:.78rem;color:rgba(255,255,255,.4)}
+footer a{color:#00bcd4;text-decoration:none}
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <a class="nav-left" href="#">
-    <img class="nav-logo" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo.gif" alt="Robo">
-    <span class="nav-brand">CEC English Camp</span>
-    <span class="nav-badge">CAMP A</span>
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/cec-edu/assets/robo.png" alt="Robo" onerror="this.style.display='none'">
+    <span class="nav-logo-text">CEC English Camp</span>
   </a>
-  <div class="nav-links">
-    <a href="/grammar-game.html">Grammar</a>
-    <a href="/GrammarBaseCamp/">Base Camp</a>
-    <a href="/">Home</a>
-  </div>
+  <ul class="nav-links">
+    <li><a href="/about.html">About</a></li>
+    <li class="nav-sep">&middot;</li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-btn">Camps &#9662;</a>
+      <div class="nav-dropdown-menu"><div class="nav-dropdown-menu-inner">
+        <a href="/camp-a/" class="active">Camp A &mdash; Elementary</a>
+        <a href="/camp-b/">Camp B &mdash; Middle &amp; High</a>
+        <a href="/camp-c/">Camp C &mdash; Adult</a>
+      </div></div>
+    </li>
+    <li class="nav-sep">&middot;</li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-btn">Courses &#9662;</a>
+      <div class="nav-dropdown-menu"><div class="nav-dropdown-menu-inner">
+        <a href="/GrammarBaseCamp/">Grammar Base Camp</a>
+        <a href="/speaking/">Speaking</a>
+        <a href="/mom-teacher/">Mom Teacher</a>
+      </div></div>
+    </li>
+    <li class="nav-sep">&middot;</li>
+    <li><a href="/grammar-game.html">Games</a></li>
+  </ul>
+  <div class="nav-register"><a href="/register.html">Register</a></div>
 </nav>
 
-<div class="hero">
-  <img class="hero-robo" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo.gif" alt="Robo">
-  <div class="hero-badge">CEC ENGLISH CAMP</div><br>
-  <div class="hero-title-1">Learn English with</div>
-  <div class="hero-title-2">World Classics</div>
-  <div class="hero-sub">세계 명작으로 배우는 영어 · 그림 보고 말하기 + AI 튜터</div>
-  <div class="hero-stats">
-    <div><div class="stat-num">4</div><div class="stat-label">GRADES</div></div>
-    <div><div class="stat-num">36</div><div class="stat-label">MAX WEEKS</div></div>
-    <div><div class="stat-num">G3</div><div class="stat-label">START HERE</div></div>
+<section class="hero">
+  <div class="camp-label">
+    <span class="camp-badge">CAMP A &middot; ELEMENTARY SCHOOL</span>
+    <h1 class="camp-title">Camp A</h1>
   </div>
-</div>
-
-<div class="container">
-
-  <a href="speaking/" class="speaking-banner">
-    <div class="speaking-icon">🎤</div>
-    <div class="speaking-title">Speaking Training</div>
-    <div class="speaking-desc">그림으로 배우는 영어 말하기 · G3~G6 전체</div>
-    <div class="speaking-arrow">START →</div>
-  </a>
-
-  <div class="grade-grid">
-    <a href="/camp-a/grade3/" class="grade-card g3">
-      <div class="grade-num">3</div>
-      <div class="grade-label">GRADE</div>
-      <div class="grade-book">Peter Rabbit</div>
-      <div class="grade-sub">W1 ~ W18</div>
-    </a>
-    <a href="/camp-a/grade4/" class="grade-card g4">
-      <div class="grade-num">4</div>
-      <div class="grade-label">GRADE</div>
-      <div class="grade-book">Wind in the Willows</div>
-      <div class="grade-sub">W1 ~ W18</div>
-    </a>
-    <a href="/camp-a/grade5/" class="grade-card g5">
-      <div class="grade-num">5</div>
-      <div class="grade-label">GRADE</div>
-      <div class="grade-book">Treasure Island</div>
-      <div class="grade-sub">W1 ~ W16</div>
-    </a>
-    <a href="/camp-a/grade6/" class="grade-card g6">
-      <div class="grade-num">6</div>
-      <div class="grade-label">GRADE</div>
-      <div class="grade-book">A Little Princess</div>
-      <div class="grade-sub">W1 ~ W16</div>
-    </a>
+  <div class="hero-img-wrap" onclick="document.getElementById('grade-tabs').scrollIntoView({behavior:'smooth',block:'start'})">
+    <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/covers/Camp_A.png" alt="Camp A" onerror="this.style.display='none'">
+    <div class="img-overlay"><span>Select Your Grade &darr;</span></div>
   </div>
+</section>
 
-</div>
+<section class="desc-section">
+  <div class="desc-inner">
+    <div class="desc-intro">
+      <p>Classic literature drives every lesson &mdash; from fairy tales in Grade 3 to full novels in Grade 6. Reading, speaking, writing and grammar woven into one seamless weekly lesson.</p>
+    </div>
 
-<div class="footer">© 2026 CEC English Camp · Learn English with World Classics</div>
+    <div class="features-grid">
+      <div class="feature-card"><span class="feature-icon">📖</span><div class="feature-title">Literature-Based Learning</div><p class="feature-body">Students read Peter Rabbit, Treasure Island, Peter Pan and more &mdash; building vocabulary naturally through narrative.</p></div>
+      <div class="feature-card"><span class="feature-icon">🗣️</span><div class="feature-title">AI Speaking Training</div><p class="feature-body">Weekly AI-powered speaking sessions with instant feedback &mdash; building fluency without pressure.</p></div>
+      <div class="feature-card"><span class="feature-icon">✍️</span><div class="feature-title">Graded Writing Practice</div><p class="feature-body">Three writing levels (A1 &middot; A2 &middot; B1) ensure every student writes at exactly the right challenge level.</p></div>
+      <div class="feature-card"><span class="feature-icon">🎯</span><div class="feature-title">Weekly Dictation Challenge</div><p class="feature-body">Three fixed difficulty levels that sharpen listening and spelling simultaneously.</p></div>
+    </div>
 
+    <div class="grade-tabs" id="grade-tabs" role="tablist">
+      <button class="grade-tab active" role="tab" data-grade="grade3">Grade 3</button>
+      <button class="grade-tab" role="tab" data-grade="grade4">Grade 4</button>
+      <button class="grade-tab" role="tab" data-grade="grade5">Grade 5</button>
+      <button class="grade-tab" role="tab" data-grade="grade6">Grade 6</button>
+    </div>
+
+    <!-- Grade 3 -->
+    <div class="grade-section active" id="grade3" role="tabpanel">
+      <div class="grade-header"><h3 style="color:#4ade80">Grade 3</h3><span>Elementary &middot; Year 3 &middot; A2 &middot; 9권 &middot; 36주</span></div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Peter Rabbit</h4><div class="book-line"></div><span class="book-badge">W01&ndash;W05</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade3/week01a.html"><span class="wnum">W01</span><span>Week 1</span></a>
+          <a class="week-card" href="/camp-a/grade3/week02a.html"><span class="wnum">W02</span><span>Week 2</span></a>
+          <a class="week-card" href="/camp-a/grade3/week03a.html"><span class="wnum">W03</span><span>Week 3</span></a>
+          <a class="week-card" href="/camp-a/grade3/week04a.html"><span class="wnum">W04</span><span>Week 4</span></a>
+          <a class="week-card" href="/camp-a/grade3/week05a.html"><span class="wnum">W05</span><span>Week 5</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Red Riding Hood</h4><div class="book-line"></div><span class="book-badge">W06&ndash;W10</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade3/week06a.html"><span class="wnum">W06</span><span>Week 6</span></a>
+          <a class="week-card" href="/camp-a/grade3/week07a.html"><span class="wnum">W07</span><span>Week 7</span></a>
+          <a class="week-card" href="/camp-a/grade3/week08a.html"><span class="wnum">W08</span><span>Week 8</span></a>
+          <a class="week-card" href="/camp-a/grade3/week09a.html"><span class="wnum">W09</span><span>Week 9</span></a>
+          <a class="week-card" href="/camp-a/grade3/week10a.html"><span class="wnum">W10</span><span>Week 10</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Jack &amp; Beanstalk</h4><div class="book-line"></div><span class="book-badge">W11&ndash;W14</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade3/week11a.html"><span class="wnum">W11</span><span>Week 11</span></a>
+          <a class="week-card" href="/camp-a/grade3/week12a.html"><span class="wnum">W12</span><span>Week 12</span></a>
+          <a class="week-card" href="/camp-a/grade3/week13a.html"><span class="wnum">W13</span><span>Week 13</span></a>
+          <a class="week-card" href="/camp-a/grade3/week14a.html"><span class="wnum">W14</span><span>Week 14</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Frog Prince</h4><div class="book-line"></div><span class="book-badge">W15&ndash;W18</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade3/week15a.html"><span class="wnum">W15</span><span>Week 15</span></a>
+          <a class="week-card" href="/camp-a/grade3/week16a.html"><span class="wnum">W16</span><span>Week 16</span></a>
+          <a class="week-card" href="/camp-a/grade3/week17a.html"><span class="wnum">W17</span><span>Week 17</span></a>
+          <a class="week-card" href="/camp-a/grade3/week18a.html"><span class="wnum">W18</span><span>Week 18</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Elves &amp; Shoemaker</h4><div class="book-line"></div><span class="book-badge">W19&ndash;W21</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade3/week19a.html"><span class="wnum">W19</span><span>Week 19</span></a>
+          <a class="week-card" href="/camp-a/grade3/week20a.html"><span class="wnum">W20</span><span>Week 20</span></a>
+          <a class="week-card" href="/camp-a/grade3/week21a.html"><span class="wnum">W21</span><span>Week 21</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Thumbelina</h4><div class="book-line"></div><span class="book-badge">W22&ndash;W24</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade3/week22a.html"><span class="wnum">W22</span><span>Week 22</span></a>
+          <a class="week-card" href="/camp-a/grade3/week23a.html"><span class="wnum">W23</span><span>Week 23</span></a>
+          <a class="week-card" href="/camp-a/grade3/week24a.html"><span class="wnum">W24</span><span>Week 24</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Emperor's New Clothes</h4><div class="book-line"></div><span class="book-badge">W25&ndash;W27</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade3/week25a.html"><span class="wnum">W25</span><span>Week 25</span></a>
+          <a class="week-card" href="/camp-a/grade3/week26a.html"><span class="wnum">W26</span><span>Week 26</span></a>
+          <a class="week-card" href="/camp-a/grade3/week27a.html"><span class="wnum">W27</span><span>Week 27</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Lucky Hans</h4><div class="book-line"></div><span class="book-badge">W28&ndash;W31</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade3/week28a.html"><span class="wnum">W28</span><span>Week 28</span></a>
+          <a class="week-card" href="/camp-a/grade3/week29a.html"><span class="wnum">W29</span><span>Week 29</span></a>
+          <a class="week-card" href="/camp-a/grade3/week30a.html"><span class="wnum">W30</span><span>Week 30</span></a>
+          <a class="week-card" href="/camp-a/grade3/week31a.html"><span class="wnum">W31</span><span>Week 31</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Velveteen Rabbit</h4><div class="book-line"></div><span class="book-badge">W32&ndash;W36</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade3/week32a.html"><span class="wnum">W32</span><span>Week 32</span></a>
+          <a class="week-card" href="/camp-a/grade3/week33a.html"><span class="wnum">W33</span><span>Week 33</span></a>
+          <a class="week-card" href="/camp-a/grade3/week34a.html"><span class="wnum">W34</span><span>Week 34</span></a>
+          <a class="week-card" href="/camp-a/grade3/week35a.html"><span class="wnum">W35</span><span>Week 35</span></a>
+          <a class="week-card" href="/camp-a/grade3/week36a.html"><span class="wnum">W36</span><span>Week 36</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grade 4 -->
+    <div class="grade-section" id="grade4" role="tabpanel">
+      <div class="grade-header"><h3 style="color:#60a5fa">Grade 4</h3><span>Elementary &middot; Year 4 &middot; B1 &middot; 7권 &middot; 36주</span></div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Wind in the Willows</h4><div class="book-line"></div><span class="book-badge">W01&ndash;W04</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade4/week01a.html"><span class="wnum">W01</span><span>Week 1</span></a>
+          <a class="week-card" href="/camp-a/grade4/week02a.html"><span class="wnum">W02</span><span>Week 2</span></a>
+          <a class="week-card" href="/camp-a/grade4/week03a.html"><span class="wnum">W03</span><span>Week 3</span></a>
+          <a class="week-card" href="/camp-a/grade4/week04a.html"><span class="wnum">W04</span><span>Week 4</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>The Wizard of Oz</h4><div class="book-line"></div><span class="book-badge">W05&ndash;W08</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade4/week05a.html"><span class="wnum">W05</span><span>Week 5</span></a>
+          <a class="week-card" href="/camp-a/grade4/week06a.html"><span class="wnum">W06</span><span>Week 6</span></a>
+          <a class="week-card" href="/camp-a/grade4/week07a.html"><span class="wnum">W07</span><span>Week 7</span></a>
+          <a class="week-card" href="/camp-a/grade4/week08a.html"><span class="wnum">W08</span><span>Week 8</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Wind in the Willows <span style="font-size:.7em;color:rgba(255,255,255,.4);font-style:italic">(continued)</span></h4><div class="book-line"></div><span class="book-badge">W09&ndash;W12</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade4/week09a.html"><span class="wnum">W09</span><span>Week 9</span></a>
+          <a class="week-card" href="/camp-a/grade4/week10a.html"><span class="wnum">W10</span><span>Week 10</span></a>
+          <a class="week-card" href="/camp-a/grade4/week11a.html"><span class="wnum">W11</span><span>Week 11</span></a>
+          <a class="week-card" href="/camp-a/grade4/week12a.html"><span class="wnum">W12</span><span>Week 12</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Mary Poppins</h4><div class="book-line"></div><span class="book-badge">W13&ndash;W16</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade4/week13a.html"><span class="wnum">W13</span><span>Week 13</span></a>
+          <a class="week-card" href="/camp-a/grade4/week14a.html"><span class="wnum">W14</span><span>Week 14</span></a>
+          <a class="week-card" href="/camp-a/grade4/week15a.html"><span class="wnum">W15</span><span>Week 15</span></a>
+          <a class="week-card" href="/camp-a/grade4/week16a.html"><span class="wnum">W16</span><span>Week 16</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Charlotte's Web</h4><div class="book-line"></div><span class="book-badge">W17&ndash;W20</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade4/week17a.html"><span class="wnum">W17</span><span>Week 17</span></a>
+          <a class="week-card" href="/camp-a/grade4/week18a.html"><span class="wnum">W18</span><span>Week 18</span></a>
+          <a class="week-card" href="/camp-a/grade4/week19a.html"><span class="wnum">W19</span><span>Week 19</span></a>
+          <a class="week-card" href="/camp-a/grade4/week20a.html"><span class="wnum">W20</span><span>Week 20</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>The Wizard of Oz <span style="font-size:.7em;color:rgba(255,255,255,.4);font-style:italic">(continued)</span></h4><div class="book-line"></div><span class="book-badge">W21&ndash;W27</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade4/week21a.html"><span class="wnum">W21</span><span>Week 21</span></a>
+          <a class="week-card" href="/camp-a/grade4/week22a.html"><span class="wnum">W22</span><span>Week 22</span></a>
+          <a class="week-card" href="/camp-a/grade4/week23a.html"><span class="wnum">W23</span><span>Week 23</span></a>
+          <a class="week-card" href="/camp-a/grade4/week24a.html"><span class="wnum">W24</span><span>Week 24</span></a>
+          <a class="week-card" href="/camp-a/grade4/week25a.html"><span class="wnum">W25</span><span>Week 25</span></a>
+          <a class="week-card" href="/camp-a/grade4/week26a.html"><span class="wnum">W26</span><span>Week 26</span></a>
+          <a class="week-card" href="/camp-a/grade4/week27a.html"><span class="wnum">W27</span><span>Week 27</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Alice in Wonderland</h4><div class="book-line"></div><span class="book-badge">W28&ndash;W31</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade4/week28a.html"><span class="wnum">W28</span><span>Week 28</span></a>
+          <a class="week-card" href="/camp-a/grade4/week29a.html"><span class="wnum">W29</span><span>Week 29</span></a>
+          <a class="week-card" href="/camp-a/grade4/week30a.html"><span class="wnum">W30</span><span>Week 30</span></a>
+          <a class="week-card" href="/camp-a/grade4/week31a.html"><span class="wnum">W31</span><span>Week 31</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>The Adventures of Tom Sawyer</h4><div class="book-line"></div><span class="book-badge">W32&ndash;W36</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade4/week32a.html"><span class="wnum">W32</span><span>Week 32</span></a>
+          <a class="week-card" href="/camp-a/grade4/week33a.html"><span class="wnum">W33</span><span>Week 33</span></a>
+          <a class="week-card" href="/camp-a/grade4/week34a.html"><span class="wnum">W34</span><span>Week 34</span></a>
+          <a class="week-card" href="/camp-a/grade4/week35a.html"><span class="wnum">W35</span><span>Week 35</span></a>
+          <a class="week-card" href="/camp-a/grade4/week36a.html"><span class="wnum">W36</span><span>Week 36</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grade 5 -->
+    <div class="grade-section" id="grade5" role="tabpanel">
+      <div class="grade-header"><h3 style="color:#f59e0b">Grade 5</h3><span>Elementary &middot; Year 5 &middot; B1 &middot; 5권 &middot; 36주</span></div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Treasure Island</h4><div class="book-line"></div><span class="book-badge">W01&ndash;W09</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade5/week01a.html"><span class="wnum">W01</span><span>Week 1</span></a>
+          <a class="week-card" href="/camp-a/grade5/week02a.html"><span class="wnum">W02</span><span>Week 2</span></a>
+          <a class="week-card" href="/camp-a/grade5/week03a.html"><span class="wnum">W03</span><span>Week 3</span></a>
+          <a class="week-card" href="/camp-a/grade5/week04a.html"><span class="wnum">W04</span><span>Week 4</span></a>
+          <a class="week-card" href="/camp-a/grade5/week05a.html"><span class="wnum">W05</span><span>Week 5</span></a>
+          <a class="week-card" href="/camp-a/grade5/week06a.html"><span class="wnum">W06</span><span>Week 6</span></a>
+          <a class="week-card" href="/camp-a/grade5/week07a.html"><span class="wnum">W07</span><span>Week 7</span></a>
+          <a class="week-card" href="/camp-a/grade5/week08a.html"><span class="wnum">W08</span><span>Week 8</span></a>
+          <a class="week-card" href="/camp-a/grade5/week09a.html"><span class="wnum">W09</span><span>Week 9</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Around the World in 80 Days</h4><div class="book-line"></div><span class="book-badge">W10&ndash;W18</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade5/week10a.html"><span class="wnum">W10</span><span>Week 10</span></a>
+          <a class="week-card" href="/camp-a/grade5/week11a.html"><span class="wnum">W11</span><span>Week 11</span></a>
+          <a class="week-card" href="/camp-a/grade5/week12a.html"><span class="wnum">W12</span><span>Week 12</span></a>
+          <a class="week-card" href="/camp-a/grade5/week13a.html"><span class="wnum">W13</span><span>Week 13</span></a>
+          <a class="week-card" href="/camp-a/grade5/week14a.html"><span class="wnum">W14</span><span>Week 14</span></a>
+          <a class="week-card" href="/camp-a/grade5/week15a.html"><span class="wnum">W15</span><span>Week 15</span></a>
+          <a class="week-card" href="/camp-a/grade5/week16a.html"><span class="wnum">W16</span><span>Week 16</span></a>
+          <a class="week-card" href="/camp-a/grade5/week17a.html"><span class="wnum">W17</span><span>Week 17</span></a>
+          <a class="week-card" href="/camp-a/grade5/week18a.html"><span class="wnum">W18</span><span>Week 18</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>The Call of the Wild</h4><div class="book-line"></div><span class="book-badge">W19&ndash;W27</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade5/week19a.html"><span class="wnum">W19</span><span>Week 19</span></a>
+          <a class="week-card" href="/camp-a/grade5/week20a.html"><span class="wnum">W20</span><span>Week 20</span></a>
+          <a class="week-card" href="/camp-a/grade5/week21a.html"><span class="wnum">W21</span><span>Week 21</span></a>
+          <a class="week-card" href="/camp-a/grade5/week22a.html"><span class="wnum">W22</span><span>Week 22</span></a>
+          <a class="week-card" href="/camp-a/grade5/week23a.html"><span class="wnum">W23</span><span>Week 23</span></a>
+          <a class="week-card" href="/camp-a/grade5/week24a.html"><span class="wnum">W24</span><span>Week 24</span></a>
+          <a class="week-card" href="/camp-a/grade5/week25a.html"><span class="wnum">W25</span><span>Week 25</span></a>
+          <a class="week-card" href="/camp-a/grade5/week26a.html"><span class="wnum">W26</span><span>Week 26</span></a>
+          <a class="week-card" href="/camp-a/grade5/week27a.html"><span class="wnum">W27</span><span>Week 27</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Anne of Green Gables</h4><div class="book-line"></div><span class="book-badge">W28&ndash;W32</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade5/week28a.html"><span class="wnum">W28</span><span>Week 28</span></a>
+          <a class="week-card" href="/camp-a/grade5/week29a.html"><span class="wnum">W29</span><span>Week 29</span></a>
+          <a class="week-card" href="/camp-a/grade5/week30a.html"><span class="wnum">W30</span><span>Week 30</span></a>
+          <a class="week-card" href="/camp-a/grade5/week31a.html"><span class="wnum">W31</span><span>Week 31</span></a>
+          <a class="week-card" href="/camp-a/grade5/week32a.html"><span class="wnum">W32</span><span>Week 32</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Swiss Family Robinson</h4><div class="book-line"></div><span class="book-badge">W33&ndash;W36</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade5/week33a.html"><span class="wnum">W33</span><span>Week 33</span></a>
+          <a class="week-card" href="/camp-a/grade5/week34a.html"><span class="wnum">W34</span><span>Week 34</span></a>
+          <a class="week-card" href="/camp-a/grade5/week35a.html"><span class="wnum">W35</span><span>Week 35</span></a>
+          <a class="week-card" href="/camp-a/grade5/week36a.html"><span class="wnum">W36</span><span>Week 36</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grade 6 -->
+    <div class="grade-section" id="grade6" role="tabpanel">
+      <div class="grade-header"><h3 style="color:#f472b6">Grade 6</h3><span>Elementary &middot; Year 6 &middot; B2 &middot; 7권 &middot; 36주</span></div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>A Little Princess</h4><div class="book-line"></div><span class="book-badge">W01&ndash;W08</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade6/week01a.html"><span class="wnum">W01</span><span>Week 1</span></a>
+          <a class="week-card" href="/camp-a/grade6/week02a.html"><span class="wnum">W02</span><span>Week 2</span></a>
+          <a class="week-card" href="/camp-a/grade6/week03a.html"><span class="wnum">W03</span><span>Week 3</span></a>
+          <a class="week-card" href="/camp-a/grade6/week04a.html"><span class="wnum">W04</span><span>Week 4</span></a>
+          <a class="week-card" href="/camp-a/grade6/week05a.html"><span class="wnum">W05</span><span>Week 5</span></a>
+          <a class="week-card" href="/camp-a/grade6/week06a.html"><span class="wnum">W06</span><span>Week 6</span></a>
+          <a class="week-card" href="/camp-a/grade6/week07a.html"><span class="wnum">W07</span><span>Week 7</span></a>
+          <a class="week-card" href="/camp-a/grade6/week08a.html"><span class="wnum">W08</span><span>Week 8</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Peter Pan</h4><div class="book-line"></div><span class="book-badge">W09&ndash;W16</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade6/week09a.html"><span class="wnum">W09</span><span>Week 9</span></a>
+          <a class="week-card" href="/camp-a/grade6/week10a.html"><span class="wnum">W10</span><span>Week 10</span></a>
+          <a class="week-card" href="/camp-a/grade6/week11a.html"><span class="wnum">W11</span><span>Week 11</span></a>
+          <a class="week-card" href="/camp-a/grade6/week12a.html"><span class="wnum">W12</span><span>Week 12</span></a>
+          <a class="week-card" href="/camp-a/grade6/week13a.html"><span class="wnum">W13</span><span>Week 13</span></a>
+          <a class="week-card" href="/camp-a/grade6/week14a.html"><span class="wnum">W14</span><span>Week 14</span></a>
+          <a class="week-card" href="/camp-a/grade6/week15a.html"><span class="wnum">W15</span><span>Week 15</span></a>
+          <a class="week-card" href="/camp-a/grade6/week16a.html"><span class="wnum">W16</span><span>Week 16</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>The Jungle Book</h4><div class="book-line"></div><span class="book-badge">W17&ndash;W20</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade6/week17a.html"><span class="wnum">W17</span><span>Week 17</span></a>
+          <a class="week-card" href="/camp-a/grade6/week18a.html"><span class="wnum">W18</span><span>Week 18</span></a>
+          <a class="week-card" href="/camp-a/grade6/week19a.html"><span class="wnum">W19</span><span>Week 19</span></a>
+          <a class="week-card" href="/camp-a/grade6/week20a.html"><span class="wnum">W20</span><span>Week 20</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Pinocchio</h4><div class="book-line"></div><span class="book-badge">W21&ndash;W24</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade6/week21a.html"><span class="wnum">W21</span><span>Week 21</span></a>
+          <a class="week-card" href="/camp-a/grade6/week22a.html"><span class="wnum">W22</span><span>Week 22</span></a>
+          <a class="week-card" href="/camp-a/grade6/week23a.html"><span class="wnum">W23</span><span>Week 23</span></a>
+          <a class="week-card" href="/camp-a/grade6/week24a.html"><span class="wnum">W24</span><span>Week 24</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>The Phantom Tollbooth</h4><div class="book-line"></div><span class="book-badge">W25&ndash;W28</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade6/week25a.html"><span class="wnum">W25</span><span>Week 25</span></a>
+          <a class="week-card" href="/camp-a/grade6/week26a.html"><span class="wnum">W26</span><span>Week 26</span></a>
+          <a class="week-card" href="/camp-a/grade6/week27a.html"><span class="wnum">W27</span><span>Week 27</span></a>
+          <a class="week-card" href="/camp-a/grade6/week28a.html"><span class="wnum">W28</span><span>Week 28</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Little Women</h4><div class="book-line"></div><span class="book-badge">W29&ndash;W32</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade6/week29a.html"><span class="wnum">W29</span><span>Week 29</span></a>
+          <a class="week-card" href="/camp-a/grade6/week30a.html"><span class="wnum">W30</span><span>Week 30</span></a>
+          <a class="week-card" href="/camp-a/grade6/week31a.html"><span class="wnum">W31</span><span>Week 31</span></a>
+          <a class="week-card" href="/camp-a/grade6/week32a.html"><span class="wnum">W32</span><span>Week 32</span></a>
+        </div>
+      </div>
+
+      <div class="book-group">
+        <div class="book-title"><h4>Emil and the Detectives</h4><div class="book-line"></div><span class="book-badge">W33&ndash;W36</span></div>
+        <div class="week-grid">
+          <a class="week-card" href="/camp-a/grade6/week33a.html"><span class="wnum">W33</span><span>Week 33</span></a>
+          <a class="week-card" href="/camp-a/grade6/week34a.html"><span class="wnum">W34</span><span>Week 34</span></a>
+          <a class="week-card" href="/camp-a/grade6/week35a.html"><span class="wnum">W35</span><span>Week 35</span></a>
+          <a class="week-card" href="/camp-a/grade6/week36a.html"><span class="wnum">W36</span><span>Week 36</span></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 CEC English Camp &middot; <a href="/">Home</a> &middot; <a href="/camp-a/">Camp A</a>
+</footer>
+
+<script>
+document.querySelectorAll('.grade-tab').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var target=this.dataset.grade;
+    document.querySelectorAll('.grade-tab').forEach(function(b){b.classList.remove('active');});
+    this.classList.add('active');
+    document.querySelectorAll('.grade-section').forEach(function(s){s.classList.remove('active');});
+    var el=document.getElementById(target);
+    if(el)el.classList.add('active');
+  });
+});
+</script>
 </body>
 </html>
