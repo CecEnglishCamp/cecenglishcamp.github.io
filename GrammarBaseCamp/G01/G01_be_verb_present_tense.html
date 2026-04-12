@@ -644,11 +644,18 @@
   var GB_MODEL='gemma4:e2b';
 
   function gbBuildSystemPrompt(){
-    var topic = data ? (gid+' '+data.title) : gid;
+    // Extract English title from <title> tag (e.g., "G01. Be Verb: Present Tense")
+    var engTitle = (document.title||'').replace(/^G\d+\.\s*/i,'').trim() || '';
+    var koTitle = data ? data.title : '';
+    var exampleHint = data && data.example ? data.example : '';
+    var fullTopic = gid + (koTitle ? ' - '+koTitle : '') + (engTitle ? ' ('+engTitle+')' : '');
     return '당신은 CEC English Camp 문법 선생님입니다.\n'
-      + '현재 학생이 보고 있는 문법: '+topic+'\n'
-      + '한국어로 친절하게 설명해주세요.\n'
-      + '문법 규칙, 예문, 활용법을 쉽게 알려주세요.';
+      + '지금 학생은 ['+fullTopic+'] 페이지를 보고 있습니다.\n'
+      + (exampleHint ? '이 문법의 대표 예문: '+exampleHint+'\n' : '')
+      + '학생이 "이 문법", "this grammar" 등으로 질문하면 반드시 '+(koTitle||gid)+'에 대해 답해주세요.\n'
+      + '다른 문법을 묻지 않는 한 현재 페이지 문법으로 답변을 집중하세요.\n'
+      + '한국어로 친절하고 쉽게 설명해주세요.\n'
+      + '문법 규칙, 예문, 실생활 활용법을 포함해서 답해주세요.';
   }
 
   window.gbFetch=function(userMsg){
