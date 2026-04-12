@@ -411,5 +411,25 @@ document.addEventListener('click', function(e){
 renderAll(units);
 </script>
 <script src="grammar_story_map.js"></script>
+<script>
+// Propagate ?return= param to all internal links (so the back button on lesson pages works)
+(function(){
+  var ret=new URLSearchParams(window.location.search).get('return');
+  if(!ret)return;
+  function propagate(){
+    document.querySelectorAll('a[href]').forEach(function(a){
+      var href=a.getAttribute('href');
+      if(!href||href.startsWith('http')||href.startsWith('#')||href.startsWith('mailto:'))return;
+      if(href.indexOf('return=')!==-1)return;
+      var sep=href.indexOf('?')===-1?'?':'&';
+      a.setAttribute('href',href+sep+'return='+encodeURIComponent(ret));
+    });
+  }
+  propagate();
+  // Re-run after dynamic rendering (units/stories)
+  setTimeout(propagate,200);
+  setTimeout(propagate,1000);
+})();
+</script>
 </body>
 </html>
