@@ -134,6 +134,23 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
 /* Footer */
 footer{background:#000;border-top:1px solid rgba(255,255,255,.06);padding:32px 20px;text-align:center;font-size:.78rem;color:rgba(255,255,255,.4)}
 footer a{color:#00bcd4;text-decoration:none}
+
+/* Mobile hamburger menu */
+.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;margin-left:auto;flex-shrink:0;}
+.nav-hamburger span{display:block;width:24px;height:2px;background:#fff;transition:all .3s;}
+.nav-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.nav-hamburger.open span:nth-child(2){opacity:0;}
+.nav-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+@media(max-width:900px){
+  .nav-hamburger{display:flex;}
+  .nav-links{display:none!important;position:fixed;top:64px;left:0;right:0;background:#000;flex-direction:column;padding:20px;gap:16px;z-index:999;border-bottom:1px solid rgba(255,255,255,.1);margin:0;transform:none;}
+  .nav-links.open{display:flex!important;}
+  .nav-links>li{width:100%;}
+  .nav-links>li>a,.nav-links a{width:100%;display:block;padding:10px 0;font-size:1rem;}
+  .nav-sep{display:none;}
+  .nav-dropdown-menu{position:static;transform:none;padding-top:8px;}
+  .nav-dropdown-menu-inner{background:rgba(255,255,255,.04);}
+}
 </style>
 </head>
 <body>
@@ -166,6 +183,7 @@ footer a{color:#00bcd4;text-decoration:none}
     <li class="nav-sep">&middot;</li>
     <li><a href="/grammar-game.html">Games</a></li>
   </ul>
+  <button class="nav-hamburger" onclick="navToggle()" aria-label="메뉴"><span></span><span></span><span></span></button>
   <div class="nav-register"><a href="/register.html">Register</a></div>
 </nav>
 
@@ -295,6 +313,10 @@ document.querySelectorAll('.grade-tab').forEach(function(btn){
     if(el)el.classList.add('active');
   });
 });
+</script>
+
+<script>
+function navToggle(){var b=document.querySelector('.nav-hamburger');var l=document.querySelector('.nav-links');if(b&&l){b.classList.toggle('open');l.classList.toggle('open');}}
 </script>
 </body>
 </html>
