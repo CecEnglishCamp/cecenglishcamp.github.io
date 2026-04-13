@@ -85,6 +85,23 @@ div:hover>.image-overlay>.overlay-label{opacity:1;transform:translateY(0)}
 .nav-dropdown:hover .nav-dropdown-menu{display:block}
 .nav-dropdown-menu a{display:block;padding:10px 18px;color:rgba(255,255,255,.78);text-decoration:none;font-size:.87rem;font-weight:500;transition:background .15s,color .15s;white-space:nowrap}
 .nav-dropdown-menu a:hover{background:rgba(0,255,255,.08);color:#00ffff}
+
+/* Mobile hamburger menu */
+.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;margin-left:auto;flex-shrink:0;}
+.nav-hamburger span{display:block;width:24px;height:2px;background:#fff;transition:all .3s;}
+.nav-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.nav-hamburger.open span:nth-child(2){opacity:0;}
+.nav-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+@media(max-width:900px){
+  .nav-hamburger{display:flex;}
+  .nav-links{display:none!important;position:fixed;top:64px;left:0;right:0;background:#000;flex-direction:column;padding:20px;gap:16px;z-index:999;border-bottom:1px solid rgba(255,255,255,.1);margin:0;transform:none;}
+  .nav-links.open{display:flex!important;}
+  .nav-links>li{width:100%;}
+  .nav-links>li>a,.nav-links a{width:100%;display:block;padding:10px 0;font-size:1rem;}
+  .nav-sep{display:none;}
+  .nav-dropdown-menu{position:static;transform:none;padding-top:8px;}
+  .nav-dropdown-menu-inner{background:rgba(255,255,255,.04);}
+}
 </style>
 </head>
 <body>
@@ -117,6 +134,7 @@ div:hover>.image-overlay>.overlay-label{opacity:1;transform:translateY(0)}
     <li class="nav-sep">•</li>
     <li><a href="#">AI Tools</a></li>
   </ul>
+  <button class="nav-hamburger" onclick="navToggle()" aria-label="메뉴"><span></span><span></span><span></span></button>
   <div class="nav-register"><a href="/cec-edu/register/">Register</a></div>
 </nav>
 <section class="hero">
@@ -242,5 +260,9 @@ document.querySelectorAll('.grade-tab').forEach(btn=>{
 });
 const img=document.querySelector('.camp-image');
 if(img){document.addEventListener('mousemove',e=>{const cx=window.innerWidth/2,cy=window.innerHeight/2;const dx=(e.clientX-cx)/cx,dy=(e.clientY-cy)/cy;img.style.transform=`perspective(800px) rotateX(${dy*-5}deg) rotateY(${dx*6}deg) translateY(-2px)`;});document.addEventListener('mouseleave',()=>{img.style.transform='';});}
+</script>
+
+<script>
+function navToggle(){var b=document.querySelector('.nav-hamburger');var l=document.querySelector('.nav-links');if(b&&l){b.classList.toggle('open');l.classList.toggle('open');}}
 </script>
 </body></html>
