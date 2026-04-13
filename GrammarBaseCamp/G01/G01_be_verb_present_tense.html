@@ -589,7 +589,12 @@
     <input class="gb-input" id="gbInput" type="text" placeholder="질문을 입력하세요..." onkeydown="gbCheckEnter(event)" oninput="gbDropdown(this.value)">
     <button class="gb-send" onclick="gbSend()">→</button>
   </div>
-  <div class="gb-btns"><button class="gb-btn2" id="gbBtn2" onclick="gbCamp()" style="flex:none;width:100%;">🏕️ 영어캠프 둘러보기</button></div>
+  <div class="gb-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 12px 12px;background:#fff;">
+    <button class="gb-btn2" onclick="gbQuick('언제 쓰는 거야?')">⏰ 언제 쓰는 거야?</button>
+    <button class="gb-btn2" onclick="gbQuick('왜 필요한거야?')">❓ 왜 필요한거야?</button>
+    <button class="gb-btn2" onclick="gbQuick('다른 예문 하나 더 줘')">📝 다른 예문 하나 더</button>
+    <button class="gb-btn2" onclick="gbReturn()">🏕️ 공부하던 곳으로</button>
+  </div>
 </div>
 <script src="../grammar_story_map.js"></script>
 <script>
@@ -601,13 +606,25 @@
   var data = map[gid] || null;
   var gbIsOpen = false;
 
+  // ===== Camp A-style grammar context =====
+  var GB_GRAMMAR_ID = gid;
+  var GB_GRAMMAR_KR = data ? data.title : '';
+  var GB_GRAMMAR_EN = (document.title||'').replace(/^G\d+\.\s*/i,'').trim() || '';
+  var GB_GRAMMAR_EXAMPLE = data && data.example ? data.example : '';
+  var GB_CONTEXT = function(){
+    return '오늘 학습 문법: ' + GB_GRAMMAR_ID
+      + (GB_GRAMMAR_KR ? ' — ' + GB_GRAMMAR_KR : '')
+      + (GB_GRAMMAR_EN ? ' (' + GB_GRAMMAR_EN + ')' : '')
+      + (GB_GRAMMAR_EXAMPLE ? '\n대표 예문: ' + GB_GRAMMAR_EXAMPLE : '');
+  };
+
   if(data){
     var ht = document.getElementById('gbHintText');
     var sub = document.getElementById('gbSub');
     if(ht) ht.textContent = data.title;
     if(sub) sub.textContent = gid + ' \u2014 ' + data.title;
     setTimeout(function(){
-      gbAddAI('\uc548\ub155\ud558\uc138\uc694! \ud83d\udcd8 \uad81\uae08\ud55c \ubb38\ubc95 \ubc14\ub85c \ubb3c\uc5b4\ubcf4\uc138\uc694!\n\uc608: \'\uc774 \ubb38\ubc95 \uc5b8\uc81c \uc368\uc694?\' \'\uc608\ubb38 \ud558\ub098 \ub354 \ubcf4\uc5ec\uc918\' \'\ud55c\uad6d\uc5b4\ub85c \uc124\uba85\ud574\uc918\'');
+      gbAddAI('안녕! 나는 Robo야! 🤖\n오늘 배우는 문법: ' + GB_GRAMMAR_KR + '\n궁금한 거 있으면 아래 버튼을 눌러봐!');
     }, 300);
   }
 
@@ -639,34 +656,20 @@
     if(e.key === 'Enter') gbSend();
   };
 
-  // ===== AI API (Gemma4 via ngrok) =====
+  // ===== AI API (Gemma4 via ngrok) — Camp A style: single user role =====
   var GB_API_URL='https://journey-bronzy-fruitily.ngrok-free.dev/api/chat/completions';
   var GB_MODEL='gemma4:e2b';
-
-  function gbBuildSystemPrompt(){
-    // Extract English title from <title> tag (e.g., "G01. Be Verb: Present Tense")
-    var engTitle = (document.title||'').replace(/^G\d+\.\s*/i,'').trim() || '';
-    var koTitle = data ? data.title : '';
-    var exampleHint = data && data.example ? data.example : '';
-    var fullTopic = gid + (koTitle ? ' - '+koTitle : '') + (engTitle ? ' ('+engTitle+')' : '');
-    return '당신은 CEC English Camp 문법 선생님입니다.\n'
-      + '지금 학생은 ['+fullTopic+'] 페이지를 보고 있습니다.\n'
-      + (exampleHint ? '이 문법의 대표 예문: '+exampleHint+'\n' : '')
-      + '학생이 "이 문법", "this grammar" 등으로 질문하면 반드시 '+(koTitle||gid)+'에 대해 답해주세요.\n'
-      + '다른 문법을 묻지 않는 한 현재 페이지 문법으로 답변을 집중하세요.\n'
-      + '한국어로 친절하고 쉽게 설명해주세요.\n'
-      + '문법 규칙, 예문, 실생활 활용법을 포함해서 답해주세요.';
-  }
 
   window.gbFetch=function(userMsg){
     var bubble=gbAddAI('생각 중... 🤔');
     var c=document.getElementById('gbChat');
+    var fullContent = GB_CONTEXT()
+      + '\n학생 질문: ' + userMsg
+      + '\n중고등학생 수준으로 한국어로 친절하게 답해줘.'
+      + '\n문법 규칙, 예문, 실생활 활용법 포함.';
     var body={
       model:GB_MODEL,
-      messages:[
-        {role:'system',content:gbBuildSystemPrompt()},
-        {role:'user',content:userMsg}
-      ],
+      messages:[{role:'user',content:fullContent}],
       stream:false
     };
     fetch(GB_API_URL,{
@@ -681,6 +684,25 @@
     }).catch(function(e){
       if(bubble)bubble.textContent='⚠️ 연결 실패: '+e.message;
     });
+  };
+
+  // Quick button handler: 4 preset questions
+  window.gbQuick=function(text){
+    if(!gbIsOpen)window.gbToggle();
+    gbAddUser(text);
+    gbFetch(text);
+  };
+
+  // "공부하던 곳으로 보내줘" — return to the referring lesson page
+  window.gbReturn=function(){
+    var ret=new URLSearchParams(window.location.search).get('return');
+    if(ret){
+      window.location.href=ret;
+    }else if(document.referrer && document.referrer.indexOf(window.location.hostname)!==-1){
+      window.location.href=document.referrer;
+    }else{
+      history.back();
+    }
   };
 
   // Keyword → G## map for quick navigation to OTHER grammar pages
