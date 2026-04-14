@@ -637,29 +637,49 @@
   var GB_API_URL='https://journey-bronzy-fruitily.ngrok-free.dev/api/chat/completions';
   var GB_MODEL='gemma4:e2b';
 
-  window.gbFetch=function(userMsg){
-    var bubble=gbAddAI('생각 중... 🤔');
+  window.gbFetch=async function(userMsg){
+    var bubble=window.gbAddAI('생각 중... 🤔');
     var c=document.getElementById('gbChat');
     var fullContent = '오늘 문법: ' + GB_TOPIC
       + '\n학생 질문: ' + userMsg
       + '\n중고등학생 수준으로 한국어로 친절하게 답해줘.';
-    var body={
-      model:GB_MODEL,
-      messages:[{role:'user',content:fullContent}],
-      stream:false
-    };
-    fetch(GB_API_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(body)
-    }).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-    .then(function(d){
-      var reply=(d&&d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||'(응답 없음)';
-      if(bubble)bubble.innerHTML=String(reply).replace(/\n/g,'<br>');
-      if(c)c.scrollTop=c.scrollHeight;
-    }).catch(function(e){
+    try{
+      var res=await fetch(GB_API_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model:GB_MODEL,messages:[{role:'system',content:'마크다운 기호(#, *, **, ##, - 등)를 절대 사용하지 말고 일반 텍스트로만 답해줘. 이모지는 사용 가능.'},{role:'user',content:fullContent}],max_tokens:300,stream:true})
+      });
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      var reader=res.body.getReader();
+      var decoder=new TextDecoder();
+      var buf='', acc='', first=true;
+      while(true){
+        var chunk=await reader.read();
+        if(chunk.done) break;
+        buf+=decoder.decode(chunk.value,{stream:true});
+        var idx;
+        while((idx=buf.indexOf('\n'))>=0){
+          var line=buf.slice(0,idx).trim();
+          buf=buf.slice(idx+1);
+          if(!line.startsWith('data:')) continue;
+          var payload=line.slice(5).trim();
+          if(payload==='[DONE]') continue;
+          try{
+            var jd=JSON.parse(payload);
+            var delta=jd&&jd.choices&&jd.choices[0]&&jd.choices[0].delta&&jd.choices[0].delta.content;
+            if(delta){
+              if(first){ if(bubble)bubble.innerHTML=''; first=false; }
+              acc+=delta;
+              if(bubble)bubble.innerHTML=String(acc).replace(/\n/g,'<br>');
+              if(c)c.scrollTop=c.scrollHeight;
+            }
+          }catch(e){}
+        }
+      }
+      if(!acc && bubble) bubble.textContent='(응답 없음)';
+    }catch(e){
       if(bubble)bubble.textContent='⚠️ 연결 실패: '+e.message;
-    });
+    }
   };
 
   // Quick button handler: 4 preset questions
@@ -856,13 +876,14 @@
 
   window.gbAddAI = function(msg){
     var c = document.getElementById('gbChat');
-    if(!c) return;
+    if(!c) return null;
     var d = document.createElement('div');
     d.className = 'gb-ai-msg';
-    d.innerHTML = '<img src="../robo_jump.gif" onerror="this.src=\'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif\'">' +
-      '<div class="gb-ai-bubble">' + msg.replace(/\n/g,'<br>') + '</div>';
+    d.innerHTML = '<img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif">' +
+      '<div class="gb-ai-bubble">' + String(msg).replace(/\n/g,'<br>') + '</div>';
     c.appendChild(d);
     c.scrollTop = c.scrollHeight;
+    return d.querySelector('.gb-ai-bubble');
   };
 
   window.gbAddAIHtml = function(html){
