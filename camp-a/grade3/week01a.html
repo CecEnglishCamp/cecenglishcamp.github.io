@@ -283,21 +283,46 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
     d.innerHTML='<div class="gb-user-bubble">'+msg+'</div>';
     c.appendChild(d);c.scrollTop=c.scrollHeight;
   };
-  window.gbFetch=function(userContent){
+  window.gbFetch=async function(userContent){
     var bubble=window.gbAddAI('생각 중... 🤔');
     var c=document.getElementById('gbChat');
-    fetch(GB_API_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:GB_MODEL,messages:[{role:'user',content:userContent}],stream:false})
-    }).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-    .then(function(data){
-      var reply=(data&&data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||'(응답 없음)';
-      if(bubble)bubble.innerHTML=String(reply).replace(/\n/g,'<br>');
-      if(c)c.scrollTop=c.scrollHeight;
-    }).catch(function(e){
+    try{
+      var res=await fetch(GB_API_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model:GB_MODEL,messages:[{role:'user',content:userContent}],max_tokens:150,stream:true})
+      });
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      var reader=res.body.getReader();
+      var decoder=new TextDecoder();
+      var buf='', acc='', first=true;
+      while(true){
+        var chunk=await reader.read();
+        if(chunk.done) break;
+        buf+=decoder.decode(chunk.value,{stream:true});
+        var idx;
+        while((idx=buf.indexOf('\n'))>=0){
+          var line=buf.slice(0,idx).trim();
+          buf=buf.slice(idx+1);
+          if(!line.startsWith('data:')) continue;
+          var payload=line.slice(5).trim();
+          if(payload==='[DONE]') continue;
+          try{
+            var d=JSON.parse(payload);
+            var delta=d&&d.choices&&d.choices[0]&&d.choices[0].delta&&d.choices[0].delta.content;
+            if(delta){
+              if(first){ if(bubble)bubble.innerHTML=''; first=false; }
+              acc+=delta;
+              if(bubble)bubble.innerHTML=String(acc).replace(/\n/g,'<br>');
+              if(c)c.scrollTop=c.scrollHeight;
+            }
+          }catch(e){}
+        }
+      }
+      if(!acc && bubble) bubble.textContent='(응답 없음)';
+    }catch(e){
       if(bubble)bubble.textContent='⚠️ 연결 실패: '+e.message;
-    });
+    }
   };
   window.gbSend=function(){
     var inp=document.getElementById('gbInput');if(!inp)return;
