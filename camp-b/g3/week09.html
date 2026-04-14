@@ -366,6 +366,34 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
     .btn-ai-debate:hover{background:#3d5636}
     @media(max-width:600px){.debate-sides{grid-template-columns:1fr}.vocab-grid{grid-template-columns:1fr}}
   </style>
+<!-- ===== CEC Robo Helper styles (Camp B) ===== -->
+  <style>
+  .gb{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+  .gb-hint{background:#4a6741;color:#fff;font-size:12px;padding:7px 14px;border-radius:20px 20px 4px 20px;cursor:pointer;white-space:nowrap;animation:gbFloat 3s ease-in-out infinite;font-family:sans-serif;}
+  .gb-hint span{color:#c8e6a0;}
+  @keyframes gbFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+  .gb-robo{width:56px;height:56px;border-radius:50%;background:#4a6741;border:2px solid #a8d070;cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+  .gb-robo img{width:46px;height:46px;object-fit:cover;border-radius:50%;}
+  .gb-panel{display:none;position:fixed;bottom:92px;right:24px;width:300px;background:#fff;border-radius:20px;border:0.5px solid #c8d8b8;box-shadow:0 4px 24px rgba(74,103,65,0.15);overflow:hidden;z-index:9998;}
+  .gb-head{background:#4a6741;padding:12px 16px;display:flex;align-items:center;gap:10px;}
+  .gb-head img{width:28px;height:28px;border-radius:50%;object-fit:cover;}
+  .gb-ht{font-size:13px;font-weight:700;color:#fff;font-family:sans-serif;}
+  .gb-hs{font-size:11px;color:#c8e6a0;font-family:sans-serif;}
+  .gb-close{margin-left:auto;background:none;border:none;color:#a0c080;font-size:14px;cursor:pointer;}
+  .gb-chat{padding:12px 14px;height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:#f8faf5;}
+  .gb-ai-msg{display:flex;gap:8px;align-items:flex-start;}
+  .gb-ai-msg img{width:22px;height:22px;border-radius:50%;object-fit:cover;flex-shrink:0;}
+  .gb-ai-bubble{background:#fff;border:0.5px solid #c8d8b8;border-radius:0 10px 10px 10px;padding:8px 12px;font-size:12px;color:#2d4a25;line-height:1.6;max-width:210px;white-space:pre-line;font-family:sans-serif;}
+  .gb-user-msg{display:flex;justify-content:flex-end;}
+  .gb-user-bubble{background:#4a6741;color:#fff;border-radius:10px 0 10px 10px;padding:8px 12px;font-size:12px;max-width:200px;line-height:1.5;white-space:pre-line;font-family:sans-serif;}
+  .gb-input-row{padding:10px 12px;border-top:0.5px solid #d0e0c0;display:flex;gap:8px;background:#fff;}
+  .gb-input{flex:1;padding:8px 12px;border-radius:20px;border:0.5px solid #c0d0b0;font-size:12px;font-family:sans-serif;outline:none;background:#f8faf5;}
+  .gb-send{width:34px;height:34px;border-radius:50%;background:#4a6741;border:none;cursor:pointer;color:#fff;font-size:14px;flex-shrink:0;}
+  .gb-btns{padding:10px 12px 12px;display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#fff;}
+  .gb-btn{padding:8px 4px;background:#f0f8e8;border:0.5px solid #a8d070;color:#4a6741;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:sans-serif;text-align:center;line-height:1.3;}
+  .gb-btn:hover{background:#e0f0d0;}
+  </style>
+  <!-- ===== /CEC Robo Helper styles ===== -->
 </head>
 <body>
 <div class="hd-wrap">
@@ -491,10 +519,18 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
   <span class="wk-current">W09</span>
   <a href="week10.html" class="wk-btn">W10 →</a>
 </div>
-<div class="pw-wrap" style="bottom:80px;">
-  <div class="pw-bubble">Brave New World 질문 있으세요?</div>
-  <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo_jump.gif" class="pw-robo" onclick="toggleChat()" alt="Robo">
+<!-- ===== CEC Robo Helper (Camp B) ===== -->
+<div class="gb">
+  <div class="gb-hint" onclick="gbToggle()" id="gbHint"><span>Robo</span>한테 물어봐!</div>
+  <div class="gb-robo" onclick="gbToggle()"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif" alt="Robo"></div>
 </div>
+<div class="gb-panel" id="gbPanel">
+  <div class="gb-head">
+    <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif" alt="Robo">
+    <div>
+      <div class="gb-ht">Robo 선생님</div>
+      <div class="gb-hs">Camp B</div>
+    </div>
 <script>
 var CHATGPT_URL='https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166';
 function speak(t){if(!t)return;t=t.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\u2600-\u27BF]|\uFE0F/g,'').trim();var u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=0.85;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}
@@ -514,7 +550,87 @@ function launchChatGPTPractice(){
   var m='Brave New World W09 (버나드의 반항) \uc8fc\uc81c\ub85c \uc601\uc5b4 \ud68c\ud654 \uc5f0\uc2b5\uc744 \ud558\uace0 \uc2f6\uc5b4\uc694!';
   copyAndOpen(m);
 }
-function toggleChat(){window.open(CHATGPT_URL,'_blank');}
+/* ===== CEC Robo Helper (Camp B) ===== */
+(function(){
+  if(window.__gbRoboInit)return;window.__gbRoboInit=true;
+  var GB_API_URL='https://journey-bronzy-fruitily.ngrok-free.dev/api/chat/completions';
+  var GB_MODEL='gemma4:e2b';
+  var GB_IMG='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif';
+  var GB_BOOK='';
+  var GB_WEEK='';
+  var GB_KEY_SENTENCE='';
+  var GB_CONTEXT=function(){return '오늘 수업: '+GB_BOOK+(GB_WEEK?' '+GB_WEEK:'')+(GB_KEY_SENTENCE?'\n핵심 문장: '+GB_KEY_SENTENCE:'');};
+  var gbIsOpen=false;
+  window.gbToggle=function(){
+    gbIsOpen=!gbIsOpen;
+    var panel=document.getElementById('gbPanel');
+    var hint=document.getElementById('gbHint');
+    if(panel)panel.style.display=gbIsOpen?'block':'none';
+    if(hint)hint.style.opacity=gbIsOpen?'0':'1';
+    if(gbIsOpen)setTimeout(function(){var inp=document.getElementById('gbInput');if(inp)inp.focus();},100);
+  };
+  window.gbCheckEnter=function(e){if(e.key==='Enter')window.gbSend();};
+  window.gbAddAI=function(msg){
+    var c=document.getElementById('gbChat');if(!c)return null;
+    var d=document.createElement('div');d.className='gb-ai-msg';
+    d.innerHTML='<img src="'+GB_IMG+'" alt="Robo"><div class="gb-ai-bubble">'+String(msg).replace(/\n/g,'<br>')+'</div>';
+    c.appendChild(d);c.scrollTop=c.scrollHeight;
+    return d.querySelector('.gb-ai-bubble');
+  };
+  window.gbAddUser=function(msg){
+    var c=document.getElementById('gbChat');if(!c)return;
+    var d=document.createElement('div');d.className='gb-user-msg';
+    d.innerHTML='<div class="gb-user-bubble">'+msg+'</div>';
+    c.appendChild(d);c.scrollTop=c.scrollHeight;
+  };
+  window.gbFetch=function(userContent){
+    var bubble=window.gbAddAI('생각 중... 🤔');
+    var c=document.getElementById('gbChat');
+    fetch(GB_API_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:GB_MODEL,messages:[{role:'user',content:userContent}],stream:false})
+    }).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+    .then(function(data){
+      var reply=(data&&data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||'(응답 없음)';
+      if(bubble)bubble.innerHTML=String(reply).replace(/\n/g,'<br>');
+      if(c)c.scrollTop=c.scrollHeight;
+    }).catch(function(e){
+      if(bubble)bubble.textContent='⚠️ 연결 실패: '+e.message;
+    });
+  };
+  window.gbSend=function(){
+    var inp=document.getElementById('gbInput');if(!inp)return;
+    var msg=inp.value.trim();if(!msg)return;
+    window.gbAddUser(msg);inp.value='';
+    window.gbFetch(GB_CONTEXT()+'\n학생 질문: '+msg+'\n중고등학생 수준으로 한국어로 친절하게 답해줘.');
+  };
+  window.gbAsk=function(buttonText){
+    if(!gbIsOpen)window.gbToggle();
+    window.gbAddUser(buttonText);
+    window.gbFetch(GB_CONTEXT()+'\n학생 질문: '+buttonText+'\n중고등학생 수준으로 한국어로 친절하게 답해줘.');
+  };
+  function gbInit(){
+    var ts=document.querySelector('.top-sub')||document.querySelector('.hero-meta');
+    if(ts&&ts.textContent){
+      var raw=ts.textContent.trim();
+      var parts=raw.split(/\s*[·•]\s*/);
+      GB_BOOK=(parts[0]||raw).trim();
+      if(parts[1])GB_WEEK=parts[1].trim();
+    }
+    var ke=document.querySelector('.ke-en');
+    if(ke&&ke.textContent){
+      GB_KEY_SENTENCE=ke.textContent.replace(/\uD83D\uDD0A/g,'').replace(/["\u201C\u201D]/g,'').trim();
+    }
+    setTimeout(function(){
+      var greet='안녕! 나는 Robo야! 🤖\n오늘 수업: '+GB_BOOK+(GB_WEEK?' '+GB_WEEK:'');
+      if(GB_KEY_SENTENCE)greet+='\n\n📌 오늘의 핵심 문장:\n'+GB_KEY_SENTENCE;
+      greet+='\n\n궁금한 거 있으면 아래 버튼을 눌러봐!';
+      window.gbAddAI(greet);
+    },500);
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',gbInit);}else{gbInit();}
+})();
 </script>
 </body>
 </html>
