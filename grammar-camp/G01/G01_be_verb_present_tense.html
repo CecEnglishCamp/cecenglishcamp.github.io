@@ -655,17 +655,14 @@
   var GB_API_URL='https://journey-bronzy-fruitily.ngrok-free.dev/api/deepseek/chat/completions';
   var GB_MODEL='deepseek-chat';
 
-  window.gbFetch=async function(userMsg){
-    var bubble=gbAddAI('생각 중... 🤔');
+  window.gbFetch=async function(userContent){
+    var bubble=window.gbAddAI('생각 중... 🤔');
     var c=document.getElementById('gbChat');
-    var fullContent = '오늘 문법: ' + GB_TOPIC
-      + '\n학생 질문: ' + userMsg
-      + '\n중고등학생 수준으로 한국어로 친절하게 답해줘.';
     try{
       var res=await fetch(GB_API_URL,{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({model:GB_MODEL,messages:[{role:'system',content:'마크다운 기호(#, *, **, ##, - 등)를 절대 사용하지 말고 일반 텍스트로만 답해줘. 이모지는 사용 가능.'},{role:'user',content:fullContent}],max_tokens:300,stream:true})
+        body:JSON.stringify({model:GB_MODEL,messages:[{role:'system',content:'마크다운 기호(#, *, **, ##, - 등)를 절대 사용하지 말고 일반 텍스트로만 답해줘. 이모지는 사용 가능.'},{role:'user',content:userContent}],max_tokens:300,stream:true})
       });
       if(!res.ok) throw new Error('HTTP '+res.status);
       var reader=res.body.getReader();
@@ -683,8 +680,8 @@
           var payload=line.slice(5).trim();
           if(payload==='[DONE]') continue;
           try{
-            var jd=JSON.parse(payload);
-            var delta=jd&&jd.choices&&jd.choices[0]&&jd.choices[0].delta&&jd.choices[0].delta.content;
+            var d=JSON.parse(payload);
+            var delta=d&&d.choices&&d.choices[0]&&d.choices[0].delta&&d.choices[0].delta.content;
             if(delta){
               if(first){ if(bubble)bubble.innerHTML=''; first=false; }
               acc+=delta;
@@ -704,7 +701,7 @@
   window.gbQuick=function(text){
     if(!gbIsOpen)window.gbToggle();
     gbAddUser(text);
-    gbFetch(text);
+    gbFetch('오늘 문법: '+GB_TOPIC+'\n학생 질문: '+text+'\n중고등학생 수준으로 한국어로 친절하게 답해줘.');
   };
 
   // CEC 영어캠프 메인으로 이동 (새 탭)
@@ -816,7 +813,7 @@
     }
 
     // 3. Everything else → AI with current page context
-    gbFetch(msg);
+    gbFetch('오늘 문법: '+GB_TOPIC+'\n학생 질문: '+msg+'\n중고등학생 수준으로 한국어로 친절하게 답해줘.');
   };
 
 
