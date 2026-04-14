@@ -488,7 +488,7 @@ body::before{
   <meta name="keywords" content="Korean housewife English,adult English,CEC English Camp C">
   <meta property="og:title" content="Camp C EP01 | CEC English Camp">
   <meta name="robots" content="index, follow">
-<!-- ===== CEC Vix Helper styles ===== -->
+<!-- ===== CEC Robo Helper styles (Camp C) ===== -->
 <style>
 .gb{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
 .gb-hint{background:#4a6741;color:#fff;font-size:12px;padding:7px 14px;border-radius:20px 20px 4px 20px;cursor:pointer;white-space:nowrap;animation:gbFloat 3s ease-in-out infinite;font-family:sans-serif;}
@@ -515,19 +515,19 @@ body::before{
 .gb-btn{padding:8px 4px;background:#f0f8e8;border:0.5px solid #a8d070;color:#4a6741;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:sans-serif;text-align:center;line-height:1.3;}
 .gb-btn:hover{background:#e0f0d0;}
 </style>
-<!-- ===== /CEC Vix Helper styles ===== -->
+<!-- ===== /CEC Robo Helper styles ===== -->
 </head>
 <body data-camp="c" data-episode="11">
-<!-- ===== CEC Vix Helper ===== -->
+<!-- ===== CEC Robo Helper (Camp C) ===== -->
 <div class="gb">
-  <div class="gb-hint" onclick="gbToggle()" id="gbHint"><span>Vix</span>한테 물어봐!</div>
-  <div class="gb-robo" onclick="gbToggle()"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif" alt="Vix"></div>
+  <div class="gb-hint" onclick="gbToggle()" id="gbHint"><span>Robo</span>한테 물어봐!</div>
+  <div class="gb-robo" onclick="gbToggle()"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif" alt="Robo"></div>
 </div>
 <div class="gb-panel" id="gbPanel">
   <div class="gb-head">
-    <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif" alt="Vix">
+    <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif" alt="Robo">
     <div>
-      <div class="gb-ht">Vix 선생님</div>
+      <div class="gb-ht">Robo 선생님</div>
       <div class="gb-hs">Camp C</div>
     </div>
     <button class="gb-close" onclick="gbToggle()">&#10005;</button>
@@ -538,17 +538,17 @@ body::before{
     <button class="gb-send" onclick="gbSend()">→</button>
   </div>
   <div class="gb-btns">
-    <button class="gb-btn" onclick="gbAsk('이 표현 어떻게 써요?')">🗣️ 이 표현 어떻게 써요?</button>
-    <button class="gb-btn" onclick="gbAsk('다른 표현은요?')">🔄 다른 표현은요?</button>
-    <button class="gb-btn" onclick="gbAsk('예문 보여주세요')">📝 예문 보여주세요</button>
-    <button class="gb-btn" onclick="gbAsk('실생활에서 언제 써요?')">💬 실생활에서 언제 써요?</button>
+    <button class="gb-btn" onclick="gbAsk('이 표현 언제 써요?')">🗣️ 이 표현 언제 써요?</button>
+    <button class="gb-btn" onclick="gbAsk('더 공손한 방법은요?')">🔄 더 공손한 방법은요?</button>
+    <button class="gb-btn" onclick="gbAsk('예를 들면?')">📝 예를 들면?</button>
+    <button class="gb-btn" onclick="gbAsk('실생활 사용 팁?')">💬 실생활 사용 팁?</button>
   </div>
 </div>
 <script>
 (function(){
-  if(window.__gbVixInit)return;window.__gbVixInit=true;
-  var GB_API_URL='https://journey-bronzy-fruitily.ngrok-free.dev/api/chat/completions';
-  var GB_MODEL='gemma4:e2b';
+  if(window.__gbRoboInit)return;window.__gbRoboInit=true;
+  var GB_API_URL='https://journey-bronzy-fruitily.ngrok-free.dev/api/deepseek/chat/completions';
+  var GB_MODEL='deepseek-chat';
   var GB_IMG='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif';
   var GB_KEY_SENTENCE='';
   var GB_EP='EP';
@@ -566,7 +566,7 @@ body::before{
   window.gbAddAI=function(msg){
     var c=document.getElementById('gbChat');if(!c)return null;
     var d=document.createElement('div');d.className='gb-ai-msg';
-    d.innerHTML='<img src="'+GB_IMG+'" alt="Vix"><div class="gb-ai-bubble">'+String(msg).replace(/\n/g,'<br>')+'</div>';
+    d.innerHTML='<img src="'+GB_IMG+'" alt="Robo"><div class="gb-ai-bubble">'+String(msg).replace(/\n/g,'<br>')+'</div>';
     c.appendChild(d);c.scrollTop=c.scrollHeight;
     return d.querySelector('.gb-ai-bubble');
   };
@@ -576,21 +576,46 @@ body::before{
     d.innerHTML='<div class="gb-user-bubble">'+msg+'</div>';
     c.appendChild(d);c.scrollTop=c.scrollHeight;
   };
-  window.gbFetch=function(userContent){
+  window.gbFetch=async function(userContent){
     var bubble=window.gbAddAI('생각 중... 🤔');
     var c=document.getElementById('gbChat');
-    fetch(GB_API_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:GB_MODEL,messages:[{role:'user',content:userContent}],stream:false})
-    }).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-    .then(function(data){
-      var reply=(data&&data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content)||'(응답 없음)';
-      if(bubble)bubble.innerHTML=String(reply).replace(/\n/g,'<br>');
-      if(c)c.scrollTop=c.scrollHeight;
-    }).catch(function(e){
+    try{
+      var res=await fetch(GB_API_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model:GB_MODEL,messages:[{role:'system',content:'마크다운 기호(#, *, **, ##, - 등)를 절대 사용하지 말고 일반 텍스트로만 답해줘. 이모지는 사용 가능.'},{role:'user',content:userContent}],max_tokens:300,stream:true})
+      });
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      var reader=res.body.getReader();
+      var decoder=new TextDecoder();
+      var buf='', acc='', first=true;
+      while(true){
+        var chunk=await reader.read();
+        if(chunk.done) break;
+        buf+=decoder.decode(chunk.value,{stream:true});
+        var idx;
+        while((idx=buf.indexOf('\n'))>=0){
+          var line=buf.slice(0,idx).trim();
+          buf=buf.slice(idx+1);
+          if(!line.startsWith('data:')) continue;
+          var payload=line.slice(5).trim();
+          if(payload==='[DONE]') continue;
+          try{
+            var d=JSON.parse(payload);
+            var delta=d&&d.choices&&d.choices[0]&&d.choices[0].delta&&d.choices[0].delta.content;
+            if(delta){
+              if(first){ if(bubble)bubble.innerHTML=''; first=false; }
+              acc+=delta;
+              if(bubble)bubble.innerHTML=String(acc).replace(/\n/g,'<br>');
+              if(c)c.scrollTop=c.scrollHeight;
+            }
+          }catch(e){}
+        }
+      }
+      if(!acc && bubble) bubble.textContent='(응답 없음)';
+    }catch(e){
       if(bubble)bubble.textContent='⚠️ 연결 실패: '+e.message;
-    });
+    }
   };
   window.gbSend=function(){
     var inp=document.getElementById('gbInput');if(!inp)return;
@@ -609,13 +634,13 @@ body::before{
     var _ep=document.querySelector('.key-num');
     if(_ep&&_ep.textContent)GB_EP=_ep.textContent.trim();
     setTimeout(function(){
-      window.gbAddAI('안녕하세요! 저는 Vix예요! 🤖\n오늘 배운 표현: "'+GB_KEY_SENTENCE+'"\n궁금한 거 있으면 아래 버튼을 눌러보세요!');
+      window.gbAddAI('안녕! 나는 Robo야! 🤖\n오늘 배운 표현: "'+GB_KEY_SENTENCE+'"\n궁금한 거 있으면 아래 버튼을 눌러봐!');
     },500);
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',gbInit);}else{gbInit();}
 })();
 </script>
-<!-- ===== /CEC Vix Helper ===== -->
+<!-- ===== /CEC Robo Helper ===== -->
 
 
 <div class="shape s1"></div><div class="shape s2"></div>
