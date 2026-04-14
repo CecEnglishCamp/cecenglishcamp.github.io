@@ -264,8 +264,6 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
   .gb-btns{padding:10px 12px 12px;display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#fff;}
   .gb-btn{padding:8px 4px;background:#f0f8e8;border:0.5px solid #a8d070;color:#4a6741;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:sans-serif;text-align:center;line-height:1.3;}
   .gb-btn:hover{background:#e0f0d0;}
-  .gbw{cursor:pointer;border-radius:3px;transition:background .15s}
-  .gbw:hover{background:rgba(0,242,255,.18)}
   </style>
   <!-- ===== /CEC Robo Helper styles ===== -->
 </head>
@@ -333,10 +331,10 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
     <button class="gb-send" onclick="gbSend()">&rarr;</button>
   </div>
   <div class="gb-btns">
-    <button class="gb-btn" onclick="gbAsk('이 이야기가 뭐야?')">📖 이 이야기가 뭐야?</button>
-    <button class="gb-btn" onclick="gbAsk('교훈이 뭐야?')">💭 교훈이 뭐야?</button>
-    <button class="gb-btn" onclick="gbAsk('예문 하나 더 줘')">🤔 예문 하나 더 줘</button>
-    <button class="gb-btn" onclick="gbWordLookup()">🔊 단어 발음/뜻 보기</button>
+    <button class="gb-btn" onclick="gbAsk('오늘 공부의 내용은?')">📖 오늘 공부의 내용은?</button>
+    <button class="gb-btn" onclick="gbAsk('오늘날의 교훈은?')">💭 오늘날의 교훈은?</button>
+    <button class="gb-btn" onclick="gbAsk('배경 설명')">🤔 배경 설명</button>
+    <button class="gb-btn" onclick="gbAsk('이 주제로 에세이를 쓴다면?')">✍️ 이 주제로 에세이를 쓴다면?</button>
   </div>
 </div>
 <script>
@@ -409,9 +407,9 @@ function launchChatGPTPractice(){
   var GB_IMG='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif';
   var GB_BOOK='';
   var GB_WEEK='';
-  var GB_CONTEXT=function(){return '오늘 수업: '+GB_BOOK+(GB_WEEK?' '+GB_WEEK:'');};
+  var GB_KEY_SENTENCE='';
+  var GB_CONTEXT=function(){return '오늘 수업: '+GB_BOOK+(GB_WEEK?' '+GB_WEEK:'')+(GB_KEY_SENTENCE?'\n핵심 문장: '+GB_KEY_SENTENCE:'');};
   var gbIsOpen=false;
-  window.gbLastWord='';
   window.gbToggle=function(){
     gbIsOpen=!gbIsOpen;
     var panel=document.getElementById('gbPanel');
@@ -461,45 +459,6 @@ function launchChatGPTPractice(){
     window.gbAddUser(buttonText);
     window.gbFetch(GB_CONTEXT()+'\n학생 질문: '+buttonText+'\n중고등학생 수준으로 한국어로 친절하게 답해줘.');
   };
-  window.gbWordLookup=function(){
-    if(!gbIsOpen)window.gbToggle();
-    var w=window.gbLastWord;
-    if(!w){
-      window.gbAddAI('단어에 마우스를 올리거나 탭해 주세요! 🖱️');
-      return;
-    }
-    var q='"'+w+'" 발음과 뜻을 알려줘';
-    window.gbAddUser(q);
-    window.gbFetch(GB_CONTEXT()+'\n학생 질문: "'+w+'" 이 단어의 발음기호(IPA)와 한국어 뜻을 알려줘.\n중고등학생 수준으로 한국어로 친절하게 답해줘.');
-  };
-  function wrapWords(container){
-    if(container.dataset.gbwWrapped)return;
-    container.dataset.gbwWrapped='1';
-    var text=container.textContent.replace(/\uD83D\uDD0A/g,'').trim();
-    var tokens=text.split(/(\s+)/);
-    var frag=document.createDocumentFragment();
-    tokens.forEach(function(t){
-      if(!t)return;
-      if(/^\s+$/.test(t)){frag.appendChild(document.createTextNode(t));return;}
-      var m=t.match(/^([^A-Za-z']*)([A-Za-z][A-Za-z']*)([^A-Za-z']*)$/);
-      if(!m){frag.appendChild(document.createTextNode(t));return;}
-      if(m[1])frag.appendChild(document.createTextNode(m[1]));
-      var span=document.createElement('span');
-      span.className='gbw';
-      span.textContent=m[2];
-      span.setAttribute('data-word',m[2].toLowerCase().replace(/'s$/,''));
-      frag.appendChild(span);
-      if(m[3])frag.appendChild(document.createTextNode(m[3]));
-    });
-    container.innerHTML='';
-    container.appendChild(frag);
-  }
-  function trackLastWord(e){
-    var t=e.target;
-    if(t&&t.classList&&t.classList.contains('gbw')){
-      window.gbLastWord=t.getAttribute('data-word');
-    }
-  }
   function gbInit(){
     var ts=document.querySelector('.top-sub')||document.querySelector('.hero-meta');
     if(ts&&ts.textContent){
@@ -508,12 +467,15 @@ function launchChatGPTPractice(){
       GB_BOOK=(parts[0]||raw).trim();
       if(parts[1])GB_WEEK=parts[1].trim();
     }
-    document.querySelectorAll('.ke-en').forEach(wrapWords);
-    document.addEventListener('mouseover',trackLastWord);
-    document.addEventListener('touchstart',trackLastWord,{passive:true});
-    document.addEventListener('click',trackLastWord);
+    var ke=document.querySelector('.ke-en');
+    if(ke&&ke.textContent){
+      GB_KEY_SENTENCE=ke.textContent.replace(/\uD83D\uDD0A/g,'').replace(/["\u201C\u201D]/g,'').trim();
+    }
     setTimeout(function(){
-      window.gbAddAI('안녕! 나는 Robo야! 🤖\n오늘 수업: '+GB_BOOK+(GB_WEEK?' '+GB_WEEK:'')+'\n궁금한 거 있으면 아래 버튼을 눌러봐!');
+      var greet='안녕! 나는 Robo야! 🤖\n오늘 수업: '+GB_BOOK+(GB_WEEK?' '+GB_WEEK:'');
+      if(GB_KEY_SENTENCE)greet+='\n\n📌 오늘의 핵심 문장:\n'+GB_KEY_SENTENCE;
+      greet+='\n\n궁금한 거 있으면 아래 버튼을 눌러봐!';
+      window.gbAddAI(greet);
     },500);
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',gbInit);}else{gbInit();}
