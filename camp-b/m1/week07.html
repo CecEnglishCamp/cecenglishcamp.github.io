@@ -237,6 +237,16 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
     .btn-ai-debate{display:inline-block;background:#4a6741;color:#fff;padding:12px 28px;border-radius:100px;border:none;font-size:0.95rem;font-weight:700;cursor:pointer;margin-top:12px}
     .btn-ai-debate:hover{background:#3d5636}
     @media(max-width:600px){.debate-sides{grid-template-columns:1fr}.vocab-grid{grid-template-columns:1fr}}
+    /* ===== Word hover/tap tooltip ===== */
+    .ke-en .w{display:inline-block;cursor:pointer;padding:0 2px;border-radius:4px;transition:background .15s}
+    .ke-en .w:hover,.ke-en .w.wactive{background:rgba(0,242,255,.18)}
+    .ke-en .w-speak{cursor:pointer;margin-left:6px;user-select:none}
+    .w-tip{position:absolute;z-index:10000;background:#1a1a2e;color:#00f2ff;padding:10px 14px;border-radius:10px;border:1px solid rgba(0,242,255,.25);box-shadow:0 8px 24px rgba(0,0,0,.5);font-size:.9rem;line-height:1.5;min-width:140px;max-width:280px;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .15s,transform .15s;font-family:'Noto Sans KR',sans-serif}
+    .w-tip.show{opacity:1;transform:translateY(0)}
+    .w-tip::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%) rotate(45deg);width:10px;height:10px;background:#1a1a2e;border-left:1px solid rgba(0,242,255,.25);border-top:1px solid rgba(0,242,255,.25)}
+    .w-tip .wt-ph{font-family:'Space Mono',monospace;color:#00f2ff;font-size:.95rem;font-weight:700}
+    .w-tip .wt-def{color:rgba(255,255,255,.85);font-size:.82rem;margin-top:6px}
+    .w-tip .wt-err{color:#ff9aa2;font-size:.8rem}
   </style>
 </head>
 <body>
@@ -347,6 +357,19 @@ function launchChatGPTPractice(){
   copyAndOpen(m);
 }
 function toggleChat(){window.open(CHATGPT_URL,'_blank');}
+/* ===== Word hover/tap dictionary (Free Dictionary API) ===== */
+(function(){
+  var tip=null,cache={},activeSpan=null;
+  function ensureTip(){if(!tip){tip=document.createElement('div');tip.className='w-tip';document.body.appendChild(tip);}return tip;}
+  function hideTip(){if(tip)tip.classList.remove('show');if(activeSpan){activeSpan.classList.remove('wactive');activeSpan=null;}}
+  function positionTip(el){var r=el.getBoundingClientRect();ensureTip();var tr=tip.getBoundingClientRect();var left=r.left+r.width/2-tr.width/2+window.scrollX;var top=r.bottom+10+window.scrollY;var max=document.documentElement.clientWidth-tr.width-8;left=Math.max(8,Math.min(left,max));tip.style.left=left+'px';tip.style.top=top+'px';}
+  function speakWord(w){try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(w);u.lang='en-US';u.rate=0.9;speechSynthesis.speak(u);}catch(e){}}
+  function showTipFor(span,data){ensureTip();var ph=data.phonetic||'';var def=data.definition||'';var err=data.error||'';tip.innerHTML=err?'<div class="wt-err">'+err+'</div>':(ph?'<div class="wt-ph">'+ph+'</div>':'')+(def?'<div class="wt-def">'+def+'</div>':'<div class="wt-def">뜻 정보 없음</div>');tip.classList.add('show');positionTip(span);}
+  function lookupWord(word,span){if(activeSpan===span)return;hideTip();activeSpan=span;span.classList.add('wactive');speakWord(word);window.gbLastWord=word;if(cache[word]){showTipFor(span,cache[word]);return;}ensureTip();tip.innerHTML='<div class="wt-def">🔍 검색 중...</div>';tip.classList.add('show');positionTip(span);fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(word)).then(function(r){return r.ok?r.json():Promise.reject('not found');}).then(function(d){var e=Array.isArray(d)?d[0]:null;var ph=(e&&e.phonetic)||(e&&e.phonetics&&(e.phonetics.find(function(p){return p.text;})||{}).text)||'';var def='';if(e&&e.meanings&&e.meanings[0]){var m=e.meanings[0];if(m.definitions&&m.definitions[0])def=m.definitions[0].definition||'';}var data={phonetic:ph,definition:def};cache[word]=data;if(activeSpan===span)showTipFor(span,data);}).catch(function(){var data={error:'단어를 찾을 수 없어요'};cache[word]=data;if(activeSpan===span)showTipFor(span,data);});}
+  function wrapWords(container){if(container.dataset.wordWrapped)return;container.dataset.wordWrapped='1';var full=container.textContent.replace(/\uD83D\uDD0A/g,'').trim();var tokens=full.split(/(\s+)/);var frag=document.createDocumentFragment();tokens.forEach(function(t){if(!t)return;if(/^\s+$/.test(t)){frag.appendChild(document.createTextNode(t));return;}var m=t.match(/^([^A-Za-z']*)([A-Za-z][A-Za-z']*)([^A-Za-z']*)$/);if(!m){frag.appendChild(document.createTextNode(t));return;}if(m[1])frag.appendChild(document.createTextNode(m[1]));var span=document.createElement('span');span.className='w';span.textContent=m[2];span.setAttribute('data-word',m[2].toLowerCase().replace(/'s$/,''));frag.appendChild(span);if(m[3])frag.appendChild(document.createTextNode(m[3]));});var spk=document.createElement('span');spk.className='w-speak';spk.textContent='\uD83D\uDD0A';spk.setAttribute('data-full',full);frag.appendChild(spk);container.removeAttribute('onclick');container.innerHTML='';container.appendChild(frag);}
+  function init(){document.querySelectorAll('.ke-en').forEach(wrapWords);var isTouch='ontouchstart' in window;document.addEventListener('click',function(e){var t=e.target;if(t.classList&&t.classList.contains('w')){e.stopPropagation();lookupWord(t.getAttribute('data-word'),t);return;}if(t.classList&&t.classList.contains('w-speak')){e.stopPropagation();var f=t.getAttribute('data-full');if(f&&typeof speak==='function')speak(f);return;}hideTip();},true);if(!isTouch){document.addEventListener('mouseover',function(e){var t=e.target;if(t.classList&&t.classList.contains('w'))lookupWord(t.getAttribute('data-word'),t);});}window.addEventListener('scroll',hideTip,{passive:true});window.addEventListener('resize',hideTip);}
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
+})();
 </script>
 </body>
 </html>
