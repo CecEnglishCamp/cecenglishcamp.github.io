@@ -590,10 +590,10 @@
     <button class="gb-send" onclick="gbSend()">→</button>
   </div>
   <div class="gb-btns" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:10px 12px 12px;background:#fff;">
-    <button class="gb-btn2" onclick="gbQuick('언제 쓰는 거야?')">⏰ 언제 쓰는 거야?</button>
-    <button class="gb-btn2" onclick="gbQuick('왜 필요한거야?')">❓ 왜 필요한거야?</button>
-    <button class="gb-btn2" onclick="gbQuick('다른 예문 하나 더 줘')">📝 다른 예문 하나 더</button>
-    <button class="gb-btn2" onclick="gbReturn()">🏕️ 공부하던 곳으로</button>
+    <button class="gb-btn2" onclick="gbQuick('오늘 문법의 핵심은?')">📖 오늘 문법의 핵심은?</button>
+    <button class="gb-btn2" onclick="gbQuick('주의할 점')">⚠️ 주의할 점</button>
+    <button class="gb-btn2" onclick="gbQuick('영어회화에 적용한다면?')">💬 영어회화에 적용한다면?</button>
+    <button class="gb-btn2" onclick="gbGotoCamp()">🏕️ CEC 영어캠프 돌아보기</button>
   </div>
 </div>
 <script src="../grammar_story_map.js"></script>
@@ -606,27 +606,21 @@
   var data = map[gid] || null;
   var gbIsOpen = false;
 
-  // ===== Camp A-style grammar context =====
-  var GB_GRAMMAR_ID = gid;
-  var GB_GRAMMAR_KR = data ? data.title : '';
-  var GB_GRAMMAR_EN = (document.title||'').replace(/^G\d+\.\s*/i,'').trim() || '';
-  var GB_GRAMMAR_EXAMPLE = data && data.example ? data.example : '';
-  var GB_CONTEXT = function(){
-    return '오늘 학습 문법: ' + GB_GRAMMAR_ID
-      + (GB_GRAMMAR_KR ? ' — ' + GB_GRAMMAR_KR : '')
-      + (GB_GRAMMAR_EN ? ' (' + GB_GRAMMAR_EN + ')' : '')
-      + (GB_GRAMMAR_EXAMPLE ? '\n대표 예문: ' + GB_GRAMMAR_EXAMPLE : '');
-  };
+  // ===== Grammar topic extraction =====
+  var GB_TOPIC = '';
+  var gtEl = document.querySelector('.grammar-title');
+  if(gtEl && gtEl.textContent) GB_TOPIC = gtEl.textContent.trim();
+  if(!GB_TOPIC && data && data.title) GB_TOPIC = data.title;
+  if(!GB_TOPIC) GB_TOPIC = (document.title||'').replace(/\s*[—\-\|]\s*CEC.*$/i,'').replace(/^G\d+[\.\s]*/i,'').trim();
+  if(!GB_TOPIC) GB_TOPIC = 'Grammar ' + gid;
 
-  if(data){
-    var ht = document.getElementById('gbHintText');
-    var sub = document.getElementById('gbSub');
-    if(ht) ht.textContent = data.title;
-    if(sub) sub.textContent = gid + ' \u2014 ' + data.title;
-    setTimeout(function(){
-      gbAddAI('안녕! 나는 Robo야! 🤖\n오늘 배우는 문법: ' + GB_GRAMMAR_KR + '\n궁금한 거 있으면 아래 버튼을 눌러봐!');
-    }, 300);
-  }
+  var ht = document.getElementById('gbHintText');
+  var sub = document.getElementById('gbSub');
+  if(ht) ht.textContent = GB_TOPIC;
+  if(sub) sub.textContent = gid + ' \u2014 ' + GB_TOPIC;
+  setTimeout(function(){
+    gbAddAI('안녕! 나는 Robo야! 🤖\n오늘 문법: ' + GB_TOPIC + '\n궁금한 거 있으면 아래 버튼을 눌러봐!');
+  }, 300);
 
   window.gbToggle = function(){
     gbIsOpen = !gbIsOpen;
@@ -663,10 +657,9 @@
   window.gbFetch=function(userMsg){
     var bubble=gbAddAI('생각 중... 🤔');
     var c=document.getElementById('gbChat');
-    var fullContent = GB_CONTEXT()
+    var fullContent = '오늘 문법: ' + GB_TOPIC
       + '\n학생 질문: ' + userMsg
-      + '\n중고등학생 수준으로 한국어로 친절하게 답해줘.'
-      + '\n문법 규칙, 예문, 실생활 활용법 포함.';
+      + '\n중고등학생 수준으로 한국어로 친절하게 답해줘.';
     var body={
       model:GB_MODEL,
       messages:[{role:'user',content:fullContent}],
@@ -693,16 +686,9 @@
     gbFetch(text);
   };
 
-  // "공부하던 곳으로 보내줘" — return to the referring lesson page
-  window.gbReturn=function(){
-    var ret=new URLSearchParams(window.location.search).get('return');
-    if(ret){
-      window.location.href=ret;
-    }else if(document.referrer && document.referrer.indexOf(window.location.hostname)!==-1){
-      window.location.href=document.referrer;
-    }else{
-      history.back();
-    }
+  // CEC 영어캠프 메인으로 이동 (새 탭)
+  window.gbGotoCamp=function(){
+    window.open('https://cecenglishcamp.com/','_blank');
   };
 
   // Keyword → G## map for quick navigation to OTHER grammar pages
