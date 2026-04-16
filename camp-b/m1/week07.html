@@ -270,6 +270,8 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
 
 
 
+
+<style id="grade-theme">:root{--gp:var(--gp);--gl:#D6E4F0;--gd:var(--gd);}</style>
 <style id="m1-extra-css">
 .pd-notice{font-size:11px;color:#999;text-align:center;padding:12px 20px;margin-top:30px;margin-bottom:80px;border-top:1px solid rgba(255,255,255,0.08);line-height:1.6;}
 .pd-en{font-size:10px;color:#bbb;}
@@ -278,13 +280,11 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
 .gb-panel{bottom:148px !important;}
 .play-pause-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:rgba(0,242,255,0.1);border:1px solid #00f2ff;color:#00f2ff;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;}
 .play-pause-btn.playing{background:#00f2ff;color:#000;}
-.reading-controls{display:flex;gap:10px;margin:12px 0 4px;}
-.play-btn,.pause-btn{flex:1;padding:10px;border-radius:8px;border:none;font-size:14px;font-weight:bold;cursor:pointer;font-family:inherit;}
-.play-btn{background:#2E75B6;color:#fff;}
-.play-btn:hover{background:#1f5a8f;}
-.pause-btn{background:#e0e0e0;color:#333;}
-.pause-btn:hover{background:#c8c8c8;}
-.pause-btn.paused{background:#c9a84c;color:#000;}
+/* Play toggle — single button */
+.play-toggle{display:inline-flex;align-items:center;gap:10px;padding:12px 24px;background:linear-gradient(135deg,rgba(0,242,255,0.15),rgba(0,242,255,0.05));border:1px solid #00f2ff;border-radius:30px;color:#00f2ff;font-size:13px;letter-spacing:0.15em;cursor:pointer;transition:all 0.3s;font-family:inherit;font-weight:700;margin-top:10px;}
+.play-toggle:hover{background:rgba(0,242,255,0.25);box-shadow:0 0 20px rgba(0,242,255,0.3);}
+.play-toggle.playing{background:#00f2ff;color:#0a1628;}
+.play-icon{font-size:14px;}
 .game-block{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px;margin-top:12px;}
 .game-title{font-size:0.85rem;color:#c9a84c;font-weight:700;margin-bottom:10px;letter-spacing:1px;}
 .game-q{font-size:0.92rem;color:#eee;margin:10px 0 8px;line-height:1.6;}
@@ -342,64 +342,74 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
 .debate-card.con{border-left:3px solid #dc5050;}
 @media(max-width:560px){.debate-grid{grid-template-columns:1fr;}}
 .debate-topic-box{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
-/* Day 1/2/3 plan cards */
-.day-plan{display:flex;align-items:stretch;gap:8px;margin:16px 0;overflow-x:auto;padding-bottom:4px;}
-.day-card{flex:1;min-width:140px;background:#f5f5f5;border-radius:12px;padding:12px;text-align:center;color:#333;}
-.day-card.today{background:#1F4E79;color:#fff;border:2px solid #00f2ff;box-shadow:0 0 14px rgba(0,242,255,0.25);}
-.day-card.past{background:#e8f0fe;color:#333;}
-.day-label{font-size:11px;font-weight:700;margin-bottom:4px;letter-spacing:0.5px;}
-.day-dot{font-size:14px;color:#2E75B6;margin-bottom:6px;letter-spacing:2px;}
-.day-card.today .day-dot{color:#00f2ff;}
-.day-sent{font-size:12px;line-height:1.45;}
-.day-card.today .day-sent{font-weight:600;}
-.day-arrow{font-size:20px;color:rgba(255,255,255,0.35);flex-shrink:0;align-self:center;}
-@media(max-width:560px){.day-card{min-width:110px;padding:10px;}.day-label{font-size:10px;}.day-sent{font-size:11px;}}
+/* Day 1/2/3 progress — golden gradient */
+.day-progress{margin:16px 0;background:linear-gradient(135deg,rgba(201,169,97,0.12),rgba(30,37,71,0.8));border:1px solid rgba(201,169,97,0.4);border-radius:12px;padding:14px;}
+.day-item{padding:10px 14px;border-left:3px solid rgba(201,169,97,0.35);margin-bottom:6px;}
+.day-item.today{border-left:3px solid #c9a84c;background:rgba(201,169,97,0.15);border-radius:0 8px 8px 0;}
+.day-label{font-size:11px;font-weight:bold;color:#c9a84c;display:block;margin-bottom:3px;letter-spacing:0.5px;}
+.day-text{font-size:14px;color:rgba(255,255,255,0.85);display:block;line-height:1.45;}
+.day-item.today .day-text{color:#fff;font-weight:600;}
+.day-divider{color:rgba(201,169,97,0.5);text-align:center;font-size:14px;display:block;padding:2px 0;}
 /* Reading tab buttons — larger, stronger active */
 .level-tabs{display:flex;gap:8px;margin-bottom:12px;}
 .ltab{flex:1;padding:11px 16px !important;font-size:14px !important;font-weight:700 !important;border-radius:10px !important;border:2px solid rgba(255,255,255,0.15) !important;background:rgba(255,255,255,0.04) !important;color:#ccc !important;cursor:pointer;transition:all 0.15s;}
 .ltab:hover{background:rgba(255,255,255,0.08) !important;}
-.ltab.active{background:linear-gradient(135deg,#00f2ff,#2E75B6) !important;color:#000 !important;border-color:#00f2ff !important;box-shadow:0 0 12px rgba(0,242,255,0.4) !important;transform:translateY(-1px);}
-/* Essay tips block (sec 6 top) */
-.essay-tips{background:#f8f9ff;border-radius:16px;padding:20px;margin-bottom:20px;color:#222;}
-.tips-title{font-size:16px;font-weight:700;color:#1F4E79;margin-bottom:16px;text-align:center;}
-.tip-card{display:flex;gap:12px;background:#fff;border-radius:10px;padding:12px 14px;margin-bottom:10px;border-left:4px solid #2E75B6;align-items:flex-start;}
-.tip-num{width:28px;height:28px;background:#2E75B6;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:14px;}
-.tip-card b{color:#1F4E79;font-size:14px;display:block;margin-bottom:2px;}
+.ltab.active{background:linear-gradient(135deg,var(--gp),var(--gd)) !important;color:#fff !important;border-color:var(--gp) !important;box-shadow:0 0 12px rgba(0,0,0,0.25) !important;transform:translateY(-1px);}
+/* Essay tips block (sec 6 top) — cyan gradient */
+.essay-tips{background:linear-gradient(135deg,rgba(0,242,255,0.06),rgba(20,25,55,0.9));border:1px solid rgba(0,242,255,0.2);border-radius:16px;padding:20px;margin-bottom:20px;color:rgba(255,255,255,0.85);}
+.tips-title{font-size:16px;font-weight:700;color:#00f2ff;margin-bottom:16px;text-align:center;}
+.tip-card{display:flex;gap:12px;background:#fff;border-radius:10px;padding:12px 14px;margin-bottom:10px;border-left:4px solid var(--gp);align-items:flex-start;}
+.tip-num{width:28px;height:28px;background:var(--gp);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:14px;}
+.tip-card b{color:var(--gd);font-size:14px;display:block;margin-bottom:2px;}
 .tip-card p{font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;}
 .tip-card .bad{color:#c00;font-size:12px;display:block;margin-top:2px;}
 .tip-card .good{color:#1a7a1a;font-size:12px;display:block;margin-top:2px;}
-.useful-phrases{background:#eef3ff;border-radius:10px;padding:12px 14px;margin-top:12px;color:#1F4E79;font-size:13px;}
-.useful-phrases b{display:block;margin-bottom:6px;color:#1F4E79;}
+.useful-phrases{background:rgba(0,242,255,0.08);border-radius:10px;padding:12px 14px;margin-top:12px;color:rgba(255,255,255,0.85);font-size:13px;}
+.useful-phrases b{display:block;margin-bottom:6px;color:#00f2ff;}
 .phrase-grid{display:grid;grid-template-columns:1fr;gap:6px;font-size:13px;color:#333;margin-top:4px;}
 .phrase-grid > div{background:#fff;padding:6px 10px;border-radius:6px;}
+/* Defensive section override — template has conflicting .sh{display:flex} */
+section.sh{display:block !important;flex-direction:unset !important;}
+section.sh > *{float:none !important;}
+/* m2 paragraph writing — workbook-style card (defensive against template CSS conflicts) */
+.paragraph-section{display:block !important;width:100% !important;float:none !important;position:static !important;padding:18px 18px 22px;background:#f8f9ff;border-radius:16px;margin:0 0 20px 0;color:#222;box-sizing:border-box;}
+.para-guide-card{display:block !important;width:100% !important;float:none !important;position:static !important;background:#f0f4ff;border-radius:12px;padding:16px;margin-bottom:16px;box-sizing:border-box;}
+.para-step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
+.para-step:last-child{margin-bottom:0;}
+.para-step b{color:var(--gd);font-size:14px;display:block;margin-bottom:2px;}
+.para-step p{font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;}
+.step-num{width:28px;height:28px;background:var(--gp);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:13px;}
+.example{background:#fff;border-left:3px solid var(--gp);padding:7px 10px;margin-top:6px;font-size:12px;color:#444;border-radius:0 6px 6px 0;line-height:1.5;}
+.para-inputs{display:block !important;width:100% !important;float:none !important;position:static !important;margin-top:8px;box-sizing:border-box;}
+.para-inputs label{display:block;font-weight:700;margin:10px 0 4px;color:var(--gd);font-size:13px;}
+.para-inputs textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:14px;resize:vertical;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;min-height:70px;}
+.para-inputs textarea:focus{border-color:var(--gp);outline:none;box-shadow:0 0 0 3px rgba(46,117,182,0.15);}
+.para-submit-wrap{text-align:center;margin-top:14px;}
 </style>
 </head>
 <body>
 <div class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">Middle School 1</span></div></div>
-<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">The Invisible Man &middot; W07 / 12</div><h1 class="hero-title">The Invisible Man</h1><p class="hero-sub">이방인의 도착 &mdash; H.G. Wells &middot; B1</p></div></div>
+<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">The Invisible Man &middot; W07 / 12</div><h1 class="hero-title">The Invisible Man</h1><p class="hero-sub">이상한 손님 &mdash; H.G. Wells &middot; B1</p></div></div>
 <div class="content-wrap">
   <section class="sh"><div class="sh-bar"><span class="sh-num">1</span><h2>핵심 표현 <span class="sh-en">KEY EXPRESSION</span></h2></div>
     <div class="key-expr-box">
-      <div class="ke-en" onclick="speak(this.textContent)">A strange man arrived in the village with his face fully covered, and nobody knew who he truly was. &#128266;</div>
-      <div class="ke-ko">낯선 사람이 얼굴을 완전히 가리고 마을에 도착했고, 아무도 그가 진짜 누구인지 알지 못했다.</div>
+      <div class="ke-en" onclick="speak(this.textContent)">A strange man came to a small village with his face completely covered. &#128266;</div>
+      <div class="ke-ko">낯선 남자가 그의 얼굴을 완전히 가린 채 작은 마을에 왔다.</div>
     </div>
-    <div class="day-plan">
-      <div class="day-card past">
-        <div class="day-label">Day 1 (월)</div>
-        <div class="day-dot">●</div>
-        <div class="day-sent">A strange man came.</div>
+    <div class="day-progress">
+      <div class="day-item">
+        <span class="day-label">Day 1 (월)</span>
+        <span class="day-text">A strange man came to the village.</span>
       </div>
-      <div class="day-arrow">→</div>
-      <div class="day-card past">
-        <div class="day-label">Day 2 (수)</div>
-        <div class="day-dot">●●</div>
-        <div class="day-sent">A strange man came to the village covered.</div>
+      <div class="day-divider">↓</div>
+      <div class="day-item">
+        <span class="day-label">Day 2 (수)</span>
+        <span class="day-text">A strange man came to a small village.</span>
       </div>
-      <div class="day-arrow">→</div>
-      <div class="day-card today">
-        <div class="day-label">Day 3 (금) ⭐ 오늘</div>
-        <div class="day-dot">●●●</div>
-        <div class="day-sent">A strange man arrived in the village with his face fully covered, and nobody knew who he truly was.</div>
+      <div class="day-divider">↓</div>
+      <div class="day-item today">
+        <span class="day-label">⭐ Day 3 (금) 오늘</span>
+        <span class="day-text">A strange man came to a small village with his face completely covered.</span>
       </div>
     </div>
   </section>
@@ -409,30 +419,24 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
       <button class="ltab" onclick="showLevel('c1',this)">🟣 심화 (C1)</button>
     </div>
     <div id="b1Story" class="story-box" style="display:block;">
-      <div id="b1Text"><p>A strange man came to our village. He wore a big coat and a hat. His face was covered with a scarf. We could only see his eyes. He walked slowly down the street. People looked at him. They felt curious and a little scared. Nobody knew his name. He did not talk to anyone. He went into the old house at the end of the road. The house was empty for many years. Now he lives there alone. Children sometimes see him at the window. They run away quickly. They tell their parents about the strange man. Parents say to stay away from that house. They think the man has a secret. Maybe he is hiding from someone. Maybe he is very sad. We do not know his story. But we watch him every day. We wait to see his face. We want to know who he is.</p></div>
-      <div class="reading-controls">
-        <button class="play-btn" onclick="playReading('b1')">▶ 재생</button>
-        <button class="pause-btn" onclick="pauseReading()">⏸ 일시정지</button>
-      </div>
+      <div id="b1Text"><p>A man came to our small village. He was very strange. He walked slowly with his head down. He wore big glasses and a hat. His face was hard to see.</p><p>He went to the small hotel. He talked to the owner. He asked for a quiet room. He spoke with his voice very low. People felt something was wrong.</p><p>He stayed in his room all day. He came out only at night. He walked with his hands covered by gloves. The village children were afraid. They ran away when they saw him.</p></div>
+      <button class="play-toggle" onclick="togglePlay(this)"><span class="play-icon">▶</span><span class="play-label">재생</span></button>
     </div>
     <div id="c1Story" class="story-box" style="display:none;">
-      <div id="c1Text"><p>A mysterious visitor arrived in our small village last week. He keeps his face completely hidden under a large hat and dark glasses. This unusual appearance makes everyone very curious about his true identity. People observe him walking alone every evening near the forest. He never stops to talk with any of the villagers, which seems quite surprising. Some people think he might be a traveler who lost his way. Others wonder if he is hiding from a difficult past. I feel he is just a lonely person looking for a quiet place. Perhaps he wants to forget his old life and start again. We may never discover the real reason for his secretive behavior. However, his presence has changed our peaceful village. Now we often discuss the stranger and his possible story. Life is not as simple and predictable as it was before.</p></div>
-      <div class="reading-controls">
-        <button class="play-btn" onclick="playReading('c1')">▶ 재생</button>
-        <button class="pause-btn" onclick="pauseReading()">⏸ 일시정지</button>
-      </div>
+      <div id="c1Text"><p>A mysterious visitor arrived in our peaceful village one cold afternoon. He moved with purpose, yet his appearance was unsettling, with his face completely hidden by bandages and dark glasses. The local people watched him with curiosity and growing suspicion as he proceeded directly to the only inn.</p><p>He requested a room at the back, away from the street, with the windows kept closed at all times. His manner was quiet and his words were few, spoken with his voice carefully controlled. This secrecy naturally fostered whispers and questions among the villagers.</p><p>His solitary walks occurred only after sunset, a figure moving through shadows with his intentions utterly concealed. This behavior, with his identity so deliberately obscured, transformed simple curiosity into genuine unease throughout the small community.</p></div>
+      <button class="play-toggle" onclick="togglePlay(this)"><span class="play-icon">▶</span><span class="play-label">재생</span></button>
     </div>
   </section>
   <section class="sh"><div class="sh-bar"><span class="sh-num">3</span><h2>핵심 어휘 <span class="sh-en">VOCABULARY</span></h2></div>
-    <div class="vocab-grid"><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">strange &#128266;</div><div class="vc-ko">이상한, 낯선</div><div class="vc-ex">"The strange man did not talk to anyone in the village."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">covered &#128266;</div><div class="vc-ko">가려진, 덮인</div><div class="vc-ex">"His face was covered so we could not see it."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">arrive &#128266;</div><div class="vc-ko">도착하다</div><div class="vc-ex">"The bus will arrive at the village in ten minutes."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">secret &#128266;</div><div class="vc-ko">비밀</div><div class="vc-ex">"She has a big secret that she tells no one."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">village &#128266;</div><div class="vc-ko">마을</div><div class="vc-ex">"Our small village has only one school and a shop."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">nobody &#128266;</div><div class="vc-ko">아무도 ... 않다</div><div class="vc-ex">"Nobody knows the answer to that difficult question."</div></div></div>
+    <div class="vocab-grid"><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">strange &#128266;</div><div class="vc-ko">이상한, 낯선</div><div class="vc-ex">"The strange man walked with his face covered by a scarf."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">village &#128266;</div><div class="vc-ko">마을</div><div class="vc-ex">"He came to a quiet village with its life unchanged for years."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">secret &#128266;</div><div class="vc-ko">비밀</div><div class="vc-ex">"He lived with his past kept secret from everyone."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">cover &#128266;</div><div class="vc-ko">가리다</div><div class="vc-ex">"She talked with her mouth covered by her hand."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">afraid &#128266;</div><div class="vc-ko">두려운</div><div class="vc-ex">"The children were afraid of the house with its windows always closed."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">whisper &#128266;</div><div class="vc-ko">속삭임</div><div class="vc-ex">"People shared stories with their voices lowered to a whisper."</div></div></div>
 
-    <div class="game-block"><div class="game-title">🎯 빈칸 채우기</div><div class="game-q">1. The man <strong>___</strong> his face with a black scarf.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">covered</button><button class="game-opt" onclick="fbCheck(this,false)">opened</button><button class="game-opt" onclick="fbCheck(this,false)">cleaned</button></div><div class="game-fb"></div><div class="game-q">2. <strong>___</strong> in the village knew the strange man's name.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">Nobody</button><button class="game-opt" onclick="fbCheck(this,false)">Everybody</button><button class="game-opt" onclick="fbCheck(this,false)">Somebody</button></div><div class="game-fb"></div></div>
-    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기</div><div class="game-q">1. <span class="game-hint">힌트: 익숙하지 않은</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds1" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds1','strange')">확인</button></div><div class="game-fb" id="ds1-fb"></div><div class="game-q">2. <span class="game-hint">힌트: 시골의 작은 마을</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds2" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds2','village')">확인</button></div><div class="game-fb" id="ds2-fb"></div><div class="game-q">3. <span class="game-hint">힌트: 다른 사람에게 말하지 않는 것</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds3" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds3','secret')">확인</button></div><div class="game-fb" id="ds3-fb"></div></div>
-    <div class="game-block"><div class="game-title">👂 듣고 고르기</div><div class="game-q">1. <button class="game-opt" onclick="lcPlay('arrive')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">arrive</button><button class="game-opt" onclick="lcCheck(this,false)">alive</button><button class="game-opt" onclick="lcCheck(this,false)">a drive</button></div><div class="game-fb"></div><div class="game-q">2. <button class="game-opt" onclick="lcPlay('nobody')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">nobody</button><button class="game-opt" onclick="lcCheck(this,false)">no body</button><button class="game-opt" onclick="lcCheck(this,false)">know body</button></div><div class="game-fb"></div><div class="game-q">3. <button class="game-opt" onclick="lcPlay('covered')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">covered</button><button class="game-opt" onclick="lcCheck(this,false)">discovered</button><button class="game-opt" onclick="lcCheck(this,false)">recovered</button></div><div class="game-fb"></div></div>
-    <div class="game-block"><div class="game-title">🔤 단어 배열하기</div><div class="game-q">1. 레벨 B1 — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo1-bank"><span class="wo-chip" data-word="A" onclick="woAdd(1,this,'A')">A</span><span class="wo-chip" data-word="man" onclick="woAdd(1,this,'man')">man</span><span class="wo-chip" data-word="came" onclick="woAdd(1,this,'came')">came</span><span class="wo-chip" data-word="strange" onclick="woAdd(1,this,'strange')">strange</span></div><div class="wo-zone" id="wo1-zone"></div><button class="game-opt" onclick="woCheck(1)">확인</button><div class="game-fb" id="wo1-fb"></div><div class="game-q">2. 레벨 B2 — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo2-bank"><span class="wo-chip" data-word="knew" onclick="woAdd(2,this,'knew')">knew</span><span class="wo-chip" data-word="of" onclick="woAdd(2,this,'of')">of</span><span class="wo-chip" data-word="Nobody" onclick="woAdd(2,this,'Nobody')">Nobody</span><span class="wo-chip" data-word="stranger" onclick="woAdd(2,this,'stranger')">stranger</span><span class="wo-chip" data-word="the" onclick="woAdd(2,this,'the')">the</span><span class="wo-chip" data-word="the" onclick="woAdd(2,this,'the')">the</span><span class="wo-chip" data-word="secret" onclick="woAdd(2,this,'secret')">secret</span></div><div class="wo-zone" id="wo2-zone"></div><button class="game-opt" onclick="woCheck(2)">확인</button><div class="game-fb" id="wo2-fb"></div></div>
-    <div class="game-block"><div class="game-title">🎴 짝맞추기</div><div class="game-q">단어와 한국어 뜻을 짝지어보세요:</div><div class="match-grid"><div><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">strange</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">village</button><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">arrive</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">secret</button></div><div><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">마을</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">비밀</button><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">도착하다</button><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">이상한</button></div></div></div>
-    <div class="game-block"><div class="game-title">🏆 받아쓰기 도전</div><div class="game-q">A1 — <button class="game-opt" onclick="dcPlay('A strange man came to the village.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a1','A strange man came to the village.')">확인</button></div><div class="game-fb" id="dc-a1-fb"></div><div class="game-q">A2 — <button class="game-opt" onclick="dcPlay('The man with a covered face walked slowly.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a2" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a2','The man with a covered face walked slowly.')">확인</button></div><div class="game-fb" id="dc-a2-fb"></div><div class="game-q">B1 — <button class="game-opt" onclick="dcPlay('Nobody in the small village knew the secret of the new visitor.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-b1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('b1','Nobody in the small village knew the secret of the new visitor.')">확인</button></div><div class="game-fb" id="dc-b1-fb"></div></div>
-    <script>document.addEventListener('DOMContentLoaded',function(){woInit(1, ["A", "strange", "man", "came"]);woInit(2, ["Nobody", "knew", "the", "secret", "of", "the", "stranger"]);});</script>
+    <div class="game-block"><div class="game-title">🎯 빈칸 채우기</div><div class="game-q">1. The man left the room with the door <strong>___</strong> behind him.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">closed</button><button class="game-opt" onclick="fbCheck(this,false)">open</button><button class="game-opt" onclick="fbCheck(this,false)">broken</button></div><div class="game-fb"></div><div class="game-q">2. She read the letter with her name <strong>___</strong> at the top.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">written</button><button class="game-opt" onclick="fbCheck(this,false)">spoken</button><button class="game-opt" onclick="fbCheck(this,false)">drawn</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기</div><div class="game-q">1. <span class="game-hint">힌트: 이상한</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds1" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds1','strange')">확인</button></div><div class="game-fb" id="ds1-fb"></div><div class="game-q">2. <span class="game-hint">힌트: 마을</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds2" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds2','village')">확인</button></div><div class="game-fb" id="ds2-fb"></div><div class="game-q">3. <span class="game-hint">힌트: 비밀</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds3" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds3','secret')">확인</button></div><div class="game-fb" id="ds3-fb"></div></div>
+    <div class="game-block"><div class="game-title">👂 듣고 고르기</div><div class="game-q">1. <button class="game-opt" onclick="lcPlay('face')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">face</button><button class="game-opt" onclick="lcCheck(this,false)">faith</button><button class="game-opt" onclick="lcCheck(this,false)">phase</button></div><div class="game-fb"></div><div class="game-q">2. <button class="game-opt" onclick="lcPlay('hide')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">hide</button><button class="game-opt" onclick="lcCheck(this,false)">height</button><button class="game-opt" onclick="lcCheck(this,false)">hired</button></div><div class="game-fb"></div><div class="game-q">3. <button class="game-opt" onclick="lcPlay('trust')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">trust</button><button class="game-opt" onclick="lcCheck(this,false)">trash</button><button class="game-opt" onclick="lcCheck(this,false)">thrust</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">🔤 단어 배열하기</div><div class="game-q">1. 레벨 B1 — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo1-bank"><span class="wo-chip" data-word="man" onclick="woAdd(1,this,'man')">man</span><span class="wo-chip" data-word="The" onclick="woAdd(1,this,'The')">The</span><span class="wo-chip" data-word="looked" onclick="woAdd(1,this,'looked')">looked</span><span class="wo-chip" data-word="very" onclick="woAdd(1,this,'very')">very</span><span class="wo-chip" data-word="strange" onclick="woAdd(1,this,'strange')">strange</span></div><div class="wo-zone" id="wo1-zone"></div><button class="game-opt" onclick="woCheck(1)">확인</button><div class="game-fb" id="wo1-fb"></div><div class="game-q">2. 레벨 B2 — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo2-bank"><span class="wo-chip" data-word="he" onclick="woAdd(2,this,'he')">he</span><span class="wo-chip" data-word="face" onclick="woAdd(2,this,'face')">face</span><span class="wo-chip" data-word="Nobody" onclick="woAdd(2,this,'Nobody')">Nobody</span><span class="wo-chip" data-word="knew" onclick="woAdd(2,this,'knew')">knew</span><span class="wo-chip" data-word="why" onclick="woAdd(2,this,'why')">why</span><span class="wo-chip" data-word="his" onclick="woAdd(2,this,'his')">his</span><span class="wo-chip" data-word="hid" onclick="woAdd(2,this,'hid')">hid</span></div><div class="wo-zone" id="wo2-zone"></div><button class="game-opt" onclick="woCheck(2)">확인</button><div class="game-fb" id="wo2-fb"></div></div>
+    <div class="game-block"><div class="game-title">🎴 짝맞추기</div><div class="game-q">단어와 한국어 뜻을 짝지어보세요:</div><div class="match-grid"><div><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">cover</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">afraid</button><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">whisper</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">trust</button></div><div><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">신뢰하다</button><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">속삭이다</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">두려운</button><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">가리다</button></div></div></div>
+    <div class="game-block"><div class="game-title">🏆 받아쓰기 도전</div><div class="game-q">A1 — <button class="game-opt" onclick="dcPlay('A strange man came to the village.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a1','A strange man came to the village.')">확인</button></div><div class="game-fb" id="dc-a1-fb"></div><div class="game-q">A2 — <button class="game-opt" onclick="dcPlay('He walked with his face covered by a big hat.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a2" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a2','He walked with his face covered by a big hat.')">확인</button></div><div class="game-fb" id="dc-a2-fb"></div><div class="game-q">B1 — <button class="game-opt" onclick="dcPlay('The villagers felt nervous because the visitor lived with his windows always closed.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-b1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('b1','The villagers felt nervous because the visitor lived with his windows always closed.')">확인</button></div><div class="game-fb" id="dc-b1-fb"></div></div>
+    <script>document.addEventListener('DOMContentLoaded',function(){woInit(1, ["The", "man", "looked", "very", "strange"]);woInit(2, ["Nobody", "knew", "why", "he", "hid", "his", "face"]);});</script>
   </section>
   <section class="sh comp-section"><div class="sh-bar"><span class="sh-num">4</span><h2>이해 문제 <span class="sh-en">COMPREHENSION</span></h2></div>
     <div class="comp-tabs">
@@ -440,13 +444,13 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
       <button class="comp-tab" onclick="compTab(this,'b1')">🔵 초급 B1</button>
       <button class="comp-tab" onclick="compTab(this,'intermediate')">🟣 중급</button>
     </div>
-    <div class="comp-panel comp-panel-entry active"><div class="game-q">Q1. 낯선 사람은 어떻게 마을에 왔나요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">얼굴을 가리고</button><button class="game-opt" onclick="compCheck(this,false)">큰 소리를 내며</button><button class="game-opt" onclick="compCheck(this,false)">친구들과 함께</button></div><div class="game-fb"></div><div class="game-q">Q2. 마을 사람들은 낯선 사람에 대해 어떻게 느꼈나요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">호기심과 두려움</button><button class="game-opt" onclick="compCheck(this,false)">즐거움과 기쁨</button><button class="game-opt" onclick="compCheck(this,false)">관심 없음</button></div><div class="game-fb"></div><div class="game-q">Q3. 낯선 사람은 어디에 살게 되었나요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">오래된 빈 집</button><button class="game-opt" onclick="compCheck(this,false)">마을 호텔</button><button class="game-opt" onclick="compCheck(this,false)">학교 근처</button></div><div class="game-fb"></div></div>
-    <div class="comp-panel comp-panel-b1"><div class="game-q">Q1. How did the man hide his face?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">with a scarf and hat</button><button class="game-opt" onclick="compCheck(this,false)">with a book</button><button class="game-opt" onclick="compCheck(this,false)">with his hands</button></div><div class="game-fb"></div><div class="game-q">Q2. Where did the man go to live?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">in an old empty house</button><button class="game-opt" onclick="compCheck(this,false)">in a big hotel</button><button class="game-opt" onclick="compCheck(this,false)">with a family</button></div><div class="game-fb"></div><div class="game-q">Q3. What do the children do when they see him?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">They run away.</button><button class="game-opt" onclick="compCheck(this,false)">They say hello.</button><button class="game-opt" onclick="compCheck(this,false)">They ask questions.</button></div><div class="game-fb"></div></div>
-    <div class="comp-panel comp-panel-intermediate"><div class="game-q">Q1. Why do the parents tell children to stay away from the house?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">They think the man might be dangerous.</button><button class="game-opt" onclick="compCheck(this,false)">The house is too dirty.</button><button class="game-opt" onclick="compCheck(this,false)">The man does not like children.</button></div><div class="game-fb"></div><div class="game-q">Q2. What is the main reason people are curious about the man?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">They cannot see his face or know his story.</button><button class="game-opt" onclick="compCheck(this,false)">He has a lot of money.</button><button class="game-opt" onclick="compCheck(this,false)">He talks too much.</button></div><div class="game-fb"></div><div class="game-q">Q3. How has the man changed life in the village?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">People now talk about him and feel less peaceful.</button><button class="game-opt" onclick="compCheck(this,false)">He helped build a new school.</button><button class="game-opt" onclick="compCheck(this,false)">He made many friends quickly.</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-entry active"><div class="game-q">Q1. 이상한 손님은 어디에 왔나요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">큰 도시</button><button class="game-opt" onclick="compCheck(this,true)">작은 마을</button><button class="game-opt" onclick="compCheck(this,false)">학교</button></div><div class="game-fb"></div><div class="game-q">Q2. 손님은 얼굴을 어떻게 했나요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">잘 보였음</button><button class="game-opt" onclick="compCheck(this,true)">가렸음</button><button class="game-opt" onclick="compCheck(this,false)">웃었음</button></div><div class="game-fb"></div><div class="game-q">Q3. 마을 사람들은 어떻게 느꼈나요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">행복함</button><button class="game-opt" onclick="compCheck(this,true)">두려움</button><button class="game-opt" onclick="compCheck(this,false)">지루함</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-b1"><div class="game-q">Q1. Where did the strange man go?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">to a school</button><button class="game-opt" onclick="compCheck(this,true)">to a hotel</button><button class="game-opt" onclick="compCheck(this,false)">to a shop</button></div><div class="game-fb"></div><div class="game-q">Q2. When did he usually walk outside?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">in the morning</button><button class="game-opt" onclick="compCheck(this,false)">at noon</button><button class="game-opt" onclick="compCheck(this,true)">at night</button></div><div class="game-fb"></div><div class="game-q">Q3. How did the village children feel?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">happy</button><button class="game-opt" onclick="compCheck(this,true)">afraid</button><button class="game-opt" onclick="compCheck(this,false)">excited</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-intermediate"><div class="game-q">Q1. Why were the villagers suspicious?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">He was too friendly.</button><button class="game-opt" onclick="compCheck(this,true)">He hid his appearance.</button><button class="game-opt" onclick="compCheck(this,false)">He gave them money.</button></div><div class="game-fb"></div><div class="game-q">Q2. What does 'with his face covered' tell us?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">He was cold.</button><button class="game-opt" onclick="compCheck(this,false)">He wanted to be seen.</button><button class="game-opt" onclick="compCheck(this,true)">He kept a secret.</button></div><div class="game-fb"></div><div class="game-q">Q3. What was the main result of his behavior?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">The village became famous.</button><button class="game-opt" onclick="compCheck(this,true)">People felt uneasy.</button><button class="game-opt" onclick="compCheck(this,false)">Children played with him.</button></div><div class="game-fb"></div></div>
   </section>
   <section class="sh"><div class="sh-bar"><span class="sh-num">5</span><h2>생각해보기 <span class="sh-en">MY THOUGHTS</span></h2></div>
     <div class="essay-topic-box">
-      <div style="font-size:0.95rem;color:#00f2ff;margin-bottom:6px;">💭 이 이야기에서 가장 인상적인 장면은? (한 문장으로)</div>
+      <div style="font-size:0.95rem;color:#00f2ff;margin-bottom:6px;">💭 얼굴을 가린 사람들을 우리는 믿어야 할까요?</div>
       <div style="font-size:0.82rem;color:rgba(255,255,255,0.5);">한 문장으로 짧게 영어 또는 한국어로 써보세요.</div>
     </div>
     <textarea class="essay-input" id="myThoughtInput" placeholder="한 문장으로 써보세요..." style="min-height:60px;"></textarea>
@@ -520,10 +524,10 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
     </div>
     <div class="sample-essay-box">
       <div class="sample-essay-title">📖 이번 주 샘플 에세이 (읽기용)</div>
-      <div style="font-size:0.82rem;color:#c9a84c;margin-bottom:8px;">Topic: A stranger in my village.</div>
-      <div><strong style="color:#00f2ff;">①</strong> I think a stranger can change a small village in many ways.</div>
-      <div style="margin-top:8px;"><strong style="color:#00f2ff;">②</strong> For example, when the covered man came, people felt nervous and talked only about him.</div>
-      <div style="margin-top:8px;"><strong style="color:#00f2ff;">③</strong> That is why new people make us think about our own lives.</div>
+      <div style="font-size:0.82rem;color:#c9a84c;margin-bottom:8px;">Topic: First impressions: can we really trust them?</div>
+      <div><strong style="color:#00f2ff;">①</strong> I think first impressions are not always right or trustworthy.</div>
+      <div style="margin-top:8px;"><strong style="color:#00f2ff;">②</strong> For example, a person who looks strange or hides their face might actually be kind and have a good reason.</div>
+      <div style="margin-top:8px;"><strong style="color:#00f2ff;">③</strong> That is why we should not judge people only by our first look.</div>
     </div>
     <div style="background:rgba(201,168,76,0.08);border-left:3px solid #c9a84c;padding:12px 14px;margin-top:14px;border-radius:4px;font-size:0.88rem;color:rgba(255,255,255,0.75);">
       💡 <strong>다음 달부터</strong> 직접 써볼 거예요! 준비됐죠? 😊
@@ -532,13 +536,6 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
       <button class="btn-submit" onclick="askEssayStructure()">❓ ChatGPT에 에세이 구조 질문하기</button>
     </div>
   </section>
-  <!-- ESSAY-CAMP-LINK -->
-  <div style="margin-top:12px;padding:12px 16px;background:#f9f7f2;border:1px solid #e0dbd0;border-radius:10px;text-align:center;">
-    <p style="font-size:12px;color:#6b5b3a;margin-bottom:8px;">✍️ 에세이 쓰기가 어렵다면?</p>
-    <a href="/essay-camp/" style="display:inline-block;background:#4a6741;color:white;padding:8px 18px;border-radius:20px;font-size:12px;text-decoration:none;font-weight:bold;">📚 Essay Writing Camp 바로가기</a>
-    <p style="font-size:11px;color:#888;margin-top:6px;">중1 Level 1부터 차근차근 배워보세요!</p>
-  </div>
-
   <section class="sh"><div class="sh-bar"><span class="sh-num">7</span><h2>ChatGPT 회화 연습 <span class="sh-en">AI PRACTICE</span></h2></div>
     <div style="text-align:center;padding:20px 0;">
       <p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">이번 주 핵심 표현으로 ChatGPT Camp B와 영어로 대화해보세요!</p>
@@ -624,7 +621,7 @@ function copyAndOpen(msg){
 function sendDebate(){}
 function submitEssay(){}
 function launchChatGPTPractice(){
-  var m='\uc774\ubc88 \uc8fc\uc5d0\ub294 \'\ud22c\uba85 \uc778\uac04\'\uc5d0\uc11c \ub0af\uc120 \uc0ac\ub78c\uc774 \ub9c8\uc744\uc5d0 \ub3c4\ucc29\ud558\ub294 \uc7a5\uba74\uc744 \uc77d\uc5c8\uc5b4\uc694. \ub9cc\uc57d \uc5ec\ub7ec\ubd84\uc758 \ub9c8\uc744\uc5d0 \uc5bc\uad74\uc744 \uac00\ub9b0 \ub0af\uc120 \uc0ac\ub78c\uc774 \ub098\ud0c0\ub09c\ub2e4\uba74, \uc5b4\ub5bb\uac8c \ub290\ub07c\uace0 \uc5b4\ub5bb\uac8c \ud589\ub3d9\ud560 \uac83 \uac19\uc544\uc694? \ud568\uaed8 \uc774\uc57c\uae30\ud574 \ubd05\uc2dc\ub2e4.';
+  var m='\'\ud22c\uba85 \uc778\uac04\'\uc744 \uc77d\uace0 \uc788\uc5b4\uc694. \uc774\uc57c\uae30 \uc18d \uc774\uc0c1\ud55c \uc190\ub2d8\ucc98\ub7fc, \uc5bc\uad74\uc744 \uac00\ub9b0 \uc0ac\ub78c\uc744 \ubcf8\ub2e4\uba74 \uc5b4\ub5bb\uac8c \ub290\ub084 \uac83 \uac19\uc544\uc694? \uc65c \uadf8 \uc0ac\ub78c\uc740 \uc790\uc2e0\uc744 \uc228\uacbc\uc744\uae4c\uc694? \ud568\uaed8 \uc774\uc57c\uae30\ud574 \ubd10\uc694.';
   copyAndOpen(m);
 }
 /* ===== CEC Robo Helper (Camp B) ===== */
@@ -742,25 +739,35 @@ function launchChatGPTPractice(){
 
 
 
+
+
 <script id="m1-extra-js">
-// Reading controls — 분리된 Play/Pause 버튼
-function playReading(lvl){
-  window.speechSynthesis.cancel();
-  var el = document.getElementById(lvl+'Text');
-  if(!el) return;
-  var u = new SpeechSynthesisUtterance(el.textContent);
-  u.lang='en-US'; u.rate=0.9;
-  window.speechSynthesis.speak(u);
-  document.querySelectorAll('.pause-btn').forEach(function(b){ b.classList.remove('paused'); b.textContent='⏸ 일시정지'; });
-}
-function pauseReading(){
-  var btns = document.querySelectorAll('.pause-btn');
-  if(window.speechSynthesis.paused){
-    window.speechSynthesis.resume();
-    btns.forEach(function(b){ b.classList.remove('paused'); b.textContent='⏸ 일시정지'; });
-  } else if(window.speechSynthesis.speaking){
+// Reading toggle — single Play/Pause button
+function togglePlay(btn){
+  var icon=btn.querySelector('.play-icon');
+  var label=btn.querySelector('.play-label');
+  if(btn.classList.contains('playing')){
     window.speechSynthesis.pause();
-    btns.forEach(function(b){ b.classList.add('paused'); b.textContent='▶ 계속 재생'; });
+    btn.classList.remove('playing');
+    icon.textContent='▶';
+    label.textContent='재생';
+  } else {
+    if(window.speechSynthesis.paused){
+      window.speechSynthesis.resume();
+    } else {
+      var storyDiv=btn.closest('.story-box')||btn.parentElement;
+      var textEl=storyDiv.querySelector('[id$="Text"]');
+      var txt=textEl?textEl.textContent:'';
+      window.speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(txt);
+      u.lang='en-US';u.rate=0.85;
+      u.onend=function(){btn.classList.remove('playing');icon.textContent='▶';label.textContent='재생';};
+      u.onerror=u.onend;
+      window.speechSynthesis.speak(u);
+    }
+    btn.classList.add('playing');
+    icon.textContent='⏸';
+    label.textContent='일시정지';
   }
 }
 
@@ -931,7 +938,8 @@ function submitParagraph(){
 
 // m2: opinion — send 1 paragraph to ChatGPT
 function sendOpinion(){
-  var t = document.getElementById('opinionInput').value.trim();
+  var el = document.getElementById('opn1') || document.getElementById('opinionInput');
+  var t = el ? el.value.trim() : '';
   if(!t){ alert('내 생각을 한 단락으로 써주세요!'); return; }
   var topic = document.getElementById('opTopic') ? document.getElementById('opTopic').textContent : '';
   var msg = '안녕하세요! 저는 Middle School 2 학생이에요.\n\n의견 표현 주제: ' + topic + '\n\n내 생각:\n' + t + '\n\n중학생 수준에서 자연스럽게 고쳐주시고 간단한 코멘트 부탁드려요!';
