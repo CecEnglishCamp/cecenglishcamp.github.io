@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A Tale of Two Cities W21 | Camp B Middle School 3</title>
+  <title>Heart of Darkness W21 | Camp B Middle School 3</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
 :root{--bg:#1a2535;--card:#1e2e42;--card2:#192840;--border:#2a3a52;--acc:#0ea5e9;--acc2:#0369a1;--green:#16a34a;--gold:#f59e0b;--red:#dc2626;--text:#e8e8f0;--sub:#8899aa;--a1c:#16a34a;--a1b:#0d2a1a;--a2c:#0ea5e9;--a2b:#0a1e30;--b1c:#7c3aed;--b1b:#1e0d4a;}
@@ -266,51 +266,331 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
   .gb-btn:hover{background:#e0f0d0;}
   </style>
   <!-- ===== /CEC Robo Helper styles ===== -->
+<style id="grade-theme">:root{--gp:#6A1B9A;--gl:#F3E5F5;--gd:#4A148C;}</style>
+<style id="m1-extra-css">
+.pd-notice{font-size:11px;color:#999;text-align:center;padding:12px 20px;margin-top:30px;margin-bottom:80px;border-top:1px solid rgba(255,255,255,0.08);line-height:1.6;}
+.pd-en{font-size:10px;color:#bbb;}
+/* override Robo + panel positions to clear sticky wk-nav */
+.gb{bottom:80px !important;}
+.gb-panel{bottom:148px !important;}
+.play-pause-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:rgba(0,242,255,0.1);border:1px solid #00f2ff;color:#00f2ff;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;}
+.play-pause-btn.playing{background:#00f2ff;color:#000;}
+.reading-controls{display:flex;gap:10px;margin:12px 0 4px;}
+.play-btn,.pause-btn{flex:1;padding:10px;border-radius:8px;border:none;font-size:14px;font-weight:bold;cursor:pointer;font-family:inherit;}
+.play-btn{background:var(--gp);color:#fff;}
+.play-btn:hover{background:#1f5a8f;}
+.pause-btn{background:#e0e0e0;color:#333;}
+.pause-btn:hover{background:#c8c8c8;}
+.pause-btn.paused{background:#c9a84c;color:#000;}
+.game-block{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px;margin-top:12px;}
+.game-title{font-size:0.85rem;color:#c9a84c;font-weight:700;margin-bottom:10px;letter-spacing:1px;}
+.game-q{font-size:0.92rem;color:#eee;margin:10px 0 8px;line-height:1.6;}
+.game-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.game-opt{padding:7px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ddd;border-radius:18px;font-size:0.85rem;cursor:pointer;}
+.game-opt:hover{background:rgba(0,242,255,0.12);border-color:#00f2ff;}
+.game-opt.correct{background:rgba(40,200,120,0.25);border-color:#28c878;color:#6be0a0;}
+.game-opt.wrong{background:rgba(220,80,80,0.2);border-color:#dc5050;color:#ffb0b0;}
+.game-fb{font-size:0.82rem;color:rgba(255,255,255,0.55);margin-top:6px;min-height:18px;}
+.game-fb.correct{color:#6be0a0;}
+.game-fb.wrong{color:#ffb0b0;}
+.game-input{width:100%;max-width:300px;padding:7px 12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.18);color:#fff;border-radius:6px;font-size:0.9rem;margin-right:6px;}
+.game-hint{font-size:0.78rem;color:#c9a84c;font-style:italic;margin-left:8px;}
+.wo-bank,.wo-zone{display:flex;flex-wrap:wrap;gap:6px;padding:10px;border:1px dashed rgba(255,255,255,0.2);border-radius:8px;min-height:44px;margin:6px 0;}
+.wo-zone{border-style:solid;background:rgba(0,242,255,0.04);}
+.wo-chip{padding:6px 12px;background:rgba(0,242,255,0.15);color:#00f2ff;border-radius:14px;font-size:0.85rem;cursor:pointer;user-select:none;}
+.wo-chip.used{opacity:0.35;cursor:default;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+.match-btn{padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#ddd;border-radius:6px;font-size:0.88rem;cursor:pointer;text-align:left;}
+.match-btn.sel{border-color:#c9a84c;background:rgba(201,168,76,0.15);}
+.match-btn.matched{border-color:#28c878;background:rgba(40,200,120,0.2);color:#6be0a0;pointer-events:none;}
+.comp-tabs{display:flex;gap:6px;margin-bottom:10px;}
+.comp-tab{padding:6px 14px;border:1px solid rgba(255,255,255,0.15);border-radius:18px;background:transparent;color:#ccc;font-size:0.85rem;cursor:pointer;}
+.comp-tab.active{background:#00f2ff;color:#000;border-color:#00f2ff;}
+.comp-panel{display:none;}
+.comp-panel.active{display:block;}
+.essay-basics-box{background:rgba(0,242,255,0.04);border-left:3px solid #00f2ff;border-radius:6px;padding:14px 18px;margin-bottom:12px;}
+.essay-basics-label{font-size:0.78rem;color:#c9a84c;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.essay-basics-text{font-size:0.92rem;color:#ddd;line-height:1.7;}
+.essay-basics-text em{color:#00f2ff;font-style:italic;}
+.sample-essay-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:16px 20px;margin-top:14px;font-size:0.92rem;color:#ddd;line-height:1.8;}
+.sample-essay-title{font-size:0.82rem;color:#c9a84c;font-weight:700;margin-bottom:8px;}
+/* m2 additions */
+.grammar-box{background:rgba(201,168,76,0.06);border-left:3px solid #c9a84c;border-radius:6px;padding:14px 18px;margin-bottom:12px;}
+.grammar-label{font-size:0.78rem;color:#c9a84c;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.grammar-code{display:inline-block;background:#c9a84c;color:#000;font-weight:700;padding:2px 10px;border-radius:12px;font-size:0.78rem;margin-right:8px;}
+.grammar-title{font-size:1.05rem;color:#fff;font-weight:700;margin-bottom:8px;}
+.grammar-explain{font-size:0.92rem;color:#ddd;line-height:1.7;margin-bottom:10px;}
+.grammar-example{background:rgba(0,0,0,0.25);border-radius:6px;padding:8px 12px;margin-top:6px;font-size:0.9rem;color:#ddd;line-height:1.6;cursor:pointer;}
+.grammar-example:hover{background:rgba(0,242,255,0.08);}
+.grammar-example .ge-ko{color:rgba(255,255,255,0.55);font-size:0.82rem;margin-top:3px;}
+.pw-wrap{margin-top:12px;}
+.pw-label{font-size:0.82rem;color:#00f2ff;font-weight:700;margin:10px 0 6px;}
+.pw-hint{font-size:0.78rem;color:rgba(255,255,255,0.55);margin-bottom:6px;line-height:1.5;}
+.pw-input{width:100%;min-height:54px;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:6px;font-size:0.92rem;font-family:inherit;resize:vertical;}
+.opinion-box{background:rgba(0,242,255,0.05);border:1px solid rgba(0,242,255,0.25);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+/* m3 additions — debate */
+.debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.debate-col{display:flex;flex-direction:column;gap:8px;}
+.debate-col-title{font-weight:700;font-size:0.88rem;padding:6px 10px;border-radius:6px;text-align:center;letter-spacing:1px;}
+.debate-col-title.pro{background:rgba(40,200,120,0.15);color:#6be0a0;border:1px solid rgba(40,200,120,0.35);}
+.debate-col-title.con{background:rgba(220,80,80,0.15);color:#ffb0b0;border:1px solid rgba(220,80,80,0.35);}
+.debate-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:9px 12px;font-size:0.86rem;color:#ddd;line-height:1.55;}
+.debate-card.pro{border-left:3px solid #28c878;}
+.debate-card.con{border-left:3px solid #dc5050;}
+@media(max-width:560px){.debate-grid{grid-template-columns:1fr;}}
+.debate-topic-box{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+/* Day 1/2/3 progress — simple border-left list */
+.day-progress{margin:16px 0;background:#fafafa;border-radius:12px;padding:14px;}
+.day-item{padding:10px 14px;border-left:3px solid var(--gl);margin-bottom:6px;}
+.day-item.today{border-left:3px solid var(--gp);background:var(--gl);border-radius:0 8px 8px 0;}
+.day-label{font-size:11px;font-weight:bold;color:var(--gp);display:block;margin-bottom:3px;letter-spacing:0.5px;}
+.day-text{font-size:14px;color:#333;display:block;line-height:1.45;}
+.day-divider{color:#bbb;text-align:center;font-size:14px;display:block;padding:2px 0;}
+/* Reading tab buttons — larger, stronger active */
+.level-tabs{display:flex;gap:8px;margin-bottom:12px;}
+.ltab{flex:1;padding:11px 16px !important;font-size:14px !important;font-weight:700 !important;border-radius:10px !important;border:2px solid rgba(255,255,255,0.15) !important;background:rgba(255,255,255,0.04) !important;color:#ccc !important;cursor:pointer;transition:all 0.15s;}
+.ltab:hover{background:rgba(255,255,255,0.08) !important;}
+.ltab.active{background:linear-gradient(135deg,var(--gp),var(--gd)) !important;color:#fff !important;border-color:var(--gp) !important;box-shadow:0 0 12px rgba(0,0,0,0.25) !important;transform:translateY(-1px);}
+/* Essay tips block (sec 6 top) */
+.essay-tips{background:#f8f9ff;border-radius:16px;padding:20px;margin-bottom:20px;color:#222;}
+.tips-title{font-size:16px;font-weight:700;color:var(--gd);margin-bottom:16px;text-align:center;}
+.tip-card{display:flex;gap:12px;background:#fff;border-radius:10px;padding:12px 14px;margin-bottom:10px;border-left:4px solid var(--gp);align-items:flex-start;}
+.tip-num{width:28px;height:28px;background:var(--gp);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:14px;}
+.tip-card b{color:var(--gd);font-size:14px;display:block;margin-bottom:2px;}
+.tip-card p{font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;}
+.tip-card .bad{color:#c00;font-size:12px;display:block;margin-top:2px;}
+.tip-card .good{color:#1a7a1a;font-size:12px;display:block;margin-top:2px;}
+.useful-phrases{background:#eef3ff;border-radius:10px;padding:12px 14px;margin-top:12px;color:var(--gd);font-size:13px;}
+.useful-phrases b{display:block;margin-bottom:6px;color:var(--gd);}
+.phrase-grid{display:grid;grid-template-columns:1fr;gap:6px;font-size:13px;color:#333;margin-top:4px;}
+.phrase-grid > div{background:#fff;padding:6px 10px;border-radius:6px;}
+/* Defensive section override — template has conflicting .sh{display:flex} */
+section.sh{display:block !important;flex-direction:unset !important;}
+section.sh > *{float:none !important;}
+/* m2 paragraph writing — workbook-style card (defensive against template CSS conflicts) */
+.paragraph-section{display:block !important;width:100% !important;float:none !important;position:static !important;padding:18px 18px 22px;background:#f8f9ff;border-radius:16px;margin:0 0 20px 0;color:#222;box-sizing:border-box;}
+.para-guide-card{display:block !important;width:100% !important;float:none !important;position:static !important;background:#f0f4ff;border-radius:12px;padding:16px;margin-bottom:16px;box-sizing:border-box;}
+.para-step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
+.para-step:last-child{margin-bottom:0;}
+.para-step b{color:var(--gd);font-size:14px;display:block;margin-bottom:2px;}
+.para-step p{font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;}
+.step-num{width:28px;height:28px;background:var(--gp);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:13px;}
+.example{background:#fff;border-left:3px solid var(--gp);padding:7px 10px;margin-top:6px;font-size:12px;color:#444;border-radius:0 6px 6px 0;line-height:1.5;}
+.para-inputs{display:block !important;width:100% !important;float:none !important;position:static !important;margin-top:8px;box-sizing:border-box;}
+.para-inputs label{display:block;font-weight:700;margin:10px 0 4px;color:var(--gd);font-size:13px;}
+.para-inputs textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:14px;resize:vertical;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;min-height:70px;}
+.para-inputs textarea:focus{border-color:var(--gp);outline:none;box-shadow:0 0 0 3px rgba(46,117,182,0.15);}
+.para-submit-wrap{text-align:center;margin-top:14px;}
+</style>
 </head>
 <body>
 <div class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">Middle School 3</span></div></div>
-<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">Jane Eyre &middot; W07 / 08</div><h1 class="hero-title">Jane Eyre</h1><p class="hero-sub">독립적인 정신 — Charlotte Brontë · B2</p></div></div>
+<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">Heart of Darkness &middot; W21 / 24</div><h1 class="hero-title">Heart of Darkness</h1><p class="hero-sub">식민지의 진실 &mdash; Joseph Conrad &middot; B2</p></div></div>
 <div class="content-wrap">
-  <section class="sh"><div class="sh-bar"><span class="sh-num">1</span><h2>&#54645;&#49900; &#54364;&#54788; <span class="sh-en">KEY EXPRESSION</span></h2></div>
-    <div class="key-expr-box"><div class="ke-en" onclick="speak(this.textContent)">The Revolution that began with justice ended with terror. 🔊</div><div class="ke-ko">정의로 시작된 혁명은 공포로 끝났다.</div></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">2</span><h2>&#51648;&#47928; &#51069;&#44592; <span class="sh-en">READING</span></h2></div>
-    <div class="level-tabs"><button class="ltab active" onclick="showLevel('b1',this)">B1 &#44592;&#48376;</button><button class="ltab" onclick="showLevel('c1',this)">C1 &#49900;&#54868;</button></div>
-    <div id="b1Story" class="story-box" style="display:block;"><p id="b1Text">The French Revolution began with good ideas. Liberty, equality, brotherhood. But it became a reign of terror. The guillotine killed not only the guilty but the innocent. Dickens shows both sides. The question is — can justice ever be achieved through violence?</p></div>
-    <div id="c1Story" class="story-box" style="display:none;"><p id="c1Text">Dickens' political vision is deliberately balanced and deeply pessimistic. He is sympathetic to the revolutionary cause but horrified by the Terror. His novel suggests that violent revolution is a cycle — oppression generates rebellion, rebellion generates counter-oppression.</p></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">3</span><h2>&#54645;&#49900; &#50612;&#55064; <span class="sh-en">VOCABULARY</span></h2></div>
-    <div class="vocab-grid">
-<div class="vc"><div class="vc-en" onclick="speak('deliberate')">deliberate 🔊</div><div class="vc-ko">의도적인</div><div class="vc-ex">"Dickens' balance is entirely deliberate."</div></div>
-<div class="vc"><div class="vc-en" onclick="speak('pessimistic')">pessimistic 🔊</div><div class="vc-ko">비관적인</div><div class="vc-ex">"His political vision is deeply pessimistic."</div></div>
-<div class="vc"><div class="vc-en" onclick="speak('counter-oppression')">counter-oppression 🔊</div><div class="vc-ko">반대 억압</div><div class="vc-ex">"Rebellion generates new counter-oppression."</div></div>
-<div class="vc"><div class="vc-en" onclick="speak('compassion')">compassion 🔊</div><div class="vc-ko">연민</div><div class="vc-ex">"True reform requires compassion."</div></div>
-<div class="vc"><div class="vc-en" onclick="speak('imply')">imply 🔊</div><div class="vc-ko">시사하다</div><div class="vc-ex">"Dickens implies that love must replace hatred."</div></div>
-</div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">4</span><h2>&#47928;&#48277; &#54252;&#51064;&#53944; <span class="sh-en">GRAMMAR</span></h2></div>
-    <div class="gram-box"><div class="gram-label">Generate + 명사 (G77)</div><ul class="grammar-examples"><li><em>"Although Jane was poor, she refused to feel inferior." — although</em></li><li><em>"Despite her small size, Jane had remarkable courage." — despite</em></li><li><em>"Even though Rochester was rich, Jane treated him as an equal." — even though</em></li></ul></div>
-  <div style="text-align:center;margin-top:12px;"><a href="/grammar-camp/G77/G77_complex_sentence_structures.html?return=/camp-b/m3/week21.html" target="_blank" style="display:inline-block;padding:6px 14px;background:#00f2ff;color:#000;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;">📘 Grammar Base Camp →</a></div></section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">5</span><h2>&#53664;&#47200; &#51452;&#51228; <span class="sh-en">DEBATE</span></h2></div>
-    <div class="debate-q-box"><div class="debate-q">💬 "Violent revolution always creates more injustice than it resolves."</div><div class="debate-q-ko">폭력적 혁명은 항상 해결하는 불의보다 더 많은 불의를 낳는다.</div></div>
-    <div class="debate-sides"><div class="debate-agree"><strong>&#9989; &#52268;&#49457;</strong><ul><li>The Terror killed innocent alongside guilty</li><li>Every revolution produces new oppression</li><li>The cycle of violence has no natural end</li></ul></div><div class="debate-disagree"><strong>&#10060; &#48152;&#45824;</strong><ul><li>Some revolutions produced genuine democratic progress</li><li>Gradual reform was not possible under extreme oppression</li><li>The alternative to revolution was continued suffering</li></ul></div></div>
-    <div style="margin-top:20px;"><p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-bottom:8px;">&#45236; &#51452;&#51109;&#51012; &#50689;&#50612;&#47196; &#50024;&#48372;&#49464;&#50836;:</p><textarea class="essay-input" id="debateInput" placeholder="I argue that... because..."></textarea><button class="btn-ai-debate" onclick="sendDebate()">&#9876;&#65039; ChatGPT&#50640;&#49436; AI&#50752; &#53664;&#47200;&#54616;&#44592;</button></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">6</span><h2>&#50640;&#49464;&#51060; &#50416;&#44592; <span class="sh-en">ESSAY</span></h2></div>
-    <div class="essay-topic-box"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:#00f2ff;margin-bottom:8px;">"How does Jane assert her equality with Rochester through language and dialogue?"</div><div style="font-size:0.9rem;color:rgba(255,255,255,0.6);">제인은 언어와 대화를 통해 로체스터와의 평등을 어떻게 주장하는가?</div></div>
-    <div style="margin-top:16px;">
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;">&#128221; Introduction</p><textarea class="essay-input" id="es1" placeholder="Introduce the topic..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Body 1</p><textarea class="essay-input" id="es2" placeholder="First argument..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Body 2</p><textarea class="essay-input" id="es3" placeholder="Second argument..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Conclusion</p><textarea class="essay-input" id="es4" placeholder="Summarize..."></textarea>
-      <button class="btn-submit" onclick="submitEssay()">&#9997;&#65039; ChatGPT&#50640;&#49436; &#50640;&#49464;&#51060; &#54588;&#46300;&#48177; &#48155;&#44592;</button>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">1</span><h2>핵심 표현 <span class="sh-en">KEY EXPRESSION</span></h2></div>
+    <div class="key-expr-box">
+      <div class="ke-en" onclick="speak(this.textContent)">European colonialism. &#128266;</div>
+      <div class="ke-ko">유럽 식민주의</div>
+    </div>
+    <div class="day-progress">
+      <div class="day-item">
+        <span class="day-label">Day 1 (월)</span>
+        <span class="day-text">Colonialism was built on violence and greed.</span>
+      </div>
+      <div class="day-divider">↓</div>
+      <div class="day-item">
+        <span class="day-label">Day 2 (수)</span>
+        <span class="day-text">European colonialism was really built on violence and greed.</span>
+      </div>
+      <div class="day-divider">↓</div>
+      <div class="day-item today">
+        <span class="day-label">⭐ Day 3 (금) 오늘</span>
+        <span class="day-text">European colonialism.</span>
+      </div>
     </div>
   </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">7</span><h2>ChatGPT &#54924;&#54868; &#50672;&#49845; <span class="sh-en">AI PRACTICE</span></h2></div>
-    <div style="text-align:center;padding:20px 0;"><p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">ChatGPT Camp B&#50752; &#54632;&#44760; &#50689;&#50612;&#47196; &#45824;&#54868;&#54644;&#48372;&#49464;&#50836;!</p><button class="btn-submit" onclick="launchChatGPTPractice()">&#129302; ChatGPT&#50752; 50:50 &#54924;&#54868; &#50672;&#49845;</button></div>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">2</span><h2>지문 읽기 <span class="sh-en">READING</span></h2></div>
+    <div class="level-tabs">
+      <button class="ltab active" onclick="showLevel('b1',this)">🔵 기본 (B2)</button>
+      <button class="ltab" onclick="showLevel('c1',this)">🟣 심화 (C1)</button>
+    </div>
+    <div id="b1Story" class="story-box" style="display:block;">
+      <div id="b1Text"><p>Colonial powers often claimed they were bringing civilization to distant lands. They argued that their presence would modernize societies and spread education. However, these justifications frequently masked darker intentions beneath the surface.</p><p>In reality, colonial systems were designed to extract valuable resources for European industries. Local populations were forced to work under harsh conditions with little compensation. Their traditional ways of life were systematically dismantled over time.</p><p>This exploitation created lasting damage that continues to affect former colonies today. Economic structures were distorted to serve foreign interests rather than local needs. The true legacy of colonialism involves both visible and invisible wounds.</p></div>
+      <div class="reading-controls">
+        <button class="play-btn" onclick="playReading('b1')">▶ 재생</button>
+        <button class="pause-btn" onclick="pauseReading()">⏸ 일시정지</button>
+      </div>
+    </div>
+    <div id="c1Story" class="story-box" style="display:none;">
+      <div id="c1Text"><p>While colonial administrations frequently professed noble intentions regarding development and progress, their underlying motivations were predominantly economic and strategic. European nations, having undergone rapid industrialization, required both raw materials and new markets for their manufactured goods, which colonial territories could abundantly provide.</p><p>Indigenous populations consequently found themselves subjected to systems of forced labor and cultural suppression, as colonial authorities sought to maximize extraction efficiency. Traditional social structures were deliberately undermined to facilitate control, while local economies were reoriented toward export monocultures.</p><p>The profound psychological and social disruptions inflicted during this era have generated intergenerational trauma and persistent economic dependency. Consequently, many post-colonial nations continue to grapple with borders arbitrarily drawn by distant powers and institutions ill-suited to their historical contexts.</p></div>
+      <div class="reading-controls">
+        <button class="play-btn" onclick="playReading('c1')">▶ 재생</button>
+        <button class="pause-btn" onclick="pauseReading()">⏸ 일시정지</button>
+      </div>
+    </div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">3</span><h2>핵심 어휘 <span class="sh-en">VOCABULARY</span></h2></div>
+    <div class="vocab-grid"><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">exploitation &#128266;</div><div class="vc-ko">착취, 이용</div><div class="vc-ex">"The economic system was based on the exploitation of natural resources and local labor."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">justification &#128266;</div><div class="vc-ko">정당화, 변명</div><div class="vc-ex">"They offered moral justification for their actions, but it lacked genuine credibility."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">extraction &#128266;</div><div class="vc-ko">추출, 채굴</div><div class="vc-ex">"The primary goal was the extraction of minerals without regard for environmental costs."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">legacy &#128266;</div><div class="vc-ko">유산, 남겨진 영향</div><div class="vc-ex">"The colonial legacy includes complex political borders and economic challenges."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">suppression &#128266;</div><div class="vc-ko">억압, 탄압</div><div class="vc-ex">"Cultural suppression involved banning local languages and traditional practices."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">dependency &#128266;</div><div class="vc-ko">의존, 종속</div><div class="vc-ex">"The policy created a cycle of economic dependency that was difficult to break."</div></div></div>
+
+    <div class="game-block"><div class="game-title">🎯 빈칸 채우기</div><div class="game-q">1. Historical records show that colonial economies were largely <strong>___</strong> on exporting single crops like rubber or cotton.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">dependent</button><button class="game-opt" onclick="fbCheck(this,false)">insistent</button><button class="game-opt" onclick="fbCheck(this,false)">reluctant</button></div><div class="game-fb"></div><div class="game-q">2. Many scholars argue that the <strong>___</strong> of colonialism continues to shape global inequalities today.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">legacy</button><button class="game-opt" onclick="fbCheck(this,false)">celebration</button><button class="game-opt" onclick="fbCheck(this,false)">beginning</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기</div><div class="game-q">1. <span class="game-hint">힌트: 자원이나 사람을 부당하게 이용함</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds1" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds1','exploitation')">확인</button></div><div class="game-fb" id="ds1-fb"></div><div class="game-q">2. <span class="game-hint">힌트: 과거로부터 남겨진 영향</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds2" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds2','legacy')">확인</button></div><div class="game-fb" id="ds2-fb"></div><div class="game-q">3. <span class="game-hint">힌트: 억누르거나 금지시킴</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds3" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds3','suppression')">확인</button></div><div class="game-fb" id="ds3-fb"></div></div>
+    <div class="game-block"><div class="game-title">👂 듣고 고르기</div><div class="game-q">1. <button class="game-opt" onclick="lcPlay('extract')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">extract</button><button class="game-opt" onclick="lcCheck(this,false)">attract</button><button class="game-opt" onclick="lcCheck(this,false)">distract</button></div><div class="game-fb"></div><div class="game-q">2. <button class="game-opt" onclick="lcPlay('justify')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">justify</button><button class="game-opt" onclick="lcCheck(this,false)">testify</button><button class="game-opt" onclick="lcCheck(this,false)">purify</button></div><div class="game-fb"></div><div class="game-q">3. <button class="game-opt" onclick="lcPlay('dependent')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">dependent</button><button class="game-opt" onclick="lcCheck(this,false)">descendant</button><button class="game-opt" onclick="lcCheck(this,false)">defendant</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">🔤 단어 배열하기</div><div class="game-q">1. 레벨 B2 — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo1-bank"><span class="wo-chip" data-word="system" onclick="woAdd(1,this,'system')">system</span><span class="wo-chip" data-word="created" onclick="woAdd(1,this,'created')">created</span><span class="wo-chip" data-word="The" onclick="woAdd(1,this,'The')">The</span><span class="wo-chip" data-word="long-term" onclick="woAdd(1,this,'long-term')">long-term</span><span class="wo-chip" data-word="dependency" onclick="woAdd(1,this,'dependency')">dependency</span><span class="wo-chip" data-word="economic" onclick="woAdd(1,this,'economic')">economic</span></div><div class="wo-zone" id="wo1-zone"></div><button class="game-opt" onclick="woCheck(1)">확인</button><div class="game-fb" id="wo1-fb"></div><div class="game-q">2. 레벨 C1 — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo2-bank"><span class="wo-chip" data-word="Lasting" onclick="woAdd(2,this,'Lasting')">Lasting</span><span class="wo-chip" data-word="direct" onclick="woAdd(2,this,'direct')">direct</span><span class="wo-chip" data-word="legacy" onclick="woAdd(2,this,'legacy')">legacy</span><span class="wo-chip" data-word="dependency" onclick="woAdd(2,this,'dependency')">dependency</span><span class="wo-chip" data-word="was" onclick="woAdd(2,this,'was')">was</span><span class="wo-chip" data-word="economic" onclick="woAdd(2,this,'economic')">economic</span><span class="wo-chip" data-word="a" onclick="woAdd(2,this,'a')">a</span><span class="wo-chip" data-word="colonial" onclick="woAdd(2,this,'colonial')">colonial</span></div><div class="wo-zone" id="wo2-zone"></div><button class="game-opt" onclick="woCheck(2)">확인</button><div class="game-fb" id="wo2-fb"></div></div>
+    <div class="game-block"><div class="game-title">🎴 짝맞추기</div><div class="game-q">단어와 한국어 뜻을 짝지어보세요:</div><div class="match-grid"><div><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">exploitation</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">justification</button><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">legacy</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">suppression</button></div><div><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">유산</button><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">착취</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">정당화</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">억압</button></div></div></div>
+    <div class="game-block"><div class="game-title">🏆 받아쓰기 도전</div><div class="game-q">A1 — <button class="game-opt" onclick="dcPlay('Colonialism affected many countries around the world.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a1','Colonialism affected many countries around the world.')">확인</button></div><div class="game-fb" id="dc-a1-fb"></div><div class="game-q">A2 — <button class="game-opt" onclick="dcPlay('The extraction of resources often harmed the local environment.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a2" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a2','The extraction of resources often harmed the local environment.')">확인</button></div><div class="game-fb" id="dc-a2-fb"></div><div class="game-q">B1 — <button class="game-opt" onclick="dcPlay('Despite claims of bringing progress, colonial rule frequently relied on systemic exploitation and cultural suppression.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-b1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('b1','Despite claims of bringing progress, colonial rule frequently relied on systemic exploitation and cultural suppression.')">확인</button></div><div class="game-fb" id="dc-b1-fb"></div></div>
+    <script>document.addEventListener('DOMContentLoaded',function(){woInit(1, ["The", "economic", "system", "created", "long-term", "dependency"]);woInit(2, ["Lasting", "economic", "dependency", "was", "a", "direct", "colonial", "legacy"]);});</script>
+  </section>
+  <section class="sh comp-section"><div class="sh-bar"><span class="sh-num">4</span><h2>이해 문제 <span class="sh-en">COMPREHENSION</span></h2></div>
+    <div class="comp-tabs">
+      <button class="comp-tab active" onclick="compTab(this,'entry')">🟡 입문</button>
+      <button class="comp-tab" onclick="compTab(this,'b1')">🔵 초급 B1</button>
+      <button class="comp-tab" onclick="compTab(this,'intermediate')">🟣 중급</button>
+    </div>
+    <div class="comp-panel comp-panel-entry active"><div class="game-q">Q1. 지문에 따르면, 식민주의의 주된 동기는 무엇이었나요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">문화 교류</button><button class="game-opt" onclick="compCheck(this,true)">경제적 이익</button><button class="game-opt" onclick="compCheck(this,false)">종교 전파</button></div><div class="game-fb"></div><div class="game-q">Q2. 식민지 통치가 현지 사회에 미친 영향은 무엇이었나요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">전통 강화</button><button class="game-opt" onclick="compCheck(this,true)">체계적 해체</button><button class="game-opt" onclick="compCheck(this,false)">완전한 독립</button></div><div class="game-fb"></div><div class="game-q">Q3. 지문에서 'legacy'라는 단어가 의미하는 것은 무엇인가요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">초기 계획</button><button class="game-opt" onclick="compCheck(this,true)">남겨진 영향</button><button class="game-opt" onclick="compCheck(this,false)">공식 문서</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-b1"><div class="game-q">Q1. What did colonial powers often claim to be bringing to distant lands?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">Military conflict</button><button class="game-opt" onclick="compCheck(this,true)">Civilization and education</button><button class="game-opt" onclick="compCheck(this,false)">Complete independence</button></div><div class="game-fb"></div><div class="game-q">Q2. How were local economies affected by colonial systems?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">They became more diverse.</button><button class="game-opt" onclick="compCheck(this,true)">They were reoriented to serve foreign interests.</button><button class="game-opt" onclick="compCheck(this,false)">They remained completely unchanged.</button></div><div class="game-fb"></div><div class="game-q">Q3. According to the passage, what continues to affect former colonies today?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">The lasting damage from exploitation</button><button class="game-opt" onclick="compCheck(this,false)">Ongoing direct European rule</button><button class="game-opt" onclick="compCheck(this,false)">A complete lack of natural resources</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-intermediate"><div class="game-q">Q1. What can be inferred about the 'justifications' mentioned in the first paragraph?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">They were always completely honest.</button><button class="game-opt" onclick="compCheck(this,true)">They often hid the true intentions behind colonialism.</button><button class="game-opt" onclick="compCheck(this,false)">They were never believed by anyone.</button></div><div class="game-fb"></div><div class="game-q">Q2. Why does the author mention 'export monocultures' in the C1 passage?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">To show the agricultural success of colonies.</button><button class="game-opt" onclick="compCheck(this,true)">To illustrate how local economies were simplified for colonial benefit.</button><button class="game-opt" onclick="compCheck(this,false)">To argue that colonies had advanced farming techniques.</button></div><div class="game-fb"></div><div class="game-q">Q3. What is the implied relationship between 'industrialization' and 'colonialism' in the C1 passage?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">Industrialization ended colonialism.</button><button class="game-opt" onclick="compCheck(this,true)">Industrialization created a need for resources that colonialism fulfilled.</button><button class="game-opt" onclick="compCheck(this,false)">They were unrelated historical processes.</button></div><div class="game-fb"></div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">5</span><h2>문법 <span class="sh-en">GRAMMAR</span></h2></div>
+    <div class="grammar-box">
+      <div class="grammar-label"><span class="grammar-code">G21</span>이번 주 문법 포인트</div>
+      <div class="grammar-title">Passive Voice with Modal Verbs</div>
+      <div class="essay-basics-text" style="margin-bottom:8px;">조동사가 있는 수동태</div>
+      <div class="grammar-explain">조동사(can, could, may, might, must, should, will, would 등)와 함께 쓰이는 수동태입니다. '조동사 + be + 과거분사' 형태로, 누군가에 의해 '될 수 있다', '되어야 한다' 등의 의미를 표현할 때 사용합니다.</div>
+    </div>
+    <div class="essay-basics-label" style="margin-top:14px;">📝 예문 3개 (클릭해서 듣기)</div>
+    <div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">The true costs of colonialism must be acknowledged by future generations.</span> &#128266;<div class="ge-ko">식민주의의 진정한 대가는 미래 세대에 의해 인정되어야 합니다.</div></div><div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">Historical injustices can be examined through careful study of primary sources.</span> &#128266;<div class="ge-ko">역사적 부정의는 1차 자료를 신중하게 연구함으로써 검토될 수 있습니다.</div></div><div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">Economic systems should not be designed solely for the extraction of wealth.</span> &#128266;<div class="ge-ko">경제 체계는 단순히 부를 추출하기 위해서만 설계되어서는 안 됩니다.</div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num" style="min-width:40px;">5-B</span><h2>문법 연습 <span class="sh-en">GRAMMAR PRACTICE</span></h2></div>
+    <div class="game-block"><div class="game-title">🎯 문법 이해 문제 (Grammar Quiz)</div><div class="game-q">Q1. Which sentence correctly uses passive voice with a modal verb?</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,false)">Resources must protected for the future.</button><button class="game-opt" onclick="fbCheck(this,true)">Resources must be protected for the future.</button><button class="game-opt" onclick="fbCheck(this,false)">Resources must to be protected for the future.</button></div><div class="game-fb"></div><div class="game-q">Q2. Choose the correct passive modal structure.</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,false)">This history can forgotten if we are not careful.</button><button class="game-opt" onclick="fbCheck(this,true)">This history can be forgotten if we are not careful.</button><button class="game-opt" onclick="fbCheck(this,false)">This history can being forgotten if we are not careful.</button></div><div class="game-fb"></div><div class="game-q">Q3. Identify the grammatically correct sentence.</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,false)">The full story might never known.</button><button class="game-opt" onclick="fbCheck(this,false)">The full story might be never known.</button><button class="game-opt" onclick="fbCheck(this,true)">The full story might never be known.</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기 (Dictation)</div><div class="game-q">1. <button class="game-opt" onclick="gpDictPlay('justification')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-1" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(1,'justification')">확인</button><button class="game-opt" onclick="gpDictHint(1)">💡 힌트</button><span id="gp-dict-hint-1" class="game-hint" style="visibility:hidden;">j____</span></div><div class="game-fb" id="gp-dict-fb-1"></div><div class="game-q">2. <button class="game-opt" onclick="gpDictPlay('extraction')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-2" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(2,'extraction')">확인</button><button class="game-opt" onclick="gpDictHint(2)">💡 힌트</button><span id="gp-dict-hint-2" class="game-hint" style="visibility:hidden;">e____</span></div><div class="game-fb" id="gp-dict-fb-2"></div><div class="game-q">3. <button class="game-opt" onclick="gpDictPlay('dependency')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-3" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(3,'dependency')">확인</button><button class="game-opt" onclick="gpDictHint(3)">💡 힌트</button><span id="gp-dict-hint-3" class="game-hint" style="visibility:hidden;">d____</span></div><div class="game-fb" id="gp-dict-fb-3"></div></div>
+    <div class="game-block"><div class="game-title">📝 빈칸 채우기 (Fill in the Blank)</div><div class="game-q">1. The <strong>_______</strong> of natural resources often left the land depleted and the people impoverished.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">extraction</button><button class="game-opt" onclick="fbCheck(this,false)">celebration</button><button class="game-opt" onclick="fbCheck(this,false)">invention</button></div><div class="game-fb"></div><div class="game-q">2. Their moral <strong>_______</strong> for ruling other people was frequently questioned by critics.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">justification</button><button class="game-opt" onclick="fbCheck(this,false)">elimination</button><button class="game-opt" onclick="fbCheck(this,false)">foundation</button></div><div class="game-fb"></div></div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">6</span><h2>에세이 쓰기 <span class="sh-en">ESSAY WRITING</span></h2></div>
+
+    <div style="display:block;background:#f8f9ff;border-radius:16px;padding:20px;margin-bottom:16px;color:#222;box-sizing:border-box;">
+      <div style="font-size:16px;font-weight:bold;color:var(--gd);margin-bottom:16px;text-align:center;">✍️ 좋은 에세이 쓰는 5가지 요령</div>
+      <div style="display:flex;gap:12px;background:white;border-radius:10px;padding:12px 14px;margin-bottom:10px;border-left:4px solid var(--gp);align-items:flex-start;">
+      <span style="width:28px;height:28px;background:var(--gp);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;font-size:14px;">1</span>
+      <div>
+        <b style="color:var(--gd);font-size:14px;display:block;margin-bottom:2px;">명확한 주제문</b>
+        <p style="font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;">첫 문장에 내 입장을 분명히!</p>
+        <span style="display:block;color:#c00;font-size:12px;margin-top:2px;">❌ "Beauty is important."</span>
+        <span style="display:block;color:#1a7a1a;font-size:12px;margin-top:2px;">✅ "Beauty without morality leads to corruption."</span>
+      </div>
+    </div>
+      <div style="display:flex;gap:12px;background:white;border-radius:10px;padding:12px 14px;margin-bottom:10px;border-left:4px solid var(--gp);align-items:flex-start;">
+      <span style="width:28px;height:28px;background:var(--gp);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;font-size:14px;">2</span>
+      <div>
+        <b style="color:var(--gd);font-size:14px;display:block;margin-bottom:2px;">구체적 근거와 예시</b>
+        <p style="font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;">"Because" 다음엔 반드시 예시!</p>
+        
+        <span style="display:block;color:#1a7a1a;font-size:12px;margin-top:2px;">✅ "For example, ..."</span>
+      </div>
+    </div>
+      <div style="display:flex;gap:12px;background:white;border-radius:10px;padding:12px 14px;margin-bottom:10px;border-left:4px solid var(--gp);align-items:flex-start;">
+      <span style="width:28px;height:28px;background:var(--gp);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;font-size:14px;">3</span>
+      <div>
+        <b style="color:var(--gd);font-size:14px;display:block;margin-bottom:2px;">반대 의견 인정하기</b>
+        <p style="font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;">반대를 인정하면 더 설득력 UP!</p>
+        
+        <span style="display:block;color:#1a7a1a;font-size:12px;margin-top:2px;">✅ "Although some argue..."</span>
+      </div>
+    </div>
+      <div style="display:flex;gap:12px;background:white;border-radius:10px;padding:12px 14px;margin-bottom:10px;border-left:4px solid var(--gp);align-items:flex-start;">
+      <span style="width:28px;height:28px;background:var(--gp);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;font-size:14px;">4</span>
+      <div>
+        <b style="color:var(--gd);font-size:14px;display:block;margin-bottom:2px;">연결어 사용</b>
+        <p style="font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;">First / Furthermore / However / Therefore / In conclusion</p>
+        
+        
+      </div>
+    </div>
+      <div style="display:flex;gap:12px;background:white;border-radius:10px;padding:12px 14px;margin-bottom:10px;border-left:4px solid var(--gp);align-items:flex-start;">
+      <span style="width:28px;height:28px;background:var(--gp);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0;font-size:14px;">5</span>
+      <div>
+        <b style="color:var(--gd);font-size:14px;display:block;margin-bottom:2px;">강한 마무리</b>
+        <p style="font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;">마지막 문장이 가장 중요! 핵심 메시지를 다시 강조하세요</p>
+        
+        
+      </div>
+    </div>
+      <div style="background:#eef3ff;border-radius:10px;padding:12px 14px;margin-top:12px;color:var(--gd);font-size:13px;">
+        <b style="display:block;margin-bottom:6px;color:var(--gd);">💬 유용한 표현</b>
+        <div style="display:grid;grid-template-columns:1fr;gap:6px;font-size:13px;color:#333;margin-top:4px;">
+          <div style="background:white;padding:6px 10px;border-radius:6px;">서론: "In my opinion... / I strongly believe..."</div>
+          <div style="background:white;padding:6px 10px;border-radius:6px;">본론: "For instance... / This shows that..."</div>
+          <div style="background:white;padding:6px 10px;border-radius:6px;">결론: "In conclusion... / Therefore..."</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="esTopic" style="display:block;background:var(--gd);color:white;border-radius:12px;padding:16px;margin-bottom:14px;text-align:center;box-sizing:border-box;">
+      <div style="font-size:15px;font-weight:bold;">✍️ The economic development brought by European colonialism ultimately did more harm than good for the colonized societies.</div>
+      <div style="font-size:12px;color:#cce;margin-top:4px;">유럽 식민주의가 가져온 경제적 발전은 결국 식민지 사회에 해가 더 컸다.</div>
+      <div style="font-size:11px;color:#9bf;margin-top:6px;">📐 3단락 구조: 서론 → 본론 → 결론</div>
+    </div>
+
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">① 서론 (Introduction)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">서론: 흥미로운 질문이나 강한 진술로 시작하세요 (예: 'Can economic growth ever justify the loss of cultural identity and political freedom?'). 주제(식민주의의 경제적 유산)를 소개한 후, 명확한 테시스 진술로 입장을 밝히세요 (예: 'This essay will argue that the economic changes imposed by colonial powers created lasting damage that outweighed any temporary benefits.').</p>
+      <textarea id="es1" rows="4" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="Hook + 주제 소개 + Thesis Statement..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">② 본론 (Body)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">본론: 첫 번째 논거로 식민지 경제가 단일 작물 수출에 의존하도록 왜곡되었다는 점을 설명하세요 (예: 'Firstly, colonial economies were restructured as monocultures...'). 구체적인 예시(고무, 면화)를 들고, 이로 인한 취약성을 설명하세요. 두 번째 논거로 부의 착출과 불평등 구조를 다루세요 (예: 'Furthermore, the wealth generated was largely extracted...'). 근거로 노동 조건이나 무역 불균형을 제시하세요.</p>
+      <textarea id="es2" rows="6" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="First, ... Second, ... For example, ..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">③ 결론 (Conclusion)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">결론: 주요 논점을 요약하며 테시스를 재진술하세요 (예: 'In conclusion, while infrastructure was sometimes built, the fundamental economic systems established by colonialism were exploitative and unsustainable.'). 마무리로 오늘날의 교훈이나 미래에 대한 함의를 제시하며 글을 끝내세요 (예: 'Therefore, understanding this history is crucial for building fairer economic relationships today.').</p>
+      <textarea id="es3" rows="4" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="In conclusion, ..."></textarea>
+
+      <button onclick="submitFullEssay()" style="display:block;width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;">💬 ChatGPT에 3단락 에세이 피드백 받기</button>
+    </div>
+  </section>
+  <!-- ESSAY-CAMP-LINK -->
+  <div style="margin-top:12px;padding:12px 16px;background:#f9f7f2;border:1px solid #e0dbd0;border-radius:10px;text-align:center;">
+    <p style="font-size:12px;color:#6b5b3a;margin-bottom:8px;">✍️ 에세이 쓰기가 어렵다면?</p>
+    <a href="/essay-camp/" style="display:inline-block;background:#4a6741;color:white;padding:8px 18px;border-radius:20px;font-size:12px;text-decoration:none;font-weight:bold;">📚 Essay Writing Camp 바로가기</a>
+    <p style="font-size:11px;color:#888;margin-top:6px;">고1-3 Level 3 — 입시 에세이까지 완성!</p>
+  </div>
+
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">7</span><h2>디베이트 기초 <span class="sh-en">DEBATE BASICS</span></h2></div>
+
+    <div id="dbTopic" style="display:block;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;box-sizing:border-box;">
+      <div style="font-size:11px;font-weight:bold;letter-spacing:2px;margin-bottom:6px;opacity:0.9;">🗣️ TODAY'S MOTION</div>
+      <div style="font-size:15px;font-weight:bold;line-height:1.45;">Resolved: Former colonial powers have a moral obligation to provide significant financial reparations to their former colonies.</div>
+      <div style="font-size:13px;margin-top:6px;opacity:0.92;">전 식민 지배국들은 그들이 지배했던 식민지에 상당한 금전적 배상을 해야 할 도의적 의무가 있다.</div>
+    </div>
+
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;margin-bottom:16px;">
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <div style="flex:1 1 260px;min-width:240px;">
+          <div style="display:block;background:#d4f4dd;color:#156b2c;font-weight:bold;padding:8px 12px;border-radius:8px;text-align:center;margin-bottom:10px;letter-spacing:1px;">PRO (찬성)</div>
+          <div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 역사적 불의를 시정하는 것은 정의의 기본 원칙이며, 배상은 피해를 인정하는 구체적인 행동입니다.</div><div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 많은 전 식민지 국가들은 식민지 시대에 조성된 경제적 불균형과 부채로 인해 여전히 발전에 어려움을 겪고 있습니다.</div><div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 국제법과 유엔 선언문에도 역사적 부정의에 대한 보상의 원칙이 명시되어 있습니다.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:240px;">
+          <div style="display:block;background:#fbd5d5;color:#8a1a1a;font-weight:bold;padding:8px 12px;border-radius:8px;text-align:center;margin-bottom:10px;letter-spacing:1px;">CON (반대)</div>
+          <div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 현재 살아있는 세대는 과거 정부의 행위에 대해 개인적 책임을 질 수 없으며, 배상은 불공정한 처벌이 될 수 있습니다.</div><div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 직접적인 금전적 지원보다는 공정한 무역 협정과 기술 이전과 같은 구조적 해결책이 장기적으로 더 효과적입니다.</div><div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 배상 금액과 수혜자를 객관적으로 결정하는 것은 매우 복잡하고 논란의 여지가 많아 실행이 거의 불가능합니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">📝 My Opening Statement</label>
+      <p style="font-size:12px;color:#666;margin:0 0 8px;line-height:1.5;">내 입장(찬성 또는 반대)을 명확히 선택하세요. 공식적인 토론 개회 선언 형식으로, 청중을 향해 인사한 후 입장을 밝히세요. (예: 'Honorable judges, esteemed opponents, and fellow students. I strongly believe that former colonial powers do have a moral obligation to provide reparations.'). 이후 본론에서 다룰 2-3개의 주요 논거를 간략히 예고하세요 (예: 'I will support this position by discussing, first, the principle of corrective justice; second, the persistent economic disadvantages; and third, existing international frameworks.').</p>
+      <textarea id="openStmt" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="I strongly believe that ..."></textarea>
+      <button onclick="sendDebateStatement()" style="display:block;width:100%;margin-top:14px;padding:14px;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;">🤖 ChatGPT와 토론 시작하기</button>
+    </div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">8</span><h2>ChatGPT 회화 연습 <span class="sh-en">AI PRACTICE</span></h2></div>
+    <div style="text-align:center;padding:20px 0;">
+      <p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">이번 주 핵심 표현으로 ChatGPT Camp B와 영어로 대화해보세요!</p>
+      <button class="btn-submit" onclick="launchChatGPTPractice()">🤖 ChatGPT와 50:50 회화 연습</button>
+    </div>
   </section>
 </div>
-<div class="wk-nav"><a href="week20.html" class="wk-btn">&larr; W06</a><span class="wk-current">W21</span><a href="week22.html" class="wk-btn">W08 &rarr;</a></div>
+<div class="wk-nav"><a href="week20.html" class="wk-btn">&larr; W20</a><span class="wk-current">W21</span><a href="week22.html" class="wk-btn">W22 &rarr;</a></div>
 <!-- ===== CEC Robo Helper (Camp B) ===== -->
 <div class="gb">
   <div class="gb-hint" onclick="gbToggle()" id="gbHint"><span>Robo</span>한테 물어봐!</div>
@@ -342,9 +622,12 @@ var CHATGPT_URL='https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166';
 function speak(t){if(!t)return;var u=new SpeechSynthesisUtterance(t.replace(/\uD83D\uDD0A/g,'').trim());u.lang='en-US';u.rate=0.85;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}
 function showLevel(lv,btn){document.getElementById('b1Story').style.display=lv==='b1'?'block':'none';document.getElementById('c1Story').style.display=lv==='c1'?'block':'none';document.querySelectorAll('.ltab').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');}
 function copyAndOpen(msg){window.open(CHATGPT_URL,'_blank');try{navigator.clipboard.writeText(msg);}catch(e){}}
-function sendDebate(){var t=document.getElementById('debateInput').value;var m='\uc548\ub155\ud558\uc138\uc694! Middle School 3\uc774\uc5d0\uc694.\n\nJane Eyre W07\uc744 \uacf5\ubd80\ud588\uc5b4\uc694.\n\n\ud1a0\ub860 \uc8fc\uc81c: "True equality between people is possible regardless of wealth."\n\n\ub0b4 \uc8fc\uc7a5:\n'+t+'\n\n\uc774 \uc8fc\uc7a5\uc5d0 \ubc18\ubc15\ud574\uc8fc\uc138\uc694!';copyAndOpen(m);}
-function submitEssay(){var e=[1,2,3,4].map(function(i){return document.getElementById('es'+i).value}).join('\n\n');var m='\uc548\ub155\ud558\uc138\uc694! Middle School 3\uc774\uc5d0\uc694.\n\n\uc5d0\uc138\uc774 \uc8fc\uc81c: "How does Jane assert her equality with Rochester?"\n\n'+e+'\n\n\ud53c\ub4dc\ubc31 \ubd80\ud0c1\ub4dc\ub824\uc694!';copyAndOpen(m);}
-function launchChatGPTPractice(){var m='Jane Eyre W07 (독립 — 손필드의 제인) \uc8fc\uc81c\ub85c \uc601\uc5b4 \ud68c\ud654 \uc5f0\uc2b5\uc744 \ud558\uace0 \uc2f6\uc5b4\uc694!';copyAndOpen(m);}
+function sendDebate(){}
+function submitEssay(){}
+function launchChatGPTPractice(){
+  var m='\uc774\ubc88 \uc8fc\uc5d0\ub294 \'\uc5b4\ub460\uc758 \uc2ec\uc7a5\'\uc744 \ud1b5\ud574 \uc2dd\ubbfc\uc8fc\uc758\uc758 \ubcf5\uc7a1\ud55c \uc9c4\uc2e4\uc744 \ud0d0\uad6c\ud588\uc5b4\uc694. \uc791\ud488 \uc18d\uc5d0\uc11c \ub9c8\ub97c\ub85c\uc6b0\uac00 \ubaa9\uaca9\ud55c \ucc29\ucde8\uc640 \ud3ed\ub825\uc758 \ud604\uc7a5\uc740 \ub2e8\uc21c\ud55c \uc5ed\uc0ac\uc801 \uc0ac\uac74\uc774 \uc544\ub2c8\ub77c \uc624\ub298\ub0a0\uae4c\uc9c0 \uc774\uc5b4\uc9c0\ub294 \ubb38\uc81c\ub97c \uc0dd\uac01\ud558\uac8c \ub9cc\ub4ed\ub2c8\ub2e4. \uc5ec\ub7ec\ubd84\uc740 \uc2dd\ubbfc\uc8fc\uc758\uc758 \uac00\uc7a5 \ud070 \uc720\uc0b0\uc774 \ubb34\uc5c7\uc774\ub77c\uace0 \uc0dd\uac01\ud558\ub098\uc694? \uacbd\uc81c\uc801 \ubd88\ud3c9\ub4f1, \ubb38\ud654\uc801 \ub2e8\uc808, \uc544\ub2c8\uba74 \ub2e4\ub978 \uac83\uc77c\uae4c\uc694?';
+  copyAndOpen(m);
+}
 /* ===== CEC Robo Helper (Camp B) ===== */
 (function(){
   if(window.__gbRoboInit)return;window.__gbRoboInit=true;
@@ -452,5 +735,255 @@ function launchChatGPTPractice(){var m='Jane Eyre W07 (독립 — 손필드의 �
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',gbInit);}else{gbInit();}
 })();
 </script>
+<script id="m1-extra-js">
+// Reading controls — 분리된 Play/Pause 버튼
+function playReading(lvl){
+  window.speechSynthesis.cancel();
+  var el = document.getElementById(lvl+'Text');
+  if(!el) return;
+  var u = new SpeechSynthesisUtterance(el.textContent);
+  u.lang='en-US'; u.rate=0.9;
+  window.speechSynthesis.speak(u);
+  document.querySelectorAll('.pause-btn').forEach(function(b){ b.classList.remove('paused'); b.textContent='⏸ 일시정지'; });
+}
+function pauseReading(){
+  var btns = document.querySelectorAll('.pause-btn');
+  if(window.speechSynthesis.paused){
+    window.speechSynthesis.resume();
+    btns.forEach(function(b){ b.classList.remove('paused'); b.textContent='⏸ 일시정지'; });
+  } else if(window.speechSynthesis.speaking){
+    window.speechSynthesis.pause();
+    btns.forEach(function(b){ b.classList.add('paused'); b.textContent='▶ 계속 재생'; });
+  }
+}
+
+// Play/Pause TTS state (legacy toggle — kept for any remaining pages)
+var m1TtsActive = null;
+function m1PlayPause(btnId, textElId){
+  var btn = document.getElementById(btnId);
+  var txt = document.getElementById(textElId).textContent;
+  if(m1TtsActive === btnId){
+    window.speechSynthesis.cancel();
+    m1TtsActive = null;
+    btn.classList.remove('playing');
+    btn.innerHTML = '▶ 전체 듣기';
+    return;
+  }
+  if(m1TtsActive){
+    window.speechSynthesis.cancel();
+    var prev = document.getElementById(m1TtsActive);
+    if(prev){ prev.classList.remove('playing'); prev.innerHTML='▶ 전체 듣기'; }
+  }
+  var u = new SpeechSynthesisUtterance(txt);
+  u.lang='en-US'; u.rate=0.9;
+  u.onend = function(){ btn.classList.remove('playing'); btn.innerHTML='▶ 전체 듣기'; m1TtsActive=null; };
+  u.onerror = u.onend;
+  window.speechSynthesis.speak(u);
+  m1TtsActive = btnId;
+  btn.classList.add('playing');
+  btn.innerHTML = '⏸ 일시정지';
+}
+
+// Fill-in-blank
+function fbCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅ 정답!'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌ 다시 해볼까요?'; fb.className='game-fb wrong'; }
+}
+
+// Dictation simple
+function dsCheck(inpId, answer){
+  var el = document.getElementById(inpId);
+  var fb = document.getElementById(inpId+'-fb');
+  if(el.value.trim().toLowerCase() === answer.toLowerCase()){
+    fb.textContent='✅ 정답! ('+answer+')'; fb.className='game-fb correct';
+  } else {
+    fb.textContent='❌ 정답: '+answer; fb.className='game-fb wrong';
+  }
+}
+
+// Listen-choose: speak then reveal
+function lcPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.85;
+  window.speechSynthesis.speak(u);
+}
+function lcCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅ 잘 들으셨어요!'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌ 다시 들어볼까요?'; fb.className='game-fb wrong'; }
+}
+
+// Word order
+var woState = {};
+function woInit(idx, words){
+  woState[idx] = { correct: words.slice(), arranged: [] };
+}
+function woAdd(idx, chipEl, word){
+  if(chipEl.classList.contains('used')) return;
+  chipEl.classList.add('used');
+  woState[idx].arranged.push(word);
+  var zone = document.getElementById('wo'+idx+'-zone');
+  var span = document.createElement('span');
+  span.className = 'wo-chip'; span.textContent = word; span.dataset.word = word;
+  span.onclick = function(){
+    // remove on click from zone
+    var i = woState[idx].arranged.indexOf(word);
+    if(i>=0) woState[idx].arranged.splice(i,1);
+    span.remove();
+    // re-enable bank chip
+    var bankChips = document.querySelectorAll('#wo'+idx+'-bank .wo-chip');
+    bankChips.forEach(function(b){ if(b.dataset.word===word) b.classList.remove('used'); });
+  };
+  zone.appendChild(span);
+}
+function woCheck(idx){
+  var fb = document.getElementById('wo'+idx+'-fb');
+  var ok = JSON.stringify(woState[idx].arranged) === JSON.stringify(woState[idx].correct);
+  if(ok){ fb.textContent='✅ 정답! '+woState[idx].correct.join(' '); fb.className='game-fb correct'; }
+  else { fb.textContent='❌ 순서를 다시 확인해보세요.'; fb.className='game-fb wrong'; }
+}
+
+// Matching
+var mmSel = null;
+function mmClick(btn, pairKey){
+  if(btn.classList.contains('matched')) return;
+  if(!mmSel){ mmSel = btn; btn.classList.add('sel'); return; }
+  if(mmSel === btn){ mmSel.classList.remove('sel'); mmSel=null; return; }
+  if(mmSel.dataset.pair === pairKey && mmSel !== btn){
+    mmSel.classList.remove('sel'); mmSel.classList.add('matched');
+    btn.classList.add('matched'); mmSel=null;
+  } else {
+    var tmp = mmSel; mmSel.classList.remove('sel'); mmSel=null;
+    btn.classList.add('wrong');
+    setTimeout(function(){ btn.classList.remove('wrong'); }, 500);
+  }
+}
+
+// Dictation challenge
+function dcPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.9;
+  window.speechSynthesis.speak(u);
+}
+function dcCheck(lvl, answer){
+  var inp = document.getElementById('dc-'+lvl);
+  var fb = document.getElementById('dc-'+lvl+'-fb');
+  var g = inp.value.trim().toLowerCase().replace(/[.,!?]/g,'');
+  var a = answer.toLowerCase().replace(/[.,!?]/g,'');
+  if(g === a){ fb.textContent='✅ 완벽!'; fb.className='game-fb correct'; }
+  else { fb.innerHTML='❌ 정답: '+answer; fb.className='game-fb wrong'; }
+}
+
+// Comprehension tabs
+function compTab(tab, lvl){
+  var root = tab.closest('.comp-section');
+  root.querySelectorAll('.comp-tab').forEach(function(t){ t.classList.remove('active'); });
+  root.querySelectorAll('.comp-panel').forEach(function(p){ p.classList.remove('active'); });
+  tab.classList.add('active');
+  root.querySelector('.comp-panel-'+lvl).classList.add('active');
+}
+function compCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌'; fb.className='game-fb wrong'; }
+}
+
+// My thoughts — ChatGPT send
+function sendMyThought(){
+  var t = document.getElementById('myThoughtInput').value.trim();
+  if(!t){ alert('한 문장 써주세요!'); return; }
+  copyAndOpen('안녕하세요! 오늘 읽은 이야기에 대한 제 생각이에요:\n\n'+t+'\n\n이 의견에 대해 간단히 코멘트 부탁드려요!');
+}
+
+// Essay basics — structure question
+function askEssayStructure(){
+  copyAndOpen('안녕하세요! 저는 Middle School 1 학생이에요.\n\n에세이 구조(주제문-근거-마무리)에 대해 질문이 있어요. 중학생이 쉽게 이해할 수 있게 설명해주세요!');
+}
+
+// m2: paragraph writing — send 3 sentences to ChatGPT
+function submitParagraph(){
+  var t1 = document.getElementById('pw1').value.trim();
+  var t2 = document.getElementById('pw2').value.trim();
+  var t3 = document.getElementById('pw3').value.trim();
+  if(!t1 || !t2 || !t3){ alert('세 문장 모두 써주세요! (주제문/근거/마무리)'); return; }
+  var topic = document.getElementById('pwTopic') ? document.getElementById('pwTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 2 학생이에요.\n\n에세이 단락쓰기 주제: ' + topic + '\n\n'
+          + '① 주제문: ' + t1 + '\n'
+          + '② 근거/예시: ' + t2 + '\n'
+          + '③ 마무리: ' + t3 + '\n\n'
+          + '제 단락을 중학생 수준에서 피드백해주세요! 문법, 자연스러움, 논리 구조 모두 봐주세요.';
+  copyAndOpen(msg);
+}
+
+// m2: opinion — send 1 paragraph to ChatGPT
+function sendOpinion(){
+  var el = document.getElementById('opn1') || document.getElementById('opinionInput');
+  var t = el ? el.value.trim() : '';
+  if(!t){ alert('내 생각을 한 단락으로 써주세요!'); return; }
+  var topic = document.getElementById('opTopic') ? document.getElementById('opTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 2 학생이에요.\n\n의견 표현 주제: ' + topic + '\n\n내 생각:\n' + t + '\n\n중학생 수준에서 자연스럽게 고쳐주시고 간단한 코멘트 부탁드려요!';
+  copyAndOpen(msg);
+}
+
+// m2: grammar example — read aloud on click
+function grammarSpeak(el){
+  var txt = el.querySelector('.ge-en');
+  if(txt) speak(txt.textContent);
+}
+
+// 5-B Grammar Practice — dictation with hint reveal
+function gpDictHint(idx){
+  var el = document.getElementById('gp-dict-hint-'+idx);
+  if(el) el.style.visibility = 'visible';
+}
+function gpDictPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.8;
+  window.speechSynthesis.speak(u);
+}
+function gpDictCheck(idx, answer){
+  var el = document.getElementById('gp-dict-'+idx);
+  var fb = document.getElementById('gp-dict-fb-'+idx);
+  if(el.value.trim().toLowerCase() === answer.toLowerCase()){
+    fb.textContent='✅ 정답! ('+answer+')'; fb.className='game-fb correct';
+  } else {
+    fb.textContent='❌ 정답: '+answer; fb.className='game-fb wrong';
+  }
+}
+
+// m3: 3-paragraph essay (intro/body/conclusion)
+function submitFullEssay(){
+  var p1 = document.getElementById('es1').value.trim();
+  var p2 = document.getElementById('es2').value.trim();
+  var p3 = document.getElementById('es3').value.trim();
+  if(!p1 || !p2 || !p3){ alert('서론/본론/결론 세 단락 모두 써주세요!'); return; }
+  var topic = document.getElementById('esTopic') ? document.getElementById('esTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 3 학생이에요.\n\n에세이 주제: ' + topic + '\n\n'
+          + '① 서론 (Introduction):\n' + p1 + '\n\n'
+          + '② 본론 (Body):\n' + p2 + '\n\n'
+          + '③ 결론 (Conclusion):\n' + p3 + '\n\n'
+          + '제 3단락 에세이를 중학생 수준에서 피드백해주세요! 서론-본론-결론 구조, 논리, 문법 모두 봐주세요.';
+  copyAndOpen(msg);
+}
+
+// m3: debate — send opening statement for rebuttal
+function sendDebateStatement(){
+  var t = document.getElementById('openStmt').value.trim();
+  if(!t){ alert('Opening Statement를 써주세요!'); return; }
+  var topic = document.getElementById('dbTopic') ? document.getElementById('dbTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 3 학생이에요.\n\n토론 주제: ' + topic + '\n\n'
+          + '제 Opening Statement:\n' + t + '\n\n'
+          + '이 주장에 대해 반박(counterargument)을 해주시고, 영어 토론 방식으로 저와 대화해주세요!';
+  copyAndOpen(msg);
+}
+</script>
+<div class="pd-notice">📚 이 교재는 저작권이 만료된 공개 도메인(Public Domain) 작품을 기반으로 제작되었습니다. 원문을 직접 인용하지 않고 AI가 교육 목적에 맞게 완전히 새로 작성한 창작 학습 자료입니다.<br><span class="pd-en">This material is based on Public Domain works. All content has been newly written by AI for educational purposes. No original text was quoted.</span></div>
 </body>
 </html>
