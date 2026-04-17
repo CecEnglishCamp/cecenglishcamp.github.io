@@ -1117,7 +1117,7 @@ function startSceneReveal(id) {
     var pos = startPos + (0 - startPos) * ease;
     _scenePos[id] = pos;
     el.style.bottom = pos + '%';
-    el.style.opacity = 0.45;
+    el.classList.add('active');
 
     if (progress < 1) {
       _sceneTimers[id] = requestAnimationFrame(step);
@@ -1140,18 +1140,11 @@ function pauseSceneReveal(id) {
 function fadeOutScene(id) {
   var el = document.getElementById(id);
   if (!el) return;
-  var op = 0.45;
-  var fade = setInterval(function() {
-    op -= 0.02;
-    if (op <= 0) {
-      el.style.opacity = 0;
-      el.style.bottom = '-100%';
-      _scenePos[id] = -100;
-      clearInterval(fade);
-    } else {
-      el.style.opacity = op;
-    }
-  }, 50);
+  el.classList.remove('active');
+  setTimeout(function() {
+    el.style.bottom = '-100%';
+    _scenePos[id] = -100;
+  }, 2000);
 }
 
 var sceneObs = new IntersectionObserver(function(entries) {
