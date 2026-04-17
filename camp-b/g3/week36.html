@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Waiting for Godot W36 | Camp B High School 3</title>
+  <title>Walden W36 | Camp B High School 3</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
 :root{
@@ -336,69 +336,318 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
   .gb-btn:hover{background:#e0f0d0;}
   </style>
   <!-- ===== /CEC Robo Helper styles ===== -->
+<style id="grade-theme">:root{--gp:#1A237E;--gl:#E8EAF6;--gd:#0D1652;}</style>
+<style id="m1-extra-css">
+.pd-notice{font-size:11px;color:#999;text-align:center;padding:12px 20px;margin-top:30px;margin-bottom:80px;border-top:1px solid rgba(255,255,255,0.08);line-height:1.6;}
+.pd-en{font-size:10px;color:#bbb;}
+/* override Robo + panel positions to clear sticky wk-nav */
+.gb{bottom:80px !important;}
+.gb-panel{bottom:148px !important;}
+.play-pause-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:rgba(0,242,255,0.1);border:1px solid #00f2ff;color:#00f2ff;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;}
+.play-pause-btn.playing{background:#00f2ff;color:#000;}
+/* Play toggle — single button */
+.play-toggle{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:#1F4E79;border:none;border-radius:20px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:inherit;margin-top:10px;}
+.play-toggle:hover{background:#2E75B6;}
+.play-toggle.playing{background:#2E75B6;color:#fff;}
+.play-icon{font-size:14px;}
+.game-block{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px;margin-top:12px;}
+.game-title{font-size:0.85rem;color:#c9a84c;font-weight:700;margin-bottom:10px;letter-spacing:1px;}
+.game-q{font-size:0.92rem;color:#eee;margin:10px 0 8px;line-height:1.6;}
+.game-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.game-opt{padding:7px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ddd;border-radius:18px;font-size:0.85rem;cursor:pointer;}
+.game-opt:hover{background:rgba(0,242,255,0.12);border-color:#00f2ff;}
+.game-opt.correct{background:rgba(40,200,120,0.25);border-color:#28c878;color:#6be0a0;}
+.game-opt.wrong{background:rgba(220,80,80,0.2);border-color:#dc5050;color:#ffb0b0;}
+.game-fb{font-size:0.82rem;color:rgba(255,255,255,0.55);margin-top:6px;min-height:18px;}
+.game-fb.correct{color:#6be0a0;}
+.game-fb.wrong{color:#ffb0b0;}
+.game-input{width:100%;max-width:300px;padding:7px 12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.18);color:#fff;border-radius:6px;font-size:0.9rem;margin-right:6px;}
+.game-hint{font-size:0.78rem;color:#c9a84c;font-style:italic;margin-left:8px;}
+.wo-bank,.wo-zone{display:flex;flex-wrap:wrap;gap:6px;padding:10px;border:1px dashed rgba(255,255,255,0.2);border-radius:8px;min-height:44px;margin:6px 0;}
+.wo-zone{border-style:solid;background:rgba(0,242,255,0.04);}
+.wo-chip{padding:6px 12px;background:rgba(0,242,255,0.15);color:#00f2ff;border-radius:14px;font-size:0.85rem;cursor:pointer;user-select:none;}
+.wo-chip.used{opacity:0.35;cursor:default;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+.match-btn{padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#ddd;border-radius:6px;font-size:0.88rem;cursor:pointer;text-align:left;}
+.match-btn.sel{border-color:#c9a84c;background:rgba(201,168,76,0.15);}
+.match-btn.matched{border-color:#28c878;background:rgba(40,200,120,0.2);color:#6be0a0;pointer-events:none;}
+.comp-tabs{display:flex;gap:6px;margin-bottom:10px;}
+.comp-tab{padding:6px 14px;border:1px solid rgba(255,255,255,0.15);border-radius:18px;background:transparent;color:#ccc;font-size:0.85rem;cursor:pointer;}
+.comp-tab.active{background:#00f2ff;color:#000;border-color:#00f2ff;}
+.comp-panel{display:none;}
+.comp-panel.active{display:block;}
+.essay-basics-box{background:rgba(0,242,255,0.04);border-left:3px solid #00f2ff;border-radius:6px;padding:14px 18px;margin-bottom:12px;}
+.essay-basics-label{font-size:0.78rem;color:#c9a84c;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.essay-basics-text{font-size:0.92rem;color:#ddd;line-height:1.7;}
+.essay-basics-text em{color:#00f2ff;font-style:italic;}
+.sample-essay-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:16px 20px;margin-top:14px;font-size:0.92rem;color:#ddd;line-height:1.8;}
+.sample-essay-title{font-size:0.82rem;color:#c9a84c;font-weight:700;margin-bottom:8px;}
+/* m2 additions */
+.grammar-box{background:rgba(201,168,76,0.06);border-left:3px solid #c9a84c;border-radius:6px;padding:14px 18px;margin-bottom:12px;}
+.grammar-label{font-size:0.78rem;color:#c9a84c;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.grammar-code{display:inline-block;background:#c9a84c;color:#000;font-weight:700;padding:2px 10px;border-radius:12px;font-size:0.78rem;margin-right:8px;}
+.grammar-title{font-size:1.05rem;color:#fff;font-weight:700;margin-bottom:8px;}
+.grammar-explain{font-size:0.92rem;color:#ddd;line-height:1.7;margin-bottom:10px;}
+.grammar-example{background:rgba(0,0,0,0.25);border-radius:6px;padding:8px 12px;margin-top:6px;font-size:0.9rem;color:#ddd;line-height:1.6;cursor:pointer;}
+.grammar-example:hover{background:rgba(0,242,255,0.08);}
+.grammar-example .ge-ko{color:rgba(255,255,255,0.55);font-size:0.82rem;margin-top:3px;}
+.pw-wrap{margin-top:12px;}
+.pw-label{font-size:0.82rem;color:#00f2ff;font-weight:700;margin:10px 0 6px;}
+.pw-hint{font-size:0.78rem;color:rgba(255,255,255,0.55);margin-bottom:6px;line-height:1.5;}
+.pw-input{width:100%;min-height:54px;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:6px;font-size:0.92rem;font-family:inherit;resize:vertical;}
+.opinion-box{background:rgba(0,242,255,0.05);border:1px solid rgba(0,242,255,0.25);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+/* m3 additions — debate */
+.debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.debate-col{display:flex;flex-direction:column;gap:8px;}
+.debate-col-title{font-weight:700;font-size:0.88rem;padding:6px 10px;border-radius:6px;text-align:center;letter-spacing:1px;}
+.debate-col-title.pro{background:rgba(40,200,120,0.15);color:#6be0a0;border:1px solid rgba(40,200,120,0.35);}
+.debate-col-title.con{background:rgba(220,80,80,0.15);color:#ffb0b0;border:1px solid rgba(220,80,80,0.35);}
+.debate-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:9px 12px;font-size:0.86rem;color:#ddd;line-height:1.55;}
+.debate-card.pro{border-left:3px solid #28c878;}
+.debate-card.con{border-left:3px solid #dc5050;}
+@media(max-width:560px){.debate-grid{grid-template-columns:1fr;}}
+.debate-topic-box{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+/* Day 1/2/3 block — dot + border-left + word count */
+.day-block{margin:16px 0;background:#f3f0ff;border-radius:12px;padding:16px;}
+.day-row{margin-bottom:12px;}
+.day-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.day-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.dot-1{background:#B4B2A9;}.dot-2{background:#4A9E75;}.dot-3{background:var(--gp);}
+.day-tag{font-size:11px;font-weight:600;letter-spacing:0.06em;color:#888;text-transform:uppercase;}
+.day-wc{font-size:10px;color:var(--gp);margin-left:auto;background:var(--gl);padding:2px 8px;border-radius:10px;}
+.day-sent{font-size:15px;line-height:1.65;padding:10px 14px;border-left:3px solid;border-radius:0 10px 10px 0;}
+.sent-1{border-color:#B4B2A9;background:#f3f0ff;color:#222;}
+.sent-2{border-color:#8478e0;background:#ede8ff;color:#222;}
+.sent-3{border-color:var(--gp);background:var(--gl);color:#111;font-weight:600;}
+.sent-kr{font-size:13px;color:#444;padding:6px 14px 0;font-style:italic;}
+.day-tts{display:flex;align-items:center;gap:8px;margin-top:8px;padding-left:14px;}
+/* Reading tab buttons — larger, stronger active */
+.level-tabs{display:flex;gap:8px;margin-bottom:12px;}
+.ltab{flex:1;padding:11px 16px !important;font-size:14px !important;font-weight:700 !important;border-radius:10px !important;border:2px solid rgba(255,255,255,0.15) !important;background:rgba(255,255,255,0.04) !important;color:#ccc !important;cursor:pointer;transition:all 0.15s;}
+.ltab:hover{background:rgba(255,255,255,0.08) !important;}
+.ltab.active{background:linear-gradient(135deg,var(--gp),var(--gd)) !important;color:#fff !important;border-color:var(--gp) !important;box-shadow:0 0 12px rgba(0,0,0,0.25) !important;transform:translateY(-1px);}
+/* Essay tips — colored cards */
+.et-wrap{margin-bottom:20px;}
+.et-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.et-icon{width:32px;height:32px;border-radius:8px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.et-title{font-size:15px;font-weight:600;color:#1a3a5c;}
+.et-sub{font-size:11px;color:#888;margin-top:1px;}
+.tip-list{display:flex;flex-direction:column;gap:8px;}
+.tip-card{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:10px;border:1px solid;}
+.tc-1{background:#f3f0ff;border-color:#9b8fe8;}.tc-2{background:#ede8ff;border-color:#8478e0;}.tc-3{background:#e6e0ff;border-color:#7264d8;}.tc-4{background:#ddd6ff;border-color:#6454cf;}.tc-5{background:#d4ccff;border-color:#5344c6;}
+.tip-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px;}
+.tn-1{background:#9b8fe8;color:#fff;}.tn-2{background:#8478e0;color:#fff;}.tn-3{background:#7264d8;color:#fff;}.tn-4{background:#6454cf;color:#fff;}.tn-5{background:#5344c6;color:#fff;}
+.tip-body{flex:1;}
+.tip-name{font-size:13px;font-weight:600;color:#222;margin-bottom:3px;}
+.tip-desc{font-size:12px;color:#555;line-height:1.5;}
+.tip-ex{margin-top:6px;font-size:12px;line-height:1.6;}
+.ex-bad{color:#5344c6;background:#ede8ff;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:3px;}
+.ex-good{color:#27500A;background:#EAF3DE;padding:2px 8px;border-radius:4px;display:inline-block;}
+.phrase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;}
+.phrase-card{background:#f3f0ff;border:1px solid #c4baff;border-radius:8px;padding:10px 12px;}
+.phrase-role{font-size:11px;font-weight:600;color:#6454cf;margin-bottom:5px;}
+.phrase-item{font-size:12px;color:#333;line-height:1.6;}
+@media(max-width:560px){.phrase-grid{grid-template-columns:1fr;}}
+/* Defensive section override — template has conflicting .sh{display:flex} */
+section.sh{display:block !important;flex-direction:unset !important;}
+section.sh > *{float:none !important;}
+/* m2 paragraph writing — workbook-style card (defensive against template CSS conflicts) */
+.paragraph-section{display:block !important;width:100% !important;float:none !important;position:static !important;padding:18px 18px 22px;background:#f8f9ff;border-radius:16px;margin:0 0 20px 0;color:#222;box-sizing:border-box;}
+.para-guide-card{display:block !important;width:100% !important;float:none !important;position:static !important;background:#f0f4ff;border-radius:12px;padding:16px;margin-bottom:16px;box-sizing:border-box;}
+.para-step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
+.para-step:last-child{margin-bottom:0;}
+.para-step b{color:var(--gd);font-size:14px;display:block;margin-bottom:2px;}
+.para-step p{font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;}
+.step-num{width:28px;height:28px;background:var(--gp);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:13px;}
+.example{background:#fff;border-left:3px solid var(--gp);padding:7px 10px;margin-top:6px;font-size:12px;color:#444;border-radius:0 6px 6px 0;line-height:1.5;}
+.para-inputs{display:block !important;width:100% !important;float:none !important;position:static !important;margin-top:8px;box-sizing:border-box;}
+.para-inputs label{display:block;font-weight:700;margin:10px 0 4px;color:var(--gd);font-size:13px;}
+.para-inputs textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:14px;resize:vertical;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;min-height:70px;}
+.para-inputs textarea:focus{border-color:var(--gp);outline:none;box-shadow:0 0 0 3px rgba(46,117,182,0.15);}
+.para-submit-wrap{text-align:center;margin-top:14px;}
+</style>
 </head>
 <body>
-<div class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">High School 1</span></div></div>
-<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">Of Mice and Men &middot; W07 / 08</div><h1 class="hero-title">Of Mice and Men</h1><p class="hero-sub">꿈의 무게 — John Steinbeck · B2~C1</p><div style="margin-top:12px;font-size:0.8rem;color:rgba(255,255,255,0.6);background:rgba(0,0,0,0.3);padding:8px 12px;border-radius:8px;display:inline-block;">🔊 <strong>음성 기능 사용법:</strong> 페이지 하단의 "음성 기능 활성화" 버튼을 먼저 클릭해주세요!</div></div></div>
+<div class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">High School 3</span></div></div>
+<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">Walden &middot; W36 / 36</div><h1 class="hero-title">Walden</h1><p class="hero-sub">깨어있는 삶 &mdash; Henry David Thoreau &middot; C1+</p></div></div>
 <div class="content-wrap">
-  <section class="sh"><div class="sh-bar"><span class="sh-num">1</span><h2>&#54645;&#49900; &#54364;&#54788; <span class="sh-en">KEY EXPRESSION</span></h2></div>
-    <div class="key-expr-box"><div class="ke-en" onclick="speak(this.textContent)">Guys like us, that work on ranches, are the loneliest guys in the world. &#128266;</div><div class="ke-ko">목장에서 일하는 우리 같은 사람들은 세상에서 가장 외로운 사람들이야.</div></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">2</span><h2>&#51648;&#47928; &#51069;&#44592; <span class="sh-en">READING</span></h2></div>
-    <div class="level-tabs"><button class="ltab active" onclick="showLevel('b1',this)">B1 &#44592;&#48376;</button><button class="ltab" onclick="showLevel('c1',this)">C1 &#49900;&#54868;</button></div>
-    <div id="b1Story" class="story-box" style="display:block;">
-<p class="story-line" data-speak="You have completed High School 3 Camp B — and with it, the entire Camp B curriculum">You have completed High School 3 Camp B — and with it, the entire Camp B curriculum</p>
-<p class="story-line" data-speak="Six final works: 1984, Brave New World, Slaughterhouse-Five, Crime and Punishment, The Stranger, and Waiting for Godot">Six final works: 1984, Brave New World, Slaughterhouse-Five, Crime and Punishment, The Stranger, and Waiting for Godot</p>
-<p class="story-line" data-speak="These are some of the most challenging works in the English literary canon.">These are some of the most challenging works in the English literary canon.</p>
-</div>
-    <div id="c1Story" class="story-box" style="display:none;">
-<p class="story-line" data-speak="The curriculum has traced the twentieth century's deepest question: how do we live when the structures that gave life meaning have collapsed? Orwell showed the perversion of political utopia">The curriculum has traced the twentieth century's deepest question: how do we live when the structures that gave life meaning have collapsed? Orwell showed the perversion of political utopia</p>
-<p class="story-line" data-speak="Huxley showed the perversion of comfort">Huxley showed the perversion of comfort</p>
-<p class="story-line" data-speak="Vonnegut showed the impossibility of making sense of catastrophe">Vonnegut showed the impossibility of making sense of catastrophe</p>
-<p class="story-line" data-speak="Dostoevsky showed the necessity of conscience">Dostoevsky showed the necessity of conscience</p>
-<p class="story-line" data-speak="Camus showed dignity in absurdity">Camus showed dignity in absurdity</p>
-<p class="story-line" data-speak="Beckett showed the irreducible human will to continue">Beckett showed the irreducible human will to continue</p>
-<p class="story-line" data-speak="Together: a complete philosophy for living without guarantees.">Together: a complete philosophy for living without guarantees.</p>
-</div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">3</span><h2>&#54645;&#49900; &#50612;&#55064; <span class="sh-en">VOCABULARY</span></h2></div>
-    <div class="vocab-grid">
-<div class="vocab-card"><div class="vc-en" onclick="speak('utopia')">utopia 🔊</div><div class="vc-ko">유토피아</div><div class="vc-ex">"Orwell showed the perversion of political utopia."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('irreducible')">irreducible 🔊</div><div class="vc-ko">더 이상 줄일 수 없는</div><div class="vc-ex">"Beckett showed the irreducible human will to continue."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('guarantees')">guarantees 🔊</div><div class="vc-ko">보장</div><div class="vc-ex">"A philosophy for living without guarantees."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('collapsed')">collapsed 🔊</div><div class="vc-ko">붕괴된</div><div class="vc-ex">"Structures that gave meaning have collapsed."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('inadequate')">inadequate 🔊</div><div class="vc-ko">불충분한</div><div class="vc-ex">"Old structures have been revealed as inadequate."</div></div>
-</div><div class="vc-ko">이주하는</div><div class="vc-ex">"George and Lennie were migrant workers."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">companionship &#128266;</div><div class="vc-ko">동반자 관계</div><div class="vc-ex">"Their companionship was unusual for ranch workers."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">innocence &#128266;</div><div class="vc-ko">순수함</div><div class="vc-ex">"Lennie's innocence made him both lovable and dangerous."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">poignant &#128266;</div><div class="vc-ko">애절한</div><div class="vc-ex">"The ending was deeply poignant and tragic."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">loneliness &#128266;</div><div class="vc-ko">외로움</div><div class="vc-ex">"Loneliness was the defining condition of ranch life."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">inevitable &#128266;</div><div class="vc-ko">불가피한</div><div class="vc-ex">"Their tragedy seemed almost inevitable."</div></div>
-</div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">4</span><h2>&#47928;&#48277; &#54252;&#51064;&#53944; <span class="sh-en">GRAMMAR</span></h2></div>
-    <div class="gram-box"><div class="gram-label">Narrative Tenses (G32)</div><ul class="grammar-examples"><li><em>"They had been walking all day when they reached the river." — 과거완료진행</em></li><li><em>"While Lennie was drinking, George watched carefully." — 과거진행</em></li><li><em>"No sooner had they arrived than trouble began." — no sooner...than</em></li></ul></div>
-  <div style="text-align:center;margin-top:12px;"><a href="/grammar-camp/G32/G32_past_simple_vs_past_continuous.html?return=/camp-b/g3/week36.html" target="_blank" style="display:inline-block;padding:6px 14px;background:#00f2ff;color:#000;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;">📘 Grammar Base Camp →</a></div></section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">5</span><h2>&#53664;&#47200; &#51452;&#51228; <span class="sh-en">DEBATE</span></h2></div>
-    <div class="debate-q-box"><div class="debate-q">"The six novels constitute the most important body of literature ever assembled for high school students."</div><div class="debate-q-ko">여섯 소설은 고등학생을 위한 가장 중요한 문학 작품 모음이다.</div></div>
-    <div class="debate-sides"><div class="debate-agree"><strong>&#9989; &#52268;&#49457;</strong><ul><li>George and Lennie's dream is destroyed by forces beyond their control</li><li>The Depression proves the Dream is inaccessible to the poor</li><li>Candy, Crooks, and Curley's wife all have crushed dreams</li></ul></div><div class="debate-disagree"><strong>&#10060; &#48152;&#45824;</strong><ul><li>The dream gives George and Lennie purpose</li><li>Without aspiration human life loses meaning</li><li>Some people do achieve the Dream through perseverance</li></ul></div></div>
-    <div style="margin-top:20px;"><p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-bottom:8px;">&#45236; &#51452;&#51109;&#51012; &#50689;&#50612;&#47196; &#50024;&#48372;&#49464;&#50836;:</p><textarea class="essay-input" id="debateInput" placeholder="I argue that... because..."></textarea><button class="btn-ai-debate" onclick="sendDebate()">&#9876;&#65039; ChatGPT&#50640;&#49436; AI&#50752; &#53664;&#47200;&#54616;&#44592;</button></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">6</span><h2>&#50640;&#49464;&#51060; &#50416;&#44592; <span class="sh-en">ESSAY</span></h2></div>
-    <div class="essay-topic-box"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:#00f2ff;margin-bottom:8px;">"How does Steinbeck use George and Lennie's friendship to critique the American Dream?"</div><div style="font-size:0.9rem;color:rgba(255,255,255,0.6);">Steinbeck는 조지와 레니의 우정을 통해 아메리칸 드림을 어떻게 비판하는가?</div></div>
-    <div style="margin-top:16px;">
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;">&#128221; Introduction</p><textarea class="essay-input" id="es1" placeholder="Introduce the topic..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Body 1</p><textarea class="essay-input" id="es2" placeholder="First argument..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Body 2</p><textarea class="essay-input" id="es3" placeholder="Second argument..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Conclusion</p><textarea class="essay-input" id="es4" placeholder="Summarize..."></textarea>
-      <button class="btn-submit" onclick="submitEssay()">&#9997;&#65039; ChatGPT&#50640;&#49436; &#50640;&#49464;&#51060; &#54588;&#46300;&#48177; &#48155;&#44592;</button>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">1</span><h2>핵심 표현 <span class="sh-en">KEY EXPRESSION</span></h2></div>
+    <div class="day-block">
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-1"></span><span class="day-tag">Day 1 · 기초</span></div>
+        <div class="day-sent sent-1">Most people are asleep.</div>
+      </div>
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-2"></span><span class="day-tag">Day 2 · 확장</span></div>
+        <div class="day-sent sent-2">Thoreau believed most people live half-awake.</div>
+      </div>
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-3"></span><span class="day-tag">Day 3 · 목표 ⭐ 오늘</span><span class="day-wc">43 words</span></div>
+        <div class="day-sent sent-3">Thoreau's most enduring argument is that most humans live essentially asleep, their thoughts shaped by habit and convention, and that the real task of philosophy is simply to wake up and become fully conscious of one's own existence while there is still time.</div>
+        <div class="sent-kr">🇰🇷 소로는 가장 지속력 있는 주장으로, 대부분의 인간이 본질적으로 잠들어 살아가며 그들의 생각이 습관과 관습에 의해 형성된다고 보았고, 철학의 진정한 과제는 단순히 깨어나 아직 시간이 있을 때 자신의 존재를 완전히 의식하는 것이라고 했다.</div>
+        <div class="day-tts">
+          <button class="play-toggle" onclick="togglePlay(this)" data-text="Thoreau\'s most enduring argument is that most humans live essentially asleep, their thoughts shaped by habit and convention, and that the real task of philosophy is simply to wake up and become fully conscious of one\'s own existence while there is still time."><span class="play-icon">▶</span><span class="play-label">듣기</span></button>
+        </div>
+      </div>
     </div>
   </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">7</span><h2>ChatGPT &#54924;&#54868; &#50672;&#49845; <span class="sh-en">AI PRACTICE</span></h2></div>
-    <div style="text-align:center;padding:20px 0;"><p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">ChatGPT Camp B&#50752; &#54632;&#44760; &#50689;&#50612;&#47196; &#45824;&#54868;&#54644;&#48372;&#49464;&#50836;!</p><button class="btn-submit" onclick="launchChatGPTPractice()">&#129302; ChatGPT&#50752; 50:50 &#54924;&#54868; &#50672;&#49845;</button></div>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">2</span><h2>지문 읽기 <span class="sh-en">READING</span></h2></div>
+    <div class="level-tabs">
+      <button class="ltab active" onclick="showLevel('b1',this)">🔵 기본 (C1)</button>
+      <button class="ltab" onclick="showLevel('c1',this)">🟣 심화 (C1+)</button>
+    </div>
+    <div id="b1Story" class="story-box" style="display:block;">
+      <div id="b1Text"><p>The pervasive state of mental slumber that characterizes modern existence stems from our relentless adherence to societal expectations and predetermined life scripts. Individuals frequently navigate their daily routines while their authentic aspirations remain systematically suppressed by external pressures and conventional wisdom. This collective somnambulism manifests through the uncritical acceptance of cultural norms and the passive consumption of mass media narratives. A genuine awakening requires deliberate introspection and the courageous questioning of inherited values that may no longer serve our deeper purpose. We must cultivate moments of solitude to discern our own voice amid the cacophony of external influences that constantly shape our perceptions. The journey toward conscious living begins with recognizing the subtle ways our autonomy becomes eroded by unexamined habits and social conformity.</p></div>
+      <button class="play-toggle" onclick="togglePlay(this)"><span class="play-icon">▶</span><span class="play-label">재생</span></button>
+    </div>
+    <div id="c1Story" class="story-box" style="display:none;">
+      <div id="c1Text"><p>The philosophical inquiry into consciousness posits that a significant portion of human experience is conducted in a state of psychological automatism, wherein cognitive processes operate according to ingrained patterns rather than deliberate volition. This epistemological somnolence is perpetuated by institutional structures that privilege efficiency and predictability over authentic self-examination and existential clarity. Consequently, individuals often pursue externally validated milestones while their intrinsic motivations and core identities remain obscured by layers of social conditioning. A substantive awakening necessitates a rigorous deconstruction of these internalized frameworks and a sustained commitment to epistemic vigilance against the seductive comforts of conventional thought. The cultivation of such awareness enables one to perceive the profound interplay between personal agency and structural determinants that collectively configure the contours of a lived experience. Therefore, the project of becoming fully awake constitutes an ongoing dialectical engagement with both the self and the world, demanding continuous critical reflection on the premises that undergird our most fundamental choices and values.</p></div>
+      <button class="play-toggle" onclick="togglePlay(this)"><span class="play-icon">▶</span><span class="play-label">재생</span></button>
+    </div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">3</span><h2>핵심 어휘 <span class="sh-en">VOCABULARY</span></h2></div>
+    <div class="vocab-grid"><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">somnolence &#128266;</div><div class="vc-ko">졸음, 나른함, 의식이 몽롱한 상태</div><div class="vc-ex">"The cultural somnolence of the populace was evident in their uncritical acceptance of commercial messages while their capacity for independent judgment lay dormant."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">automatism &#128266;</div><div class="vc-ko">자동적 행동, 무의식적 반사 작용</div><div class="vc-ex">"His daily routine had degenerated into mere automatism, a series of mechanical gestures performed without conscious thought or genuine engagement."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">epistemic &#128266;</div><div class="vc-ko">인식론적인, 지식 또는 인식에 관한</div><div class="vc-ex">"Achieving epistemic clarity requires questioning the very foundations of one's beliefs, especially while those beliefs are being shaped by unseen cultural forces."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">volition &#128266;</div><div class="vc-ko">의지, 의욕, 자발적 선택</div><div class="vc-ex">"True freedom is exercised not through the absence of constraint but through the conscious application of personal volition in directing one's life path."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">dialectical &#128266;</div><div class="vc-ko">변증법적인, 상반되는 힘의 상호작용을 통한</div><div class="vc-ex">"A dialectical understanding of self-awareness recognizes the constant tension between internal desires and external realities that shapes human consciousness."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">contours &#128266;</div><div class="vc-ko">윤곽, 개요, 특징적인 형상</div><div class="vc-ex">"The subtle contours of her personality became visible only after she discarded the masks worn to satisfy societal expectations and their imposed standards."</div></div></div>
+
+    <div class="game-block"><div class="game-title">🎯 빈칸 채우기</div><div class="game-q">1. Many people live their entire lives on autopilot, their potential <strong>___</strong><strong>___</strong>_ by fear and conformity.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">stifled</button><button class="game-opt" onclick="fbCheck(this,false)">enhanced</button><button class="game-opt" onclick="fbCheck(this,false)">celebrated</button></div><div class="game-fb"></div><div class="game-q">2. He finally achieved a moment of clarity <strong>___</strong><strong>___</strong>_ his peers continued to debate trivial matters.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">while</button><button class="game-opt" onclick="fbCheck(this,false)">because</button><button class="game-opt" onclick="fbCheck(this,false)">unless</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기</div><div class="game-q">1. <span class="game-hint">힌트: 의식</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds1" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds1','consciousness')">확인</button></div><div class="game-fb" id="ds1-fb"></div><div class="game-q">2. <span class="game-hint">힌트: 신중한, 의도적인</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds2" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds2','deliberate')">확인</button></div><div class="game-fb" id="ds2-fb"></div><div class="game-q">3. <span class="game-hint">힌트: 내성, 자기 반성</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds3" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds3','introspection')">확인</button></div><div class="game-fb" id="ds3-fb"></div></div>
+    <div class="game-block"><div class="game-title">👂 듣고 고르기</div><div class="game-q">1. <button class="game-opt" onclick="lcPlay('A mind truly awake questions its own assumptions.')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">A mind truly awake questions its own assumptions.</button><button class="game-opt" onclick="lcCheck(this,false)">A mind truly awake excepts its own assumptions.</button><button class="game-opt" onclick="lcCheck(this,false)">A mind truly awake questions its own impressions.</button></div><div class="game-fb"></div><div class="game-q">2. <button class="game-opt" onclick="lcPlay('Their perspectives were shaped by unchallenged traditions.')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">Their perspectives were shaped by unchallenged traditions.</button><button class="game-opt" onclick="lcCheck(this,false)">Their perspectives were shaped by unchallenged transitions.</button><button class="game-opt" onclick="lcCheck(this,false)">Their perspectives were shaped by unchallenged transmissions.</button></div><div class="game-fb"></div><div class="game-q">3. <button class="game-opt" onclick="lcPlay('He sought authenticity while others pursued status.')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">He sought authenticity while others pursued status.</button><button class="game-opt" onclick="lcCheck(this,false)">He sought authenticity while others pursued statues.</button><button class="game-opt" onclick="lcCheck(this,false)">He sought authenticity while others pursued statutes.</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">🔤 단어 배열하기</div><div class="game-q">1. 레벨 C1 — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo1-bank"><span class="wo-chip" data-word="fully" onclick="woAdd(1,this,'fully')">fully</span><span class="wo-chip" data-word="is" onclick="woAdd(1,this,'is')">is</span><span class="wo-chip" data-word="with" onclick="woAdd(1,this,'with')">with</span><span class="wo-chip" data-word="awakening" onclick="woAdd(1,this,'awakening')">awakening</span><span class="wo-chip" data-word="life" onclick="woAdd(1,this,'life')">life</span><span class="wo-chip" data-word="True" onclick="woAdd(1,this,'True')">True</span><span class="wo-chip" data-word="sense" onclick="woAdd(1,this,'sense')">sense</span><span class="wo-chip" data-word="often" onclick="woAdd(1,this,'often')">often</span><span class="wo-chip" data-word="that" onclick="woAdd(1,this,'that')">that</span><span class="wo-chip" data-word="own." onclick="woAdd(1,this,'own.')">own.</span><span class="wo-chip" data-word="discomforting" onclick="woAdd(1,this,'discomforting')">discomforting</span><span class="wo-chip" data-word="a" onclick="woAdd(1,this,'a')">a</span><span class="wo-chip" data-word="one's" onclick="woAdd(1,this,'one\'s')">one's</span><span class="wo-chip" data-word="one's" onclick="woAdd(1,this,'one\'s')">one's</span><span class="wo-chip" data-word="not" onclick="woAdd(1,this,'not')">not</span><span class="wo-chip" data-word="begins" onclick="woAdd(1,this,'begins')">begins</span></div><div class="wo-zone" id="wo1-zone"></div><button class="game-opt" onclick="woCheck(1)">확인</button><div class="game-fb" id="wo1-fb"></div><div class="game-q">2. 레벨 C1+ — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo2-bank"><span class="wo-chip" data-word="our" onclick="woAdd(2,this,'our')">our</span><span class="wo-chip" data-word="of" onclick="woAdd(2,this,'of')">of</span><span class="wo-chip" data-word="of" onclick="woAdd(2,this,'of')">of</span><span class="wo-chip" data-word="passively" onclick="woAdd(2,this,'passively')">passively</span><span class="wo-chip" data-word="persistent" onclick="woAdd(2,this,'persistent')">persistent</span><span class="wo-chip" data-word="philosophical" onclick="woAdd(2,this,'philosophical')">philosophical</span><span class="wo-chip" data-word="inform" onclick="woAdd(2,this,'inform')">inform</span><span class="wo-chip" data-word="societal" onclick="woAdd(2,this,'societal')">societal</span><span class="wo-chip" data-word="interrogation" onclick="woAdd(2,this,'interrogation')">interrogation</span><span class="wo-chip" data-word="that" onclick="woAdd(2,this,'that')">that</span><span class="wo-chip" data-word="worldview." onclick="woAdd(2,this,'worldview.')">worldview.</span><span class="wo-chip" data-word="self-realization" onclick="woAdd(2,this,'self-realization')">self-realization</span><span class="wo-chip" data-word="a" onclick="woAdd(2,this,'a')">a</span><span class="wo-chip" data-word="project" onclick="woAdd(2,this,'project')">project</span><span class="wo-chip" data-word="The" onclick="woAdd(2,this,'The')">The</span><span class="wo-chip" data-word="demands" onclick="woAdd(2,this,'demands')">demands</span><span class="wo-chip" data-word="narratives" onclick="woAdd(2,this,'narratives')">narratives</span><span class="wo-chip" data-word="the" onclick="woAdd(2,this,'the')">the</span></div><div class="wo-zone" id="wo2-zone"></div><button class="game-opt" onclick="woCheck(2)">확인</button><div class="game-fb" id="wo2-fb"></div></div>
+    <div class="game-block"><div class="game-title">🎴 짝맞추기</div><div class="game-q">단어와 한국어 뜻을 짝지어보세요:</div><div class="match-grid"><div><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">pervasive</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">adherence</button><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">cacophony</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">vigilance</button></div><div><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">불협화음, 불쾌한 소음</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">고수, 준수</button><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">퍼져 있는, 널리 퍼진</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">경계, 각성</button></div></div></div>
+    <div class="game-block"><div class="game-title">🏆 받아쓰기 도전</div><div class="game-q">A1 — <button class="game-opt" onclick="dcPlay('Living awake means making conscious choices every single day.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a1','Living awake means making conscious choices every single day.')">확인</button></div><div class="game-fb" id="dc-a1-fb"></div><div class="game-q">A2 — <button class="game-opt" onclick="dcPlay('Their dreams remained unrealized, their passions quietly buried under daily obligations.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a2" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a2','Their dreams remained unrealized, their passions quietly buried under daily obligations.')">확인</button></div><div class="game-fb" id="dc-a2-fb"></div><div class="game-q">B1 — <button class="game-opt" onclick="dcPlay('A life examined with rigorous honesty often reveals the subtle ways our autonomy is compromised while we believe ourselves to be free.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-b1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('b1','A life examined with rigorous honesty often reveals the subtle ways our autonomy is compromised while we believe ourselves to be free.')">확인</button></div><div class="game-fb" id="dc-b1-fb"></div></div>
+    <script>document.addEventListener('DOMContentLoaded',function(){woInit(1, ["True", "awakening", "often", "begins", "with", "a", "discomforting", "sense", "that", "one's", "life", "is", "not", "fully", "one's", "own."]);woInit(2, ["The", "philosophical", "project", "of", "self-realization", "demands", "a", "persistent", "interrogation", "of", "the", "societal", "narratives", "that", "passively", "inform", "our", "worldview."]);});</script>
+  </section>
+  <section class="sh comp-section"><div class="sh-bar"><span class="sh-num">4</span><h2>이해 문제 <span class="sh-en">COMPREHENSION</span></h2></div>
+    <div class="comp-tabs">
+      <button class="comp-tab active" onclick="compTab(this,'entry')">🟡 입문</button>
+      <button class="comp-tab" onclick="compTab(this,'b1')">🔵 초급 B1</button>
+      <button class="comp-tab" onclick="compTab(this,'intermediate')">🟣 중급</button>
+    </div>
+    <div class="comp-panel comp-panel-entry active"><div class="game-q">Q1. 지문에 따르면, 현대인의 '정신적 졸음' 상태의 주요 원인은 무엇인가?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">사회적 기대와 정해진 인생 설계에 대한 맹목적 추종</button><button class="game-opt" onclick="compCheck(this,false)">개인적 게으름과 의지 부족</button><button class="game-opt" onclick="compCheck(this,false)">과학 기술의 과도한 발전</button></div><div class="game-fb"></div><div class="game-q">Q2. 진정한 '깨어남'을 위해 필요한 첫 번째 단계는 무엇인가?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">내면을 성찰하고 물려받은 가치관을 용기 있게 질문하는 것</button><button class="game-opt" onclick="compCheck(this,false)">모든 사회적 관계를 끊고 은둔하는 것</button><button class="game-opt" onclick="compCheck(this,false)">더 많은 지식을 쌓기 위해 책을 많이 읽는 것</button></div><div class="game-fb"></div><div class="game-q">Q3. 문장 '...while their authentic aspirations remain systematically suppressed...'에서 'their'가 가리키는 것은?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">개인들(Individuals)</button><button class="game-opt" onclick="compCheck(this,false)">일상적인 루틴(daily routines)</button><button class="game-opt" onclick="compCheck(this,false)">외부적인 압력(external pressures)</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-b1"><div class="game-q">Q1. According to the C1 passage, what is a primary characteristic of 'psychological automatism'?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">Cognitive processes operating via ingrained patterns rather than deliberate choice.</button><button class="game-opt" onclick="compCheck(this,false)">A complete lack of any emotional response to external stimuli.</button><button class="game-opt" onclick="compCheck(this,false)">The active rejection of all social norms and conventions.</button></div><div class="game-fb"></div><div class="game-q">Q2. What does the passage suggest is necessary for 'substantive awakening'?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">Deconstructing internalized frameworks and committing to epistemic vigilance.</button><button class="game-opt" onclick="compCheck(this,false)">Achieving complete financial independence and social isolation.</button><button class="game-opt" onclick="compCheck(this,false)">Mastering a wide range of academic disciplines and philosophical theories.</button></div><div class="game-fb"></div><div class="game-q">Q3. How does the passage describe the relationship between 'personal agency' and 'structural determinants'?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">As a profound interplay that configures lived experience.</button><button class="game-opt" onclick="compCheck(this,false)">As a relationship where structural determinants completely nullify personal agency.</button><button class="game-opt" onclick="compCheck(this,false)">As two entirely separate domains that never influence each other.</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-intermediate"><div class="game-q">Q1. Which of the following best captures the epistemological argument implied in the C1+ passage?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">Consciousness is often clouded by unchallenged, institutionally reinforced premises that must be critically examined.</button><button class="game-opt" onclick="compCheck(this,false)">Human knowledge is purely subjective and therefore any pursuit of 'awakening' is fundamentally futile.</button><button class="game-opt" onclick="compCheck(this,false)">True awareness is an innate state that some possess and others lack, independent of effort or reflection.</button></div><div class="game-fb"></div><div class="game-q">Q2. The passage posits that 'the project of becoming fully awake' is dialectical. What is the most accurate interpretation of this claim?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">It involves an ongoing, dynamic interaction between self-reflection and engagement with external realities.</button><button class="game-opt" onclick="compCheck(this,false)">It requires choosing definitively between focusing on the self or focusing on the world.</button><button class="game-opt" onclick="compCheck(this,false)">It is a linear process that moves from ignorance to enlightenment in distinct, irreversible stages.</button></div><div class="game-fb"></div><div class="game-q">Q3. What critical function does 'epistemic vigilance' serve in the process described?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">It guards against the uncritical adoption of comforting but potentially limiting conventional thoughts.</button><button class="game-opt" onclick="compCheck(this,false)">It ensures the accumulation of factual knowledge from authoritative sources.</button><button class="game-opt" onclick="compCheck(this,false)">It promotes skepticism to the point of rejecting all forms of external information.</button></div><div class="game-fb"></div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">5</span><h2>문법 <span class="sh-en">GRAMMAR</span></h2></div>
+    <div class="grammar-box">
+      <div class="grammar-label"><span class="grammar-code">G36</span>이번 주 문법 포인트</div>
+      <div class="grammar-title">Adverbial Clause with 'while' &amp; Possessive + Noun + Past Participle</div>
+      <div class="essay-basics-text" style="margin-bottom:8px;">'while'을 이용한 부사절 및 소유격 + 명사 + 과거분사 구조</div>
+      <div class="grammar-explain">'while + 주어 + 동사'는 두 가지 상황이 동시에 발생함을 나타내는 부사절을 이끕니다. 'their + 명사 + p.p.'(과거분사) 구조는 소유격('their')이 나타내는 대상에 대해 수동의 의미나 완료된 상태를 설명하는 절을 생략한 절약 표현입니다.</div>
+    </div>
+    <div class="essay-basics-label" style="margin-top:14px;">📝 예문 3개 (클릭해서 듣기)</div>
+    <div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">Profound insights often emerge in solitude while the bustling world continues its relentless pace outside.</span> &#128266;<div class="ge-ko">깊은 통찰은 종종 고독 속에서 떠오르는데, 한편으로는 북적이는 세상이 밖에서 그 무자비한 속도를 유지한다.</div></div><div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">Many artists create their best work while their personal lives are fraught with turmoil and uncertainty.</span> &#128266;<div class="ge-ko">많은 예술가들이 그들의 개인적 삶이 혼란과 불확실성으로 가득 찬 동안 최고의 작품을 창조한다.</div></div><div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">The community progressed, its original vision preserved intact by the steadfast commitment of its founders.</span> &#128266;<div class="ge-ko">그 공동체는 발전했는데, 그것의 원래 비전은 창립자들의 확고한 헌신에 의해 온전히 보존된 채로였다.</div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num" style="min-width:40px;">5-B</span><h2>문법 연습 <span class="sh-en">GRAMMAR PRACTICE</span></h2></div>
+    <div class="game-block"><div class="game-title">🎯 문법 이해 문제 (Grammar Quiz)</div><div class="game-q">Q1. Choose the sentence that correctly uses the grammar point.</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">He found peace while the city slept, its streets emptied of their usual noise.</button><button class="game-opt" onclick="fbCheck(this,false)">He found peace while the city sleeps, its streets emptying of their usual noise.</button><button class="game-opt" onclick="fbCheck(this,false)">He found peace while the city slept, its streets emptying of their usual noise.</button></div><div class="game-fb"></div><div class="game-q">Q2. Which option best completes the sentence? 'The old house stood silent, _______.'</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">its windows boarded up and its garden overgrown</button><button class="game-opt" onclick="fbCheck(this,false)">while its windows boarded up and its garden overgrown</button><button class="game-opt" onclick="fbCheck(this,false)">its windows boarding up and its garden overgrowing</button></div><div class="game-fb"></div><div class="game-q">Q3. Identify the sentence with an error in the target grammar structure.</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,false)">While their opinions were dismissed by the majority, they held firm to their convictions.</button><button class="game-opt" onclick="fbCheck(this,false)">The team celebrated, their goal achieved through immense collective effort.</button><button class="game-opt" onclick="fbCheck(this,true)">The forest was serene, while its paths covered by a thick blanket of snow.</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기 (Dictation)</div><div class="game-q">1. <button class="game-opt" onclick="gpDictPlay('consciousness')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-1" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(1,'consciousness')">확인</button><button class="game-opt" onclick="gpDictHint(1)">💡 힌트</button><span id="gp-dict-hint-1" class="game-hint" style="visibility:hidden;">의식</span></div><div class="game-fb" id="gp-dict-fb-1"></div><div class="game-q">2. <button class="game-opt" onclick="gpDictPlay('deliberate')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-2" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(2,'deliberate')">확인</button><button class="game-opt" onclick="gpDictHint(2)">💡 힌트</button><span id="gp-dict-hint-2" class="game-hint" style="visibility:hidden;">신중한</span></div><div class="game-fb" id="gp-dict-fb-2"></div><div class="game-q">3. <button class="game-opt" onclick="gpDictPlay('introspection')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-3" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(3,'introspection')">확인</button><button class="game-opt" onclick="gpDictHint(3)">💡 힌트</button><span id="gp-dict-hint-3" class="game-hint" style="visibility:hidden;">내성</span></div><div class="game-fb" id="gp-dict-fb-3"></div></div>
+    <div class="game-block"><div class="game-title">📝 빈칸 채우기 (Fill in the Blank)</div><div class="game-q">1. The manuscript was finally published, its content <strong>_______</strong> for decades.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">suppressed</button><button class="game-opt" onclick="fbCheck(this,false)">expressed</button><button class="game-opt" onclick="fbCheck(this,false)">compressed</button></div><div class="game-fb"></div><div class="game-q">2. <strong>_______</strong> she developed her own philosophy, her colleagues remained satisfied with conventional answers.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">While</button><button class="game-opt" onclick="fbCheck(this,false)">Because</button><button class="game-opt" onclick="fbCheck(this,false)">If</button></div><div class="game-fb"></div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num" style="min-width:40px;">5-C</span><h2>수능형 연습 <span class="sh-en">CSAT PRACTICE</span></h2></div>
+    <div class="game-block"><div class="game-title">📋 Q1. 주제 파악</div><div style="background:rgba(255,255,255,0.06);padding:12px;border-radius:8px;margin-bottom:10px;font-size:0.9rem;line-height:1.7;color:#ddd;">The concept of an 'awakened life' transcends mere alertness, constituting a sustained, critical engagement with one's own existence. It involves a deliberate rupture from the autopilot of habit and social scripting, demanding constant interrogation of the values and assumptions that guide action. This state is not a permanent achievement but a dynamic process of becoming, characterized by heightened sensitivity to experience and a reclaimed sense of authentic agency. The awakened individual navigates the world with intentionality, recognizing the profound responsibility inherent in authoring one's own narrative.</div><div class="game-q">What is the main idea of the passage?</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">Living an awakened life is an ongoing process of critical self-examination and intentional action, not a fixed state.</button><button class="game-opt" onclick="fbCheck(this,false)">Social habits are detrimental and must be completely eliminated to achieve a state of true happiness and awareness.</button><button class="game-opt" onclick="fbCheck(this,false)">Awakened individuals possess a special talent for introspection that ordinary people lack and cannot develop.</button><button class="game-opt" onclick="fbCheck(this,false)">The primary goal of philosophy is to provide a fixed set of rules for achieving a permanently awakened state of mind.</button></div><div class="game-fb"></div></div><div class="game-block"><div class="game-title">📋 Q2. 빈칸 추론</div><div style="background:rgba(255,255,255,0.06);padding:12px;border-radius:8px;margin-bottom:10px;font-size:0.9rem;line-height:1.7;color:#ddd;">Authentic self-awareness often arises from a conscious disengagement from the noise of everyday life. In these quiet intervals, the incessant chatter of external demands fades, allowing for a clearer perception of one's inner voice and core desires. This practice of deliberate _______ creates the necessary space for reflection, where one can evaluate whether their actions align with their professed values or are merely reactions to circumstance.</div><div class="game-q">Which word best fills the blank?</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">introspection</button><button class="game-opt" onclick="fbCheck(this,false)">distraction</button><button class="game-opt" onclick="fbCheck(this,false)">acceleration</button><button class="game-opt" onclick="fbCheck(this,false)">conformity</button></div><div class="game-fb"></div></div><div class="game-block"><div class="game-title">📋 Q3. 문장 배열 (Sentence Order)</div><div class="game-q">Arrange the sentences in logical order.</div><div class="game-q" style="margin:4px 0;">A. This cultivated awareness allows one to act with greater intention rather than react out of habit.</div><div class="game-q" style="margin:4px 0;">B. Over time, this practice can illuminate the often-invisible patterns that dictate behavior.</div><div class="game-q" style="margin:4px 0;">C. By consistently observing these internal processes without immediate judgment, a space for choice opens up.</div><div class="game-q" style="margin:4px 0;">D. The journey toward a conscious life begins with the simple, yet difficult, act of paying close attention to one's own thoughts and feelings.</div><div style="margin-top:8px;"><input class="game-input" id="csat-ord" placeholder="정답 순서 (예: ABCD)" style="max-width:200px;" /><button class="game-opt" onclick="var v=document.getElementById('csat-ord').value.trim().toUpperCase();var fb=document.getElementById('csat-ord-fb');if(v==='DCBA'){fb.textContent='✅ 정답!';fb.className='game-fb correct';}else{fb.textContent='❌ 정답: DCBA';fb.className='game-fb wrong';}">확인</button></div><div class="game-fb" id="csat-ord-fb"></div></div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">6</span><h2>에세이 쓰기 <span class="sh-en">ESSAY WRITING</span></h2></div>
+    <div class="et-wrap">
+  <div class="et-header">
+    <div class="et-icon">✍️</div>
+    <div><div class="et-title">에세이 잘 쓰는 5가지 요령</div><div class="et-sub">Good Essay Writing Tips</div></div>
+  </div>
+  <div class="tip-list">
+    <div class="tip-card tc-1"><div class="tip-num tn-1">1</div><div class="tip-body">
+      <div class="tip-name">명확한 주제문 (Topic Sentence)</div>
+      <div class="tip-desc">첫 문장에 내 주장을 한 번에! 모호하면 읽는 사람이 혼란스러워요.</div>
+      <div class="tip-ex"><span class="ex-bad">❌ "Beauty is important."</span> <span class="ex-good">✅ "Beauty without morality leads to corruption."</span></div>
+    </div></div>
+    <div class="tip-card tc-2"><div class="tip-num tn-2">2</div><div class="tip-body">
+      <div class="tip-name">구체적 근거 + 예시</div>
+      <div class="tip-desc">"Because" 다음엔 반드시 구체적인 예시가 따라와야 해요.</div>
+      <div class="tip-ex"><span class="ex-bad">❌ "Because it is bad."</span> <span class="ex-good">✅ "For example, the story shows how..."</span></div>
+    </div></div>
+    <div class="tip-card tc-3"><div class="tip-num tn-3">3</div><div class="tip-body">
+      <div class="tip-name">반대 의견 인정하기</div>
+      <div class="tip-desc">반대 의견을 먼저 인정하면 내 주장이 더 설득력 있어 보여요.</div>
+      <div class="tip-ex"><span class="ex-good">✅ "Although some argue that..., I believe..."</span></div>
+    </div></div>
+    <div class="tip-card tc-4"><div class="tip-num tn-4">4</div><div class="tip-body">
+      <div class="tip-name">연결어 (Transition Words)</div>
+      <div class="tip-desc">단락과 단락을 자연스럽게 이어주는 다리 역할을 해요.</div>
+      <div class="tip-ex"><span class="ex-good">First · Furthermore · However · Therefore · In conclusion</span></div>
+    </div></div>
+    <div class="tip-card tc-5"><div class="tip-num tn-5">5</div><div class="tip-body">
+      <div class="tip-name">강한 마무리 (Concluding Sentence)</div>
+      <div class="tip-desc">마지막 문장이 가장 오래 기억돼요. 핵심 메시지를 새로운 표현으로!</div>
+      <div class="tip-ex"><span class="ex-good">✅ "Therefore, it is clear that..." / "This is why..."</span></div>
+    </div></div>
+  </div>
+  <div class="phrase-grid">
+    <div class="phrase-card"><div class="phrase-role">서론</div><div class="phrase-item">In my opinion...<br>I strongly believe...<br>It is clear that...</div></div>
+    <div class="phrase-card"><div class="phrase-role">본론</div><div class="phrase-item">For instance...<br>This shows that...<br>Furthermore...</div></div>
+    <div class="phrase-card"><div class="phrase-role">결론</div><div class="phrase-item">In conclusion...<br>Therefore...<br>This is why...</div></div>
+  </div>
+</div>
+    <div id="esTopic" style="display:block;background:var(--gd);color:white;border-radius:12px;padding:16px;margin-bottom:14px;text-align:center;box-sizing:border-box;">
+      <div style="font-size:15px;font-weight:bold;">✍️ The moments when I feel most genuinely and completely alive</div>
+      <div style="font-size:12px;color:#cce;margin-top:4px;">내가 가장 진정성 있고 완전하게 살아있다고 느끼는 순간들</div>
+      <div style="font-size:11px;color:#9bf;margin-top:6px;">📐 4단락 구조: 서론 → 본론1 → 본론2 → 결론</div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">① 서론 (Introduction)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">서론: '진정으로 살아있다는 느낌'을 정의하세요. 이 느낌이 단순한 즐거움이나 흥분을 넘어서는, 존재의 밀도와 깊이와 관련된 것임을 제시하세요. 개인적으로 이 주제가 중요한 이유를 언급하며 독자의 관심을 끌도록 하세요.</p>
+      <textarea id="es1" rows="4" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="Hook + Thesis Statement..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">② 본론 1 (Body 1)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">본론 1: 구체적인 경험 하나를 선정해 상세히 묘사하세요. (예: 자연 속에서의 순간, 깊은 대화, 창작 활동, 도전 극복). 그 순간의 감각적 세부사항(보고, 듣고, 느낀 것)과 그때 느꼈던 '살아있음'의 정확한 질감(예: 선명한 의식, 시간의 확장, 목적 의식, 연결감)을 설명하세요.</p>
+      <textarea id="es2" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="First argument + evidence..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">③ 본론 2 (Body 2)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">본론 2: 첫 번째 예와 대비되는 또 다른 유형의 '살아있음'의 순간을 분석하세요. (예: 고독한 성찰의 순간, 타인을 위한 헌신의 순간, 평범한 일상에서의 갑작스런 깨달음). 이 두 경험이 공통적으로 드러내는 '진정하게 살아있음'의 본질적 조건은 무엇인지 논의하세요. (예: 자아 의식의 높은 농도, 내적-외적 세계의 조화, 수동성이 아닌 주체성의 발현).</p>
+      <textarea id="es3" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="Second argument or concession..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">④ 결론 (Conclusion)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">결론: 위의 분석을 바탕으로, '가장 살아있는 순간'들이 단순히 소극적으로 경험되는 것이 아니라 적극적으로 창조되고 초대될 수 있는 삶의 태도와 어떤 관련이 있는지 종합하세요. 이러한 순간들이 당신의 인생을 어떻게 더 풍요롭고 의미 있게 만드는지, 그리고 앞으로 어떻게 이러한 순간들을 더 자주 맞이할 수 있을지에 대한 통찰로 글을 마무리하세요.</p>
+      <textarea id="es4" rows="4" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="In conclusion, ..."></textarea>
+
+      <button onclick="submitFullEssay()" style="display:block;width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;">💬 ChatGPT에 4단락 에세이 피드백 받기</button>
+    </div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">7</span><h2>디베이트 <span class="sh-en">DEBATE</span></h2></div>
+    <div id="dbTopic" style="display:block;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;box-sizing:border-box;">
+      <div style="font-size:11px;font-weight:bold;letter-spacing:2px;margin-bottom:6px;opacity:0.9;">🗣️ TODAY'S MOTION</div>
+      <div style="font-size:15px;font-weight:bold;line-height:1.45;">What does it truly and practically mean to be fully awake to your own life?</div>
+      <div style="font-size:13px;margin-top:6px;opacity:0.92;">자신의 삶에 대해 완전히 깨어있다는 것이 진정으로, 그리고 실질적으로 무엇을 의미하는가?</div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;margin-bottom:16px;">
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <div style="flex:1 1 260px;min-width:240px;">
+          <div style="display:block;background:#d4f4dd;color:#156b2c;font-weight:bold;padding:8px 12px;border-radius:8px;text-align:center;margin-bottom:10px;">PRO (찬성)</div>
+          <div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 이는 매순간 의식적인 선택을 하고, 자동적 반응이 아닌 자신의 가치관에 기반해 행동하는 것을 의미한다.</div><div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 이는 자신의 감정, 동기, 편견을 있는 그대로 인식하고 수용하며, 자기 기만에서 벗어나는 것을 의미한다.</div><div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 이는 삶을 단순히 '살아가는' 것이 아니라 적극적으로 '경험하고 성찰하며 창조하는' 주체가 되는 것을 의미한다.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:240px;">
+          <div style="display:block;background:#fbd5d5;color:#8a1a1a;font-weight:bold;padding:8px 12px;border-radius:8px;text-align:center;margin-bottom:10px;">CON (반대)</div>
+          <div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 완전한 깨어남은 인간 심리의 제한으로 인해 달성할 수 없는 이상적인 상태일 뿐이다.</div><div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 지나친 자기 성찰과 '깨어있음'의 추구는 역설적으로 삶의 자연스러운 흐름과 즉흥성을 해치고 불안을 초래할 수 있다.</div><div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 실용적인 관점에서, 모든 결정을 완전히 '깨어서' 하는 것은 효율성을 현저히 떨어뜨리며 현대 사회의 빠른 속도를 따라가지 못하게 할 수 있다.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;margin-bottom:16px;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">📝 My Opening Statement</label>
+      <p style="font-size:12px;color:#666;margin:0 0 8px;line-height:1.5;">Opening Statement 가이드: 토론 주제를 명확히 정의하고, 당신의 입장(찬성/반대)을 분명히 밝히세요. 당신의 입장을 지지하는 핵심 논거 2-3가지를 간결하게 제시하세요. '깨어있음'에 대한 실용적이고 구체적인 정의를 제공하며, 이 정의가 왜 타당한지 설명하세요.</p>
+      <textarea id="openStmt" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="I strongly believe that ..."></textarea>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">🔄 My Rebuttal</label>
+      <p style="font-size:12px;color:#666;margin:0 0 8px;line-height:1.5;">Rebuttal 가이드: 상대방의 주장을 정확히 요약한 후, 그 주장의 논리적 허점, 가정의 문제점, 또는 실생활에서의 비현실성을 지적하세요. 단순히 반대만 하는 것이 아니라, 상대방 주장을 비판하면서 동시에 자신의 입장을 더욱 공고히 하는 반론을 구성하세요. 구체적인 사례나 유추를 들어 설명하세요.</p>
+      <textarea id="rebuttalStmt" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="While the opposition argues that..., this ignores the fact that..."></textarea>
+      <button onclick="sendDebateStatement()" style="display:block;width:100%;margin-top:14px;padding:14px;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;">🤖 ChatGPT와 토론 시작하기</button>
+    </div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">8</span><h2>ChatGPT 회화 연습 <span class="sh-en">AI PRACTICE</span></h2></div>
+    <div style="text-align:center;padding:20px 0;">
+      <p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">이번 주 핵심 표현으로 ChatGPT Camp B와 영어로 대화해보세요!</p>
+      <button class="btn-submit" onclick="launchChatGPTPractice()">🤖 ChatGPT와 50:50 회화 연습</button>
+    </div>
   </section>
 </div>
-<div class="wk-nav"><a href="week06.html" class="wk-btn">&larr; W06</a><span class="wk-current">W36</span><a href="week08.html" class="wk-btn">W08 &rarr;</a></div>
+<div class="wk-nav"><a href="week35.html" class="wk-btn">&larr; W35</a><span class="wk-current">W36</span><span class="wk-btn" style="visibility:hidden">&nbsp;</span></div>
 <!-- ===== CEC Robo Helper (Camp B) ===== -->
 <div class="gb">
   <div class="gb-hint" onclick="gbToggle()" id="gbHint"><span>Robo</span>한테 물어봐!</div>
@@ -430,9 +679,12 @@ var CHATGPT_URL='https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166';
 function speak(t){if(!t)return;var u=new SpeechSynthesisUtterance(t.replace(/\uD83D\uDD0A/g,'').trim());u.lang='en-US';u.rate=0.85;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}
 function showLevel(lv,btn){document.getElementById('b1Story').style.display=lv==='b1'?'block':'none';document.getElementById('c1Story').style.display=lv==='c1'?'block':'none';document.querySelectorAll('.ltab').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');}
 function copyAndOpen(msg){window.open(CHATGPT_URL,'_blank');try{navigator.clipboard.writeText(msg);}catch(e){}}
-function sendDebate(){var t=document.getElementById('debateInput').value;var m='\uc548\ub155\ud558\uc138\uc694! High School 1\uc774\uc5d0\uc694.\n\nOf Mice and Men W07\uc744 \uacf5\ubd80\ud588\uc5b4\uc694.\n\n\ud1a0\ub860 \uc8fc\uc81c: "The American Dream is an illusion that causes more suffering than hope."\n\n\ub0b4 \uc8fc\uc7a5:\n'+t+'\n\n\uc774 \uc8fc\uc7a5\uc5d0 \ubc18\ubc15\ud574\uc8fc\uc138\uc694!';copyAndOpen(m);}
-function submitEssay(){var e=[1,2,3,4].map(function(i){return document.getElementById('es'+i).value}).join('\n\n');var m='\uc548\ub155\ud558\uc138\uc694! High School 1\uc774\uc5d0\uc694.\n\n\uc5d0\uc138\uc774 \uc8fc\uc81c: "How does Steinbeck use George and Lennie\\u0027s friendship to critique the American Dream?"\n\n'+e+'\n\n\ud53c\ub4dc\ubc31 \ubd80\ud0c1\ub4dc\ub824\uc694!';copyAndOpen(m);}
-function launchChatGPTPractice(){var m='Of Mice and Men W07 (아메리칸 드림 — 조지와 레니) \uc8fc\uc81c\ub85c \uc601\uc5b4 \ud68c\ud654 \uc5f0\uc2b5\uc744 \ud558\uace0 \uc2f6\uc5b4\uc694!';copyAndOpen(m);}
+function sendDebate(){}
+function submitEssay(){}
+function launchChatGPTPractice(){
+  var m='\uc18c\ub85c\uc758 \'\uae68\uc5b4\uc788\ub294 \uc0b6\'\uc774\ub77c\ub294 \uac1c\ub150\uc740 19\uc138\uae30 \uc790\uc5f0 \uc18d \uc740\ub454 \uc0dd\ud65c\uc744 \ub118\uc5b4, \uc624\ub298\ub0a0 \uc6b0\ub9ac\uc758 \ub514\uc9c0\ud138 \uc77c\uc0c1\uc5d0 \uc5b4\ub5a4 \uc758\ubbf8\ub85c \ub2e4\uac00\uc624\ub098\uc694? \uc5ec\ub7ec\ubd84\uc740 \uc2a4\uc2a4\ub85c\uc758 \uc0b6\uc5d0 \'\uae68\uc5b4\uc788\ub2e4\'\uace0 \ub290\ub07c\ub294 \uae30\uc900\uc774 \ubb34\uc5c7\uc774\ub77c\uace0 \uc0dd\uac01\ud558\uc2dc\ub098\uc694? \uc77c\uc0c1 \uc18d\uc5d0\uc11c \'\uae68\uc5b4\uc788\uc74c\'\uc744 \uc2e4\ucc9c\ud558\ub294 \uad6c\uccb4\uc801\uc778 \ubc29\ubc95\uc5d0\ub294 \uc5b4\ub5a4 \uac83\ub4e4\uc774 \uc788\uc744\uc9c0 \ud568\uaed8 \uc774\uc57c\uae30 \ub098\ub220\ubcf4\uc544\uc694.';
+  copyAndOpen(m);
+}
 /* ===== CEC Robo Helper (Camp B) ===== */
 (function(){
   if(window.__gbRoboInit)return;window.__gbRoboInit=true;
@@ -540,5 +792,262 @@ function launchChatGPTPractice(){var m='Of Mice and Men W07 (아메리칸 드림
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',gbInit);}else{gbInit();}
 })();
 </script>
+<script id="m1-extra-js">
+// Reading toggle — single Play/Pause button
+function togglePlay(btn){
+  var icon=btn.querySelector('.play-icon');
+  var label=btn.querySelector('.play-label');
+  if(btn.classList.contains('playing')){
+    window.speechSynthesis.pause();
+    btn.classList.remove('playing');
+    icon.textContent='▶';
+    label.textContent='재생';
+  } else {
+    if(window.speechSynthesis.paused){
+      window.speechSynthesis.resume();
+    } else {
+      var txt=btn.dataset.text||'';
+      if(!txt){var storyDiv=btn.closest('.story-box')||btn.parentElement;var textEl=storyDiv.querySelector('[id$="Text"]');txt=textEl?textEl.textContent:'';}
+      window.speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(txt);
+      u.lang='en-US';u.rate=0.85;
+      u.onend=function(){btn.classList.remove('playing');icon.textContent='▶';label.textContent='재생';};
+      u.onerror=u.onend;
+      window.speechSynthesis.speak(u);
+    }
+    btn.classList.add('playing');
+    icon.textContent='⏸';
+    label.textContent='일시정지';
+  }
+}
+
+// Play/Pause TTS state (legacy toggle — kept for any remaining pages)
+var m1TtsActive = null;
+function m1PlayPause(btnId, textElId){
+  var btn = document.getElementById(btnId);
+  var txt = document.getElementById(textElId).textContent;
+  if(m1TtsActive === btnId){
+    window.speechSynthesis.cancel();
+    m1TtsActive = null;
+    btn.classList.remove('playing');
+    btn.innerHTML = '▶ 전체 듣기';
+    return;
+  }
+  if(m1TtsActive){
+    window.speechSynthesis.cancel();
+    var prev = document.getElementById(m1TtsActive);
+    if(prev){ prev.classList.remove('playing'); prev.innerHTML='▶ 전체 듣기'; }
+  }
+  var u = new SpeechSynthesisUtterance(txt);
+  u.lang='en-US'; u.rate=0.9;
+  u.onend = function(){ btn.classList.remove('playing'); btn.innerHTML='▶ 전체 듣기'; m1TtsActive=null; };
+  u.onerror = u.onend;
+  window.speechSynthesis.speak(u);
+  m1TtsActive = btnId;
+  btn.classList.add('playing');
+  btn.innerHTML = '⏸ 일시정지';
+}
+
+// Fill-in-blank
+function fbCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅ 정답!'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌ 다시 해볼까요?'; fb.className='game-fb wrong'; }
+}
+
+// Dictation simple
+function dsCheck(inpId, answer){
+  var el = document.getElementById(inpId);
+  var fb = document.getElementById(inpId+'-fb');
+  if(el.value.trim().toLowerCase() === answer.toLowerCase()){
+    fb.textContent='✅ 정답! ('+answer+')'; fb.className='game-fb correct';
+  } else {
+    fb.textContent='❌ 정답: '+answer; fb.className='game-fb wrong';
+  }
+}
+
+// Listen-choose: speak then reveal
+function lcPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.85;
+  window.speechSynthesis.speak(u);
+}
+function lcCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅ 잘 들으셨어요!'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌ 다시 들어볼까요?'; fb.className='game-fb wrong'; }
+}
+
+// Word order
+var woState = {};
+function woInit(idx, words){
+  woState[idx] = { correct: words.slice(), arranged: [] };
+}
+function woAdd(idx, chipEl, word){
+  if(chipEl.classList.contains('used')) return;
+  chipEl.classList.add('used');
+  woState[idx].arranged.push(word);
+  var zone = document.getElementById('wo'+idx+'-zone');
+  var span = document.createElement('span');
+  span.className = 'wo-chip'; span.textContent = word; span.dataset.word = word;
+  span.onclick = function(){
+    // remove on click from zone
+    var i = woState[idx].arranged.indexOf(word);
+    if(i>=0) woState[idx].arranged.splice(i,1);
+    span.remove();
+    // re-enable bank chip
+    var bankChips = document.querySelectorAll('#wo'+idx+'-bank .wo-chip');
+    bankChips.forEach(function(b){ if(b.dataset.word===word) b.classList.remove('used'); });
+  };
+  zone.appendChild(span);
+}
+function woCheck(idx){
+  var fb = document.getElementById('wo'+idx+'-fb');
+  var ok = JSON.stringify(woState[idx].arranged) === JSON.stringify(woState[idx].correct);
+  if(ok){ fb.textContent='✅ 정답! '+woState[idx].correct.join(' '); fb.className='game-fb correct'; }
+  else { fb.textContent='❌ 순서를 다시 확인해보세요.'; fb.className='game-fb wrong'; }
+}
+
+// Matching
+var mmSel = null;
+function mmClick(btn, pairKey){
+  if(btn.classList.contains('matched')) return;
+  if(!mmSel){ mmSel = btn; btn.classList.add('sel'); return; }
+  if(mmSel === btn){ mmSel.classList.remove('sel'); mmSel=null; return; }
+  if(mmSel.dataset.pair === pairKey && mmSel !== btn){
+    mmSel.classList.remove('sel'); mmSel.classList.add('matched');
+    btn.classList.add('matched'); mmSel=null;
+  } else {
+    var tmp = mmSel; mmSel.classList.remove('sel'); mmSel=null;
+    btn.classList.add('wrong');
+    setTimeout(function(){ btn.classList.remove('wrong'); }, 500);
+  }
+}
+
+// Dictation challenge
+function dcPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.9;
+  window.speechSynthesis.speak(u);
+}
+function dcCheck(lvl, answer){
+  var inp = document.getElementById('dc-'+lvl);
+  var fb = document.getElementById('dc-'+lvl+'-fb');
+  var g = inp.value.trim().toLowerCase().replace(/[.,!?]/g,'');
+  var a = answer.toLowerCase().replace(/[.,!?]/g,'');
+  if(g === a){ fb.textContent='✅ 완벽!'; fb.className='game-fb correct'; }
+  else { fb.innerHTML='❌ 정답: '+answer; fb.className='game-fb wrong'; }
+}
+
+// Comprehension tabs
+function compTab(tab, lvl){
+  var root = tab.closest('.comp-section');
+  root.querySelectorAll('.comp-tab').forEach(function(t){ t.classList.remove('active'); });
+  root.querySelectorAll('.comp-panel').forEach(function(p){ p.classList.remove('active'); });
+  tab.classList.add('active');
+  root.querySelector('.comp-panel-'+lvl).classList.add('active');
+}
+function compCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌'; fb.className='game-fb wrong'; }
+}
+
+// My thoughts — ChatGPT send
+function sendMyThought(){
+  var t = document.getElementById('myThoughtInput').value.trim();
+  if(!t){ alert('한 문장 써주세요!'); return; }
+  copyAndOpen('안녕하세요! 오늘 읽은 이야기에 대한 제 생각이에요:\n\n'+t+'\n\n이 의견에 대해 간단히 코멘트 부탁드려요!');
+}
+
+// Essay basics — structure question
+function askEssayStructure(){
+  copyAndOpen('안녕하세요! 저는 Middle School 1 학생이에요.\n\n에세이 구조(주제문-근거-마무리)에 대해 질문이 있어요. 중학생이 쉽게 이해할 수 있게 설명해주세요!');
+}
+
+// m2: paragraph writing — send 3 sentences to ChatGPT
+function submitParagraph(){
+  var t1 = document.getElementById('pw1').value.trim();
+  var t2 = document.getElementById('pw2').value.trim();
+  var t3 = document.getElementById('pw3').value.trim();
+  if(!t1 || !t2 || !t3){ alert('세 문장 모두 써주세요! (주제문/근거/마무리)'); return; }
+  var topic = document.getElementById('pwTopic') ? document.getElementById('pwTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 2 학생이에요.\n\n에세이 단락쓰기 주제: ' + topic + '\n\n'
+          + '① 주제문: ' + t1 + '\n'
+          + '② 근거/예시: ' + t2 + '\n'
+          + '③ 마무리: ' + t3 + '\n\n'
+          + '제 단락을 중학생 수준에서 피드백해주세요! 문법, 자연스러움, 논리 구조 모두 봐주세요.';
+  copyAndOpen(msg);
+}
+
+// m2: opinion — send 1 paragraph to ChatGPT
+function sendOpinion(){
+  var el = document.getElementById('opn1') || document.getElementById('opinionInput');
+  var t = el ? el.value.trim() : '';
+  if(!t){ alert('내 생각을 한 단락으로 써주세요!'); return; }
+  var topic = document.getElementById('opTopic') ? document.getElementById('opTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 2 학생이에요.\n\n의견 표현 주제: ' + topic + '\n\n내 생각:\n' + t + '\n\n중학생 수준에서 자연스럽게 고쳐주시고 간단한 코멘트 부탁드려요!';
+  copyAndOpen(msg);
+}
+
+// m2: grammar example — read aloud on click
+function grammarSpeak(el){
+  var txt = el.querySelector('.ge-en');
+  if(txt) speak(txt.textContent);
+}
+
+// 5-B Grammar Practice — dictation with hint reveal
+function gpDictHint(idx){
+  var el = document.getElementById('gp-dict-hint-'+idx);
+  if(el) el.style.visibility = 'visible';
+}
+function gpDictPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.8;
+  window.speechSynthesis.speak(u);
+}
+function gpDictCheck(idx, answer){
+  var el = document.getElementById('gp-dict-'+idx);
+  var fb = document.getElementById('gp-dict-fb-'+idx);
+  if(el.value.trim().toLowerCase() === answer.toLowerCase()){
+    fb.textContent='✅ 정답! ('+answer+')'; fb.className='game-fb correct';
+  } else {
+    fb.textContent='❌ 정답: '+answer; fb.className='game-fb wrong';
+  }
+}
+
+// m3: 3-paragraph essay (intro/body/conclusion)
+function submitFullEssay(){
+  var p1 = document.getElementById('es1').value.trim();
+  var p2 = document.getElementById('es2').value.trim();
+  var p3 = document.getElementById('es3').value.trim();
+  if(!p1 || !p2 || !p3){ alert('서론/본론/결론 세 단락 모두 써주세요!'); return; }
+  var topic = document.getElementById('esTopic') ? document.getElementById('esTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 3 학생이에요.\n\n에세이 주제: ' + topic + '\n\n'
+          + '① 서론 (Introduction):\n' + p1 + '\n\n'
+          + '② 본론 (Body):\n' + p2 + '\n\n'
+          + '③ 결론 (Conclusion):\n' + p3 + '\n\n'
+          + '제 3단락 에세이를 중학생 수준에서 피드백해주세요! 서론-본론-결론 구조, 논리, 문법 모두 봐주세요.';
+  copyAndOpen(msg);
+}
+
+// m3: debate — send opening statement for rebuttal
+function sendDebateStatement(){
+  var t = document.getElementById('openStmt').value.trim();
+  if(!t){ alert('Opening Statement를 써주세요!'); return; }
+  var topic = document.getElementById('dbTopic') ? document.getElementById('dbTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 3 학생이에요.\n\n토론 주제: ' + topic + '\n\n'
+          + '제 Opening Statement:\n' + t + '\n\n'
+          + '이 주장에 대해 반박(counterargument)을 해주시고, 영어 토론 방식으로 저와 대화해주세요!';
+  copyAndOpen(msg);
+}
+</script>
+<div class="pd-notice">📚 이 교재는 저작권이 만료된 공개 도메인(Public Domain) 작품을 기반으로 제작되었습니다. 원문을 직접 인용하지 않고 AI가 교육 목적에 맞게 완전히 새로 작성한 창작 학습 자료입니다.<br><span class="pd-en">This material is based on Public Domain works. All content has been newly written by AI for educational purposes. No original text was quoted.</span></div>
 </body>
 </html>

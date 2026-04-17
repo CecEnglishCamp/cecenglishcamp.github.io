@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Catcher in the Rye W26 | Camp B High School 1</title>
+  <title>All Quiet on the Western Front W26 | Camp B High School 1</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
 :root{
@@ -336,69 +336,315 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
   .gb-btn:hover{background:#e0f0d0;}
   </style>
   <!-- ===== /CEC Robo Helper styles ===== -->
+<style id="grade-theme">:root{--gp:#E65100;--gl:#FFF3E0;--gd:#BF360C;}</style>
+<style id="m1-extra-css">
+.pd-notice{font-size:11px;color:#999;text-align:center;padding:12px 20px;margin-top:30px;margin-bottom:80px;border-top:1px solid rgba(255,255,255,0.08);line-height:1.6;}
+.pd-en{font-size:10px;color:#bbb;}
+/* override Robo + panel positions to clear sticky wk-nav */
+.gb{bottom:80px !important;}
+.gb-panel{bottom:148px !important;}
+.play-pause-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:rgba(0,242,255,0.1);border:1px solid #00f2ff;color:#00f2ff;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;}
+.play-pause-btn.playing{background:#00f2ff;color:#000;}
+/* Play toggle — single button */
+.play-toggle{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:#1F4E79;border:none;border-radius:20px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:inherit;margin-top:10px;}
+.play-toggle:hover{background:#2E75B6;}
+.play-toggle.playing{background:#2E75B6;color:#fff;}
+.play-icon{font-size:14px;}
+.game-block{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px;margin-top:12px;}
+.game-title{font-size:0.85rem;color:#c9a84c;font-weight:700;margin-bottom:10px;letter-spacing:1px;}
+.game-q{font-size:0.92rem;color:#eee;margin:10px 0 8px;line-height:1.6;}
+.game-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.game-opt{padding:7px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ddd;border-radius:18px;font-size:0.85rem;cursor:pointer;}
+.game-opt:hover{background:rgba(0,242,255,0.12);border-color:#00f2ff;}
+.game-opt.correct{background:rgba(40,200,120,0.25);border-color:#28c878;color:#6be0a0;}
+.game-opt.wrong{background:rgba(220,80,80,0.2);border-color:#dc5050;color:#ffb0b0;}
+.game-fb{font-size:0.82rem;color:rgba(255,255,255,0.55);margin-top:6px;min-height:18px;}
+.game-fb.correct{color:#6be0a0;}
+.game-fb.wrong{color:#ffb0b0;}
+.game-input{width:100%;max-width:300px;padding:7px 12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.18);color:#fff;border-radius:6px;font-size:0.9rem;margin-right:6px;}
+.game-hint{font-size:0.78rem;color:#c9a84c;font-style:italic;margin-left:8px;}
+.wo-bank,.wo-zone{display:flex;flex-wrap:wrap;gap:6px;padding:10px;border:1px dashed rgba(255,255,255,0.2);border-radius:8px;min-height:44px;margin:6px 0;}
+.wo-zone{border-style:solid;background:rgba(0,242,255,0.04);}
+.wo-chip{padding:6px 12px;background:rgba(0,242,255,0.15);color:#00f2ff;border-radius:14px;font-size:0.85rem;cursor:pointer;user-select:none;}
+.wo-chip.used{opacity:0.35;cursor:default;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+.match-btn{padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#ddd;border-radius:6px;font-size:0.88rem;cursor:pointer;text-align:left;}
+.match-btn.sel{border-color:#c9a84c;background:rgba(201,168,76,0.15);}
+.match-btn.matched{border-color:#28c878;background:rgba(40,200,120,0.2);color:#6be0a0;pointer-events:none;}
+.comp-tabs{display:flex;gap:6px;margin-bottom:10px;}
+.comp-tab{padding:6px 14px;border:1px solid rgba(255,255,255,0.15);border-radius:18px;background:transparent;color:#ccc;font-size:0.85rem;cursor:pointer;}
+.comp-tab.active{background:#00f2ff;color:#000;border-color:#00f2ff;}
+.comp-panel{display:none;}
+.comp-panel.active{display:block;}
+.essay-basics-box{background:rgba(0,242,255,0.04);border-left:3px solid #00f2ff;border-radius:6px;padding:14px 18px;margin-bottom:12px;}
+.essay-basics-label{font-size:0.78rem;color:#c9a84c;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.essay-basics-text{font-size:0.92rem;color:#ddd;line-height:1.7;}
+.essay-basics-text em{color:#00f2ff;font-style:italic;}
+.sample-essay-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:16px 20px;margin-top:14px;font-size:0.92rem;color:#ddd;line-height:1.8;}
+.sample-essay-title{font-size:0.82rem;color:#c9a84c;font-weight:700;margin-bottom:8px;}
+/* m2 additions */
+.grammar-box{background:rgba(201,168,76,0.06);border-left:3px solid #c9a84c;border-radius:6px;padding:14px 18px;margin-bottom:12px;}
+.grammar-label{font-size:0.78rem;color:#c9a84c;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.grammar-code{display:inline-block;background:#c9a84c;color:#000;font-weight:700;padding:2px 10px;border-radius:12px;font-size:0.78rem;margin-right:8px;}
+.grammar-title{font-size:1.05rem;color:#fff;font-weight:700;margin-bottom:8px;}
+.grammar-explain{font-size:0.92rem;color:#ddd;line-height:1.7;margin-bottom:10px;}
+.grammar-example{background:rgba(0,0,0,0.25);border-radius:6px;padding:8px 12px;margin-top:6px;font-size:0.9rem;color:#ddd;line-height:1.6;cursor:pointer;}
+.grammar-example:hover{background:rgba(0,242,255,0.08);}
+.grammar-example .ge-ko{color:rgba(255,255,255,0.55);font-size:0.82rem;margin-top:3px;}
+.pw-wrap{margin-top:12px;}
+.pw-label{font-size:0.82rem;color:#00f2ff;font-weight:700;margin:10px 0 6px;}
+.pw-hint{font-size:0.78rem;color:rgba(255,255,255,0.55);margin-bottom:6px;line-height:1.5;}
+.pw-input{width:100%;min-height:54px;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:6px;font-size:0.92rem;font-family:inherit;resize:vertical;}
+.opinion-box{background:rgba(0,242,255,0.05);border:1px solid rgba(0,242,255,0.25);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+/* m3 additions — debate */
+.debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.debate-col{display:flex;flex-direction:column;gap:8px;}
+.debate-col-title{font-weight:700;font-size:0.88rem;padding:6px 10px;border-radius:6px;text-align:center;letter-spacing:1px;}
+.debate-col-title.pro{background:rgba(40,200,120,0.15);color:#6be0a0;border:1px solid rgba(40,200,120,0.35);}
+.debate-col-title.con{background:rgba(220,80,80,0.15);color:#ffb0b0;border:1px solid rgba(220,80,80,0.35);}
+.debate-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:9px 12px;font-size:0.86rem;color:#ddd;line-height:1.55;}
+.debate-card.pro{border-left:3px solid #28c878;}
+.debate-card.con{border-left:3px solid #dc5050;}
+@media(max-width:560px){.debate-grid{grid-template-columns:1fr;}}
+.debate-topic-box{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+/* Day 1/2/3 block — dot + border-left + word count */
+.day-block{margin:16px 0;background:#f3f0ff;border-radius:12px;padding:16px;}
+.day-row{margin-bottom:12px;}
+.day-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.day-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.dot-1{background:#B4B2A9;}.dot-2{background:#4A9E75;}.dot-3{background:var(--gp);}
+.day-tag{font-size:11px;font-weight:600;letter-spacing:0.06em;color:#888;text-transform:uppercase;}
+.day-wc{font-size:10px;color:var(--gp);margin-left:auto;background:var(--gl);padding:2px 8px;border-radius:10px;}
+.day-sent{font-size:15px;line-height:1.65;padding:10px 14px;border-left:3px solid;border-radius:0 10px 10px 0;}
+.sent-1{border-color:#B4B2A9;background:#f3f0ff;color:#222;}
+.sent-2{border-color:#8478e0;background:#ede8ff;color:#222;}
+.sent-3{border-color:var(--gp);background:var(--gl);color:#111;font-weight:600;}
+.sent-kr{font-size:13px;color:#444;padding:6px 14px 0;font-style:italic;}
+.day-tts{display:flex;align-items:center;gap:8px;margin-top:8px;padding-left:14px;}
+/* Reading tab buttons — larger, stronger active */
+.level-tabs{display:flex;gap:8px;margin-bottom:12px;}
+.ltab{flex:1;padding:11px 16px !important;font-size:14px !important;font-weight:700 !important;border-radius:10px !important;border:2px solid rgba(255,255,255,0.15) !important;background:rgba(255,255,255,0.04) !important;color:#ccc !important;cursor:pointer;transition:all 0.15s;}
+.ltab:hover{background:rgba(255,255,255,0.08) !important;}
+.ltab.active{background:linear-gradient(135deg,var(--gp),var(--gd)) !important;color:#fff !important;border-color:var(--gp) !important;box-shadow:0 0 12px rgba(0,0,0,0.25) !important;transform:translateY(-1px);}
+/* Essay tips — colored cards */
+.et-wrap{margin-bottom:20px;}
+.et-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.et-icon{width:32px;height:32px;border-radius:8px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.et-title{font-size:15px;font-weight:600;color:#1a3a5c;}
+.et-sub{font-size:11px;color:#888;margin-top:1px;}
+.tip-list{display:flex;flex-direction:column;gap:8px;}
+.tip-card{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:10px;border:1px solid;}
+.tc-1{background:#f3f0ff;border-color:#9b8fe8;}.tc-2{background:#ede8ff;border-color:#8478e0;}.tc-3{background:#e6e0ff;border-color:#7264d8;}.tc-4{background:#ddd6ff;border-color:#6454cf;}.tc-5{background:#d4ccff;border-color:#5344c6;}
+.tip-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px;}
+.tn-1{background:#9b8fe8;color:#fff;}.tn-2{background:#8478e0;color:#fff;}.tn-3{background:#7264d8;color:#fff;}.tn-4{background:#6454cf;color:#fff;}.tn-5{background:#5344c6;color:#fff;}
+.tip-body{flex:1;}
+.tip-name{font-size:13px;font-weight:600;color:#222;margin-bottom:3px;}
+.tip-desc{font-size:12px;color:#555;line-height:1.5;}
+.tip-ex{margin-top:6px;font-size:12px;line-height:1.6;}
+.ex-bad{color:#5344c6;background:#ede8ff;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:3px;}
+.ex-good{color:#27500A;background:#EAF3DE;padding:2px 8px;border-radius:4px;display:inline-block;}
+.phrase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;}
+.phrase-card{background:#f3f0ff;border:1px solid #c4baff;border-radius:8px;padding:10px 12px;}
+.phrase-role{font-size:11px;font-weight:600;color:#6454cf;margin-bottom:5px;}
+.phrase-item{font-size:12px;color:#333;line-height:1.6;}
+@media(max-width:560px){.phrase-grid{grid-template-columns:1fr;}}
+/* Defensive section override — template has conflicting .sh{display:flex} */
+section.sh{display:block !important;flex-direction:unset !important;}
+section.sh > *{float:none !important;}
+/* m2 paragraph writing — workbook-style card (defensive against template CSS conflicts) */
+.paragraph-section{display:block !important;width:100% !important;float:none !important;position:static !important;padding:18px 18px 22px;background:#f8f9ff;border-radius:16px;margin:0 0 20px 0;color:#222;box-sizing:border-box;}
+.para-guide-card{display:block !important;width:100% !important;float:none !important;position:static !important;background:#f0f4ff;border-radius:12px;padding:16px;margin-bottom:16px;box-sizing:border-box;}
+.para-step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
+.para-step:last-child{margin-bottom:0;}
+.para-step b{color:var(--gd);font-size:14px;display:block;margin-bottom:2px;}
+.para-step p{font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;}
+.step-num{width:28px;height:28px;background:var(--gp);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:13px;}
+.example{background:#fff;border-left:3px solid var(--gp);padding:7px 10px;margin-top:6px;font-size:12px;color:#444;border-radius:0 6px 6px 0;line-height:1.5;}
+.para-inputs{display:block !important;width:100% !important;float:none !important;position:static !important;margin-top:8px;box-sizing:border-box;}
+.para-inputs label{display:block;font-weight:700;margin:10px 0 4px;color:var(--gd);font-size:13px;}
+.para-inputs textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:14px;resize:vertical;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;min-height:70px;}
+.para-inputs textarea:focus{border-color:var(--gp);outline:none;box-shadow:0 0 0 3px rgba(46,117,182,0.15);}
+.para-submit-wrap{text-align:center;margin-top:14px;}
+</style>
 </head>
 <body>
 <div class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">High School 1</span></div></div>
-<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">Of Mice and Men &middot; W07 / 08</div><h1 class="hero-title">Of Mice and Men</h1><p class="hero-sub">꿈의 무게 — John Steinbeck · B2~C1</p><div style="margin-top:12px;font-size:0.8rem;color:rgba(255,255,255,0.6);background:rgba(0,0,0,0.3);padding:8px 12px;border-radius:8px;display:inline-block;">🔊 <strong>음성 기능 사용법:</strong> 페이지 하단의 "음성 기능 활성화" 버튼을 먼저 클릭해주세요!</div></div></div>
+<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">All Quiet on the Western Front &middot; W26 / 30</div><h1 class="hero-title">All Quiet on the Western Front</h1><p class="hero-sub">전쟁의 현실 &mdash; Erich Maria Remarque &middot; B2~C1</p></div></div></div>
 <div class="content-wrap">
-  <section class="sh"><div class="sh-bar"><span class="sh-num">1</span><h2>&#54645;&#49900; &#54364;&#54788; <span class="sh-en">KEY EXPRESSION</span></h2></div>
-    <div class="key-expr-box"><div class="ke-en" onclick="speak(this.textContent)">Guys like us, that work on ranches, are the loneliest guys in the world. &#128266;</div><div class="ke-ko">목장에서 일하는 우리 같은 사람들은 세상에서 가장 외로운 사람들이야.</div></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">2</span><h2>&#51648;&#47928; &#51069;&#44592; <span class="sh-en">READING</span></h2></div>
-    <div class="level-tabs"><button class="ltab active" onclick="showLevel('b1',this)">B1 &#44592;&#48376;</button><button class="ltab" onclick="showLevel('c1',this)">C1 &#49900;&#54868;</button></div>
-    <div id="b1Story" class="story-box" style="display:block;">
-<p class="story-line" data-speak="Holden's little sister Phoebe is the one person who truly helps him">Holden's little sister Phoebe is the one person who truly helps him</p>
-<p class="story-line" data-speak="She listens">She listens</p>
-<p class="story-line" data-speak="She challenges him honestly">She challenges him honestly</p>
-<p class="story-line" data-speak="When Holden wants to run away, Phoebe insists on coming">When Holden wants to run away, Phoebe insists on coming</p>
-<p class="story-line" data-speak="This stops him">This stops him</p>
-<p class="story-line" data-speak="He watches her ride the carousel in the rain.">He watches her ride the carousel in the rain.</p>
-</div>
-    <div id="c1Story" class="story-box" style="display:none;">
-<p class="story-line" data-speak="Phoebe is the novel's moral center">Phoebe is the novel's moral center</p>
-<p class="story-line" data-speak="She is not idealized — she argues and demands">She is not idealized — she argues and demands</p>
-<p class="story-line" data-speak="But she genuinely loves Holden">But she genuinely loves Holden</p>
-<p class="story-line" data-speak="The carousel scene is the novel's emotional resolution.">The carousel scene is the novel's emotional resolution.</p>
-</div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">3</span><h2>&#54645;&#49900; &#50612;&#55064; <span class="sh-en">VOCABULARY</span></h2></div>
-    <div class="vocab-grid">
-<div class="vocab-card"><div class="vc-en" onclick="speak('idealized')">idealized 🔊</div><div class="vc-ko">이상화된</div><div class="vc-ex">"Phoebe is not idealized."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('penetrate')">penetrate 🔊</div><div class="vc-ko">꼻뚫다</div><div class="vc-ex">"Her honesty penetrates his defenses."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('resolution')">resolution 🔊</div><div class="vc-ko">해결</div><div class="vc-ex">"The carousel scene is the emotional resolution."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('inconsistency')">inconsistency 🔊</div><div class="vc-ko">불일치</div><div class="vc-ex">"She calls Holden on his inconsistencies."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('imperfect')">imperfect 🔊</div><div class="vc-ko">불완전한</div><div class="vc-ex">"He feels acceptance of the world's imperfect beauty."</div></div>
-</div><div class="vc-ko">이주하는</div><div class="vc-ex">"George and Lennie were migrant workers."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">companionship &#128266;</div><div class="vc-ko">동반자 관계</div><div class="vc-ex">"Their companionship was unusual for ranch workers."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">innocence &#128266;</div><div class="vc-ko">순수함</div><div class="vc-ex">"Lennie's innocence made him both lovable and dangerous."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">poignant &#128266;</div><div class="vc-ko">애절한</div><div class="vc-ex">"The ending was deeply poignant and tragic."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">loneliness &#128266;</div><div class="vc-ko">외로움</div><div class="vc-ex">"Loneliness was the defining condition of ranch life."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">inevitable &#128266;</div><div class="vc-ko">불가피한</div><div class="vc-ex">"Their tragedy seemed almost inevitable."</div></div>
-</div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">4</span><h2>&#47928;&#48277; &#54252;&#51064;&#53944; <span class="sh-en">GRAMMAR</span></h2></div>
-    <div class="gram-box"><div class="gram-label">Narrative Tenses (G32)</div><ul class="grammar-examples"><li><em>"They had been walking all day when they reached the river." — 과거완료진행</em></li><li><em>"While Lennie was drinking, George watched carefully." — 과거진행</em></li><li><em>"No sooner had they arrived than trouble began." — no sooner...than</em></li></ul></div>
-  <div style="text-align:center;margin-top:12px;"><a href="/grammar-camp/G32/G32_past_simple_vs_past_continuous.html?return=/camp-b/g1/week26.html" target="_blank" style="display:inline-block;padding:6px 14px;background:#00f2ff;color:#000;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;">📘 Grammar Base Camp →</a></div></section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">5</span><h2>&#53664;&#47200; &#51452;&#51228; <span class="sh-en">DEBATE</span></h2></div>
-    <div class="debate-q-box"><div class="debate-q">"Human connection, not professional treatment, is what ultimately saves Holden."</div><div class="debate-q-ko">궁극적으로 홈든을 구하는 것은 전문적 치료가 아니라 인간적 연결이다.</div></div>
-    <div class="debate-sides"><div class="debate-agree"><strong>&#9989; &#52268;&#49457;</strong><ul><li>George and Lennie's dream is destroyed by forces beyond their control</li><li>The Depression proves the Dream is inaccessible to the poor</li><li>Candy, Crooks, and Curley's wife all have crushed dreams</li></ul></div><div class="debate-disagree"><strong>&#10060; &#48152;&#45824;</strong><ul><li>The dream gives George and Lennie purpose</li><li>Without aspiration human life loses meaning</li><li>Some people do achieve the Dream through perseverance</li></ul></div></div>
-    <div style="margin-top:20px;"><p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-bottom:8px;">&#45236; &#51452;&#51109;&#51012; &#50689;&#50612;&#47196; &#50024;&#48372;&#49464;&#50836;:</p><textarea class="essay-input" id="debateInput" placeholder="I argue that... because..."></textarea><button class="btn-ai-debate" onclick="sendDebate()">&#9876;&#65039; ChatGPT&#50640;&#49436; AI&#50752; &#53664;&#47200;&#54616;&#44592;</button></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">6</span><h2>&#50640;&#49464;&#51060; &#50416;&#44592; <span class="sh-en">ESSAY</span></h2></div>
-    <div class="essay-topic-box"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:#00f2ff;margin-bottom:8px;">"How does Steinbeck use George and Lennie's friendship to critique the American Dream?"</div><div style="font-size:0.9rem;color:rgba(255,255,255,0.6);">Steinbeck는 조지와 레니의 우정을 통해 아메리칸 드림을 어떻게 비판하는가?</div></div>
-    <div style="margin-top:16px;">
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;">&#128221; Introduction</p><textarea class="essay-input" id="es1" placeholder="Introduce the topic..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Body 1</p><textarea class="essay-input" id="es2" placeholder="First argument..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Body 2</p><textarea class="essay-input" id="es3" placeholder="Second argument..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Conclusion</p><textarea class="essay-input" id="es4" placeholder="Summarize..."></textarea>
-      <button class="btn-submit" onclick="submitEssay()">&#9997;&#65039; ChatGPT&#50640;&#49436; &#50640;&#49464;&#51060; &#54588;&#46300;&#48177; &#48155;&#44592;</button>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">1</span><h2>핵심 표현 <span class="sh-en">KEY EXPRESSION</span></h2></div>
+    <div class="day-block">
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-1"></span><span class="day-tag">Day 1 · 기초</span></div>
+        <div class="day-sent sent-1">The real war was nothing like they had imagined.</div>
+      </div>
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-2"></span><span class="day-tag">Day 2 · 확장</span></div>
+        <div class="day-sent sent-2">The trenches destroyed every illusion they had brought with them.</div>
+      </div>
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-3"></span><span class="day-tag">Day 3 · 목표 ⭐ 오늘</span><span class="day-wc">31 words</span></div>
+        <div class="day-sent sent-3">The trenches destroyed every illusion they had carried from their classroom, replacing dreams of heroic combat with the constant terror of random death, mud, hunger, and the screaming of wounded men.</div>
+        <div class="sent-kr">🇰🇷 참호는 그들이 교실에서 가져온 모든 환상을 파괴했고, 영웅적인 전투에 대한 꿈을 무작위적인 죽음, 진흙, 굶주림, 그리고 부상당한 병사들의 비명으로 대체했습니다.</div>
+        <div class="day-tts">
+          <button class="play-toggle" onclick="togglePlay(this)" data-text="The trenches destroyed every illusion they had carried from their classroom, replacing dreams of heroic combat with the constant terror of random death, mud, hunger, and the screaming of wounded men."><span class="play-icon">▶</span><span class="play-label">듣기</span></button>
+        </div>
+      </div>
     </div>
   </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">7</span><h2>ChatGPT &#54924;&#54868; &#50672;&#49845; <span class="sh-en">AI PRACTICE</span></h2></div>
-    <div style="text-align:center;padding:20px 0;"><p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">ChatGPT Camp B&#50752; &#54632;&#44760; &#50689;&#50612;&#47196; &#45824;&#54868;&#54644;&#48372;&#49464;&#50836;!</p><button class="btn-submit" onclick="launchChatGPTPractice()">&#129302; ChatGPT&#50752; 50:50 &#54924;&#54868; &#50672;&#49845;</button></div>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">2</span><h2>지문 읽기 <span class="sh-en">READING</span></h2></div>
+    <div class="level-tabs">
+      <button class="ltab active" onclick="showLevel('b1',this)">🔵 기본 (B2)</button>
+      <button class="ltab" onclick="showLevel('c1',this)">🟣 심화 (C1)</button>
+    </div>
+    <div id="b1Story" class="story-box" style="display:block;">
+      <div id="b1Text"><p>The young recruits had been told stories of glorious charges and decisive victories, narratives that had filled their minds with romantic visions of warfare. They had imagined themselves as heroes returning to parades, their bravery celebrated by grateful nations. However, the reality they encountered was profoundly different, replacing their noble ideals with the grim mechanics of survival in a shattered landscape. The constant artillery barrage, which they had not anticipated, created a state of perpetual anxiety. They soon realized the stories had omitted the pervasive mud, the rats, and the decaying smell that hung in the air. Their previous understanding of conflict, formed before they had ever seen a trench, was utterly dismantled by the first week of actual service.</p></div>
+      <button class="play-toggle" onclick="togglePlay(this)"><span class="play-icon">▶</span><span class="play-label">재생</span></button>
+    </div>
+    <div id="c1Story" class="story-box" style="display:none;">
+      <div id="c1Text"><p>Prior to their deployment, the soldiers had been immersed in patriotic education that had glorified the notion of sacrifice for the fatherland. This idealized portrayal, which had been meticulously constructed by state propaganda, effectively replaced complex geopolitical realities with simplistic slogans of honor and duty. Upon reaching the front, however, the abstract concept of enemy territory was supplanted by the immediate, visceral horror of no man's land—a scarred expanse where any movement invited sniper fire. The profound disconnect between the sanitized version of events presented at home and the chaotic brutality they witnessed daily became a source of deep psychological trauma. Consequently, the men found that the language of heroism they had learned was entirely inadequate to describe the experience of watching a comrade succumb to a gas attack.</p></div>
+      <button class="play-toggle" onclick="togglePlay(this)"><span class="play-icon">▶</span><span class="play-label">재생</span></button>
+    </div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">3</span><h2>핵심 어휘 <span class="sh-en">VOCABULARY</span></h2></div>
+    <div class="vocab-grid"><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">visceral &#128266;</div><div class="vc-ko">본능적인, 내장의</div><div class="vc-ex">"The description of the battlefield evoked a visceral reaction of nausea and dread among the listeners."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">pervasive &#128266;</div><div class="vc-ko">퍼져 있는, 널리 퍼진</div><div class="vc-ex">"A pervasive sense of futility settled over the troops as the stalemate continued for months."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">dismantle &#128266;</div><div class="vc-ko">분해하다, 무너뜨리다</div><div class="vc-ex">"The firsthand experience of combat served to completely dismantle his previously held beliefs about glory."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">stalemate &#128266;</div><div class="vc-ko">교착 상태</div><div class="vc-ex">"The war had degenerated into a bloody stalemate, with neither side able to achieve a breakthrough."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">sanitized &#128266;</div><div class="vc-ko">순화된, 깨끗하게 처리된</div><div class="vc-ex">"The official reports provided a sanitized version of events that omitted the true cost in human suffering."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">inadequate &#128266;</div><div class="vc-ko">부적절한, 불충분한</div><div class="vc-ex">"Traditional military training proved utterly inadequate for preparing soldiers for the psychological toll of trench warfare."</div></div></div>
+
+    <div class="game-block"><div class="game-title">🎯 빈칸 채우기</div><div class="game-q">1. The propaganda posters had <strong>___</strong> a romantic image of war, which was quickly <strong>___</strong> by the grim reality of the front lines.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">depicted...shattered</button><button class="game-opt" onclick="fbCheck(this,false)">created...enhanced</button><button class="game-opt" onclick="fbCheck(this,false)">ignored...confirmed</button></div><div class="game-fb"></div><div class="game-q">2. By the time the reinforcements arrived, the original battalion <strong>___</strong> severe casualties from the relentless artillery fire.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">had sustained</button><button class="game-opt" onclick="fbCheck(this,false)">sustained</button><button class="game-opt" onclick="fbCheck(this,false)">was sustaining</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기</div><div class="game-q">1. <span class="game-hint">힌트: 환상</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds1" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds1','illusion')">확인</button></div><div class="game-fb" id="ds1-fb"></div><div class="game-q">2. <span class="game-hint">힌트: 참호</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds2" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds2','trench')">확인</button></div><div class="game-fb" id="ds2-fb"></div><div class="game-q">3. <span class="game-hint">힌트: 선전</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds3" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds3','propaganda')">확인</button></div><div class="game-fb" id="ds3-fb"></div></div>
+    <div class="game-block"><div class="game-title">👂 듣고 고르기</div><div class="game-q">1. <button class="game-opt" onclick="lcPlay('The experience of combat replaced their abstract notions of patriotism with a desperate will to survive.')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">The experience of combat replaced their abstract notions of patriotism with a desperate will to survive.</button><button class="game-opt" onclick="lcCheck(this,false)">The experience of combat enhanced their abstract notions of patriotism with a desperate will to survive.</button><button class="game-opt" onclick="lcCheck(this,false)">The experience of combat ignored their abstract notions of patriotism for a desperate will to survive.</button></div><div class="game-fb"></div><div class="game-q">2. <button class="game-opt" onclick="lcPlay('They had believed the stories of easy victory before they witnessed the stalemate.')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">They had believed the stories of easy victory before they witnessed the stalemate.</button><button class="game-opt" onclick="lcCheck(this,false)">They believed the stories of easy victory before they had witnessed the stalemate.</button><button class="game-opt" onclick="lcCheck(this,false)">They believe the stories of easy victory before they witnessed the stalemate.</button></div><div class="game-fb"></div><div class="game-q">3. <button class="game-opt" onclick="lcPlay('The constant threat of random death created a pervasive atmosphere of terror.')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">The constant threat of random death created a pervasive atmosphere of terror.</button><button class="game-opt" onclick="lcCheck(this,false)">The constant threat of random death destroyed a pervasive atmosphere of terror.</button><button class="game-opt" onclick="lcCheck(this,false)">The constant threat of random death ignored a pervasive atmosphere of terror.</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">🔤 단어 배열하기</div><div class="game-q">1. 레벨 B2 — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo1-bank"><span class="wo-chip" data-word="before" onclick="woAdd(1,this,'before')">before</span><span class="wo-chip" data-word="promised" onclick="woAdd(1,this,'promised')">promised</span><span class="wo-chip" data-word="began" onclick="woAdd(1,this,'began')">began</span><span class="wo-chip" data-word="war" onclick="woAdd(1,this,'war')">war</span><span class="wo-chip" data-word="quick" onclick="woAdd(1,this,'quick')">quick</span><span class="wo-chip" data-word="victory" onclick="woAdd(1,this,'victory')">victory</span><span class="wo-chip" data-word="The" onclick="woAdd(1,this,'The')">The</span><span class="wo-chip" data-word="the" onclick="woAdd(1,this,'the')">the</span><span class="wo-chip" data-word="government" onclick="woAdd(1,this,'government')">government</span><span class="wo-chip" data-word="had" onclick="woAdd(1,this,'had')">had</span><span class="wo-chip" data-word="a" onclick="woAdd(1,this,'a')">a</span><span class="wo-chip" data-word="." onclick="woAdd(1,this,'.')">.</span></div><div class="wo-zone" id="wo1-zone"></div><button class="game-opt" onclick="woCheck(1)">확인</button><div class="game-fb" id="wo1-fb"></div><div class="game-q">2. 레벨 C1 — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo2-bank"><span class="wo-chip" data-word="mundane" onclick="woAdd(2,this,'mundane')">mundane</span><span class="wo-chip" data-word="replaced" onclick="woAdd(2,this,'replaced')">replaced</span><span class="wo-chip" data-word="ultimately" onclick="woAdd(2,this,'ultimately')">ultimately</span><span class="wo-chip" data-word="daily" onclick="woAdd(2,this,'daily')">daily</span><span class="wo-chip" data-word="vision" onclick="woAdd(2,this,'vision')">vision</span><span class="wo-chip" data-word="combat" onclick="woAdd(2,this,'combat')">combat</span><span class="wo-chip" data-word="the" onclick="woAdd(2,this,'the')">the</span><span class="wo-chip" data-word="heroic" onclick="woAdd(2,this,'heroic')">heroic</span><span class="wo-chip" data-word="horror" onclick="woAdd(2,this,'horror')">horror</span><span class="wo-chip" data-word="idealized" onclick="woAdd(2,this,'idealized')">idealized</span><span class="wo-chip" data-word="survival" onclick="woAdd(2,this,'survival')">survival</span><span class="wo-chip" data-word="." onclick="woAdd(2,this,'.')">.</span><span class="wo-chip" data-word="of" onclick="woAdd(2,this,'of')">of</span><span class="wo-chip" data-word="of" onclick="woAdd(2,this,'of')">of</span><span class="wo-chip" data-word="by" onclick="woAdd(2,this,'by')">by</span><span class="wo-chip" data-word="was" onclick="woAdd(2,this,'was')">was</span><span class="wo-chip" data-word="Their" onclick="woAdd(2,this,'Their')">Their</span></div><div class="wo-zone" id="wo2-zone"></div><button class="game-opt" onclick="woCheck(2)">확인</button><div class="game-fb" id="wo2-fb"></div></div>
+    <div class="game-block"><div class="game-title">🎴 짝맞추기</div><div class="game-q">단어와 한국어 뜻을 짝지어보세요:</div><div class="match-grid"><div><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">brutality</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">futility</button><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">glorify</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">trauma</button></div><div><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">무용함</button><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">영광스럽게 하다</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">정신적 외상</button><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">잔인함</button></div></div></div>
+    <div class="game-block"><div class="game-title">🏆 받아쓰기 도전</div><div class="game-q">A1 — <button class="game-opt" onclick="dcPlay('War was not glorious. It was muddy and terrifying for the young soldiers.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a1','War was not glorious. It was muddy and terrifying for the young soldiers.')">확인</button></div><div class="game-fb" id="dc-a1-fb"></div><div class="game-q">A2 — <button class="game-opt" onclick="dcPlay('The reality of the trenches destroyed the romantic illusions the recruits had brought from home.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a2" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a2','The reality of the trenches destroyed the romantic illusions the recruits had brought from home.')">확인</button></div><div class="game-fb" id="dc-a2-fb"></div><div class="game-q">B1 — <button class="game-opt" onclick="dcPlay('By the time the first major battle had concluded, the recruits understood that their training had failed to prepare them for the visceral chaos of modern warfare.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-b1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('b1','By the time the first major battle had concluded, the recruits understood that their training had failed to prepare them for the visceral chaos of modern warfare.')">확인</button></div><div class="game-fb" id="dc-b1-fb"></div></div>
+    <script>document.addEventListener('DOMContentLoaded',function(){woInit(1, ["The", "government", "had", "promised", "a", "quick", "victory", "before", "the", "war", "began", "."]);woInit(2, ["Their", "idealized", "vision", "of", "heroic", "combat", "was", "ultimately", "replaced", "by", "the", "mundane", "horror", "of", "daily", "survival", "."]);});</script>
+  </section>
+  <section class="sh comp-section"><div class="sh-bar"><span class="sh-num">4</span><h2>이해 문제 <span class="sh-en">COMPREHENSION</span></h2></div>
+    <div class="comp-tabs">
+      <button class="comp-tab active" onclick="compTab(this,'entry')">🟡 입문</button>
+      <button class="comp-tab" onclick="compTab(this,'b1')">🔵 초급 B1</button>
+      <button class="comp-tab" onclick="compTab(this,'intermediate')">🟣 중급</button>
+    </div>
+    <div class="comp-panel comp-panel-entry active"><div class="game-q">Q1. 지문에 따르면, 젊은 병사들이 전쟁에 대해 가지고 있던 생각은 무엇과 대조되었나요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">영웅적인 승리와 영광</button><button class="game-opt" onclick="compCheck(this,true)">전쟁의 실제적인 참혹함과 공포</button><button class="game-opt" onclick="compCheck(this,false)">국가를 위한 단순한 의무감</button></div><div class="game-fb"></div><div class="game-q">Q2. '과거완료'는 주로 어떤 상황을 설명하는 데 사용되나요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">현재 진행 중인 일</button><button class="game-opt" onclick="compCheck(this,true)">과거의 특정 시점보다 더 이전에 일어난 일</button><button class="game-opt" onclick="compCheck(this,false)">미래에 일어날 일</button></div><div class="game-fb"></div><div class="game-q">Q3. 본문에서 'replacing A with B' 구조가 의미하는 바는 무엇인가요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">A를 버리고 B가 그 자리를 차지함</button><button class="game-opt" onclick="compCheck(this,false)">A와 B를 동시에 경험함</button><button class="game-opt" onclick="compCheck(this,false)">A를 강화하기 위해 B를 사용함</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-b1"><div class="game-q">Q1. What primary effect did the soldiers' firsthand experience have on their prior beliefs?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">It reinforced and validated their patriotic training.</button><button class="game-opt" onclick="compCheck(this,true)">It completely dismantled their romanticized illusions.</button><button class="game-opt" onclick="compCheck(this,false)">It made them appreciate military strategy more.</button></div><div class="game-fb"></div><div class="game-q">Q2. How is the grammar point 'replacing A with B' demonstrated in the context of the passage?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">It shows how abstract ideals were substituted by harsh realities.</button><button class="game-opt" onclick="compCheck(this,false)">It explains how new weapons were introduced to the army.</button><button class="game-opt" onclick="compCheck(this,false)">It describes how soldiers traded equipment with each other.</button></div><div class="game-fb"></div><div class="game-q">Q3. What had the state propaganda done before the soldiers enlisted, according to the text?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">It had provided accurate tactical manuals.</button><button class="game-opt" onclick="compCheck(this,true)">It had glorified war and replaced complex truths with simple slogans.</button><button class="game-opt" onclick="compCheck(this,false)">It had warned them about the psychological dangers of combat.</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-intermediate"><div class="game-q">Q1. Which statement best analyzes the psychological impact of the disparity between expectation and reality as described?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">It fostered a resilient adaptability that increased combat effectiveness.</button><button class="game-opt" onclick="compCheck(this,true)">It created a profound cognitive dissonance and trauma by invalidating their foundational worldview.</button><button class="game-opt" onclick="compCheck(this,false)">It led to immediate rebellion against military authority and desertion.</button></div><div class="game-fb"></div><div class="game-q">Q2. How does the use of the past perfect tense ('had been immersed', 'had been constructed') function rhetorically in the C1 passage?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">It establishes a sequence, emphasizing that the indoctrination was a completed precondition that shaped their vulnerable perspective before the traumatic reality intervened.</button><button class="game-opt" onclick="compCheck(this,false)">It simply lists events in the order they happened without special emphasis.</button><button class="game-opt" onclick="compCheck(this,false)">It suggests that the propaganda efforts were ongoing and simultaneous with the frontline experience.</button></div><div class="game-fb"></div><div class="game-q">Q3. The phrase 'sanitized version of events' implies a critique of what societal mechanism?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">Military logistics and supply chains.</button><button class="game-opt" onclick="compCheck(this,true)">The educational and media systems that filter and alter information to protect or manipulate public perception.</button><button class="game-opt" onclick="compCheck(this,false)">The medical procedures used in field hospitals.</button></div><div class="game-fb"></div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">5</span><h2>문법 <span class="sh-en">GRAMMAR</span></h2></div>
+    <div class="grammar-box">
+      <div class="grammar-label"><span class="grammar-code">G26</span>이번 주 문법 포인트</div>
+      <div class="grammar-title">Replacing A with B / Past Perfect</div>
+      <div class="essay-basics-text" style="margin-bottom:8px;">A를 B로 대체하기 / 과거완료</div>
+      <div class="grammar-explain">'replacing A with B'는 어떤 것을 버리고 다른 것으로 그 자리를 채우는 변화를 나타냅니다. '과거완료(had + p.p.)'는 과거의 특정 시점보다 더 이전에 일어난 사건을 설명할 때 사용합니다.</div>
+    </div>
+    <div class="essay-basics-label" style="margin-top:14px;">📝 예문 3개 (클릭해서 듣기)</div>
+    <div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">The brutal reality of the front was replacing their youthful idealism with a cynical despair.</span> &#128266;<div class="ge-ko">전선의 잔혹한 현실은 그들의 젊은 이상주의를 냉소적인 절망으로 대체하고 있었다.</div></div><div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">They discovered that the army had replaced the promised new uniforms with ragged, used ones.</span> &#128266;<div class="ge-ko">그들은 군대가 약속된 새 군복을 누더기처럼 낡은 것으로 대체했음을 발견했다.</div></div><div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">By 1917, the initial patriotic fervor had been completely replaced by a desperate longing for peace.</span> &#128266;<div class="ge-ko">1917년이 되자, 초기의 애국적 열광은 완전히 평화에 대한 간절한 갈망으로 대체되어 있었다.</div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num" style="min-width:40px;">5-B</span><h2>문법 연습 <span class="sh-en">GRAMMAR PRACTICE</span></h2></div>
+    <div class="game-block"><div class="game-title">🎯 문법 이해 문제 (Grammar Quiz)</div><div class="game-q">Q1. Choose the sentence that correctly uses 'replacing A with B' to show a shift from illusion to reality.</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,false)">The general was replacing old maps for new strategies.</button><button class="game-opt" onclick="fbCheck(this,true)">The experience of combat was replacing their abstract fear of death with a very concrete and immediate terror.</button><button class="game-opt" onclick="fbCheck(this,false)">They were replacing their boots because they were comfortable.</button></div><div class="game-fb"></div><div class="game-q">Q2. Which sentence correctly uses the past perfect tense?</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">The soldiers realized they had been fed lies about the war's purpose long before they reached the front.</button><button class="game-opt" onclick="fbCheck(this,false)">The soldiers realize they had been fed lies about the war's purpose.</button><button class="game-opt" onclick="fbCheck(this,false)">The soldiers had realized they are fed lies about the war's purpose.</button></div><div class="game-fb"></div><div class="game-q">Q3. Identify the sentence with a grammatical error in the use of 'replace with' or past perfect.</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,false)">The government had promised prosperity, but the war replaced that hope with widespread poverty.</button><button class="game-opt" onclick="fbCheck(this,false)">He had replaced his broken rifle with one he found on the battlefield.</button><button class="game-opt" onclick="fbCheck(this,true)">The ceasefire replaced the constant bombardment by a tense and uneasy silence.</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기 (Dictation)</div><div class="game-q">1. <button class="game-opt" onclick="gpDictPlay('propaganda')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-1" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(1,'propaganda')">확인</button><button class="game-opt" onclick="gpDictHint(1)">💡 힌트</button><span id="gp-dict-hint-1" class="game-hint" style="visibility:hidden;">선전, 특정 사상을 퍼뜨리는 활동</span></div><div class="game-fb" id="gp-dict-fb-1"></div><div class="game-q">2. <button class="game-opt" onclick="gpDictPlay('visceral')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-2" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(2,'visceral')">확인</button><button class="game-opt" onclick="gpDictHint(2)">💡 힌트</button><span id="gp-dict-hint-2" class="game-hint" style="visibility:hidden;">본능적인, 내장에서 오는</span></div><div class="game-fb" id="gp-dict-fb-2"></div><div class="game-q">3. <button class="game-opt" onclick="gpDictPlay('dismantle')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-3" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(3,'dismantle')">확인</button><button class="game-opt" onclick="gpDictHint(3)">💡 힌트</button><span id="gp-dict-hint-3" class="game-hint" style="visibility:hidden;">분해하다, 구조를 무너뜨리다</span></div><div class="game-fb" id="gp-dict-fb-3"></div></div>
+    <div class="game-block"><div class="game-title">📝 빈칸 채우기 (Fill in the Blank)</div><div class="game-q">1. The official narrative sought to <strong>_______</strong> the public's fear of loss <strong>_______</strong> a sense of patriotic duty.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">replace...with</button><button class="game-opt" onclick="fbCheck(this,false)">exchange...for</button><button class="game-opt" onclick="fbCheck(this,false)">substitute...from</button></div><div class="game-fb"></div><div class="game-q">2. By the winter of 1916, the landscape <strong>_______</strong> beyond all recognition by the endless shelling.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">had been transformed</button><button class="game-opt" onclick="fbCheck(this,false)">was transformed</button><button class="game-opt" onclick="fbCheck(this,false)">has been transformed</button></div><div class="game-fb"></div></div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">6</span><h2>에세이 쓰기 <span class="sh-en">ESSAY WRITING</span></h2></div>
+    <div class="et-wrap">
+  <div class="et-header">
+    <div class="et-icon">✍️</div>
+    <div><div class="et-title">에세이 잘 쓰는 5가지 요령</div><div class="et-sub">Good Essay Writing Tips</div></div>
+  </div>
+  <div class="tip-list">
+    <div class="tip-card tc-1"><div class="tip-num tn-1">1</div><div class="tip-body">
+      <div class="tip-name">명확한 주제문 (Topic Sentence)</div>
+      <div class="tip-desc">첫 문장에 내 주장을 한 번에! 모호하면 읽는 사람이 혼란스러워요.</div>
+      <div class="tip-ex"><span class="ex-bad">❌ "Beauty is important."</span> <span class="ex-good">✅ "Beauty without morality leads to corruption."</span></div>
+    </div></div>
+    <div class="tip-card tc-2"><div class="tip-num tn-2">2</div><div class="tip-body">
+      <div class="tip-name">구체적 근거 + 예시</div>
+      <div class="tip-desc">"Because" 다음엔 반드시 구체적인 예시가 따라와야 해요.</div>
+      <div class="tip-ex"><span class="ex-bad">❌ "Because it is bad."</span> <span class="ex-good">✅ "For example, the story shows how..."</span></div>
+    </div></div>
+    <div class="tip-card tc-3"><div class="tip-num tn-3">3</div><div class="tip-body">
+      <div class="tip-name">반대 의견 인정하기</div>
+      <div class="tip-desc">반대 의견을 먼저 인정하면 내 주장이 더 설득력 있어 보여요.</div>
+      <div class="tip-ex"><span class="ex-good">✅ "Although some argue that..., I believe..."</span></div>
+    </div></div>
+    <div class="tip-card tc-4"><div class="tip-num tn-4">4</div><div class="tip-body">
+      <div class="tip-name">연결어 (Transition Words)</div>
+      <div class="tip-desc">단락과 단락을 자연스럽게 이어주는 다리 역할을 해요.</div>
+      <div class="tip-ex"><span class="ex-good">First · Furthermore · However · Therefore · In conclusion</span></div>
+    </div></div>
+    <div class="tip-card tc-5"><div class="tip-num tn-5">5</div><div class="tip-body">
+      <div class="tip-name">강한 마무리 (Concluding Sentence)</div>
+      <div class="tip-desc">마지막 문장이 가장 오래 기억돼요. 핵심 메시지를 새로운 표현으로!</div>
+      <div class="tip-ex"><span class="ex-good">✅ "Therefore, it is clear that..." / "This is why..."</span></div>
+    </div></div>
+  </div>
+  <div class="phrase-grid">
+    <div class="phrase-card"><div class="phrase-role">서론</div><div class="phrase-item">In my opinion...<br>I strongly believe...<br>It is clear that...</div></div>
+    <div class="phrase-card"><div class="phrase-role">본론</div><div class="phrase-item">For instance...<br>This shows that...<br>Furthermore...</div></div>
+    <div class="phrase-card"><div class="phrase-role">결론</div><div class="phrase-item">In conclusion...<br>Therefore...<br>This is why...</div></div>
+  </div>
+</div>
+    <div id="esTopic" style="display:block;background:var(--gd);color:white;border-radius:12px;padding:16px;margin-bottom:14px;text-align:center;box-sizing:border-box;">
+      <div style="font-size:15px;font-weight:bold;">✍️ The difference between how something is presented and what it actually is</div>
+      <div style="font-size:12px;color:#cce;margin-top:4px;">어떤 것이 제시되는 방식과 실제 그 것 사이의 차이</div>
+      <div style="font-size:11px;color:#9bf;margin-top:6px;">📐 4단락 구조: 서론 → 본론1 → 본론2 → 결론</div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">① 서론 (Introduction)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">Hook: 역사, 광고, 또는 정치에서 우리가 접하는 이야기와 엄격한 현실 사이에는 종종 커다란 간극이 존재합니다. Thesis: 이러한 제시 방식과 실제 사이의 괴리는 개인의 인식을 왜곡하고, 중요한 결정에 영향을 미치며, 사회적 비판을 약화시킬 수 있습니다.</p>
+      <textarea id="es1" rows="4" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="Hook + Thesis Statement..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">② 본론 1 (Body 1)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">첫 번째 논거 + 예시: 첫째, 이 괴리는 개인의 기대와 인식을 심각하게 왜곡시킵니다. (예: 청년들을 전쟁에 참여하게 만든 영웅주의적 선전과 참호전의 추악한 현실 사이의 차이를 분석하세요. 'All Quiet on the Western Front'의 주제와 연결지어 설명합니다.)</p>
+      <textarea id="es2" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="First argument + evidence..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">③ 본론 2 (Body 2)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">두 번째 논거 + 예시 또는 반대 의견 인정: 둘째, 이 차이는 집단적 결정과 사회적 책임에 영향을 미칩니다. (예: 정부나 기업이 복잡한 문제를 단순화하거나 미화하여 발표할 때 시민이나 소비자의 판단이 어떻게 흐려질 수 있는지 논의하세요.) 반대 의견: 어떤 위험한 현실로부터 대중을 보호하기 위해 정보를 순화하는 것이 필요할 수 있다는 주장을 인정한 후, 장기적인 신뢰 상실과 준비 부족의 위험성으로 반박하세요.</p>
+      <textarea id="es3" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="Second argument or concession..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">④ 결론 (Conclusion)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">Thesis 재진술: 따라서, 표면적 제시와 근본적 현실 사이의 간극은 단순한 오해를 넘어서서 개인과 사회의 건강에 실질적인 위협이 됩니다. 마무리: 우리는 정보를 수동적으로 소비하기보다, 비판적 사고를 통해 그 이면을 탐구하려는 적극적인 자세가 필요함을 강조하며 글을 마칩니다.</p>
+      <textarea id="es4" rows="4" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="In conclusion, ..."></textarea>
+
+      <button onclick="submitFullEssay()" style="display:block;width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;">💬 ChatGPT에 4단락 에세이 피드백 받기</button>
+    </div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">7</span><h2>디베이트 <span class="sh-en">DEBATE</span></h2></div>
+    <div id="dbTopic" style="display:block;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;box-sizing:border-box;">
+      <div style="font-size:11px;font-weight:bold;letter-spacing:2px;margin-bottom:6px;opacity:0.9;">🗣️ TODAY'S MOTION</div>
+      <div style="font-size:15px;font-weight:bold;line-height:1.45;">Should we protect young people from the reality of war, or educate them honestly?</div>
+      <div style="font-size:13px;margin-top:6px;opacity:0.92;">우리는 젊은이들을 전쟁의 현실로부터 보호해야 할까요, 아니면 정직하게 교육해야 할까요?</div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;margin-bottom:16px;">
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <div style="flex:1 1 260px;min-width:240px;">
+          <div style="display:block;background:#d4f4dd;color:#156b2c;font-weight:bold;padding:8px 12px;border-radius:8px;text-align:center;margin-bottom:10px;">PRO (찬성)</div>
+          <div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 보호는 정신적 외상과 불필요한 공포를 예방하여 건강한 발달을 도울 수 있습니다.</div><div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 어린 나이에 가혹한 현실을 접하는 것은 세계관을 비관적으로 만들고 미래에 대한 희망을 앗아갈 수 있습니다.</div><div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 교육은 연령에 적합한 방식으로 점진적으로 이루어져야 하며, 지나치게 노골적인 정보는 역효과를 낼 수 있습니다.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:240px;">
+          <div style="display:block;background:#fbd5d5;color:#8a1a1a;font-weight:bold;padding:8px 12px;border-radius:8px;text-align:center;margin-bottom:10px;">CON (반대)</div>
+          <div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 정직한 교육은 역사의 반복을 방지하고 평화의 가치를 진정으로 이해하는 데 필수적입니다.</div><div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 보호하는 것은 오히려 낭만화된 전쟁 관념을 심어주어 미래의 갈등에 대한 취약성을 높일 수 있습니다.</div><div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 디지털 시대에 정보를 완전히 통제하는 것은 불가능하며, 오히려 비판적 사고력을 갖춘 올바른 안내가 필요합니다.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;margin-bottom:16px;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">📝 My Opening Statement</label>
+      <p style="font-size:12px;color:#666;margin:0 0 8px;line-height:1.5;">명확한 입장 표명으로 시작하세요. (예: "저희 팀은 젊은이들에게 전쟁의 현실을 정직하게 교육해야 한다고 믿습니다.") 핵심 논거 2-3가지를 간략히 제시하세요. (예: "첫째, 이는 역사적 교훈을 전달합니다. 둘째, 미디어의 왜곡된 정보로부터 그들을 방어합니다. 셋째, 미래의 평화로운 사회를 건설하는 시민을 양성합니다.")</p>
+      <textarea id="openStmt" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="I strongly believe that ..."></textarea>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">🔄 My Rebuttal</label>
+      <p style="font-size:12px;color:#666;margin:0 0 8px;line-height:1.5;">상대 논거를 인용한 뒤 반박하는 방법: 'While the opposition argues that protecting young minds prevents trauma, this ignores the fact that sheltering them often leads to greater shock and disillusionment when they inevitably encounter the truth through unfiltered media or personal experience. Furthermore, a carefully guided, age-appropriate honest education can build resilience, not induce trauma.'</p>
+      <textarea id="rebuttalStmt" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="While the opposition argues that..., this ignores the fact that..."></textarea>
+      <button onclick="sendDebateStatement()" style="display:block;width:100%;margin-top:14px;padding:14px;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;">🤖 ChatGPT와 토론 시작하기</button>
+    </div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">8</span><h2>ChatGPT 회화 연습 <span class="sh-en">AI PRACTICE</span></h2></div>
+    <div style="text-align:center;padding:20px 0;">
+      <p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">이번 주 핵심 표현으로 ChatGPT Camp B와 영어로 대화해보세요!</p>
+      <button class="btn-submit" onclick="launchChatGPTPractice()">🤖 ChatGPT와 50:50 회화 연습</button>
+    </div>
   </section>
 </div>
-<div class="wk-nav"><a href="week06.html" class="wk-btn">&larr; W06</a><span class="wk-current">W26</span><a href="week08.html" class="wk-btn">W08 &rarr;</a></div>
+<div class="wk-nav"><a href="week25.html" class="wk-btn">&larr; W25</a><span class="wk-current">W26</span><a href="week27.html" class="wk-btn">W27 &rarr;</a></div>
 <!-- ===== CEC Robo Helper (Camp B) ===== -->
 <div class="gb">
   <div class="gb-hint" onclick="gbToggle()" id="gbHint"><span>Robo</span>한테 물어봐!</div>
@@ -430,9 +676,12 @@ var CHATGPT_URL='https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166';
 function speak(t){if(!t)return;var u=new SpeechSynthesisUtterance(t.replace(/\uD83D\uDD0A/g,'').trim());u.lang='en-US';u.rate=0.85;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}
 function showLevel(lv,btn){document.getElementById('b1Story').style.display=lv==='b1'?'block':'none';document.getElementById('c1Story').style.display=lv==='c1'?'block':'none';document.querySelectorAll('.ltab').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');}
 function copyAndOpen(msg){window.open(CHATGPT_URL,'_blank');try{navigator.clipboard.writeText(msg);}catch(e){}}
-function sendDebate(){var t=document.getElementById('debateInput').value;var m='\uc548\ub155\ud558\uc138\uc694! High School 1\uc774\uc5d0\uc694.\n\nOf Mice and Men W07\uc744 \uacf5\ubd80\ud588\uc5b4\uc694.\n\n\ud1a0\ub860 \uc8fc\uc81c: "The American Dream is an illusion that causes more suffering than hope."\n\n\ub0b4 \uc8fc\uc7a5:\n'+t+'\n\n\uc774 \uc8fc\uc7a5\uc5d0 \ubc18\ubc15\ud574\uc8fc\uc138\uc694!';copyAndOpen(m);}
-function submitEssay(){var e=[1,2,3,4].map(function(i){return document.getElementById('es'+i).value}).join('\n\n');var m='\uc548\ub155\ud558\uc138\uc694! High School 1\uc774\uc5d0\uc694.\n\n\uc5d0\uc138\uc774 \uc8fc\uc81c: "How does Steinbeck use George and Lennie\\u0027s friendship to critique the American Dream?"\n\n'+e+'\n\n\ud53c\ub4dc\ubc31 \ubd80\ud0c1\ub4dc\ub824\uc694!';copyAndOpen(m);}
-function launchChatGPTPractice(){var m='Of Mice and Men W07 (아메리칸 드림 — 조지와 레니) \uc8fc\uc81c\ub85c \uc601\uc5b4 \ud68c\ud654 \uc5f0\uc2b5\uc744 \ud558\uace0 \uc2f6\uc5b4\uc694!';copyAndOpen(m);}
+function sendDebate(){}
+function submitEssay(){}
+function launchChatGPTPractice(){
+  var m='\uc804\uc7c1\uc758 \ucc38\ud639\ud55c \ud604\uc2e4\uc744 \uc9c1\uc811 \uacaa\uc9c0 \uc54a\uc740 \uc6b0\ub9ac\uc5d0\uac8c, \uadf8 \uc5ed\uc0ac\ub97c \uc5b4\ub5bb\uac8c \uac00\ub974\uccd0\uc57c \ud560\uae4c\uc694? \uc644\uc804\ud788 \ubcf4\ud638\ud558\ub294 \uac83\uacfc \uc9c0\ub098\uce58\uac8c \ub178\ucd9c\uc2dc\ud0a4\ub294 \uac83 \uc0ac\uc774\uc5d0\uc11c \uc62c\ubc14\ub978 \uad50\uc721\uc758 \uade0\ud615\uc740 \ubb34\uc5c7\uc774\ub77c\uace0 \uc0dd\uac01\ud558\uc2dc\ub098\uc694? \uc5ec\ub7ec\ubd84\uc758 \uc758\uacac\uc744 \ub098\ub220\uc8fc\uc138\uc694.';
+  copyAndOpen(m);
+}
 /* ===== CEC Robo Helper (Camp B) ===== */
 (function(){
   if(window.__gbRoboInit)return;window.__gbRoboInit=true;
@@ -540,5 +789,262 @@ function launchChatGPTPractice(){var m='Of Mice and Men W07 (아메리칸 드림
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',gbInit);}else{gbInit();}
 })();
 </script>
+<script id="m1-extra-js">
+// Reading toggle — single Play/Pause button
+function togglePlay(btn){
+  var icon=btn.querySelector('.play-icon');
+  var label=btn.querySelector('.play-label');
+  if(btn.classList.contains('playing')){
+    window.speechSynthesis.pause();
+    btn.classList.remove('playing');
+    icon.textContent='▶';
+    label.textContent='재생';
+  } else {
+    if(window.speechSynthesis.paused){
+      window.speechSynthesis.resume();
+    } else {
+      var txt=btn.dataset.text||'';
+      if(!txt){var storyDiv=btn.closest('.story-box')||btn.parentElement;var textEl=storyDiv.querySelector('[id$="Text"]');txt=textEl?textEl.textContent:'';}
+      window.speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(txt);
+      u.lang='en-US';u.rate=0.85;
+      u.onend=function(){btn.classList.remove('playing');icon.textContent='▶';label.textContent='재생';};
+      u.onerror=u.onend;
+      window.speechSynthesis.speak(u);
+    }
+    btn.classList.add('playing');
+    icon.textContent='⏸';
+    label.textContent='일시정지';
+  }
+}
+
+// Play/Pause TTS state (legacy toggle — kept for any remaining pages)
+var m1TtsActive = null;
+function m1PlayPause(btnId, textElId){
+  var btn = document.getElementById(btnId);
+  var txt = document.getElementById(textElId).textContent;
+  if(m1TtsActive === btnId){
+    window.speechSynthesis.cancel();
+    m1TtsActive = null;
+    btn.classList.remove('playing');
+    btn.innerHTML = '▶ 전체 듣기';
+    return;
+  }
+  if(m1TtsActive){
+    window.speechSynthesis.cancel();
+    var prev = document.getElementById(m1TtsActive);
+    if(prev){ prev.classList.remove('playing'); prev.innerHTML='▶ 전체 듣기'; }
+  }
+  var u = new SpeechSynthesisUtterance(txt);
+  u.lang='en-US'; u.rate=0.9;
+  u.onend = function(){ btn.classList.remove('playing'); btn.innerHTML='▶ 전체 듣기'; m1TtsActive=null; };
+  u.onerror = u.onend;
+  window.speechSynthesis.speak(u);
+  m1TtsActive = btnId;
+  btn.classList.add('playing');
+  btn.innerHTML = '⏸ 일시정지';
+}
+
+// Fill-in-blank
+function fbCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅ 정답!'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌ 다시 해볼까요?'; fb.className='game-fb wrong'; }
+}
+
+// Dictation simple
+function dsCheck(inpId, answer){
+  var el = document.getElementById(inpId);
+  var fb = document.getElementById(inpId+'-fb');
+  if(el.value.trim().toLowerCase() === answer.toLowerCase()){
+    fb.textContent='✅ 정답! ('+answer+')'; fb.className='game-fb correct';
+  } else {
+    fb.textContent='❌ 정답: '+answer; fb.className='game-fb wrong';
+  }
+}
+
+// Listen-choose: speak then reveal
+function lcPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.85;
+  window.speechSynthesis.speak(u);
+}
+function lcCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅ 잘 들으셨어요!'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌ 다시 들어볼까요?'; fb.className='game-fb wrong'; }
+}
+
+// Word order
+var woState = {};
+function woInit(idx, words){
+  woState[idx] = { correct: words.slice(), arranged: [] };
+}
+function woAdd(idx, chipEl, word){
+  if(chipEl.classList.contains('used')) return;
+  chipEl.classList.add('used');
+  woState[idx].arranged.push(word);
+  var zone = document.getElementById('wo'+idx+'-zone');
+  var span = document.createElement('span');
+  span.className = 'wo-chip'; span.textContent = word; span.dataset.word = word;
+  span.onclick = function(){
+    // remove on click from zone
+    var i = woState[idx].arranged.indexOf(word);
+    if(i>=0) woState[idx].arranged.splice(i,1);
+    span.remove();
+    // re-enable bank chip
+    var bankChips = document.querySelectorAll('#wo'+idx+'-bank .wo-chip');
+    bankChips.forEach(function(b){ if(b.dataset.word===word) b.classList.remove('used'); });
+  };
+  zone.appendChild(span);
+}
+function woCheck(idx){
+  var fb = document.getElementById('wo'+idx+'-fb');
+  var ok = JSON.stringify(woState[idx].arranged) === JSON.stringify(woState[idx].correct);
+  if(ok){ fb.textContent='✅ 정답! '+woState[idx].correct.join(' '); fb.className='game-fb correct'; }
+  else { fb.textContent='❌ 순서를 다시 확인해보세요.'; fb.className='game-fb wrong'; }
+}
+
+// Matching
+var mmSel = null;
+function mmClick(btn, pairKey){
+  if(btn.classList.contains('matched')) return;
+  if(!mmSel){ mmSel = btn; btn.classList.add('sel'); return; }
+  if(mmSel === btn){ mmSel.classList.remove('sel'); mmSel=null; return; }
+  if(mmSel.dataset.pair === pairKey && mmSel !== btn){
+    mmSel.classList.remove('sel'); mmSel.classList.add('matched');
+    btn.classList.add('matched'); mmSel=null;
+  } else {
+    var tmp = mmSel; mmSel.classList.remove('sel'); mmSel=null;
+    btn.classList.add('wrong');
+    setTimeout(function(){ btn.classList.remove('wrong'); }, 500);
+  }
+}
+
+// Dictation challenge
+function dcPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.9;
+  window.speechSynthesis.speak(u);
+}
+function dcCheck(lvl, answer){
+  var inp = document.getElementById('dc-'+lvl);
+  var fb = document.getElementById('dc-'+lvl+'-fb');
+  var g = inp.value.trim().toLowerCase().replace(/[.,!?]/g,'');
+  var a = answer.toLowerCase().replace(/[.,!?]/g,'');
+  if(g === a){ fb.textContent='✅ 완벽!'; fb.className='game-fb correct'; }
+  else { fb.innerHTML='❌ 정답: '+answer; fb.className='game-fb wrong'; }
+}
+
+// Comprehension tabs
+function compTab(tab, lvl){
+  var root = tab.closest('.comp-section');
+  root.querySelectorAll('.comp-tab').forEach(function(t){ t.classList.remove('active'); });
+  root.querySelectorAll('.comp-panel').forEach(function(p){ p.classList.remove('active'); });
+  tab.classList.add('active');
+  root.querySelector('.comp-panel-'+lvl).classList.add('active');
+}
+function compCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌'; fb.className='game-fb wrong'; }
+}
+
+// My thoughts — ChatGPT send
+function sendMyThought(){
+  var t = document.getElementById('myThoughtInput').value.trim();
+  if(!t){ alert('한 문장 써주세요!'); return; }
+  copyAndOpen('안녕하세요! 오늘 읽은 이야기에 대한 제 생각이에요:\n\n'+t+'\n\n이 의견에 대해 간단히 코멘트 부탁드려요!');
+}
+
+// Essay basics — structure question
+function askEssayStructure(){
+  copyAndOpen('안녕하세요! 저는 Middle School 1 학생이에요.\n\n에세이 구조(주제문-근거-마무리)에 대해 질문이 있어요. 중학생이 쉽게 이해할 수 있게 설명해주세요!');
+}
+
+// m2: paragraph writing — send 3 sentences to ChatGPT
+function submitParagraph(){
+  var t1 = document.getElementById('pw1').value.trim();
+  var t2 = document.getElementById('pw2').value.trim();
+  var t3 = document.getElementById('pw3').value.trim();
+  if(!t1 || !t2 || !t3){ alert('세 문장 모두 써주세요! (주제문/근거/마무리)'); return; }
+  var topic = document.getElementById('pwTopic') ? document.getElementById('pwTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 2 학생이에요.\n\n에세이 단락쓰기 주제: ' + topic + '\n\n'
+          + '① 주제문: ' + t1 + '\n'
+          + '② 근거/예시: ' + t2 + '\n'
+          + '③ 마무리: ' + t3 + '\n\n'
+          + '제 단락을 중학생 수준에서 피드백해주세요! 문법, 자연스러움, 논리 구조 모두 봐주세요.';
+  copyAndOpen(msg);
+}
+
+// m2: opinion — send 1 paragraph to ChatGPT
+function sendOpinion(){
+  var el = document.getElementById('opn1') || document.getElementById('opinionInput');
+  var t = el ? el.value.trim() : '';
+  if(!t){ alert('내 생각을 한 단락으로 써주세요!'); return; }
+  var topic = document.getElementById('opTopic') ? document.getElementById('opTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 2 학생이에요.\n\n의견 표현 주제: ' + topic + '\n\n내 생각:\n' + t + '\n\n중학생 수준에서 자연스럽게 고쳐주시고 간단한 코멘트 부탁드려요!';
+  copyAndOpen(msg);
+}
+
+// m2: grammar example — read aloud on click
+function grammarSpeak(el){
+  var txt = el.querySelector('.ge-en');
+  if(txt) speak(txt.textContent);
+}
+
+// 5-B Grammar Practice — dictation with hint reveal
+function gpDictHint(idx){
+  var el = document.getElementById('gp-dict-hint-'+idx);
+  if(el) el.style.visibility = 'visible';
+}
+function gpDictPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.8;
+  window.speechSynthesis.speak(u);
+}
+function gpDictCheck(idx, answer){
+  var el = document.getElementById('gp-dict-'+idx);
+  var fb = document.getElementById('gp-dict-fb-'+idx);
+  if(el.value.trim().toLowerCase() === answer.toLowerCase()){
+    fb.textContent='✅ 정답! ('+answer+')'; fb.className='game-fb correct';
+  } else {
+    fb.textContent='❌ 정답: '+answer; fb.className='game-fb wrong';
+  }
+}
+
+// m3: 3-paragraph essay (intro/body/conclusion)
+function submitFullEssay(){
+  var p1 = document.getElementById('es1').value.trim();
+  var p2 = document.getElementById('es2').value.trim();
+  var p3 = document.getElementById('es3').value.trim();
+  if(!p1 || !p2 || !p3){ alert('서론/본론/결론 세 단락 모두 써주세요!'); return; }
+  var topic = document.getElementById('esTopic') ? document.getElementById('esTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 3 학생이에요.\n\n에세이 주제: ' + topic + '\n\n'
+          + '① 서론 (Introduction):\n' + p1 + '\n\n'
+          + '② 본론 (Body):\n' + p2 + '\n\n'
+          + '③ 결론 (Conclusion):\n' + p3 + '\n\n'
+          + '제 3단락 에세이를 중학생 수준에서 피드백해주세요! 서론-본론-결론 구조, 논리, 문법 모두 봐주세요.';
+  copyAndOpen(msg);
+}
+
+// m3: debate — send opening statement for rebuttal
+function sendDebateStatement(){
+  var t = document.getElementById('openStmt').value.trim();
+  if(!t){ alert('Opening Statement를 써주세요!'); return; }
+  var topic = document.getElementById('dbTopic') ? document.getElementById('dbTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 3 학생이에요.\n\n토론 주제: ' + topic + '\n\n'
+          + '제 Opening Statement:\n' + t + '\n\n'
+          + '이 주장에 대해 반박(counterargument)을 해주시고, 영어 토론 방식으로 저와 대화해주세요!';
+  copyAndOpen(msg);
+}
+</script>
+<div class="pd-notice">📚 이 교재는 저작권이 만료된 공개 도메인(Public Domain) 작품을 기반으로 제작되었습니다. 원문을 직접 인용하지 않고 AI가 교육 목적에 맞게 완전히 새로 작성한 창작 학습 자료입니다.<br><span class="pd-en">This material is based on Public Domain works. All content has been newly written by AI for educational purposes. No original text was quoted.</span></div>
 </body>
 </html>

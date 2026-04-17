@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Trial W34 | Camp B High School 2</title>
+  <title>Utopia W34 | Camp B High School 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
 :root{
@@ -336,67 +336,318 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
   .gb-btn:hover{background:#e0f0d0;}
   </style>
   <!-- ===== /CEC Robo Helper styles ===== -->
+<style id="grade-theme">:root{--gp:#C62828;--gl:#FFEBEE;--gd:#B71C1C;}</style>
+<style id="m1-extra-css">
+.pd-notice{font-size:11px;color:#999;text-align:center;padding:12px 20px;margin-top:30px;margin-bottom:80px;border-top:1px solid rgba(255,255,255,0.08);line-height:1.6;}
+.pd-en{font-size:10px;color:#bbb;}
+/* override Robo + panel positions to clear sticky wk-nav */
+.gb{bottom:80px !important;}
+.gb-panel{bottom:148px !important;}
+.play-pause-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:rgba(0,242,255,0.1);border:1px solid #00f2ff;color:#00f2ff;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;}
+.play-pause-btn.playing{background:#00f2ff;color:#000;}
+/* Play toggle — single button */
+.play-toggle{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:#1F4E79;border:none;border-radius:20px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:inherit;margin-top:10px;}
+.play-toggle:hover{background:#2E75B6;}
+.play-toggle.playing{background:#2E75B6;color:#fff;}
+.play-icon{font-size:14px;}
+.game-block{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px;margin-top:12px;}
+.game-title{font-size:0.85rem;color:#c9a84c;font-weight:700;margin-bottom:10px;letter-spacing:1px;}
+.game-q{font-size:0.92rem;color:#eee;margin:10px 0 8px;line-height:1.6;}
+.game-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.game-opt{padding:7px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ddd;border-radius:18px;font-size:0.85rem;cursor:pointer;}
+.game-opt:hover{background:rgba(0,242,255,0.12);border-color:#00f2ff;}
+.game-opt.correct{background:rgba(40,200,120,0.25);border-color:#28c878;color:#6be0a0;}
+.game-opt.wrong{background:rgba(220,80,80,0.2);border-color:#dc5050;color:#ffb0b0;}
+.game-fb{font-size:0.82rem;color:rgba(255,255,255,0.55);margin-top:6px;min-height:18px;}
+.game-fb.correct{color:#6be0a0;}
+.game-fb.wrong{color:#ffb0b0;}
+.game-input{width:100%;max-width:300px;padding:7px 12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.18);color:#fff;border-radius:6px;font-size:0.9rem;margin-right:6px;}
+.game-hint{font-size:0.78rem;color:#c9a84c;font-style:italic;margin-left:8px;}
+.wo-bank,.wo-zone{display:flex;flex-wrap:wrap;gap:6px;padding:10px;border:1px dashed rgba(255,255,255,0.2);border-radius:8px;min-height:44px;margin:6px 0;}
+.wo-zone{border-style:solid;background:rgba(0,242,255,0.04);}
+.wo-chip{padding:6px 12px;background:rgba(0,242,255,0.15);color:#00f2ff;border-radius:14px;font-size:0.85rem;cursor:pointer;user-select:none;}
+.wo-chip.used{opacity:0.35;cursor:default;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+.match-btn{padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#ddd;border-radius:6px;font-size:0.88rem;cursor:pointer;text-align:left;}
+.match-btn.sel{border-color:#c9a84c;background:rgba(201,168,76,0.15);}
+.match-btn.matched{border-color:#28c878;background:rgba(40,200,120,0.2);color:#6be0a0;pointer-events:none;}
+.comp-tabs{display:flex;gap:6px;margin-bottom:10px;}
+.comp-tab{padding:6px 14px;border:1px solid rgba(255,255,255,0.15);border-radius:18px;background:transparent;color:#ccc;font-size:0.85rem;cursor:pointer;}
+.comp-tab.active{background:#00f2ff;color:#000;border-color:#00f2ff;}
+.comp-panel{display:none;}
+.comp-panel.active{display:block;}
+.essay-basics-box{background:rgba(0,242,255,0.04);border-left:3px solid #00f2ff;border-radius:6px;padding:14px 18px;margin-bottom:12px;}
+.essay-basics-label{font-size:0.78rem;color:#c9a84c;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.essay-basics-text{font-size:0.92rem;color:#ddd;line-height:1.7;}
+.essay-basics-text em{color:#00f2ff;font-style:italic;}
+.sample-essay-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:16px 20px;margin-top:14px;font-size:0.92rem;color:#ddd;line-height:1.8;}
+.sample-essay-title{font-size:0.82rem;color:#c9a84c;font-weight:700;margin-bottom:8px;}
+/* m2 additions */
+.grammar-box{background:rgba(201,168,76,0.06);border-left:3px solid #c9a84c;border-radius:6px;padding:14px 18px;margin-bottom:12px;}
+.grammar-label{font-size:0.78rem;color:#c9a84c;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.grammar-code{display:inline-block;background:#c9a84c;color:#000;font-weight:700;padding:2px 10px;border-radius:12px;font-size:0.78rem;margin-right:8px;}
+.grammar-title{font-size:1.05rem;color:#fff;font-weight:700;margin-bottom:8px;}
+.grammar-explain{font-size:0.92rem;color:#ddd;line-height:1.7;margin-bottom:10px;}
+.grammar-example{background:rgba(0,0,0,0.25);border-radius:6px;padding:8px 12px;margin-top:6px;font-size:0.9rem;color:#ddd;line-height:1.6;cursor:pointer;}
+.grammar-example:hover{background:rgba(0,242,255,0.08);}
+.grammar-example .ge-ko{color:rgba(255,255,255,0.55);font-size:0.82rem;margin-top:3px;}
+.pw-wrap{margin-top:12px;}
+.pw-label{font-size:0.82rem;color:#00f2ff;font-weight:700;margin:10px 0 6px;}
+.pw-hint{font-size:0.78rem;color:rgba(255,255,255,0.55);margin-bottom:6px;line-height:1.5;}
+.pw-input{width:100%;min-height:54px;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:6px;font-size:0.92rem;font-family:inherit;resize:vertical;}
+.opinion-box{background:rgba(0,242,255,0.05);border:1px solid rgba(0,242,255,0.25);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+/* m3 additions — debate */
+.debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.debate-col{display:flex;flex-direction:column;gap:8px;}
+.debate-col-title{font-weight:700;font-size:0.88rem;padding:6px 10px;border-radius:6px;text-align:center;letter-spacing:1px;}
+.debate-col-title.pro{background:rgba(40,200,120,0.15);color:#6be0a0;border:1px solid rgba(40,200,120,0.35);}
+.debate-col-title.con{background:rgba(220,80,80,0.15);color:#ffb0b0;border:1px solid rgba(220,80,80,0.35);}
+.debate-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:9px 12px;font-size:0.86rem;color:#ddd;line-height:1.55;}
+.debate-card.pro{border-left:3px solid #28c878;}
+.debate-card.con{border-left:3px solid #dc5050;}
+@media(max-width:560px){.debate-grid{grid-template-columns:1fr;}}
+.debate-topic-box{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+/* Day 1/2/3 block — dot + border-left + word count */
+.day-block{margin:16px 0;background:#f3f0ff;border-radius:12px;padding:16px;}
+.day-row{margin-bottom:12px;}
+.day-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.day-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.dot-1{background:#B4B2A9;}.dot-2{background:#4A9E75;}.dot-3{background:var(--gp);}
+.day-tag{font-size:11px;font-weight:600;letter-spacing:0.06em;color:#888;text-transform:uppercase;}
+.day-wc{font-size:10px;color:var(--gp);margin-left:auto;background:var(--gl);padding:2px 8px;border-radius:10px;}
+.day-sent{font-size:15px;line-height:1.65;padding:10px 14px;border-left:3px solid;border-radius:0 10px 10px 0;}
+.sent-1{border-color:#B4B2A9;background:#f3f0ff;color:#222;}
+.sent-2{border-color:#8478e0;background:#ede8ff;color:#222;}
+.sent-3{border-color:var(--gp);background:var(--gl);color:#111;font-weight:600;}
+.sent-kr{font-size:13px;color:#444;padding:6px 14px 0;font-style:italic;}
+.day-tts{display:flex;align-items:center;gap:8px;margin-top:8px;padding-left:14px;}
+/* Reading tab buttons — larger, stronger active */
+.level-tabs{display:flex;gap:8px;margin-bottom:12px;}
+.ltab{flex:1;padding:11px 16px !important;font-size:14px !important;font-weight:700 !important;border-radius:10px !important;border:2px solid rgba(255,255,255,0.15) !important;background:rgba(255,255,255,0.04) !important;color:#ccc !important;cursor:pointer;transition:all 0.15s;}
+.ltab:hover{background:rgba(255,255,255,0.08) !important;}
+.ltab.active{background:linear-gradient(135deg,var(--gp),var(--gd)) !important;color:#fff !important;border-color:var(--gp) !important;box-shadow:0 0 12px rgba(0,0,0,0.25) !important;transform:translateY(-1px);}
+/* Essay tips — colored cards */
+.et-wrap{margin-bottom:20px;}
+.et-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.et-icon{width:32px;height:32px;border-radius:8px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.et-title{font-size:15px;font-weight:600;color:#1a3a5c;}
+.et-sub{font-size:11px;color:#888;margin-top:1px;}
+.tip-list{display:flex;flex-direction:column;gap:8px;}
+.tip-card{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:10px;border:1px solid;}
+.tc-1{background:#f3f0ff;border-color:#9b8fe8;}.tc-2{background:#ede8ff;border-color:#8478e0;}.tc-3{background:#e6e0ff;border-color:#7264d8;}.tc-4{background:#ddd6ff;border-color:#6454cf;}.tc-5{background:#d4ccff;border-color:#5344c6;}
+.tip-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px;}
+.tn-1{background:#9b8fe8;color:#fff;}.tn-2{background:#8478e0;color:#fff;}.tn-3{background:#7264d8;color:#fff;}.tn-4{background:#6454cf;color:#fff;}.tn-5{background:#5344c6;color:#fff;}
+.tip-body{flex:1;}
+.tip-name{font-size:13px;font-weight:600;color:#222;margin-bottom:3px;}
+.tip-desc{font-size:12px;color:#555;line-height:1.5;}
+.tip-ex{margin-top:6px;font-size:12px;line-height:1.6;}
+.ex-bad{color:#5344c6;background:#ede8ff;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:3px;}
+.ex-good{color:#27500A;background:#EAF3DE;padding:2px 8px;border-radius:4px;display:inline-block;}
+.phrase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;}
+.phrase-card{background:#f3f0ff;border:1px solid #c4baff;border-radius:8px;padding:10px 12px;}
+.phrase-role{font-size:11px;font-weight:600;color:#6454cf;margin-bottom:5px;}
+.phrase-item{font-size:12px;color:#333;line-height:1.6;}
+@media(max-width:560px){.phrase-grid{grid-template-columns:1fr;}}
+/* Defensive section override — template has conflicting .sh{display:flex} */
+section.sh{display:block !important;flex-direction:unset !important;}
+section.sh > *{float:none !important;}
+/* m2 paragraph writing — workbook-style card (defensive against template CSS conflicts) */
+.paragraph-section{display:block !important;width:100% !important;float:none !important;position:static !important;padding:18px 18px 22px;background:#f8f9ff;border-radius:16px;margin:0 0 20px 0;color:#222;box-sizing:border-box;}
+.para-guide-card{display:block !important;width:100% !important;float:none !important;position:static !important;background:#f0f4ff;border-radius:12px;padding:16px;margin-bottom:16px;box-sizing:border-box;}
+.para-step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
+.para-step:last-child{margin-bottom:0;}
+.para-step b{color:var(--gd);font-size:14px;display:block;margin-bottom:2px;}
+.para-step p{font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;}
+.step-num{width:28px;height:28px;background:var(--gp);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:13px;}
+.example{background:#fff;border-left:3px solid var(--gp);padding:7px 10px;margin-top:6px;font-size:12px;color:#444;border-radius:0 6px 6px 0;line-height:1.5;}
+.para-inputs{display:block !important;width:100% !important;float:none !important;position:static !important;margin-top:8px;box-sizing:border-box;}
+.para-inputs label{display:block;font-weight:700;margin:10px 0 4px;color:var(--gd);font-size:13px;}
+.para-inputs textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:14px;resize:vertical;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;min-height:70px;}
+.para-inputs textarea:focus{border-color:var(--gp);outline:none;box-shadow:0 0 0 3px rgba(46,117,182,0.15);}
+.para-submit-wrap{text-align:center;margin-top:14px;}
+</style>
 </head>
 <body>
-<div class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">High School 1</span></div></div>
-<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">Of Mice and Men &middot; W07 / 08</div><h1 class="hero-title">Of Mice and Men</h1><p class="hero-sub">꿈의 무게 — John Steinbeck · B2~C1</p><div style="margin-top:12px;font-size:0.8rem;color:rgba(255,255,255,0.6);background:rgba(0,0,0,0.3);padding:8px 12px;border-radius:8px;display:inline-block;">🔊 <strong>음성 기능 사용법:</strong> 페이지 하단의 "음성 기능 활성화" 버튼을 먼저 클릭해주세요!</div></div></div>
+<div class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">High School 2</span></div></div>
+<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">Utopia &middot; W34 / 36</div><h1 class="hero-title">Utopia</h1><p class="hero-sub">종교적 관용 &mdash; Thomas More &middot; C1</p></div></div>
 <div class="content-wrap">
-  <section class="sh"><div class="sh-bar"><span class="sh-num">1</span><h2>&#54645;&#49900; &#54364;&#54788; <span class="sh-en">KEY EXPRESSION</span></h2></div>
-    <div class="key-expr-box"><div class="ke-en" onclick="speak(this.textContent)">Guys like us, that work on ranches, are the loneliest guys in the world. &#128266;</div><div class="ke-ko">목장에서 일하는 우리 같은 사람들은 세상에서 가장 외로운 사람들이야.</div></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">2</span><h2>&#51648;&#47928; &#51069;&#44592; <span class="sh-en">READING</span></h2></div>
-    <div class="level-tabs"><button class="ltab active" onclick="showLevel('b1',this)">B1 &#44592;&#48376;</button><button class="ltab" onclick="showLevel('c1',this)">C1 &#49900;&#54868;</button></div>
-    <div id="b1Story" class="story-box" style="display:block;">
-<p class="story-line" data-speak="Kafka influenced Sartre, Camus, and Beckett">Kafka influenced Sartre, Camus, and Beckett</p>
-<p class="story-line" data-speak="Existentialism asks how we create meaning without inherent purpose">Existentialism asks how we create meaning without inherent purpose</p>
-<p class="story-line" data-speak="Kafka's characters cannot create meaning — the system prevents it">Kafka's characters cannot create meaning — the system prevents it</p>
-<p class="story-line" data-speak="But Kafka himself kept writing">But Kafka himself kept writing</p>
-<p class="story-line" data-speak="His artistic act contradicts his philosophical despair.">His artistic act contradicts his philosophical despair.</p>
-</div>
-    <div id="c1Story" class="story-box" style="display:none;">
-<p class="story-line" data-speak="Kafka anticipates existentialism's core concerns but his resolution differs">Kafka anticipates existentialism's core concerns but his resolution differs</p>
-<p class="story-line" data-speak="Where Camus counsels revolt and Sartre counsels radical choice, Kafka offers no exit">Where Camus counsels revolt and Sartre counsels radical choice, Kafka offers no exit</p>
-<p class="story-line" data-speak="Yet his very act of writing — giving form to chaos — is itself a form of revolt against meaninglessness.">Yet his very act of writing — giving form to chaos — is itself a form of revolt against meaninglessness.</p>
-</div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">3</span><h2>&#54645;&#49900; &#50612;&#55064; <span class="sh-en">VOCABULARY</span></h2></div>
-    <div class="vocab-grid">
-<div class="vocab-card"><div class="vc-en" onclick="speak('inherent')">inherent 🔊</div><div class="vc-ko">내재적인</div><div class="vc-ex">"Existentialism asks about meaning without inherent purpose."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('anticipates')">anticipates 🔊</div><div class="vc-ko">예견하다</div><div class="vc-ex">"Kafka anticipates existentialism's core concerns."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('revolt')">revolt 🔊</div><div class="vc-ko">반항</div><div class="vc-ex">"Camus counsels revolt; Kafka offers no exit."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('incomprehension')">incomprehension 🔊</div><div class="vc-ko">이해 불가</div><div class="vc-ex">"Making art from incomprehension is revolt."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('authentic')">authentic 🔊</div><div class="vc-ko">진정한</div><div class="vc-ex">"The search for authentic selfhood."</div></div>
-</div><div class="vc-ko">이주하는</div><div class="vc-ex">"George and Lennie were migrant workers."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">companionship &#128266;</div><div class="vc-ko">동반자 관계</div><div class="vc-ex">"Their companionship was unusual for ranch workers."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">innocence &#128266;</div><div class="vc-ko">순수함</div><div class="vc-ex">"Lennie's innocence made him both lovable and dangerous."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">poignant &#128266;</div><div class="vc-ko">애절한</div><div class="vc-ex">"The ending was deeply poignant and tragic."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">loneliness &#128266;</div><div class="vc-ko">외로움</div><div class="vc-ex">"Loneliness was the defining condition of ranch life."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">inevitable &#128266;</div><div class="vc-ko">불가피한</div><div class="vc-ex">"Their tragedy seemed almost inevitable."</div></div>
-</div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">4</span><h2>&#47928;&#48277; &#54252;&#51064;&#53944; <span class="sh-en">GRAMMAR</span></h2></div>
-    <div class="gram-box"><div class="gram-label">Narrative Tenses (G32)</div><ul class="grammar-examples"><li><em>"They had been walking all day when they reached the river." — 과거완료진행</em></li><li><em>"While Lennie was drinking, George watched carefully." — 과거진행</em></li><li><em>"No sooner had they arrived than trouble began." — no sooner...than</em></li></ul></div>
-  <div style="text-align:center;margin-top:12px;"><a href="/grammar-camp/G32/G32_past_simple_vs_past_continuous.html?return=/camp-b/g2/week34.html" target="_blank" style="display:inline-block;padding:6px 14px;background:#00f2ff;color:#000;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;">📘 Grammar Base Camp →</a></div></section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">5</span><h2>&#53664;&#47200; &#51452;&#51228; <span class="sh-en">DEBATE</span></h2></div>
-    <div class="debate-q-box"><div class="debate-q">"Kafka's refusal to offer solutions makes him more honest than Camus or Sartre."</div><div class="debate-q-ko">카프카의 해결책 거부는 그를 카뮈나 사르트르보다 더 정직하게 만든다.</div></div>
-    <div class="debate-sides"><div class="debate-agree"><strong>&#9989; &#52268;&#49457;</strong><ul><li>George and Lennie's dream is destroyed by forces beyond their control</li><li>The Depression proves the Dream is inaccessible to the poor</li><li>Candy, Crooks, and Curley's wife all have crushed dreams</li></ul></div><div class="debate-disagree"><strong>&#10060; &#48152;&#45824;</strong><ul><li>The dream gives George and Lennie purpose</li><li>Without aspiration human life loses meaning</li><li>Some people do achieve the Dream through perseverance</li></ul></div></div>
-    <div style="margin-top:20px;"><p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-bottom:8px;">&#45236; &#51452;&#51109;&#51012; &#50689;&#50612;&#47196; &#50024;&#48372;&#49464;&#50836;:</p><textarea class="essay-input" id="debateInput" placeholder="I argue that... because..."></textarea><button class="btn-ai-debate" onclick="sendDebate()">&#9876;&#65039; ChatGPT&#50640;&#49436; AI&#50752; &#53664;&#47200;&#54616;&#44592;</button></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">6</span><h2>&#50640;&#49464;&#51060; &#50416;&#44592; <span class="sh-en">ESSAY</span></h2></div>
-    <div class="essay-topic-box"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:#00f2ff;margin-bottom:8px;">"How does Steinbeck use George and Lennie's friendship to critique the American Dream?"</div><div style="font-size:0.9rem;color:rgba(255,255,255,0.6);">Steinbeck는 조지와 레니의 우정을 통해 아메리칸 드림을 어떻게 비판하는가?</div></div>
-    <div style="margin-top:16px;">
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;">&#128221; Introduction</p><textarea class="essay-input" id="es1" placeholder="Introduce the topic..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Body 1</p><textarea class="essay-input" id="es2" placeholder="First argument..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Body 2</p><textarea class="essay-input" id="es3" placeholder="Second argument..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Conclusion</p><textarea class="essay-input" id="es4" placeholder="Summarize..."></textarea>
-      <button class="btn-submit" onclick="submitEssay()">&#9997;&#65039; ChatGPT&#50640;&#49436; &#50640;&#49464;&#51060; &#54588;&#46300;&#48177; &#48155;&#44592;</button>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">1</span><h2>핵심 표현 <span class="sh-en">KEY EXPRESSION</span></h2></div>
+    <div class="day-block">
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-1"></span><span class="day-tag">Day 1 · 기초</span></div>
+        <div class="day-sent sent-1">All religions were respected.</div>
+      </div>
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-2"></span><span class="day-tag">Day 2 · 확장</span></div>
+        <div class="day-sent sent-2">Utopians practiced many religions but all were tolerated.</div>
+      </div>
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-3"></span><span class="day-tag">Day 3 · 목표 ⭐ 오늘</span><span class="day-wc">28 words</span></div>
+        <div class="day-sent sent-3">More's Utopia practiced something almost unimaginable in sixteenth-century Europe: genuine religious pluralism where citizens worshipped freely, provided they did not use religion to persecute those who believed differently.</div>
+        <div class="sent-kr">🇰🇷 모어의 유토피아는 16세기 유럽에서는 거의 상상할 수 없었던 것을 실천했습니다: 시민들이 자유롭게 예배할 수 있는 진정한 종교적 다원주의였으며, 단지 다른 믿음을 가진 사람들을 박해하는 데 종교를 사용하지 않는 한 허용되었습니다.</div>
+        <div class="day-tts">
+          <button class="play-toggle" onclick="togglePlay(this)" data-text="More\'s Utopia practiced something almost unimaginable in sixteenth-century Europe: genuine religious pluralism where citizens worshipped freely, provided they did not use religion to persecute those who believed differently."><span class="play-icon">▶</span><span class="play-label">듣기</span></button>
+        </div>
+      </div>
     </div>
   </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">7</span><h2>ChatGPT &#54924;&#54868; &#50672;&#49845; <span class="sh-en">AI PRACTICE</span></h2></div>
-    <div style="text-align:center;padding:20px 0;"><p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">ChatGPT Camp B&#50752; &#54632;&#44760; &#50689;&#50612;&#47196; &#45824;&#54868;&#54644;&#48372;&#49464;&#50836;!</p><button class="btn-submit" onclick="launchChatGPTPractice()">&#129302; ChatGPT&#50752; 50:50 &#54924;&#54868; &#50672;&#49845;</button></div>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">2</span><h2>지문 읽기 <span class="sh-en">READING</span></h2></div>
+    <div class="level-tabs">
+      <button class="ltab active" onclick="showLevel('b1',this)">🔵 기본 (C1)</button>
+      <button class="ltab" onclick="showLevel('c1',this)">🟣 심화 (C1+)</button>
+    </div>
+    <div id="b1Story" class="story-box" style="display:block;">
+      <div id="b1Text"><p>In contemporary pluralistic societies, a fundamental question persists: should all religious expressions receive equal accommodation? The answer requires careful distinction between belief and practice. Religious freedom must be protected for those who hold diverse convictions, provided their actions do not infringe upon the fundamental rights of others. This principle establishes necessary boundaries in a complex social landscape.</p><p>Genuine tolerance does not demand agreement but rather respect for differing worldviews. However, societies face legitimate challenges when religious practices conflict with established laws or public safety. The state maintains authority to regulate conduct, even when motivated by sincere faith, to preserve social cohesion and protect vulnerable citizens from potential harm.</p><p>Thus, religious pluralism thrives under a specific condition: the peaceful coexistence of varied traditions. This framework allows for individual spiritual exploration while maintaining the collective welfare as the paramount concern. Ultimately, sustainable pluralism depends on this delicate balance between personal liberty and communal responsibility.</p></div>
+      <button class="play-toggle" onclick="togglePlay(this)"><span class="play-icon">▶</span><span class="play-label">재생</span></button>
+    </div>
+    <div id="c1Story" class="story-box" style="display:none;">
+      <div id="c1Text"><p>The philosophical and legal contours of religious freedom in heterogeneous societies present a perennial dilemma: defining the precise point where individual conviction must yield to collective norms. A robust pluralistic framework champions the liberty of conscience for all citizens, yet this liberty is inherently conditional. It is circumscribed by the imperative to prevent harm, a principle that justifies state intervention when religious practices threaten public order, health, or the inviolable rights of other individuals.</p><p>Consequently, the operationalization of tolerance necessitates a nuanced jurisprudence. Legal systems must adjudicate conflicts between religious mandates and secular laws, such as those pertaining to medical treatment, educational content, or gender equality. The guiding criterion should be whether a practice causes tangible detriment to non-consenting parties or undermines the foundational democratic values of the polity itself.</p><p>Therefore, the architecture of a pluralistic society rests upon a foundational paradox: it must simultaneously affirm the profound importance of religious belief while establishing its non-absolute status. This creates a social contract where diversity flourishes within a framework of mutually agreed-upon limits, ensuring that pluralism does not devolve into a state of perpetual conflict or the tyranny of one group over another.</p></div>
+      <button class="play-toggle" onclick="togglePlay(this)"><span class="play-icon">▶</span><span class="play-label">재생</span></button>
+    </div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">3</span><h2>핵심 어휘 <span class="sh-en">VOCABULARY</span></h2></div>
+    <div class="vocab-grid"><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">pluralism &#128266;</div><div class="vc-ko">다원주의</div><div class="vc-ex">"A healthy democracy is characterized by a robust pluralism that accommodates a wide spectrum of cultural and religious viewpoints without favoring any single one."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">accommodation &#128266;</div><div class="vc-ko">수용, 조정</div><div class="vc-ex">"Reasonable accommodation of religious practices in the workplace is a legal requirement, provided it does not impose an undue hardship on the employer."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">circumscribe &#128266;</div><div class="vc-ko">제한하다, 한계를 정하다</div><div class="vc-ex">"Constitutional rights, while fundamental, are circumscribed by the need to protect national security and public safety from clear and present dangers."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">jurisprudence &#128266;</div><div class="vc-ko">법철학, 법체계</div><div class="vc-ex">"Modern jurisprudence increasingly grapples with complex cases where religious freedom claims conflict with evolving norms of equality and non-discrimination."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">tangible &#128266;</div><div class="vc-ko">만질 수 있는, 명백한</div><div class="vc-ex">"For a restriction on religious practice to be justified, the state must demonstrate a tangible and compelling threat to public welfare, not merely a speculative concern."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">inviolable &#128266;</div><div class="vc-ko">침범할 수 없는, 신성한</div><div class="vc-ex">"The core principle of human dignity is considered inviolable, forming an absolute boundary that no religious or cultural practice may legitimately cross."</div></div></div>
+
+    <div class="game-block"><div class="game-title">🎯 빈칸 채우기</div><div class="game-q">1. A society can claim to be truly tolerant only <strong>___</strong><strong>___</strong>_ it protects the rights of minority faiths alongside those of the majority.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">provided</button><button class="game-opt" onclick="fbCheck(this,false)">although</button><button class="game-opt" onclick="fbCheck(this,false)">because</button></div><div class="game-fb"></div><div class="game-q">2. The state's duty is to protect <strong>___</strong><strong>___</strong>_ <strong>___</strong><strong>___</strong>_ dissent from mainstream religious doctrines, ensuring their safety and freedom of conscience.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">those who</button><button class="game-opt" onclick="fbCheck(this,false)">people which</button><button class="game-opt" onclick="fbCheck(this,false)">individuals whom</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기</div><div class="game-q">1. <span class="game-hint">힌트: 관용</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds1" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds1','tolerance')">확인</button></div><div class="game-fb" id="ds1-fb"></div><div class="game-q">2. <span class="game-hint">힌트: 양심</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds2" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds2','conscience')">확인</button></div><div class="game-fb" id="ds2-fb"></div><div class="game-q">3. <span class="game-hint">힌트: 공존</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds3" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds3','coexistence')">확인</button></div><div class="game-fb" id="ds3-fb"></div></div>
+    <div class="game-block"><div class="game-title">👂 듣고 고르기</div><div class="game-q">1. <button class="game-opt" onclick="lcPlay('provided they do not disturb the public peace')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">if they maintain public order</button><button class="game-opt" onclick="lcCheck(this,false)">although they are peaceful</button><button class="game-opt" onclick="lcCheck(this,false)">because they promote harmony</button></div><div class="game-fb"></div><div class="game-q">2. <button class="game-opt" onclick="lcPlay('the rights of those who hold unpopular beliefs')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,false)">rights for people with common views</button><button class="game-opt" onclick="lcCheck(this,true)">protections for individuals with minority opinions</button><button class="game-opt" onclick="lcCheck(this,false)">freedoms for groups with power</button></div><div class="game-fb"></div><div class="game-q">3. <button class="game-opt" onclick="lcPlay('a critical distinction: belief itself is absolute, but practice is not')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">a key difference between thought and action</button><button class="game-opt" onclick="lcCheck(this,false)">an important similarity in doctrine</button><button class="game-opt" onclick="lcCheck(this,false)">a confusing overlap of ideas</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">🔤 단어 배열하기</div><div class="game-q">1. 레벨 C1 — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo1-bank"><span class="wo-chip" data-word="freedom" onclick="woAdd(1,this,'freedom')">freedom</span><span class="wo-chip" data-word="delicate" onclick="woAdd(1,this,'delicate')">delicate</span><span class="wo-chip" data-word="Genuine" onclick="woAdd(1,this,'Genuine')">Genuine</span><span class="wo-chip" data-word="between" onclick="woAdd(1,this,'between')">between</span><span class="wo-chip" data-word="and" onclick="woAdd(1,this,'and')">and</span><span class="wo-chip" data-word="balance" onclick="woAdd(1,this,'balance')">balance</span><span class="wo-chip" data-word="individual" onclick="woAdd(1,this,'individual')">individual</span><span class="wo-chip" data-word="requires" onclick="woAdd(1,this,'requires')">requires</span><span class="wo-chip" data-word="conviction" onclick="woAdd(1,this,'conviction')">conviction</span><span class="wo-chip" data-word="religious" onclick="woAdd(1,this,'religious')">religious</span><span class="wo-chip" data-word="harmony" onclick="woAdd(1,this,'harmony')">harmony</span><span class="wo-chip" data-word="social" onclick="woAdd(1,this,'social')">social</span><span class="wo-chip" data-word="a" onclick="woAdd(1,this,'a')">a</span></div><div class="wo-zone" id="wo1-zone"></div><button class="game-opt" onclick="woCheck(1)">확인</button><div class="game-fb" id="wo1-fb"></div><div class="game-q">2. 레벨 C1+ — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo2-bank"><span class="wo-chip" data-word="state" onclick="woAdd(2,this,'state')">state</span><span class="wo-chip" data-word="upon" onclick="woAdd(2,this,'upon')">upon</span><span class="wo-chip" data-word="citizens" onclick="woAdd(2,this,'citizens')">citizens</span><span class="wo-chip" data-word="infringe" onclick="woAdd(2,this,'infringe')">infringe</span><span class="wo-chip" data-word="of" onclick="woAdd(2,this,'of')">of</span><span class="wo-chip" data-word="fundamental" onclick="woAdd(2,this,'fundamental')">fundamental</span><span class="wo-chip" data-word="the" onclick="woAdd(2,this,'the')">the</span><span class="wo-chip" data-word="must" onclick="woAdd(2,this,'must')">must</span><span class="wo-chip" data-word="directly" onclick="woAdd(2,this,'directly')">directly</span><span class="wo-chip" data-word="other" onclick="woAdd(2,this,'other')">other</span><span class="wo-chip" data-word="impose" onclick="woAdd(2,this,'impose')">impose</span><span class="wo-chip" data-word="The" onclick="woAdd(2,this,'The')">The</span><span class="wo-chip" data-word="practices" onclick="woAdd(2,this,'practices')">practices</span><span class="wo-chip" data-word="religious" onclick="woAdd(2,this,'religious')">religious</span><span class="wo-chip" data-word="rights" onclick="woAdd(2,this,'rights')">rights</span><span class="wo-chip" data-word="on" onclick="woAdd(2,this,'on')">on</span><span class="wo-chip" data-word="limits" onclick="woAdd(2,this,'limits')">limits</span><span class="wo-chip" data-word="that" onclick="woAdd(2,this,'that')">that</span><span class="wo-chip" data-word="inevitably" onclick="woAdd(2,this,'inevitably')">inevitably</span></div><div class="wo-zone" id="wo2-zone"></div><button class="game-opt" onclick="woCheck(2)">확인</button><div class="game-fb" id="wo2-fb"></div></div>
+    <div class="game-block"><div class="game-title">🎴 짝맞추기</div><div class="game-q">단어와 한국어 뜻을 짝지어보세요:</div><div class="match-grid"><div><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">heterogeneous</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">imperative</button><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">adjudicate</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">paradox</button></div><div><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">역설</button><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">이질적인, 다양한</button><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">판결을 내리다, 재판하다</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">필수적인, 명령</button></div></div></div>
+    <div class="game-block"><div class="game-title">🏆 받아쓰기 도전</div><div class="game-q">A1 — <button class="game-opt" onclick="dcPlay('Religious tolerance means accepting different beliefs in our community.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a1','Religious tolerance means accepting different beliefs in our community.')">확인</button></div><div class="game-fb" id="dc-a1-fb"></div><div class="game-q">A2 — <button class="game-opt" onclick="dcPlay('A key challenge for pluralistic societies is balancing many religious freedoms.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a2" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a2','A key challenge for pluralistic societies is balancing many religious freedoms.')">확인</button></div><div class="game-fb" id="dc-a2-fb"></div><div class="game-q">B1 — <button class="game-opt" onclick="dcPlay('The legal system faces complex dilemmas when sincere religious practices conflict with established secular laws designed for public safety.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-b1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('b1','The legal system faces complex dilemmas when sincere religious practices conflict with established secular laws designed for public safety.')">확인</button></div><div class="game-fb" id="dc-b1-fb"></div></div>
+    <script>document.addEventListener('DOMContentLoaded',function(){woInit(1, ["Genuine", "religious", "freedom", "requires", "a", "delicate", "balance", "between", "individual", "conviction", "and", "social", "harmony"]);woInit(2, ["The", "state", "must", "inevitably", "impose", "limits", "on", "religious", "practices", "that", "directly", "infringe", "upon", "the", "fundamental", "rights", "of", "other", "citizens"]);});</script>
+  </section>
+  <section class="sh comp-section"><div class="sh-bar"><span class="sh-num">4</span><h2>이해 문제 <span class="sh-en">COMPREHENSION</span></h2></div>
+    <div class="comp-tabs">
+      <button class="comp-tab active" onclick="compTab(this,'entry')">🟡 입문</button>
+      <button class="comp-tab" onclick="compTab(this,'b1')">🔵 초급 B1</button>
+      <button class="comp-tab" onclick="compTab(this,'intermediate')">🟣 중급</button>
+    </div>
+    <div class="comp-panel comp-panel-entry active"><div class="game-q">Q1. 본문에 따르면, 종교적 자유의 주요 조건은 무엇인가요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">타인의 권리를 침해하지 않는 것</button><button class="game-opt" onclick="compCheck(this,false)">정부의 승인을 받는 것</button><button class="game-opt" onclick="compCheck(this,false)">대부분의 종교와 일치하는 것</button></div><div class="game-fb"></div><div class="game-q">Q2. 다원주의 사회에서 국가의 역할은 무엇으로 설명되나요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">해를 방지하는 중재자</button><button class="game-opt" onclick="compCheck(this,false)">['모든 종교적 실천의 후원자', '한 종교의 우월성 확립자']</button></div><div class="game-fb"></div><div class="game-q">Q3. 글에서 '침해할 수 없는' 권리는 무엇을 의미하나요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">어떤 이유로도 침범되어서는 안 되는 권리</button><button class="game-opt" onclick="compCheck(this,false)">['때때로 제한될 수 있는 권리', '종교적 실천에만 해당되는 권리']</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-b1"><div class="game-q">Q1. According to the passage, what is the foundational paradox of a pluralistic society?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">It must value religious belief while recognizing its limits.</button><button class="game-opt" onclick="compCheck(this,false)">It seeks to eliminate all religious conflict entirely.</button><button class="game-opt" onclick="compCheck(this,false)">It prioritizes secular laws over all personal convictions.</button></div><div class="game-fb"></div><div class="game-q">Q2. What is the stated criterion for justifying state intervention in religious practice?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">When it causes tangible harm to others or public order.</button><button class="game-opt" onclick="compCheck(this,false)">When it differs from the beliefs of the political majority.</button><button class="game-opt" onclick="compCheck(this,false)">Whenever it is based on ancient texts or traditions.</button></div><div class="game-fb"></div><div class="game-q">Q3. How does the passage characterize the relationship between diversity and social stability?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">Diversity flourishes within a framework of agreed limits.</button><button class="game-opt" onclick="compCheck(this,false)">Diversity inherently leads to conflict and must be minimized.</button><button class="game-opt" onclick="compCheck(this,false)">Social stability requires uniformity of belief and practice.</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-intermediate"><div class="game-q">Q1. Which of the following best captures the author's view on the 'operationalization of tolerance'?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">It requires a legal system capable of nuanced judgment in complex conflicts.</button><button class="game-opt" onclick="compCheck(this,false)">It is best achieved by allowing all religious practices without exception.</button><button class="game-opt" onclick="compCheck(this,false)">It is an impractical ideal that modern states should not attempt.</button></div><div class="game-fb"></div><div class="game-q">Q2. The passage implies that the most significant threat to pluralism comes from:</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">The refusal to establish any limits, leading to potential tyranny or conflict.</button><button class="game-opt" onclick="compCheck(this,false)">The existence of any laws that reference religious principles.</button><button class="game-opt" onclick="compCheck(this,false)">Governments that acknowledge the importance of religious belief.</button></div><div class="game-fb"></div><div class="game-q">Q3. What analytical distinction is central to the passage's argument about limits?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">The distinction between protected belief and regulatable practice.</button><button class="game-opt" onclick="compCheck(this,false)">The distinction between ancient and modern religions.</button><button class="game-opt" onclick="compCheck(this,false)">The distinction between individual and communal worship styles.</button></div><div class="game-fb"></div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">5</span><h2>문법 <span class="sh-en">GRAMMAR</span></h2></div>
+    <div class="grammar-box">
+      <div class="grammar-label"><span class="grammar-code">G34</span>이번 주 문법 포인트</div>
+      <div class="grammar-title">Colon (:), Provided (=if), Those who</div>
+      <div class="essay-basics-text" style="margin-bottom:8px;">콜론(:), Provided (=만약 ~한다면), Those who (~하는 사람들)</div>
+      <div class="grammar-explain">콜론(:)은 앞의 진술을 설명하거나 예시를 들 때 사용합니다. 'Provided'는 'if'와 유사한 조건을 나타내는 접속사로, 공식적인 문맥에서 자주 쓰입니다. 'Those who'는 '~하는 사람들'이라는 의미의 관계대명사 구문으로, 특정 집단을 지칭할 때 사용합니다.</div>
+    </div>
+    <div class="essay-basics-label" style="margin-top:14px;">📝 예문 3개 (클릭해서 듣기)</div>
+    <div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">Utopia established one supreme rule: all citizens must respect the peaceful worship of others, provided it caused no public disorder.</span> &#128266;<div class="ge-ko">유토피아는 한 가지 최고의 규칙을 정했습니다: 시민들은 공공의 무질서를 초래하지 않는 한 다른 사람들의 평화로운 예배를 존중해야 합니다.</div></div><div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">The state offers protection to those who dissent from mainstream religious doctrines, provided their dissent is expressed peacefully and within the law.</span> &#128266;<div class="ge-ko">국가는 그들의 반대가 평화적으로 그리고 법 내에서 표현되는 한 주류 종교 교리에서 이의를 제기하는 사람들을 보호합니다.</div></div><div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">A complex challenge arises: how to balance absolute freedom of belief with necessary limits on action, a dilemma faced by all pluralistic democracies.</span> &#128266;<div class="ge-ko">복잡한 도전이 발생합니다: 어떻게 신념의 절대적 자유와 행동에 대한 필요한 제한을 균형 있게 조화시킬 것인가, 이는 모든 다원주의 민주주의가 직면한 딜레마입니다.</div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num" style="min-width:40px;">5-B</span><h2>문법 연습 <span class="sh-en">GRAMMAR PRACTICE</span></h2></div>
+    <div class="game-block"><div class="game-title">🎯 문법 이해 문제 (Grammar Quiz)</div><div class="game-q">Q1. Choose the sentence that correctly uses 'provided'.</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">People can believe anything provided they keep it private.</button><button class="game-opt" onclick="fbCheck(this,false)">Provided the weather is good, we will have the ceremony.</button><button class="game-opt" onclick="fbCheck(this,false)">He provided the documents for the meeting.</button></div><div class="game-fb"></div><div class="game-q">Q2. Which sentence correctly uses a colon to introduce an explanation?</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">The principle is clear: actions motivated by religion are not above the law.</button><button class="game-opt" onclick="fbCheck(this,false)">The principle is clear, actions motivated by religion are not above the law.</button><button class="game-opt" onclick="fbCheck(this,false)">The principle is clear; actions motivated by religion: are not above the law.</button></div><div class="game-fb"></div><div class="game-q">Q3. Identify the correct use of 'those who'.</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">Society must listen to those who advocate for tolerance.</button><button class="game-opt" onclick="fbCheck(this,false)">Society must listen to those which advocate for tolerance.</button><button class="game-opt" onclick="fbCheck(this,false)">Society must listen to people who they advocate for tolerance.</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기 (Dictation)</div><div class="game-q">1. <button class="game-opt" onclick="gpDictPlay('pluralistic')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-1" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(1,'pluralistic')">확인</button><button class="game-opt" onclick="gpDictHint(1)">💡 힌트</button><span id="gp-dict-hint-1" class="game-hint" style="visibility:hidden;">다원적인</span></div><div class="game-fb" id="gp-dict-fb-1"></div><div class="game-q">2. <button class="game-opt" onclick="gpDictPlay('accommodation')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-2" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(2,'accommodation')">확인</button><button class="game-opt" onclick="gpDictHint(2)">💡 힌트</button><span id="gp-dict-hint-2" class="game-hint" style="visibility:hidden;">수용, 조정</span></div><div class="game-fb" id="gp-dict-fb-2"></div><div class="game-q">3. <button class="game-opt" onclick="gpDictPlay('jurisprudence')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-3" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(3,'jurisprudence')">확인</button><button class="game-opt" onclick="gpDictHint(3)">💡 힌트</button><span id="gp-dict-hint-3" class="game-hint" style="visibility:hidden;">법철학</span></div><div class="game-fb" id="gp-dict-fb-3"></div></div>
+    <div class="game-block"><div class="game-title">📝 빈칸 채우기 (Fill in the Blank)</div><div class="game-q">1. The law makes a crucial distinction: belief is inviolable, <strong>_______</strong> practice can be regulated for the common good.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">but</button><button class="game-opt" onclick="fbCheck(this,false)">and</button><button class="game-opt" onclick="fbCheck(this,false)">so</button></div><div class="game-fb"></div><div class="game-q">2. <strong>_______</strong> <strong>_______</strong> oppose certain medical procedures on religious grounds must still respect a patient's right to choose.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">Those who</button><button class="game-opt" onclick="fbCheck(this,false)">People which</button><button class="game-opt" onclick="fbCheck(this,false)">Ones who</button></div><div class="game-fb"></div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num" style="min-width:40px;">5-C</span><h2>수능형 연습 <span class="sh-en">CSAT PRACTICE</span></h2></div>
+    <div class="game-block"><div class="game-title">📋 Q1. 주제 파악</div><div style="background:rgba(255,255,255,0.06);padding:12px;border-radius:8px;margin-bottom:10px;font-size:0.9rem;line-height:1.7;color:#ddd;">The concept of religious tolerance within a pluralistic framework is not an endorsement of all possible beliefs but a pragmatic social contract. Its sustainability hinges on a shared understanding that liberty has boundaries where it impinges on the liberty or safety of others. Thus, while conscience is free, conduct is necessarily subject to secular legal principles designed to maintain order and protect fundamental human rights. This creates the space for diversity without surrendering to anarchy.</div><div class="game-q">What is the main idea of the passage?</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">Religious tolerance requires limiting practices that harm others to maintain social order.</button><button class="game-opt" onclick="fbCheck(this,false)">All religious conduct should be free from any government regulation or limitation.</button><button class="game-opt" onclick="fbCheck(this,false)">Pluralistic societies must choose one official religion to ensure stability and unity.</button><button class="game-opt" onclick="fbCheck(this,false)">The freedom of belief is unimportant compared to the need for uniform social conduct.</button></div><div class="game-fb"></div></div><div class="game-block"><div class="game-title">📋 Q2. 빈칸 추론</div><div style="background:rgba(255,255,255,0.06);padding:12px;border-radius:8px;margin-bottom:10px;font-size:0.9rem;line-height:1.7;color:#ddd;">In legal disputes involving religion, courts often apply a test of 'compelling state interest.' This means a religious practice can only be restricted if the government demonstrates a _______ and overriding public need, such as preventing imminent harm. This high standard protects minority faiths from arbitrary majoritarian prejudice.</div><div class="game-q">Which word best fills the blank?</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">genuine</button><button class="game-opt" onclick="fbCheck(this,false)">minor</button><button class="game-opt" onclick="fbCheck(this,false)">hypothetical</button><button class="game-opt" onclick="fbCheck(this,false)">religious</button></div><div class="game-fb"></div></div><div class="game-block"><div class="game-title">📋 Q3. 문장 배열 (Sentence Order)</div><div class="game-q">Arrange the sentences in logical order.</div><div class="game-q" style="margin:4px 0;">A. In pluralistic democracies, the freedom to hold any religious belief is considered nearly absolute.</div><div class="game-q" style="margin:4px 0;">B. This principle creates a protected space for individual conscience.</div><div class="game-q" style="margin:4px 0;">C. The line between protected belief and regulatable action is the central frontier of religious liberty jurisprudence.</div><div class="game-q" style="margin:4px 0;">D. However, when a belief manifests as an action that conflicts with neutral, generally applicable laws, the state may intervene.</div><div style="margin-top:8px;"><input class="game-input" id="csat-ord" placeholder="정답 순서 (예: ABCD)" style="max-width:200px;" /><button class="game-opt" onclick="var v=document.getElementById('csat-ord').value.trim().toUpperCase();var fb=document.getElementById('csat-ord-fb');if(v==='ABDC'){fb.textContent='✅ 정답!';fb.className='game-fb correct';}else{fb.textContent='❌ 정답: ABDC';fb.className='game-fb wrong';}">확인</button></div><div class="game-fb" id="csat-ord-fb"></div></div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">6</span><h2>에세이 쓰기 <span class="sh-en">ESSAY WRITING</span></h2></div>
+    <div class="et-wrap">
+  <div class="et-header">
+    <div class="et-icon">✍️</div>
+    <div><div class="et-title">에세이 잘 쓰는 5가지 요령</div><div class="et-sub">Good Essay Writing Tips</div></div>
+  </div>
+  <div class="tip-list">
+    <div class="tip-card tc-1"><div class="tip-num tn-1">1</div><div class="tip-body">
+      <div class="tip-name">명확한 주제문 (Topic Sentence)</div>
+      <div class="tip-desc">첫 문장에 내 주장을 한 번에! 모호하면 읽는 사람이 혼란스러워요.</div>
+      <div class="tip-ex"><span class="ex-bad">❌ "Beauty is important."</span> <span class="ex-good">✅ "Beauty without morality leads to corruption."</span></div>
+    </div></div>
+    <div class="tip-card tc-2"><div class="tip-num tn-2">2</div><div class="tip-body">
+      <div class="tip-name">구체적 근거 + 예시</div>
+      <div class="tip-desc">"Because" 다음엔 반드시 구체적인 예시가 따라와야 해요.</div>
+      <div class="tip-ex"><span class="ex-bad">❌ "Because it is bad."</span> <span class="ex-good">✅ "For example, the story shows how..."</span></div>
+    </div></div>
+    <div class="tip-card tc-3"><div class="tip-num tn-3">3</div><div class="tip-body">
+      <div class="tip-name">반대 의견 인정하기</div>
+      <div class="tip-desc">반대 의견을 먼저 인정하면 내 주장이 더 설득력 있어 보여요.</div>
+      <div class="tip-ex"><span class="ex-good">✅ "Although some argue that..., I believe..."</span></div>
+    </div></div>
+    <div class="tip-card tc-4"><div class="tip-num tn-4">4</div><div class="tip-body">
+      <div class="tip-name">연결어 (Transition Words)</div>
+      <div class="tip-desc">단락과 단락을 자연스럽게 이어주는 다리 역할을 해요.</div>
+      <div class="tip-ex"><span class="ex-good">First · Furthermore · However · Therefore · In conclusion</span></div>
+    </div></div>
+    <div class="tip-card tc-5"><div class="tip-num tn-5">5</div><div class="tip-body">
+      <div class="tip-name">강한 마무리 (Concluding Sentence)</div>
+      <div class="tip-desc">마지막 문장이 가장 오래 기억돼요. 핵심 메시지를 새로운 표현으로!</div>
+      <div class="tip-ex"><span class="ex-good">✅ "Therefore, it is clear that..." / "This is why..."</span></div>
+    </div></div>
+  </div>
+  <div class="phrase-grid">
+    <div class="phrase-card"><div class="phrase-role">서론</div><div class="phrase-item">In my opinion...<br>I strongly believe...<br>It is clear that...</div></div>
+    <div class="phrase-card"><div class="phrase-role">본론</div><div class="phrase-item">For instance...<br>This shows that...<br>Furthermore...</div></div>
+    <div class="phrase-card"><div class="phrase-role">결론</div><div class="phrase-item">In conclusion...<br>Therefore...<br>This is why...</div></div>
+  </div>
+</div>
+    <div id="esTopic" style="display:block;background:var(--gd);color:white;border-radius:12px;padding:16px;margin-bottom:14px;text-align:center;box-sizing:border-box;">
+      <div style="font-size:15px;font-weight:bold;">✍️ The necessary limits of religious freedom in a pluralistic society</div>
+      <div style="font-size:12px;color:#cce;margin-top:4px;">다원주의 사회에서 종교의 자유에 필요한 제한</div>
+      <div style="font-size:11px;color:#9bf;margin-top:6px;">📐 4단락 구조: 서론 → 본론1 → 본론2 → 결론</div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">① 서론 (Introduction)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">다원주의 사회의 핵심적 딜레마인 '무제한의 관용 대 사회적 질서'를 제시하세요. 종교적 자유가 민주주의의 초석이지만, 그 자유가 타인의 권리나 공공의 안전과 충돌할 때 발생하는 문제를 지적하며 논의의 필요성을 서론에 명확히 밝히세요.</p>
+      <textarea id="es1" rows="4" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="Hook + Thesis Statement..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">② 본론 1 (Body 1)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">본론 1에서는 제한이 필요한 논리적 근거를 제시하세요. '해악의 원칙'을 설명하고, 종교적 실천이 신체적 안전(예: 의료 거부), 평등권(예: 차별), 공공 질서에 미치는 구체적 위협을 예시로 들어 논증하세요. 'provided'나 'those who'와 같은 이번 주 문법 포인트를 활용해 보세요.</p>
+      <textarea id="es2" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="First argument + evidence..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">③ 본론 2 (Body 2)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">본론 2에서는 이러한 제한을 설정하고 적용할 때의 어려움과 기준을 논의하세요. 중립적이고 일반적으로 적용 가능한 법의 원칙, 국가의 중재자 역할, 그리고 소수 종교 보호의 중요성을 다루세요. 제한이 자의적으로 적용되어서는 안 되며, 정당한 공공 이익을 위해 엄격히 필요할 때만 가능함을 강조하세요.</p>
+      <textarea id="es3" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="Second argument or concession..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">④ 결론 (Conclusion)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">결론에서는 신념의 자유와 실행의 규제 사이의 지속적인 긴장 관계를 요약하세요. 다원주의가 번성하기 위해서는 이 균형이 필수적이며, 이는 약한 자를 보호하고 사회적 협약을 유지하는 합의된 틀 내에서의 자유임을 재확인하는 내용으로 마무리하세요.</p>
+      <textarea id="es4" rows="4" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="In conclusion, ..."></textarea>
+
+      <button onclick="submitFullEssay()" style="display:block;width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;">💬 ChatGPT에 4단락 에세이 피드백 받기</button>
+    </div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">7</span><h2>디베이트 <span class="sh-en">DEBATE</span></h2></div>
+    <div id="dbTopic" style="display:block;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;box-sizing:border-box;">
+      <div style="font-size:11px;font-weight:bold;letter-spacing:2px;margin-bottom:6px;opacity:0.9;">🗣️ TODAY'S MOTION</div>
+      <div style="font-size:15px;font-weight:bold;line-height:1.45;">Should all religious beliefs and practices be equally tolerated in society?</div>
+      <div style="font-size:13px;margin-top:6px;opacity:0.92;">모든 종교적 신념과 실천이 사회에서 동등하게 관용되어야 하는가?</div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;margin-bottom:16px;">
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <div style="flex:1 1 260px;min-width:240px;">
+          <div style="display:block;background:#d4f4dd;color:#156b2c;font-weight:bold;padding:8px 12px;border-radius:8px;text-align:center;margin-bottom:10px;">PRO (찬성)</div>
+          <div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 평등한 관용은 소수 종교인들의 존엄성과 정체성을 보호하며, 사회적 배제와 차별을 방지합니다.</div><div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 절대적인 관용은 신념의 시장을 창출하여, 가장 건설적인 사상이 경쟁을 통해 부상할 수 있는 환경을 조성합니다.</div><div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 정부가 관용의 경계를 정하는 것은 위험한 선례를 만들며, 결국 다수 의견에 의해 권리가 침해될 수 있습니다.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:240px;">
+          <div style="display:block;background:#fbd5d5;color:#8a1a1a;font-weight:bold;padding:8px 12px;border-radius:8px;text-align:center;margin-bottom:10px;">CON (반대)</div>
+          <div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 어린이 안전, 강제 결혼, 의학적 방치와 같은 해로운 관행은 심각한 피해를 초래하기 때문에 관용의 대상이 될 수 없습니다.</div><div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 평등한 관용은 때로 기본적인 인권, 특히 여성 및 LGBTQ+ 개인의 권리와 상충하여 보호받지 못한 채 방치할 수 있습니다.</div><div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 모든 실천을 동등하게 허용하는 것은 사회적 응집력과 공유된 시민적 가치의 형성을 훼손하여 사회를 분열시킬 수 있습니다.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;margin-bottom:16px;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">📝 My Opening Statement</label>
+      <p style="font-size:12px;color:#666;margin:0 0 8px;line-height:1.5;">명확한 입장(찬성/반대)을 밝히고, 핵심 논거 2-3가지를 간결하게 제시하세요. 정의(예: '관용'의 의미)를 내리고, 논의의 틀(예: 개인 권리 대 사회적 책임)을 설정하세요. 강력한 수사적 질문이나 선언문으로 청중의 관심을 끌어보세요.</p>
+      <textarea id="openStmt" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="I strongly believe that ..."></textarea>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">🔄 My Rebuttal</label>
+      <p style="font-size:12px;color:#666;margin:0 0 8px;line-height:1.5;">상대방의 주장을 정확히 인용한 후 반박하세요. 그들의 논리가 가진 결함(예: 극단적인 사례 일반화, 결과 무시)을 지적하세요. 반박할 때 자신의 원래 논거를 강화하는 추가 증거나 논리를 제시하세요. '상대방은 X라고 주장하지만, 이는 Y 사실을 간과합니다'와 같은 구조를 사용하세요.</p>
+      <textarea id="rebuttalStmt" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="While the opposition argues that..., this ignores the fact that..."></textarea>
+      <button onclick="sendDebateStatement()" style="display:block;width:100%;margin-top:14px;padding:14px;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;">🤖 ChatGPT와 토론 시작하기</button>
+    </div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">8</span><h2>ChatGPT 회화 연습 <span class="sh-en">AI PRACTICE</span></h2></div>
+    <div style="text-align:center;padding:20px 0;">
+      <p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">이번 주 핵심 표현으로 ChatGPT Camp B와 영어로 대화해보세요!</p>
+      <button class="btn-submit" onclick="launchChatGPTPractice()">🤖 ChatGPT와 50:50 회화 연습</button>
+    </div>
   </section>
 </div>
-<div class="wk-nav"><a href="week06.html" class="wk-btn">&larr; W06</a><span class="wk-current">W34</span><a href="week08.html" class="wk-btn">W08 &rarr;</a></div>
+<div class="wk-nav"><a href="week33.html" class="wk-btn">&larr; W33</a><span class="wk-current">W34</span><a href="week35.html" class="wk-btn">W35 &rarr;</a></div>
 <!-- ===== CEC Robo Helper (Camp B) ===== -->
 <div class="gb">
   <div class="gb-hint" onclick="gbToggle()" id="gbHint"><span>Robo</span>한테 물어봐!</div>
@@ -428,9 +679,12 @@ var CHATGPT_URL='https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166';
 function speak(t){if(!t)return;var u=new SpeechSynthesisUtterance(t.replace(/\uD83D\uDD0A/g,'').trim());u.lang='en-US';u.rate=0.85;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}
 function showLevel(lv,btn){document.getElementById('b1Story').style.display=lv==='b1'?'block':'none';document.getElementById('c1Story').style.display=lv==='c1'?'block':'none';document.querySelectorAll('.ltab').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');}
 function copyAndOpen(msg){window.open(CHATGPT_URL,'_blank');try{navigator.clipboard.writeText(msg);}catch(e){}}
-function sendDebate(){var t=document.getElementById('debateInput').value;var m='\uc548\ub155\ud558\uc138\uc694! High School 1\uc774\uc5d0\uc694.\n\nOf Mice and Men W07\uc744 \uacf5\ubd80\ud588\uc5b4\uc694.\n\n\ud1a0\ub860 \uc8fc\uc81c: "The American Dream is an illusion that causes more suffering than hope."\n\n\ub0b4 \uc8fc\uc7a5:\n'+t+'\n\n\uc774 \uc8fc\uc7a5\uc5d0 \ubc18\ubc15\ud574\uc8fc\uc138\uc694!';copyAndOpen(m);}
-function submitEssay(){var e=[1,2,3,4].map(function(i){return document.getElementById('es'+i).value}).join('\n\n');var m='\uc548\ub155\ud558\uc138\uc694! High School 1\uc774\uc5d0\uc694.\n\n\uc5d0\uc138\uc774 \uc8fc\uc81c: "How does Steinbeck use George and Lennie\\u0027s friendship to critique the American Dream?"\n\n'+e+'\n\n\ud53c\ub4dc\ubc31 \ubd80\ud0c1\ub4dc\ub824\uc694!';copyAndOpen(m);}
-function launchChatGPTPractice(){var m='Of Mice and Men W07 (아메리칸 드림 — 조지와 레니) \uc8fc\uc81c\ub85c \uc601\uc5b4 \ud68c\ud654 \uc5f0\uc2b5\uc744 \ud558\uace0 \uc2f6\uc5b4\uc694!';copyAndOpen(m);}
+function sendDebate(){}
+function submitEssay(){}
+function launchChatGPTPractice(){
+  var m='\ubaa8\uc5b4\uc758 \'\uc720\ud1a0\ud53c\uc544\'\ub294 \uc885\uad50\uc801 \uad00\uc6a9\uc758 \uc774\uc0c1\uc744 \uadf8\ub838\uc9c0\ub9cc, \ud604\uc2e4\uc758 \ub2e4\uc6d0\uc8fc\uc758 \uc0ac\ud68c\ub294 \ub354 \ubcf5\uc7a1\ud55c \ubb38\uc81c\uc5d0 \uc9c1\uba74\ud569\ub2c8\ub2e4. \ubaa8\ub4e0 \uc885\uad50\uc801 \uc2e4\ucc9c\uc744 \ubb34\uc870\uac74 \ud5c8\uc6a9\ud574\uc57c \ud560\uae4c\uc694, \uc544\ub2c8\uba74 \uacf5\uacf5\uc758 \uc548\uc804\uacfc \ud0c0\uc778\uc758 \uad8c\ub9ac\ub97c \ubcf4\ud638\ud558\uae30 \uc704\ud55c \uc120\uc744 \uadf8\uc5b4\uc57c \ud560\uae4c\uc694? \uc5ec\ub7ec\ubd84\uc758 \uc0dd\uac01\uacfc \uadf8 \uadfc\uac70\ub97c \ub098\ub220\ubcf4\uc138\uc694.';
+  copyAndOpen(m);
+}
 /* ===== CEC Robo Helper (Camp B) ===== */
 (function(){
   if(window.__gbRoboInit)return;window.__gbRoboInit=true;
@@ -538,5 +792,262 @@ function launchChatGPTPractice(){var m='Of Mice and Men W07 (아메리칸 드림
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',gbInit);}else{gbInit();}
 })();
 </script>
+<script id="m1-extra-js">
+// Reading toggle — single Play/Pause button
+function togglePlay(btn){
+  var icon=btn.querySelector('.play-icon');
+  var label=btn.querySelector('.play-label');
+  if(btn.classList.contains('playing')){
+    window.speechSynthesis.pause();
+    btn.classList.remove('playing');
+    icon.textContent='▶';
+    label.textContent='재생';
+  } else {
+    if(window.speechSynthesis.paused){
+      window.speechSynthesis.resume();
+    } else {
+      var txt=btn.dataset.text||'';
+      if(!txt){var storyDiv=btn.closest('.story-box')||btn.parentElement;var textEl=storyDiv.querySelector('[id$="Text"]');txt=textEl?textEl.textContent:'';}
+      window.speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(txt);
+      u.lang='en-US';u.rate=0.85;
+      u.onend=function(){btn.classList.remove('playing');icon.textContent='▶';label.textContent='재생';};
+      u.onerror=u.onend;
+      window.speechSynthesis.speak(u);
+    }
+    btn.classList.add('playing');
+    icon.textContent='⏸';
+    label.textContent='일시정지';
+  }
+}
+
+// Play/Pause TTS state (legacy toggle — kept for any remaining pages)
+var m1TtsActive = null;
+function m1PlayPause(btnId, textElId){
+  var btn = document.getElementById(btnId);
+  var txt = document.getElementById(textElId).textContent;
+  if(m1TtsActive === btnId){
+    window.speechSynthesis.cancel();
+    m1TtsActive = null;
+    btn.classList.remove('playing');
+    btn.innerHTML = '▶ 전체 듣기';
+    return;
+  }
+  if(m1TtsActive){
+    window.speechSynthesis.cancel();
+    var prev = document.getElementById(m1TtsActive);
+    if(prev){ prev.classList.remove('playing'); prev.innerHTML='▶ 전체 듣기'; }
+  }
+  var u = new SpeechSynthesisUtterance(txt);
+  u.lang='en-US'; u.rate=0.9;
+  u.onend = function(){ btn.classList.remove('playing'); btn.innerHTML='▶ 전체 듣기'; m1TtsActive=null; };
+  u.onerror = u.onend;
+  window.speechSynthesis.speak(u);
+  m1TtsActive = btnId;
+  btn.classList.add('playing');
+  btn.innerHTML = '⏸ 일시정지';
+}
+
+// Fill-in-blank
+function fbCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅ 정답!'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌ 다시 해볼까요?'; fb.className='game-fb wrong'; }
+}
+
+// Dictation simple
+function dsCheck(inpId, answer){
+  var el = document.getElementById(inpId);
+  var fb = document.getElementById(inpId+'-fb');
+  if(el.value.trim().toLowerCase() === answer.toLowerCase()){
+    fb.textContent='✅ 정답! ('+answer+')'; fb.className='game-fb correct';
+  } else {
+    fb.textContent='❌ 정답: '+answer; fb.className='game-fb wrong';
+  }
+}
+
+// Listen-choose: speak then reveal
+function lcPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.85;
+  window.speechSynthesis.speak(u);
+}
+function lcCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅ 잘 들으셨어요!'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌ 다시 들어볼까요?'; fb.className='game-fb wrong'; }
+}
+
+// Word order
+var woState = {};
+function woInit(idx, words){
+  woState[idx] = { correct: words.slice(), arranged: [] };
+}
+function woAdd(idx, chipEl, word){
+  if(chipEl.classList.contains('used')) return;
+  chipEl.classList.add('used');
+  woState[idx].arranged.push(word);
+  var zone = document.getElementById('wo'+idx+'-zone');
+  var span = document.createElement('span');
+  span.className = 'wo-chip'; span.textContent = word; span.dataset.word = word;
+  span.onclick = function(){
+    // remove on click from zone
+    var i = woState[idx].arranged.indexOf(word);
+    if(i>=0) woState[idx].arranged.splice(i,1);
+    span.remove();
+    // re-enable bank chip
+    var bankChips = document.querySelectorAll('#wo'+idx+'-bank .wo-chip');
+    bankChips.forEach(function(b){ if(b.dataset.word===word) b.classList.remove('used'); });
+  };
+  zone.appendChild(span);
+}
+function woCheck(idx){
+  var fb = document.getElementById('wo'+idx+'-fb');
+  var ok = JSON.stringify(woState[idx].arranged) === JSON.stringify(woState[idx].correct);
+  if(ok){ fb.textContent='✅ 정답! '+woState[idx].correct.join(' '); fb.className='game-fb correct'; }
+  else { fb.textContent='❌ 순서를 다시 확인해보세요.'; fb.className='game-fb wrong'; }
+}
+
+// Matching
+var mmSel = null;
+function mmClick(btn, pairKey){
+  if(btn.classList.contains('matched')) return;
+  if(!mmSel){ mmSel = btn; btn.classList.add('sel'); return; }
+  if(mmSel === btn){ mmSel.classList.remove('sel'); mmSel=null; return; }
+  if(mmSel.dataset.pair === pairKey && mmSel !== btn){
+    mmSel.classList.remove('sel'); mmSel.classList.add('matched');
+    btn.classList.add('matched'); mmSel=null;
+  } else {
+    var tmp = mmSel; mmSel.classList.remove('sel'); mmSel=null;
+    btn.classList.add('wrong');
+    setTimeout(function(){ btn.classList.remove('wrong'); }, 500);
+  }
+}
+
+// Dictation challenge
+function dcPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.9;
+  window.speechSynthesis.speak(u);
+}
+function dcCheck(lvl, answer){
+  var inp = document.getElementById('dc-'+lvl);
+  var fb = document.getElementById('dc-'+lvl+'-fb');
+  var g = inp.value.trim().toLowerCase().replace(/[.,!?]/g,'');
+  var a = answer.toLowerCase().replace(/[.,!?]/g,'');
+  if(g === a){ fb.textContent='✅ 완벽!'; fb.className='game-fb correct'; }
+  else { fb.innerHTML='❌ 정답: '+answer; fb.className='game-fb wrong'; }
+}
+
+// Comprehension tabs
+function compTab(tab, lvl){
+  var root = tab.closest('.comp-section');
+  root.querySelectorAll('.comp-tab').forEach(function(t){ t.classList.remove('active'); });
+  root.querySelectorAll('.comp-panel').forEach(function(p){ p.classList.remove('active'); });
+  tab.classList.add('active');
+  root.querySelector('.comp-panel-'+lvl).classList.add('active');
+}
+function compCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌'; fb.className='game-fb wrong'; }
+}
+
+// My thoughts — ChatGPT send
+function sendMyThought(){
+  var t = document.getElementById('myThoughtInput').value.trim();
+  if(!t){ alert('한 문장 써주세요!'); return; }
+  copyAndOpen('안녕하세요! 오늘 읽은 이야기에 대한 제 생각이에요:\n\n'+t+'\n\n이 의견에 대해 간단히 코멘트 부탁드려요!');
+}
+
+// Essay basics — structure question
+function askEssayStructure(){
+  copyAndOpen('안녕하세요! 저는 Middle School 1 학생이에요.\n\n에세이 구조(주제문-근거-마무리)에 대해 질문이 있어요. 중학생이 쉽게 이해할 수 있게 설명해주세요!');
+}
+
+// m2: paragraph writing — send 3 sentences to ChatGPT
+function submitParagraph(){
+  var t1 = document.getElementById('pw1').value.trim();
+  var t2 = document.getElementById('pw2').value.trim();
+  var t3 = document.getElementById('pw3').value.trim();
+  if(!t1 || !t2 || !t3){ alert('세 문장 모두 써주세요! (주제문/근거/마무리)'); return; }
+  var topic = document.getElementById('pwTopic') ? document.getElementById('pwTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 2 학생이에요.\n\n에세이 단락쓰기 주제: ' + topic + '\n\n'
+          + '① 주제문: ' + t1 + '\n'
+          + '② 근거/예시: ' + t2 + '\n'
+          + '③ 마무리: ' + t3 + '\n\n'
+          + '제 단락을 중학생 수준에서 피드백해주세요! 문법, 자연스러움, 논리 구조 모두 봐주세요.';
+  copyAndOpen(msg);
+}
+
+// m2: opinion — send 1 paragraph to ChatGPT
+function sendOpinion(){
+  var el = document.getElementById('opn1') || document.getElementById('opinionInput');
+  var t = el ? el.value.trim() : '';
+  if(!t){ alert('내 생각을 한 단락으로 써주세요!'); return; }
+  var topic = document.getElementById('opTopic') ? document.getElementById('opTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 2 학생이에요.\n\n의견 표현 주제: ' + topic + '\n\n내 생각:\n' + t + '\n\n중학생 수준에서 자연스럽게 고쳐주시고 간단한 코멘트 부탁드려요!';
+  copyAndOpen(msg);
+}
+
+// m2: grammar example — read aloud on click
+function grammarSpeak(el){
+  var txt = el.querySelector('.ge-en');
+  if(txt) speak(txt.textContent);
+}
+
+// 5-B Grammar Practice — dictation with hint reveal
+function gpDictHint(idx){
+  var el = document.getElementById('gp-dict-hint-'+idx);
+  if(el) el.style.visibility = 'visible';
+}
+function gpDictPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.8;
+  window.speechSynthesis.speak(u);
+}
+function gpDictCheck(idx, answer){
+  var el = document.getElementById('gp-dict-'+idx);
+  var fb = document.getElementById('gp-dict-fb-'+idx);
+  if(el.value.trim().toLowerCase() === answer.toLowerCase()){
+    fb.textContent='✅ 정답! ('+answer+')'; fb.className='game-fb correct';
+  } else {
+    fb.textContent='❌ 정답: '+answer; fb.className='game-fb wrong';
+  }
+}
+
+// m3: 3-paragraph essay (intro/body/conclusion)
+function submitFullEssay(){
+  var p1 = document.getElementById('es1').value.trim();
+  var p2 = document.getElementById('es2').value.trim();
+  var p3 = document.getElementById('es3').value.trim();
+  if(!p1 || !p2 || !p3){ alert('서론/본론/결론 세 단락 모두 써주세요!'); return; }
+  var topic = document.getElementById('esTopic') ? document.getElementById('esTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 3 학생이에요.\n\n에세이 주제: ' + topic + '\n\n'
+          + '① 서론 (Introduction):\n' + p1 + '\n\n'
+          + '② 본론 (Body):\n' + p2 + '\n\n'
+          + '③ 결론 (Conclusion):\n' + p3 + '\n\n'
+          + '제 3단락 에세이를 중학생 수준에서 피드백해주세요! 서론-본론-결론 구조, 논리, 문법 모두 봐주세요.';
+  copyAndOpen(msg);
+}
+
+// m3: debate — send opening statement for rebuttal
+function sendDebateStatement(){
+  var t = document.getElementById('openStmt').value.trim();
+  if(!t){ alert('Opening Statement를 써주세요!'); return; }
+  var topic = document.getElementById('dbTopic') ? document.getElementById('dbTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 3 학생이에요.\n\n토론 주제: ' + topic + '\n\n'
+          + '제 Opening Statement:\n' + t + '\n\n'
+          + '이 주장에 대해 반박(counterargument)을 해주시고, 영어 토론 방식으로 저와 대화해주세요!';
+  copyAndOpen(msg);
+}
+</script>
+<div class="pd-notice">📚 이 교재는 저작권이 만료된 공개 도메인(Public Domain) 작품을 기반으로 제작되었습니다. 원문을 직접 인용하지 않고 AI가 교육 목적에 맞게 완전히 새로 작성한 창작 학습 자료입니다.<br><span class="pd-en">This material is based on Public Domain works. All content has been newly written by AI for educational purposes. No original text was quoted.</span></div>
 </body>
 </html>
