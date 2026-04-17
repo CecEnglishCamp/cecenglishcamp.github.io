@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Stranger W24 | Camp B High School 3</title>
+  <title>Emma W24 | Camp B High School 3</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
 :root{
@@ -336,66 +336,318 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
   .gb-btn:hover{background:#e0f0d0;}
   </style>
   <!-- ===== /CEC Robo Helper styles ===== -->
+<style id="grade-theme">:root{--gp:#1A237E;--gl:#E8EAF6;--gd:#0D1652;}</style>
+<style id="m1-extra-css">
+.pd-notice{font-size:11px;color:#999;text-align:center;padding:12px 20px;margin-top:30px;margin-bottom:80px;border-top:1px solid rgba(255,255,255,0.08);line-height:1.6;}
+.pd-en{font-size:10px;color:#bbb;}
+/* override Robo + panel positions to clear sticky wk-nav */
+.gb{bottom:80px !important;}
+.gb-panel{bottom:148px !important;}
+.play-pause-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:rgba(0,242,255,0.1);border:1px solid #00f2ff;color:#00f2ff;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;}
+.play-pause-btn.playing{background:#00f2ff;color:#000;}
+/* Play toggle — single button */
+.play-toggle{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:#1F4E79;border:none;border-radius:20px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:inherit;margin-top:10px;}
+.play-toggle:hover{background:#2E75B6;}
+.play-toggle.playing{background:#2E75B6;color:#fff;}
+.play-icon{font-size:14px;}
+.game-block{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px;margin-top:12px;}
+.game-title{font-size:0.85rem;color:#c9a84c;font-weight:700;margin-bottom:10px;letter-spacing:1px;}
+.game-q{font-size:0.92rem;color:#eee;margin:10px 0 8px;line-height:1.6;}
+.game-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.game-opt{padding:7px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ddd;border-radius:18px;font-size:0.85rem;cursor:pointer;}
+.game-opt:hover{background:rgba(0,242,255,0.12);border-color:#00f2ff;}
+.game-opt.correct{background:rgba(40,200,120,0.25);border-color:#28c878;color:#6be0a0;}
+.game-opt.wrong{background:rgba(220,80,80,0.2);border-color:#dc5050;color:#ffb0b0;}
+.game-fb{font-size:0.82rem;color:rgba(255,255,255,0.55);margin-top:6px;min-height:18px;}
+.game-fb.correct{color:#6be0a0;}
+.game-fb.wrong{color:#ffb0b0;}
+.game-input{width:100%;max-width:300px;padding:7px 12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.18);color:#fff;border-radius:6px;font-size:0.9rem;margin-right:6px;}
+.game-hint{font-size:0.78rem;color:#c9a84c;font-style:italic;margin-left:8px;}
+.wo-bank,.wo-zone{display:flex;flex-wrap:wrap;gap:6px;padding:10px;border:1px dashed rgba(255,255,255,0.2);border-radius:8px;min-height:44px;margin:6px 0;}
+.wo-zone{border-style:solid;background:rgba(0,242,255,0.04);}
+.wo-chip{padding:6px 12px;background:rgba(0,242,255,0.15);color:#00f2ff;border-radius:14px;font-size:0.85rem;cursor:pointer;user-select:none;}
+.wo-chip.used{opacity:0.35;cursor:default;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+.match-btn{padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#ddd;border-radius:6px;font-size:0.88rem;cursor:pointer;text-align:left;}
+.match-btn.sel{border-color:#c9a84c;background:rgba(201,168,76,0.15);}
+.match-btn.matched{border-color:#28c878;background:rgba(40,200,120,0.2);color:#6be0a0;pointer-events:none;}
+.comp-tabs{display:flex;gap:6px;margin-bottom:10px;}
+.comp-tab{padding:6px 14px;border:1px solid rgba(255,255,255,0.15);border-radius:18px;background:transparent;color:#ccc;font-size:0.85rem;cursor:pointer;}
+.comp-tab.active{background:#00f2ff;color:#000;border-color:#00f2ff;}
+.comp-panel{display:none;}
+.comp-panel.active{display:block;}
+.essay-basics-box{background:rgba(0,242,255,0.04);border-left:3px solid #00f2ff;border-radius:6px;padding:14px 18px;margin-bottom:12px;}
+.essay-basics-label{font-size:0.78rem;color:#c9a84c;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.essay-basics-text{font-size:0.92rem;color:#ddd;line-height:1.7;}
+.essay-basics-text em{color:#00f2ff;font-style:italic;}
+.sample-essay-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:16px 20px;margin-top:14px;font-size:0.92rem;color:#ddd;line-height:1.8;}
+.sample-essay-title{font-size:0.82rem;color:#c9a84c;font-weight:700;margin-bottom:8px;}
+/* m2 additions */
+.grammar-box{background:rgba(201,168,76,0.06);border-left:3px solid #c9a84c;border-radius:6px;padding:14px 18px;margin-bottom:12px;}
+.grammar-label{font-size:0.78rem;color:#c9a84c;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.grammar-code{display:inline-block;background:#c9a84c;color:#000;font-weight:700;padding:2px 10px;border-radius:12px;font-size:0.78rem;margin-right:8px;}
+.grammar-title{font-size:1.05rem;color:#fff;font-weight:700;margin-bottom:8px;}
+.grammar-explain{font-size:0.92rem;color:#ddd;line-height:1.7;margin-bottom:10px;}
+.grammar-example{background:rgba(0,0,0,0.25);border-radius:6px;padding:8px 12px;margin-top:6px;font-size:0.9rem;color:#ddd;line-height:1.6;cursor:pointer;}
+.grammar-example:hover{background:rgba(0,242,255,0.08);}
+.grammar-example .ge-ko{color:rgba(255,255,255,0.55);font-size:0.82rem;margin-top:3px;}
+.pw-wrap{margin-top:12px;}
+.pw-label{font-size:0.82rem;color:#00f2ff;font-weight:700;margin:10px 0 6px;}
+.pw-hint{font-size:0.78rem;color:rgba(255,255,255,0.55);margin-bottom:6px;line-height:1.5;}
+.pw-input{width:100%;min-height:54px;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:6px;font-size:0.92rem;font-family:inherit;resize:vertical;}
+.opinion-box{background:rgba(0,242,255,0.05);border:1px solid rgba(0,242,255,0.25);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+/* m3 additions — debate */
+.debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.debate-col{display:flex;flex-direction:column;gap:8px;}
+.debate-col-title{font-weight:700;font-size:0.88rem;padding:6px 10px;border-radius:6px;text-align:center;letter-spacing:1px;}
+.debate-col-title.pro{background:rgba(40,200,120,0.15);color:#6be0a0;border:1px solid rgba(40,200,120,0.35);}
+.debate-col-title.con{background:rgba(220,80,80,0.15);color:#ffb0b0;border:1px solid rgba(220,80,80,0.35);}
+.debate-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:9px 12px;font-size:0.86rem;color:#ddd;line-height:1.55;}
+.debate-card.pro{border-left:3px solid #28c878;}
+.debate-card.con{border-left:3px solid #dc5050;}
+@media(max-width:560px){.debate-grid{grid-template-columns:1fr;}}
+.debate-topic-box{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+/* Day 1/2/3 block — dot + border-left + word count */
+.day-block{margin:16px 0;background:#f3f0ff;border-radius:12px;padding:16px;}
+.day-row{margin-bottom:12px;}
+.day-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.day-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.dot-1{background:#B4B2A9;}.dot-2{background:#4A9E75;}.dot-3{background:var(--gp);}
+.day-tag{font-size:11px;font-weight:600;letter-spacing:0.06em;color:#888;text-transform:uppercase;}
+.day-wc{font-size:10px;color:var(--gp);margin-left:auto;background:var(--gl);padding:2px 8px;border-radius:10px;}
+.day-sent{font-size:15px;line-height:1.65;padding:10px 14px;border-left:3px solid;border-radius:0 10px 10px 0;}
+.sent-1{border-color:#B4B2A9;background:#f3f0ff;color:#222;}
+.sent-2{border-color:#8478e0;background:#ede8ff;color:#222;}
+.sent-3{border-color:var(--gp);background:var(--gl);color:#111;font-weight:600;}
+.sent-kr{font-size:13px;color:#444;padding:6px 14px 0;font-style:italic;}
+.day-tts{display:flex;align-items:center;gap:8px;margin-top:8px;padding-left:14px;}
+/* Reading tab buttons — larger, stronger active */
+.level-tabs{display:flex;gap:8px;margin-bottom:12px;}
+.ltab{flex:1;padding:11px 16px !important;font-size:14px !important;font-weight:700 !important;border-radius:10px !important;border:2px solid rgba(255,255,255,0.15) !important;background:rgba(255,255,255,0.04) !important;color:#ccc !important;cursor:pointer;transition:all 0.15s;}
+.ltab:hover{background:rgba(255,255,255,0.08) !important;}
+.ltab.active{background:linear-gradient(135deg,var(--gp),var(--gd)) !important;color:#fff !important;border-color:var(--gp) !important;box-shadow:0 0 12px rgba(0,0,0,0.25) !important;transform:translateY(-1px);}
+/* Essay tips — colored cards */
+.et-wrap{margin-bottom:20px;}
+.et-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.et-icon{width:32px;height:32px;border-radius:8px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.et-title{font-size:15px;font-weight:600;color:#1a3a5c;}
+.et-sub{font-size:11px;color:#888;margin-top:1px;}
+.tip-list{display:flex;flex-direction:column;gap:8px;}
+.tip-card{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:10px;border:1px solid;}
+.tc-1{background:#f3f0ff;border-color:#9b8fe8;}.tc-2{background:#ede8ff;border-color:#8478e0;}.tc-3{background:#e6e0ff;border-color:#7264d8;}.tc-4{background:#ddd6ff;border-color:#6454cf;}.tc-5{background:#d4ccff;border-color:#5344c6;}
+.tip-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px;}
+.tn-1{background:#9b8fe8;color:#fff;}.tn-2{background:#8478e0;color:#fff;}.tn-3{background:#7264d8;color:#fff;}.tn-4{background:#6454cf;color:#fff;}.tn-5{background:#5344c6;color:#fff;}
+.tip-body{flex:1;}
+.tip-name{font-size:13px;font-weight:600;color:#222;margin-bottom:3px;}
+.tip-desc{font-size:12px;color:#555;line-height:1.5;}
+.tip-ex{margin-top:6px;font-size:12px;line-height:1.6;}
+.ex-bad{color:#5344c6;background:#ede8ff;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:3px;}
+.ex-good{color:#27500A;background:#EAF3DE;padding:2px 8px;border-radius:4px;display:inline-block;}
+.phrase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;}
+.phrase-card{background:#f3f0ff;border:1px solid #c4baff;border-radius:8px;padding:10px 12px;}
+.phrase-role{font-size:11px;font-weight:600;color:#6454cf;margin-bottom:5px;}
+.phrase-item{font-size:12px;color:#333;line-height:1.6;}
+@media(max-width:560px){.phrase-grid{grid-template-columns:1fr;}}
+/* Defensive section override — template has conflicting .sh{display:flex} */
+section.sh{display:block !important;flex-direction:unset !important;}
+section.sh > *{float:none !important;}
+/* m2 paragraph writing — workbook-style card (defensive against template CSS conflicts) */
+.paragraph-section{display:block !important;width:100% !important;float:none !important;position:static !important;padding:18px 18px 22px;background:#f8f9ff;border-radius:16px;margin:0 0 20px 0;color:#222;box-sizing:border-box;}
+.para-guide-card{display:block !important;width:100% !important;float:none !important;position:static !important;background:#f0f4ff;border-radius:12px;padding:16px;margin-bottom:16px;box-sizing:border-box;}
+.para-step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
+.para-step:last-child{margin-bottom:0;}
+.para-step b{color:var(--gd);font-size:14px;display:block;margin-bottom:2px;}
+.para-step p{font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;}
+.step-num{width:28px;height:28px;background:var(--gp);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:13px;}
+.example{background:#fff;border-left:3px solid var(--gp);padding:7px 10px;margin-top:6px;font-size:12px;color:#444;border-radius:0 6px 6px 0;line-height:1.5;}
+.para-inputs{display:block !important;width:100% !important;float:none !important;position:static !important;margin-top:8px;box-sizing:border-box;}
+.para-inputs label{display:block;font-weight:700;margin:10px 0 4px;color:var(--gd);font-size:13px;}
+.para-inputs textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:14px;resize:vertical;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;min-height:70px;}
+.para-inputs textarea:focus{border-color:var(--gp);outline:none;box-shadow:0 0 0 3px rgba(46,117,182,0.15);}
+.para-submit-wrap{text-align:center;margin-top:14px;}
+</style>
 </head>
 <body>
-<div class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">High School 1</span></div></div>
-<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">Of Mice and Men &middot; W07 / 08</div><h1 class="hero-title">Of Mice and Men</h1><p class="hero-sub">꿈의 무게 — John Steinbeck · B2~C1</p><div style="margin-top:12px;font-size:0.8rem;color:rgba(255,255,255,0.6);background:rgba(0,0,0,0.3);padding:8px 12px;border-radius:8px;display:inline-block;">🔊 <strong>음성 기능 사용법:</strong> 페이지 하단의 "음성 기능 활성화" 버튼을 먼저 클릭해주세요!</div></div></div>
+<div class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">High School 3</span></div></div>
+<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">Emma &middot; W24 / 24</div><h1 class="hero-title">Emma</h1><p class="hero-sub">성숙한 자기 이해 &mdash; Jane Austen &middot; C1+</p></div></div>
 <div class="content-wrap">
-  <section class="sh"><div class="sh-bar"><span class="sh-num">1</span><h2>&#54645;&#49900; &#54364;&#54788; <span class="sh-en">KEY EXPRESSION</span></h2></div>
-    <div class="key-expr-box"><div class="ke-en" onclick="speak(this.textContent)">Guys like us, that work on ranches, are the loneliest guys in the world. &#128266;</div><div class="ke-ko">목장에서 일하는 우리 같은 사람들은 세상에서 가장 외로운 사람들이야.</div></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">2</span><h2>&#51648;&#47928; &#51069;&#44592; <span class="sh-en">READING</span></h2></div>
-    <div class="level-tabs"><button class="ltab active" onclick="showLevel('b1',this)">B1 &#44592;&#48376;</button><button class="ltab" onclick="showLevel('c1',this)">C1 &#49900;&#54868;</button></div>
-    <div id="b1Story" class="story-box" style="display:block;">
-<p class="story-line" data-speak="Meursault goes to the beach with Raymond">Meursault goes to the beach with Raymond</p>
-<p class="story-line" data-speak="He meets the Arab again">He meets the Arab again</p>
-<p class="story-line" data-speak="The sun is blazing">The sun is blazing</p>
-<p class="story-line" data-speak="He fires his gun once, then four more times">He fires his gun once, then four more times</p>
-<p class="story-line" data-speak=""It was because of the sun," he says.">"It was because of the sun," he says.</p>
-</div>
-    <div id="c1Story" class="story-box" style="display:none;">
-<p class="story-line" data-speak="The murder scene is deliberately absurd — Camus refuses conventional psychological motivation">The murder scene is deliberately absurd — Camus refuses conventional psychological motivation</p>
-<p class="story-line" data-speak="The four extra shots are the most disturbing detail: the first might be fear; the next four can only be meaninglessness.">The four extra shots are the most disturbing detail: the first might be fear; the next four can only be meaninglessness.</p>
-</div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">3</span><h2>&#54645;&#49900; &#50612;&#55064; <span class="sh-en">VOCABULARY</span></h2></div>
-    <div class="vocab-grid">
-<div class="vocab-card"><div class="vc-en" onclick="speak('blazing')">blazing 🔊</div><div class="vc-ko">타오르는</div><div class="vc-ex">"The sun was blazing."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('deliberately')">deliberately 🔊</div><div class="vc-ko">의도적으로</div><div class="vc-ex">"The scene is deliberately stripped of conventional motivation."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('meaninglessness')">meaninglessness 🔊</div><div class="vc-ko">무의미함</div><div class="vc-ex">"The four extra shots represent meaninglessness."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('overwhelmed')">overwhelmed 🔊</div><div class="vc-ko">압도된</div><div class="vc-ex">"Meursault is overwhelmed by physical sensation."</div></div>
-<div class="vocab-card"><div class="vc-en" onclick="speak('conventional')">conventional 🔊</div><div class="vc-ko">관습적인</div><div class="vc-ex">"Camus refuses the conventional explanation."</div></div>
-</div><div class="vc-ko">이주하는</div><div class="vc-ex">"George and Lennie were migrant workers."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">companionship &#128266;</div><div class="vc-ko">동반자 관계</div><div class="vc-ex">"Their companionship was unusual for ranch workers."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">innocence &#128266;</div><div class="vc-ko">순수함</div><div class="vc-ex">"Lennie's innocence made him both lovable and dangerous."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">poignant &#128266;</div><div class="vc-ko">애절한</div><div class="vc-ex">"The ending was deeply poignant and tragic."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">loneliness &#128266;</div><div class="vc-ko">외로움</div><div class="vc-ex">"Loneliness was the defining condition of ranch life."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">inevitable &#128266;</div><div class="vc-ko">불가피한</div><div class="vc-ex">"Their tragedy seemed almost inevitable."</div></div>
-</div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">4</span><h2>&#47928;&#48277; &#54252;&#51064;&#53944; <span class="sh-en">GRAMMAR</span></h2></div>
-    <div class="gram-box"><div class="gram-label">Narrative Tenses (G32)</div><ul class="grammar-examples"><li><em>"They had been walking all day when they reached the river." — 과거완료진행</em></li><li><em>"While Lennie was drinking, George watched carefully." — 과거진행</em></li><li><em>"No sooner had they arrived than trouble began." — no sooner...than</em></li></ul></div>
-  <div style="text-align:center;margin-top:12px;"><a href="/grammar-camp/G32/G32_past_simple_vs_past_continuous.html?return=/camp-b/g3/week24.html" target="_blank" style="display:inline-block;padding:6px 14px;background:#00f2ff;color:#000;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;">📘 Grammar Base Camp →</a></div></section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">5</span><h2>&#53664;&#47200; &#51452;&#51228; <span class="sh-en">DEBATE</span></h2></div>
-    <div class="debate-q-box"><div class="debate-q">"Meursault's murder of the Arab is the central moral failure of the novel."</div><div class="debate-q-ko">몰르소의 아랍인 살인은 소설의 핵심적 도덕적 실패다.</div></div>
-    <div class="debate-sides"><div class="debate-agree"><strong>&#9989; &#52268;&#49457;</strong><ul><li>George and Lennie's dream is destroyed by forces beyond their control</li><li>The Depression proves the Dream is inaccessible to the poor</li><li>Candy, Crooks, and Curley's wife all have crushed dreams</li></ul></div><div class="debate-disagree"><strong>&#10060; &#48152;&#45824;</strong><ul><li>The dream gives George and Lennie purpose</li><li>Without aspiration human life loses meaning</li><li>Some people do achieve the Dream through perseverance</li></ul></div></div>
-    <div style="margin-top:20px;"><p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-bottom:8px;">&#45236; &#51452;&#51109;&#51012; &#50689;&#50612;&#47196; &#50024;&#48372;&#49464;&#50836;:</p><textarea class="essay-input" id="debateInput" placeholder="I argue that... because..."></textarea><button class="btn-ai-debate" onclick="sendDebate()">&#9876;&#65039; ChatGPT&#50640;&#49436; AI&#50752; &#53664;&#47200;&#54616;&#44592;</button></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">6</span><h2>&#50640;&#49464;&#51060; &#50416;&#44592; <span class="sh-en">ESSAY</span></h2></div>
-    <div class="essay-topic-box"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:#00f2ff;margin-bottom:8px;">"How does Steinbeck use George and Lennie's friendship to critique the American Dream?"</div><div style="font-size:0.9rem;color:rgba(255,255,255,0.6);">Steinbeck는 조지와 레니의 우정을 통해 아메리칸 드림을 어떻게 비판하는가?</div></div>
-    <div style="margin-top:16px;">
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;">&#128221; Introduction</p><textarea class="essay-input" id="es1" placeholder="Introduce the topic..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Body 1</p><textarea class="essay-input" id="es2" placeholder="First argument..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Body 2</p><textarea class="essay-input" id="es3" placeholder="Second argument..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Conclusion</p><textarea class="essay-input" id="es4" placeholder="Summarize..."></textarea>
-      <button class="btn-submit" onclick="submitEssay()">&#9997;&#65039; ChatGPT&#50640;&#49436; &#50640;&#49464;&#51060; &#54588;&#46300;&#48177; &#48155;&#44592;</button>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">1</span><h2>핵심 표현 <span class="sh-en">KEY EXPRESSION</span></h2></div>
+    <div class="day-block">
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-1"></span><span class="day-tag">Day 1 · 기초</span></div>
+        <div class="day-sent sent-1">Emma finally understood herself.</div>
+      </div>
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-2"></span><span class="day-tag">Day 2 · 확장</span></div>
+        <div class="day-sent sent-2">Emma finally reached genuine self-knowledge.</div>
+      </div>
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-3"></span><span class="day-tag">Day 3 · 목표 ⭐ 오늘</span><span class="day-wc">37 words</span></div>
+        <div class="day-sent sent-3">Austen's deepest argument in Emma is that moral growth requires not just good intentions or hard effort, but the much more difficult work of accurate self-perception, the painful ability to see ourselves as others actually see us.</div>
+        <div class="sent-kr">🇰🇷 오스틴의 『엠마』에서 가장 깊은 논지는 도덕적 성장이 단순히 선한 의도나 노력이 아니라, 훨씬 더 어려운 작업인 정확한 자기 인식, 즉 타인이 실제로 우리를 보는 방식 그대로 자신을 바라보는 고통스러운 능력을 필요로 한다는 것이다.</div>
+        <div class="day-tts">
+          <button class="play-toggle" onclick="togglePlay(this)" data-text="Austen\'s deepest argument in Emma is that moral growth requires not just good intentions or hard effort, but the much more difficult work of accurate self-perception, the painful ability to see ourselves as others actually see us."><span class="play-icon">▶</span><span class="play-label">듣기</span></button>
+        </div>
+      </div>
     </div>
   </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">7</span><h2>ChatGPT &#54924;&#54868; &#50672;&#49845; <span class="sh-en">AI PRACTICE</span></h2></div>
-    <div style="text-align:center;padding:20px 0;"><p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">ChatGPT Camp B&#50752; &#54632;&#44760; &#50689;&#50612;&#47196; &#45824;&#54868;&#54644;&#48372;&#49464;&#50836;!</p><button class="btn-submit" onclick="launchChatGPTPractice()">&#129302; ChatGPT&#50752; 50:50 &#54924;&#54868; &#50672;&#49845;</button></div>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">2</span><h2>지문 읽기 <span class="sh-en">READING</span></h2></div>
+    <div class="level-tabs">
+      <button class="ltab active" onclick="showLevel('b1',this)">🔵 기본 (C1)</button>
+      <button class="ltab" onclick="showLevel('c1',this)">🟣 심화 (C1+)</button>
+    </div>
+    <div id="b1Story" class="story-box" style="display:block;">
+      <div id="b1Text"><p>The journey toward genuine self-knowledge constitutes a formidable psychological undertaking that demands rigorous introspection and uncomfortable honesty. This process requires not just occasional self-reflection but the systematic dismantling of self-serving narratives we construct to protect our ego. Individuals must confront the dissonance between their perceived identity and how they are objectively perceived by others in their social milieu. Such confrontation often reveals uncomfortable truths about one's motivations, biases, and unacknowledged flaws that have been obscured by pride or willful ignorance. The attainment of accurate self-perception, therefore, represents a pivotal moral achievement that precedes authentic ethical development. Without this foundational clarity, virtuous actions may stem from misguided intentions or a desire for social approval rather than integrated moral character. Consequently, the cultivation of self-knowledge emerges as the indispensable cornerstone for any meaningful ethical progress in both personal and interpersonal domains.</p></div>
+      <button class="play-toggle" onclick="togglePlay(this)"><span class="play-icon">▶</span><span class="play-label">재생</span></button>
+    </div>
+    <div id="c1Story" class="story-box" style="display:none;">
+      <div id="c1Text"><p>Philosophical and psychological discourse has long interrogated the proposition that authentic moral virtue is predicated upon the prior acquisition of genuine self-knowledge. This epistemological prerequisite demands not just superficial awareness of one's preferences but a profound, often disquieting comprehension of one's core motivations, cognitive biases, and the structural limitations of one's own perspective. The process necessitates transcending the ego's defensive mechanisms to achieve a degree of objectivity typically reserved for external observation, thereby reconciling the subjective self-concept with intersubjective reality. Such rigorous self-examination frequently unveils contradictions between professed values and enacted behaviors, revealing the complex interplay between conscious intention and subconscious influence. Within ethical frameworks, this clarity is paramount; virtue exercised without self-understanding risks degenerating into performative altruism or dogma, devoid of the reflective integrity that characterizes mature moral agency. Therefore, the arduous pursuit of self-knowledge constitutes the essential, non-negotiable substrate from which all consistent and authentic virtue must ultimately emanate, shaping ethical decisions that are coherent, resilient, and genuinely aligned with one's examined principles.</p></div>
+      <button class="play-toggle" onclick="togglePlay(this)"><span class="play-icon">▶</span><span class="play-label">재생</span></button>
+    </div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">3</span><h2>핵심 어휘 <span class="sh-en">VOCABULARY</span></h2></div>
+    <div class="vocab-grid"><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">introspection &#128266;</div><div class="vc-ko">내성, 자기 성찰</div><div class="vc-ex">"Her period of deep introspection revealed not just surface-level regrets but fundamental misalignments between her aspirations and her daily actions."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">dissonance &#128266;</div><div class="vc-ko">불협화음, 부조화</div><div class="vc-ex">"The cognitive dissonance he experienced between his self-image as impartial and his demonstrably biased decisions forced a painful reevaluation."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">predicated &#128266;</div><div class="vc-ko">~에 근거를 두다, ~을 전제로 하다</div><div class="vc-ex">"The entire ethical system is predicated upon the notion that genuine freedom requires not just external liberty but profound internal self-mastery."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">substrate &#128266;</div><div class="vc-ko">기초, 바탕</div><div class="vc-ex">"Beneath her charismatic personality lay a substrate of profound insecurity, which careful self-analysis eventually brought to light."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">intersubjective &#128266;</div><div class="vc-ko">주체 간의, 상호주관적인</div><div class="vc-ex">"Moral reasoning develops within an intersubjective realm, requiring us to reconcile our personal views with collectively shared norms and perceptions."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">dogma &#128266;</div><div class="vc-ko">교조, 독단</div><div class="vc-ex">"He cautioned against virtue based solely on rigid dogma, advocating instead for ethics grounded in critical self-knowledge and empathetic understanding."</div></div></div>
+
+    <div class="game-block"><div class="game-title">🎯 빈칸 채우기</div><div class="game-q">1. Mature ethical development requires <strong>___</strong><strong>___</strong>_ superficial compliance with rules <strong>___</strong><strong>___</strong>_ a deep, internalized understanding of one's own values and their consequences.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">not just...but</button><button class="game-opt" onclick="fbCheck(this,false)">either...or</button><button class="game-opt" onclick="fbCheck(this,false)">both...and</button></div><div class="game-fb"></div><div class="game-q">2. The therapeutic breakthrough involved recognizing <strong>___</strong><strong>___</strong>_ a desire to help <strong>___</strong><strong>___</strong>_ a subconscious need for control and recognition.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">not just...but</button><button class="game-opt" onclick="fbCheck(this,false)">whether...or</button><button class="game-opt" onclick="fbCheck(this,false)">more...than</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기</div><div class="game-q">1. <span class="game-hint">힌트: 자기 인식</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds1" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds1','self-perception')">확인</button></div><div class="game-fb" id="ds1-fb"></div><div class="game-q">2. <span class="game-hint">힌트: 내성</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds2" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds2','introspection')">확인</button></div><div class="game-fb" id="ds2-fb"></div><div class="game-q">3. <span class="game-hint">힌트: 필수 조건</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds3" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds3','prerequisite')">확인</button></div><div class="game-fb" id="ds3-fb"></div></div>
+    <div class="game-block"><div class="game-title">👂 듣고 고르기</div><div class="game-q">1. <button class="game-opt" onclick="lcPlay('not just intention but action')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">not just intention but action</button><button class="game-opt" onclick="lcCheck(this,false)">not just action but intention</button><button class="game-opt" onclick="lcCheck(this,false)">both intention and action</button></div><div class="game-fb"></div><div class="game-q">2. <button class="game-opt" onclick="lcPlay('requires not just effort but insight')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,false)">requires not just insight but effort</button><button class="game-opt" onclick="lcCheck(this,true)">requires not just effort but insight</button><button class="game-opt" onclick="lcCheck(this,false)">requires effort more than insight</button></div><div class="game-fb"></div><div class="game-q">3. <button class="game-opt" onclick="lcPlay('found not just in theory but in practice')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,false)">found not just in practice but in theory</button><button class="game-opt" onclick="lcCheck(this,true)">found not just in theory but in practice</button><button class="game-opt" onclick="lcCheck(this,false)">found equally in theory and practice</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">🔤 단어 배열하기</div><div class="game-q">1. 레벨 C1 — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo1-bank"><span class="wo-chip" data-word="moral" onclick="woAdd(1,this,'moral')">moral</span><span class="wo-chip" data-word="painful" onclick="woAdd(1,this,'painful')">painful</span><span class="wo-chip" data-word="growth" onclick="woAdd(1,this,'growth')">growth</span><span class="wo-chip" data-word="just" onclick="woAdd(1,this,'just')">just</span><span class="wo-chip" data-word="good" onclick="woAdd(1,this,'good')">good</span><span class="wo-chip" data-word="but" onclick="woAdd(1,this,'but')">but</span><span class="wo-chip" data-word="True" onclick="woAdd(1,this,'True')">True</span><span class="wo-chip" data-word="intentions" onclick="woAdd(1,this,'intentions')">intentions</span><span class="wo-chip" data-word="self-awareness." onclick="woAdd(1,this,'self-awareness.')">self-awareness.</span><span class="wo-chip" data-word="demands" onclick="woAdd(1,this,'demands')">demands</span><span class="wo-chip" data-word="not" onclick="woAdd(1,this,'not')">not</span></div><div class="wo-zone" id="wo1-zone"></div><button class="game-opt" onclick="woCheck(1)">확인</button><div class="game-fb" id="wo1-fb"></div><div class="game-q">2. 레벨 C1+ — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo2-bank"><span class="wo-chip" data-word="action" onclick="woAdd(2,this,'action')">action</span><span class="wo-chip" data-word="clear" onclick="woAdd(2,this,'clear')">clear</span><span class="wo-chip" data-word="is" onclick="woAdd(2,this,'is')">is</span><span class="wo-chip" data-word="self-knowledge." onclick="woAdd(2,this,'self-knowledge.')">self-knowledge.</span><span class="wo-chip" data-word="just" onclick="woAdd(2,this,'just')">just</span><span class="wo-chip" data-word="virtue" onclick="woAdd(2,this,'virtue')">virtue</span><span class="wo-chip" data-word="but" onclick="woAdd(2,this,'but')">but</span><span class="wo-chip" data-word="philosopher" onclick="woAdd(2,this,'philosopher')">philosopher</span><span class="wo-chip" data-word="argued" onclick="woAdd(2,this,'argued')">argued</span><span class="wo-chip" data-word="that" onclick="woAdd(2,this,'that')">that</span><span class="wo-chip" data-word="predicated" onclick="woAdd(2,this,'predicated')">predicated</span><span class="wo-chip" data-word="on" onclick="woAdd(2,this,'on')">on</span><span class="wo-chip" data-word="on" onclick="woAdd(2,this,'on')">on</span><span class="wo-chip" data-word="The" onclick="woAdd(2,this,'The')">The</span><span class="wo-chip" data-word="not" onclick="woAdd(2,this,'not')">not</span></div><div class="wo-zone" id="wo2-zone"></div><button class="game-opt" onclick="woCheck(2)">확인</button><div class="game-fb" id="wo2-fb"></div></div>
+    <div class="game-block"><div class="game-title">🎴 짝맞추기</div><div class="game-q">단어와 한국어 뜻을 짝지어보세요:</div><div class="match-grid"><div><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">introspection</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">dissonance</button><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">predicated</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">substrate</button></div><div><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">어떤 것을 기초로 하거나 전제로 함</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">무언가가 세워지거나 발생하는 기반이나 바탕</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">서로 조화되지 않고 충돌하는 상태</button><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">자기 자신의 생각과 감정을 살피는 관찰</button></div></div></div>
+    <div class="game-block"><div class="game-title">🏆 받아쓰기 도전</div><div class="game-q">A1 — <button class="game-opt" onclick="dcPlay('Self-knowledge requires honest reflection about our true motives and flaws.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a1','Self-knowledge requires honest reflection about our true motives and flaws.')">확인</button></div><div class="game-fb" id="dc-a1-fb"></div><div class="game-q">A2 — <button class="game-opt" onclick="dcPlay('Genuine virtue is built not just on good deeds but on deep self-understanding.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a2" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a2','Genuine virtue is built not just on good deeds but on deep self-understanding.')">확인</button></div><div class="game-fb" id="dc-a2-fb"></div><div class="game-q">B1 — <button class="game-opt" onclick="dcPlay('The most difficult aspect of moral development is achieving an objective view of oneself, as seen through others\' eyes.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-b1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('b1','The most difficult aspect of moral development is achieving an objective view of oneself, as seen through others\' eyes.')">확인</button></div><div class="game-fb" id="dc-b1-fb"></div></div>
+    <script>document.addEventListener('DOMContentLoaded',function(){woInit(1, ["True", "moral", "growth", "demands", "not", "just", "good", "intentions", "but", "painful", "self-awareness."]);woInit(2, ["The", "philosopher", "argued", "that", "virtue", "is", "predicated", "not", "just", "on", "action", "but", "on", "clear", "self-knowledge."]);});</script>
+  </section>
+  <section class="sh comp-section"><div class="sh-bar"><span class="sh-num">4</span><h2>이해 문제 <span class="sh-en">COMPREHENSION</span></h2></div>
+    <div class="comp-tabs">
+      <button class="comp-tab active" onclick="compTab(this,'entry')">🟡 입문</button>
+      <button class="comp-tab" onclick="compTab(this,'b1')">🔵 초급 B1</button>
+      <button class="comp-tab" onclick="compTab(this,'intermediate')">🟣 중급</button>
+    </div>
+    <div class="comp-panel comp-panel-entry active"><div class="game-q">Q1. 본문에 따르면, 진정한 도덕적 성장을 위해 가장 필요한 것은 무엇인가요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">타인의 인정</button><button class="game-opt" onclick="compCheck(this,true)">정확한 자기 인식</button><button class="game-opt" onclick="compCheck(this,false)">물질적 성공</button></div><div class="game-fb"></div><div class="game-q">Q2. 'not just A but B' 구문이 강조하는 것은 무엇인가요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">A와 B의 대조</button><button class="game-opt" onclick="compCheck(this,true)">B의 추가적 중요성</button><button class="game-opt" onclick="compCheck(this,false)">A의 우월성</button></div><div class="game-fb"></div><div class="game-q">Q3. 자기 이해 과정이 종종 '고통스럽다'고 묘사되는 이유는 무엇인가요?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">시간이 많이 걸려서</button><button class="game-opt" onclick="compCheck(this,true)">자신의 결점을 마주해야 해서</button><button class="game-opt" onclick="compCheck(this,false)">도움을 받기 어려워서</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-b1"><div class="game-q">Q1. According to the C1 passage, what is the primary challenge in achieving self-knowledge?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">Finding enough time for reflection</button><button class="game-opt" onclick="compCheck(this,true)">Dismantling self-protective narratives</button><button class="game-opt" onclick="compCheck(this,false)">Learning philosophical theories</button></div><div class="game-fb"></div><div class="game-q">Q2. What does the passage suggest is the risk of virtue without self-knowledge?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">It becomes too difficult to practice.</button><button class="game-opt" onclick="compCheck(this,true)">It may stem from a desire for approval.</button><button class="game-opt" onclick="compCheck(this,false)">It loses all social value.</button></div><div class="game-fb"></div><div class="game-q">Q3. How is the relationship between self-perception and moral action characterized?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">Self-perception is optional for moral action.</button><button class="game-opt" onclick="compCheck(this,true)">Self-perception is the foundation for moral action.</button><button class="game-opt" onclick="compCheck(this,false)">Moral action eventually leads to self-perception.</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-intermediate"><div class="game-q">Q1. The C1+ passage posits that self-knowledge requires transcending ego defenses to achieve a perspective comparable to:</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">philosophical abstraction</button><button class="game-opt" onclick="compCheck(this,true)">external observation</button><button class="game-opt" onclick="compCheck(this,false)">emotional intuition</button></div><div class="game-fb"></div><div class="game-q">Q2. What critical function does 'intersubjective reality' serve in the process described?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">It provides a corrective benchmark against personal bias.</button><button class="game-opt" onclick="compCheck(this,false)">It offers a source of unconditional validation.</button><button class="game-opt" onclick="compCheck(this,false)">It simplifies complex moral dilemmas.</button></div><div class="game-fb"></div><div class="game-q">Q3. The passage argues that virtue without self-knowledge risks becoming 'performative altruism.' This implies it lacks:</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,false)">public visibility</button><button class="game-opt" onclick="compCheck(this,true)">reflective integrity</button><button class="game-opt" onclick="compCheck(this,false)">historical precedent</button></div><div class="game-fb"></div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">5</span><h2>문법 <span class="sh-en">GRAMMAR</span></h2></div>
+    <div class="grammar-box">
+      <div class="grammar-label"><span class="grammar-code">G24</span>이번 주 문법 포인트</div>
+      <div class="grammar-title">not just A but (also) B</div>
+      <div class="essay-basics-text" style="margin-bottom:8px;">동격 명사구를 이끄는 'not just A but B'</div>
+      <div class="grammar-explain">'not just A but (also) B'는 A도 중요하지만 B가 더 중요하거나 추가적으로 고려되어야 함을 강조하는 구문입니다. A와 B는 문법적으로 동등한 요소(명사구, 형용사구, 절 등)로 구성되며, '단순히 A가 아니라 B이다'라는 의미의 대조를 나타냅니다.</div>
+    </div>
+    <div class="essay-basics-label" style="margin-top:14px;">📝 예문 3개 (클릭해서 듣기)</div>
+    <div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">The investigation revealed not just procedural errors but a profound failure of ethical oversight at the highest levels.</span> &#128266;<div class="ge-ko">그 조사는 단순히 절차상의 오류가 아니라 최고 수준의 윤리적 감독의 심각한 실패를 드러냈다.</div></div><div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">Her leadership success was attributable not just to her intelligence but to her exceptional capacity for empathetic listening.</span> &#128266;<div class="ge-ko">그녀의 리더십 성공은 단순히 그녀의 지능 때문이 아니라 공감적으로 듣는 그녀의 탁월한 능력 덕분이었다.</div></div><div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">Achieving sustainability requires change not just in industrial practices but in fundamental consumer attitudes and values.</span> &#128266;<div class="ge-ko">지속가능성 달성은 단순히 산업 관행의 변화가 아니라 근본적인 소비자 태도와 가치관의 변화를 필요로 한다.</div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num" style="min-width:40px;">5-B</span><h2>문법 연습 <span class="sh-en">GRAMMAR PRACTICE</span></h2></div>
+    <div class="game-block"><div class="game-title">🎯 문법 이해 문제 (Grammar Quiz)</div><div class="game-q">Q1. Which sentence correctly uses 'not just A but B' to emphasize B?</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">He was not just tired but exhausted from the journey.</button><button class="game-opt" onclick="fbCheck(this,false)">He was not just exhausted but tired from the journey.</button><button class="game-opt" onclick="fbCheck(this,false)">He was tired but not just exhausted from the journey.</button></div><div class="game-fb"></div><div class="game-q">Q2. Choose the option that best completes the sentence: 'The policy's failure demonstrated a need for reform _______ in its implementation _______ in its core design.'</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">not just...but</button><button class="game-opt" onclick="fbCheck(this,false)">whether...or</button><button class="game-opt" onclick="fbCheck(this,false)">more...than</button></div><div class="game-fb"></div><div class="game-q">Q3. Identify the sentence where A and B are grammatically parallel elements in the 'not just A but B' structure.</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,false)">She is not just a scientist but also she writes poetry.</button><button class="game-opt" onclick="fbCheck(this,true)">He admired not just her talent but also her dedication.</button><button class="game-opt" onclick="fbCheck(this,false)">The goal is not just to win but participating fully.</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기 (Dictation)</div><div class="game-q">1. <button class="game-opt" onclick="gpDictPlay('self-knowledge')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-1" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(1,'self-knowledge')">확인</button><button class="game-opt" onclick="gpDictHint(1)">💡 힌트</button><span id="gp-dict-hint-1" class="game-hint" style="visibility:hidden;">진정한 자기 이해</span></div><div class="game-fb" id="gp-dict-fb-1"></div><div class="game-q">2. <button class="game-opt" onclick="gpDictPlay('introspection')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-2" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(2,'introspection')">확인</button><button class="game-opt" onclick="gpDictHint(2)">💡 힌트</button><span id="gp-dict-hint-2" class="game-hint" style="visibility:hidden;">내적인 성찰</span></div><div class="game-fb" id="gp-dict-fb-2"></div><div class="game-q">3. <button class="game-opt" onclick="gpDictPlay('prerequisite')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-3" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(3,'prerequisite')">확인</button><button class="game-opt" onclick="gpDictHint(3)">💡 힌트</button><span id="gp-dict-hint-3" class="game-hint" style="visibility:hidden;">필수 선행 조건</span></div><div class="game-fb" id="gp-dict-fb-3"></div></div>
+    <div class="game-block"><div class="game-title">📝 빈칸 채우기 (Fill in the Blank)</div><div class="game-q">1. The argument posits that ethical action stems <strong>_______</strong> from conscious choice <strong>_______</strong> from a deeply understood and integrated character.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">not just...but</button><button class="game-opt" onclick="fbCheck(this,false)">either...or</button><button class="game-opt" onclick="fbCheck(this,false)">if...then</button></div><div class="game-fb"></div><div class="game-q">2. Cognitive development involves <strong>_______</strong> acquiring new information <strong>_______</strong> restructuring one's fundamental frameworks of understanding.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">not just...but</button><button class="game-opt" onclick="fbCheck(this,false)">neither...nor</button><button class="game-opt" onclick="fbCheck(this,false)">so...that</button></div><div class="game-fb"></div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num" style="min-width:40px;">5-C</span><h2>수능형 연습 <span class="sh-en">CSAT PRACTICE</span></h2></div>
+    <div class="game-block"><div class="game-title">📋 Q1. 주제 파악</div><div style="background:rgba(255,255,255,0.06);padding:12px;border-radius:8px;margin-bottom:10px;font-size:0.9rem;line-height:1.7;color:#ddd;">The pursuit of self-knowledge is often misconstrued as a passive, narcissistic endeavor. In truth, it constitutes an active and demanding form of intellectual and moral labor. It necessitates rigorously auditing one's motivations, confronting inconvenient truths about one's limitations, and integrating external feedback that may contradict cherished self-narratives. This process is foundational because moral decisions made in ignorance of the self are vulnerable to hidden biases and unexamined impulses, rendering even well-intentioned actions potentially misguided or hypocritical.</div><div class="game-q">What is the main idea of the passage?</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">Self-knowledge is a difficult but essential basis for sound moral judgment.</button><button class="game-opt" onclick="fbCheck(this,false)">Narcissism is a common pitfall in the process of self-reflection.</button><button class="game-opt" onclick="fbCheck(this,false)">External feedback is always more accurate than self-perception.</button><button class="game-opt" onclick="fbCheck(this,false)">Moral labor is primarily about following established rules.</button></div><div class="game-fb"></div></div><div class="game-block"><div class="game-title">📋 Q2. 빈칸 추론</div><div style="background:rgba(255,255,255,0.06);padding:12px;border-radius:8px;margin-bottom:10px;font-size:0.9rem;line-height:1.7;color:#ddd;">Philosophers have long debated whether virtue can be taught. A compelling argument suggests that teachable virtue is _______ on a prior, unteachable foundation: self-knowledge. Without understanding one's own capacities for rationalization, self-deception, and bias, instruction in ethics may merely provide new justifications for old, unexamined behaviors. Thus, the _______ work of seeing oneself clearly is the indispensable precursor to any meaningful ethical education.</div><div class="game-q">Which word best fills the blank?</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">predicated</button><button class="game-opt" onclick="fbCheck(this,false)">independent</button><button class="game-opt" onclick="fbCheck(this,false)">contingent</button><button class="game-opt" onclick="fbCheck(this,false)">reflective</button></div><div class="game-fb"></div></div><div class="game-block"><div class="game-title">📋 Q3. 문장 배열 (Sentence Order)</div><div class="game-q">Arrange the sentences in logical order.</div><div class="game-q" style="margin:4px 0;">A. Therefore, the arduous journey of self-discovery is not a selfish detour but the very path to genuine virtue.</div><div class="game-q" style="margin:4px 0;">B. This clarity allows for actions that are consistent with one's authentic values, not just social expectations.</div><div class="game-q" style="margin:4px 0;">C. Bridging this gap requires honest introspection and the courage to accept uncomfortable truths.</div><div class="game-q" style="margin:4px 0;">D. Genuine self-knowledge involves recognizing the gap between one's professed ideals and one's actual impulses.</div><div style="margin-top:8px;"><input class="game-input" id="csat-ord" placeholder="정답 순서 (예: ABCD)" style="max-width:200px;" /><button class="game-opt" onclick="var v=document.getElementById('csat-ord').value.trim().toUpperCase();var fb=document.getElementById('csat-ord-fb');if(v==='DCBA'){fb.textContent='✅ 정답!';fb.className='game-fb correct';}else{fb.textContent='❌ 정답: DCBA';fb.className='game-fb wrong';}">확인</button></div><div class="game-fb" id="csat-ord-fb"></div></div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">6</span><h2>에세이 쓰기 <span class="sh-en">ESSAY WRITING</span></h2></div>
+    <div class="et-wrap">
+  <div class="et-header">
+    <div class="et-icon">✍️</div>
+    <div><div class="et-title">에세이 잘 쓰는 5가지 요령</div><div class="et-sub">Good Essay Writing Tips</div></div>
+  </div>
+  <div class="tip-list">
+    <div class="tip-card tc-1"><div class="tip-num tn-1">1</div><div class="tip-body">
+      <div class="tip-name">명확한 주제문 (Topic Sentence)</div>
+      <div class="tip-desc">첫 문장에 내 주장을 한 번에! 모호하면 읽는 사람이 혼란스러워요.</div>
+      <div class="tip-ex"><span class="ex-bad">❌ "Beauty is important."</span> <span class="ex-good">✅ "Beauty without morality leads to corruption."</span></div>
+    </div></div>
+    <div class="tip-card tc-2"><div class="tip-num tn-2">2</div><div class="tip-body">
+      <div class="tip-name">구체적 근거 + 예시</div>
+      <div class="tip-desc">"Because" 다음엔 반드시 구체적인 예시가 따라와야 해요.</div>
+      <div class="tip-ex"><span class="ex-bad">❌ "Because it is bad."</span> <span class="ex-good">✅ "For example, the story shows how..."</span></div>
+    </div></div>
+    <div class="tip-card tc-3"><div class="tip-num tn-3">3</div><div class="tip-body">
+      <div class="tip-name">반대 의견 인정하기</div>
+      <div class="tip-desc">반대 의견을 먼저 인정하면 내 주장이 더 설득력 있어 보여요.</div>
+      <div class="tip-ex"><span class="ex-good">✅ "Although some argue that..., I believe..."</span></div>
+    </div></div>
+    <div class="tip-card tc-4"><div class="tip-num tn-4">4</div><div class="tip-body">
+      <div class="tip-name">연결어 (Transition Words)</div>
+      <div class="tip-desc">단락과 단락을 자연스럽게 이어주는 다리 역할을 해요.</div>
+      <div class="tip-ex"><span class="ex-good">First · Furthermore · However · Therefore · In conclusion</span></div>
+    </div></div>
+    <div class="tip-card tc-5"><div class="tip-num tn-5">5</div><div class="tip-body">
+      <div class="tip-name">강한 마무리 (Concluding Sentence)</div>
+      <div class="tip-desc">마지막 문장이 가장 오래 기억돼요. 핵심 메시지를 새로운 표현으로!</div>
+      <div class="tip-ex"><span class="ex-good">✅ "Therefore, it is clear that..." / "This is why..."</span></div>
+    </div></div>
+  </div>
+  <div class="phrase-grid">
+    <div class="phrase-card"><div class="phrase-role">서론</div><div class="phrase-item">In my opinion...<br>I strongly believe...<br>It is clear that...</div></div>
+    <div class="phrase-card"><div class="phrase-role">본론</div><div class="phrase-item">For instance...<br>This shows that...<br>Furthermore...</div></div>
+    <div class="phrase-card"><div class="phrase-role">결론</div><div class="phrase-item">In conclusion...<br>Therefore...<br>This is why...</div></div>
+  </div>
+</div>
+    <div id="esTopic" style="display:block;background:var(--gd);color:white;border-radius:12px;padding:16px;margin-bottom:14px;text-align:center;box-sizing:border-box;">
+      <div style="font-size:15px;font-weight:bold;">✍️ The hardest and most uncomfortable truth about who I really am</div>
+      <div style="font-size:12px;color:#cce;margin-top:4px;">내가 진정으로 누구인지에 대한 가장 어렵고 불편한 진실</div>
+      <div style="font-size:11px;color:#9bf;margin-top:6px;">📐 4단락 구조: 서론 → 본론1 → 본론2 → 결론</div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">① 서론 (Introduction)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">서론: '자기 이해'라는 광범위한 개념을 소개하며, 그 과정이 종종 편안한 자아상이 아닌 불편한 진실과 마주하게 함을 언급하세요. 주제 문장에서 본인이 발견하거나 마주해야 했던 가장 어려웠던 자기 인식을 명시적으로 제시하세요.</p>
+      <textarea id="es1" rows="4" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="Hook + Thesis Statement..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">② 본론 1 (Body 1)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">본론 1: 그 '가장 불편한 진실'의 정체와 그것이 왜 발견하기 어렵고 받아들이기 불편했는지 구체적으로 서술하세요. 어떤 상황, 반응, 또는 성찰을 통해 이 진실이 드러났는지 설명하세요. (예: 타인의 피드백, 내적 모순의 인식, 실패의 분석)</p>
+      <textarea id="es2" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="First argument + evidence..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">③ 본론 2 (Body 2)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">본론 2: 이 진실을 인정하고 마주한 것이 당신의 사고방식, 감정, 또는 행동에 어떤 변화를 가져왔는지 분석하세요. 이 경험이 '진정한 자기 이해'와 '도덕적 성장'(주제와 연결하여)에 어떻게 기여했는지 또는 어떤 새로운 질문을 제기했는지 논의하세요.</p>
+      <textarea id="es3" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="Second argument or concession..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">④ 결론 (Conclusion)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">결론: 이 불편한 진실과의 마주침이 단순히 고통스러운 경험이 아닌, 더 진실되고 통합된 자아를 구축하는 데 필수적인 단계였음을 재강조하세요. 자기 이해의 여정이 완결점이 아닌 지속적인 과정임을 인정하며 글을 마무리하세요.</p>
+      <textarea id="es4" rows="4" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="In conclusion, ..."></textarea>
+
+      <button onclick="submitFullEssay()" style="display:block;width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;">💬 ChatGPT에 4단락 에세이 피드백 받기</button>
+    </div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">7</span><h2>디베이트 <span class="sh-en">DEBATE</span></h2></div>
+    <div id="dbTopic" style="display:block;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;box-sizing:border-box;">
+      <div style="font-size:11px;font-weight:bold;letter-spacing:2px;margin-bottom:6px;opacity:0.9;">🗣️ TODAY'S MOTION</div>
+      <div style="font-size:15px;font-weight:bold;line-height:1.45;">Is genuine self-knowledge the true and necessary foundation of all moral virtue?</div>
+      <div style="font-size:13px;margin-top:6px;opacity:0.92;">진정한 자기 이해는 모든 도덕적 덕목의 참되고 필수적인 기초인가?</div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;margin-bottom:16px;">
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <div style="flex:1 1 260px;min-width:240px;">
+          <div style="display:block;background:#d4f4dd;color:#156b2c;font-weight:bold;padding:8px 12px;border-radius:8px;text-align:center;margin-bottom:10px;">PRO (찬성)</div>
+          <div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 찬성1: 자기 이해 없이는 행동의 진정한 동기를 알 수 없으며, 숨겨진 이기심이나 편향에 기반한 행동은 진정한 덕이라고 볼 수 없다.</div><div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 찬성2: 덕은 습관이지만, 그 습관이 고정관념이나 강제가 아닌 자발적이고 합리적인 선택이 되려면 자신에 대한 명확한 인식이 전제되어야 한다.</div><div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 찬성3: 자기 기만 상태에서의 '선한 행동'은 일관성이 없고 상황에 따라 쉽게 무너지며, 오직 정확한 자기 인식을 바탕으로 한 덕만이 견고하고 신뢰할 수 있다.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:240px;">
+          <div style="display:block;background:#fbd5d5;color:#8a1a1a;font-weight:bold;padding:8px 12px;border-radius:8px;text-align:center;margin-bottom:10px;">CON (반대)</div>
+          <div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 반대1: 많은 덕목(예: 용기, 자비)은 본능적 반응이나 사회화를 통해 발현될 수 있으며, 반드시 깊은 자기 분석을 필요로 하지 않는다.</div><div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 반대2: 지나친 자기 성찰은 행동을 마비시키거나 자기 중심적이게 할 수 있으며, 타인에 대한 관심과 실천적 도덕성이 더 중요한 기초가 될 수 있다.</div><div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 반대3: 철학적/종교적 교리, 문화적 규범 등 외부적 가르침이 덕의 강력한 기초가 될 수 있으며, 이는 자기 이해보다 먼저 또는 독립적으로 작용한다.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;margin-bottom:16px;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">📝 My Opening Statement</label>
+      <p style="font-size:12px;color:#666;margin:0 0 8px;line-height:1.5;">Opening Statement 가이드: 팀의 입장(찬성/반대)을 명확히 밝히고, '진정한 자기 이해'와 '모든 도덕적 덕목의 기초'라는 핵심 용어를 정의하세요. 주장의 근간이 될 2-3개의 핵심 논리를 간결하게 제시하세요. (예: 찬성측 - 동기의 투명성, 덕의 일관성, 자기기만의 위험 강조)</p>
+      <textarea id="openStmt" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="I strongly believe that ..."></textarea>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">🔄 My Rebuttal</label>
+      <p style="font-size:12px;color:#666;margin:0 0 8px;line-height:1.5;">Rebuttal 가이드: 상대방의 주장을 정확히 요약한 후, 그 주장의 논리적 결함, 가정의 문제점, 또는 반례를 들어 반박하세요. 단순히 반대만 하지 말고, 자신의 입장을 강화하는 방식으로 재구성하세요. 상대방의 강력한 주장을 인정한 후에도 자신의 주장이 더 우월함을 보이는 '예견적 반박'을 사용하세요.</p>
+      <textarea id="rebuttalStmt" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="While the opposition argues that..., this ignores the fact that..."></textarea>
+      <button onclick="sendDebateStatement()" style="display:block;width:100%;margin-top:14px;padding:14px;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;">🤖 ChatGPT와 토론 시작하기</button>
+    </div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">8</span><h2>ChatGPT 회화 연습 <span class="sh-en">AI PRACTICE</span></h2></div>
+    <div style="text-align:center;padding:20px 0;">
+      <p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">이번 주 핵심 표현으로 ChatGPT Camp B와 영어로 대화해보세요!</p>
+      <button class="btn-submit" onclick="launchChatGPTPractice()">🤖 ChatGPT와 50:50 회화 연습</button>
+    </div>
   </section>
 </div>
-<div class="wk-nav"><a href="week06.html" class="wk-btn">&larr; W06</a><span class="wk-current">W24</span><a href="week08.html" class="wk-btn">W08 &rarr;</a></div>
+<div class="wk-nav"><a href="week23.html" class="wk-btn">&larr; W23</a><span class="wk-current">W24</span><a href="week25.html" class="wk-btn">W25 &rarr;</a></div>
 <!-- ===== CEC Robo Helper (Camp B) ===== -->
 <div class="gb">
   <div class="gb-hint" onclick="gbToggle()" id="gbHint"><span>Robo</span>한테 물어봐!</div>
@@ -427,9 +679,12 @@ var CHATGPT_URL='https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166';
 function speak(t){if(!t)return;var u=new SpeechSynthesisUtterance(t.replace(/\uD83D\uDD0A/g,'').trim());u.lang='en-US';u.rate=0.85;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}
 function showLevel(lv,btn){document.getElementById('b1Story').style.display=lv==='b1'?'block':'none';document.getElementById('c1Story').style.display=lv==='c1'?'block':'none';document.querySelectorAll('.ltab').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');}
 function copyAndOpen(msg){window.open(CHATGPT_URL,'_blank');try{navigator.clipboard.writeText(msg);}catch(e){}}
-function sendDebate(){var t=document.getElementById('debateInput').value;var m='\uc548\ub155\ud558\uc138\uc694! High School 1\uc774\uc5d0\uc694.\n\nOf Mice and Men W07\uc744 \uacf5\ubd80\ud588\uc5b4\uc694.\n\n\ud1a0\ub860 \uc8fc\uc81c: "The American Dream is an illusion that causes more suffering than hope."\n\n\ub0b4 \uc8fc\uc7a5:\n'+t+'\n\n\uc774 \uc8fc\uc7a5\uc5d0 \ubc18\ubc15\ud574\uc8fc\uc138\uc694!';copyAndOpen(m);}
-function submitEssay(){var e=[1,2,3,4].map(function(i){return document.getElementById('es'+i).value}).join('\n\n');var m='\uc548\ub155\ud558\uc138\uc694! High School 1\uc774\uc5d0\uc694.\n\n\uc5d0\uc138\uc774 \uc8fc\uc81c: "How does Steinbeck use George and Lennie\\u0027s friendship to critique the American Dream?"\n\n'+e+'\n\n\ud53c\ub4dc\ubc31 \ubd80\ud0c1\ub4dc\ub824\uc694!';copyAndOpen(m);}
-function launchChatGPTPractice(){var m='Of Mice and Men W07 (아메리칸 드림 — 조지와 레니) \uc8fc\uc81c\ub85c \uc601\uc5b4 \ud68c\ud654 \uc5f0\uc2b5\uc744 \ud558\uace0 \uc2f6\uc5b4\uc694!';copyAndOpen(m);}
+function sendDebate(){}
+function submitEssay(){}
+function launchChatGPTPractice(){
+  var m='\uc790\uae30 \uc774\ud574\uc5d0 \uad00\ud55c \uc774\ubc88 \uc8fc \uc8fc\uc81c, \uc815\ub9d0 \uc0dd\uac01\ud560 \uac70\ub9ac\uac00 \ub9ce\ub124\uc694. \'\uc9c4\uc815\ud55c \ub098\'\ub97c \uc548\ub2e4\ub294 \uac8c \ubb34\uc5c7\uc77c\uae4c\uc694? \uc6b0\ub9ac\uac00 \uc2a4\uc2a4\ub85c\uc5d0 \ub300\ud574 \ubbff\uace0 \uc2f6\uc740 \uc774\uc57c\uae30\uc640 \ud0c0\uc778\uc774 \ubcf4\ub294 \uc6b0\ub9ac, \uadf8\ub9ac\uace0 \uc544\ub9c8\ub3c4 \uac00\uc7a5 \uc194\uc9c1\ud55c \uc6b0\ub9ac \uc790\uc2e0\uc758 \ubaa8\uc2b5 \uc0ac\uc774\uc5d0\ub294 \uc5b4\ub5a4 \uac04\uadf9\uc774 \uc788\uc744\uae4c\uc694? \uc5ec\ub7ec\ubd84\uc758 \uacbd\ud5d8\uc774\ub098 \uc0dd\uac01\uc744 \ub098\ub204\uc5b4 \ubcf4\uc138\uc694.';
+  copyAndOpen(m);
+}
 /* ===== CEC Robo Helper (Camp B) ===== */
 (function(){
   if(window.__gbRoboInit)return;window.__gbRoboInit=true;
@@ -537,5 +792,262 @@ function launchChatGPTPractice(){var m='Of Mice and Men W07 (아메리칸 드림
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',gbInit);}else{gbInit();}
 })();
 </script>
+<script id="m1-extra-js">
+// Reading toggle — single Play/Pause button
+function togglePlay(btn){
+  var icon=btn.querySelector('.play-icon');
+  var label=btn.querySelector('.play-label');
+  if(btn.classList.contains('playing')){
+    window.speechSynthesis.pause();
+    btn.classList.remove('playing');
+    icon.textContent='▶';
+    label.textContent='재생';
+  } else {
+    if(window.speechSynthesis.paused){
+      window.speechSynthesis.resume();
+    } else {
+      var txt=btn.dataset.text||'';
+      if(!txt){var storyDiv=btn.closest('.story-box')||btn.parentElement;var textEl=storyDiv.querySelector('[id$="Text"]');txt=textEl?textEl.textContent:'';}
+      window.speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(txt);
+      u.lang='en-US';u.rate=0.85;
+      u.onend=function(){btn.classList.remove('playing');icon.textContent='▶';label.textContent='재생';};
+      u.onerror=u.onend;
+      window.speechSynthesis.speak(u);
+    }
+    btn.classList.add('playing');
+    icon.textContent='⏸';
+    label.textContent='일시정지';
+  }
+}
+
+// Play/Pause TTS state (legacy toggle — kept for any remaining pages)
+var m1TtsActive = null;
+function m1PlayPause(btnId, textElId){
+  var btn = document.getElementById(btnId);
+  var txt = document.getElementById(textElId).textContent;
+  if(m1TtsActive === btnId){
+    window.speechSynthesis.cancel();
+    m1TtsActive = null;
+    btn.classList.remove('playing');
+    btn.innerHTML = '▶ 전체 듣기';
+    return;
+  }
+  if(m1TtsActive){
+    window.speechSynthesis.cancel();
+    var prev = document.getElementById(m1TtsActive);
+    if(prev){ prev.classList.remove('playing'); prev.innerHTML='▶ 전체 듣기'; }
+  }
+  var u = new SpeechSynthesisUtterance(txt);
+  u.lang='en-US'; u.rate=0.9;
+  u.onend = function(){ btn.classList.remove('playing'); btn.innerHTML='▶ 전체 듣기'; m1TtsActive=null; };
+  u.onerror = u.onend;
+  window.speechSynthesis.speak(u);
+  m1TtsActive = btnId;
+  btn.classList.add('playing');
+  btn.innerHTML = '⏸ 일시정지';
+}
+
+// Fill-in-blank
+function fbCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅ 정답!'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌ 다시 해볼까요?'; fb.className='game-fb wrong'; }
+}
+
+// Dictation simple
+function dsCheck(inpId, answer){
+  var el = document.getElementById(inpId);
+  var fb = document.getElementById(inpId+'-fb');
+  if(el.value.trim().toLowerCase() === answer.toLowerCase()){
+    fb.textContent='✅ 정답! ('+answer+')'; fb.className='game-fb correct';
+  } else {
+    fb.textContent='❌ 정답: '+answer; fb.className='game-fb wrong';
+  }
+}
+
+// Listen-choose: speak then reveal
+function lcPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.85;
+  window.speechSynthesis.speak(u);
+}
+function lcCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅ 잘 들으셨어요!'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌ 다시 들어볼까요?'; fb.className='game-fb wrong'; }
+}
+
+// Word order
+var woState = {};
+function woInit(idx, words){
+  woState[idx] = { correct: words.slice(), arranged: [] };
+}
+function woAdd(idx, chipEl, word){
+  if(chipEl.classList.contains('used')) return;
+  chipEl.classList.add('used');
+  woState[idx].arranged.push(word);
+  var zone = document.getElementById('wo'+idx+'-zone');
+  var span = document.createElement('span');
+  span.className = 'wo-chip'; span.textContent = word; span.dataset.word = word;
+  span.onclick = function(){
+    // remove on click from zone
+    var i = woState[idx].arranged.indexOf(word);
+    if(i>=0) woState[idx].arranged.splice(i,1);
+    span.remove();
+    // re-enable bank chip
+    var bankChips = document.querySelectorAll('#wo'+idx+'-bank .wo-chip');
+    bankChips.forEach(function(b){ if(b.dataset.word===word) b.classList.remove('used'); });
+  };
+  zone.appendChild(span);
+}
+function woCheck(idx){
+  var fb = document.getElementById('wo'+idx+'-fb');
+  var ok = JSON.stringify(woState[idx].arranged) === JSON.stringify(woState[idx].correct);
+  if(ok){ fb.textContent='✅ 정답! '+woState[idx].correct.join(' '); fb.className='game-fb correct'; }
+  else { fb.textContent='❌ 순서를 다시 확인해보세요.'; fb.className='game-fb wrong'; }
+}
+
+// Matching
+var mmSel = null;
+function mmClick(btn, pairKey){
+  if(btn.classList.contains('matched')) return;
+  if(!mmSel){ mmSel = btn; btn.classList.add('sel'); return; }
+  if(mmSel === btn){ mmSel.classList.remove('sel'); mmSel=null; return; }
+  if(mmSel.dataset.pair === pairKey && mmSel !== btn){
+    mmSel.classList.remove('sel'); mmSel.classList.add('matched');
+    btn.classList.add('matched'); mmSel=null;
+  } else {
+    var tmp = mmSel; mmSel.classList.remove('sel'); mmSel=null;
+    btn.classList.add('wrong');
+    setTimeout(function(){ btn.classList.remove('wrong'); }, 500);
+  }
+}
+
+// Dictation challenge
+function dcPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.9;
+  window.speechSynthesis.speak(u);
+}
+function dcCheck(lvl, answer){
+  var inp = document.getElementById('dc-'+lvl);
+  var fb = document.getElementById('dc-'+lvl+'-fb');
+  var g = inp.value.trim().toLowerCase().replace(/[.,!?]/g,'');
+  var a = answer.toLowerCase().replace(/[.,!?]/g,'');
+  if(g === a){ fb.textContent='✅ 완벽!'; fb.className='game-fb correct'; }
+  else { fb.innerHTML='❌ 정답: '+answer; fb.className='game-fb wrong'; }
+}
+
+// Comprehension tabs
+function compTab(tab, lvl){
+  var root = tab.closest('.comp-section');
+  root.querySelectorAll('.comp-tab').forEach(function(t){ t.classList.remove('active'); });
+  root.querySelectorAll('.comp-panel').forEach(function(p){ p.classList.remove('active'); });
+  tab.classList.add('active');
+  root.querySelector('.comp-panel-'+lvl).classList.add('active');
+}
+function compCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌'; fb.className='game-fb wrong'; }
+}
+
+// My thoughts — ChatGPT send
+function sendMyThought(){
+  var t = document.getElementById('myThoughtInput').value.trim();
+  if(!t){ alert('한 문장 써주세요!'); return; }
+  copyAndOpen('안녕하세요! 오늘 읽은 이야기에 대한 제 생각이에요:\n\n'+t+'\n\n이 의견에 대해 간단히 코멘트 부탁드려요!');
+}
+
+// Essay basics — structure question
+function askEssayStructure(){
+  copyAndOpen('안녕하세요! 저는 Middle School 1 학생이에요.\n\n에세이 구조(주제문-근거-마무리)에 대해 질문이 있어요. 중학생이 쉽게 이해할 수 있게 설명해주세요!');
+}
+
+// m2: paragraph writing — send 3 sentences to ChatGPT
+function submitParagraph(){
+  var t1 = document.getElementById('pw1').value.trim();
+  var t2 = document.getElementById('pw2').value.trim();
+  var t3 = document.getElementById('pw3').value.trim();
+  if(!t1 || !t2 || !t3){ alert('세 문장 모두 써주세요! (주제문/근거/마무리)'); return; }
+  var topic = document.getElementById('pwTopic') ? document.getElementById('pwTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 2 학생이에요.\n\n에세이 단락쓰기 주제: ' + topic + '\n\n'
+          + '① 주제문: ' + t1 + '\n'
+          + '② 근거/예시: ' + t2 + '\n'
+          + '③ 마무리: ' + t3 + '\n\n'
+          + '제 단락을 중학생 수준에서 피드백해주세요! 문법, 자연스러움, 논리 구조 모두 봐주세요.';
+  copyAndOpen(msg);
+}
+
+// m2: opinion — send 1 paragraph to ChatGPT
+function sendOpinion(){
+  var el = document.getElementById('opn1') || document.getElementById('opinionInput');
+  var t = el ? el.value.trim() : '';
+  if(!t){ alert('내 생각을 한 단락으로 써주세요!'); return; }
+  var topic = document.getElementById('opTopic') ? document.getElementById('opTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 2 학생이에요.\n\n의견 표현 주제: ' + topic + '\n\n내 생각:\n' + t + '\n\n중학생 수준에서 자연스럽게 고쳐주시고 간단한 코멘트 부탁드려요!';
+  copyAndOpen(msg);
+}
+
+// m2: grammar example — read aloud on click
+function grammarSpeak(el){
+  var txt = el.querySelector('.ge-en');
+  if(txt) speak(txt.textContent);
+}
+
+// 5-B Grammar Practice — dictation with hint reveal
+function gpDictHint(idx){
+  var el = document.getElementById('gp-dict-hint-'+idx);
+  if(el) el.style.visibility = 'visible';
+}
+function gpDictPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.8;
+  window.speechSynthesis.speak(u);
+}
+function gpDictCheck(idx, answer){
+  var el = document.getElementById('gp-dict-'+idx);
+  var fb = document.getElementById('gp-dict-fb-'+idx);
+  if(el.value.trim().toLowerCase() === answer.toLowerCase()){
+    fb.textContent='✅ 정답! ('+answer+')'; fb.className='game-fb correct';
+  } else {
+    fb.textContent='❌ 정답: '+answer; fb.className='game-fb wrong';
+  }
+}
+
+// m3: 3-paragraph essay (intro/body/conclusion)
+function submitFullEssay(){
+  var p1 = document.getElementById('es1').value.trim();
+  var p2 = document.getElementById('es2').value.trim();
+  var p3 = document.getElementById('es3').value.trim();
+  if(!p1 || !p2 || !p3){ alert('서론/본론/결론 세 단락 모두 써주세요!'); return; }
+  var topic = document.getElementById('esTopic') ? document.getElementById('esTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 3 학생이에요.\n\n에세이 주제: ' + topic + '\n\n'
+          + '① 서론 (Introduction):\n' + p1 + '\n\n'
+          + '② 본론 (Body):\n' + p2 + '\n\n'
+          + '③ 결론 (Conclusion):\n' + p3 + '\n\n'
+          + '제 3단락 에세이를 중학생 수준에서 피드백해주세요! 서론-본론-결론 구조, 논리, 문법 모두 봐주세요.';
+  copyAndOpen(msg);
+}
+
+// m3: debate — send opening statement for rebuttal
+function sendDebateStatement(){
+  var t = document.getElementById('openStmt').value.trim();
+  if(!t){ alert('Opening Statement를 써주세요!'); return; }
+  var topic = document.getElementById('dbTopic') ? document.getElementById('dbTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 3 학생이에요.\n\n토론 주제: ' + topic + '\n\n'
+          + '제 Opening Statement:\n' + t + '\n\n'
+          + '이 주장에 대해 반박(counterargument)을 해주시고, 영어 토론 방식으로 저와 대화해주세요!';
+  copyAndOpen(msg);
+}
+</script>
+<div class="pd-notice">📚 이 교재는 저작권이 만료된 공개 도메인(Public Domain) 작품을 기반으로 제작되었습니다. 원문을 직접 인용하지 않고 AI가 교육 목적에 맞게 완전히 새로 작성한 창작 학습 자료입니다.<br><span class="pd-en">This material is based on Public Domain works. All content has been newly written by AI for educational purposes. No original text was quoted.</span></div>
 </body>
 </html>

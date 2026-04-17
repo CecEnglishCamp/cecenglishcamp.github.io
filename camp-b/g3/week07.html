@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brave New World W07 | CEC Camp B High School 3</title>
+  <title>Sons and Lovers W07 | Camp B High School 3</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
 :root{
@@ -336,48 +336,315 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
   .gb-btn:hover{background:#e0f0d0;}
   </style>
   <!-- ===== /CEC Robo Helper styles ===== -->
+<style id="grade-theme">:root{--gp:#1A237E;--gl:#E8EAF6;--gd:#0D1652;}</style>
+<style id="m1-extra-css">
+.pd-notice{font-size:11px;color:#999;text-align:center;padding:12px 20px;margin-top:30px;margin-bottom:80px;border-top:1px solid rgba(255,255,255,0.08);line-height:1.6;}
+.pd-en{font-size:10px;color:#bbb;}
+/* override Robo + panel positions to clear sticky wk-nav */
+.gb{bottom:80px !important;}
+.gb-panel{bottom:148px !important;}
+.play-pause-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:rgba(0,242,255,0.1);border:1px solid #00f2ff;color:#00f2ff;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;}
+.play-pause-btn.playing{background:#00f2ff;color:#000;}
+/* Play toggle — single button */
+.play-toggle{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:#1F4E79;border:none;border-radius:20px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:inherit;margin-top:10px;}
+.play-toggle:hover{background:#2E75B6;}
+.play-toggle.playing{background:#2E75B6;color:#fff;}
+.play-icon{font-size:14px;}
+.game-block{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px;margin-top:12px;}
+.game-title{font-size:0.85rem;color:#c9a84c;font-weight:700;margin-bottom:10px;letter-spacing:1px;}
+.game-q{font-size:0.92rem;color:#eee;margin:10px 0 8px;line-height:1.6;}
+.game-opts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.game-opt{padding:7px 14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#ddd;border-radius:18px;font-size:0.85rem;cursor:pointer;}
+.game-opt:hover{background:rgba(0,242,255,0.12);border-color:#00f2ff;}
+.game-opt.correct{background:rgba(40,200,120,0.25);border-color:#28c878;color:#6be0a0;}
+.game-opt.wrong{background:rgba(220,80,80,0.2);border-color:#dc5050;color:#ffb0b0;}
+.game-fb{font-size:0.82rem;color:rgba(255,255,255,0.55);margin-top:6px;min-height:18px;}
+.game-fb.correct{color:#6be0a0;}
+.game-fb.wrong{color:#ffb0b0;}
+.game-input{width:100%;max-width:300px;padding:7px 12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.18);color:#fff;border-radius:6px;font-size:0.9rem;margin-right:6px;}
+.game-hint{font-size:0.78rem;color:#c9a84c;font-style:italic;margin-left:8px;}
+.wo-bank,.wo-zone{display:flex;flex-wrap:wrap;gap:6px;padding:10px;border:1px dashed rgba(255,255,255,0.2);border-radius:8px;min-height:44px;margin:6px 0;}
+.wo-zone{border-style:solid;background:rgba(0,242,255,0.04);}
+.wo-chip{padding:6px 12px;background:rgba(0,242,255,0.15);color:#00f2ff;border-radius:14px;font-size:0.85rem;cursor:pointer;user-select:none;}
+.wo-chip.used{opacity:0.35;cursor:default;}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;}
+.match-btn{padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);color:#ddd;border-radius:6px;font-size:0.88rem;cursor:pointer;text-align:left;}
+.match-btn.sel{border-color:#c9a84c;background:rgba(201,168,76,0.15);}
+.match-btn.matched{border-color:#28c878;background:rgba(40,200,120,0.2);color:#6be0a0;pointer-events:none;}
+.comp-tabs{display:flex;gap:6px;margin-bottom:10px;}
+.comp-tab{padding:6px 14px;border:1px solid rgba(255,255,255,0.15);border-radius:18px;background:transparent;color:#ccc;font-size:0.85rem;cursor:pointer;}
+.comp-tab.active{background:#00f2ff;color:#000;border-color:#00f2ff;}
+.comp-panel{display:none;}
+.comp-panel.active{display:block;}
+.essay-basics-box{background:rgba(0,242,255,0.04);border-left:3px solid #00f2ff;border-radius:6px;padding:14px 18px;margin-bottom:12px;}
+.essay-basics-label{font-size:0.78rem;color:#c9a84c;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.essay-basics-text{font-size:0.92rem;color:#ddd;line-height:1.7;}
+.essay-basics-text em{color:#00f2ff;font-style:italic;}
+.sample-essay-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:16px 20px;margin-top:14px;font-size:0.92rem;color:#ddd;line-height:1.8;}
+.sample-essay-title{font-size:0.82rem;color:#c9a84c;font-weight:700;margin-bottom:8px;}
+/* m2 additions */
+.grammar-box{background:rgba(201,168,76,0.06);border-left:3px solid #c9a84c;border-radius:6px;padding:14px 18px;margin-bottom:12px;}
+.grammar-label{font-size:0.78rem;color:#c9a84c;font-weight:700;letter-spacing:1px;margin-bottom:6px;}
+.grammar-code{display:inline-block;background:#c9a84c;color:#000;font-weight:700;padding:2px 10px;border-radius:12px;font-size:0.78rem;margin-right:8px;}
+.grammar-title{font-size:1.05rem;color:#fff;font-weight:700;margin-bottom:8px;}
+.grammar-explain{font-size:0.92rem;color:#ddd;line-height:1.7;margin-bottom:10px;}
+.grammar-example{background:rgba(0,0,0,0.25);border-radius:6px;padding:8px 12px;margin-top:6px;font-size:0.9rem;color:#ddd;line-height:1.6;cursor:pointer;}
+.grammar-example:hover{background:rgba(0,242,255,0.08);}
+.grammar-example .ge-ko{color:rgba(255,255,255,0.55);font-size:0.82rem;margin-top:3px;}
+.pw-wrap{margin-top:12px;}
+.pw-label{font-size:0.82rem;color:#00f2ff;font-weight:700;margin:10px 0 6px;}
+.pw-hint{font-size:0.78rem;color:rgba(255,255,255,0.55);margin-bottom:6px;line-height:1.5;}
+.pw-input{width:100%;min-height:54px;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:6px;font-size:0.92rem;font-family:inherit;resize:vertical;}
+.opinion-box{background:rgba(0,242,255,0.05);border:1px solid rgba(0,242,255,0.25);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+/* m3 additions — debate */
+.debate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+.debate-col{display:flex;flex-direction:column;gap:8px;}
+.debate-col-title{font-weight:700;font-size:0.88rem;padding:6px 10px;border-radius:6px;text-align:center;letter-spacing:1px;}
+.debate-col-title.pro{background:rgba(40,200,120,0.15);color:#6be0a0;border:1px solid rgba(40,200,120,0.35);}
+.debate-col-title.con{background:rgba(220,80,80,0.15);color:#ffb0b0;border:1px solid rgba(220,80,80,0.35);}
+.debate-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:9px 12px;font-size:0.86rem;color:#ddd;line-height:1.55;}
+.debate-card.pro{border-left:3px solid #28c878;}
+.debate-card.con{border-left:3px solid #dc5050;}
+@media(max-width:560px){.debate-grid{grid-template-columns:1fr;}}
+.debate-topic-box{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:14px 18px;margin-bottom:12px;}
+/* Day 1/2/3 block — dot + border-left + word count */
+.day-block{margin:16px 0;background:#f3f0ff;border-radius:12px;padding:16px;}
+.day-row{margin-bottom:12px;}
+.day-meta{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.day-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.dot-1{background:#B4B2A9;}.dot-2{background:#4A9E75;}.dot-3{background:var(--gp);}
+.day-tag{font-size:11px;font-weight:600;letter-spacing:0.06em;color:#888;text-transform:uppercase;}
+.day-wc{font-size:10px;color:var(--gp);margin-left:auto;background:var(--gl);padding:2px 8px;border-radius:10px;}
+.day-sent{font-size:15px;line-height:1.65;padding:10px 14px;border-left:3px solid;border-radius:0 10px 10px 0;}
+.sent-1{border-color:#B4B2A9;background:#f3f0ff;color:#222;}
+.sent-2{border-color:#8478e0;background:#ede8ff;color:#222;}
+.sent-3{border-color:var(--gp);background:var(--gl);color:#111;font-weight:600;}
+.sent-kr{font-size:13px;color:#444;padding:6px 14px 0;font-style:italic;}
+.day-tts{display:flex;align-items:center;gap:8px;margin-top:8px;padding-left:14px;}
+/* Reading tab buttons — larger, stronger active */
+.level-tabs{display:flex;gap:8px;margin-bottom:12px;}
+.ltab{flex:1;padding:11px 16px !important;font-size:14px !important;font-weight:700 !important;border-radius:10px !important;border:2px solid rgba(255,255,255,0.15) !important;background:rgba(255,255,255,0.04) !important;color:#ccc !important;cursor:pointer;transition:all 0.15s;}
+.ltab:hover{background:rgba(255,255,255,0.08) !important;}
+.ltab.active{background:linear-gradient(135deg,var(--gp),var(--gd)) !important;color:#fff !important;border-color:var(--gp) !important;box-shadow:0 0 12px rgba(0,0,0,0.25) !important;transform:translateY(-1px);}
+/* Essay tips — colored cards */
+.et-wrap{margin-bottom:20px;}
+.et-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.et-icon{width:32px;height:32px;border-radius:8px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.et-title{font-size:15px;font-weight:600;color:#1a3a5c;}
+.et-sub{font-size:11px;color:#888;margin-top:1px;}
+.tip-list{display:flex;flex-direction:column;gap:8px;}
+.tip-card{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:10px;border:1px solid;}
+.tc-1{background:#f3f0ff;border-color:#9b8fe8;}.tc-2{background:#ede8ff;border-color:#8478e0;}.tc-3{background:#e6e0ff;border-color:#7264d8;}.tc-4{background:#ddd6ff;border-color:#6454cf;}.tc-5{background:#d4ccff;border-color:#5344c6;}
+.tip-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;margin-top:1px;}
+.tn-1{background:#9b8fe8;color:#fff;}.tn-2{background:#8478e0;color:#fff;}.tn-3{background:#7264d8;color:#fff;}.tn-4{background:#6454cf;color:#fff;}.tn-5{background:#5344c6;color:#fff;}
+.tip-body{flex:1;}
+.tip-name{font-size:13px;font-weight:600;color:#222;margin-bottom:3px;}
+.tip-desc{font-size:12px;color:#555;line-height:1.5;}
+.tip-ex{margin-top:6px;font-size:12px;line-height:1.6;}
+.ex-bad{color:#5344c6;background:#ede8ff;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:3px;}
+.ex-good{color:#27500A;background:#EAF3DE;padding:2px 8px;border-radius:4px;display:inline-block;}
+.phrase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;}
+.phrase-card{background:#f3f0ff;border:1px solid #c4baff;border-radius:8px;padding:10px 12px;}
+.phrase-role{font-size:11px;font-weight:600;color:#6454cf;margin-bottom:5px;}
+.phrase-item{font-size:12px;color:#333;line-height:1.6;}
+@media(max-width:560px){.phrase-grid{grid-template-columns:1fr;}}
+/* Defensive section override — template has conflicting .sh{display:flex} */
+section.sh{display:block !important;flex-direction:unset !important;}
+section.sh > *{float:none !important;}
+/* m2 paragraph writing — workbook-style card (defensive against template CSS conflicts) */
+.paragraph-section{display:block !important;width:100% !important;float:none !important;position:static !important;padding:18px 18px 22px;background:#f8f9ff;border-radius:16px;margin:0 0 20px 0;color:#222;box-sizing:border-box;}
+.para-guide-card{display:block !important;width:100% !important;float:none !important;position:static !important;background:#f0f4ff;border-radius:12px;padding:16px;margin-bottom:16px;box-sizing:border-box;}
+.para-step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
+.para-step:last-child{margin-bottom:0;}
+.para-step b{color:var(--gd);font-size:14px;display:block;margin-bottom:2px;}
+.para-step p{font-size:13px;color:#444;margin:2px 0 4px;line-height:1.45;}
+.step-num{width:28px;height:28px;background:var(--gp);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:13px;}
+.example{background:#fff;border-left:3px solid var(--gp);padding:7px 10px;margin-top:6px;font-size:12px;color:#444;border-radius:0 6px 6px 0;line-height:1.5;}
+.para-inputs{display:block !important;width:100% !important;float:none !important;position:static !important;margin-top:8px;box-sizing:border-box;}
+.para-inputs label{display:block;font-weight:700;margin:10px 0 4px;color:var(--gd);font-size:13px;}
+.para-inputs textarea{width:100%;border:1px solid #ddd;border-radius:8px;padding:10px 12px;font-size:14px;resize:vertical;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;min-height:70px;}
+.para-inputs textarea:focus{border-color:var(--gp);outline:none;box-shadow:0 0 0 3px rgba(46,117,182,0.15);}
+.para-submit-wrap{text-align:center;margin-top:14px;}
+</style>
 </head>
 <body>
 <div class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">High School 3</span></div></div>
-<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">Brave New World &middot; W07 / 08</div><h1 class="hero-title">Brave New World</h1><p class="hero-sub">쯠락의 통제 — Aldous Huxley · C1</p></div></div>
+<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">Sons and Lovers &middot; W07 / 12</div><h1 class="hero-title">Sons and Lovers</h1><p class="hero-sub">어머니의 사랑 &mdash; D.H. Lawrence &middot; C1+</p></div></div>
 <div class="content-wrap">
-  <section class="sh"><div class="sh-bar"><span class="sh-num">1</span><h2>&#54645;&#49900; &#54364;&#54788; <span class="sh-en">KEY EXPRESSION</span></h2></div>
-    <div class="key-expr-box"><div class="ke-en" onclick="speak(this.textContent)">A really efficient totalitarian state would be one in which the all-powerful executive control a population of slaves who do not have to be coerced. &#128266;</div><div class="ke-ko">정말 효율적인 전체주의 국가는 강제할 필요 없는 노예 집단을 통제하는 것이다.</div></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">2</span><h2>&#51648;&#47928; &#51069;&#44592; <span class="sh-en">READING</span></h2></div>
-    <div class="level-tabs"><button class="ltab active" onclick="showLevel('b1',this)">B1 &#44592;&#48376;</button><button class="ltab" onclick="showLevel('c1',this)">C1 &#49900;&#54868;</button></div>
-    <div id="b1Story" class="story-box" style="display:block;"><p id="b1Text">In the future, the World State controls everything. Babies are made in factories. People take drugs called Soma to keep them happy. There is no family, no love, and no freedom. Bernard Marx feels different. He is not happy.</p><button class="sp-btn" onclick="speak(document.getElementById('b1Text').textContent)">&#128266; &#46307;&#44592;</button></div>
-    <div id="c1Story" class="story-box" style="display:none;"><p id="c1Text">Huxley's dystopia inverts Orwell's model: instead of control through pain and fear, the World State achieves perfect compliance through pleasure, conditioning, and the elimination of meaningful choice.</p><button class="sp-btn" onclick="speak(document.getElementById('c1Text').textContent)">&#128266; &#46307;&#44592;</button></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">3</span><h2>&#54645;&#49900; &#50612;&#55064; <span class="sh-en">VOCABULARY</span></h2></div>
-    <div class="vocab-grid">      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">compliance &#128266;</div><div class="vc-ko">순응</div><div class="vc-ex">"The World State achieved compliance through pleasure."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">conditioning &#128266;</div><div class="vc-ko">조건화</div><div class="vc-ex">"Citizens were conditioned from birth."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">submission &#128266;</div><div class="vc-ko">복종</div><div class="vc-ex">"Soma encouraged voluntary submission."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">oppression &#128266;</div><div class="vc-ko">억압</div><div class="vc-ex">"Citizens didn't realize they lived under oppression."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">eliminate &#128266;</div><div class="vc-ko">제거하다</div><div class="vc-ex">"The State eliminated all sources of discontent."</div></div>
-      <div class="vc"><div class="vc-en" onclick="speak(this.textContent)">voluntary &#128266;</div><div class="vc-ko">자발적인</div><div class="vc-ex">"Their slavery was entirely voluntary."</div></div>
-</div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">4</span><h2>&#47928;&#48277; &#54252;&#51064;&#53944; <span class="sh-en">GRAMMAR</span></h2></div>
-    <div class="gram-box"><div class="gram-label">Advanced Hypotheticals (G68)</div><ul class="grammar-examples"><li><em>"Were citizens to refuse Soma, the State would collapse." — 도치 가정법</em></li><li><em>"Had Huxley written this today, he might have included social media." — 과거 가정</em></li><li><em>"Should you stop taking Soma, reality would become unbearable." — should 가정법</em></li></ul></div>
-  <div style="text-align:center;margin-top:12px;"><a href="/grammar-camp/G68/G68_advanced_conditionals_unless,_provided_that.html?return=/camp-b/g3/week07.html" target="_blank" style="display:inline-block;padding:6px 14px;background:#00f2ff;color:#000;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;">📘 Grammar Base Camp →</a></div></section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">5</span><h2>&#53664;&#47200; &#51452;&#51228; <span class="sh-en">DEBATE</span></h2></div>
-    <div class="debate-q-box"><div class="debate-q">&#128172; "A society that controls through pleasure is more dangerous than one that controls through fear."</div><div class="debate-q-ko">쯠락으로 통제하는 사회는 공포로 통제하는 사회보다 더 위험하다.</div></div>
-    <div class="debate-sides"><div class="debate-agree"><strong>&#9989; &#52268;&#49457;</strong><ul><li>Citizens don't recognize their own oppression</li><li>Pleasurable control is harder to resist than fear</li><li>Modern social media functions similarly to Soma</li></ul></div><div class="debate-disagree"><strong>&#10060; &#48152;&#45824;</strong><ul><li>1984's society causes more immediate suffering</li><li>People can choose to reject pleasure</li><li>At least people are subjectively happy</li></ul></div></div>
-    <div style="margin-top:20px;"><p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-bottom:8px;">&#45236; &#51452;&#51109;&#51012; &#50689;&#50612;&#47196; &#50024;&#48372;&#49464;&#50836;:</p><textarea class="essay-input" id="debateInput" placeholder="I argue that... because..."></textarea><button class="btn-ai-debate" onclick="sendDebate()">&#9876;&#65039; ChatGPT&#50640;&#49436; AI&#50752; &#53664;&#47200;&#54616;&#44592;</button></div>
-  </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">6</span><h2>&#50640;&#49464;&#51060; &#50416;&#44592; <span class="sh-en">ESSAY</span></h2></div>
-    <div class="essay-topic-box"><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:#00f2ff;margin-bottom:8px;">"Compare Brave New World and 1984 as warnings about totalitarianism. Which is more relevant today?"</div><div style="font-size:0.9rem;color:rgba(255,255,255,0.6);">Brave New World와 1984를 전체주의에 대한 경고로 비교하라.</div></div>
-    <div style="margin-top:16px;">
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;">&#128221; Introduction</p><textarea class="essay-input" id="es1" placeholder="Introduce the topic..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Body 1</p><textarea class="essay-input" id="es2" placeholder="First argument..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Body 2</p><textarea class="essay-input" id="es3" placeholder="Second argument..."></textarea>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.9rem;margin-top:12px;">&#128221; Conclusion</p><textarea class="essay-input" id="es4" placeholder="Summarize..."></textarea>
-      <button class="btn-submit" onclick="submitEssay()">&#9997;&#65039; ChatGPT&#50640;&#49436; &#50640;&#49464;&#51060; &#54588;&#46300;&#48177; &#48155;&#44592;</button>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">1</span><h2>핵심 표현 <span class="sh-en">KEY EXPRESSION</span></h2></div>
+    <div class="day-block">
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-1"></span><span class="day-tag">Day 1 · 기초</span></div>
+        <div class="day-sent sent-1">Paul loved his mother deeply.</div>
+      </div>
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-2"></span><span class="day-tag">Day 2 · 확장</span></div>
+        <div class="day-sent sent-2">Paul was emotionally bound to his mother.</div>
+      </div>
+      <div class="day-row">
+        <div class="day-meta"><span class="day-dot dot-3"></span><span class="day-tag">Day 3 · 목표 ⭐ 오늘</span><span class="day-wc">33 words</span></div>
+        <div class="day-sent sent-3">Paul Morel gradually discovered that no other woman could compete with his mother, and that every relationship he formed would be shadowed and eventually undermined by the emotional intensity of that original bond.</div>
+        <div class="sent-kr">🇰🇷 폴 모렐은 점차 다른 어떤 여성도 자신의 어머니와 견줄 수 없다는 사실을 깨달았으며, 그가 형성하는 모든 관계는 그 원초적 유대의 감정적 강도에 의해 그림자지워지고 결국 훼손될 것임을 알게 되었다.</div>
+        <div class="day-tts">
+          <button class="play-toggle" onclick="togglePlay(this)" data-text="Paul Morel gradually discovered that no other woman could compete with his mother, and that every relationship he formed would be shadowed and eventually undermined by the emotional intensity of that original bond."><span class="play-icon">▶</span><span class="play-label">듣기</span></button>
+        </div>
+      </div>
     </div>
   </section>
-  <section class="sh"><div class="sh-bar"><span class="sh-num">7</span><h2>ChatGPT &#54924;&#54868; &#50672;&#49845; <span class="sh-en">AI PRACTICE</span></h2></div>
-    <div style="text-align:center;padding:20px 0;"><p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">ChatGPT Camp B&#50752; &#54632;&#44760; &#50689;&#50612;&#47196; &#45824;&#54868;&#54644;&#48372;&#49464;&#50836;!</p><button class="btn-submit" onclick="launchChatGPTPractice()">&#129302; ChatGPT&#50752; 50:50 &#54924;&#54868; &#50672;&#49845;</button></div>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">2</span><h2>지문 읽기 <span class="sh-en">READING</span></h2></div>
+    <div class="level-tabs">
+      <button class="ltab active" onclick="showLevel('b1',this)">🔵 기본 (C1)</button>
+      <button class="ltab" onclick="showLevel('c1',this)">🟣 심화 (C1+)</button>
+    </div>
+    <div id="b1Story" class="story-box" style="display:block;">
+      <div id="b1Text"><p>The psychological phenomenon of excessive maternal attachment presents a complex developmental challenge that can profoundly influence an individual's relational capacities throughout adulthood. This intense bond, while providing initial emotional security, often establishes patterns of comparison and expectation that subsequent relationships would be measured against and found wanting. The central proposition that no other connection could ever replicate that foundational intimacy creates a template for disappointment and emotional withdrawal. Consequently, individuals who experience such profound enmeshment frequently discover that their capacity for autonomous romantic attachment would be compromised by unconscious comparisons to the primary caregiver. This dynamic illustrates how early relational frameworks can predetermine emotional responses in ways that limit psychological growth and relational fulfillment.</p></div>
+      <button class="play-toggle" onclick="togglePlay(this)"><span class="play-icon">▶</span><span class="play-label">재생</span></button>
+    </div>
+    <div id="c1Story" class="story-box" style="display:none;">
+      <div id="c1Text"><p>The psychoanalytic concept of the maternal shadow posits that an excessively intense primary attachment can establish cognitive and emotional schemas that systematically undermine subsequent intimate relationships. This phenomenon manifests through a dual mechanism: first, the internalization of the mother as an unparalleled emotional archetype creates an implicit standard that potential partners would be evaluated against and inevitably fail to meet. Second, the emotional enmeshment characteristic of such bonds fosters dependency structures that inhibit the development of autonomous relational capacities essential for mature partnership. Clinical observations substantiate the hypothesis that individuals enmeshed in such dynamics frequently encounter relational impasses where their attempts at intimacy would be sabotaged by unconscious loyalty conflicts and comparative frameworks. The resultant psychological landscape is one where every prospective connection exists in the penumbra of that primordial bond, its potential for depth and authenticity perpetually compromised by the spectral presence of the original attachment figure.</p></div>
+      <button class="play-toggle" onclick="togglePlay(this)"><span class="play-icon">▶</span><span class="play-label">재생</span></button>
+    </div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">3</span><h2>핵심 어휘 <span class="sh-en">VOCABULARY</span></h2></div>
+    <div class="vocab-grid"><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">enmeshment &#128266;</div><div class="vc-ko">얽힘, 얽매임 (심리적)</div><div class="vc-ex">"The clinical diagnosis revealed a profound emotional enmeshment that prevented the patient from establishing healthy boundaries in any of his subsequent relationships."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">archetype &#128266;</div><div class="vc-ko">원형, 전형</div><div class="vc-ex">"The maternal figure functioned as an emotional archetype against which all other women would be measured and found deficient in his psychological framework."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">penumbra &#128266;</div><div class="vc-ko">반영, 영향권 (비유적)</div><div class="vc-ex">"All his adult relationships existed in the penumbra of that overwhelming childhood bond, never fully escaping its emotional gravity."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">primordial &#128266;</div><div class="vc-ko">원초적인, 태초의</div><div class="vc-ex">"The primordial attachment to his mother established neural pathways that would be activated during every subsequent intimate encounter."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">impasse &#128266;</div><div class="vc-ko">막다른 골목, 교착 상태</div><div class="vc-ex">"The therapeutic process aimed to navigate the relational impasse created by his conviction that no other bond could replicate that foundational intensity."</div></div><div class="vc"><div class="vc-en" onclick="speak(this.textContent)">sabotage &#128266;</div><div class="vc-ko">의도적으로 훼손하다</div><div class="vc-ex">"Unconscious psychological mechanisms would often sabotage his romantic relationships whenever they threatened to rival the emotional primacy of the maternal bond."</div></div></div>
+
+    <div class="game-block"><div class="game-title">🎯 빈칸 채우기</div><div class="game-q">1. The psychological theory <strong>___</strong><strong>___</strong>_ excessive parental attachment can establish relational patterns that <strong>___</strong><strong>___</strong>_ replicated in adulthood.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">posits that / would be</button><button class="game-opt" onclick="fbCheck(this,false)">suggests / will be</button><button class="game-opt" onclick="fbCheck(this,false)">argues / could be</button></div><div class="game-fb"></div><div class="game-q">2. Clinical evidence indicates that such intense early bonds <strong>___</strong><strong>___</strong>_ emotional templates that subsequent relationships <strong>___</strong><strong>___</strong>_ measured against.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">create / would be</button><button class="game-opt" onclick="fbCheck(this,false)">form / are</button><button class="game-opt" onclick="fbCheck(this,false)">establish / will be</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기</div><div class="game-q">1. <span class="game-hint">힌트: 애착 (심리학 용어)</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds1" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds1','attachment')">확인</button></div><div class="game-fb" id="ds1-fb"></div><div class="game-q">2. <span class="game-hint">힌트: 약화시키다, 훼손하다</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds2" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds2','undermine')">확인</button></div><div class="game-fb" id="ds2-fb"></div><div class="game-q">3. <span class="game-hint">힌트: 자율적인, 독립적인</span></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="ds3" placeholder="영어 단어" /><button class="game-opt" onclick="dsCheck('ds3','autonomous')">확인</button></div><div class="game-fb" id="ds3-fb"></div></div>
+    <div class="game-block"><div class="game-title">👂 듣고 고르기</div><div class="game-q">1. <button class="game-opt" onclick="lcPlay('The emotional intensity of that primary bond')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,false)">would be replicated</button><button class="game-opt" onclick="lcCheck(this,true)">could never be replicated</button><button class="game-opt" onclick="lcCheck(this,false)">was frequently replicated</button></div><div class="game-fb"></div><div class="game-q">2. <button class="game-opt" onclick="lcPlay('Subsequent romantic relationships')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">would be overshadowed</button><button class="game-opt" onclick="lcCheck(this,false)">were occasionally enhanced</button><button class="game-opt" onclick="lcCheck(this,false)">remained completely separate</button></div><div class="game-fb"></div><div class="game-q">3. <button class="game-opt" onclick="lcPlay('The developmental psychologist argued')">🔊 듣기</button></div><div class="game-opts"><button class="game-opt" onclick="lcCheck(this,true)">that such patterns would be internalized</button><button class="game-opt" onclick="lcCheck(this,false)">about internalization patterns</button><button class="game-opt" onclick="lcCheck(this,false)">for different internalization methods</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">🔤 단어 배열하기</div><div class="game-q">1. 레벨 C1 — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo1-bank"><span class="wo-chip" data-word="primordial" onclick="woAdd(1,this,'primordial')">primordial</span><span class="wo-chip" data-word="created" onclick="woAdd(1,this,'created')">created</span><span class="wo-chip" data-word="could" onclick="woAdd(1,this,'could')">could</span><span class="wo-chip" data-word="psychological" onclick="woAdd(1,this,'psychological')">psychological</span><span class="wo-chip" data-word="realization" onclick="woAdd(1,this,'realization')">realization</span><span class="wo-chip" data-word="profound" onclick="woAdd(1,this,'profound')">profound</span><span class="wo-chip" data-word="ever" onclick="woAdd(1,this,'ever')">ever</span><span class="wo-chip" data-word="intimacy" onclick="woAdd(1,this,'intimacy')">intimacy</span><span class="wo-chip" data-word="that" onclick="woAdd(1,this,'that')">that</span><span class="wo-chip" data-word="that" onclick="woAdd(1,this,'that')">that</span><span class="wo-chip" data-word="burden" onclick="woAdd(1,this,'burden')">burden</span><span class="wo-chip" data-word="lasting" onclick="woAdd(1,this,'lasting')">lasting</span><span class="wo-chip" data-word="a" onclick="woAdd(1,this,'a')">a</span><span class="wo-chip" data-word="no" onclick="woAdd(1,this,'no')">no</span><span class="wo-chip" data-word="relationship" onclick="woAdd(1,this,'relationship')">relationship</span><span class="wo-chip" data-word="The" onclick="woAdd(1,this,'The')">The</span><span class="wo-chip" data-word="match" onclick="woAdd(1,this,'match')">match</span><span class="wo-chip" data-word="subsequent" onclick="woAdd(1,this,'subsequent')">subsequent</span></div><div class="wo-zone" id="wo1-zone"></div><button class="game-opt" onclick="woCheck(1)">확인</button><div class="game-fb" id="wo1-fb"></div><div class="game-q">2. 레벨 C1+ — 단어를 순서대로 배열:</div><div class="wo-bank" id="wo2-bank"><span class="wo-chip" data-word="frameworks" onclick="woAdd(2,this,'frameworks')">frameworks</span><span class="wo-chip" data-word="activated" onclick="woAdd(2,this,'activated')">activated</span><span class="wo-chip" data-word="demonstrates" onclick="woAdd(2,this,'demonstrates')">demonstrates</span><span class="wo-chip" data-word="establish" onclick="woAdd(2,this,'establish')">establish</span><span class="wo-chip" data-word="future" onclick="woAdd(2,this,'future')">future</span><span class="wo-chip" data-word="would" onclick="woAdd(2,this,'would')">would</span><span class="wo-chip" data-word="enmeshed" onclick="woAdd(2,this,'enmeshed')">enmeshed</span><span class="wo-chip" data-word="be" onclick="woAdd(2,this,'be')">be</span><span class="wo-chip" data-word="parent-child" onclick="woAdd(2,this,'parent-child')">parent-child</span><span class="wo-chip" data-word="research" onclick="woAdd(2,this,'research')">research</span><span class="wo-chip" data-word="in" onclick="woAdd(2,this,'in')">in</span><span class="wo-chip" data-word="that" onclick="woAdd(2,this,'that')">that</span><span class="wo-chip" data-word="excessively" onclick="woAdd(2,this,'excessively')">excessively</span><span class="wo-chip" data-word="that" onclick="woAdd(2,this,'that')">that</span><span class="wo-chip" data-word="Psychological" onclick="woAdd(2,this,'Psychological')">Psychological</span><span class="wo-chip" data-word="encounters" onclick="woAdd(2,this,'encounters')">encounters</span><span class="wo-chip" data-word="dynamics" onclick="woAdd(2,this,'dynamics')">dynamics</span><span class="wo-chip" data-word="perpetually" onclick="woAdd(2,this,'perpetually')">perpetually</span><span class="wo-chip" data-word="emotional" onclick="woAdd(2,this,'emotional')">emotional</span><span class="wo-chip" data-word="consistently" onclick="woAdd(2,this,'consistently')">consistently</span><span class="wo-chip" data-word="intimate" onclick="woAdd(2,this,'intimate')">intimate</span></div><div class="wo-zone" id="wo2-zone"></div><button class="game-opt" onclick="woCheck(2)">확인</button><div class="game-fb" id="wo2-fb"></div></div>
+    <div class="game-block"><div class="game-title">🎴 짝맞추기</div><div class="game-q">단어와 한국어 뜻을 짝지어보세요:</div><div class="match-grid"><div><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">enmeshment</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">archetype</button><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">penumbra</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">primordial</button></div><div><button class="match-btn" data-pair="p0" onclick="mmClick(this,'p0')">심리적 얽힘</button><button class="match-btn" data-pair="p3" onclick="mmClick(this,'p3')">원초적인</button><button class="match-btn" data-pair="p1" onclick="mmClick(this,'p1')">원형, 전형</button><button class="match-btn" data-pair="p2" onclick="mmClick(this,'p2')">반영, 영향권</button></div></div></div>
+    <div class="game-block"><div class="game-title">🏆 받아쓰기 도전</div><div class="game-q">A1 — <button class="game-opt" onclick="dcPlay('The intense bond with his mother created emotional patterns that would be repeated.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a1','The intense bond with his mother created emotional patterns that would be repeated.')">확인</button></div><div class="game-fb" id="dc-a1-fb"></div><div class="game-q">A2 — <button class="game-opt" onclick="dcPlay('Psychological theories suggest that such early attachments would be internalized as relational templates.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-a2" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('a2','Psychological theories suggest that such early attachments would be internalized as relational templates.')">확인</button></div><div class="game-fb" id="dc-a2-fb"></div><div class="game-q">B1 — <button class="game-opt" onclick="dcPlay('The clinical observation that these primordial attachments would be unconsciously reenacted in adult relationships has substantial empirical support.')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input class="game-input" id="dc-b1" placeholder="들은 문장을 입력" style="max-width:500px;"/><button class="game-opt" onclick="dcCheck('b1','The clinical observation that these primordial attachments would be unconsciously reenacted in adult relationships has substantial empirical support.')">확인</button></div><div class="game-fb" id="dc-b1-fb"></div></div>
+    <script>document.addEventListener('DOMContentLoaded',function(){woInit(1, ["The", "profound", "realization", "that", "no", "subsequent", "relationship", "could", "ever", "match", "that", "primordial", "intimacy", "created", "a", "lasting", "psychological", "burden"]);woInit(2, ["Psychological", "research", "consistently", "demonstrates", "that", "excessively", "enmeshed", "parent-child", "dynamics", "establish", "emotional", "frameworks", "that", "would", "be", "perpetually", "activated", "in", "future", "intimate", "encounters"]);});</script>
+  </section>
+  <section class="sh comp-section"><div class="sh-bar"><span class="sh-num">4</span><h2>이해 문제 <span class="sh-en">COMPREHENSION</span></h2></div>
+    <div class="comp-tabs">
+      <button class="comp-tab active" onclick="compTab(this,'entry')">🟡 입문</button>
+      <button class="comp-tab" onclick="compTab(this,'b1')">🔵 초급 B1</button>
+      <button class="comp-tab" onclick="compTab(this,'intermediate')">🟣 중급</button>
+    </div>
+    <div class="comp-panel comp-panel-entry active"><div class="game-q">Q1. 지문의 중심 내용은 무엇인가?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">과도한 모성애가 성인기 관계에 미치는 부정적 영향</button><button class="game-opt" onclick="compCheck(this,false)">건강한 부모-자녀 관계의 중요성</button><button class="game-opt" onclick="compCheck(this,false)">사랑의 다양한 표현 방식</button></div><div class="game-fb"></div><div class="game-q">Q2. ‘원초적 유대’가 의미하는 것은?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">어머니와의 강한 초기 애착</button><button class="game-opt" onclick="compCheck(this,false)">형제자매와의 관계</button><button class="game-opt" onclick="compCheck(this,false)">첫 사랑의 경험</button></div><div class="game-fb"></div><div class="game-q">Q3. 지문에서 ‘would be’가 표현하는 것은?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">반복적으로 일어나는 결과</button><button class="game-opt" onclick="compCheck(this,false)">가능성 있는 미래</button><button class="game-opt" onclick="compCheck(this,false)">과거의 습관</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-b1"><div class="game-q">Q1. What is the primary mechanism through which excessive maternal attachment affects adult relationships?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">By creating comparative frameworks that new relationships cannot satisfy</button><button class="game-opt" onclick="compCheck(this,false)">By reducing overall capacity for emotional experience</button><button class="game-opt" onclick="compCheck(this,false)">By encouraging complete emotional detachment from all relationships</button></div><div class="game-fb"></div><div class="game-q">Q2. How does the text characterize the psychological outcome of such enmeshment?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">As a relational impasse where autonomy is compromised</button><button class="game-opt" onclick="compCheck(this,false)">As enhanced emotional intelligence and sensitivity</button><button class="game-opt" onclick="compCheck(this,false)">As complete independence from familial influences</button></div><div class="game-fb"></div><div class="game-q">Q3. What grammatical function does 'would be' serve in describing these relational patterns?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">It indicates predictable, repeated consequences of the established dynamic</button><button class="game-opt" onclick="compCheck(this,false)">It expresses hypothetical situations that might occur</button><button class="game-opt" onclick="compCheck(this,false)">It describes past habits that are no longer relevant</button></div><div class="game-fb"></div></div>
+    <div class="comp-panel comp-panel-intermediate"><div class="game-q">Q1. Which analytical perspective best explains the text's portrayal of the maternal shadow?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">A psychoanalytic framework emphasizing unconscious repetition of early patterns</button><button class="game-opt" onclick="compCheck(this,false)">A behavioral approach focusing on learned responses to stimuli</button><button class="game-opt" onclick="compCheck(this,false)">A cognitive perspective prioritizing conscious decision-making processes</button></div><div class="game-fb"></div><div class="game-q">Q2. How does the text's academic register enhance its argument about relational development?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">Through precise psychological terminology that conceptualizes abstract dynamics</button><button class="game-opt" onclick="compCheck(this,false)">By using emotional language to persuade readers experientially</button><button class="game-opt" onclick="compCheck(this,false)">Through simplified explanations that make complex ideas accessible</button></div><div class="game-fb"></div><div class="game-q">Q3. What is implied about the possibility of overcoming such developmental constraints?</div><div class="game-opts"><button class="game-opt" onclick="compCheck(this,true)">The text suggests significant therapeutic work would be required to reconfigure these internalized patterns</button><button class="game-opt" onclick="compCheck(this,false)">It implies these patterns are easily changed through conscious effort alone</button><button class="game-opt" onclick="compCheck(this,false)">It states these influences are permanent and completely deterministic</button></div><div class="game-fb"></div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">5</span><h2>문법 <span class="sh-en">GRAMMAR</span></h2></div>
+    <div class="grammar-box">
+      <div class="grammar-label"><span class="grammar-code">G07</span>이번 주 문법 포인트</div>
+      <div class="grammar-title">That-clause (Appositive) / Would be + p.p.</div>
+      <div class="essay-basics-text" style="margin-bottom:8px;">that-절 (동격) / would be + p.p.</div>
+      <div class="grammar-explain">That-절(동격)은 선행 명사를 설명하는 명사절로, '~라는 사실'을 의미합니다. 'Would be + p.p.'는 과거의 관점에서 미래에 반복적으로 일어날 것으로 예상되는 수동의 상황을 표현합니다.</div>
+    </div>
+    <div class="essay-basics-label" style="margin-top:14px;">📝 예문 3개 (클릭해서 듣기)</div>
+    <div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">The psychological insight that early attachments create lasting templates explains why certain relational patterns would be repeatedly reenacted.</span> &#128266;<div class="ge-ko">초기 애착이 지속적인 틀을 만든다는 심리학적 통찰은 왜 특정 관계 패턴이 반복적으로 재현될 것인지를 설명한다.</div></div><div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">His growing awareness that no other woman could compare to his mother meant that every subsequent relationship would be measured against an impossible standard.</span> &#128266;<div class="ge-ko">다른 어떤 여성도 자신의 어머니와 비교될 수 없다는 그의 점증하는 깨달음은 이후의 모든 관계가 불가능한 기준에 따라 평가될 것임을 의미했다.</div></div><div class="grammar-example" onclick="grammarSpeak(this)"><span class="ge-en">The therapeutic realization that these dynamics were internalized in childhood allowed him to understand why his romantic choices would be consistently undermined.</span> &#128266;<div class="ge-ko">이러한 역동이 어린 시절에 내면화되었다는 치료적 깨달음은 왜 그의 로맨틱한 선택이 지속적으로 훼손될 것인지를 이해하게 해주었다.</div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num" style="min-width:40px;">5-B</span><h2>문법 연습 <span class="sh-en">GRAMMAR PRACTICE</span></h2></div>
+    <div class="game-block"><div class="game-title">🎯 문법 이해 문제 (Grammar Quiz)</div><div class="game-q">Q1. Which sentence correctly uses an appositive that-clause with 'would be + p.p.'?</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,false)">The fact he loved his mother meant problems would be encountered later.</button><button class="game-opt" onclick="fbCheck(this,true)">The realization that his attachment was excessive suggested future relationships would be compromised.</button><button class="game-opt" onclick="fbCheck(this,false)">He knew his mother was important so relationships would be difficult.</button></div><div class="game-fb"></div><div class="game-q">Q2. Identify the sentence with the correct grammatical structure:</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,false)">His belief no woman was like his mother ensured loneliness would be his fate.</button><button class="game-opt" onclick="fbCheck(this,true)">His conviction that the maternal bond was supreme meant other connections would be perceived as inferior.</button><button class="game-opt" onclick="fbCheck(this,false)">Understanding his mother's influence helped see how relationships would be affected.</button></div><div class="game-fb"></div><div class="game-q">Q3. Choose the option where 'would be + p.p.' correctly expresses a predictable consequence:</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,false)">He hoped that his next relationship would be different from the others.</button><button class="game-opt" onclick="fbCheck(this,true)">The psychological pattern established in childhood meant similar conflicts would be recreated in adulthood.</button><button class="game-opt" onclick="fbCheck(this,false)">She thought that the meeting would be postponed until next week.</button></div><div class="game-fb"></div></div>
+    <div class="game-block"><div class="game-title">✏️ 단어 받아쓰기 (Dictation)</div><div class="game-q">1. <button class="game-opt" onclick="gpDictPlay('enmeshment')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-1" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(1,'enmeshment')">확인</button><button class="game-opt" onclick="gpDictHint(1)">💡 힌트</button><span id="gp-dict-hint-1" class="game-hint" style="visibility:hidden;">심리적 얽힘</span></div><div class="game-fb" id="gp-dict-fb-1"></div><div class="game-q">2. <button class="game-opt" onclick="gpDictPlay('archetype')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-2" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(2,'archetype')">확인</button><button class="game-opt" onclick="gpDictHint(2)">💡 힌트</button><span id="gp-dict-hint-2" class="game-hint" style="visibility:hidden;">원형, 전형</span></div><div class="game-fb" id="gp-dict-fb-2"></div><div class="game-q">3. <button class="game-opt" onclick="gpDictPlay('undermine')">🔊 듣기</button></div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;"><input class="game-input" id="gp-dict-3" placeholder="철자를 입력" /><button class="game-opt" onclick="gpDictCheck(3,'undermine')">확인</button><button class="game-opt" onclick="gpDictHint(3)">💡 힌트</button><span id="gp-dict-hint-3" class="game-hint" style="visibility:hidden;">약화시키다</span></div><div class="game-fb" id="gp-dict-fb-3"></div></div>
+    <div class="game-block"><div class="game-title">📝 빈칸 채우기 (Fill in the Blank)</div><div class="game-q">1. The psychoanalytic premise <strong>_______</strong> excessively close parental bonds <strong>_______</strong> internalized as relational blueprints has substantial empirical support.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">that / would be</button><button class="game-opt" onclick="fbCheck(this,false)">which / are</button><button class="game-opt" onclick="fbCheck(this,false)">of / being</button></div><div class="game-fb"></div><div class="game-q">2. Clinical evidence supports the hypothesis <strong>_______</strong> such early attachment patterns <strong>_______</strong> reenacted throughout adult life.</div><div class="game-opts"><button class="game-opt" onclick="fbCheck(this,true)">that / would be</button><button class="game-opt" onclick="fbCheck(this,false)">which / will be</button><button class="game-opt" onclick="fbCheck(this,false)">why / could be</button></div><div class="game-fb"></div></div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num" style="min-width:40px;">5-C</span><h2>수능형 연습 <span class="sh-en">CSAT PRACTICE</span></h2></div>
+    <div class="game-block"><div class="game-title">📋 Q1. 주제 파악</div><div style="background:rgba(255,255,255,0.06);padding:12px;border-radius:8px;margin-bottom:10px;font-size:0.9rem;line-height:1.7;color:#ddd;">The concept of developmental psychology that examines how primary caregiver relationships establish cognitive-emotional frameworks is crucial for understanding adult relational patterns. These early attachments create internal working models that influence expectations, behaviors, and emotional responses in subsequent intimate connections. When these initial bonds are characterized by excessive intensity or enmeshment, they can establish templates that limit relational autonomy and create comparative frameworks that new partners cannot satisfy, ultimately constraining the individual's capacity for mature partnership.</div><div class="game-q">What is the main idea of the passage?</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">Early excessive attachments can create restrictive templates that negatively affect adult relationships.</button><button class="game-opt" onclick="fbCheck(this,false)">All parent-child relationships positively influence future romantic partnerships.</button><button class="game-opt" onclick="fbCheck(this,false)">Developmental psychology focuses only on childhood without considering adulthood.</button><button class="game-opt" onclick="fbCheck(this,false)">Internal working models are easily changed through conscious effort in adulthood.</button></div><div class="game-fb"></div></div><div class="game-block"><div class="game-title">📋 Q2. 빈칸 추론</div><div style="background:rgba(255,255,255,0.06);padding:12px;border-radius:8px;margin-bottom:10px;font-size:0.9rem;line-height:1.7;color:#ddd;">The psychological phenomenon whereby early relational patterns with primary caregivers establish cognitive frameworks that influence adult intimacy is termed 'internal working models.' These models, once established in childhood, function as templates that _______ how subsequent relationships are perceived and navigated. Research indicates that when these models are based on enmeshed or excessively dependent attachments, they can significantly constrain relational autonomy and satisfaction in adulthood.</div><div class="game-q">Which word best fills the blank?</div><div class="game-opts" style="flex-direction:column;align-items:stretch;"><button class="game-opt" onclick="fbCheck(this,true)">predetermine</button><button class="game-opt" onclick="fbCheck(this,false)">occasionally affect</button><button class="game-opt" onclick="fbCheck(this,false)">rarely influence</button><button class="game-opt" onclick="fbCheck(this,false)">completely eliminate</button></div><div class="game-fb"></div></div><div class="game-block"><div class="game-title">📋 Q3. 문장 배열 (Sentence Order)</div><div class="game-q">Arrange the sentences in logical order.</div><div class="game-q" style="margin:4px 0;">A. Consequently, the individual may experience a series of failed relationships, each undermined by unconscious loyalty to the original attachment figure.</div><div class="game-q" style="margin:4px 0;">B. When early maternal attachment becomes excessively intense, it establishes an internal archetype against which all future partners are measured.</div><div class="game-q" style="margin:4px 0;">C. This comparative process inevitably leads to disappointment as new partners cannot replicate the idealized primary bond.</div><div class="game-q" style="margin:4px 0;">D. The psychological mechanism involves the internalization of the mother as an unparalleled emotional standard.</div><div style="margin-top:8px;"><input class="game-input" id="csat-ord" placeholder="정답 순서 (예: ABCD)" style="max-width:200px;" /><button class="game-opt" onclick="var v=document.getElementById('csat-ord').value.trim().toUpperCase();var fb=document.getElementById('csat-ord-fb');if(v==='DBCA'){fb.textContent='✅ 정답!';fb.className='game-fb correct';}else{fb.textContent='❌ 정답: DBCA';fb.className='game-fb wrong';}">확인</button></div><div class="game-fb" id="csat-ord-fb"></div></div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">6</span><h2>에세이 쓰기 <span class="sh-en">ESSAY WRITING</span></h2></div>
+    <div class="et-wrap">
+  <div class="et-header">
+    <div class="et-icon">✍️</div>
+    <div><div class="et-title">에세이 잘 쓰는 5가지 요령</div><div class="et-sub">Good Essay Writing Tips</div></div>
+  </div>
+  <div class="tip-list">
+    <div class="tip-card tc-1"><div class="tip-num tn-1">1</div><div class="tip-body">
+      <div class="tip-name">명확한 주제문 (Topic Sentence)</div>
+      <div class="tip-desc">첫 문장에 내 주장을 한 번에! 모호하면 읽는 사람이 혼란스러워요.</div>
+      <div class="tip-ex"><span class="ex-bad">❌ "Beauty is important."</span> <span class="ex-good">✅ "Beauty without morality leads to corruption."</span></div>
+    </div></div>
+    <div class="tip-card tc-2"><div class="tip-num tn-2">2</div><div class="tip-body">
+      <div class="tip-name">구체적 근거 + 예시</div>
+      <div class="tip-desc">"Because" 다음엔 반드시 구체적인 예시가 따라와야 해요.</div>
+      <div class="tip-ex"><span class="ex-bad">❌ "Because it is bad."</span> <span class="ex-good">✅ "For example, the story shows how..."</span></div>
+    </div></div>
+    <div class="tip-card tc-3"><div class="tip-num tn-3">3</div><div class="tip-body">
+      <div class="tip-name">반대 의견 인정하기</div>
+      <div class="tip-desc">반대 의견을 먼저 인정하면 내 주장이 더 설득력 있어 보여요.</div>
+      <div class="tip-ex"><span class="ex-good">✅ "Although some argue that..., I believe..."</span></div>
+    </div></div>
+    <div class="tip-card tc-4"><div class="tip-num tn-4">4</div><div class="tip-body">
+      <div class="tip-name">연결어 (Transition Words)</div>
+      <div class="tip-desc">단락과 단락을 자연스럽게 이어주는 다리 역할을 해요.</div>
+      <div class="tip-ex"><span class="ex-good">First · Furthermore · However · Therefore · In conclusion</span></div>
+    </div></div>
+    <div class="tip-card tc-5"><div class="tip-num tn-5">5</div><div class="tip-body">
+      <div class="tip-name">강한 마무리 (Concluding Sentence)</div>
+      <div class="tip-desc">마지막 문장이 가장 오래 기억돼요. 핵심 메시지를 새로운 표현으로!</div>
+      <div class="tip-ex"><span class="ex-good">✅ "Therefore, it is clear that..." / "This is why..."</span></div>
+    </div></div>
+  </div>
+  <div class="phrase-grid">
+    <div class="phrase-card"><div class="phrase-role">서론</div><div class="phrase-item">In my opinion...<br>I strongly believe...<br>It is clear that...</div></div>
+    <div class="phrase-card"><div class="phrase-role">본론</div><div class="phrase-item">For instance...<br>This shows that...<br>Furthermore...</div></div>
+    <div class="phrase-card"><div class="phrase-role">결론</div><div class="phrase-item">In conclusion...<br>Therefore...<br>This is why...</div></div>
+  </div>
+</div>
+    <div id="esTopic" style="display:block;background:var(--gd);color:white;border-radius:12px;padding:16px;margin-bottom:14px;text-align:center;box-sizing:border-box;">
+      <div style="font-size:15px;font-weight:bold;">✍️ The long shadow that family casts on all future relationships</div>
+      <div style="font-size:12px;color:#cce;margin-top:4px;">가족이 모든 미래 관계에 드리우는 긴 그림자</div>
+      <div style="font-size:11px;color:#9bf;margin-top:6px;">📐 4단락 구조: 서론 → 본론1 → 본론2 → 결론</div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">① 서론 (Introduction)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">가족 관계, 특히 초기 애착이 성인기 관계 패턴에 미치는 지속적 영향을 소개하며, '긴 그림자'를 심리학적 개념(내적 작업 모델, 애착 이론)으로 정의하세요. 논문의 주요 주장(가족의 영향이 미래 관계의 인지적, 정서적 틀을 형성함)을 명시하십시오.</p>
+      <textarea id="es1" rows="4" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="Hook + Thesis Statement..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">② 본론 1 (Body 1)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">본론 1: 초기 애착이 형성하는 인지적/정서적 틀(내적 작업 모델)을 설명하세요. 과도한 애착이나 정서적 얽힘이 어떻게 관계에 대한 기대, 해석, 반응 방식을 미리 결정하는지, 구체적인 심리학적 메커니즘(비교 프레임워크, 이상화, 의존성 구조)을 들어 논증하세요.</p>
+      <textarea id="es2" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="First argument + evidence..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">③ 본론 2 (Body 2)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">본론 2: 이러한 '그림자'가 미래 관계(우정, 연애, 협력 관계)에 미치는 구체적 결과를 분석하세요. 관계 선택의 제한, 갈등 해결 방식의 경직, 정서적 독립성의 저해, 무의식적 재현 등의 측면에서 논의하고, 'would be + p.p.' 구조를 사용해 예측 가능한 패턴을 서술하세요.</p>
+      <textarea id="es3" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="Second argument or concession..."></textarea>
+
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:14px 0 4px;">④ 결론 (Conclusion)</label>
+      <p style="font-size:12px;color:#666;margin:0 0 6px;line-height:1.5;">결론: 가족의 영향이 결정론적이지 않으며, 의식적 성찰, 치료적 개입, 새로운 관계 경험을 통해 내적 틀을 수정하고 '그림자'로부터의 자율성을 확보할 가능성을 제시하세요. 가족의 영향력을 인정하면서도 성인으로서의 주체성과 변화 가능성을 강조하며 글을 마무리하십시오.</p>
+      <textarea id="es4" rows="4" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="In conclusion, ..."></textarea>
+
+      <button onclick="submitFullEssay()" style="display:block;width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;">💬 ChatGPT에 4단락 에세이 피드백 받기</button>
+    </div>
+  </section>
+  <section class="sh">
+    <div class="sh-bar"><span class="sh-num">7</span><h2>디베이트 <span class="sh-en">DEBATE</span></h2></div>
+    <div id="dbTopic" style="display:block;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border-radius:12px;padding:16px;margin-bottom:16px;text-align:center;box-sizing:border-box;">
+      <div style="font-size:11px;font-weight:bold;letter-spacing:2px;margin-bottom:6px;opacity:0.9;">🗣️ TODAY'S MOTION</div>
+      <div style="font-size:15px;font-weight:bold;line-height:1.45;">Can too much parental love genuinely harm a child's development?</div>
+      <div style="font-size:13px;margin-top:6px;opacity:0.92;">지나친 부모의 사랑이 아이의 발달에 진정으로 해를 끼칠 수 있는가?</div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;margin-bottom:16px;">
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <div style="flex:1 1 260px;min-width:240px;">
+          <div style="display:block;background:#d4f4dd;color:#156b2c;font-weight:bold;padding:8px 12px;border-radius:8px;text-align:center;margin-bottom:10px;">PRO (찬성)</div>
+          <div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 과도한 보호와 관여는 자녀의 자율성, 문제 해결 능력, 회복탄력성 발달을 저해할 수 있습니다.</div><div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 정서적 얽힘(Enmeshment)은 건강한 경계 설정과 독립된 정체성 형성을 방해하는 주요 심리적 요인입니다.</div><div style="display:block;background:#fff;border-left:4px solid #28a745;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#28a745;font-weight:bold;">✅</span> 무조건적이고 제한 없는 사랑은 현실적 기대치 형성과 좌절 내성을 발달시키는 데 필요한 경험을 박탈할 수 있습니다.</div>
+        </div>
+        <div style="flex:1 1 260px;min-width:240px;">
+          <div style="display:block;background:#fbd5d5;color:#8a1a1a;font-weight:bold;padding:8px 12px;border-radius:8px;text-align:center;margin-bottom:10px;">CON (반대)</div>
+          <div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 사랑은 본질적으로 양적 개념이 아니며, '지나친 사랑'보다는 사랑의 표현 방식이 문제가 될 수 있습니다.</div><div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 안정적이고 풍부한 애착은 오히려 정서적 안정감, 자아존중감, 미래 관계 능력의 기반을 마련해 줍니다.</div><div style="display:block;background:#fff;border-left:4px solid #dc3545;border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;color:#222;line-height:1.5;"><span style="color:#dc3545;font-weight:bold;">❌</span> 발달에 해로운 것은 사랑 그 자체가 아니라 통제, 과보호, 조건부 사랑과 같은 사랑이 아닌 다른 요소들입니다.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;margin-bottom:16px;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">📝 My Opening Statement</label>
+      <p style="font-size:12px;color:#666;margin:0 0 8px;line-height:1.5;">토론 주제를 명확히 정의하고('지나친'의 기준, '해'의 의미), 자신의 입장(찬성/반대)을 분명히 밝히세요. 핵심 논거 2-3가지를 간결하게 제시하며, 논거의 이론적/경험적 근거(심리학 이론, 연구 결과, 사례)를 언급하십시오.</p>
+      <textarea id="openStmt" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="I strongly believe that ..."></textarea>
+    </div>
+    <div style="display:block;width:100%;background:#f8f9ff;border-radius:16px;padding:18px;color:#222;box-sizing:border-box;">
+      <label style="display:block;font-weight:bold;color:var(--gd);margin:0 0 4px;">🔄 My Rebuttal</label>
+      <p style="font-size:12px;color:#666;margin:0 0 8px;line-height:1.5;">상대방의 주장을 정확히 요약한 후, 그 주장의 논리적 허점, 가정의 문제점, 또는 반례를 들어 반박하세요. '사랑의 표현 방식 vs 양'과 같은 개념의 혼동을 지적하거나, 상대방의 주장이 특정 상황만을 일반화하는 오류를 범하고 있음을 보여주세요. 자신의 입장을 강화하는 추가 근거를 제시하십시오.</p>
+      <textarea id="rebuttalStmt" rows="5" style="display:block;width:100%;border:1px solid #ddd;border-radius:8px;padding:10px;font-size:14px;box-sizing:border-box;font-family:inherit;background:#fff;color:#222;resize:vertical;" placeholder="While the opposition argues that..., this ignores the fact that..."></textarea>
+      <button onclick="sendDebateStatement()" style="display:block;width:100%;margin-top:14px;padding:14px;background:linear-gradient(135deg,var(--gp),var(--gd));color:white;border:none;border-radius:10px;font-size:15px;font-weight:bold;cursor:pointer;font-family:inherit;">🤖 ChatGPT와 토론 시작하기</button>
+    </div>
+  </section>
+  <section class="sh"><div class="sh-bar"><span class="sh-num">8</span><h2>ChatGPT 회화 연습 <span class="sh-en">AI PRACTICE</span></h2></div>
+    <div style="text-align:center;padding:20px 0;">
+      <p style="color:rgba(255,255,255,0.7);margin-bottom:16px;">이번 주 핵심 표현으로 ChatGPT Camp B와 영어로 대화해보세요!</p>
+      <button class="btn-submit" onclick="launchChatGPTPractice()">🤖 ChatGPT와 50:50 회화 연습</button>
+    </div>
   </section>
 </div>
 <div class="wk-nav"><a href="week06.html" class="wk-btn">&larr; W06</a><span class="wk-current">W07</span><a href="week08.html" class="wk-btn">W08 &rarr;</a></div>
@@ -412,9 +679,12 @@ var CHATGPT_URL='https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166';
 function speak(t){if(!t)return;var u=new SpeechSynthesisUtterance(t.replace(/\uD83D\uDD0A/g,'').trim());u.lang='en-US';u.rate=0.85;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}
 function showLevel(lv,btn){document.getElementById('b1Story').style.display=lv==='b1'?'block':'none';document.getElementById('c1Story').style.display=lv==='c1'?'block':'none';document.querySelectorAll('.ltab').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');}
 function copyAndOpen(msg){window.open(CHATGPT_URL,'_blank');try{navigator.clipboard.writeText(msg);}catch(e){}}
-function sendDebate(){var t=document.getElementById('debateInput').value;var m='\uc548\ub155\ud558\uc138\uc694! High School 3\uc774\uc5d0\uc694.\n\nBrave New World W07\uc744 \uacf5\ubd80\ud588\uc5b4\uc694.\n\n\ud1a0\ub860 \uc8fc\uc81c: "A society that controls through pleasure is more dangerous than one that controls through fear."\n\n\ub0b4 \uc8fc\uc7a5:\n'+t+'\n\n\uc774 \uc8fc\uc7a5\uc5d0 \ubc18\ubc15\ud574\uc8fc\uc138\uc694!';copyAndOpen(m);}
-function submitEssay(){var e=[1,2,3,4].map(function(i){return document.getElementById('es'+i).value}).join('\n\n');var m='\uc548\ub155\ud558\uc138\uc694! High School 3\uc774\uc5d0\uc694.\n\n\uc5d0\uc138\uc774 \uc8fc\uc81c: "Compare Brave New World and 1984. Which is more relevant today?"\n\n'+e+'\n\n\ud53c\ub4dc\ubc31 \ubd80\ud0c1\ub4dc\ub824\uc694!';copyAndOpen(m);}
-function launchChatGPTPractice(){var m='Brave New World W07 (쯠락으로 통제 — 세계국가) \uc8fc\uc81c\ub85c \uc601\uc5b4 \ud68c\ud654 \uc5f0\uc2b5\uc744 \ud558\uace0 \uc2f6\uc5b4\uc694!';copyAndOpen(m);}
+function sendDebate(){}
+function submitEssay(){}
+function launchChatGPTPractice(){
+  var m='\u2018\uc0ac\ub791\u2019\uc774\ub77c\ub294 \uc774\ub984\uc73c\ub85c \ud589\ud574\uc9c0\ub294 \ubd80\ubaa8\uc758 \uad00\uc5ec\uac00 \uc5b4\ub514\uae4c\uc9c0\ub294 \uac74\uac15\ud558\uace0, \uc5b4\ub290 \uc21c\uac04\ubd80\ud130\ub294 \ubc1c\ub2ec\uc5d0 \uc7a5\uc560\uac00 \ub420\uae4c\uc694? \uc5ec\ub7ec\ubd84\uc758 \uacbd\ud5d8\uc774\ub098 \uad00\ucc30\uc744 \ubc14\ud0d5\uc73c\ub85c \u2018\uac74\uac15\ud55c \ubd80\ubaa8\uc758 \uc0ac\ub791\u2019\uc758 \uae30\uc900\uc5d0 \ub300\ud574 \ud568\uaed8 \ub17c\uc758\ud574 \ubcf4\uc138\uc694.';
+  copyAndOpen(m);
+}
 /* ===== CEC Robo Helper (Camp B) ===== */
 (function(){
   if(window.__gbRoboInit)return;window.__gbRoboInit=true;
@@ -522,5 +792,262 @@ function launchChatGPTPractice(){var m='Brave New World W07 (쯠락으로 통제
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',gbInit);}else{gbInit();}
 })();
 </script>
+<script id="m1-extra-js">
+// Reading toggle — single Play/Pause button
+function togglePlay(btn){
+  var icon=btn.querySelector('.play-icon');
+  var label=btn.querySelector('.play-label');
+  if(btn.classList.contains('playing')){
+    window.speechSynthesis.pause();
+    btn.classList.remove('playing');
+    icon.textContent='▶';
+    label.textContent='재생';
+  } else {
+    if(window.speechSynthesis.paused){
+      window.speechSynthesis.resume();
+    } else {
+      var txt=btn.dataset.text||'';
+      if(!txt){var storyDiv=btn.closest('.story-box')||btn.parentElement;var textEl=storyDiv.querySelector('[id$="Text"]');txt=textEl?textEl.textContent:'';}
+      window.speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(txt);
+      u.lang='en-US';u.rate=0.85;
+      u.onend=function(){btn.classList.remove('playing');icon.textContent='▶';label.textContent='재생';};
+      u.onerror=u.onend;
+      window.speechSynthesis.speak(u);
+    }
+    btn.classList.add('playing');
+    icon.textContent='⏸';
+    label.textContent='일시정지';
+  }
+}
+
+// Play/Pause TTS state (legacy toggle — kept for any remaining pages)
+var m1TtsActive = null;
+function m1PlayPause(btnId, textElId){
+  var btn = document.getElementById(btnId);
+  var txt = document.getElementById(textElId).textContent;
+  if(m1TtsActive === btnId){
+    window.speechSynthesis.cancel();
+    m1TtsActive = null;
+    btn.classList.remove('playing');
+    btn.innerHTML = '▶ 전체 듣기';
+    return;
+  }
+  if(m1TtsActive){
+    window.speechSynthesis.cancel();
+    var prev = document.getElementById(m1TtsActive);
+    if(prev){ prev.classList.remove('playing'); prev.innerHTML='▶ 전체 듣기'; }
+  }
+  var u = new SpeechSynthesisUtterance(txt);
+  u.lang='en-US'; u.rate=0.9;
+  u.onend = function(){ btn.classList.remove('playing'); btn.innerHTML='▶ 전체 듣기'; m1TtsActive=null; };
+  u.onerror = u.onend;
+  window.speechSynthesis.speak(u);
+  m1TtsActive = btnId;
+  btn.classList.add('playing');
+  btn.innerHTML = '⏸ 일시정지';
+}
+
+// Fill-in-blank
+function fbCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅ 정답!'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌ 다시 해볼까요?'; fb.className='game-fb wrong'; }
+}
+
+// Dictation simple
+function dsCheck(inpId, answer){
+  var el = document.getElementById(inpId);
+  var fb = document.getElementById(inpId+'-fb');
+  if(el.value.trim().toLowerCase() === answer.toLowerCase()){
+    fb.textContent='✅ 정답! ('+answer+')'; fb.className='game-fb correct';
+  } else {
+    fb.textContent='❌ 정답: '+answer; fb.className='game-fb wrong';
+  }
+}
+
+// Listen-choose: speak then reveal
+function lcPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.85;
+  window.speechSynthesis.speak(u);
+}
+function lcCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅ 잘 들으셨어요!'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌ 다시 들어볼까요?'; fb.className='game-fb wrong'; }
+}
+
+// Word order
+var woState = {};
+function woInit(idx, words){
+  woState[idx] = { correct: words.slice(), arranged: [] };
+}
+function woAdd(idx, chipEl, word){
+  if(chipEl.classList.contains('used')) return;
+  chipEl.classList.add('used');
+  woState[idx].arranged.push(word);
+  var zone = document.getElementById('wo'+idx+'-zone');
+  var span = document.createElement('span');
+  span.className = 'wo-chip'; span.textContent = word; span.dataset.word = word;
+  span.onclick = function(){
+    // remove on click from zone
+    var i = woState[idx].arranged.indexOf(word);
+    if(i>=0) woState[idx].arranged.splice(i,1);
+    span.remove();
+    // re-enable bank chip
+    var bankChips = document.querySelectorAll('#wo'+idx+'-bank .wo-chip');
+    bankChips.forEach(function(b){ if(b.dataset.word===word) b.classList.remove('used'); });
+  };
+  zone.appendChild(span);
+}
+function woCheck(idx){
+  var fb = document.getElementById('wo'+idx+'-fb');
+  var ok = JSON.stringify(woState[idx].arranged) === JSON.stringify(woState[idx].correct);
+  if(ok){ fb.textContent='✅ 정답! '+woState[idx].correct.join(' '); fb.className='game-fb correct'; }
+  else { fb.textContent='❌ 순서를 다시 확인해보세요.'; fb.className='game-fb wrong'; }
+}
+
+// Matching
+var mmSel = null;
+function mmClick(btn, pairKey){
+  if(btn.classList.contains('matched')) return;
+  if(!mmSel){ mmSel = btn; btn.classList.add('sel'); return; }
+  if(mmSel === btn){ mmSel.classList.remove('sel'); mmSel=null; return; }
+  if(mmSel.dataset.pair === pairKey && mmSel !== btn){
+    mmSel.classList.remove('sel'); mmSel.classList.add('matched');
+    btn.classList.add('matched'); mmSel=null;
+  } else {
+    var tmp = mmSel; mmSel.classList.remove('sel'); mmSel=null;
+    btn.classList.add('wrong');
+    setTimeout(function(){ btn.classList.remove('wrong'); }, 500);
+  }
+}
+
+// Dictation challenge
+function dcPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.9;
+  window.speechSynthesis.speak(u);
+}
+function dcCheck(lvl, answer){
+  var inp = document.getElementById('dc-'+lvl);
+  var fb = document.getElementById('dc-'+lvl+'-fb');
+  var g = inp.value.trim().toLowerCase().replace(/[.,!?]/g,'');
+  var a = answer.toLowerCase().replace(/[.,!?]/g,'');
+  if(g === a){ fb.textContent='✅ 완벽!'; fb.className='game-fb correct'; }
+  else { fb.innerHTML='❌ 정답: '+answer; fb.className='game-fb wrong'; }
+}
+
+// Comprehension tabs
+function compTab(tab, lvl){
+  var root = tab.closest('.comp-section');
+  root.querySelectorAll('.comp-tab').forEach(function(t){ t.classList.remove('active'); });
+  root.querySelectorAll('.comp-panel').forEach(function(p){ p.classList.remove('active'); });
+  tab.classList.add('active');
+  root.querySelector('.comp-panel-'+lvl).classList.add('active');
+}
+function compCheck(btn, correct){
+  var opts = btn.parentElement.querySelectorAll('.game-opt');
+  opts.forEach(function(o){ o.classList.remove('correct','wrong'); });
+  var fb = btn.parentElement.nextElementSibling;
+  if(correct){ btn.classList.add('correct'); fb.textContent='✅'; fb.className='game-fb correct'; }
+  else { btn.classList.add('wrong'); fb.textContent='❌'; fb.className='game-fb wrong'; }
+}
+
+// My thoughts — ChatGPT send
+function sendMyThought(){
+  var t = document.getElementById('myThoughtInput').value.trim();
+  if(!t){ alert('한 문장 써주세요!'); return; }
+  copyAndOpen('안녕하세요! 오늘 읽은 이야기에 대한 제 생각이에요:\n\n'+t+'\n\n이 의견에 대해 간단히 코멘트 부탁드려요!');
+}
+
+// Essay basics — structure question
+function askEssayStructure(){
+  copyAndOpen('안녕하세요! 저는 Middle School 1 학생이에요.\n\n에세이 구조(주제문-근거-마무리)에 대해 질문이 있어요. 중학생이 쉽게 이해할 수 있게 설명해주세요!');
+}
+
+// m2: paragraph writing — send 3 sentences to ChatGPT
+function submitParagraph(){
+  var t1 = document.getElementById('pw1').value.trim();
+  var t2 = document.getElementById('pw2').value.trim();
+  var t3 = document.getElementById('pw3').value.trim();
+  if(!t1 || !t2 || !t3){ alert('세 문장 모두 써주세요! (주제문/근거/마무리)'); return; }
+  var topic = document.getElementById('pwTopic') ? document.getElementById('pwTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 2 학생이에요.\n\n에세이 단락쓰기 주제: ' + topic + '\n\n'
+          + '① 주제문: ' + t1 + '\n'
+          + '② 근거/예시: ' + t2 + '\n'
+          + '③ 마무리: ' + t3 + '\n\n'
+          + '제 단락을 중학생 수준에서 피드백해주세요! 문법, 자연스러움, 논리 구조 모두 봐주세요.';
+  copyAndOpen(msg);
+}
+
+// m2: opinion — send 1 paragraph to ChatGPT
+function sendOpinion(){
+  var el = document.getElementById('opn1') || document.getElementById('opinionInput');
+  var t = el ? el.value.trim() : '';
+  if(!t){ alert('내 생각을 한 단락으로 써주세요!'); return; }
+  var topic = document.getElementById('opTopic') ? document.getElementById('opTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 2 학생이에요.\n\n의견 표현 주제: ' + topic + '\n\n내 생각:\n' + t + '\n\n중학생 수준에서 자연스럽게 고쳐주시고 간단한 코멘트 부탁드려요!';
+  copyAndOpen(msg);
+}
+
+// m2: grammar example — read aloud on click
+function grammarSpeak(el){
+  var txt = el.querySelector('.ge-en');
+  if(txt) speak(txt.textContent);
+}
+
+// 5-B Grammar Practice — dictation with hint reveal
+function gpDictHint(idx){
+  var el = document.getElementById('gp-dict-hint-'+idx);
+  if(el) el.style.visibility = 'visible';
+}
+function gpDictPlay(text){
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.8;
+  window.speechSynthesis.speak(u);
+}
+function gpDictCheck(idx, answer){
+  var el = document.getElementById('gp-dict-'+idx);
+  var fb = document.getElementById('gp-dict-fb-'+idx);
+  if(el.value.trim().toLowerCase() === answer.toLowerCase()){
+    fb.textContent='✅ 정답! ('+answer+')'; fb.className='game-fb correct';
+  } else {
+    fb.textContent='❌ 정답: '+answer; fb.className='game-fb wrong';
+  }
+}
+
+// m3: 3-paragraph essay (intro/body/conclusion)
+function submitFullEssay(){
+  var p1 = document.getElementById('es1').value.trim();
+  var p2 = document.getElementById('es2').value.trim();
+  var p3 = document.getElementById('es3').value.trim();
+  if(!p1 || !p2 || !p3){ alert('서론/본론/결론 세 단락 모두 써주세요!'); return; }
+  var topic = document.getElementById('esTopic') ? document.getElementById('esTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 3 학생이에요.\n\n에세이 주제: ' + topic + '\n\n'
+          + '① 서론 (Introduction):\n' + p1 + '\n\n'
+          + '② 본론 (Body):\n' + p2 + '\n\n'
+          + '③ 결론 (Conclusion):\n' + p3 + '\n\n'
+          + '제 3단락 에세이를 중학생 수준에서 피드백해주세요! 서론-본론-결론 구조, 논리, 문법 모두 봐주세요.';
+  copyAndOpen(msg);
+}
+
+// m3: debate — send opening statement for rebuttal
+function sendDebateStatement(){
+  var t = document.getElementById('openStmt').value.trim();
+  if(!t){ alert('Opening Statement를 써주세요!'); return; }
+  var topic = document.getElementById('dbTopic') ? document.getElementById('dbTopic').textContent : '';
+  var msg = '안녕하세요! 저는 Middle School 3 학생이에요.\n\n토론 주제: ' + topic + '\n\n'
+          + '제 Opening Statement:\n' + t + '\n\n'
+          + '이 주장에 대해 반박(counterargument)을 해주시고, 영어 토론 방식으로 저와 대화해주세요!';
+  copyAndOpen(msg);
+}
+</script>
+<div class="pd-notice">📚 이 교재는 저작권이 만료된 공개 도메인(Public Domain) 작품을 기반으로 제작되었습니다. 원문을 직접 인용하지 않고 AI가 교육 목적에 맞게 완전히 새로 작성한 창작 학습 자료입니다.<br><span class="pd-en">This material is based on Public Domain works. All content has been newly written by AI for educational purposes. No original text was quoted.</span></div>
 </body>
 </html>
