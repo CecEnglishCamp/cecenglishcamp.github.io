@@ -908,14 +908,14 @@ function speak(text){
   text=text.replace(/\uD83D\uDD0A/g,'').trim();
   speechSynthesis.cancel();
   function doSpeak(){
-    var voices=speechSynthesis.getVoices();
+    var voices=window.speechSynthesis.getVoices();
     var u=new SpeechSynthesisUtterance(text);
-    var prefer=['Samantha','Karen','Moira','Tessa','Fiona','Allison','Ava','Susan','Zoe','Victoria'];
-    var exclude=['Alex','Fred','Daniel','Ralph','Bruce','Google UK English Male','Microsoft David'];
-    var v=voices.find(function(vo){return prefer.some(function(p){return vo.name===p;});});
-    if(!v)v=voices.find(function(vo){return vo.lang==='en-US'&&exclude.every(function(e){return vo.name.indexOf(e)<0;})&&vo.name.indexOf('Siri')<0;});
-    if(!v)v=voices.find(function(vo){return vo.lang.startsWith('en')&&vo.name.indexOf('Siri')<0;});
-    if(v)u.voice=v;
+    var sel=null;
+    var pref=['Samantha','Karen','Moira','Tessa','Fiona','Allison','Ava','Susan','Zoe','Victoria','Google US English','Microsoft Zira Desktop'];
+    for(var p of pref){sel=voices.find(function(v){return v.name===p;});if(sel)break;}
+    if(!sel)sel=voices.find(function(v){return v.lang==='en-US'&&v.name.indexOf('Siri')<0;});
+    if(!sel)sel=voices.find(function(v){return v.lang.startsWith('en');});
+    if(sel)u.voice=sel;
     u.lang='en-US';u.rate=0.85;u.pitch=1.0;u.volume=1.0;
     speechSynthesis.speak(u);
   }
