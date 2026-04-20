@@ -912,26 +912,12 @@ var voiceCache=null;
 function getVoice(){
   if(voiceCache) return voiceCache;
   var voices=speechSynthesis.getVoices();
-  var prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
-  var exclude=['Alex','Fred','Daniel','Google UK English Male'];
-  for(var i=0;i<prefer.length;i++){
-    var v=voices.find(function(v){return v.name.includes(prefer[i]);});
-    if(v){voiceCache=v;return v;}
-  }
-  voiceCache=voices.find(function(v){return v.lang==='en-US'&&!exclude.some(function(e){return v.name.includes(e);});})||voices[0];
-  return voiceCache;
-}
-function speak(text){
-  if(!text) return;
-  text=text.replace(/\uD83D\uDD0A/g,'').trim();
-  speechSynthesis.cancel();
-  function doSpeak(){
-    var voices=speechSynthesis.getVoices();
-    var u=new SpeechSynthesisUtterance(text);
-    var prefer=['Samantha','Karen','Victoria','Zira','Eva','Jenny','Aria','Google US English'];
-    var exclude=['Alex','Fred','Daniel','Google UK English Male'];
-    var v=voices.find(function(v){return prefer.some(function(p){return v.name.includes(p);})&&!exclude.some(function(e){return v.name.includes(e);});});
-    if(v) u.voice=v;
+  var prefer=['Samantha','Karen','Moira','Tessa','Fiona','Allison','Ava','Susan','Zoe','Victoria'];
+    var exclude=['Alex','Fred','Daniel','Ralph','Bruce','Google UK English Male','Microsoft David'];
+    var v=voices.find(function(vo){return prefer.some(function(p){return vo.name===p;});});
+    if(!v)v=voices.find(function(vo){return vo.lang==='en-US'&&exclude.every(function(e){return vo.name.indexOf(e)<0;})&&vo.name.indexOf('Siri')<0;});
+    if(!v)v=voices.find(function(vo){return vo.lang.startsWith('en')&&vo.name.indexOf('Siri')<0;});
+    if(v)u.voice=v;
     u.lang='en-US';u.rate=0.85;u.pitch=1.0;u.volume=1.0;
     speechSynthesis.speak(u);
   }
