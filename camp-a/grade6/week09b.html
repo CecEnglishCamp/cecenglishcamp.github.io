@@ -594,7 +594,18 @@ function listenChk(btn,t){var fb=document.getElementById('listen-fb');if(t==='ok
 function chkDict(ans){var v=document.getElementById('dictIn').value.trim().toLowerCase();var fb=document.getElementById('dict-fb');if(v===ans.toLowerCase()){fb.style.color='var(--sage)';setTimeout(function(){fb.textContent='\u2705 정답! +25 XP';addXP(25);},400);document.getElementById('dictIn').style.borderColor='var(--sage)';}else if(!v.length){fb.textContent='\u270F\uFE0F 써봐!';}else{fb.style.color='#e53935';fb.textContent='\u274C 힌트: '+ans[0]+'...';}}
 function duoPick(btn,t,fId){var fb=document.getElementById(fId);if(t==='ok'){btn.classList.add('ok');btn.parentElement.querySelectorAll('.duo-ch').forEach(function(b){b.disabled=true;});setTimeout(function(){fb.style.color='var(--sage)';fb.textContent='\u2705 정답! +25 XP';addXP(25);duoDone=true;if(csDone)checkComplete();},400);}else{btn.classList.add('no');fb.style.color='#e53935';fb.textContent='\u274C 다시 생각해봐!';setTimeout(function(){btn.classList.remove('no');fb.textContent='';},1200);}}
 function csPick(btn,v,blankId,fId){var bl=document.getElementById(blankId),fb=document.getElementById(fId);if(btn.dataset.ans==='ok'){btn.classList.add('ok');if(bl)bl.textContent=v;btn.parentElement.querySelectorAll('.cs-opt').forEach(function(b){b.disabled=true;});setTimeout(function(){fb.style.color='var(--sage)';fb.textContent='\u2705 정답! +25 XP';addXP(25);csDone=true;if(duoDone)checkComplete();},400);}else{btn.classList.add('no');fb.style.color='#e53935';fb.textContent='\u274C 다시 생각해봐!';setTimeout(function(){btn.classList.remove('no');fb.textContent='';},1200);}}
-copyBtn.textContent='\u2705 복사됨!';setTimeout(function(){copyBtn.textContent='\uD83D\uDCCB 복사';},1500);};var closeBtn=document.createElement('button');closeBtn.textContent='닫기';closeBtn.style.cssText='padding:10px 18px;background:rgba(255,255,255,0.1);color:#fff;border:none;border-radius:10px;font-size:0.85rem;font-weight:700;cursor:pointer;';closeBtn.onclick=function(){modal.remove();};btns.appendChild(copyBtn);btns.appendChild(closeBtn);box.appendChild(hdr);box.appendChild(ta);box.appendChild(btns);modal.appendChild(box);document.body.appendChild(modal);setTimeout(function(){ta.focus();ta.select();},100);modal.addEventListener('click',function(e){if(e.target===modal)modal.remove();});}
+
+function doCopy(text){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(function(){
+      alert('복사됐어요!');
+    }).catch(function(){
+      prompt('아래 텍스트를 복사하세요:', text);
+    });
+  } else {
+    prompt('아래 텍스트를 복사하세요:', text);
+  }
+}
 </script>
 </body>
 </html>
