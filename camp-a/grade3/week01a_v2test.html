@@ -700,12 +700,7 @@ body {
       </div>
 
       <!-- TTS 버튼 -->
-      <button class="tts-btn" onclick="speakText('He ran away.'); addXP(5, '발음 듣기!')">
-        <div class="play-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-        </div>
-        🔊 발음 듣기 — 따라 해봐!
-      </button>
+      <button class="scene-btn" onclick="speakText('He ran away.'); addXP(5, '발음 듣기!')">🔊 영어로 들어보세요</button>
     </div>
   </article>
 
@@ -740,15 +735,9 @@ body {
       <!-- A1 영어 본문 + 그림 -->
       <div class="reading-body en-text active" id="a1Text" role="tabpanel">
         <div class="story-scene-wrap">
-          <div id="storySceneImg"></div>
+          <div id="storySceneImg" style="position:absolute;bottom:-100%;left:0;width:100%;height:100%;background:url(https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/peter-rabbit/w01_new.webp) center/cover no-repeat;opacity:0.45;z-index:0;"></div>
           <div class="story-content-wrap">
-            <button class="tts-btn" style="margin-bottom:16px;"
-              onclick="speakText('Peter did not listen to Mother. He went into the garden. Mr. McGregor saw him! He ran away.'); startSceneReveal('storySceneImg'); addXP(10, '본문 읽기!')">
-              <div class="play-icon">
-                <svg width="14" height="14" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" fill="white"/></svg>
-              </div>
-              ▶ 재생
-            </button>
+            <button class="scene-btn" onclick="speakText('Peter did not listen to Mother. He went into the garden. Mr. McGregor saw him! He ran away.'); startSceneReveal('storySceneImg'); addXP(10, '본문 읽기!')">🔊 영어로 들어보세요</button>
             Peter did not listen to Mother. 🐰<br>
             He went into the garden. 🥕<br>
             Mr. McGregor saw him! 😱<br>
@@ -760,15 +749,9 @@ body {
       <!-- A2 영어 본문 + 그림 -->
       <div class="reading-body en-text" id="a2Text" role="tabpanel">
         <div class="story-scene-wrap">
-          <div id="storySceneImg2"></div>
+          <div id="storySceneImg2" style="position:absolute;bottom:-100%;left:0;width:100%;height:100%;background:url(https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/peter-rabbit/w01_new.webp) center/cover no-repeat;opacity:0.45;z-index:0;"></div>
           <div class="story-content-wrap">
-            <button class="tts-btn" style="margin-bottom:16px;"
-              onclick="speakText('Peter Rabbit did not listen to his mother. She warned him never to go into the garden. But Peter sneaked inside and ate the vegetables. He ate carrots, lettuce, and parsley. Suddenly, Mr. McGregor appeared and shouted, Stop, thief! Peter was scared and ran away as fast as he could.'); startSceneReveal('storySceneImg2'); addXP(10, '본문 읽기!')">
-              <div class="play-icon">
-                <svg width="14" height="14" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21" fill="white"/></svg>
-              </div>
-              ▶ 재생
-            </button>
+            <button class="scene-btn" onclick="speakText('Peter Rabbit did not listen to his mother. She warned him never to go into the garden. But Peter sneaked inside and ate the vegetables. He ate carrots, lettuce, and parsley. Suddenly, Mr. McGregor appeared and shouted, Stop, thief! Peter was scared and ran away as fast as he could.'); startSceneReveal('storySceneImg2'); addXP(10, '본문 읽기!')">🔊 영어로 들어보세요</button>
             Peter Rabbit did not listen to his mother. 🐰<br>
             She warned him never to go into Mr. McGregor's garden.<br>
             But Peter sneaked inside and ate the vegetables. 🥕<br>
@@ -995,30 +978,22 @@ function startSceneReveal(id) {
   var startTime = null;
   var duration = 38000;
   var remaining = duration * (1 - (startPos + 100) / 100);
-
   cancelAnimationFrame(_sceneTimers[id]);
-
   function step(ts) {
     if (!startTime) startTime = ts;
     var elapsed = ts - startTime;
     var progress = Math.min(elapsed / remaining, 1);
-    var ease = progress < 0.5
-      ? 2 * progress * progress
-      : -1 + (4 - 2 * progress) * progress;
+    var ease = progress < 0.5 ? 2*progress*progress : -1+(4-2*progress)*progress;
     var pos = startPos + (0 - startPos) * ease;
     _scenePos[id] = pos;
     el.style.bottom = pos + '%';
     el.classList.add('active');
-    if (progress < 1) {
-      _sceneTimers[id] = requestAnimationFrame(step);
-    } else {
-      _scenePos[id] = 0;
-    }
+    if (progress < 1) { _sceneTimers[id] = requestAnimationFrame(step); }
+    else { _scenePos[id] = 0; }
   }
   _sceneTimers[id] = requestAnimationFrame(step);
-
   setTimeout(function() {
-    pauseSceneReveal(id);
+    cancelAnimationFrame(_sceneTimers[id]);
     el.style.transition = 'opacity 2s';
     el.style.opacity = '0';
     setTimeout(function() {
