@@ -151,6 +151,10 @@ footer a{color:#00bcd4;text-decoration:none}
   .nav-dropdown-menu{position:static;transform:none;padding-top:8px;}
   .nav-dropdown-menu-inner{background:rgba(255,255,255,.04);}
 }
+.book-group-b{margin-bottom:28px;}
+.book-title-b{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:10px;}
+.book-title-b span:first-child{font-size:15px;font-weight:700;color:#fff;}
+.badge-b{font-size:11px;color:rgba(255,255,255,0.4);font-weight:400;}
 </style>
 </head>
 <body>
@@ -302,15 +306,75 @@ footer a{color:#00bcd4;text-decoration:none}
 <script>
 // Generate 36 week cards for each grade
 (function(){
+  var bookMap={
+    m1:[
+      {title:'The Time Machine',w:[1,2,3,4,5,6]},
+      {title:'The Invisible Man',w:[7,8,9,10,11,12]},
+      {title:"Gulliver's Travels (Part 1)",w:[13,14,15,16,17,18]},
+      {title:'The Prince and the Pauper',w:[19,20,21,22,23,24]},
+      {title:'Kidnapped',w:[25,26,27,28,29,30]},
+      {title:'White Fang',w:[31,32,33,34,35,36]}
+    ],
+    m2:[
+      {title:'The Hound of the Baskervilles',w:[1,2,3,4,5,6]},
+      {title:'20,000 Leagues Under the Sea',w:[7,8,9,10,11,12]},
+      {title:'The Count of Monte Cristo',w:[13,14,15,16,17,18]},
+      {title:'Robinson Crusoe',w:[19,20,21,22,23,24]},
+      {title:'Frankenstein',w:[25,26,27,28,29,30]},
+      {title:'Dr. Jekyll and Mr. Hyde',w:[31,32,33,34,35,36]}
+    ],
+    m3:[
+      {title:'Les Misérables',w:[1,2,3,4,5,6]},
+      {title:'The Three Musketeers',w:[7,8,9,10,11,12]},
+      {title:'Great Expectations',w:[13,14,15,16,17,18]},
+      {title:'David Copperfield',w:[19,20,21,22,23,24]},
+      {title:'Jane Eyre',w:[25,26,27,28,29,30]},
+      {title:'Wuthering Heights',w:[31,32,33,34,35,36]}
+    ],
+    g1:[
+      {title:'The Scarlet Letter',w:[1,2,3,4,5,6]},
+      {title:'The Adventures of Huckleberry Finn',w:[7,8,9,10,11,12]},
+      {title:'Crime and Punishment',w:[13,14,15,16,17,18]},
+      {title:'Anna Karenina',w:[19,20,21,22,23,24]},
+      {title:'War and Peace',w:[25,26,27,28,29,30]},
+      {title:'Don Quixote',w:[31,32,33,34,35,36]}
+    ],
+    g2:[
+      {title:'The Great Gatsby',w:[1,2,3,4,5,6]},
+      {title:'To Kill a Mockingbird',w:[7,8,9,10,11,12]},
+      {title:'1984',w:[13,14,15,16,17,18]},
+      {title:'Brave New World',w:[19,20,21,22,23,24]},
+      {title:'The Catcher in the Rye',w:[25,26,27,28,29,30]},
+      {title:'Lord of the Flies',w:[31,32,33,34,35,36]}
+    ],
+    g3:[
+      {title:'The Great Gatsby',w:[1,2,3,4,5,6]},
+      {title:'The Picture of Dorian Gray',w:[7,8,9,10,11,12]},
+      {title:'Dr. Jekyll and Mr. Hyde',w:[13,14,15,16,17,18]},
+      {title:'Emma',w:[19,20,21,22,23,24]},
+      {title:'Persuasion',w:[25,26,27,28,29,30]},
+      {title:'The Awakening',w:[31,32,33,34,35,36]}
+    ]
+  };
+
   var grades=['m1','m2','m3','g1','g2','g3'];
   grades.forEach(function(g){
     var wrap=document.getElementById(g+'-weeks');
     if(!wrap)return;
+    var books=bookMap[g]||[];
     var html='';
-    for(var w=1;w<=36;w++){
-      var ww=w<10?'0'+w:''+w;
-      html+='<a class="week-card" href="/camp-b/'+g+'/week'+ww+'a.html"><span class="wnum">W'+ww+'</span><span>Week '+w+'</span></a>';
-    }
+    books.forEach(function(book){
+      html+='<div class="book-group-b">';
+      html+='<div class="book-title-b"><span>'+book.title+'</span><span class="badge-b">W'+
+        (book.w[0]<10?'0'+book.w[0]:book.w[0])+'–W'+
+        (book.w[book.w.length-1]<10?'0'+book.w[book.w.length-1]:book.w[book.w.length-1])+'</span></div>';
+      html+='<div class="week-grid">';
+      book.w.forEach(function(w){
+        var ww=w<10?'0'+w:''+w;
+        html+='<a class="week-card" href="/camp-b/'+g+'/week'+ww+'a.html"><span class="wnum">W'+ww+'</span><span>Week '+w+'</span></a>';
+      });
+      html+='</div></div>';
+    });
     wrap.innerHTML=html;
   });
 })();
