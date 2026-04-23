@@ -315,6 +315,21 @@
     .day-row { flex-wrap: wrap; }
     .day-label { min-width: 100%; margin-bottom: 4px; }
   }
+
+  /* ===== ROBO ===== */
+  .gb{position:fixed;bottom:80px;right:20px;z-index:999;display:flex;flex-direction:column;align-items:center;gap:6px;}
+  .gb-hint{background:#00f2ff;color:#0a1628;font-size:12px;font-weight:700;padding:5px 10px;border-radius:12px;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(0,242,255,0.4);}
+  .gb-robo img{width:64px;height:64px;cursor:pointer;filter:drop-shadow(0 2px 8px rgba(0,242,255,0.5));}
+  .gb-panel{position:fixed;bottom:160px;right:20px;width:300px;background:#0d1b2a;border:1px solid rgba(0,242,255,0.3);border-radius:14px;z-index:1000;display:none;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,0.5);}
+  .gb-panel.open{display:flex;}
+  .gb-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(0,242,255,0.15);}
+  .gb-head span{font-size:13px;font-weight:700;color:#00f2ff;}
+  .gb-close{background:none;border:none;color:#666;font-size:18px;cursor:pointer;padding:0;}
+  .gb-btns{display:flex;flex-direction:column;gap:6px;padding:12px 14px;}
+  .gb-btn{padding:9px 12px;background:rgba(0,242,255,0.06);border:1px solid rgba(0,242,255,0.2);border-radius:8px;color:#c8d0dc;font-size:12px;cursor:pointer;text-align:left;font-family:inherit;transition:all 0.15s;}
+  .gb-btn:hover{background:rgba(0,242,255,0.12);color:#fff;}
+  .gb-open-btn{margin:0 14px 14px;padding:10px;background:#00f2ff;border:none;border-radius:8px;color:#0a1628;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+  .gb-open-btn:hover{background:#00c8d4;}
 </style>
 </head>
 <body>
@@ -816,6 +831,27 @@
     </div>
   </div>
 
+  <!-- ROBO -->
+  <div class="gb">
+    <div class="gb-hint" onclick="gbToggle()"><span>Robo</span>한테 물어봐!</div>
+    <div class="gb-robo" onclick="gbToggle()">
+      <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif" alt="Robo">
+    </div>
+  </div>
+  <div class="gb-panel" id="gbPanel">
+    <div class="gb-head">
+      <span>🤖 Robo 선생님</span>
+      <button class="gb-close" onclick="gbToggle()">✕</button>
+    </div>
+    <div class="gb-btns">
+      <button class="gb-btn" onclick="gbAsk('오늘 읽은 내용을 간단히 요약해줘. 한국어로 설명해줘.')">📖 오늘 내용 요약</button>
+      <button class="gb-btn" onclick="gbAsk('오늘 배운 핵심 문법을 쉽게 설명해줘.')">📝 문법 설명</button>
+      <button class="gb-btn" onclick="gbAsk('오늘 주제로 영어로 질문 3개 만들어줘.')">💭 영어 질문 만들기</button>
+      <button class="gb-btn" onclick="gbAsk('오늘 배운 어휘로 예문 3개 만들어줘.')">✍️ 어휘 예문</button>
+    </div>
+    <button class="gb-open-btn" onclick="gbOpen()">🚀 ChatGPT로 대화하기</button>
+  </div>
+
   <!-- NAV -->
   <div class="nav">
     <div class="nav-current">W29c</div>
@@ -958,6 +994,30 @@
     setTimeout(function(){
       respDiv.textContent = '💬 Robo: "' + input + '"에 대한 답변이에요. 오늘 배운 We는 자먀틴이 1924년에 쓴 디스토피아 소설이에요. D-503이 사는 유리 도시에서는 모든 것이 통제되고 사생활이 없어요. 더 궁금한 게 있으면 물어보세요!';
     }, 800);
+  }
+
+  /* ===== ROBO JS ===== */
+  var CHATGPT_URL = 'https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166';
+  function gbToggle(){
+    var p = document.getElementById('gbPanel');
+    p.classList.toggle('open');
+  }
+  function gbAsk(msg){
+    var page = typeof PAGE_DATA !== 'undefined' ?
+      '[' + PAGE_DATA.grade + ' / ' + PAGE_DATA.week + ']\n' +
+      '책: ' + PAGE_DATA.book + '\n' +
+      '핵심문장: ' + PAGE_DATA.d3 + '\n\n' + msg : msg;
+    navigator.clipboard.writeText(page).catch(function(){});
+    window.open(CHATGPT_URL, 'chatgpt',
+      'width=' + Math.round(screen.width/2) + ',height=' + screen.height + ',left=' + Math.round(screen.width/2) + ',top=0');
+    document.getElementById('gbPanel').classList.remove('open');
+  }
+  function gbOpen(){
+    var page = typeof PAGE_DATA !== 'undefined' ?
+      '[' + PAGE_DATA.grade + ' / ' + PAGE_DATA.week + '] ' + PAGE_DATA.book : '';
+    navigator.clipboard.writeText(page).catch(function(){});
+    window.open(CHATGPT_URL, 'chatgpt',
+      'width=' + Math.round(screen.width/2) + ',height=' + screen.height + ',left=' + Math.round(screen.width/2) + ',top=0');
   }
 </script>
 
