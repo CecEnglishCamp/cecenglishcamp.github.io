@@ -318,7 +318,7 @@
 
   
   /* ===== CEC Robo Helper styles (Camp B) ===== */
-  .gb{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
+  .gb{position:fixed;bottom:80px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
   .gb-hint{background:#4a6741;color:#fff;font-size:12px;padding:7px 14px;border-radius:20px 20px 4px 20px;cursor:pointer;white-space:nowrap;animation:gbFloat 3s ease-in-out infinite;font-family:sans-serif;}
   .gb-hint span{color:#c8e6a0;}
   @keyframes gbFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
@@ -1018,11 +1018,37 @@
   var GB_API_URL='https://journey-bronzy-fruitily.ngrok-free.dev/api/deepseek/chat/completions';
   var GB_MODEL='deepseek-chat';
   var GB_IMG='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif';
-  var GB_BOOK='';
-  var GB_WEEK='';
-  var GB_KEY_SENTENCE='';
-  var GB_CONTEXT=function(){return '오늘 수업: '+GB_BOOK+(GB_WEEK?' '+GB_WEEK:'')+(GB_KEY_SENTENCE?'\n핵심 문장: '+GB_KEY_SENTENCE:'');};
+  var GB_SYSTEM='';
   var gbIsOpen=false;
+  function gbText(id){var el=document.getElementById(id);return el?el.textContent.replace(/\s+/g,' ').trim():'';}
+  function gbBuildSystem(){
+    var pd=(typeof PAGE_DATA!=='undefined')?PAGE_DATA:{};
+    var reading=gbText('b2Text')||gbText('c1Text');
+    var lines=[];
+    lines.push('너는 CEC English Camp의 AI 튜터 Robo야. 학생은 한국 중고등학생이야.');
+    lines.push('아래 수업 내용을 바탕으로 한국어로 친절하게 답해. 학생 질문이 막연하거나 수업과 관련 없어 보여도 반드시 아래 책/주제와 연결지어 설명해.');
+    lines.push('답변은 3~6문장 이내로 간결하게. 마크다운 기호(#, *, **, ##, -)는 쓰지 말고 일반 텍스트로만. 이모지는 자연스럽게 사용 가능.');
+    lines.push('');
+    lines.push('[오늘의 수업 정보]');
+    if(pd.grade||pd.week||pd.day) lines.push('학년/주차: '+[pd.grade,pd.week,pd.day].filter(Boolean).join(' '));
+    if(pd.book) lines.push('책: '+pd.book);
+    if(pd.d1) lines.push('Day 1 기초 문장: '+pd.d1);
+    if(pd.d2) lines.push('Day 2 확장 문장: '+pd.d2);
+    if(pd.d3) lines.push('Day 3 목표 문장: '+pd.d3);
+    if(pd.words&&pd.words.length) lines.push('핵심 어휘: '+pd.words.join(', '));
+    if(reading){ lines.push(''); lines.push('[오늘의 본문]'); lines.push(reading); }
+    return lines.join('\n');
+  }
+  function gbBuildGreet(){
+    var pd=(typeof PAGE_DATA!=='undefined')?PAGE_DATA:{};
+    var g='안녕! 나는 Robo야! 🤖';
+    if(pd.book) g+='\n오늘 수업: '+pd.book;
+    var wd=[pd.week,pd.day].filter(Boolean).join(' ');
+    if(wd) g+=' ('+wd+')';
+    if(pd.d3) g+='\n\n📌 오늘의 목표 문장:\n'+pd.d3;
+    g+='\n\n궁금한 거 있으면 아래 버튼을 눌러봐!';
+    return g;
+  }
   window.gbToggle=function(){
     gbIsOpen=!gbIsOpen;
     var panel=document.getElementById('gbPanel');
@@ -1052,7 +1078,7 @@
       var res=await fetch(GB_API_URL,{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({model:GB_MODEL,messages:[{role:'system',content:'마크다운 기호(#, *, **, ##, - 등)를 절대 사용하지 말고 일반 텍스트로만 답해줘. 이모지는 사용 가능.'},{role:'user',content:userContent}],max_tokens:300,stream:true})
+        body:JSON.stringify({model:GB_MODEL,messages:[{role:'system',content:GB_SYSTEM||''},{role:'user',content:userContent}],max_tokens:400,stream:true})
       });
       if(!res.ok) throw new Error('HTTP '+res.status);
       var reader=res.body.getReader();
@@ -1090,31 +1116,16 @@
     var inp=document.getElementById('gbInput');if(!inp)return;
     var msg=inp.value.trim();if(!msg)return;
     window.gbAddUser(msg);inp.value='';
-    window.gbFetch(GB_CONTEXT()+'\n학생 질문: '+msg+'\n중고등학생 수준으로 한국어로 친절하게 답해줘.');
+    window.gbFetch(msg);
   };
   window.gbAsk=function(buttonText){
     if(!gbIsOpen)window.gbToggle();
     window.gbAddUser(buttonText);
-    window.gbFetch(GB_CONTEXT()+'\n학생 질문: '+buttonText+'\n중고등학생 수준으로 한국어로 친절하게 답해줘.');
+    window.gbFetch(buttonText);
   };
   function gbInit(){
-    var ts=document.querySelector('.top-sub')||document.querySelector('.hero-meta');
-    if(ts&&ts.textContent){
-      var raw=ts.textContent.trim();
-      var parts=raw.split(/\s*[·•]\s*/);
-      GB_BOOK=(parts[0]||raw).trim();
-      if(parts[1])GB_WEEK=parts[1].trim();
-    }
-    var ke=document.querySelector('.ke-en');
-    if(ke&&ke.textContent){
-      GB_KEY_SENTENCE=ke.textContent.replace(/\uD83D\uDD0A/g,'').replace(/["\u201C\u201D]/g,'').trim();
-    }
-    setTimeout(function(){
-      var greet='안녕! 나는 Robo야! 🤖\n오늘 수업: '+GB_BOOK+(GB_WEEK?' '+GB_WEEK:'');
-      if(GB_KEY_SENTENCE)greet+='\n\n📌 오늘의 핵심 문장:\n'+GB_KEY_SENTENCE;
-      greet+='\n\n궁금한 거 있으면 아래 버튼을 눌러봐!';
-      window.gbAddAI(greet);
-    },500);
+    GB_SYSTEM=gbBuildSystem();
+    setTimeout(function(){window.gbAddAI(gbBuildGreet());},500);
   }
   if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',gbInit);}else{gbInit();}
 })();
