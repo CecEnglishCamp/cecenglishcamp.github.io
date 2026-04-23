@@ -461,7 +461,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
   <div class="game-box">
     <div class="game-q">빈칸에 알맞은 단어를 골라봐!</div>
     <div style="text-align:center;font-size:1.2rem;font-weight:900;margin-bottom:14px;line-height:2;">"Jack <span class="blank" id="b1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> the cow."</div>
-    <div class="choices"><button class="ch" onclick="pick(this,\x27traded\x27,\x27traded\x27,\x27b1\x27,\x27f1\x27)">traded</button><button class="ch" onclick="pick(this,\x27walked\x27,\x27traded\x27,\x27b1\x27,\x27f1\x27)">walked</button><button class="ch" onclick="pick(this,\x27met\x27,\x27traded\x27,\x27b1\x27,\x27f1\x27)">met</button></div>
+    <div class="choices"><button class="ch" onclick="pick(this,'traded','traded','b1','f1')">traded</button><button class="ch" onclick="pick(this,'walked','traded','b1','f1')">walked</button><button class="ch" onclick="pick(this,'met','traded','b1','f1')">met</button></div>
     <div class="fb" id="f1"></div>
   </div>
 </div><div class="prog"><div class="prog-fill" style="width:50%;"></div></div></div>
@@ -647,6 +647,49 @@ function doCopy(text){
   } else {
     prompt('아래 텍스트를 복사하세요:', text);
   }
+}
+
+var CHATGPT_URL='https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b';
+function buildPrompt(){
+  var title=document.title||'';
+  var m=title.match(/^(G\d+)\s+(Q\d+)\s+(W\d+)\s+(Day\d+)\s*—\s*([^|]+)/);
+  var grade='',week='',day='',book='';
+  if(m){ grade=m[1]; week=m[3]; day=m[4]; book=m[5].trim(); }
+  else {
+    var bm=title.match(/—\s*([^|]+)/);
+    if(bm)book=bm[1].trim();
+  }
+  var vocab=[].slice.call(document.querySelectorAll('.v-eng')).map(function(e){return e.textContent.trim();}).filter(Boolean);
+  var key='';
+  var strong=document.querySelector('.complete-sub strong');
+  if(strong)key=strong.textContent.replace(/["“”]/g,'').trim();
+  var lines=[];
+  var hdr=[grade,week,day].filter(Boolean).join(' / ');
+  if(hdr) lines.push('📚 ['+hdr+']');
+  if(book) lines.push('📖 Book: '+book);
+  if(key) lines.push('⭐ Key: '+key);
+  if(vocab.length) lines.push('📝 Words: '+vocab.join(', '));
+  return lines.join('\n');
+}
+function copyPrompt(btn){
+  var text=buildPrompt();
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(function(){
+      var orig=btn.textContent;
+      btn.textContent='✅ 복사됐어요!';
+      setTimeout(function(){btn.textContent=orig;},2000);
+    }).catch(function(){prompt('아래 텍스트를 복사하세요:',text);});
+  } else { prompt('아래 텍스트를 복사하세요:',text); }
+}
+function openChatGPT(){
+  var text=buildPrompt();
+  if(navigator.clipboard)navigator.clipboard.writeText(text);
+  setTimeout(function(){
+    window.open(CHATGPT_URL,'chatgpt',
+      'width='+Math.round(screen.width/2)+
+      ',height='+screen.height+
+      ',left='+Math.round(screen.width/2)+',top=0');
+  },300);
 }
 </script>
 <script>
