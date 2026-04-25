@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wind in the Willows Ch.2~12 — CEC Library</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Sans+KR:wght@400;500;700&family=Nunito:wght@400;600;700;800;900&display=swap');
+:root{--bg:#041208;--panel:rgba(4,18,8,0.88);--border:rgba(34,197,94,0.18);--gold:#c9a84c;--gold2:#e8c96a;--gold-pale:rgba(201,168,76,0.08);--cream:#f5ead8;--mid:#6a9a70;--light:#3a6a40;--acc:#22c55e;--acc-pale:rgba(34,197,94,0.10);--acc-b:rgba(34,197,94,0.28);--acc-dark:#15803d;}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);color:var(--cream);min-height:100vh;}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.pt{position:absolute;border-radius:50%;opacity:0;animation:ptf var(--d) var(--dl) infinite ease-in-out;}
+@keyframes ptf{0%{opacity:0;transform:translateY(100vh);}10%{opacity:var(--o);}90%{opacity:var(--o);}100%{opacity:0;transform:translateY(-20px) translateX(var(--dx));}}
+.back-btn{position:fixed;top:20px;left:20px;z-index:100;padding:8px 16px;border-radius:99px;background:rgba(4,18,8,0.9);backdrop-filter:blur(12px);border:1px solid var(--border);color:var(--gold);font-size:.78rem;font-weight:700;text-decoration:none;}
+.ch-nav{position:fixed;top:20px;right:20px;z-index:100;padding:8px 16px;border-radius:99px;background:rgba(4,18,8,0.9);backdrop-filter:blur(12px);border:1px solid var(--border);color:var(--acc);font-size:.78rem;font-weight:700;text-decoration:none;}
+.book-header{position:relative;z-index:10;padding:72px 24px 48px;text-align:center;max-width:800px;margin:0 auto;}
+.bh-eyebrow{font-size:.7rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--acc);margin-bottom:12px;}
+.bh-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--cream);margin-bottom:8px;line-height:1.1;}
+.bh-title em{font-style:italic;color:#86efac;}
+.bh-author{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--mid);margin-bottom:6px;}
+.bh-ch{font-size:.82rem;color:var(--acc);font-weight:700;margin-bottom:20px;}
+.bh-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.bhtag{padding:5px 13px;border-radius:99px;font-size:.72rem;font-weight:700;background:var(--acc-pale);border:1px solid var(--acc-b);color:#86efac;}
+.player-bar{position:sticky;top:0;z-index:50;background:rgba(2,10,4,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 20px;}
+.player-inner{max-width:800px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+.play-btn{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all .25s;background:linear-gradient(135deg,var(--acc),var(--acc-dark));color:white;box-shadow:0 4px 16px rgba(34,197,94,0.35);}
+.play-btn.playing{background:linear-gradient(135deg,#ef4444,#b91c1c);}
+.player-info{flex:1;min-width:0;}
+.pi-title{font-size:.8rem;font-weight:700;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pi-sub{font-size:.7rem;color:var(--mid);margin-top:2px;}
+.progress-wrap{flex:1;display:flex;flex-direction:column;gap:4px;}
+.progress-track{height:4px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;cursor:pointer;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--gold));border-radius:99px;width:0%;transition:width .3s linear;}
+.time-txt{font-size:.68rem;color:var(--mid);text-align:right;}
+.nav-btns{display:flex;gap:6px;}
+.nav-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.waveform{height:36px;display:flex;align-items:center;gap:0;padding:0 8px;}
+.wb{width:2.5px;border-radius:99px;background:var(--acc-pale);margin:0 1px;height:3px;transform-origin:center;}
+.waveform.on .wb{background:var(--acc);animation:wbA var(--d) ease-in-out infinite alternate;animation-delay:var(--dl);}
+@keyframes wbA{0%{height:3px;}100%{height:var(--h);}}
+.main{position:relative;z-index:10;max-width:800px;margin:0 auto;padding:32px 24px 80px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:#86efac;margin:36px 0 20px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.section-num{width:28px;height:28px;border-radius:50%;background:var(--acc-pale);border:1px solid var(--acc-b);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--acc);flex-shrink:0;}
+.para-block{margin-bottom:4px;border-radius:16px;overflow:hidden;transition:all .35s;border:1.5px solid transparent;}
+.para-block.active{border-color:rgba(34,197,94,0.4);box-shadow:0 0 0 4px rgba(34,197,94,0.06);}
+.para-block.done{opacity:.6;}
+.para-inner{display:grid;grid-template-columns:1fr 1fr;}
+@media(max-width:600px){.para-inner{grid-template-columns:1fr;}}
+.para-en{padding:18px 20px;background:rgba(4,18,8,0.6);border-right:1px solid var(--border);}
+.para-ko{padding:18px 20px;background:rgba(2,10,4,0.4);}
+.para-block.active .para-en{background:rgba(34,197,94,0.08);}
+.para-block.active .para-ko{background:rgba(34,197,94,0.05);}
+.lang-badge{font-size:.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.lang-badge.en{color:var(--acc);}.lang-badge.ko{color:var(--gold);}
+.lang-dot{width:6px;height:6px;border-radius:50%;}.lang-dot.en{background:var(--acc);}.lang-dot.ko{background:var(--gold);}
+.para-text-en{font-size:.95rem;line-height:1.85;color:var(--cream);font-family:'Nunito',sans-serif;}
+.para-text-ko{font-size:.88rem;line-height:1.9;color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.para-block.active .para-text-en{color:#f0fff4;}.para-block.active .para-text-ko{color:#d4c8a0;}
+.para-play-btn{display:flex;align-items:center;gap:6px;margin-top:10px;padding:5px 12px;border-radius:99px;background:var(--acc-pale);border:none;color:var(--acc);font-size:.7rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.content-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px 24px;}
+.vocab-table{width:100%;border-collapse:collapse;}
+.vocab-table th{font-size:.7rem;font-weight:800;color:var(--gold);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.vocab-table td{padding:10px 14px;font-size:.85rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+.vocab-table td:first-child{font-family:'Nunito',sans-serif;font-weight:700;color:var(--cream);}
+.vocab-table td:nth-child(2){color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.vocab-table td:last-child{color:var(--light);font-size:.78rem;font-family:'Noto Sans KR',sans-serif;}
+.disc-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.disc-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--acc-pale);border:1px solid var(--acc-b);border-radius:12px;}
+.disc-num{width:26px;height:26px;border-radius:50%;background:var(--acc);color:#041208;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;flex-shrink:0;}
+.disc-text{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;line-height:1.6;padding-top:3px;}
+.report-section{margin-top:48px;padding:28px;background:var(--gold-pale);border:1px solid rgba(201,168,76,0.25);border-radius:20px;text-align:center;}
+.report-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--cream);margin-bottom:8px;}
+.report-sub{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;margin-bottom:18px;}
+.report-btn{display:inline-block;padding:13px 28px;border-radius:14px;background:linear-gradient(135deg,var(--gold),#a07828);color:#1a110a;font-size:.9rem;font-weight:800;text-decoration:none;font-family:'Nunito',sans-serif;}
+.ch1-link{display:inline-block;margin-top:12px;padding:10px 20px;border-radius:12px;background:var(--acc-pale);border:1px solid var(--acc-b);color:var(--acc);font-size:.82rem;font-weight:700;text-decoration:none;font-family:'Nunito',sans-serif;}
+</style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+<a href="index.html" class="back-btn">← Library</a>
+<a href="wind-in-the-willows.html" class="ch-nav">← Ch.1</a>
+
+<div class="book-header">
+  <div class="bh-eyebrow">CEC Library · Grade 4</div>
+  <div class="bh-title"><em>The Wind in the Willows</em></div>
+  <div class="bh-author">Kenneth Grahame · 1908</div>
+  <div class="bh-ch">📖 Chapters 2–12 · 두꺼비의 대모험</div>
+  <div class="bh-tags">
+    <span class="bhtag">🦦 G4</span>
+    <span class="bhtag">🎧 MP3 32단락</span>
+    <span class="bhtag">🇰🇷 한국어 번역</span>
+    <span class="bhtag">✍️ 독후감 쓰기</span>
+  </div>
+</div>
+
+<div class="player-bar">
+  <div class="player-inner">
+    <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+    <div class="waveform" id="waveform"></div>
+    <div class="player-info">
+      <div class="pi-title" id="piTitle">재생 버튼을 눌러 시작하세요</div>
+      <div class="pi-sub">Wind in the Willows Ch.2~12 · 32 paragraphs</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track" onclick="seekAudio(event)"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="time-txt" id="timeTxt">0:00 / --:--</div>
+    </div>
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="prevPara()">⏮</button>
+      <button class="nav-btn" onclick="nextPara()">⏭</button>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div id="paras"></div>
+
+  <div class="section-title" style="margin-top:48px;"><div class="section-num">2</div>오늘의 단어 · Key Vocabulary</div>
+  <div class="content-box">
+    <table class="vocab-table">
+      <thead><tr><th>영어</th><th>한국어</th><th>예문</th></tr></thead>
+      <tbody>
+        <tr><td>enthusiastic</td><td>열정적인</td><td>not very enthusiastic</td></tr>
+        <tr><td>dungeon</td><td>지하 감옥</td><td>darkest dungeon</td></tr>
+        <tr><td>disguise</td><td>변장</td><td>escape in disguise</td></tr>
+        <tr><td>trapdoor</td><td>뚜껑문</td><td>burst through the trapdoor</td></tr>
+        <tr><td>gratitude</td><td>감사</td><td>felt gratitude</td></tr>
+        <tr><td>banquet</td><td>연회</td><td>held a banquet</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-title" style="margin-top:48px;"><div class="section-num">3</div>아이와 대화해보세요 · Discussion</div>
+  <div class="content-box">
+    <ul class="disc-list">
+      <li class="disc-item"><div class="disc-num">1</div><div class="disc-text">두꺼비의 가장 큰 문제는 무엇이었나요?</div></li>
+      <li class="disc-item"><div class="disc-num">2</div><div class="disc-text">오소리는 왜 두꺼비가 연설을 못 하게 했을까요?</div></li>
+      <li class="disc-item"><div class="disc-num">3</div><div class="disc-text">두더지가 눈물을 흘린 이유는 무엇이었나요?</div></li>
+      <li class="disc-item"><div class="disc-num">4</div><div class="disc-text">여러분에게 집처럼 느껴지는 곳은 어디인가요?</div></li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <div class="report-title">다 읽었나요? 🎉</div>
+    <div class="report-sub">영어로 독후감을 써보아요!</div>
+    <a href="book-report.html" class="report-btn">✍️ 독후감 쓰기</a><br>
+    <a href="wind-in-the-willows.html" class="ch1-link">← Chapter 1로 돌아가기</a>
+  </div>
+</div>
+
+<audio id="audioEl" preload="none"></audio>
+
+<script>
+var CDN='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/library/wind_ch2_12/';
+var PARAS=[
+  {part:'Ch.2 — The Open Road · 열린 길',en:'One bright morning, Toad came waddling up to Rat\'s house, looking very excited. Ratty! I\'ve had the most wonderful idea. We must travel — you, me, and Mole. I have a fine gypsy caravan all ready. We\'ll live on the road and see the whole country!',ko:'어느 화창한 아침, 두꺼비가 잔뜩 흥분한 얼굴로 뒤뚱뒤뚱 물쥐 집으로 왔어요. 물쥐야! 정말 멋진 생각이 떠올랐어. 우리 여행을 가야 해 — 너, 나, 그리고 두더지. 멋진 집시 마차도 다 준비해뒀어. 길 위에서 살면서 온 나라를 구경하는 거야!',label:'Paragraph 1'},
+  {en:'Rat was not very enthusiastic. He loved his river and did not want to leave it. But Mole was enchanted by the idea. His eyes shone with excitement. So they set off together — Toad leading the way, as always.',ko:'물쥐는 별로 내키지 않았어요. 강을 사랑해서 떠나고 싶지 않았거든요. 하지만 두더지는 그 생각에 완전히 빠져들었어요. 눈이 설렘으로 반짝였어요. 그래서 셋이 함께 출발했어요 — 언제나처럼 두꺼비가 앞장서서.',label:'Paragraph 2'},
+  {en:'The caravan was beautiful — yellow with green wheels, with little shelves and pots and pans inside. They traveled happily through the countryside, sleeping under the stars. Then one afternoon, a motorcar came roaring past and knocked the caravan into a ditch.',ko:'마차는 정말 예뻤어요 — 노란 몸통에 초록 바퀴, 안에는 작은 선반과 냄비들이 있었어요. 시골길을 행복하게 달리며 별 아래서 잠을 잤어요. 그러다 어느 오후, 자동차 한 대가 굉음을 내며 지나쳐 마차를 도랑에 처박았어요.',label:'Paragraph 3'},
+  {en:'Rat was furious. Mole was shaken. But Toad sat in the middle of the road, staring after the motorcar with shining eyes. Poop-poop! he whispered. That is the only way to travel. Oh, what a magnificent machine! From that moment, Toad forgot all about caravans. He was in love with motorcars.',ko:'물쥐는 격분했어요. 두더지는 충격을 받았어요. 하지만 두꺼비는 길 한가운데 앉아 빛나는 눈으로 자동차를 바라봤어요. 뿌뿌! 속삭였어요. 여행은 저렇게 해야 해. 오, 정말 멋진 기계야! 그 순간부터 두꺼비는 마차 따위는 까맣게 잊었어요. 자동차와 사랑에 빠진 거예요.',label:'Paragraph 4'},
+  {part:'Ch.3 — The Wild Wood · 야생 숲',en:'As autumn came, Mole grew curious about the Wild Wood — the dark forest across the river. Rat had warned him: The Wild Wood is not safe. Weasels and foxes live there. Do not go alone. But one winter afternoon, while Rat was napping, Mole went in alone.',ko:'가을이 오자, 두더지는 강 건너편 야생 숲이 궁금해졌어요. 물쥐가 경고했었어요. 야생 숲은 위험해. 족제비와 여우가 살아. 혼자 가지 마. 하지만 어느 겨울 오후, 물쥐가 낮잠을 자는 동안 두더지는 혼자 들어갔어요.',label:'Paragraph 5'},
+  {en:'At first the wood was beautiful — tall trees, soft snow, silence. But then Mole began to see faces — pale, evil faces peering from holes and behind trees. Whistling began. Then pattering footsteps. Mole ran — but did not know which way to go. He hid inside a hollow tree, shaking with cold and fear.',ko:'처음에는 숲이 아름다웠어요 — 키 큰 나무들, 부드러운 눈, 고요함. 하지만 곧 두더지는 얼굴들을 보기 시작했어요 — 구멍과 나무 뒤에서 훔쳐보는 창백하고 사악한 얼굴들. 휘파람 소리가 났어요. 그리고 바닥을 두드리는 발소리. 두더지는 달렸어요 — 하지만 어느 방향인지 몰랐어요. 속이 빈 나무 안에 숨어 추위와 공포로 떨었어요.',label:'Paragraph 6'},
+  {en:'Rat woke up and noticed Mole was gone. He saw the muddy footprints leading to the woods. Without hesitation, he took his pistols and went in after his friend. He found Mole at last, cold and terrified. Dear Mole, he said gently. Why did you not wait for me?',ko:'물쥐가 잠에서 깨어나 두더지가 없어진 걸 알았어요. 숲으로 이어지는 진흙 발자국을 봤어요. 망설임 없이 권총을 챙겨 친구를 찾으러 들어갔어요. 마침내 차갑고 겁에 질린 두더지를 찾았어요. 두더지야, 부드럽게 말했어요. 왜 나를 기다리지 않았어?',label:'Paragraph 7'},
+  {part:'Ch.4 — Mr. Badger · 오소리 씨',en:'Rat and Mole were lost in the snow. The wood grew darker and colder. Then Mole stumbled and looked down — he saw a small door-scraper under the snow, and then a mat, and then a door. It was Mr. Badger\'s house — right in the heart of the Wild Wood.',ko:'물쥐와 두더지는 눈 속에서 길을 잃었어요. 숲은 점점 어둡고 차가워졌어요. 그때 두더지가 발을 헛딛고 내려다봤어요 — 눈 아래 작은 신발 닦개가 보였고, 그 다음엔 매트, 그리고 문이 있었어요. 오소리 씨의 집이었어요 — 바로 야생 숲 한복판에.',label:'Paragraph 8'},
+  {en:'Badger opened the door in his dressing gown, looking grumpy. But when he saw who it was, his face softened. Come in, come in, he said warmly. Inside was a long hall, a blazing fire, and the smell of food. They were safe.',ko:'오소리가 잠옷 차림으로 문을 열었는데 짜증스러운 표정이었어요. 하지만 누군지 보더니 얼굴이 부드러워졌어요. 어서 와, 어서 들어와, 따뜻하게 말했어요. 안에는 긴 복도, 활활 타는 벽난로, 그리고 음식 냄새가 있었어요. 이제 안전했어요.',label:'Paragraph 9'},
+  {en:'Badger was old and gruff, but deeply kind. He fed them a huge supper and let them sleep. The next morning, Otter arrived too — worried about his friends. They all sat around the fire and Badger told them about the underground tunnels beneath the Wild Wood — tunnels so old no one remembered who built them.',ko:'오소리는 늙고 퉁명스러웠지만 깊이 친절했어요. 푸짐한 저녁을 먹이고 재워줬어요. 다음 날 아침, 수달도 왔어요 — 친구들 걱정에. 모두 벽난로 주위에 앉자 오소리가 야생 숲 아래 지하 통로에 대해 이야기했어요 — 누가 만들었는지 아무도 기억 못 할 정도로 오래된 통로들.',label:'Paragraph 10'},
+  {part:'Ch.5 — Dulce Domum · 집으로',en:'One cold December evening, Rat and Mole were walking home through the fields. Suddenly Mole stopped. His nose was trembling. He smelled something — something familiar, something that pulled at his heart. Rat — stop. My old home. It\'s here. Somewhere near here.',ko:'어느 차가운 12월 저녁, 물쥐와 두더지가 들판을 걸어 집으로 가고 있었어요. 갑자기 두더지가 멈췄어요. 코가 떨렸어요. 무언가 냄새를 맡았어요 — 익숙한, 마음을 잡아당기는 무언가. 물쥐 — 잠깐. 내 옛날 집. 여기야. 어딘가 근처야.',label:'Paragraph 11'},
+  {en:'Rat was cold and wanted to get home. He kept walking. Mole followed — but tears ran silently down his face. When Rat finally noticed, he stopped immediately. Mole, I\'m so sorry. We\'re going back. Right now. They found Mole\'s little underground home — dusty and dark and cold. But it was his.',ko:'물쥐는 춥고 집에 가고 싶었어요. 계속 걸었어요. 두더지는 따라갔어요 — 하지만 눈물이 조용히 뺨을 타고 흘렀어요. 물쥐가 마침내 알아채고 즉시 멈췄어요. 두더지야, 미안해. 돌아가자. 지금 당장. 두더지의 작은 땅속 집을 찾았어요 — 먼지투성이에 어둡고 차가웠어요. 하지만 두더지의 것이었어요.',label:'Paragraph 12'},
+  {en:'They lit a fire and found some food in the cupboard — sardines, crackers, and jam. Field mice arrived, singing Christmas carols in the snow outside. Mole invited them in and gave them hot soup. That night, sitting by the fire with Rat, Mole felt truly happy.',ko:'불을 피우고 찬장에서 음식을 찾았어요 — 정어리, 크래커, 잼. 들쥐들이 밖에서 눈 속에 크리스마스 캐럴을 부르며 왔어요. 두더지가 안으로 초대해 뜨거운 수프를 줬어요. 그날 밤, 물쥐와 함께 벽난로 옆에 앉아 두더지는 진정으로 행복했어요.',label:'Paragraph 13'},
+  {part:'Ch.6 — Mr. Toad · 두꺼비 씨',en:'Meanwhile, Toad had gone completely mad about motorcars. He crashed car after car — seven accidents in a row — and had been to hospital three times. Rat and Mole and Badger held a meeting. Something had to be done.',ko:'한편, 두꺼비는 자동차에 완전히 미쳐버렸어요. 차를 계속 박살냈어요 — 연속 일곱 번 사고 — 그리고 병원에 세 번이나 갔어요. 물쥐, 두더지, 오소리가 회의를 열었어요. 뭔가 조치를 해야 했어요.',label:'Paragraph 14'},
+  {en:'The three friends marched to Toad Hall and sat Toad down. Badger spoke firmly: Toad, you are a disgrace to your family and friends. You must give up motorcars. Now. Toad cried and promised — and then immediately broke his promise. He snuck out, stole a beautiful car, and drove off at full speed.',ko:'세 친구가 두꺼비 저택으로 가서 두꺼비를 앉혔어요. 오소리가 단호하게 말했어요. 두꺼비, 넌 가족과 친구들의 수치야. 자동차를 포기해야 해. 지금 당장. 두꺼비는 울며 약속했어요 — 그리고 즉시 약속을 어겼어요. 몰래 빠져나가 멋진 차를 훔쳐 전속력으로 달아났어요.',label:'Paragraph 15'},
+  {part:'Ch.7 — The Piper at the Gates of Dawn · 새벽의 문지기',en:'Otter\'s young son, Portly, had gone missing. Everyone was worried. Rat and Mole set out in the boat at night to search for him. As dawn approached, they heard music — strange, beautiful, hypnotic music drifting across the water. They followed it, trembling with a feeling they could not name.',ko:'수달의 어린 아들 포틀리가 사라졌어요. 모두 걱정했어요. 물쥐와 두더지가 밤에 배를 타고 찾으러 나섰어요. 새벽이 가까워지자, 음악이 들렸어요 — 물 위로 흘러오는 이상하고, 아름답고, 최면 같은 음악. 이름 붙일 수 없는 감정에 떨면서 따라갔어요.',label:'Paragraph 16'},
+  {en:'They came to a small island. And there, sleeping between the hooves of a great god Pan, was little Portly — safe and peaceful. The music faded. The feeling faded. By the time they rowed home, they had both forgotten what they had seen. But they both felt, for the rest of their lives, a strange and unexplained happiness when they heard the wind in the willows.',ko:'작은 섬에 도착했어요. 그리고 거기, 위대한 신 판의 발굽 사이에서 어린 포틀리가 — 안전하고 평화롭게 자고 있었어요. 음악이 사라졌어요. 그 느낌도 사라졌어요. 집으로 노를 저어 돌아올 때쯤엔 둘 다 본 것을 잊었어요. 하지만 두 동물은 평생, 버드나무 사이 바람 소리를 들을 때마다 이상하고 설명할 수 없는 행복을 느꼈어요.',label:'Paragraph 17'},
+  {part:'Ch.8~10 — Toad\'s Adventures · 두꺼비의 모험',en:'Toad was caught by the police and put on trial for stealing the motorcar. The judge was very stern. This is a serious crime, he said. Toad was sentenced to twenty years in the darkest dungeon in the castle. As the door clanged shut, even Toad — for a moment — felt the weight of what he had done.',ko:'두꺼비는 경찰에 잡혀 자동차 절도 혐의로 재판을 받았어요. 판사는 매우 엄했어요. 이건 심각한 범죄야, 말했어요. 두꺼비는 성의 가장 어두운 지하 감옥에 20년형을 선고받았어요. 문이 쾅 닫히자, 두꺼비도 — 잠시 — 자신이 한 일의 무게를 느꼈어요.',label:'Paragraph 18'},
+  {en:'But the jailer\'s daughter felt sorry for Toad. She brought him food and books and was kind to him. I have a plan, she whispered one day. My aunt does the washing here. You can escape dressed as a washerwoman. Toad dressed in an apron and bonnet and walked right out of the castle.',ko:'하지만 간수의 딸이 두꺼비를 가엾이 여겼어요. 음식과 책을 가져다주며 친절하게 대해줬어요. 계획이 있어요, 어느 날 속삭였어요. 이모가 여기서 빨래를 해요. 빨래부인으로 변장해서 탈출할 수 있어요. 두꺼비는 앞치마와 보닛을 쓰고 당당히 성 밖으로 걸어 나왔어요.',label:'Paragraph 19'},
+  {en:'Toad ran to the railway station and bought a ticket. On the train he met a real washerwoman who quickly saw through his disguise. But she was kind and helped him escape the conductor. Toad leapt from the train and tumbled down a bank — right into a canal.',ko:'두꺼비는 기차역으로 달려가 표를 샀어요. 기차에서 진짜 빨래부인을 만났는데, 그녀는 금세 변장을 알아챘어요. 하지만 친절해서 검표원을 피해 도망치도록 도와줬어요. 두꺼비는 기차에서 뛰어내려 비탈을 굴러 — 운하에 빠졌어요.',label:'Paragraph 20'},
+  {en:'A barge woman pulled Toad out of the canal. He told her he was a washerwoman. She asked him to do some washing — and when she saw how terrible he was at it, she laughed at him. Furious, Toad pushed her off the barge, stole her horse, and galloped away.',ko:'바지선 여인이 두꺼비를 운하에서 건져줬어요. 두꺼비는 빨래부인이라고 했어요. 빨래를 해달라고 했는데, 두꺼비가 얼마나 형편없는지 보고 비웃었어요. 화가 난 두꺼비는 여인을 배 밖으로 밀어뜨리고, 말을 훔쳐 달아났어요.',label:'Paragraph 21'},
+  {en:'Meanwhile, Rat was feeling restless. A swallow told him about the warm south — golden beaches and orange groves. A wayfaring rat told him tales of adventure on the seas. Rat nearly packed his bags and left. But Mole held his hand and talked to him — gently, quietly — until the feeling passed.',ko:'한편, 물쥐는 안절부절했어요. 제비가 따뜻한 남쪽 이야기를 해줬어요 — 황금빛 해변과 오렌지 숲. 나그네 쥐가 바다의 모험 이야기를 해줬어요. 물쥐는 거의 짐을 챙겨 떠날 뻔했어요. 하지만 두더지가 손을 잡고 이야기했어요 — 부드럽게, 조용히 — 그 느낌이 사라질 때까지.',label:'Paragraph 22'},
+  {en:'Toad sold the horse and came to a town. There, in front of a pub, was a motorcar — unattended. He tried to walk past. He tried very hard. But his legs simply walked him over to the car, his hands found the wheel, and before he knew it — he was driving again.',ko:'두꺼비는 말을 팔고 마을에 왔어요. 거기, 술집 앞에 자동차가 있었어요 — 사람이 없었어요. 지나치려고 했어요. 정말 열심히. 하지만 다리가 저절로 차 쪽으로 걸어갔고, 손이 핸들을 잡았고, 정신 차려보니 — 또 운전하고 있었어요.',label:'Paragraph 23'},
+  {en:'The police chased him again. Toad drove faster and faster — until the car plunged into a pond. He swam out, hid in the reeds, and made his way back toward home. Finally, wet and tired and humbled, he arrived at the riverbank — only to find terrible news.',ko:'경찰이 또 쫓아왔어요. 두꺼비는 점점 더 빨리 달렸어요 — 자동차가 연못에 빠질 때까지. 헤엄쳐 나와 갈대 숲에 숨은 다음 집 쪽으로 돌아왔어요. 마침내, 젖고 지치고 겸손해진 상태로 강가에 도착했어요 — 그런데 끔찍한 소식을 들었어요.',label:'Paragraph 24'},
+  {part:'Ch.11~12 — The Return · 귀환',en:'Rat met Toad at the river with grim news. Toad Hall has been taken. While you were in prison, the weasels and ferrets moved in. They\'re living there now, and they\'ve put guards everywhere. Toad\'s face went pale. His home — his beautiful Toad Hall — was occupied by enemies.',ko:'물쥐가 강가에서 두꺼비를 만나 험악한 소식을 전했어요. 두꺼비 저택을 빼앗겼어. 네가 감옥에 있는 동안 족제비와 담비들이 들어왔어. 지금 거기 살면서 사방에 파수꾼을 세워뒀어. 두꺼비 얼굴이 창백해졌어요. 집이 — 아름다운 두꺼비 저택이 — 적들에게 점령당했어요.',label:'Paragraph 25'},
+  {en:'Toad was furious. He rushed to Toad Hall alone and demanded to be let in. The weasels jeered and threw things at him from the windows. Toad retreated, soaking wet, his pride in tatters. For the first time, he admitted: I need help.',ko:'두꺼비는 격분했어요. 혼자 두꺼비 저택으로 달려가 들여보내 달라고 요구했어요. 족제비들이 비웃으며 창문에서 물건을 던졌어요. 두꺼비는 흠뻑 젖은 채로, 자존심이 산산조각 난 채로 물러났어요. 처음으로 인정했어요. 도움이 필요해.',label:'Paragraph 26'},
+  {en:'Badger revealed the secret — a hidden underground passage that led directly into Toad Hall. It had been built centuries ago. Only Badger knew of it. Tomorrow night, said Badger, the weasels are having a banquet. Every single guard will be inside, celebrating. That\'s when we go.',ko:'오소리가 비밀을 밝혔어요 — 두꺼비 저택 안으로 직접 이어지는 숨겨진 지하 통로. 수백 년 전에 만들어진 것이었어요. 오소리만 알고 있었어요. 내일 밤, 오소리가 말했어요, 족제비들이 연회를 열어. 모든 파수꾼이 안에서 축제를 벌일 거야. 그때 들어가는 거야.',label:'Paragraph 27'},
+  {en:'The four friends armed themselves and crept through the underground passage. It was dark and narrow and dripping with water. Toad complained — Badger silenced him with a look. At the end of the passage was a trapdoor. They could hear the weasels singing and laughing above.',ko:'네 친구가 무장하고 지하 통로를 기어갔어요. 어둡고 좁고 물이 뚝뚝 떨어졌어요. 두꺼비가 불평했어요 — 오소리가 눈빛 하나로 조용히 시켰어요. 통로 끝에 뚜껑문이 있었어요. 위에서 족제비들이 노래하고 웃는 소리가 들렸어요.',label:'Paragraph 28'},
+  {en:'NOW! cried Badger. They burst up through the trapdoor, shouting and waving their weapons. The weasels panicked completely — they ran in every direction, jumping out of windows and fleeing through doors. Within minutes, Toad Hall was empty of enemies.',ko:'지금! 오소리가 외쳤어요. 뚜껑문을 박차고 올라와 소리를 지르며 무기를 휘둘렀어요. 족제비들이 완전히 공황상태에 빠졌어요 — 사방으로 달렸고, 창문으로 뛰어내리고 문으로 도망쳤어요. 몇 분 만에 두꺼비 저택에서 적들이 사라졌어요.',label:'Paragraph 29'},
+  {en:'Toad stood in the middle of his great hall, looking around with shining eyes. His home. His beautiful Toad Hall. His again. He wanted to make a grand speech, but Badger stopped him. No speeches, Toad. Just be grateful. For once, Toad listened.',ko:'두꺼비가 저택 홀 한가운데 서서 빛나는 눈으로 둘러봤어요. 집. 아름다운 두꺼비 저택. 다시 자신의 것. 거창한 연설을 하고 싶었지만 오소리가 막았어요. 연설은 없어, 두꺼비. 그냥 감사해. 두꺼비는 이번엔 들었어요.',label:'Paragraph 30'},
+  {en:'That evening they held a banquet — just the four of them. No grand speeches. No boasting. Just food and fire and friendship. Toad looked at his three friends — Rat, Mole, Badger — and felt something he had never felt quite so strongly before. Gratitude. And love.',ko:'그날 저녁 네 명이서 연회를 열었어요. 거창한 연설도 없었어요. 자랑도 없었어요. 그냥 음식과 불과 우정. 두꺼비는 세 친구를 바라봤어요 — 물쥐, 두더지, 오소리 — 그리고 전에 이렇게 강하게 느껴본 적 없는 무언가를 느꼈어요. 감사. 그리고 사랑.',label:'Paragraph 31'},
+  {en:'And after that — though Toad still loved motorcars, and still talked too much — he never stole another car. He was kinder. He listened more. He was, in the end, a changed Toad. The river still flowed. The wind still blew through the willows. And all was well.',ko:'그 이후로 — 두꺼비는 여전히 자동차를 사랑하고, 여전히 말이 너무 많았지만 — 차를 훔친 적이 없었어요. 더 친절해졌어요. 더 잘 들었어요. 결국, 두꺼비는 변했어요. 강은 여전히 흘렀어요. 바람은 여전히 버드나무 사이를 불었어요. 모든 게 좋았어요.',label:'Paragraph 32'},
+];
+var parasEl=document.getElementById('paras'),currentPart=null;
+PARAS.forEach(function(p,i){
+  if(p.part&&p.part!==currentPart){currentPart=p.part;var h=document.createElement('div');h.className='section-title';h.style.marginTop=i===0?'0':'36px';h.innerHTML='<div class="section-num">'+(i+1)+'</div>'+p.part;parasEl.appendChild(h);}
+  var block=document.createElement('div');block.className='para-block';block.id='para_'+i;
+  block.innerHTML='<div class="para-inner"><div class="para-en"><div class="lang-badge en"><div class="lang-dot en"></div>English</div><div class="para-text-en">'+p.en+'</div><button class="para-play-btn" onclick="loadPara('+i+',true)">▶ 이 단락 듣기</button></div><div class="para-ko"><div class="lang-badge ko"><div class="lang-dot ko"></div>한국어</div><div class="para-text-ko">'+p.ko+'</div></div></div>';
+  parasEl.appendChild(block);
+});
+var waveEl=document.getElementById('waveform');
+var WH=[4,8,14,20,28,36,28,20,14,8,4,10,18,26,34,26,18,10,16,24,32,24,16,8,12,20,28,20,12,6];
+for(var b=0;b<30;b++){var bar=document.createElement('div');bar.className='wb';bar.style.setProperty('--h',WH[b%WH.length]+'px');bar.style.setProperty('--d',(0.4+Math.random()*0.6).toFixed(2)+'s');bar.style.setProperty('--dl',(b*0.022).toFixed(3)+'s');waveEl.appendChild(bar);}
+var audio=document.getElementById('audioEl'),curIdx=0,isPlaying=false,rafId=null;
+function fmt(s){if(!s||isNaN(s))return'--:--';return Math.floor(s/60)+':'+(Math.floor(s%60)<10?'0':'')+Math.floor(s%60);}
+function loadPara(idx,play){curIdx=idx;var p=PARAS[idx];document.querySelectorAll('.para-block').forEach(function(el,i){el.classList.remove('active','done');if(i<idx)el.classList.add('done');if(i===idx){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'center'});}});document.getElementById('piTitle').textContent=p.label+' / '+PARAS.length;audio.src=CDN+'p'+String(idx+1).padStart(2,'0')+'.mp3';audio.load();document.getElementById('progressFill').style.width='0%';document.getElementById('timeTxt').textContent='0:00 / --:--';audio.addEventListener('loadedmetadata',function onM(){document.getElementById('timeTxt').textContent='0:00 / '+fmt(audio.duration);audio.removeEventListener('loadedmetadata',onM);});if(play!==false)audio.play().then(function(){setPlaying(true);}).catch(function(){});}
+function togglePlay(){if(!audio.src||audio.src===window.location.href){loadPara(0,true);return;}if(audio.paused){audio.play().then(function(){setPlaying(true);}).catch(function(){});}else{audio.pause();setPlaying(false);}}
+function setPlaying(p){isPlaying=p;var btn=document.getElementById('playBtn');btn.textContent=p?'⏸':'▶';btn.classList.toggle('playing',p);waveEl.classList.toggle('on',p);if(p){cancelAnimationFrame(rafId);rafId=requestAnimationFrame(uiLoop);}else cancelAnimationFrame(rafId);}
+function uiLoop(){if(!audio||audio.paused)return;var t=audio.currentTime,dur=audio.duration||1;document.getElementById('progressFill').style.width=Math.min(t/dur*100,100)+'%';document.getElementById('timeTxt').textContent=fmt(t)+' / '+fmt(dur);rafId=requestAnimationFrame(uiLoop);}
+function seekAudio(e){var rect=e.currentTarget.getBoundingClientRect();if(audio.duration)audio.currentTime=(e.clientX-rect.left)/rect.width*audio.duration;}
+function prevPara(){if(curIdx>0)loadPara(curIdx-1,isPlaying);}
+function nextPara(){if(curIdx<PARAS.length-1)loadPara(curIdx+1,isPlaying);}
+audio.addEventListener('ended',function(){if(curIdx<PARAS.length-1){setTimeout(function(){loadPara(curIdx+1,true);},600);}else{setPlaying(false);document.getElementById('piTitle').textContent='완료! 독후감을 써봐요!';}});
+audio.addEventListener('pause',function(){if(isPlaying)setPlaying(false);});
+var pc=document.getElementById('particles');
+for(var i=0;i<24;i++){var p=document.createElement('div');p.className='pt';p.style.background='#22c55e';p.style.setProperty('--d',(8+Math.random()*12).toFixed(1)+'s');p.style.setProperty('--dl',(Math.random()*10).toFixed(1)+'s');p.style.setProperty('--o',(0.15+Math.random()*0.3).toFixed(2));p.style.setProperty('--dx',(Math.random()*80-40).toFixed(0)+'px');p.style.left=(Math.random()*100)+'%';var sz=(1+Math.random()*2).toFixed(1)+'px';p.style.width=p.style.height=sz;pc.appendChild(p);}
+</script>
+</body>
+</html>

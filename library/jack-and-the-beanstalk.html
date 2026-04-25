@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jack and the Beanstalk — CEC Library</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Sans+KR:wght@400;500;700&family=Nunito:wght@400;600;700;800;900&display=swap');
+:root{--bg:#041204;--panel:rgba(10,10,15,0.88);--border:rgba(34,197,94,0.25);--gold:#c9a84c;--gold2:#e8c96a;--gold-pale:rgba(201,168,76,0.08);--cream:#f5ead8;--mid:#6a9a60;--light:#3a6a30;--acc:#22c55e;--acc-pale:rgba(34,197,94,0.10);--acc-b:rgba(34,197,94,0.25);--acc-dark:#15803d;}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);color:var(--cream);min-height:100vh;}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.pt{position:absolute;border-radius:50%;opacity:0;animation:ptf var(--d) var(--dl) infinite ease-in-out;}
+@keyframes ptf{0%{opacity:0;transform:translateY(100vh);}10%{opacity:var(--o);}90%{opacity:var(--o);}100%{opacity:0;transform:translateY(-20px) translateX(var(--dx));}}
+.back-btn{position:fixed;top:20px;left:20px;z-index:100;padding:8px 16px;border-radius:99px;background:rgba(0,0,0,0.9);backdrop-filter:blur(12px);border:1px solid var(--border);color:var(--gold);font-size:.78rem;font-weight:700;text-decoration:none;}
+.book-header{position:relative;z-index:10;padding:72px 24px 48px;text-align:center;max-width:800px;margin:0 auto;}
+.bh-eyebrow{font-size:.7rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--acc);margin-bottom:12px;}
+.bh-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--cream);margin-bottom:8px;line-height:1.1;}
+.bh-title em{font-style:italic;color:#86efac;}
+.bh-author{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--mid);margin-bottom:20px;}
+.bh-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.bhtag{padding:5px 13px;border-radius:99px;font-size:.72rem;font-weight:700;background:var(--acc-pale);border:1px solid var(--acc-b);color:#86efac;}
+.player-bar{position:sticky;top:0;z-index:50;background:rgba(0,0,0,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 20px;}
+.player-inner{max-width:800px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+.play-btn{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all .25s;background:linear-gradient(135deg,var(--acc),var(--acc-dark));color:white;box-shadow:0 4px 16px var(--acc-pale);}
+.play-btn.playing{background:linear-gradient(135deg,#ef4444,#b91c1c);}
+.player-info{flex:1;min-width:0;}
+.pi-title{font-size:.8rem;font-weight:700;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pi-sub{font-size:.7rem;color:var(--mid);margin-top:2px;}
+.progress-wrap{flex:1;display:flex;flex-direction:column;gap:4px;}
+.progress-track{height:4px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;cursor:pointer;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--gold));border-radius:99px;width:0%;transition:width .3s linear;}
+.time-txt{font-size:.68rem;color:var(--mid);text-align:right;}
+.nav-btns{display:flex;gap:6px;}
+.nav-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.waveform{height:36px;display:flex;align-items:center;gap:0;padding:0 8px;}
+.wb{width:2.5px;border-radius:99px;background:var(--acc-pale);margin:0 1px;height:3px;transform-origin:center;}
+.waveform.on .wb{background:var(--acc);animation:wbA var(--d) ease-in-out infinite alternate;animation-delay:var(--dl);}
+@keyframes wbA{0%{height:3px;}100%{height:var(--h);}}
+.main{position:relative;z-index:10;max-width:800px;margin:0 auto;padding:32px 24px 80px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:#86efac;margin:36px 0 20px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.section-num{width:28px;height:28px;border-radius:50%;background:var(--acc-pale);border:1px solid var(--acc-b);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--acc);flex-shrink:0;}
+.para-block{margin-bottom:4px;border-radius:16px;overflow:hidden;transition:all .35s;border:1.5px solid transparent;}
+.para-block.active{border-color:var(--acc-b);box-shadow:0 0 0 4px var(--acc-pale);}
+.para-block.done{opacity:.6;}
+.para-inner{display:grid;grid-template-columns:1fr 1fr;}
+@media(max-width:600px){.para-inner{grid-template-columns:1fr;}}
+.para-en{padding:18px 20px;background:rgba(0,0,0,0.4);border-right:1px solid var(--border);}
+.para-ko{padding:18px 20px;background:rgba(0,0,0,0.25);}
+.para-block.active .para-en{background:var(--acc-pale);}
+.para-block.active .para-ko{background:rgba(0,0,0,0.15);}
+.lang-badge{font-size:.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.lang-badge.en{color:var(--acc);}.lang-badge.ko{color:var(--gold);}
+.lang-dot{width:6px;height:6px;border-radius:50%;}.lang-dot.en{background:var(--acc);}.lang-dot.ko{background:var(--gold);}
+.para-text-en{font-size:.95rem;line-height:1.85;color:var(--cream);font-family:'Nunito',sans-serif;}
+.para-text-ko{font-size:.88rem;line-height:1.9;color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.para-block.active .para-text-en{color:white;}.para-block.active .para-text-ko{color:#d4c8a0;}
+.para-play-btn{display:flex;align-items:center;gap:6px;margin-top:10px;padding:5px 12px;border-radius:99px;background:var(--acc-pale);border:none;color:var(--acc);font-size:.7rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.content-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px 24px;}
+.vocab-table{width:100%;border-collapse:collapse;}
+.vocab-table th{font-size:.7rem;font-weight:800;color:var(--gold);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.vocab-table td{padding:10px 14px;font-size:.85rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+.vocab-table td:first-child{font-family:'Nunito',sans-serif;font-weight:700;color:var(--cream);}
+.vocab-table td:nth-child(2){color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.vocab-table td:last-child{color:var(--light);font-size:.78rem;font-family:'Noto Sans KR',sans-serif;}
+.disc-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.disc-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--acc-pale);border:1px solid var(--acc-b);border-radius:12px;}
+.disc-num{width:26px;height:26px;border-radius:50%;background:var(--acc);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;flex-shrink:0;}
+.disc-text{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;line-height:1.6;padding-top:3px;}
+.report-section{margin-top:48px;padding:28px;background:var(--gold-pale);border:1px solid rgba(201,168,76,0.25);border-radius:20px;text-align:center;}
+.report-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--cream);margin-bottom:8px;}
+.report-sub{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;margin-bottom:18px;}
+.report-btn{display:inline-block;padding:13px 28px;border-radius:14px;background:linear-gradient(135deg,var(--gold),#a07828);color:#1a110a;font-size:.9rem;font-weight:800;text-decoration:none;font-family:'Nunito',sans-serif;}
+</style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+<a href="index.html" class="back-btn">← Library</a>
+<div class="book-header">
+  <div class="bh-eyebrow">CEC Library · Grade 3</div>
+  <div class="bh-title"><em>Jack and the Beanstalk</em></div>
+  <div class="bh-author">English Fairy Tale</div>
+  <div class="bh-tags">
+    <span class="bhtag">🌱 G3</span>
+    <span class="bhtag">🎧 MP3 13단락</span>
+    <span class="bhtag">🇰🇷 한국어 번역</span>
+    <span class="bhtag">✍️ 독후감 쓰기</span>
+  </div>
+</div>
+<div class="player-bar">
+  <div class="player-inner">
+    <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+    <div class="waveform" id="waveform"></div>
+    <div class="player-info">
+      <div class="pi-title" id="piTitle">재생 버튼을 눌러 시작하세요</div>
+      <div class="pi-sub">Jack and the Beanstalk · 13 paragraphs</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track" onclick="seekAudio(event)"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="time-txt" id="timeTxt">0:00 / --:--</div>
+    </div>
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="prevPara()">⏮</button>
+      <button class="nav-btn" onclick="nextPara()">⏭</button>
+    </div>
+  </div>
+</div>
+<div class="main">
+  <div id="paras"></div>
+  <div class="section-title" style="margin-top:48px;"><div class="section-num">2</div>오늘의 단어 · Key Vocabulary</div>
+  <div class="content-box">
+    <table class="vocab-table">
+      <thead><tr><th>영어</th><th>한국어</th><th>예문</th></tr></thead>
+      <tbody><tr><td>cottage</td><td>작은 오두막</td><td>lived in a cottage</td></tr><tr><td>enormous</td><td>거대한</td><td>enormous castle</td></tr><tr><td>command</td><td>명령하다</td><td>commanded the hen</td></tr><tr><td>scramble</td><td>재빨리 움직이다</td><td>scrambled down</td></tr><tr><td>tremendous</td><td>엄청난</td><td>tremendous BOOM</td></tr><tr><td>comfortably</td><td>편안하게</td><td>lived comfortably</td></tr></tbody>
+    </table>
+  </div>
+  <div class="section-title" style="margin-top:48px;"><div class="section-num">3</div>아이와 대화해보세요 · Discussion</div>
+  <div class="content-box"><ul class="disc-list"><li class="disc-item"><div class="disc-num">1</div><div class="disc-text">잭이 콩과 젖소를 바꾼 것은 좋은 생각이었나요?</div></li><li class="disc-item"><div class="disc-num">2</div><div class="disc-text">거인의 아내는 왜 잭을 도와줬을까요?</div></li><li class="disc-item"><div class="disc-num">3</div><div class="disc-text">잭이 세 번째 올라간 이유는 뭐였을까요?</div></li><li class="disc-item"><div class="disc-num">4</div><div class="disc-text">황금 알 낳는 암탉과 마법 하프 중 뭘 먼저 가져왔을 것 같아요?</div></li></ul></div>
+  <div class="report-section">
+    <div class="report-title">다 읽었나요? 🎉</div>
+    <div class="report-sub">영어로 독후감을 써보아요!</div>
+    <a href="book-report.html" class="report-btn">✍️ 독후감 쓰기</a>
+  </div>
+</div>
+<audio id="audioEl" preload="none"></audio>
+<script>
+var CDN='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/library/jack_beanstalk/';
+var PARAS=[{"part": "Part 1 — The Magic Beans · 마법의 콩", "en": "Jack lived with his mother in a small cottage. They were very poor. Their only cow was named Milky-White, and one morning she stopped giving milk. We must sell her, said Jack's mother sadly. Take her to market and get the best price you can.", "ko": "잭은 작은 오두막에서 엄마와 살았어요. 매우 가난했어요. 젖소 한 마리가 전부였는데 이름은 밀키-화이트였어요. 어느 날 아침 젖소가 우유를 주지 않았어요. 팔아야겠어, 엄마가 슬프게 말했어요. 시장에 가져가서 최대한 좋은 값에 팔아.", "label": "Paragraph 1"}, {"en": "On the way to market, Jack met a strange old man. Good morning, said the man. Where are you going with that fine cow? To market, said Jack. I will make you a deal, said the man. He opened his hand and showed Jack five colored beans. These are magic beans. Give me the cow and they are yours.", "ko": "시장 가는 길에 잭은 이상한 노인을 만났어요. 안녕하세요, 노인이 말했어요. 그 멋진 젖소를 어디 데려가는 거야? 시장에요, 잭이 말했어요. 거래하자, 노인이 말했어요. 손을 펼치자 색깔 있는 콩 다섯 개가 보였어요. 이건 마법의 콩이야. 젖소를 주면 네 거야.", "label": "Paragraph 2"}, {"en": "Jack thought five magic beans were an excellent trade. He came home very pleased. But his mother did not agree. You foolish boy! she cried. You sold our only cow for BEANS? She threw the beans out the window and sent Jack to bed without supper.", "ko": "잭은 마법의 콩 다섯 개가 훌륭한 거래라고 생각했어요. 아주 기뻐하며 집에 돌아왔어요. 하지만 엄마는 동의하지 않았어요. 이 바보 같은 녀석! 외쳤어요. 우리 유일한 젖소를 콩하고 바꿨다고? 콩을 창밖으로 던지고 잭을 저녁도 굶기고 재웠어요.", "label": "Paragraph 3"}, {"en": "Next morning, Jack woke up and his room was dark. He looked out the window — and gasped. An enormous beanstalk had grown overnight, reaching up and up through the clouds and out of sight. Jack ran outside and started climbing.", "ko": "다음 날 아침, 잭이 깨어나자 방이 어두웠어요. 창밖을 봤어요 — 그리고 숨이 멎었어요. 거대한 콩나무가 밤새 자라나 구름 위로, 위로, 안 보일 때까지 뻗어 있었어요. 잭은 밖으로 달려나가 오르기 시작했어요.", "label": "Paragraph 4"}, {"part": "Part 2 — The Giant's Castle · 거인의 성", "en": "Jack climbed and climbed until he reached the top of the clouds. There he found a long, wide road leading to an enormous castle. A giant woman stood at the door. Please, said Jack, could I have some breakfast? I am very hungry. The woman was kind. Come in quickly, she whispered. But if my husband comes home, he will eat you.", "ko": "잭은 구름 꼭대기에 닿을 때까지 올랐어요. 거기 거대한 성으로 이어지는 길고 넓은 길이 있었어요. 거대한 여인이 문 앞에 서 있었어요. 저기요, 잭이 말했어요, 아침을 좀 주실 수 있을까요? 너무 배가 고파요. 여인은 친절했어요. 빨리 들어와, 속삭였어요. 하지만 남편이 오면 너를 잡아먹을 거야.", "label": "Paragraph 5"}, {"en": "Jack had barely finished eating when the floor shook. BOOM. BOOM. BOOM. FEE-FI-FO-FUM! I SMELL THE BLOOD OF AN ENGLISHMAN! BE HE ALIVE OR BE HE DEAD, I WILL GRIND HIS BONES TO MAKE MY BREAD! Jack hid inside the oven. The giant sniffed around — but smelled only his supper cooking.", "ko": "잭이 겨우 다 먹었을 때 바닥이 흔들렸어요. 쿵. 쿵. 쿵. 피-파-포-펌! 영국 인간 냄새가 나! 살아있든 죽었든, 뼈를 갈아 빵을 만들겠어! 잭은 오븐 안에 숨었어요. 거인이 킁킁 냄새를 맡았어요 — 하지만 저녁 요리 냄새만 났어요.", "label": "Paragraph 6"}, {"en": "After supper, the giant called for his hen. It was a magical hen that laid golden eggs. LAY! commanded the giant. And the hen laid a golden egg. The giant soon fell asleep, snoring like thunder. Jack crept out, grabbed the hen, and ran for the beanstalk.", "ko": "저녁 식사 후, 거인이 암탉을 불렀어요. 황금 알을 낳는 마법의 암탉이었어요. 낳아! 거인이 명령했어요. 그리고 암탉이 황금 알을 낳았어요. 거인은 곧 천둥 같이 코를 골며 잠들었어요. 잭이 살금살금 나와 암탉을 들고 콩나무를 향해 달렸어요.", "label": "Paragraph 7"}, {"part": "Part 3 — The Harp · 하프", "en": "Jack brought the hen home. Now they had golden eggs every day and were no longer poor. But Jack was curious. He climbed the beanstalk again. This time he sneaked into the castle without asking the giant's wife for help. He hid in a large copper pot.", "ko": "잭은 암탉을 집에 데려왔어요. 이제 매일 황금 알이 생겨 더 이상 가난하지 않았어요. 하지만 잭은 호기심이 생겼어요. 다시 콩나무를 올랐어요. 이번에는 거인의 아내에게 도움을 구하지 않고 몰래 성 안으로 들어갔어요. 큰 구리 냄비 안에 숨었어요.", "label": "Paragraph 8"}, {"en": "BOOM. BOOM. BOOM. FEE-FI-FO-FUM! The giant came in, sniffed, and looked around. But he found nothing. After supper, he called for his magic harp. PLAY! he commanded. The harp played beautiful music all by itself. The giant fell asleep. Jack grabbed the harp and ran.", "ko": "쿵. 쿵. 쿵. 피-파-포-펌! 거인이 들어와 킁킁 냄새를 맡고 둘러봤어요. 하지만 아무것도 찾지 못했어요. 저녁 식사 후, 마법 하프를 불렀어요. 연주해! 명령했어요. 하프가 혼자서 아름다운 음악을 연주했어요. 거인이 잠들었어요. 잭이 하프를 들고 달렸어요.", "label": "Paragraph 9"}, {"en": "But the harp cried out — MASTER! MASTER! The giant woke with a roar and chased Jack. Jack reached the beanstalk and scrambled down, faster than he had ever moved. The giant followed, the whole stalk shaking and swaying with his weight.", "ko": "하지만 하프가 외쳤어요 — 주인님! 주인님! 거인이 으르렁대며 깨어나 잭을 쫓았어요. 잭이 콩나무에 닿아 내려가기 시작했어요. 그 어느 때보다 빠르게. 거인도 따라왔어요. 그 무게에 콩나무 전체가 흔들리고 휘청였어요.", "label": "Paragraph 10"}, {"part": "Part 4 — The End of the Giant · 거인의 최후", "en": "Mother! Bring the axe! BRING THE AXE! Jack shouted as he got close to the ground. His mother ran out with the axe. Jack jumped the last few feet, grabbed the axe, and began chopping at the beanstalk with all his might.", "ko": "엄마! 도끼 가져와! 도끼! 잭이 땅 가까이 오며 소리쳤어요. 엄마가 도끼를 들고 달려 나왔어요. 잭은 남은 몇 피트를 뛰어내려 도끼를 들고 있는 힘껏 콩나무를 찍기 시작했어요.", "label": "Paragraph 11"}, {"en": "CRACK! The beanstalk swayed. CRACK! It leaned. CRACK! Down it came — and the giant came crashing down with it, hitting the ground with a tremendous BOOM. He never got up again. Jack and his mother were safe at last.", "ko": "우지직! 콩나무가 흔들렸어요. 우지직! 기울었어요. 우지직! 쓰러졌어요 — 거인도 함께 추락해 엄청난 쿵 소리를 내며 땅에 부딪혔어요. 다시는 일어나지 않았어요. 잭과 엄마는 드디어 안전했어요.", "label": "Paragraph 12"}, {"en": "With the magic hen and the golden harp, Jack and his mother lived happily and comfortably for the rest of their lives. Jack grew up to be a brave and clever young man. And the place where the beanstalk had stood became the most beautiful garden in the land.", "ko": "마법의 암탉과 황금 하프로 잭과 엄마는 평생 행복하고 편안하게 살았어요. 잭은 용감하고 영리한 청년으로 자랐어요. 그리고 콩나무가 있던 자리는 온 땅에서 가장 아름다운 정원이 됐어요.", "label": "Paragraph 13"}];
+
+var parasEl=document.getElementById('paras'),currentPart=null;
+PARAS.forEach(function(p,i){
+  if(p.part&&p.part!==currentPart){currentPart=p.part;var h=document.createElement('div');h.className='section-title';h.style.marginTop=i===0?'0':'36px';h.innerHTML='<div class="section-num">'+(i+1)+'</div>'+p.part;parasEl.appendChild(h);}
+  var block=document.createElement('div');block.className='para-block';block.id='para_'+i;
+  block.innerHTML='<div class="para-inner"><div class="para-en"><div class="lang-badge en"><div class="lang-dot en"></div>English</div><div class="para-text-en">'+p.en+'</div><button class="para-play-btn" onclick="loadPara('+i+',true)">▶ 이 단락 듣기</button></div><div class="para-ko"><div class="lang-badge ko"><div class="lang-dot ko"></div>한국어</div><div class="para-text-ko">'+p.ko+'</div></div></div>';
+  parasEl.appendChild(block);
+});
+var waveEl=document.getElementById('waveform');
+var WH=[4,8,14,20,28,36,28,20,14,8,4,10,18,26,34,26,18,10,16,24,32,24,16,8,12,20,28,20,12,6];
+for(var b=0;b<30;b++){var bar=document.createElement('div');bar.className='wb';bar.style.setProperty('--h',WH[b%WH.length]+'px');bar.style.setProperty('--d',(0.4+Math.random()*0.6).toFixed(2)+'s');bar.style.setProperty('--dl',(b*0.022).toFixed(3)+'s');waveEl.appendChild(bar);}
+var audio=document.getElementById('audioEl'),curIdx=0,isPlaying=false,rafId=null;
+function fmt(s){if(!s||isNaN(s))return'--:--';return Math.floor(s/60)+':'+(Math.floor(s%60)<10?'0':'')+Math.floor(s%60);}
+function loadPara(idx,play){curIdx=idx;var p=PARAS[idx];document.querySelectorAll('.para-block').forEach(function(el,i){el.classList.remove('active','done');if(i<idx)el.classList.add('done');if(i===idx){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'center'});}});document.getElementById('piTitle').textContent=p.label+' / '+PARAS.length;audio.src=CDN+'p'+String(idx+1).padStart(2,'0')+'.mp3';audio.load();document.getElementById('progressFill').style.width='0%';document.getElementById('timeTxt').textContent='0:00 / --:--';audio.addEventListener('loadedmetadata',function onM(){document.getElementById('timeTxt').textContent='0:00 / '+fmt(audio.duration);audio.removeEventListener('loadedmetadata',onM);});if(play!==false)audio.play().then(function(){setPlaying(true);}).catch(function(){});}
+function togglePlay(){if(!audio.src||audio.src===window.location.href){loadPara(0,true);return;}if(audio.paused){audio.play().then(function(){setPlaying(true);}).catch(function(){});}else{audio.pause();setPlaying(false);}}
+function setPlaying(p){isPlaying=p;var btn=document.getElementById('playBtn');btn.textContent=p?'⏸':'▶';btn.classList.toggle('playing',p);waveEl.classList.toggle('on',p);if(p){cancelAnimationFrame(rafId);rafId=requestAnimationFrame(uiLoop);}else cancelAnimationFrame(rafId);}
+function uiLoop(){if(!audio||audio.paused)return;var t=audio.currentTime,dur=audio.duration||1;document.getElementById('progressFill').style.width=Math.min(t/dur*100,100)+'%';document.getElementById('timeTxt').textContent=fmt(t)+' / '+fmt(dur);rafId=requestAnimationFrame(uiLoop);}
+function seekAudio(e){var rect=e.currentTarget.getBoundingClientRect();if(audio.duration)audio.currentTime=(e.clientX-rect.left)/rect.width*audio.duration;}
+function prevPara(){if(curIdx>0)loadPara(curIdx-1,isPlaying);}
+function nextPara(){if(curIdx<PARAS.length-1)loadPara(curIdx+1,isPlaying);}
+audio.addEventListener('ended',function(){if(curIdx<PARAS.length-1){setTimeout(function(){loadPara(curIdx+1,true);},600);}else{setPlaying(false);document.getElementById('piTitle').textContent='완료! 독후감을 써봐요!';}});
+audio.addEventListener('pause',function(){if(isPlaying)setPlaying(false);});
+var pc=document.getElementById('particles');
+for(var i=0;i<24;i++){var p=document.createElement('div');p.className='pt';p.style.background="#22c55e";p.style.setProperty('--d',(8+Math.random()*12).toFixed(1)+'s');p.style.setProperty('--dl',(Math.random()*10).toFixed(1)+'s');p.style.setProperty('--o',(0.15+Math.random()*0.3).toFixed(2));p.style.setProperty('--dx',(Math.random()*80-40).toFixed(0)+'px');p.style.left=(Math.random()*100)+'%';var sz=(1+Math.random()*2).toFixed(1)+'px';p.style.width=p.style.height=sz;pc.appendChild(p);}
+
+</script>
+</body>
+</html>
