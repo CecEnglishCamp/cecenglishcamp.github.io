@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEC Library — 원본 오디오북 & PDF</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Noto+Sans+KR:wght@400;500;700&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+  --bg: #0c1008;
+  --panel: rgba(16,24,12,0.80);
+  --border: rgba(120,180,80,0.15);
+  --green: #7ab84a;
+  --green2: #a8d870;
+  --green-dim: rgba(122,184,74,0.10);
+  --amber: #d4a843;
+  --cream: #e8e0cc;
+  --mid: #6a7a5a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito','Noto Sans KR',sans-serif; background: var(--bg); color: var(--cream); min-height: 100vh; }
+
+#bgCanvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; opacity:.35; }
+.bg-vig { position:fixed; inset:0; z-index:1; background:radial-gradient(ellipse at center,transparent 20%,rgba(8,13,5,.85) 100%); pointer-events:none; }
+
+.page { position:relative; z-index:10; max-width:1100px; margin:0 auto; padding:48px 24px 80px; }
+
+/* HERO */
+.hero { text-align:center; margin-bottom:56px; }
+.hero-badge { font-size:.72rem; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--green); margin-bottom:12px; }
+.hero-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:3.2rem; font-weight:700; color:var(--cream);
+  line-height:1.1; margin-bottom:10px;
+}
+.hero-title em { font-style:italic; color:var(--green2); }
+.hero-sub { font-size:1rem; color:var(--mid); font-family:'Noto Sans KR',sans-serif; line-height:1.8; margin-bottom:20px; }
+.hero-tags { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+.htag { padding:4px 13px; border-radius:99px; font-size:.72rem; font-weight:700; background:var(--green-dim); color:var(--green2); border:1px solid rgba(122,184,74,.2); }
+
+/* GRADE SECTION */
+.grade-section { margin-bottom:44px; }
+.grade-hdr { display:flex; align-items:center; gap:14px; margin-bottom:18px; padding-bottom:10px; border-bottom:1px solid var(--border); }
+.grade-badge { padding:4px 12px; border-radius:8px; font-size:.72rem; font-weight:800; letter-spacing:1px; text-transform:uppercase; }
+.grade-badge.g3 { background:rgba(100,180,255,.1); color:#64b4ff; border:1px solid rgba(100,180,255,.2); }
+.grade-badge.g4 { background:var(--green-dim); color:var(--green2); border:1px solid rgba(122,184,74,.2); }
+.grade-badge.g5 { background:rgba(212,168,67,.1); color:var(--amber); border:1px solid rgba(212,168,67,.2); }
+.grade-badge.g6 { background:rgba(220,100,180,.1); color:#dc64b4; border:1px solid rgba(220,100,180,.2); }
+.grade-title { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:600; color:var(--cream); }
+
+/* BOOK GRID */
+.book-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; }
+
+.book-card {
+  background:var(--panel); border:1px solid var(--border);
+  border-radius:16px; padding:22px 18px;
+  text-decoration:none; display:flex; flex-direction:column; gap:8px;
+  backdrop-filter:blur(14px);
+  transition:all .25s;
+  position:relative; overflow:hidden;
+}
+.book-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+  opacity:0; transition:opacity .3s;
+}
+.book-card:hover { transform:translateY(-4px); box-shadow:0 12px 36px rgba(0,0,0,.4); border-color:rgba(122,184,74,.35); }
+.book-card:hover::before { opacity:1; }
+.book-card.no-link { opacity:.55; cursor:default; }
+.book-card.no-link:hover { transform:none; box-shadow:none; }
+
+.bc-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:4px; }
+.bc-tag { font-size:.65rem; font-weight:700; padding:2px 8px; border-radius:99px; }
+.bc-tag.mp3 { background:rgba(122,184,74,.12); color:var(--green2); border:1px solid rgba(122,184,74,.2); }
+.bc-tag.pdf { background:rgba(212,168,67,.12); color:var(--amber); border:1px solid rgba(212,168,67,.2); }
+.bc-tag.soon { background:rgba(255,255,255,.05); color:var(--mid); border:1px solid rgba(255,255,255,.08); }
+.bc-tag.camp { background:rgba(100,180,255,.1); color:#64b4ff; border:1px solid rgba(100,180,255,.15); }
+
+.bc-title { font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-weight:700; color:var(--cream); line-height:1.3; }
+.bc-author { font-size:.75rem; color:var(--mid); font-style:italic; font-family:'Cormorant Garamond',serif; }
+.bc-desc { font-size:.78rem; color:var(--mid); line-height:1.6; font-family:'Noto Sans KR',sans-serif; margin-top:2px; }
+.bc-arrow { margin-top:auto; font-size:.8rem; font-weight:700; color:var(--green); padding-top:8px; }
+.book-card.no-link .bc-arrow { color:var(--mid); }
+
+/* BACK */
+.back-btn { display:inline-flex; align-items:center; gap:6px; color:var(--green); font-size:.82rem; font-weight:700; text-decoration:none; opacity:.7; transition:opacity .2s; margin-bottom:32px; }
+.back-btn:hover { opacity:1; }
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<div class="bg-vig"></div>
+<div class="page">
+
+  <a href="/" class="back-btn">← CEC English Camp</a>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">CEC English Camp</div>
+    <div class="hero-title">📚 <em>Classic Library</em></div>
+    <div class="hero-sub">원어민 목소리로 듣는 영어 고전 · 엄마와 아이가 함께 읽는 원본 오디오북</div>
+    <div class="hero-tags">
+      <span class="htag">🎧 원본 오디오북</span>
+      <span class="htag">📄 PDF 원문</span>
+      <span class="htag">👩‍👦 엄마+아이 함께</span>
+      <span class="htag">무료 이용</span>
+    </div>
+  </div>
+
+  <!-- GRADE 4 -->
+  <div class="grade-section">
+    <div class="grade-hdr">
+      <span class="grade-badge g4">Grade 4</span>
+      <span class="grade-title">초등 4학년 추천 도서</span>
+    </div>
+    <div class="book-grid">
+      <a href="wind-in-the-willows.html" class="book-card">
+        <div class="bc-tags">
+          <span class="bc-tag mp3">🎧 MP3 12챕터</span>
+          <span class="bc-tag pdf">📄 PDF</span>
+          <span class="bc-tag camp">Camp A G4</span>
+        </div>
+        <div class="bc-title">The Wind in the Willows</div>
+        <div class="bc-author">Kenneth Grahame · 1908</div>
+        <div class="bc-desc">두더지, 물쥐, 두꺼비의 우정과 모험. 자연과 우정의 소중함을 담은 영국 고전.</div>
+        <div class="bc-arrow">지금 읽기 →</div>
+      </a>
+      <div class="book-card no-link">
+        <div class="bc-tags">
+          <span class="bc-tag mp3">🎧 MP3 27챕터</span>
+          <span class="bc-tag soon">PDF 준비중</span>
+        </div>
+        <div class="bc-title">The Secret Garden</div>
+        <div class="bc-author">Frances H. Burnett · 1911</div>
+        <div class="bc-desc">버려진 비밀 정원을 발견한 소녀 메리의 성장 이야기.</div>
+        <div class="bc-arrow">준비 중 ...</div>
+      </div>
+      <div class="book-card no-link">
+        <div class="bc-tags">
+          <span class="bc-tag mp3">🎧 MP3 24챕터</span>
+          <span class="bc-tag pdf">📄 PDF</span>
+        </div>
+        <div class="bc-title">The Wizard of Oz</div>
+        <div class="bc-author">L. Frank Baum · 1900</div>
+        <div class="bc-desc">도로시와 오즈의 마법사. 용기·지혜·마음을 찾아가는 여정.</div>
+        <div class="bc-arrow">준비 중 ...</div>
+      </div>
+      <div class="book-card no-link">
+        <div class="bc-tags">
+          <span class="bc-tag mp3">🎧 MP3 35챕터</span>
+          <span class="bc-tag soon">PDF 준비중</span>
+        </div>
+        <div class="bc-title">The Adventures of Tom Sawyer</div>
+        <div class="bc-author">Mark Twain · 1876</div>
+        <div class="bc-desc">장난꾸러기 톰 소여의 유쾌한 모험 이야기.</div>
+        <div class="bc-arrow">준비 중 ...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADE 3 -->
+  <div class="grade-section">
+    <div class="grade-hdr">
+      <span class="grade-badge g3">Grade 3</span>
+      <span class="grade-title">초등 3학년 추천 도서</span>
+    </div>
+    <div class="book-grid">
+      <div class="book-card no-link">
+        <div class="bc-tags">
+          <span class="bc-tag mp3">🎧 MP3</span>
+          <span class="bc-tag pdf">📄 PDF</span>
+          <span class="bc-tag camp">Camp A G3</span>
+        </div>
+        <div class="bc-title">The Tale of Peter Rabbit</div>
+        <div class="bc-author">Beatrix Potter · 1902</div>
+        <div class="bc-desc">피터 래빗의 모험. CEC Camp A G3 교재와 함께!</div>
+        <div class="bc-arrow">준비 중 ...</div>
+      </div>
+      <div class="book-card no-link">
+        <div class="bc-tags">
+          <span class="bc-tag mp3">🎧 MP3</span>
+          <span class="bc-tag soon">PDF 준비중</span>
+        </div>
+        <div class="bc-title">Little Red Riding Hood</div>
+        <div class="bc-author">Brothers Grimm</div>
+        <div class="bc-desc">빨간 모자 소녀의 이야기. 쉽고 재미있는 입문 동화.</div>
+        <div class="bc-arrow">준비 중 ...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADE 5 -->
+  <div class="grade-section">
+    <div class="grade-hdr">
+      <span class="grade-badge g5">Grade 5</span>
+      <span class="grade-title">초등 5학년 추천 도서</span>
+    </div>
+    <div class="book-grid">
+      <div class="book-card no-link">
+        <div class="bc-tags">
+          <span class="bc-tag mp3">🎧 MP3 34챕터</span>
+          <span class="bc-tag pdf">📄 PDF</span>
+          <span class="bc-tag camp">Camp A G5</span>
+        </div>
+        <div class="bc-title">Treasure Island</div>
+        <div class="bc-author">Robert L. Stevenson · 1883</div>
+        <div class="bc-desc">보물 지도를 손에 넣은 짐 호킨스의 해적 모험.</div>
+        <div class="bc-arrow">준비 중 ...</div>
+      </div>
+      <div class="book-card no-link">
+        <div class="bc-tags">
+          <span class="bc-tag mp3">🎧 MP3 37챕터</span>
+          <span class="bc-tag soon">PDF 준비중</span>
+        </div>
+        <div class="bc-title">Anne of Green Gables</div>
+        <div class="bc-author">L. M. Montgomery · 1908</div>
+        <div class="bc-desc">빨간 머리 앤의 성장 이야기. 따뜻하고 유머 넘치는 고전.</div>
+        <div class="bc-arrow">준비 중 ...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRADE 6 -->
+  <div class="grade-section">
+    <div class="grade-hdr">
+      <span class="grade-badge g6">Grade 6</span>
+      <span class="grade-title">초등 6학년 추천 도서</span>
+    </div>
+    <div class="book-grid">
+      <div class="book-card no-link">
+        <div class="bc-tags">
+          <span class="bc-tag mp3">🎧 MP3 19챕터</span>
+          <span class="bc-tag pdf">📄 PDF</span>
+          <span class="bc-tag camp">Camp A G6</span>
+        </div>
+        <div class="bc-title">A Little Princess</div>
+        <div class="bc-author">Frances H. Burnett · 1905</div>
+        <div class="bc-desc">소공녀 세라의 우아함과 용기. CEC Camp A G6 교재와 함께!</div>
+        <div class="bc-arrow">준비 중 ...</div>
+      </div>
+      <div class="book-card no-link">
+        <div class="bc-tags">
+          <span class="bc-tag mp3">🎧 MP3 11챕터</span>
+          <span class="bc-tag soon">PDF 준비중</span>
+          <span class="bc-tag camp">Camp A G6</span>
+        </div>
+        <div class="bc-title">The Jungle Book</div>
+        <div class="bc-author">Rudyard Kipling · 1894</div>
+        <div class="bc-desc">늑대에 길러진 모글리의 정글 모험. 자연과 생존의 이야기.</div>
+        <div class="bc-arrow">준비 중 ...</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var canvas = document.getElementById("bgCanvas");
+var ctx = canvas.getContext("2d");
+var W, H, t = 0;
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize(); window.addEventListener("resize", resize);
+var WAVES = [
+  {a:0.04,f:0.008,s:0.008,p:0,  al:0.45,lw:2},
+  {a:0.06,f:0.005,s:0.006,p:2.3,al:0.28,lw:3},
+  {a:0.03,f:0.013,s:0.012,p:4.1,al:0.38,lw:1.5},
+  {a:0.05,f:0.006,s:0.007,p:1.5,al:0.18,lw:2.5},
+];
+var ROWS = [0.15,0.35,0.58,0.80];
+function draw() {
+  ctx.clearRect(0,0,W,H);
+  var g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,"#0c1008");g.addColorStop(.5,"#0f1a0a");g.addColorStop(1,"#0c1008");
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  t+=0.18;
+  WAVES.forEach(function(w,i){
+    var ry=ROWS[i]*H;ctx.beginPath();ctx.moveTo(0,ry);
+    for(var x=0;x<=W;x+=3)
+      ctx.lineTo(x,ry+Math.sin(x*w.f+t*w.s+w.p)*H*w.a*0.3+Math.sin(x*w.f*1.8+t*w.s*0.7+w.p+1.5)*H*w.a*0.12);
+    var lg=ctx.createLinearGradient(0,0,W,0);
+    lg.addColorStop(0,"rgba(122,184,74,0)");lg.addColorStop(.2,"rgba(122,184,74,"+w.al+")");
+    lg.addColorStop(.8,"rgba(122,184,74,"+w.al+")");lg.addColorStop(1,"rgba(122,184,74,0)");
+    ctx.strokeStyle=lg;ctx.lineWidth=w.lw;ctx.stroke();
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>
