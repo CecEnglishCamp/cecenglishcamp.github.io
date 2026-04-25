@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Jungle Book — CEC Library</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Sans+KR:wght@400;500;700&family=Nunito:wght@400;600;700;800;900&display=swap');
+:root{--bg:#081208;--panel:rgba(8,18,8,0.88);--border:rgba(100,210,100,0.15);--gold:#c9a84c;--gold2:#e8c96a;--gold-pale:rgba(201,168,76,0.08);--cream:#f5ead8;--mid:#7a9a70;--light:#4a6a40;--acc:#22c55e;--acc-pale:rgba(34,197,94,0.10);--acc-b:rgba(34,197,94,0.25);}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);color:var(--cream);min-height:100vh;}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.pt{position:absolute;border-radius:50%;opacity:0;animation:ptf var(--d) var(--dl) infinite ease-in-out;}
+@keyframes ptf{0%{opacity:0;transform:translateY(100vh);}10%{opacity:var(--o);}90%{opacity:var(--o);}100%{opacity:0;transform:translateY(-20px) translateX(var(--dx));}}
+.back-btn{position:fixed;top:20px;left:20px;z-index:100;padding:8px 16px;border-radius:99px;background:rgba(0,0,0,0.9);backdrop-filter:blur(12px);border:1px solid var(--border);color:var(--gold);font-size:.78rem;font-weight:700;text-decoration:none;}
+.book-header{position:relative;z-index:10;padding:72px 24px 48px;text-align:center;max-width:800px;margin:0 auto;}
+.bh-eyebrow{font-size:.7rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--acc);margin-bottom:12px;}
+.bh-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--cream);margin-bottom:8px;line-height:1.1;}
+.bh-title em{font-style:italic;color:#86efac;}
+.bh-author{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--mid);margin-bottom:20px;}
+.bh-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.bhtag{padding:5px 13px;border-radius:99px;font-size:.72rem;font-weight:700;background:var(--acc-pale);border:1px solid var(--acc-b);color:#86efac;}
+.player-bar{position:sticky;top:0;z-index:50;background:rgba(0,0,0,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 20px;}
+.player-inner{max-width:800px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+.play-btn{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all .25s;background:linear-gradient(135deg,var(--acc),#15803d);color:white;box-shadow:0 4px 16px var(--acc-pale);}
+.play-btn.playing{background:linear-gradient(135deg,#ef4444,#b91c1c);}
+.player-info{flex:1;min-width:0;}
+.pi-title{font-size:.8rem;font-weight:700;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pi-sub{font-size:.7rem;color:var(--mid);margin-top:2px;}
+.progress-wrap{flex:1;display:flex;flex-direction:column;gap:4px;}
+.progress-track{height:4px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;cursor:pointer;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--gold));border-radius:99px;width:0%;transition:width .3s linear;}
+.time-txt{font-size:.68rem;color:var(--mid);text-align:right;}
+.nav-btns{display:flex;gap:6px;}
+.nav-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.waveform{height:36px;display:flex;align-items:center;gap:0;padding:0 8px;}
+.wb{width:2.5px;border-radius:99px;background:var(--acc-pale);margin:0 1px;height:3px;transform-origin:center;}
+.waveform.on .wb{background:var(--acc);animation:wbA var(--d) ease-in-out infinite alternate;animation-delay:var(--dl);}
+@keyframes wbA{0%{height:3px;}100%{height:var(--h);}}
+.main{position:relative;z-index:10;max-width:800px;margin:0 auto;padding:32px 24px 80px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:#86efac;margin:36px 0 20px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.section-num{width:28px;height:28px;border-radius:50%;background:var(--acc-pale);border:1px solid var(--acc-b);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--acc);flex-shrink:0;}
+.para-block{margin-bottom:4px;border-radius:16px;overflow:hidden;transition:all .35s;border:1.5px solid transparent;}
+.para-block.active{border-color:var(--acc-b);box-shadow:0 0 0 4px var(--acc-pale);}
+.para-block.done{opacity:.6;}
+.para-inner{display:grid;grid-template-columns:1fr 1fr;}
+@media(max-width:600px){.para-inner{grid-template-columns:1fr;}}
+.para-en{padding:18px 20px;background:rgba(0,0,0,0.4);border-right:1px solid var(--border);}
+.para-ko{padding:18px 20px;background:rgba(0,0,0,0.25);}
+.para-block.active .para-en{background:var(--acc-pale);}
+.para-block.active .para-ko{background:rgba(0,0,0,0.15);}
+.lang-badge{font-size:.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.lang-badge.en{color:var(--acc);}.lang-badge.ko{color:var(--gold);}
+.lang-dot{width:6px;height:6px;border-radius:50%;}.lang-dot.en{background:var(--acc);}.lang-dot.ko{background:var(--gold);}
+.para-text-en{font-size:.95rem;line-height:1.85;color:var(--cream);font-family:'Nunito',sans-serif;}
+.para-text-ko{font-size:.88rem;line-height:1.9;color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.para-block.active .para-text-en{color:white;}.para-block.active .para-text-ko{color:#d4c8a0;}
+.para-play-btn{display:flex;align-items:center;gap:6px;margin-top:10px;padding:5px 12px;border-radius:99px;background:var(--acc-pale);border:none;color:var(--acc);font-size:.7rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.content-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px 24px;}
+.vocab-table{width:100%;border-collapse:collapse;}
+.vocab-table th{font-size:.7rem;font-weight:800;color:var(--gold);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.vocab-table td{padding:10px 14px;font-size:.85rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+.vocab-table td:first-child{font-family:'Nunito',sans-serif;font-weight:700;color:var(--cream);}
+.vocab-table td:nth-child(2){color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.vocab-table td:last-child{color:var(--light);font-size:.78rem;font-family:'Noto Sans KR',sans-serif;}
+.disc-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.disc-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--acc-pale);border:1px solid var(--acc-b);border-radius:12px;}
+.disc-num{width:26px;height:26px;border-radius:50%;background:var(--acc);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;flex-shrink:0;}
+.disc-text{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;line-height:1.6;padding-top:3px;}
+.report-section{margin-top:48px;padding:28px;background:var(--gold-pale);border:1px solid rgba(201,168,76,0.25);border-radius:20px;text-align:center;}
+.report-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--cream);margin-bottom:8px;}
+.report-sub{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;margin-bottom:18px;}
+.report-btn{display:inline-block;padding:13px 28px;border-radius:14px;background:linear-gradient(135deg,var(--gold),#a07828);color:#1a110a;font-size:.9rem;font-weight:800;text-decoration:none;font-family:'Nunito',sans-serif;}
+</style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+<a href="index.html" class="back-btn">← Library</a>
+<div class="book-header">
+  <div class="bh-eyebrow">CEC Library · Grade 6</div>
+  <div class="bh-title"><em>The Jungle Book</em></div>
+  <div class="bh-author">Rudyard Kipling · 1894</div>
+  <div class="bh-tags"><span class="bhtag">🐯 G6</span><span class="bhtag">🎧 MP3 21단락</span><span class="bhtag">🇰🇷 한국어 번역</span><span class="bhtag">✍️ 독후감 쓰기</span></div>
+</div>
+<div class="player-bar">
+  <div class="player-inner">
+    <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+    <div class="waveform" id="waveform"></div>
+    <div class="player-info">
+      <div class="pi-title" id="piTitle">재생 버튼을 눌러 시작하세요</div>
+      <div class="pi-sub">The Jungle Book · 21 paragraphs</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track" onclick="seekAudio(event)"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="time-txt" id="timeTxt">0:00 / --:--</div>
+    </div>
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="prevPara()">⏮</button>
+      <button class="nav-btn" onclick="nextPara()">⏭</button>
+    </div>
+  </div>
+</div>
+<div class="main">
+  <div id="paras"></div>
+  <div class="section-title" style="margin-top:48px;"><div class="section-num">2</div>오늘의 단어 · Key Vocabulary</div>
+  <div class="content-box"><table class="vocab-table"><thead><tr><th>영어</th><th>한국어</th><th>예문</th></tr></thead><tbody>
+<tr><td>fierce</td><td>사나운</td><td>eyes fierce</td></tr>
+<tr><td>hypnotize</td><td>최면을 걸다</td><td>hypnotized all who watched</td></tr>
+<tr><td>ravine</td><td>협곡</td><td>deep ravine</td></tr>
+<tr><td>sorcerer</td><td>마법사</td><td>thought he was a sorcerer</td></tr>
+<tr><td>trophy</td><td>전리품</td><td>tiger's skin as a trophy</td></tr>
+<tr><td>embrace</td><td>안아주다</td><td>embraced him</td></tr>
+</tbody></table></div>
+  <div class="section-title" style="margin-top:48px;"><div class="section-num">3</div>아이와 대화해보세요 · Discussion</div>
+  <div class="content-box"><ul class="disc-list">
+<li class="disc-item"><div class="disc-num">1</div><div class="disc-text">모글리는 어느 세계에 속할까요 — 정글인가요, 인간 마을인가요?</div></li>
+<li class="disc-item"><div class="disc-num">2</div><div class="disc-text">발루와 바기라는 어떤 선생님이었나요?</div></li>
+<li class="disc-item"><div class="disc-num">3</div><div class="disc-text">마을 사람들이 모글리를 쫓아낸 건 왜일까요?</div></li>
+<li class="disc-item"><div class="disc-num">4</div><div class="disc-text">집이란 어디일까요?</div></li>
+</ul></div>
+  <div class="report-section">
+    <div class="report-title">다 읽었나요? 🎉</div>
+    <div class="report-sub">영어로 독후감을 써보아요!</div>
+    <a href="book-report.html" class="report-btn">✍️ 독후감 쓰기</a>
+  </div>
+</div>
+<audio id="audioEl" preload="none"></audio>
+<script>
+var CDN='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/library/jungle_book/';
+var PARAS=[{"part": "Ch.1-2 — Mowgli · 모글리", "en": "In the jungles of India, a tiger named Shere Khan was hunting. He was big, powerful, and cruel — the most feared animal in the jungle. One night he attacked a woodcutter's family in their hut. The woodcutter and his wife escaped — but they lost their baby in the darkness.", "ko": "인도의 정글에서 쉬어 칸이라는 호랑이가 사냥하고 있었어요. 크고, 강하고, 잔인한 — 정글에서 가장 두려운 동물이었어요. 어느 밤 오두막에 있는 나무꾼 가족을 공격했어요. 나무꾼과 아내는 도망쳤어요 — 하지만 어둠 속에서 아기를 잃어버렸어요.", "label": "Paragraph 1"}, {"en": "The baby crawled into the cave of a wolf family. Father Wolf and Mother Wolf were surprised to see a human child. A man-cub! said Father Wolf. Then Shere Khan's voice roared outside: Give me the man-cub. He is mine!", "ko": "아기가 늑대 가족의 굴로 기어 들어갔어요. 아빠 늑대와 엄마 늑대는 인간 아이를 보고 깜짝 놀랐어요. 인간 아이잖아! 아빠 늑대가 말했어요. 그때 밖에서 쉬어 칸의 목소리가 울렸어요. 인간 아이를 내놔. 내 거야!", "label": "Paragraph 2"}, {"en": "Mother Wolf stood over the baby, her eyes fierce. He came to us, she said firmly. He is ours now. We will call him Mowgli. Shere Khan growled and threatened — but he could not fit in the cave. That night, Mowgli became a wolf cub.", "ko": "엄마 늑대가 아기 위에 서서 눈을 부릅뜨고 말했어요. 아이가 우리에게 왔어, 단호하게 말했어요. 이제 우리 아이야. 모글리라고 부르자. 쉬어 칸이 으르렁대며 위협했어요 — 하지만 굴 안으로는 들어올 수 없었어요. 그날 밤, 모글리는 늑대 새끼가 됐어요.", "label": "Paragraph 3"}, {"en": "Mowgli grew up with the wolf pack. He learned to run, to hunt, to swim, and to climb. He learned the Law of the Jungle — the rules that kept all animals safe and fair. The strength of the wolf is the pack, said old Akela, the pack leader. And the strength of the pack is the wolf.", "ko": "모글리는 늑대 무리와 함께 자랐어요. 달리고, 사냥하고, 수영하고, 오르는 법을 배웠어요. 정글의 법칙을 배웠어요 — 모든 동물을 안전하고 공평하게 지키는 규칙들. 늑대의 힘은 무리에 있어, 무리의 우두머리 늙은 아켈라가 말했어요. 그리고 무리의 힘은 늑대에 있어.", "label": "Paragraph 4"}, {"en": "Mowgli had two great teachers. Baloo the bear taught him the jungle laws and languages. Bagheera the black panther taught him to be clever and fast. They were strict — but they loved him like family.", "ko": "모글리에게는 훌륭한 선생님 두 명이 있었어요. 곰 발루는 정글의 법칙과 언어들을 가르쳐줬어요. 검은 표범 바기라는 영리하고 빠르게 생각하는 법을 가르쳐줬어요. 엄했어요 — 하지만 가족처럼 사랑했어요.", "label": "Paragraph 5"}, {"part": "Ch.3-4 — Kaa and Fire · 카아와 불", "en": "The Bandar-log — the Monkey People — were the most dangerous animals in the jungle. Not because they were strong, but because they had no law and no leader. One day they kidnapped Mowgli and carried him to their ruined city. No animal came to help — except Baloo, Bagheera, and Kaa the python.", "ko": "반다르-로그 — 원숭이 무리 — 는 정글에서 가장 위험한 동물이었어요. 강해서가 아니라, 법도 지도자도 없었기 때문에. 어느 날 모글리를 납치해서 그들의 폐허 도시로 데려갔어요. 도우러 오는 동물이 없었어요 — 발루, 바기라, 그리고 비단뱀 카아만 빼고.", "label": "Paragraph 6"}, {"en": "Kaa was old and enormous and very, very wise. The monkeys feared him more than anything. He began to sway and weave — the famous dance that hypnotized all who watched. The monkeys froze. Mowgli escaped.", "ko": "카아는 늙고 거대하고 아주, 아주 지혜로웠어요. 원숭이들은 그 무엇보다 카아를 두려워했어요. 카아가 몸을 흔들고 구불거리기 시작했어요 — 보는 모든 것을 최면에 빠뜨리는 유명한 춤. 원숭이들이 얼어붙었어요. 모글리는 도망쳤어요.", "label": "Paragraph 7"}, {"en": "As Mowgli grew older, Shere Khan worked to turn the wolf pack against him. He is a man, Shere Khan whispered to the younger wolves. One day he will betray you. Mowgli felt the pack pulling away from him. Baloo told him: Get the Red Flower. Only that can save you.", "ko": "모글리가 자라면서 쉬어 칸이 늑대 무리를 모글리에게 등돌리게 만들었어요. 인간이야, 쉬어 칸이 어린 늑대들에게 속삭였어요. 언젠가 너희를 배신할 거야. 모글리는 무리가 자신에게서 멀어지는 걸 느꼈어요. 발루가 말했어요. 붉은 꽃을 가져와. 그것만이 너를 구할 수 있어.", "label": "Paragraph 8"}, {"en": "The Red Flower was fire — the one thing all jungle animals feared. Mowgli crept to a human village and stole a pot of burning coals. He carried the fire carefully back through the jungle. Its warmth and light felt strange and wonderful to him.", "ko": "붉은 꽃은 불이었어요 — 모든 정글 동물이 두려워하는 유일한 것. 모글리가 인간 마을로 몰래 가서 타오르는 석탄이 담긴 항아리를 가져왔어요. 불을 조심스럽게 정글로 다시 가져왔어요. 불의 따스함과 빛이 낯설면서도 경이롭게 느껴졌어요.", "label": "Paragraph 9"}, {"en": "At the next pack meeting, Shere Khan came demanding Mowgli. Mowgli stepped forward with his fire torch. He pressed it to Shere Khan's nose. The great tiger screamed and ran — and the whole jungle heard it.", "ko": "다음 무리 회의에서 쉬어 칸이 모글리를 요구하며 왔어요. 모글리가 불 횃불을 들고 앞으로 나섰어요. 쉬어 칸의 코에 갖다 댔어요. 위대한 호랑이가 비명을 지르며 달아났어요 — 정글 전체가 들었어요.", "label": "Paragraph 10"}, {"part": "Ch.5-7 — Leaving · 떠남", "en": "After that night, everything changed. The pack was safe — but Mowgli knew he no longer truly belonged. He was a man-cub. Not a wolf. Not quite human either. I will go to the man-village, he told Mother Wolf quietly. I must.", "ko": "그날 밤 이후, 모든 게 달라졌어요. 무리는 안전했어요 — 하지만 모글리는 더 이상 진정으로 속하지 않는다는 걸 알았어요. 인간 아이였어요. 늑대가 아니었어요. 완전한 인간도 아니었어요. 인간 마을로 갈 거야, 엄마 늑대에게 조용히 말했어요. 그래야 해.", "label": "Paragraph 11"}, {"en": "Village life was strange and difficult for Mowgli. He could not understand why humans wore so many clothes. He could not sit still in the houses. He missed the stars and the trees. But he learned. Slowly, patiently, he learned to be human.", "ko": "마을 생활은 모글리에게 낯설고 어려웠어요. 인간들이 왜 그렇게 많은 옷을 입는지 이해할 수 없었어요. 집 안에 가만히 앉아 있을 수 없었어요. 별과 나무가 그리웠어요. 하지만 배웠어요. 천천히, 인내심 있게, 인간이 되는 법을 배웠어요.", "label": "Paragraph 12"}, {"en": "He worked as a herd boy, keeping the village buffalo safe. One day he learned that Shere Khan was returning. The great tiger was old now and his fur was mangy — but he was still dangerous. Mowgli smiled. He had been waiting for this.", "ko": "마을 물소를 지키는 목동으로 일했어요. 어느 날 쉬어 칸이 돌아온다는 걸 알았어요. 위대한 호랑이는 이제 늙어 털이 거칠어졌어요 — 하지만 여전히 위험했어요. 모글리가 미소 지었어요. 기다리고 있었거든요.", "label": "Paragraph 13"}, {"en": "Mowgli drove the buffalo herd into a deep ravine. Shere Khan was resting there after a meal, slow and sleepy. The buffalo came from both sides — there was no escape. The great tiger who had hunted Mowgli since birth met his end in that ravine.", "ko": "모글리가 물소 떼를 깊은 계곡으로 몰았어요. 쉬어 칸이 식사 후 거기서 느릿느릿 졸고 있었어요. 물소들이 양쪽에서 왔어요 — 도망칠 곳이 없었어요. 태어날 때부터 모글리를 사냥했던 위대한 호랑이는 그 계곡에서 최후를 맞았어요.", "label": "Paragraph 14"}, {"en": "Mowgli took the tiger's skin as a trophy. But when he returned to the village, the people were afraid. They had heard he ran with wolves. They thought he was a sorcerer. They drove him away with stones and angry shouts.", "ko": "모글리는 전리품으로 호랑이 가죽을 가져갔어요. 하지만 마을로 돌아가자 사람들이 두려워했어요. 늑대와 함께 달린다는 이야기를 들었어요. 마법사라고 생각했어요. 돌을 던지고 성난 고함으로 모글리를 쫓아냈어요.", "label": "Paragraph 15"}, {"part": "Ch.8-10 — Between Worlds · 두 세계 사이", "en": "Mowgli stood alone at the edge of the jungle. The village was behind him. The dark trees were ahead. He belonged to neither world completely. But then he heard it — the night sounds of the jungle. His home.", "ko": "모글리는 정글 끝에 혼자 서 있었어요. 마을이 뒤에 있었어요. 어두운 나무들이 앞에 있었어요. 어느 세계에도 완전히 속하지 않았어요. 하지만 들렸어요 — 정글의 밤 소리들. 집.", "label": "Paragraph 16"}, {"en": "Mowgli walked back into the jungle. Baloo was there. Bagheera was there. The wolf pack howled in welcome. He was home. Not perfect. Not complete. But home.", "ko": "모글리는 정글로 다시 걸어 들어갔어요. 발루가 있었어요. 바기라가 있었어요. 늑대 무리가 환영하며 울부짖었어요. 집이었어요. 완벽하지는 않아요. 완전하지도 않아요. 하지만 집이었어요.", "label": "Paragraph 17"}, {"en": "Years passed. Mowgli grew tall and strong. He knew every corner of the jungle. Every animal knew his name. He spoke all the languages — wolf, bear, panther, snake, elephant. He moved between the worlds — not quite human, not quite animal. Something new.", "ko": "세월이 흘렀어요. 모글리는 크고 강하게 자랐어요. 정글의 모든 구석을 알았어요. 모든 동물이 이름을 알았어요. 모든 언어를 했어요 — 늑대, 곰, 표범, 뱀, 코끼리. 두 세계 사이를 오갔어요 — 완전한 인간도, 완전한 동물도 아닌. 새로운 무언가.", "label": "Paragraph 18"}, {"en": "One spring, Mowgli felt a strange pulling in his heart. Not toward the jungle. Toward the human world. Bagheera watched him with wise eyes. It is time, said the panther softly. The jungle will always be here. But your people are calling.", "ko": "어느 봄, 모글리는 마음속에서 이상한 이끌림을 느꼈어요. 정글을 향한 것이 아니었어요. 인간 세계를 향한 것이었어요. 바기라가 지혜로운 눈으로 바라봤어요. 때가 됐어, 표범이 부드럽게 말했어요. 정글은 항상 여기 있을 거야. 하지만 네 사람들이 부르고 있어.", "label": "Paragraph 19"}, {"en": "Mowgli said goodbye to the jungle for the last time. This time it was different — he was not a cub leaving home. He was a grown man, leaving by choice. He pressed his forehead to Mother Wolf's. She did not speak. She did not need to.", "ko": "모글리는 마지막으로 정글에 작별 인사를 했어요. 이번엔 달랐어요 — 집을 떠나는 새끼가 아니었어요. 선택으로 떠나는 어른이 된 남자였어요. 엄마 늑대의 이마에 이마를 댔어요. 엄마 늑대는 말을 하지 않았어요. 할 필요가 없었어요.", "label": "Paragraph 20"}, {"en": "Baloo embraced him with his great arms. Bagheera walked beside him to the edge of the jungle — and stopped. Go, man-cub, said Bagheera. Go and be great. Mowgli walked out of the jungle and did not look back. But he smiled. Because he knew the jungle would always be inside him.", "ko": "발루가 커다란 팔로 안아줬어요. 바기라가 정글 끝까지 나란히 걸었어요 — 그리고 멈췄어요. 가, 인간 아이야, 바기라가 말했어요. 가서 훌륭하게 살아. 모글리는 정글을 나서며 뒤를 돌아보지 않았어요. 하지만 미소 지었어요. 정글이 항상 자신 안에 있을 거라는 걸 알았으니까요.", "label": "Paragraph 21"}];
+var parasEl=document.getElementById('paras'),currentPart=null;
+PARAS.forEach(function(p,i){
+  if(p.part&&p.part!==currentPart){currentPart=p.part;var h=document.createElement('div');h.className='section-title';h.style.marginTop=i===0?'0':'36px';h.innerHTML='<div class="section-num">'+(i+1)+'</div>'+p.part;parasEl.appendChild(h);}
+  var block=document.createElement('div');block.className='para-block';block.id='para_'+i;
+  block.innerHTML='<div class="para-inner"><div class="para-en"><div class="lang-badge en"><div class="lang-dot en"></div>English</div><div class="para-text-en">'+p.en+'</div><button class="para-play-btn" onclick="loadPara('+i+',true)">▶ 이 단락 듣기</button></div><div class="para-ko"><div class="lang-badge ko"><div class="lang-dot ko"></div>한국어</div><div class="para-text-ko">'+p.ko+'</div></div></div>';
+  parasEl.appendChild(block);
+});
+var waveEl=document.getElementById('waveform');
+var WH=[4,8,14,20,28,36,28,20,14,8,4,10,18,26,34,26,18,10,16,24,32,24,16,8,12,20,28,20,12,6];
+for(var b=0;b<30;b++){var bar=document.createElement('div');bar.className='wb';bar.style.setProperty('--h',WH[b%WH.length]+'px');bar.style.setProperty('--d',(0.4+Math.random()*0.6).toFixed(2)+'s');bar.style.setProperty('--dl',(b*0.022).toFixed(3)+'s');waveEl.appendChild(bar);}
+var audio=document.getElementById('audioEl'),curIdx=0,isPlaying=false,rafId=null;
+function fmt(s){if(!s||isNaN(s))return'--:--';return Math.floor(s/60)+':'+(Math.floor(s%60)<10?'0':'')+Math.floor(s%60);}
+function loadPara(idx,play){curIdx=idx;var p=PARAS[idx];document.querySelectorAll('.para-block').forEach(function(el,i){el.classList.remove('active','done');if(i<idx)el.classList.add('done');if(i===idx){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'center'});}}); document.getElementById('piTitle').textContent=p.label+' / '+PARAS.length;audio.src=CDN+'p'+String(idx+1).padStart(2,'0')+'.mp3';audio.load();document.getElementById('progressFill').style.width='0%';document.getElementById('timeTxt').textContent='0:00 / --:--';audio.addEventListener('loadedmetadata',function onM(){document.getElementById('timeTxt').textContent='0:00 / '+fmt(audio.duration);audio.removeEventListener('loadedmetadata',onM);});if(play!==false)audio.play().then(function(){setPlaying(true);}).catch(function(){});}
+function togglePlay(){if(!audio.src||audio.src===window.location.href){loadPara(0,true);return;}if(audio.paused){audio.play().then(function(){setPlaying(true);}).catch(function(){});}else{audio.pause();setPlaying(false);}}
+function setPlaying(p){isPlaying=p;var btn=document.getElementById('playBtn');btn.textContent=p?'⏸':'▶';btn.classList.toggle('playing',p);waveEl.classList.toggle('on',p);if(p){cancelAnimationFrame(rafId);rafId=requestAnimationFrame(uiLoop);}else cancelAnimationFrame(rafId);}
+function uiLoop(){if(!audio||audio.paused)return;var t=audio.currentTime,dur=audio.duration||1;document.getElementById('progressFill').style.width=Math.min(t/dur*100,100)+'%';document.getElementById('timeTxt').textContent=fmt(t)+' / '+fmt(dur);rafId=requestAnimationFrame(uiLoop);}
+function seekAudio(e){var rect=e.currentTarget.getBoundingClientRect();if(audio.duration)audio.currentTime=(e.clientX-rect.left)/rect.width*audio.duration;}
+function prevPara(){if(curIdx>0)loadPara(curIdx-1,isPlaying);}
+function nextPara(){if(curIdx<PARAS.length-1)loadPara(curIdx+1,isPlaying);}
+audio.addEventListener('ended',function(){if(curIdx<PARAS.length-1){setTimeout(function(){loadPara(curIdx+1,true);},600);}else{setPlaying(false);document.getElementById('piTitle').textContent='완료! 독후감을 써봐요!';}}); audio.addEventListener('pause',function(){if(isPlaying)setPlaying(false);});
+var pc=document.getElementById('particles');
+for(var i=0;i<24;i++){var p=document.createElement('div');p.className='pt';p.style.background='#22c55e';p.style.setProperty('--d',(8+Math.random()*12).toFixed(1)+'s');p.style.setProperty('--dl',(Math.random()*10).toFixed(1)+'s');p.style.setProperty('--o',(0.15+Math.random()*0.3).toFixed(2));p.style.setProperty('--dx',(Math.random()*80-40).toFixed(0)+'px');p.style.left=(Math.random()*100)+'%';var sz=(1+Math.random()*2).toFixed(1)+'px';p.style.width=p.style.height=sz;pc.appendChild(p);}
+</script>
+</body>
+</html>
