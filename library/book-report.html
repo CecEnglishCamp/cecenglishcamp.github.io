@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEC 독후감 쓰기 — Book Report</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Noto+Sans+KR:wght@400;500;700;900&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --bg: #faf7f2;
+  --ink: #1a1410;
+  --mid: #6b5f52;
+  --light: #b5a898;
+  --paper: #ffffff;
+  --g3-color: #3b82f6;
+  --g3-pale: #eff6ff;
+  --g3-border: #bfdbfe;
+  --g4-color: #16a34a;
+  --g4-pale: #f0fdf4;
+  --g4-border: #bbf7d0;
+  --g5-color: #d97706;
+  --g5-pale: #fffbeb;
+  --g5-border: #fde68a;
+  --g6-color: #9333ea;
+  --g6-pale: #faf5ff;
+  --g6-border: #e9d5ff;
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.12);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito', 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── BACKGROUND TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(59,130,246,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(147,51,234,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 60% 30%, rgba(22,163,74,0.03) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.page {
+  position: relative; z-index: 1;
+  max-width: 900px; margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* ── HERO ── */
+.hero {
+  text-align: center;
+  margin-bottom: 52px;
+}
+.hero-eyebrow {
+  font-size: .72rem; font-weight: 800;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--light); margin-bottom: 14px;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem; font-weight: 700;
+  color: var(--ink); line-height: 1.1;
+  margin-bottom: 12px;
+}
+.hero-title em { font-style: italic; color: #9333ea; }
+.hero-sub {
+  font-size: .95rem; color: var(--mid);
+  font-family: 'Noto Sans KR', sans-serif;
+  line-height: 1.8; margin-bottom: 24px;
+}
+.hero-tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.htag {
+  padding: 5px 14px; border-radius: 99px;
+  font-size: .72rem; font-weight: 700;
+  background: white; color: var(--mid);
+  border: 1.5px solid #e5ddd5;
+  box-shadow: var(--shadow);
+}
+
+/* ── GRADE TABS ── */
+.grade-tabs {
+  display: flex; gap: 8px; margin-bottom: 32px;
+  border-bottom: 2px solid #e5ddd5;
+  padding-bottom: 0;
+}
+.gtab {
+  padding: 10px 20px; border-radius: 12px 12px 0 0;
+  font-size: .85rem; font-weight: 800;
+  cursor: pointer; border: none;
+  background: transparent; color: var(--light);
+  transition: all .2s; border-bottom: 3px solid transparent;
+  margin-bottom: -2px; font-family: 'Nunito', sans-serif;
+}
+.gtab:hover { color: var(--ink); }
+.gtab.active-g3 { color: var(--g3-color); border-bottom-color: var(--g3-color); background: var(--g3-pale); }
+.gtab.active-g4 { color: var(--g4-color); border-bottom-color: var(--g4-color); background: var(--g4-pale); }
+.gtab.active-g5 { color: var(--g5-color); border-bottom-color: var(--g5-color); background: var(--g5-pale); }
+.gtab.active-g6 { color: var(--g6-color); border-bottom-color: var(--g6-color); background: var(--g6-pale); }
+
+/* ── GRADE PANELS ── */
+.grade-panel { display: none; animation: fadeIn .35s ease; }
+.grade-panel.active { display: block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── REPORT CARD ── */
+.report-card {
+  background: var(--paper);
+  border-radius: 24px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.rc-header {
+  padding: 24px 28px 20px;
+  border-bottom: 2px dashed;
+  display: flex; align-items: center; gap: 16px;
+}
+.rc-header.g3 { background: var(--g3-pale); border-color: var(--g3-border); }
+.rc-header.g4 { background: var(--g4-pale); border-color: var(--g4-border); }
+.rc-header.g5 { background: var(--g5-pale); border-color: var(--g5-border); }
+.rc-header.g6 { background: var(--g6-pale); border-color: var(--g6-border); }
+
+.rc-badge {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+}
+.rc-badge.g3 { background: var(--g3-color); }
+.rc-badge.g4 { background: var(--g4-color); }
+.rc-badge.g5 { background: var(--g5-color); }
+.rc-badge.g6 { background: var(--g6-color); }
+
+.rc-info { flex: 1; }
+.rc-grade {
+  font-size: .7rem; font-weight: 800; letter-spacing: 1.5px;
+  text-transform: uppercase; margin-bottom: 3px;
+}
+.rc-grade.g3 { color: var(--g3-color); }
+.rc-grade.g4 { color: var(--g4-color); }
+.rc-grade.g5 { color: var(--g5-color); }
+.rc-grade.g6 { color: var(--g6-color); }
+
+.rc-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 700; color: var(--ink);
+}
+.rc-desc {
+  font-size: .8rem; color: var(--mid);
+  font-family: 'Noto Sans KR', sans-serif; margin-top: 2px;
+}
+
+/* ── BOOK SELECTOR ── */
+.book-selector {
+  padding: 20px 28px;
+  border-bottom: 1px solid #f0ebe4;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.bs-label {
+  font-size: .8rem; font-weight: 700; color: var(--mid);
+  font-family: 'Noto Sans KR', sans-serif; white-space: nowrap;
+}
+.book-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.book-btn {
+  padding: 6px 14px; border-radius: 99px;
+  font-size: .78rem; font-weight: 700;
+  border: 1.5px solid #e5ddd5;
+  background: white; color: var(--mid);
+  cursor: pointer; transition: all .2s;
+  font-family: 'Nunito', sans-serif;
+}
+.book-btn:hover { border-color: var(--mid); color: var(--ink); }
+.book-btn.selected.g3 { background: var(--g3-color); color: white; border-color: var(--g3-color); }
+.book-btn.selected.g4 { background: var(--g4-color); color: white; border-color: var(--g4-color); }
+.book-btn.selected.g5 { background: var(--g5-color); color: white; border-color: var(--g5-color); }
+.book-btn.selected.g6 { background: var(--g6-color); color: white; border-color: var(--g6-color); }
+
+/* ── REPORT FORM ── */
+.rc-body { padding: 28px; }
+
+/* LINED PAPER EFFECT */
+.report-paper {
+  background: white;
+  border-radius: 16px;
+  border: 1.5px solid #e5ddd5;
+  padding: 28px 32px;
+  position: relative;
+  background-image: repeating-linear-gradient(
+    transparent, transparent 31px, #f0ebe4 31px, #f0ebe4 32px
+  );
+  background-position: 0 28px;
+}
+.report-paper::before {
+  content: '';
+  position: absolute;
+  left: 60px; top: 0; bottom: 0;
+  width: 1.5px;
+  background: rgba(220,180,180,0.3);
+}
+
+.q-block { margin-bottom: 28px; }
+.q-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; border-radius: 50%;
+  font-size: .72rem; font-weight: 900;
+  color: white; margin-right: 8px; flex-shrink: 0;
+  vertical-align: middle;
+}
+.q-num.g3 { background: var(--g3-color); }
+.q-num.g4 { background: var(--g4-color); }
+.q-num.g5 { background: var(--g5-color); }
+.q-num.g6 { background: var(--g6-color); }
+
+.q-label {
+  font-size: .82rem; font-weight: 700; color: var(--mid);
+  font-family: 'Noto Sans KR', sans-serif;
+  margin-bottom: 8px; display: block;
+  padding-left: 32px;
+}
+.q-hint {
+  font-size: .72rem; color: var(--light);
+  font-style: italic; margin-left: 6px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.q-input {
+  width: 100%; padding: 10px 14px;
+  border: none; border-bottom: 2px dashed #e5ddd5;
+  background: transparent;
+  font-size: .92rem; color: var(--ink);
+  font-family: 'Nunito', 'Noto Sans KR', sans-serif;
+  resize: none; outline: none;
+  line-height: 32px;
+  transition: border-color .2s;
+}
+.q-input:focus { border-bottom-color: var(--g3-color); }
+.q-input.g4:focus { border-bottom-color: var(--g4-color); }
+.q-input.g5:focus { border-bottom-color: var(--g5-color); }
+.q-input.g6:focus { border-bottom-color: var(--g6-color); }
+
+/* STAR RATING */
+.stars-wrap { display: flex; gap: 8px; padding-left: 32px; margin-top: 6px; }
+.star-btn {
+  font-size: 28px; cursor: pointer;
+  transition: transform .15s;
+  opacity: 0.3; border: none; background: none;
+  line-height: 1;
+}
+.star-btn:hover, .star-btn.on { opacity: 1; transform: scale(1.2); }
+
+/* NAME INPUT */
+.name-row {
+  display: flex; gap: 12px; margin-bottom: 20px; align-items: center;
+}
+.name-input {
+  flex: 1; padding: 10px 16px;
+  border: 1.5px solid #e5ddd5; border-radius: 10px;
+  font-size: .9rem; color: var(--ink);
+  font-family: 'Nunito', sans-serif; outline: none;
+  transition: border-color .2s;
+  background: white;
+}
+.name-input:focus { border-color: var(--g3-color); }
+
+/* ── PREVIEW ── */
+.preview-box {
+  background: #faf7f2;
+  border: 1.5px dashed #d5c9bc;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-top: 20px;
+  display: none;
+  font-family: 'Nunito', 'Noto Sans KR', sans-serif;
+  font-size: .9rem; line-height: 1.9; color: var(--ink);
+}
+.preview-box.show { display: block; animation: fadeIn .3s ease; }
+.preview-title {
+  font-size: .7rem; font-weight: 800; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--light); margin-bottom: 12px;
+}
+
+/* ── ACTION BUTTONS ── */
+.action-row {
+  display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;
+}
+.btn-preview {
+  flex: 1; padding: 13px;
+  border-radius: 12px; border: 1.5px solid #e5ddd5;
+  background: white; color: var(--mid);
+  font-size: .88rem; font-weight: 700;
+  cursor: pointer; font-family: 'Nunito', sans-serif;
+  transition: all .2s;
+}
+.btn-preview:hover { border-color: var(--mid); color: var(--ink); }
+
+.btn-essay {
+  flex: 2; padding: 13px;
+  border-radius: 12px; border: none;
+  font-size: .88rem; font-weight: 800;
+  cursor: pointer; font-family: 'Nunito', 'Noto Sans KR', sans-serif;
+  transition: all .25s; color: white;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+.btn-essay:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.btn-essay.g3 { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.btn-essay.g4 { background: linear-gradient(135deg, #16a34a, #14532d); }
+.btn-essay.g5 { background: linear-gradient(135deg, #d97706, #92400e); }
+.btn-essay.g6 { background: linear-gradient(135deg, #9333ea, #581c87); }
+
+.btn-copy {
+  padding: 13px 16px;
+  border-radius: 12px; border: 1.5px solid #e5ddd5;
+  background: white; color: var(--mid);
+  font-size: .88rem; font-weight: 700;
+  cursor: pointer; font-family: 'Nunito', sans-serif;
+  transition: all .2s;
+}
+.btn-copy:hover { background: #f5f0ea; }
+
+/* ── TIPS BOX ── */
+.tips-box {
+  background: white; border-radius: 16px;
+  padding: 20px 24px; border: 1.5px solid #e5ddd5;
+  box-shadow: var(--shadow);
+}
+.tips-title {
+  font-size: .75rem; font-weight: 800; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--light); margin-bottom: 12px;
+}
+.tip-item {
+  display: flex; gap: 10px; margin-bottom: 8px;
+  font-size: .82rem; color: var(--mid);
+  font-family: 'Noto Sans KR', sans-serif; line-height: 1.6;
+}
+.tip-icon { flex-shrink: 0; font-size: 14px; margin-top: 2px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">CEC English Camp · Library</div>
+    <div class="hero-title">✍️ <em>Book Report</em></div>
+    <div class="hero-sub">
+      책을 읽고 영어로 독후감을 써보아요!<br>
+      완성하면 AI 선생님이 바로 확인해드려요.
+    </div>
+    <div class="hero-tags">
+      <span class="htag">📚 G3~G6</span>
+      <span class="htag">✨ AI 첨삭</span>
+      <span class="htag">🎯 레벨별 맞춤</span>
+      <span class="htag">🇺🇸 영어 쓰기</span>
+    </div>
+  </div>
+
+  <!-- GRADE TABS -->
+  <div class="grade-tabs">
+    <button class="gtab active-g3" onclick="switchGrade('g3')">🐰 Grade 3</button>
+    <button class="gtab" onclick="switchGrade('g4')">🦦 Grade 4</button>
+    <button class="gtab" onclick="switchGrade('g5')">⚓ Grade 5</button>
+    <button class="gtab" onclick="switchGrade('g6')">👑 Grade 6</button>
+  </div>
+
+  <!-- ════ GRADE 3 ════ -->
+  <div class="grade-panel active" id="panel-g3">
+    <div class="report-card">
+      <div class="rc-header g3">
+        <div class="rc-badge g3">🐰</div>
+        <div class="rc-info">
+          <div class="rc-grade g3">Grade 3 · 초등 3학년</div>
+          <div class="rc-title">My Book Report</div>
+          <div class="rc-desc">3문장으로 쉽게 써보아요! 그림도 그려도 좋아요.</div>
+        </div>
+      </div>
+      <div class="book-selector">
+        <div class="bs-label">📖 읽은 책:</div>
+        <div class="book-btns">
+          <button class="book-btn selected g3" onclick="selectBook(this,'g3','Peter Rabbit')">Peter Rabbit</button>
+          <button class="book-btn" onclick="selectBook(this,'g3','Red Riding Hood')">Red Riding Hood</button>
+        </div>
+      </div>
+      <div class="rc-body">
+        <div class="name-row">
+          <input class="name-input" id="name-g3" placeholder="내 이름 (My name)" type="text">
+        </div>
+        <div class="report-paper">
+          <div class="q-block">
+            <span class="q-num g3">1</span>
+            <label class="q-label">책 제목과 주인공은? <span class="q-hint">What is the book about?</span></label>
+            <textarea class="q-input" id="g3-q1" rows="2"
+              placeholder="I read ______. The main character is ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g3">2</span>
+            <label class="q-label">가장 재미있었던 장면은? <span class="q-hint">What was the best part?</span></label>
+            <textarea class="q-input" id="g3-q2" rows="2"
+              placeholder="My favorite part was when ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g3">3</span>
+            <label class="q-label">이 책에서 배운 것은? <span class="q-hint">What did you learn?</span></label>
+            <textarea class="q-input" id="g3-q3" rows="2"
+              placeholder="I learned that ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g3">★</span>
+            <label class="q-label">별점은? <span class="q-hint">How many stars?</span></label>
+            <div class="stars-wrap" id="stars-g3">
+              <button class="star-btn on" onclick="setStar('g3',1)">⭐</button>
+              <button class="star-btn on" onclick="setStar('g3',2)">⭐</button>
+              <button class="star-btn on" onclick="setStar('g3',3)">⭐</button>
+              <button class="star-btn" onclick="setStar('g3',4)">⭐</button>
+              <button class="star-btn" onclick="setStar('g3',5)">⭐</button>
+            </div>
+          </div>
+        </div>
+        <div class="preview-box" id="preview-g3">
+          <div class="preview-title">✦ 완성된 독후감 미리보기</div>
+          <div id="preview-text-g3"></div>
+        </div>
+        <div class="action-row">
+          <button class="btn-preview" onclick="showPreview('g3')">👀 미리보기</button>
+          <button class="btn-copy" onclick="copyText('g3')" title="복사">📋</button>
+          <button class="btn-essay g3" onclick="sendToEssay('g3')">
+            🤖 AI 선생님께 제출하기
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="tips-box">
+      <div class="tips-title">✦ G3 독후감 Tips</div>
+      <div class="tip-item"><span class="tip-icon">💡</span>모르는 단어는 한국어로 써도 괜찮아요. AI 선생님이 영어로 바꿔드려요!</div>
+      <div class="tip-item"><span class="tip-icon">✏️</span>짧아도 괜찮아요. 한 문장이라도 내 생각을 쓰는 게 중요해요.</div>
+      <div class="tip-item"><span class="tip-icon">⭐</span>별점은 솔직하게! 왜 그 점수인지 AI한테 설명해봐요.</div>
+    </div>
+  </div>
+
+  <!-- ════ GRADE 4 ════ -->
+  <div class="grade-panel" id="panel-g4">
+    <div class="report-card">
+      <div class="rc-header g4">
+        <div class="rc-badge g4">🦦</div>
+        <div class="rc-info">
+          <div class="rc-grade g4">Grade 4 · 초등 4학년</div>
+          <div class="rc-title">My Book Report</div>
+          <div class="rc-desc">5문장으로 내 생각을 표현해봐요!</div>
+        </div>
+      </div>
+      <div class="book-selector">
+        <div class="bs-label">📖 읽은 책:</div>
+        <div class="book-btns">
+          <button class="book-btn selected g4" onclick="selectBook(this,'g4','Wind in the Willows')">Wind in the Willows</button>
+        </div>
+      </div>
+      <div class="rc-body">
+        <div class="name-row">
+          <input class="name-input" id="name-g4" placeholder="내 이름 (My name)" type="text">
+        </div>
+        <div class="report-paper">
+          <div class="q-block">
+            <span class="q-num g4">1</span>
+            <label class="q-label">이 책은 어떤 이야기인가요? <span class="q-hint">What is this book about?</span></label>
+            <textarea class="q-input g4" id="g4-q1" rows="2"
+              placeholder="This book is about ______. The main characters are ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g4">2</span>
+            <label class="q-label">가장 좋아하는 캐릭터와 이유는? <span class="q-hint">Who is your favorite character and why?</span></label>
+            <textarea class="q-input g4" id="g4-q2" rows="2"
+              placeholder="My favorite character is ______ because ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g4">3</span>
+            <label class="q-label">가장 기억에 남는 장면은? <span class="q-hint">What scene do you remember most?</span></label>
+            <textarea class="q-input g4" id="g4-q3" rows="2"
+              placeholder="The most memorable scene was when ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g4">4</span>
+            <label class="q-label">이 책에서 배운 교훈은? <span class="q-hint">What is the lesson of this book?</span></label>
+            <textarea class="q-input g4" id="g4-q4" rows="2"
+              placeholder="This book taught me that ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g4">5</span>
+            <label class="q-label">친구에게 추천하고 싶나요? <span class="q-hint">Would you recommend this book?</span></label>
+            <textarea class="q-input g4" id="g4-q5" rows="2"
+              placeholder="I would / would not recommend this book because ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g4">★</span>
+            <label class="q-label">별점 <span class="q-hint">Star Rating</span></label>
+            <div class="stars-wrap" id="stars-g4">
+              <button class="star-btn on" onclick="setStar('g4',1)">⭐</button>
+              <button class="star-btn on" onclick="setStar('g4',2)">⭐</button>
+              <button class="star-btn on" onclick="setStar('g4',3)">⭐</button>
+              <button class="star-btn on" onclick="setStar('g4',4)">⭐</button>
+              <button class="star-btn" onclick="setStar('g4',5)">⭐</button>
+            </div>
+          </div>
+        </div>
+        <div class="preview-box" id="preview-g4">
+          <div class="preview-title">✦ 완성된 독후감 미리보기</div>
+          <div id="preview-text-g4"></div>
+        </div>
+        <div class="action-row">
+          <button class="btn-preview" onclick="showPreview('g4')">👀 미리보기</button>
+          <button class="btn-copy" onclick="copyText('g4')" title="복사">📋</button>
+          <button class="btn-essay g4" onclick="sendToEssay('g4')">
+            🤖 AI 선생님께 제출하기
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="tips-box">
+      <div class="tips-title">✦ G4 독후감 Tips</div>
+      <div class="tip-item"><span class="tip-icon">💡</span>캐릭터의 성격을 형용사로 표현해봐요. friendly, brave, funny, clever...</div>
+      <div class="tip-item"><span class="tip-icon">✏️</span>because를 사용해서 이유를 설명하면 더 좋은 문장이 돼요!</div>
+      <div class="tip-item"><span class="tip-icon">📚</span>책에서 마음에 드는 문장을 하나 골라서 써봐도 좋아요.</div>
+    </div>
+  </div>
+
+  <!-- ════ GRADE 5 ════ -->
+  <div class="grade-panel" id="panel-g5">
+    <div class="report-card">
+      <div class="rc-header g5">
+        <div class="rc-badge g5">⚓</div>
+        <div class="rc-info">
+          <div class="rc-grade g5">Grade 5 · 초등 5학년</div>
+          <div class="rc-title">My Book Report</div>
+          <div class="rc-desc">한 단락으로 완성된 독후감을 써봐요!</div>
+        </div>
+      </div>
+      <div class="book-selector">
+        <div class="bs-label">📖 읽은 책:</div>
+        <div class="book-btns">
+          <button class="book-btn selected g5" onclick="selectBook(this,'g5','Treasure Island')">Treasure Island</button>
+        </div>
+      </div>
+      <div class="rc-body">
+        <div class="name-row">
+          <input class="name-input" id="name-g5" placeholder="내 이름 (My name)" type="text">
+        </div>
+        <div class="report-paper">
+          <div class="q-block">
+            <span class="q-num g5">1</span>
+            <label class="q-label">책 소개 (Introduction) <span class="q-hint">Introduce the book in 2 sentences</span></label>
+            <textarea class="q-input g5" id="g5-q1" rows="3"
+              placeholder="I read Treasure Island by Robert Louis Stevenson. This book is about ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g5">2</span>
+            <label class="q-label">인상 깊은 캐릭터 분석 <span class="q-hint">Analyze a character in depth</span></label>
+            <textarea class="q-input g5" id="g5-q2" rows="3"
+              placeholder="The most interesting character is ______ because ______. He/She shows that ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g5">3</span>
+            <label class="q-label">주제와 교훈 <span class="q-hint">Theme and lesson</span></label>
+            <textarea class="q-input g5" id="g5-q3" rows="3"
+              placeholder="The main theme of this book is ______. I think the author wants us to know that ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g5">4</span>
+            <label class="q-label">나의 의견 (My Opinion) <span class="q-hint">Share your honest opinion</span></label>
+            <textarea class="q-input g5" id="g5-q4" rows="3"
+              placeholder="In my opinion, this book is ______ because ______. I especially liked/disliked ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g5">★</span>
+            <label class="q-label">별점 및 한 줄 추천사 <span class="q-hint">Rating + one-line recommendation</span></label>
+            <div class="stars-wrap" id="stars-g5">
+              <button class="star-btn on" onclick="setStar('g5',1)">⭐</button>
+              <button class="star-btn on" onclick="setStar('g5',2)">⭐</button>
+              <button class="star-btn on" onclick="setStar('g5',3)">⭐</button>
+              <button class="star-btn on" onclick="setStar('g5',4)">⭐</button>
+              <button class="star-btn on" onclick="setStar('g5',5)">⭐</button>
+            </div>
+            <textarea class="q-input g5" id="g5-q5" rows="2" style="margin-top:12px;"
+              placeholder="I give this book __ stars because ______."></textarea>
+          </div>
+        </div>
+        <div class="preview-box" id="preview-g5">
+          <div class="preview-title">✦ 완성된 독후감 미리보기</div>
+          <div id="preview-text-g5"></div>
+        </div>
+        <div class="action-row">
+          <button class="btn-preview" onclick="showPreview('g5')">👀 미리보기</button>
+          <button class="btn-copy" onclick="copyText('g5')" title="복사">📋</button>
+          <button class="btn-essay g5" onclick="sendToEssay('g5')">
+            🤖 AI 선생님께 제출하기
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="tips-box">
+      <div class="tips-title">✦ G5 독후감 Tips</div>
+      <div class="tip-item"><span class="tip-icon">💡</span>단순히 줄거리만 쓰지 말고 "왜?" "어떻게?"를 생각하며 써봐요.</div>
+      <div class="tip-item"><span class="tip-icon">✏️</span>In my opinion / I think / I believe 로 자신의 생각을 표현해봐요.</div>
+      <div class="tip-item"><span class="tip-icon">🎯</span>좋은 독후감은 책을 읽지 않은 사람도 궁금하게 만들어요!</div>
+    </div>
+  </div>
+
+  <!-- ════ GRADE 6 ════ -->
+  <div class="grade-panel" id="panel-g6">
+    <div class="report-card">
+      <div class="rc-header g6">
+        <div class="rc-badge g6">👑</div>
+        <div class="rc-info">
+          <div class="rc-grade g6">Grade 6 · 초등 6학년</div>
+          <div class="rc-title">My Book Report</div>
+          <div class="rc-desc">두 단락으로 깊이 있는 독후감을 완성해요!</div>
+        </div>
+      </div>
+      <div class="book-selector">
+        <div class="bs-label">📖 읽은 책:</div>
+        <div class="book-btns">
+          <button class="book-btn selected g6" onclick="selectBook(this,'g6','A Little Princess')">A Little Princess</button>
+          <button class="book-btn" onclick="selectBook(this,'g6','The Jungle Book')">The Jungle Book</button>
+        </div>
+      </div>
+      <div class="rc-body">
+        <div class="name-row">
+          <input class="name-input" id="name-g6" placeholder="내 이름 (My name)" type="text">
+        </div>
+        <div class="report-paper">
+          <div class="q-block">
+            <span class="q-num g6">1</span>
+            <label class="q-label">도입 + 줄거리 요약 <span class="q-hint">Introduction + Plot Summary</span></label>
+            <textarea class="q-input g6" id="g6-q1" rows="4"
+              placeholder="[Book title] by [Author] is a story about ______. The story begins when ______ and ends with ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g6">2</span>
+            <label class="q-label">인물 분석 <span class="q-hint">Character Analysis</span></label>
+            <textarea class="q-input g6" id="g6-q2" rows="4"
+              placeholder="The protagonist, ______, is a [adjective] character who ______. Throughout the story, she/he changes by ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g6">3</span>
+            <label class="q-label">주제 분석 <span class="q-hint">Theme Analysis</span></label>
+            <textarea class="q-input g6" id="g6-q3" rows="4"
+              placeholder="The central theme of this book is ______. This is shown when ______. The author seems to suggest that ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g6">4</span>
+            <label class="q-label">비판적 의견 + 추천 <span class="q-hint">Critical Opinion + Recommendation</span></label>
+            <textarea class="q-input g6" id="g6-q4" rows="4"
+              placeholder="Overall, I found this book ______. The strongest aspect was ______, while ______ could have been better. I would recommend this book to ______ because ______."></textarea>
+          </div>
+          <div class="q-block">
+            <span class="q-num g6">★</span>
+            <label class="q-label">별점 <span class="q-hint">Final Rating</span></label>
+            <div class="stars-wrap" id="stars-g6">
+              <button class="star-btn on" onclick="setStar('g6',1)">⭐</button>
+              <button class="star-btn on" onclick="setStar('g6',2)">⭐</button>
+              <button class="star-btn on" onclick="setStar('g6',3)">⭐</button>
+              <button class="star-btn on" onclick="setStar('g6',4)">⭐</button>
+              <button class="star-btn on" onclick="setStar('g6',5)">⭐</button>
+            </div>
+          </div>
+        </div>
+        <div class="preview-box" id="preview-g6">
+          <div class="preview-title">✦ 완성된 독후감 미리보기</div>
+          <div id="preview-text-g6"></div>
+        </div>
+        <div class="action-row">
+          <button class="btn-preview" onclick="showPreview('g6')">👀 미리보기</button>
+          <button class="btn-copy" onclick="copyText('g6')" title="복사">📋</button>
+          <button class="btn-essay g6" onclick="sendToEssay('g6')">
+            🤖 AI 선생님께 제출하기
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="tips-box">
+      <div class="tips-title">✦ G6 독후감 Tips</div>
+      <div class="tip-item"><span class="tip-icon">💡</span>protagonist(주인공), theme(주제), symbolism(상징) 같은 문학 용어를 써봐요.</div>
+      <div class="tip-item"><span class="tip-icon">✏️</span>단순 감상이 아닌 "왜 작가가 이렇게 썼을까?"를 생각해봐요.</div>
+      <div class="tip-item"><span class="tip-icon">🎯</span>좋은 점과 아쉬운 점을 균형 있게 써야 설득력 있는 독후감이 돼요.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ── STATE ── */
+var stars = { g3:3, g4:4, g5:5, g6:5 };
+var selectedBook = {
+  g3: 'Peter Rabbit',
+  g4: 'Wind in the Willows',
+  g5: 'Treasure Island',
+  g6: 'A Little Princess'
+};
+var ESSAY_URL = 'https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b';
+
+/* ── GRADE TABS ── */
+function switchGrade(g) {
+  document.querySelectorAll('.grade-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.gtab').forEach(t => {
+    t.classList.remove('active-g3','active-g4','active-g5','active-g6');
+  });
+  document.getElementById('panel-' + g).classList.add('active');
+  var tabs = document.querySelectorAll('.gtab');
+  var idx = ['g3','g4','g5','g6'].indexOf(g);
+  tabs[idx].classList.add('active-' + g);
+}
+
+/* ── BOOK SELECT ── */
+function selectBook(btn, grade, book) {
+  selectedBook[grade] = book;
+  var parent = btn.closest('.book-btns');
+  parent.querySelectorAll('.book-btn').forEach(b => {
+    b.classList.remove('selected','g3','g4','g5','g6');
+  });
+  btn.classList.add('selected', grade);
+}
+
+/* ── STARS ── */
+function setStar(grade, n) {
+  stars[grade] = n;
+  var btns = document.querySelectorAll('#stars-' + grade + ' .star-btn');
+  btns.forEach(function(b, i) {
+    b.classList.toggle('on', i < n);
+  });
+}
+
+/* ── STAR STRING ── */
+function starStr(grade) {
+  var n = stars[grade];
+  return '⭐'.repeat(n) + '☆'.repeat(5 - n) + ' (' + n + '/5)';
+}
+
+/* ── BUILD TEXT ── */
+function buildText(grade) {
+  var name = document.getElementById('name-' + grade).value || '___';
+  var book = selectedBook[grade];
+  var starS = starStr(grade);
+
+  if (grade === 'g3') {
+    var q1 = document.getElementById('g3-q1').value || '___';
+    var q2 = document.getElementById('g3-q2').value || '___';
+    var q3 = document.getElementById('g3-q3').value || '___';
+    return 'Name: ' + name + '\nBook: ' + book + '\n\n' + q1 + '\n\n' + q2 + '\n\n' + q3 + '\n\nRating: ' + starS;
+  }
+  if (grade === 'g4') {
+    var a = [1,2,3,4,5].map(function(i){return document.getElementById('g4-q'+i).value||'___';});
+    return 'Name: ' + name + '\nBook: ' + book + '\n\n' + a.join('\n\n') + '\n\nRating: ' + starS;
+  }
+  if (grade === 'g5') {
+    var a = [1,2,3,4,5].map(function(i){return document.getElementById('g5-q'+i).value||'___';});
+    return 'Name: ' + name + '\nBook: ' + book + '\n\n' + a.join('\n\n') + '\n\nRating: ' + starS;
+  }
+  if (grade === 'g6') {
+    var a = [1,2,3,4].map(function(i){return document.getElementById('g6-q'+i).value||'___';});
+    return 'Name: ' + name + '\nBook: ' + book + '\n\n' + a.join('\n\n') + '\n\nRating: ' + starS;
+  }
+}
+
+/* ── PREVIEW ── */
+function showPreview(grade) {
+  var text = buildText(grade);
+  var box = document.getElementById('preview-' + grade);
+  var textEl = document.getElementById('preview-text-' + grade);
+  textEl.innerHTML = text.replace(/\n/g, '<br>');
+  box.classList.add('show');
+  box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+/* ── COPY ── */
+function copyText(grade) {
+  var text = buildText(grade);
+  navigator.clipboard.writeText(text).then(function() {
+    alert('복사됐어요! ChatGPT에 붙여넣어 주세요 😊');
+  });
+}
+
+/* ── SEND TO ESSAY ── */
+function sendToEssay(grade) {
+  var text = buildText(grade);
+  var name = document.getElementById('name-' + grade).value || 'Student';
+  var book = selectedBook[grade];
+  var prompt = '안녕하세요! 저는 ' + name + '이에요.\n' +
+    book + ' 독후감을 써봤는데 확인해 주세요!\n\n' +
+    '--- 독후감 시작 ---\n' + text + '\n--- 독후감 끝 ---\n\n' +
+    '문법이 맞는지, 더 좋은 표현이 있는지 알려주세요!';
+  navigator.clipboard.writeText(prompt).then(function() {
+    window.open(ESSAY_URL, '_blank');
+    setTimeout(function() {
+      alert('✅ 독후감이 복사됐어요!\nChatGPT 창에서 붙여넣기(Ctrl+V) 해주세요 😊');
+    }, 500);
+  });
+}
+</script>
+</body>
+</html>
