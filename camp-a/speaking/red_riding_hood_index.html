@@ -1,185 +1,86 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Red Riding Hood Speaking Training | CEC English Camp</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: "Noto Sans KR", sans-serif; background: #0a1628; color: #fff; min-height: 100vh; }
-
-    .header { background: rgba(0,0,0,0.4); padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
-    .logo { font-family: "Cormorant Garamond", serif; font-style: italic; color: #00f2ff; font-size: 1.2rem; text-decoration: none; }
-    .back-btn { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; padding: 6px 14px; border-radius: 100px; background: rgba(255,255,255,0.1); }
-    .back-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
-
-    .hero { text-align: center; padding: 48px 20px 32px; }
-    .hero-emoji { font-size: 3rem; margin-bottom: 12px; }
-    .hero-title { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 2.4rem; color: #00f2ff; margin-bottom: 8px; }
-    .hero-sub { color: rgba(255,255,255,0.6); font-size: 0.95rem; }
-    .hero-badge { display: inline-block; background: #4a6741; color: #fff; padding: 4px 14px; border-radius: 20px; font-size: 0.8rem; margin-top: 12px; }
-
-    .scenes-wrap { max-width: 860px; margin: 0 auto; padding: 0 16px 48px; }
-    .scenes-title { font-size: 0.8rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 20px; text-align: center; }
-    .scenes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
-
-    .scene-card { background: rgba(255,255,255,0.05); border-radius: 16px; overflow: hidden; text-decoration: none; color: #fff; transition: transform 0.2s, background 0.2s; border: 1px solid rgba(255,255,255,0.08); }
-    .scene-card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.1); }
-    .scene-thumb { position: relative; aspect-ratio: 4/3; overflow: hidden; }
-    .scene-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .scene-num { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.7); color: #00f2ff; font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
-    .scene-desc { padding: 12px 14px; font-size: 0.9rem; color: rgba(255,255,255,0.8); }
-
-    .how-to { max-width: 860px; margin: 0 auto 48px; padding: 0 16px; }
-    .how-to-box { background: rgba(255,255,255,0.05); border-radius: 16px; padding: 24px; border: 1px solid rgba(255,255,255,0.08); }
-    .how-to-title { font-size: 0.8rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
-    .how-to-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
-    .step { text-align: center; padding: 12px; }
-    .step-emoji { font-size: 1.8rem; margin-bottom: 6px; }
-    .step-title { font-weight: 700; color: #fff; font-size: 0.9rem; margin-bottom: 4px; }
-    .step-desc { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
-
-    .nav-bottom { max-width: 860px; margin: 0 auto; padding: 0 16px 48px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-    .nav-link { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; padding: 10px 20px; border-radius: 100px; background: rgba(255,255,255,0.08); }
-    .nav-link:hover { background: rgba(255,255,255,0.15); color: #fff; }
-  </style>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,600&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Red Riding Hood - Picture Speaking</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Noto+Sans+KR:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito','Noto Sans KR',sans-serif;background:#020810;min-height:100vh;color:#e2e8f0}
+#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;opacity:0.4}
+.bg-overlay{position:fixed;inset:0;z-index:1;background:rgba(2,8,16,0.7);pointer-events:none}
+.page{position:relative;z-index:10;max-width:900px;margin:0 auto;padding:40px 20px}
+.back-btn{display:inline-flex;align-items:center;gap:6px;color:#ff6b6b;font-size:.85rem;font-weight:700;text-decoration:none;margin-bottom:28px;opacity:0.8;transition:opacity .2s}
+.back-btn:hover{opacity:1}
+.book-title{font-size:2rem;font-weight:900;color:#ff6b6b;text-shadow:0 0 30px #ff6b6b88;margin-bottom:6px}
+.book-title-ko{font-size:1rem;color:#556;font-family:'Noto Sans KR',sans-serif;margin-bottom:32px}
+.ep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.ep-card{background:rgba(10,16,32,0.75);border:1px solid #ff6b6b33;border-radius:14px;padding:20px 14px;text-align:center;text-decoration:none;transition:all .25s;backdrop-filter:blur(12px)}
+.ep-card:hover{border-color:#ff6b6b;transform:translateY(-3px);box-shadow:0 8px 24px #ff6b6b33}
+.ep-num{font-size:1.1rem;font-weight:900;color:#ff6b6b;margin-bottom:6px}
+.ep-label{font-size:.75rem;color:#556;font-family:'Noto Sans KR',sans-serif}
+</style>
 </head>
 <body>
-
-<div class="header">
-  <a href="/camp-a/speaking/" class="logo">🎤 Speaking Training</a>
-  <a href="/camp-a/speaking/" class="back-btn">← 전체 목록</a>
-</div>
-
-<div class="hero">
-  <div class="hero-emoji">🍎</div>
-  <h1 class="hero-title">Red Riding Hood</h1>
-  <p class="hero-sub">빨간 모자 · Grade 3 · 9 Scenes</p>
-  <span class="hero-badge">A1 레벨 · 엄마표 스피킹</span>
-</div>
-
-<div class="how-to">
-  <div class="how-to-box">
-    <div class="how-to-title">📖 이렇게 해요</div>
-    <div class="how-to-steps">
-      <div class="step">
-        <div class="step-emoji">🖼️</div>
-        <div class="step-title">그림 보기</div>
-        <div class="step-desc">장면을 함께 봐요</div>
-      </div>
-      <div class="step">
-        <div class="step-emoji">🔊</div>
-        <div class="step-title">듣기</div>
-        <div class="step-desc">엄마 목소리 따라해요</div>
-      </div>
-      <div class="step">
-        <div class="step-emoji">🗣️</div>
-        <div class="step-title">따라하기</div>
-        <div class="step-desc">영어로 말해봐요</div>
-      </div>
-      <div class="step">
-        <div class="step-emoji">⭐</div>
-        <div class="step-title">혼자하기</div>
-        <div class="step-desc">혼자 말해봐요</div>
-      </div>
-    </div>
+<canvas id="bgCanvas"></canvas>
+<div class="bg-overlay"></div>
+<div class="page">
+  <a href="../speaking/" class="back-btn">← Back to Speaking</a>
+  <div class="book-title">Red Riding Hood</div>
+  <div class="book-title-ko">빨간 모자 · Picture Speaking</div>
+  <div class="ep-grid">
+        <a href="red_riding_hood_img10.html" class="ep-card">
+          <div class="ep-num">Scene 10</div>
+          <div class="ep-label">Picture Speaking 10</div>
+        </a>
+        <a href="red_riding_hood_img11.html" class="ep-card">
+          <div class="ep-num">Scene 11</div>
+          <div class="ep-label">Picture Speaking 11</div>
+        </a>
+        <a href="red_riding_hood_img12.html" class="ep-card">
+          <div class="ep-num">Scene 12</div>
+          <div class="ep-label">Picture Speaking 12</div>
+        </a>
+        <a href="red_riding_hood_img13.html" class="ep-card">
+          <div class="ep-num">Scene 13</div>
+          <div class="ep-label">Picture Speaking 13</div>
+        </a>
+        <a href="red_riding_hood_img14.html" class="ep-card">
+          <div class="ep-num">Scene 14</div>
+          <div class="ep-label">Picture Speaking 14</div>
+        </a>
+        <a href="red_riding_hood_img15.html" class="ep-card">
+          <div class="ep-num">Scene 15</div>
+          <div class="ep-label">Picture Speaking 15</div>
+        </a>
+        <a href="red_riding_hood_img16.html" class="ep-card">
+          <div class="ep-num">Scene 16</div>
+          <div class="ep-label">Picture Speaking 16</div>
+        </a>
+        <a href="red_riding_hood_img17.html" class="ep-card">
+          <div class="ep-num">Scene 17</div>
+          <div class="ep-label">Picture Speaking 17</div>
+        </a>
+        <a href="red_riding_hood_img18.html" class="ep-card">
+          <div class="ep-num">Scene 18</div>
+          <div class="ep-label">Picture Speaking 18</div>
+        </a>
   </div>
 </div>
-
-<div class="scenes-wrap">
-  <div class="scenes-title">9개 장면 · Scene을 클릭하세요</div>
-  <div class="scenes-grid">
-
-      <a href="red_riding_hood_img10.html" class="scene-card">
-        <div class="scene-thumb">
-          <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/red_riding_hood_img10.png"
-               alt="Scene 1" loading="lazy">
-          <div class="scene-num">Scene 1</div>
-        </div>
-        <div class="scene-desc">엄마에게 바구니를 받아요</div>
-      </a>
-
-      <a href="red_riding_hood_img11.html" class="scene-card">
-        <div class="scene-thumb">
-          <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/red_riding_hood_img11.png"
-               alt="Scene 2" loading="lazy">
-          <div class="scene-num">Scene 2</div>
-        </div>
-        <div class="scene-desc">숲길을 혼자 걸어가요</div>
-      </a>
-
-      <a href="red_riding_hood_img12.html" class="scene-card">
-        <div class="scene-thumb">
-          <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/red_riding_hood_img12.png"
-               alt="Scene 3" loading="lazy">
-          <div class="scene-num">Scene 3</div>
-        </div>
-        <div class="scene-desc">숲에서 늑대를 만나요</div>
-      </a>
-
-      <a href="red_riding_hood_img13.html" class="scene-card">
-        <div class="scene-thumb">
-          <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/red_riding_hood_img13.png"
-               alt="Scene 4" loading="lazy">
-          <div class="scene-num">Scene 4</div>
-        </div>
-        <div class="scene-desc">늑대가 길을 알려줘요</div>
-      </a>
-
-      <a href="red_riding_hood_img14.html" class="scene-card">
-        <div class="scene-thumb">
-          <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/red_riding_hood_img14.png"
-               alt="Scene 5" loading="lazy">
-          <div class="scene-num">Scene 5</div>
-        </div>
-        <div class="scene-desc">늑대가 할머니 집에 도착해요</div>
-      </a>
-
-      <a href="red_riding_hood_img15.html" class="scene-card">
-        <div class="scene-thumb">
-          <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/red_riding_hood_img15.png"
-               alt="Scene 6" loading="lazy">
-          <div class="scene-num">Scene 6</div>
-        </div>
-        <div class="scene-desc">빨간 모자가 문을 두드려요</div>
-      </a>
-
-      <a href="red_riding_hood_img16.html" class="scene-card">
-        <div class="scene-thumb">
-          <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/red_riding_hood_img16.png"
-               alt="Scene 7" loading="lazy">
-          <div class="scene-num">Scene 7</div>
-        </div>
-        <div class="scene-desc">침대에서 늑대와 대화해요</div>
-      </a>
-
-      <a href="red_riding_hood_img17.html" class="scene-card">
-        <div class="scene-thumb">
-          <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/red_riding_hood_img17.png"
-               alt="Scene 8" loading="lazy">
-          <div class="scene-num">Scene 8</div>
-        </div>
-        <div class="scene-desc">사냥꾼이 구해줘요</div>
-      </a>
-
-      <a href="red_riding_hood_img18.html" class="scene-card">
-        <div class="scene-thumb">
-          <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/red_riding_hood_img18.png"
-               alt="Scene 9" loading="lazy">
-          <div class="scene-num">Scene 9</div>
-        </div>
-        <div class="scene-desc">행복한 엔딩!</div>
-      </a>
-
-  </div>
-</div>
-
-<div class="nav-bottom">
-  <a href="/camp-a/speaking/peter_rabbit_index.html" class="nav-link">🐰 Peter Rabbit</a>
-  <a href="/camp-a/speaking/wind_willows_index.html" class="nav-link">🌬️ Wind in the Willows</a>
-  <a href="/camp-a/speaking/treasure_island_index.html" class="nav-link">🏴‍☠️ Treasure Island</a>
-</div>
-
+<script>
+var canvas=document.getElementById("bgCanvas");var ctx=canvas.getContext("2d");var W,H,t=0;
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}resize();window.addEventListener("resize",resize);
+function draw(){
+  ctx.clearRect(0,0,W,H);t+=0.3;
+  [{"a":0.04,"f":0.010,"s":0.015,"p":0},{"a":0.06,"f":0.007,"s":0.010,"p":2},{"a":0.03,"f":0.018,"s":0.022,"p":4}].forEach(function(w,wi){
+    var ry=[0.25,0.5,0.75][wi]*H;ctx.beginPath();ctx.moveTo(0,ry);
+    for(var x=0;x<=W;x+=4){ctx.lineTo(x,ry+Math.sin(x*w.f+t*w.s+w.p)*H*w.a+Math.sin(x*w.f*2+t*w.s*0.7+w.p)*H*w.a*0.3);}
+    var lg=ctx.createLinearGradient(0,0,W,0);lg.addColorStop(0,"rgba(0,212,255,0)");lg.addColorStop(0.5,"rgba(0,212,255,0.25)");lg.addColorStop(1,"rgba(0,212,255,0)");
+    ctx.strokeStyle=lg;ctx.lineWidth=1.5;ctx.stroke();
+  });
+  requestAnimationFrame(draw);
+}draw();
+</script>
 </body>
 </html>
