@@ -104,6 +104,27 @@ div:hover>.image-overlay>.overlay-label{opacity:1;transform:translateY(0)}
   .nav-dropdown-menu{position:static;transform:none;padding-top:8px;}
   .nav-dropdown-menu-inner{background:rgba(255,255,255,.04);}
 }
+
+/* --- Sticky Note (📖 가이드) --- */
+#guideSticker{position:fixed;right:20px;top:40%;width:52px;height:52px;background:linear-gradient(135deg,#fff8a8,#ffe978);border:none;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,.25),0 2px 4px rgba(0,0,0,.15);cursor:pointer;z-index:1000;transform:rotate(-5deg);transition:transform .25s cubic-bezier(.4,0,.2,1),box-shadow .25s;font-family:inherit;font-size:.62rem;font-weight:800;color:#5d4827;line-height:1.1;display:flex;align-items:center;justify-content:center;text-align:center;padding:4px;}
+#guideSticker::before{content:'';position:absolute;top:-7px;left:50%;transform:translateX(-50%) rotate(-2deg);width:34px;height:14px;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,235,180,.7));border-radius:2px;box-shadow:0 1px 2px rgba(0,0,0,.1);}
+#guideSticker:hover{transform:rotate(0deg) scale(1.05);box-shadow:0 10px 24px rgba(0,0,0,.3);}
+#guideSticker.open{transform:rotate(0deg) scale(.95);opacity:.85;}
+
+#guidePanel{position:fixed;right:-380px;top:0;bottom:0;width:340px;background:#fffbf0;box-shadow:-12px 0 40px rgba(0,0,0,.25);z-index:1001;transition:right .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
+#guidePanel.open{right:0;}
+#guidePanel::before{content:'';position:absolute;top:14px;left:50%;transform:translateX(-50%) rotate(-1deg);width:90px;height:18px;background:linear-gradient(180deg,#f5d676,#d4a843);border-radius:3px;box-shadow:0 2px 6px rgba(0,0,0,.15);}
+.gp-hdr{padding:38px 18px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(196,149,106,.15);}
+.gp-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:#3D2B1F;}
+.gp-close{width:32px;height:32px;border-radius:50%;background:rgba(196,149,106,.12);border:none;cursor:pointer;font-size:.95rem;color:#7A6455;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.gp-close:hover{background:rgba(196,149,106,.25);}
+.gp-body{flex:1;padding:14px;overflow:hidden;}
+.gp-body iframe{width:100%;height:100%;border:none;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+
+@media(max-width:600px){
+  #guideSticker{width:46px;height:46px;font-size:.55rem;right:14px;}
+  #guidePanel{width:90vw;right:-100vw;}
+}
 </style>
 </head>
 <body>
@@ -327,5 +348,43 @@ if(img){document.addEventListener('mousemove',e=>{const cx=window.innerWidth/2,c
 
 <script>
 function navToggle(){var b=document.querySelector('.nav-hamburger');var l=document.querySelector('.nav-links');if(b&&l){b.classList.toggle('open');l.classList.toggle('open');}}
+</script>
+<!-- 가이드 스티커 노트 -->
+<button id="guideSticker" type="button" aria-label="가이드 열기" title="가이드">📖<br>가이드</button>
+<aside id="guidePanel" aria-hidden="true">
+  <div class="gp-hdr">
+    <div class="gp-title">📖 엄마 가이드</div>
+    <button class="gp-close" type="button" id="guideClose" aria-label="닫기">✕</button>
+  </div>
+  <div class="gp-body">
+    <iframe id="guideFrame" title="엄마 가이드" loading="lazy" data-src="guide.html"></iframe>
+  </div>
+</aside>
+<script>
+(function(){
+  var btn = document.getElementById('guideSticker');
+  var panel = document.getElementById('guidePanel');
+  var closeBtn = document.getElementById('guideClose');
+  var frame = document.getElementById('guideFrame');
+  var loaded = false;
+  function open(){
+    if(!loaded){ frame.src = frame.dataset.src; loaded = true; }
+    panel.classList.add('open');
+    btn.classList.add('open');
+    panel.setAttribute('aria-hidden', 'false');
+  }
+  function close(){
+    panel.classList.remove('open');
+    btn.classList.remove('open');
+    panel.setAttribute('aria-hidden', 'true');
+  }
+  btn.addEventListener('click', function(){
+    panel.classList.contains('open') ? close() : open();
+  });
+  closeBtn.addEventListener('click', close);
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && panel.classList.contains('open')) close();
+  });
+})();
 </script>
 </body></html>
