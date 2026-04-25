@@ -110,9 +110,19 @@ body { font-family: 'Nunito','Noto Sans KR',sans-serif; background: var(--bg); c
 /* BACK */
 .back-btn { display:inline-flex; align-items:center; gap:6px; color:var(--green); font-size:.82rem; font-weight:700; text-decoration:none; opacity:.7; transition:opacity .2s; margin-bottom:32px; }
 .back-btn:hover { opacity:1; }
+
+/* BGM Toggle */
+#bgmVideo { position:fixed; width:1px; height:1px; opacity:0; pointer-events:none; bottom:0; right:0; }
+#bgmToggle { position:fixed; bottom:24px; right:24px; z-index:9999; width:54px; height:54px; border-radius:50%; border:1px solid rgba(0,242,255,0.3); background:rgba(10,16,12,0.85); backdrop-filter:blur(10px); color:#00f2ff; font-size:1.4rem; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(0,0,0,.5); transition:transform .2s, background .2s; }
+#bgmToggle:hover { transform:scale(1.08); background:rgba(0,242,255,.15); }
+#bgmToggle.muted { color:#888; border-color:rgba(255,255,255,.18); }
 </style>
 </head>
 <body>
+<video id="bgmVideo" loop preload="auto" playsinline>
+  <source src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/library/cec_cafe_music.mp4" type="video/mp4">
+</video>
+<button id="bgmToggle" type="button" aria-label="배경음악 토글" title="배경음악">🔊</button>
 <canvas id="bgCanvas"></canvas>
 <div class="bg-vig"></div>
 <div class="page">
@@ -340,6 +350,56 @@ function draw() {
   requestAnimationFrame(draw);
 }
 draw();
+</script>
+
+<script>
+(function(){
+  var v = document.getElementById("bgmVideo");
+  var btn = document.getElementById("bgmToggle");
+  if(!v || !btn) return;
+  v.volume = 0.15;
+  v.loop = true;
+
+  function setBtn(unmuted){
+    btn.textContent = unmuted ? "🔊" : "🔇";
+    btn.classList.toggle("muted", !unmuted);
+  }
+
+  // 1차: 사운드 포함 자동재생 시도
+  v.muted = false;
+  var p = v.play();
+  if(p && typeof p.then === "function"){
+    p.then(function(){
+      setBtn(true);
+    }).catch(function(){
+      // 브라우저 차단 → 음소거 자동재생 + 첫 클릭에 unmute
+      v.muted = true;
+      v.play().catch(function(){});
+      setBtn(false);
+      function unlock(){
+        v.muted = false;
+        if(v.paused) v.play().catch(function(){});
+        setBtn(true);
+        document.removeEventListener("click", unlock);
+        document.removeEventListener("touchstart", unlock);
+      }
+      document.addEventListener("click", unlock, { once:false });
+      document.addEventListener("touchstart", unlock, { once:false });
+    });
+  }
+
+  btn.addEventListener("click", function(e){
+    e.stopPropagation();
+    if(v.paused || v.muted){
+      v.muted = false;
+      v.play().catch(function(){});
+      setBtn(true);
+    } else {
+      v.muted = true;
+      setBtn(false);
+    }
+  });
+})();
 </script>
 </body>
 </html>
