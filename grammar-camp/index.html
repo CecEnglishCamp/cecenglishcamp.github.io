@@ -48,24 +48,38 @@ body::after {
   pointer-events: none; z-index: 0;
 }
 
-/* TOPBAR */
-.topbar {
-  position: fixed; top: 0; left: 0; right: 0; height: 56px;
-  background: #000000;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 28px; z-index: 100;
+/* TOPBAR — main site nav 통일 */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 36px;height:68px;background:#000;border-bottom:1px solid rgba(0,255,255,0.13);position:fixed;top:0;left:0;right:0;z-index:1000}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo img{width:38px;height:38px;object-fit:contain;border-radius:8px}
+.nav-logo-text{font-size:1.1rem;font-weight:800;color:#fff;white-space:nowrap}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none;margin:0 auto}
+.nav-sep{color:#00bcd4;font-size:.38rem;opacity:.4;padding:0 1px}
+.nav-links>li>a{color:rgba(255,255,255,.85);text-decoration:none;font-size:.95rem;font-weight:500;padding:5px 7px;white-space:nowrap;transition:color .2s}
+.nav-links>li>a:hover,.nav-links>li>a.active{color:#00bcd4}
+.nav-register a{background:#00bcd4;color:#000;text-decoration:none;font-size:.95rem;font-weight:800;padding:9px 24px;border-radius:50px;display:block}
+.nav-register a:hover{opacity:.82}
+.nav-dropdown{position:relative}
+.nav-dropdown-btn{color:#00bcd4!important;text-decoration:none;font-size:.95rem;font-weight:600!important;padding:5px 7px;white-space:nowrap;transition:color .2s;cursor:pointer}
+.nav-dropdown:hover .nav-dropdown-btn{color:#4dd0e1!important}
+.nav-dropdown-menu{display:none;position:absolute;top:100%;padding-top:8px;left:50%;transform:translateX(-50%);background:#080808;border:1px solid rgba(0,188,212,0.22);border-radius:10px;min-width:170px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.7);z-index:200}
+.nav-dropdown:hover .nav-dropdown-menu{display:block}
+.nav-dropdown-menu a{display:block;padding:10px 18px;color:#00bcd4;text-decoration:none;font-size:.95rem;font-weight:500;transition:background .15s,color .15s;white-space:nowrap}
+.nav-dropdown-menu a:hover{background:rgba(0,188,212,.08);color:#4dd0e1}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;margin-left:auto;flex-shrink:0}
+.nav-hamburger span{display:block;width:24px;height:2px;background:#fff;transition:all .3s}
+.nav-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.nav-hamburger.open span:nth-child(2){opacity:0}
+.nav-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+@media(max-width:900px){
+  .nav-hamburger{display:flex}
+  .nav-links{display:none!important;position:fixed;top:64px;left:0;right:0;background:#000;flex-direction:column;padding:20px;gap:16px;z-index:999;border-bottom:1px solid rgba(255,255,255,.1);margin:0;transform:none}
+  .nav-links.open{display:flex!important}
+  .nav-links>li{width:100%}
+  .nav-links>li>a,.nav-links a{width:100%;display:block;padding:10px 0;font-size:1rem}
+  .nav-sep{display:none}
+  .nav-dropdown-menu{position:static;transform:none;padding-top:8px}
 }
-.logo {
-  font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600;
-  color: var(--cyan2); text-decoration: none;
-  display: flex; align-items: center; gap: 10px;
-}
-.logo-robo { width: 30px; height: 30px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border2); }
-.logo-robo img { width: 100%; height: 100%; object-fit: cover; }
-.logo-badge { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--cyan); background: rgba(0,200,255,0.1); border: 1px solid var(--border2); padding: 2px 10px; border-radius: 20px; }
-.nav-links { display: flex; align-items: center; gap: 24px; }
-.nav-link { font-size: 0.95rem; color: #fff; text-decoration: none; transition: color .3s; font-weight: 700; padding: 0; }
-.nav-link:hover { color: #00f2ff; }
 
 /* MAIN */
 .main { position: relative; z-index: 1; padding: 76px 24px 80px; max-width: 1100px; margin: 0 auto; }
@@ -148,30 +162,63 @@ body::after {
 .filter-tab.adv.active { background: rgba(240,192,64,0.12); border-color: rgba(240,192,64,0.35); color: var(--gold); }
 
 @media (max-width: 900px) { .grid { grid-template-columns: repeat(4, 1fr); } }
-@media (max-width: 700px) { .grid { grid-template-columns: repeat(3, 1fr); } .hero h1 { font-size: 32px; } .topbar { padding: 0 16px; } .nav-link { display: none; } .stats { gap: 20px; } }
+@media (max-width: 700px) { .grid { grid-template-columns: repeat(3, 1fr); } .hero h1 { font-size: 32px; } .topbar { padding: 0 16px; } .stats { gap: 20px; } }
 @media (max-width: 480px) { .grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <a href="../index.html" class="logo">
-    <div class="logo-robo"><img src="../assets/images/robo.png" alt="Robo"></div>
-    CEC English Camp
-    <span class="logo-badge">Grammar Base</span>
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/assets/robo.png" alt="Robo" onerror="this.style.display='none'">
+    <span class="nav-logo-text">CEC English Camp</span>
   </a>
-  <nav class="nav-links">
-    <a href="/library/" class="nav-link">🍵 Library</a>
-    <a href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b" target="_blank" class="nav-link">🤖 AI Coach</a>
-    <a href="/games/" class="nav-link">🎮 Games</a>
-    <a href="/insights/" class="nav-link">💡 Insights</a>
-    <a href="../essay-camp/" class="nav-link">✍️ Essay Camp</a>
-    <a href="../camp-a/" class="nav-link">Camp A</a>
-    <a href="../camp-b/" class="nav-link">Camp B</a>
-    <a href="../camp-c/" class="nav-link">Camp C</a>
-    <a href="../index.html" class="nav-link">Home</a>
-  </nav>
-</header>
+  <ul class="nav-links">
+    <li><a href="/about.html">About</a></li>
+    <li class="nav-sep">&middot;</li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-btn">Camps &#9662;</a>
+      <div class="nav-dropdown-menu">
+        <a href="/camp-a/">Camp A &mdash; Elementary</a>
+        <a href="/camp-b/">Camp B &mdash; Middle &amp; High</a>
+        <a href="/camp-c/">Camp C &mdash; Adult</a>
+      </div>
+    </li>
+    <li class="nav-sep">&middot;</li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-btn">Courses &#9662;</a>
+      <div class="nav-dropdown-menu">
+        <a href="/grammar-camp/" class="active">Grammar Base Camp</a>
+        <a href="/essay-camp/">Essay Camp</a>
+        <a href="/speaking/">Speaking</a>
+        <a href="/mom-teacher/">Mom Teacher</a>
+      </div>
+    </li>
+    <li class="nav-sep">&middot;</li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-btn">Programs &#9662;</a>
+      <div class="nav-dropdown-menu">
+        <a href="/library/">🍵 CEC Library Cafe</a>
+      </div>
+    </li>
+    <li class="nav-sep">&middot;</li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-btn">AI Tools &#9662;</a>
+      <div class="nav-dropdown-menu">
+        <a href="https://notebooklm.google.com" target="_blank">NotebookLM</a>
+        <a href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b" target="_blank">ChatGPT Coach &mdash; Camp A</a>
+        <a href="https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166" target="_blank">ChatGPT Coach &mdash; Camp B</a>
+        <a href="https://chatgpt.com/g/g-69b48918e32c81919f5a6c6c6d187df3" target="_blank">ChatGPT Coach &mdash; Camp C</a>
+      </div>
+    </li>
+    <li class="nav-sep">&middot;</li>
+    <li><a href="/games/">🎮 Games</a></li>
+    <li class="nav-sep">&middot;</li>
+    <li><a href="/insights/">💡 Insights</a></li>
+  </ul>
+  <button class="nav-hamburger" onclick="navToggle()" aria-label="메뉴"><span></span><span></span><span></span></button>
+  <div class="nav-register"><a href="/register.html">Register</a></div>
+</nav>
 
 <main class="main" data-page="grammar-index">
 
