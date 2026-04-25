@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Wizard of Oz — CEC Library</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Sans+KR:wght@400;500;700&family=Nunito:wght@400;600;700;800;900&display=swap');
+:root{--bg:#0a0514;--panel:rgba(0,0,0,0.88);--border:#8b5cf6_B;--gold:#c9a84c;--gold2:#e8c96a;--gold-pale:rgba(201,168,76,0.08);--cream:#f5ead8;--mid:#7a6a9a;--light:#4a3a6a;--acc:#8b5cf6;--acc-pale:#8b5cf6_PALE;--acc-b:#8b5cf6_B;--acc-dark:#8b5cf6_DARK;}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);color:var(--cream);min-height:100vh;}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.pt{position:absolute;border-radius:50%;opacity:0;animation:ptf var(--d) var(--dl) infinite ease-in-out;}
+@keyframes ptf{0%{opacity:0;transform:translateY(100vh);}10%{opacity:var(--o);}90%{opacity:var(--o);}100%{opacity:0;transform:translateY(-20px) translateX(var(--dx));}}
+.back-btn{position:fixed;top:20px;left:20px;z-index:100;padding:8px 16px;border-radius:99px;background:rgba(0,0,0,0.9);backdrop-filter:blur(12px);border:1px solid var(--border);color:var(--gold);font-size:.78rem;font-weight:700;text-decoration:none;}
+.book-header{position:relative;z-index:10;padding:72px 24px 48px;text-align:center;max-width:800px;margin:0 auto;}
+.bh-eyebrow{font-size:.7rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--acc);margin-bottom:12px;}
+.bh-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--cream);margin-bottom:8px;line-height:1.1;}
+.bh-title em{font-style:italic;color:#8b5cf62;}
+.bh-author{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--mid);margin-bottom:20px;}
+.bh-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.bhtag{padding:5px 13px;border-radius:99px;font-size:.72rem;font-weight:700;background:var(--acc-pale);border:1px solid var(--acc-b);color:#8b5cf62;}
+.player-bar{position:sticky;top:0;z-index:50;background:rgba(0,0,0,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 20px;}
+.player-inner{max-width:800px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+.play-btn{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all .25s;background:linear-gradient(135deg,var(--acc),var(--acc-dark));color:white;box-shadow:0 4px 16px var(--acc-pale);}
+.play-btn.playing{background:linear-gradient(135deg,#ef4444,#b91c1c);}
+.player-info{flex:1;min-width:0;}
+.pi-title{font-size:.8rem;font-weight:700;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pi-sub{font-size:.7rem;color:var(--mid);margin-top:2px;}
+.progress-wrap{flex:1;display:flex;flex-direction:column;gap:4px;}
+.progress-track{height:4px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;cursor:pointer;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--gold));border-radius:99px;width:0%;transition:width .3s linear;}
+.time-txt{font-size:.68rem;color:var(--mid);text-align:right;}
+.nav-btns{display:flex;gap:6px;}
+.nav-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.waveform{height:36px;display:flex;align-items:center;gap:0;padding:0 8px;}
+.wb{width:2.5px;border-radius:99px;background:var(--acc-pale);margin:0 1px;height:3px;transform-origin:center;}
+.waveform.on .wb{background:var(--acc);animation:wbA var(--d) ease-in-out infinite alternate;animation-delay:var(--dl);}
+@keyframes wbA{0%{height:3px;}100%{height:var(--h);}}
+.main{position:relative;z-index:10;max-width:800px;margin:0 auto;padding:32px 24px 80px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:#8b5cf62;margin:36px 0 20px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.section-num{width:28px;height:28px;border-radius:50%;background:var(--acc-pale);border:1px solid var(--acc-b);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--acc);flex-shrink:0;}
+.para-block{margin-bottom:4px;border-radius:16px;overflow:hidden;transition:all .35s;border:1.5px solid transparent;}
+.para-block.active{border-color:var(--acc-b);box-shadow:0 0 0 4px var(--acc-pale);}
+.para-block.done{opacity:.6;}
+.para-inner{display:grid;grid-template-columns:1fr 1fr;}
+@media(max-width:600px){.para-inner{grid-template-columns:1fr;}}
+.para-en{padding:18px 20px;background:rgba(0,0,0,0.4);border-right:1px solid var(--border);}
+.para-ko{padding:18px 20px;background:rgba(0,0,0,0.25);}
+.para-block.active .para-en{background:var(--acc-pale);}
+.para-block.active .para-ko{background:rgba(0,0,0,0.15);}
+.lang-badge{font-size:.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.lang-badge.en{color:var(--acc);}.lang-badge.ko{color:var(--gold);}
+.lang-dot{width:6px;height:6px;border-radius:50%;}.lang-dot.en{background:var(--acc);}.lang-dot.ko{background:var(--gold);}
+.para-text-en{font-size:.95rem;line-height:1.85;color:var(--cream);font-family:'Nunito',sans-serif;}
+.para-text-ko{font-size:.88rem;line-height:1.9;color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.para-block.active .para-text-en{color:white;}.para-block.active .para-text-ko{color:#d4c8a0;}
+.para-play-btn{display:flex;align-items:center;gap:6px;margin-top:10px;padding:5px 12px;border-radius:99px;background:var(--acc-pale);border:none;color:var(--acc);font-size:.7rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.content-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px 24px;}
+.vocab-table{width:100%;border-collapse:collapse;}
+.vocab-table th{font-size:.7rem;font-weight:800;color:var(--gold);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.vocab-table td{padding:10px 14px;font-size:.85rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+.vocab-table td:first-child{font-family:'Nunito',sans-serif;font-weight:700;color:var(--cream);}
+.vocab-table td:nth-child(2){color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.vocab-table td:last-child{color:var(--light);font-size:.78rem;font-family:'Noto Sans KR',sans-serif;}
+.disc-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.disc-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--acc-pale);border:1px solid var(--acc-b);border-radius:12px;}
+.disc-num{width:26px;height:26px;border-radius:50%;background:var(--acc);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;flex-shrink:0;}
+.disc-text{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;line-height:1.6;padding-top:3px;}
+.report-section{margin-top:48px;padding:28px;background:var(--gold-pale);border:1px solid rgba(201,168,76,0.25);border-radius:20px;text-align:center;}
+.report-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--cream);margin-bottom:8px;}
+.report-sub{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;margin-bottom:18px;}
+.report-btn{display:inline-block;padding:13px 28px;border-radius:14px;background:linear-gradient(135deg,var(--gold),#a07828);color:#1a110a;font-size:.9rem;font-weight:800;text-decoration:none;font-family:'Nunito',sans-serif;}</style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+<a href="index.html" class="back-btn">← Library</a>
+<div class="book-header">
+  <div class="bh-eyebrow">CEC Library · Grade 4</div>
+  <div class="bh-title"><em>The Wizard of Oz</em></div>
+  <div class="bh-author">L. Frank Baum · 1900</div>
+  <div class="bh-tags">
+    <span class="bhtag">🌈 G4</span>
+    <span class="bhtag">🎧 MP3 15단락</span>
+    <span class="bhtag">🇰🇷 한국어 번역</span>
+    <span class="bhtag">✍️ 독후감 쓰기</span>
+  </div>
+</div>
+<div class="player-bar">
+  <div class="player-inner">
+    <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+    <div class="waveform" id="waveform"></div>
+    <div class="player-info">
+      <div class="pi-title" id="piTitle">재생 버튼을 눌러 시작하세요</div>
+      <div class="pi-sub">The Wizard of Oz · 15 paragraphs</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track" onclick="seekAudio(event)"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="time-txt" id="timeTxt">0:00 / --:--</div>
+    </div>
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="prevPara()">⏮</button>
+      <button class="nav-btn" onclick="nextPara()">⏭</button>
+    </div>
+  </div>
+</div>
+<div class="main">
+  <div id="paras"></div>
+  <div class="section-title" style="margin-top:48px;"><div class="section-num">2</div>오늘의 단어 · Key Vocabulary</div>
+  <div class="content-box">
+    <table class="vocab-table">
+      <thead><tr><th>영어</th><th>한국어</th><th>예문</th></tr></thead>
+      <tbody><tr><td>cyclone</td><td>회오리바람</td><td>great cyclone</td></tr><tr><td>prairie</td><td>평원</td><td>Kansas prairie</td></tr><tr><td>cowardly</td><td>겁쟁이의</td><td>Cowardly Lion</td></tr><tr><td>fraud</td><td>사기꾼</td><td>the Wizard was a fraud</td></tr><tr><td>diploma</td><td>졸업장</td><td>gave a diploma</td></tr><tr><td>courage</td><td>용기</td><td>medal for courage</td></tr></tbody>
+    </table>
+  </div>
+  <div class="section-title" style="margin-top:48px;"><div class="section-num">3</div>아이와 대화해보세요 · Discussion</div>
+  <div class="content-box"><ul class="disc-list"><li class="disc-item"><div class="disc-num">1</div><div class="disc-text">허수아비는 뇌가 없었는데 왜 영리했을까요?</div></li><li class="disc-item"><div class="disc-num">2</div><div class="disc-text">마법사가 사기꾼이었다는 걸 알았을 때 어떤 기분이었을까요?</div></li><li class="disc-item"><div class="disc-num">3</div><div class="disc-text">도로시는 왜 집에 가고 싶었을까요?</div></li><li class="disc-item"><div class="disc-num">4</div><div class="disc-text">오즈에 갔다면 마법사에게 뭘 부탁했을 것 같아요?</div></li></ul></div>
+  <div class="report-section">
+    <div class="report-title">다 읽었나요? 🎉</div>
+    <div class="report-sub">영어로 독후감을 써보아요!</div>
+    <a href="book-report.html" class="report-btn">✍️ 독후감 쓰기</a>
+  </div>
+</div>
+<audio id="audioEl" preload="none"></audio>
+<script>
+var CDN='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/library/wizard_of_oz/';
+var PARAS=[{"part": "Ch.1 — The Cyclone · 회오리바람", "en": "Dorothy lived with her Aunt Em and Uncle Henry on the flat gray Kansas prairie. Everything was gray — the house, the land, the sky. Only Dorothy and her little dog Toto brought color to that world. Then one day, a great cyclone came roaring across the prairie.", "ko": "도로시는 이모 엠과 삼촌 헨리와 함께 평평하고 회색빛인 캔자스 평원에 살았어요. 모든 게 회색이었어요 — 집도, 땅도, 하늘도. 도로시와 작은 개 토토만이 그 세계에 색을 가져왔어요. 그러던 어느 날, 거대한 회오리바람이 평원을 가로질러 으르렁대며 왔어요.", "label": "Paragraph 1"}, {"en": "Dorothy grabbed Toto and ran inside. But before she could reach the cellar, the house lifted into the air. Up and up it went, spinning in the cyclone. Dorothy fell asleep to the gentle rocking — and when she woke up, the house had landed with a great thump in a very strange place.", "ko": "도로시는 토토를 안고 안으로 달렸어요. 하지만 지하실에 닿기 전에 집이 하늘로 떠올랐어요. 위로, 위로 올라가며 회오리바람 속에서 빙글빙글 돌았어요. 도로시는 살랑살랑 흔들리는 속에 잠들었어요 — 깨어나니 집이 쿵 하는 소리와 함께 아주 이상한 곳에 내려앉아 있었어요.", "label": "Paragraph 2"}, {"en": "The house had landed on a Wicked Witch — and killed her. The little people of Munchkin Land cheered and danced. A beautiful witch named Glinda appeared in a bubble of light. You are a heroine! she told Dorothy. But if you want to go home, you must follow the Yellow Brick Road to the Emerald City and find the Wizard of Oz.", "ko": "집이 사악한 마녀 위에 떨어졌어요 — 그리고 죽었어요. 먼치킨 나라의 작은 사람들이 환호하며 춤을 췄어요. 글린다라는 아름다운 마녀가 빛의 방울 속에 나타났어요. 당신은 영웅이에요! 도로시에게 말했어요. 하지만 집에 가고 싶으면 노란 벽돌 길을 따라 에메랄드 시티로 가서 오즈의 마법사를 찾아야 해요.", "label": "Paragraph 3"}, {"part": "Ch.2 — Friends on the Road · 길 위의 친구들", "en": "Dorothy put on the magical silver shoes from the dead witch and set off down the Yellow Brick Road. Soon she met a Scarecrow who wanted a brain, a Tin Woodman who wanted a heart, and a Cowardly Lion who wanted courage. They all decided to travel together to see the Wizard.", "ko": "도로시는 죽은 마녀의 마법 은색 구두를 신고 노란 벽돌 길을 따라 출발했어요. 곧 뇌를 원하는 허수아비, 심장을 원하는 양철 나무꾼, 용기를 원하는 겁쟁이 사자를 만났어요. 모두 함께 마법사를 만나러 가기로 했어요.", "label": "Paragraph 4"}, {"en": "As they walked, Dorothy noticed something. The Scarecrow always had clever ideas — even without a brain. The Tin Woodman cried when he stepped on a beetle — even without a heart. And the Lion protected his friends even when he was trembling with fear. Maybe they already had what they wanted.", "ko": "걸으면서 도로시는 무언가를 알아챘어요. 허수아비는 뇌가 없어도 항상 영리한 아이디어를 냈어요. 양철 나무꾼은 심장이 없어도 딱정벌레를 밟자 울었어요. 그리고 사자는 두려움에 떨면서도 친구들을 보호했어요. 어쩌면 그들은 이미 원하는 것을 갖고 있는 게 아닐까요.", "label": "Paragraph 5"}, {"en": "The Wicked Witch of the West was watching them through her magical eye. She wanted Dorothy's silver shoes. She sent wolves, then crows, then bees, then her soldiers — but the friends fought them off every time. Finally she sent her worst weapon: the Winged Monkeys.", "ko": "서쪽의 사악한 마녀가 마법 눈으로 그들을 지켜보고 있었어요. 도로시의 은색 구두를 원했어요. 늑대를, 그다음엔 까마귀를, 그다음엔 벌을, 그다음엔 병사들을 보냈어요 — 하지만 친구들은 매번 물리쳤어요. 마침내 최악의 무기를 보냈어요. 날개 달린 원숭이들.", "label": "Paragraph 6"}, {"part": "Ch.3 — The Wizard · 마법사", "en": "The Winged Monkeys captured Dorothy and the Lion and brought them to the Wicked Witch's castle. The witch tried everything to steal the shoes — but they would not come off Dorothy's feet. In a rage, the witch threw a bucket of water at Dorothy. It hit the witch instead. And the witch melted away.", "ko": "날개 달린 원숭이들이 도로시와 사자를 잡아 사악한 마녀의 성으로 데려갔어요. 마녀는 구두를 빼앗으려 온갖 짓을 했어요 — 하지만 도로시의 발에서 벗겨지지 않았어요. 격분한 마녀가 도로시에게 물 한 양동이를 던졌어요. 대신 마녀에게 맞았어요. 그리고 마녀가 녹아 없어졌어요.", "label": "Paragraph 7"}, {"en": "Dorothy and her friends finally reached the Emerald City. Everything was green and glittering. But when they met the Great Wizard of Oz, they got a shock. He appeared as a giant head, then a beautiful woman, then a terrible beast. He was different every time. I will help you, he boomed, but first you must kill the Wicked Witch. They already had.", "ko": "도로시와 친구들이 마침내 에메랄드 시티에 도착했어요. 모든 게 초록빛이고 반짝였어요. 하지만 위대한 오즈의 마법사를 만나자 충격을 받았어요. 거대한 머리로, 아름다운 여인으로, 끔찍한 짐승으로 나타났어요. 매번 달랐어요. 도와줄게, 우렁차게 말했어요, 하지만 먼저 사악한 마녀를 죽여야 해. 이미 죽였어요.", "label": "Paragraph 8"}, {"en": "But the Wizard kept stalling. One day Toto knocked over a screen — and behind it stood a small, bald, ordinary old man working levers and buttons. I am the Great and Terrible Oz, he squeaked. Pay no attention to that man behind the curtain. The Wizard was a fraud. He had no magic at all.", "ko": "하지만 마법사는 계속 미뤘어요. 어느 날 토토가 칸막이를 넘어뜨렸어요 — 그 뒤에 레버와 버튼을 조작하는 작고 대머리인 평범한 노인이 서 있었어요. 나는 위대하고 두려운 오즈야, 삑삑거렸어요. 커튼 뒤에 있는 사람을 신경 쓰지 마. 마법사는 사기꾼이었어요. 마법이 전혀 없었어요.", "label": "Paragraph 9"}, {"part": "Ch.4 — What They Already Had · 이미 가진 것", "en": "The Wizard was embarrassed but kind. He gave the Scarecrow a diploma — and the Scarecrow felt smarter immediately. He gave the Tin Woodman a heart-shaped clock — and the Woodman felt love at once. He gave the Lion a medal for courage — and the Lion stood tall. It was all in their minds. But it was real.", "ko": "마법사는 당황했지만 친절했어요. 허수아비에게 졸업장을 줬어요 — 그러자 허수아비는 즉시 더 똑똑해진 느낌이 들었어요. 양철 나무꾼에게 심장 모양 시계를 줬어요 — 그러자 나무꾼은 곧바로 사랑을 느꼈어요. 사자에게 용기 메달을 줬어요 — 그러자 사자가 당당하게 섰어요. 모두 마음속에 있는 거였어요. 하지만 진짜였어요.", "label": "Paragraph 10"}, {"en": "But Dorothy still needed to get home. The Wizard made a hot air balloon to take them both back to Kansas. At the last moment, Toto jumped out to chase a cat — and Dorothy jumped after him. The balloon sailed away without her. She was stranded in Oz.", "ko": "하지만 도로시는 여전히 집에 가야 했어요. 마법사가 함께 캔자스로 돌아갈 열기구를 만들었어요. 마지막 순간, 토토가 고양이를 쫓아 뛰어내렸어요 — 도로시도 토토를 쫓아 뛰어내렸어요. 열기구는 도로시 없이 날아갔어요. 도로시는 오즈에 발이 묶였어요.", "label": "Paragraph 11"}, {"en": "Glinda the Good Witch appeared again. The silver shoes can take you home, she said with a smile. They always could. You just had to find that out for yourself. Dorothy clicked her heels together three times. There is no place like home. There is no place like home. There is no place like home.", "ko": "착한 마녀 글린다가 다시 나타났어요. 은색 구두가 집에 데려다줄 수 있어요, 미소 지으며 말했어요. 항상 그럴 수 있었어요. 그냥 스스로 알아내야 했을 뿐이에요. 도로시는 뒤꿈치를 세 번 맞부딪혔어요. 집만 한 곳은 없어. 집만 한 곳은 없어. 집만 한 곳은 없어.", "label": "Paragraph 12"}, {"en": "Dorothy opened her eyes. She was in the Kansas prairie, lying in the grass. Aunt Em came running. Dorothy! Oh, you are back! Dorothy sat up and looked around at the flat gray land. It had never looked so beautiful. I am so glad to be home! she cried. Oh, Aunt Em — there is no place like home!", "ko": "도로시가 눈을 떴어요. 캔자스 평원, 풀밭에 누워 있었어요. 엠 이모가 달려왔어요. 도로시! 오, 돌아왔구나! 도로시가 일어나 앉아 평평하고 회색빛인 땅을 둘러봤어요. 이렇게 아름다워 보인 적이 없었어요. 집에 와서 너무 기뻐요! 외쳤어요. 오, 이모 — 집만 한 곳은 없어요!", "label": "Paragraph 13"}, {"en": "And what about the Scarecrow, the Tin Woodman, and the Lion? The Scarecrow became the ruler of the Emerald City — and everyone said he was very wise. The Tin Woodman became the kindest ruler the Winkies ever had. And the Lion became the King of the Beasts — the bravest of all.", "ko": "허수아비, 양철 나무꾼, 사자는 어떻게 됐을까요? 허수아비는 에메랄드 시티의 통치자가 됐어요 — 모두가 매우 현명하다고 했어요. 양철 나무꾼은 윙키들이 가진 것 중 가장 친절한 통치자가 됐어요. 그리고 사자는 짐승들의 왕이 됐어요 — 모든 것 중 가장 용감했어요.", "label": "Paragraph 14"}, {"en": "The journey to Oz had taught them all something important. Brains are not in diplomas. Hearts are not in clocks. Courage is not in medals. And home is not just a place — it is the people and the love that wait for you there. Dorothy knew that now. She always had.", "ko": "오즈로의 여행이 모두에게 중요한 것을 가르쳐줬어요. 뇌는 졸업장 안에 있는 게 아니에요. 심장은 시계 안에 있는 게 아니에요. 용기는 메달 안에 있는 게 아니에요. 그리고 집은 단순한 장소가 아니에요 — 거기서 기다리는 사람들과 사랑이에요. 도로시는 이제 알았어요. 항상 알고 있었어요.", "label": "Paragraph 15"}];
+
+var parasEl=document.getElementById('paras'),currentPart=null;
+PARAS.forEach(function(p,i){
+  if(p.part&&p.part!==currentPart){currentPart=p.part;var h=document.createElement('div');h.className='section-title';h.style.marginTop=i===0?'0':'36px';h.innerHTML='<div class="section-num">'+(i+1)+'</div>'+p.part;parasEl.appendChild(h);}
+  var block=document.createElement('div');block.className='para-block';block.id='para_'+i;
+  block.innerHTML='<div class="para-inner"><div class="para-en"><div class="lang-badge en"><div class="lang-dot en"></div>English</div><div class="para-text-en">'+p.en+'</div><button class="para-play-btn" onclick="loadPara('+i+',true)">▶ 이 단락 듣기</button></div><div class="para-ko"><div class="lang-badge ko"><div class="lang-dot ko"></div>한국어</div><div class="para-text-ko">'+p.ko+'</div></div></div>';
+  parasEl.appendChild(block);
+});
+var waveEl=document.getElementById('waveform');
+var WH=[4,8,14,20,28,36,28,20,14,8,4,10,18,26,34,26,18,10,16,24,32,24,16,8,12,20,28,20,12,6];
+for(var b=0;b<30;b++){var bar=document.createElement('div');bar.className='wb';bar.style.setProperty('--h',WH[b%WH.length]+'px');bar.style.setProperty('--d',(0.4+Math.random()*0.6).toFixed(2)+'s');bar.style.setProperty('--dl',(b*0.022).toFixed(3)+'s');waveEl.appendChild(bar);}
+var audio=document.getElementById('audioEl'),curIdx=0,isPlaying=false,rafId=null;
+function fmt(s){if(!s||isNaN(s))return'--:--';return Math.floor(s/60)+':'+(Math.floor(s%60)<10?'0':'')+Math.floor(s%60);}
+function loadPara(idx,play){curIdx=idx;var p=PARAS[idx];document.querySelectorAll('.para-block').forEach(function(el,i){el.classList.remove('active','done');if(i<idx)el.classList.add('done');if(i===idx){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'center'});}});document.getElementById('piTitle').textContent=p.label+' / '+PARAS.length;audio.src=CDN+'p'+String(idx+1).padStart(2,'0')+'.mp3';audio.load();document.getElementById('progressFill').style.width='0%';document.getElementById('timeTxt').textContent='0:00 / --:--';audio.addEventListener('loadedmetadata',function onM(){document.getElementById('timeTxt').textContent='0:00 / '+fmt(audio.duration);audio.removeEventListener('loadedmetadata',onM);});if(play!==false)audio.play().then(function(){setPlaying(true);}).catch(function(){});}
+function togglePlay(){if(!audio.src||audio.src===window.location.href){loadPara(0,true);return;}if(audio.paused){audio.play().then(function(){setPlaying(true);}).catch(function(){});}else{audio.pause();setPlaying(false);}}
+function setPlaying(p){isPlaying=p;var btn=document.getElementById('playBtn');btn.textContent=p?'⏸':'▶';btn.classList.toggle('playing',p);waveEl.classList.toggle('on',p);if(p){cancelAnimationFrame(rafId);rafId=requestAnimationFrame(uiLoop);}else cancelAnimationFrame(rafId);}
+function uiLoop(){if(!audio||audio.paused)return;var t=audio.currentTime,dur=audio.duration||1;document.getElementById('progressFill').style.width=Math.min(t/dur*100,100)+'%';document.getElementById('timeTxt').textContent=fmt(t)+' / '+fmt(dur);rafId=requestAnimationFrame(uiLoop);}
+function seekAudio(e){var rect=e.currentTarget.getBoundingClientRect();if(audio.duration)audio.currentTime=(e.clientX-rect.left)/rect.width*audio.duration;}
+function prevPara(){if(curIdx>0)loadPara(curIdx-1,isPlaying);}
+function nextPara(){if(curIdx<PARAS.length-1)loadPara(curIdx+1,isPlaying);}
+audio.addEventListener('ended',function(){if(curIdx<PARAS.length-1){setTimeout(function(){loadPara(curIdx+1,true);},600);}else{setPlaying(false);document.getElementById('piTitle').textContent='완료! 독후감을 써봐요!';}});
+audio.addEventListener('pause',function(){if(isPlaying)setPlaying(false);});
+var pc=document.getElementById('particles');
+for(var i=0;i<24;i++){var p=document.createElement('div');p.className='pt';p.style.background="#8b5cf6";p.style.setProperty('--d',(8+Math.random()*12).toFixed(1)+'s');p.style.setProperty('--dl',(Math.random()*10).toFixed(1)+'s');p.style.setProperty('--o',(0.15+Math.random()*0.3).toFixed(2));p.style.setProperty('--dx',(Math.random()*80-40).toFixed(0)+'px');p.style.left=(Math.random()*100)+'%';var sz=(1+Math.random()*2).toFixed(1)+'px';p.style.width=p.style.height=sz;pc.appendChild(p);}
+
+</script>
+</body>
+</html>
