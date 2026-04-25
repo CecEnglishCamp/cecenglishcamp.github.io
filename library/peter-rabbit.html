@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peter Rabbit — CEC Library</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Sans+KR:wght@400;500;700&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --bg:#1a110a; --bg2:#120c05;
+  --panel:rgba(26,17,10,0.88);
+  --border:rgba(210,170,100,0.15);
+  --gold:#c9a84c; --gold2:#e8c96a;
+  --gold-pale:rgba(201,168,76,0.08);
+  --cream:#f5ead8; --mid:#9a8060; --light:#6b5438;
+  --blue:#3b82f6; --blue-pale:rgba(59,130,246,0.10); --blue-b:rgba(59,130,246,0.25);
+  --green:#22c55e; --green-pale:rgba(34,197,94,0.10);
+  --amber:#f59e0b; --amber-pale:rgba(245,158,11,0.10);
+  --shadow:0 12px 48px rgba(0,0,0,0.5);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);color:var(--cream);min-height:100vh;}
+
+/* PARTICLES */
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.pt{position:absolute;width:2px;height:2px;background:var(--gold);border-radius:50%;opacity:0;animation:ptf var(--d) var(--dl) infinite ease-in-out;}
+@keyframes ptf{0%{opacity:0;transform:translateY(100vh);}10%{opacity:var(--o);}90%{opacity:var(--o);}100%{opacity:0;transform:translateY(-20px) translateX(var(--dx));}}
+
+/* BACK */
+.back-btn{position:fixed;top:20px;left:20px;z-index:100;padding:8px 16px;border-radius:99px;background:rgba(26,17,10,0.9);backdrop-filter:blur(12px);border:1px solid var(--border);color:var(--gold);font-size:.78rem;font-weight:700;text-decoration:none;transition:all .2s;}
+.back-btn:hover{background:var(--gold-pale);}
+
+/* HEADER */
+.book-header{position:relative;z-index:10;padding:72px 24px 48px;text-align:center;max-width:800px;margin:0 auto;}
+.bh-eyebrow{font-size:.7rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.bh-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--cream);margin-bottom:8px;line-height:1.1;}
+.bh-title em{font-style:italic;color:var(--gold2);}
+.bh-author{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--mid);margin-bottom:20px;}
+.bh-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.bhtag{padding:5px 13px;border-radius:99px;font-size:.72rem;font-weight:700;background:var(--gold-pale);border:1px solid var(--border);color:var(--gold2);}
+
+/* PLAYER BAR */
+.player-bar{position:sticky;top:0;z-index:50;background:rgba(18,12,5,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 20px;}
+.player-inner{max-width:800px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+.play-btn{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all .25s;background:linear-gradient(135deg,var(--blue),#1d4ed8);color:white;box-shadow:0 4px 16px rgba(59,130,246,0.35);}
+.play-btn:hover{transform:scale(1.08);box-shadow:0 6px 24px rgba(59,130,246,0.5);}
+.play-btn.playing{background:linear-gradient(135deg,#ef4444,#b91c1c);box-shadow:0 4px 16px rgba(239,68,68,0.35);}
+.player-info{flex:1;min-width:0;}
+.pi-title{font-size:.8rem;font-weight:700;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pi-sub{font-size:.7rem;color:var(--mid);margin-top:2px;}
+.progress-wrap{flex:1;display:flex;flex-direction:column;gap:4px;}
+.progress-track{height:4px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;cursor:pointer;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--gold));border-radius:99px;width:0%;transition:width .3s linear;}
+.time-txt{font-size:.68rem;color:var(--mid);text-align:right;}
+.nav-btns{display:flex;gap:6px;}
+.nav-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .2s;}
+.nav-btn:hover{background:var(--gold-pale);color:var(--gold);}
+
+/* WAVEFORM */
+.waveform{height:36px;display:flex;align-items:center;gap:0;padding:0 8px;}
+.wb{width:2.5px;border-radius:99px;background:rgba(59,130,246,0.15);margin:0 1px;height:3px;transform-origin:center;transition:background .3s;}
+.waveform.on .wb{background:var(--blue);animation:wbA var(--d) ease-in-out infinite alternate;animation-delay:var(--dl);}
+.waveform.silence .wb{background:var(--amber);}
+@keyframes wbA{0%{height:3px;}100%{height:var(--h);}}
+
+/* MAIN LAYOUT */
+.main{position:relative;z-index:10;max-width:800px;margin:0 auto;padding:32px 24px 80px;}
+
+/* SECTION TITLE */
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--gold);margin:36px 0 20px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.section-num{width:28px;height:28px;border-radius:50%;background:var(--gold-pale);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--gold);flex-shrink:0;}
+
+/* PARAGRAPH */
+.para-block{margin-bottom:4px;border-radius:16px;overflow:hidden;transition:all .35s;border:1.5px solid transparent;}
+.para-block.active{border-color:rgba(59,130,246,0.4);box-shadow:0 0 0 4px rgba(59,130,246,0.06),var(--shadow);}
+.para-block.done{opacity:.6;}
+
+.para-inner{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+@media(max-width:600px){.para-inner{grid-template-columns:1fr;}}
+
+.para-en{padding:18px 20px;background:rgba(26,17,10,0.6);border-right:1px solid var(--border);}
+.para-ko{padding:18px 20px;background:rgba(18,12,5,0.4);}
+.para-block.active .para-en{background:rgba(59,130,246,0.08);}
+.para-block.active .para-ko{background:rgba(59,130,246,0.05);}
+
+.lang-badge{font-size:.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.lang-badge.en{color:var(--blue);}
+.lang-badge.ko{color:var(--gold);}
+.lang-dot{width:6px;height:6px;border-radius:50%;}
+.lang-dot.en{background:var(--blue);}
+.lang-dot.ko{background:var(--gold);}
+
+.para-text-en{font-size:.95rem;line-height:1.85;color:var(--cream);font-family:'Nunito',sans-serif;}
+.para-text-ko{font-size:.88rem;line-height:1.9;color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.para-block.active .para-text-en{color:#e8f4ff;}
+.para-block.active .para-text-ko{color:#d4c8a0;}
+
+.para-play-btn{display:flex;align-items:center;gap:6px;margin-top:10px;padding:5px 12px;border-radius:99px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);color:var(--blue);font-size:.7rem;font-weight:700;cursor:pointer;border-color:transparent;transition:all .2s;font-family:'Nunito',sans-serif;}
+.para-play-btn:hover{background:rgba(59,130,246,0.2);}
+
+/* VOCAB TABLE */
+.vocab-table{width:100%;border-collapse:collapse;margin-top:8px;}
+.vocab-table th{font-size:.7rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gold);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.vocab-table td{padding:10px 14px;font-size:.85rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+.vocab-table tr:last-child td{border-bottom:none;}
+.vocab-table td:first-child{font-family:'Nunito',sans-serif;font-weight:700;color:var(--cream);}
+.vocab-table td:nth-child(2){color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.vocab-table td:last-child{color:var(--light);font-size:.78rem;font-family:'Noto Sans KR',sans-serif;}
+
+/* DISCUSSION */
+.disc-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.disc-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--gold-pale);border:1px solid var(--border);border-radius:12px;}
+.disc-num{width:26px;height:26px;border-radius:50%;background:var(--gold);color:#1a110a;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;flex-shrink:0;}
+.disc-text{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;line-height:1.6;padding-top:3px;}
+
+/* REPORT BTN */
+.report-section{margin-top:48px;padding:28px;background:var(--gold-pale);border:1px solid rgba(201,168,76,0.25);border-radius:20px;text-align:center;}
+.report-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--cream);margin-bottom:8px;}
+.report-sub{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;margin-bottom:18px;}
+.report-btn{display:inline-block;padding:13px 28px;border-radius:14px;background:linear-gradient(135deg,var(--gold),#a07828);color:#1a110a;font-size:.9rem;font-weight:800;text-decoration:none;font-family:'Nunito',sans-serif;transition:all .25s;box-shadow:0 4px 20px rgba(201,168,76,0.3);}
+.report-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,0.45);}
+
+/* BOX */
+.content-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px 24px;backdrop-filter:blur(12px);}
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+<a href="index.html" class="back-btn">← Library</a>
+
+<!-- HEADER -->
+<div class="book-header">
+  <div class="bh-eyebrow">CEC Library · Grade 3</div>
+  <div class="bh-title"><em>The Tale of Peter Rabbit</em></div>
+  <div class="bh-author">Beatrix Potter · 1902</div>
+  <div class="bh-tags">
+    <span class="bhtag">🐰 G3</span>
+    <span class="bhtag">🎧 MP3 15단락</span>
+    <span class="bhtag">🇰🇷 한국어 번역</span>
+    <span class="bhtag">✍️ 독후감 쓰기</span>
+  </div>
+</div>
+
+<!-- PLAYER BAR -->
+<div class="player-bar">
+  <div class="player-inner">
+    <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+    <div class="waveform" id="waveform"></div>
+    <div class="player-info">
+      <div class="pi-title" id="piTitle">재생 버튼을 눌러 시작하세요</div>
+      <div class="pi-sub" id="piSub">Peter Rabbit · 15 paragraphs</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track" onclick="seekAudio(event)">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="time-txt" id="timeTxt">0:00 / --:--</div>
+    </div>
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="prevPara()" title="이전">⏮</button>
+      <button class="nav-btn" onclick="nextPara()" title="다음">⏭</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- PARAGRAPHS -->
+  <div class="section-title">
+    <div class="section-num">1</div>
+    Part 1 — The Family · 가족 소개
+  </div>
+
+  <div id="paras"></div>
+
+  <!-- VOCAB -->
+  <div class="section-title" style="margin-top:48px;">
+    <div class="section-num">2</div>
+    오늘의 단어 · Key Vocabulary
+  </div>
+  <div class="content-box">
+    <table class="vocab-table">
+      <thead>
+        <tr><th>영어</th><th>한국어</th><th>예문</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>squeeze</td><td>비집고 들어가다</td><td>squeezed under the gate</td></tr>
+        <tr><td>thief</td><td>도둑</td><td>Stop, thief!</td></tr>
+        <tr><td>tangle</td><td>엉키다</td><td>got tangled up in the net</td></tr>
+        <tr><td>wriggle</td><td>비틀다, 몸부림치다</td><td>wriggled and twisted</td></tr>
+        <tr><td>sneeze</td><td>재채기하다</td><td>Peter sneezed — Kertyschoo!</td></tr>
+        <tr><td>pale</td><td>창백한</td><td>looking very pale</td></tr>
+        <tr><td>chamomile</td><td>카모마일 (허브차)</td><td>chamomile tea</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DISCUSSION -->
+  <div class="section-title" style="margin-top:48px;">
+    <div class="section-num">3</div>
+    아이와 대화해보세요 · Discussion
+  </div>
+  <div class="content-box">
+    <ul class="disc-list">
+      <li class="disc-item">
+        <div class="disc-num">1</div>
+        <div class="disc-text">엄마가 뭐라고 했는데도 피터는 왜 정원에 갔을까요?</div>
+      </li>
+      <li class="disc-item">
+        <div class="disc-num">2</div>
+        <div class="disc-text">피터가 그물에 걸렸을 때 도와준 건 누구였나요?</div>
+      </li>
+      <li class="disc-item">
+        <div class="disc-num">3</div>
+        <div class="disc-text">착한 형제들과 피터의 저녁이 달랐던 이유는 뭐예요?</div>
+      </li>
+      <li class="disc-item">
+        <div class="disc-num">4</div>
+        <div class="disc-text">여러분이 피터라면 어떻게 했을 것 같아요?</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- REPORT -->
+  <div class="report-section">
+    <div class="report-title">다 읽었나요? 🎉</div>
+    <div class="report-sub">영어로 독후감을 써보아요! AI 선생님이 바로 확인해드려요.</div>
+    <a href="book-report.html" class="report-btn">✍️ 독후감 쓰기</a>
+  </div>
+
+</div>
+
+<audio id="audioEl" preload="none"></audio>
+
+<script>
+/* ════ DATA ════ */
+var CDN = 'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/library/peter_rabbit/';
+
+var PARAS = [
+  {
+    part: null,
+    en: 'Once upon a time, there were four little rabbits. Their names were Flopsy, Mopsy, Cotton-tail, and Peter. They lived with their mother under the roots of a very big fir tree.',
+    ko: '옛날 옛날에 아기 토끼 네 마리가 살았어요. 이름은 플롭시, 몹시, 코튼테일, 그리고 피터였어요. 엄마 토끼와 함께 커다란 전나무 뿌리 아래서 살았답니다.',
+    label: 'Paragraph 1'
+  },
+  {
+    en: 'One morning, Mother Rabbit put on her coat and picked up her basket. "Children," she said, "I am going to the market. You may go to the fields or down the lane — but do NOT go into Mr. McGregor\'s garden."',
+    ko: '어느 날 아침, 엄마 토끼가 외투를 입고 바구니를 들었어요. "얘들아," 엄마가 말했어요, "엄마는 시장에 다녀올게. 들판이나 골목길에서 놀아도 되지만 — 맥그리거 아저씨 정원에는 절대 들어가면 안 돼."',
+    label: 'Paragraph 2'
+  },
+  {
+    en: '"Your father had an accident there," Mother said quietly. "Mr. McGregor put him in a pie." The little rabbits listened carefully. All except Peter. Peter was already thinking about the garden.',
+    ko: '"아빠가 거기서 사고를 당했거든," 엄마가 조용히 말했어요. "맥그리거 아저씨가 아빠를 파이로 만들어버렸어." 아기 토끼들은 열심히 들었어요. 피터만 빼고요. 피터는 이미 정원 생각을 하고 있었어요.',
+    label: 'Paragraph 3'
+  },
+  {
+    part: 'Part 2 — Into the Garden · 정원으로',
+    en: 'Flopsy, Mopsy, and Cotton-tail were good little rabbits. They went down the lane to pick blackberries. But Peter ran straight to Mr. McGregor\'s garden and squeezed under the gate!',
+    ko: '플롭시, 몹시, 코튼테일은 착한 아기 토끼들이었어요. 골목길로 내려가 블랙베리를 따러 갔어요. 하지만 피터는 곧장 맥그리거 아저씨 정원으로 달려가 문 아래로 쏙 들어갔어요!',
+    label: 'Paragraph 4'
+  },
+  {
+    en: 'The garden was wonderful! Peter ate some lettuce. He ate some French beans. He ate some radishes. Then he found the cucumber frame and felt rather sick.',
+    ko: '정원은 정말 멋졌어요! 피터는 상추를 먹었어요. 강낭콩도 먹었어요. 무도 먹었어요. 그리고 오이 틀을 발견했는데 배가 조금 아프기 시작했어요.',
+    label: 'Paragraph 5'
+  },
+  {
+    en: 'To feel better, Peter went to look for some parsley. But then — he turned a corner and came face to face with Mr. McGregor! Mr. McGregor was on his hands and knees planting cabbages. He jumped up and grabbed a rake. "STOP, THIEF!" he shouted.',
+    ko: '기분이 나아지려고 파슬리를 찾으러 갔어요. 그런데 — 모퉁이를 돌자 맥그리거 아저씨와 딱 마주쳤어요! 맥그리거 아저씨는 양배추를 심느라 무릎을 꿇고 있었어요. 벌떡 일어나 갈퀴를 들었어요. "서라, 도둑놈!" 소리를 질렀어요.',
+    label: 'Paragraph 6'
+  },
+  {
+    part: 'Part 3 — The Chase · 추격전',
+    en: 'Peter ran as fast as his legs could carry him! He ran through the vegetable garden, knocking over flowerpots. He lost one shoe in the cabbages and the other shoe among the potatoes.',
+    ko: '피터는 다리가 달리는 만큼 최대한 빨리 달렸어요! 채소밭을 달리다 화분들을 쓰러뜨렸어요. 양배추 밭에서 신발 한 짝을 잃어버리고, 감자밭에서 나머지 한 짝을 잃어버렸어요.',
+    label: 'Paragraph 7'
+  },
+  {
+    en: 'Peter ran on four legs and was much faster. He might have escaped easily, but he ran into a gooseberry net. The big brass buttons on his jacket got tangled up. He was trapped!',
+    ko: '피터는 네 발로 달려서 훨씬 빨랐어요. 쉽게 도망칠 수 있었을 텐데, 구스베리 그물에 걸려버렸어요. 재킷의 큰 놋쇠 단추들이 그물에 엉켜버렸어요. 꼼짝달싹 못하게 된 거예요!',
+    label: 'Paragraph 8'
+  },
+  {
+    en: 'Some friendly sparrows flew over to help. They chirped and fluttered around Peter, trying to cheer him up. Peter wriggled and twisted and finally — pop! — he was free! But he had to leave his jacket behind.',
+    ko: '친절한 참새들이 날아와 도우려 했어요. 짹짹거리며 피터 주위를 날아다니며 기운을 북돋아줬어요. 피터가 비틀고 또 비틀다 결국 — 펑! — 자유로워졌어요! 하지만 재킷은 두고 가야 했어요.',
+    label: 'Paragraph 9'
+  },
+  {
+    part: 'Part 4 — Lost and Found · 숨고 찾기',
+    en: 'Peter ran into a big dark shed. He jumped into a watering can. It was very cold and wet — but it was a good hiding place. He stayed very, very still.',
+    ko: '피터는 크고 어두운 창고 안으로 뛰어들었어요. 물뿌리개 안으로 쏙 들어갔어요. 너무 차갑고 축축했지만 — 좋은 은신처였어요. 아주, 아주 가만히 있었어요.',
+    label: 'Paragraph 10'
+  },
+  {
+    en: 'Mr. McGregor searched and searched. He looked under flowerpots and behind the shed. Finally he gave up and went back to work. Peter waited until everything was quiet.',
+    ko: '맥그리거 아저씨는 샅샅이 찾았어요. 화분 아래도 들여다보고, 창고 뒤도 봤어요. 결국 포기하고 다시 일하러 갔어요. 피터는 모든 게 조용해질 때까지 기다렸어요.',
+    label: 'Paragraph 11'
+  },
+  {
+    en: 'Then Peter sneezed — "Kertyschoo!" Mr. McGregor was after him at once! Peter dashed out the window — but Mr. McGregor was too big to fit through. Peter finally found the gate and slipped out safely.',
+    ko: '그때 피터가 재채기를 했어요 — "에취!" 맥그리거 아저씨가 바로 쫓아왔어요! 피터는 창문으로 뛰쳐나갔어요 — 하지만 맥그리거 아저씨는 너무 커서 통과할 수 없었어요. 피터는 마침내 문을 찾아 안전하게 빠져나왔어요.',
+    label: 'Paragraph 12'
+  },
+  {
+    part: 'Part 5 — Home Safe · 집으로',
+    en: 'Peter ran all the way home without stopping. He was so tired he flopped down on the soft sand floor of the rabbit hole. He closed his eyes and didn\'t move.',
+    ko: '피터는 멈추지 않고 집까지 내달렸어요. 너무 지쳐서 토끼굴의 부드러운 모래 바닥에 털썩 쓰러졌어요. 눈을 감고 꼼짝도 하지 않았어요.',
+    label: 'Paragraph 13'
+  },
+  {
+    en: 'Mother Rabbit was cooking dinner when Peter arrived. She looked at him — no jacket, no shoes, looking very pale. She said nothing, but put him to bed with some chamomile tea. "Drink this," she said gently.',
+    ko: '피터가 돌아왔을 때 엄마 토끼는 저녁을 요리하고 있었어요. 피터를 바라봤어요 — 재킷도 없고, 신발도 없고, 얼굴이 창백했어요. 아무 말도 하지 않았지만, 카모마일 차를 끓여서 재웠어요. "이거 마셔," 부드럽게 말했어요.',
+    label: 'Paragraph 14'
+  },
+  {
+    en: 'Flopsy, Mopsy, and Cotton-tail had a wonderful supper. Mother gave them blackberries, bread, and milk. Peter, though, had only chamomile tea. It was a good lesson — but Peter already knew he would forget it by tomorrow.',
+    ko: '플롭시, 몹시, 코튼테일은 멋진 저녁을 먹었어요. 엄마가 블랙베리, 빵, 우유를 줬어요. 하지만 피터는 카모마일 차만 마셨어요. 좋은 교훈이었어요 — 하지만 피터는 내일이면 잊을 거라는 걸 이미 알고 있었어요.',
+    label: 'Paragraph 15'
+  }
+];
+
+/* ════ BUILD PARAGRAPHS ════ */
+var parasEl = document.getElementById('paras');
+var currentPart = null;
+
+PARAS.forEach(function(p, i) {
+  // Part heading
+  if (p.part && p.part !== currentPart) {
+    currentPart = p.part;
+    var h = document.createElement('div');
+    h.className = 'section-title';
+    h.style.marginTop = i === 0 ? '0' : '36px';
+    h.innerHTML = '<div class="section-num">' + (i+1) + '</div>' + p.part;
+    parasEl.appendChild(h);
+  }
+
+  var block = document.createElement('div');
+  block.className = 'para-block';
+  block.id = 'para_' + i;
+  block.innerHTML =
+    '<div class="para-inner">' +
+      '<div class="para-en">' +
+        '<div class="lang-badge en"><div class="lang-dot en"></div>English</div>' +
+        '<div class="para-text-en">' + p.en + '</div>' +
+        '<button class="para-play-btn" onclick="loadPara(' + i + ',true)">▶ 이 단락 듣기</button>' +
+      '</div>' +
+      '<div class="para-ko">' +
+        '<div class="lang-badge ko"><div class="lang-dot ko"></div>한국어</div>' +
+        '<div class="para-text-ko">' + p.ko + '</div>' +
+      '</div>' +
+    '</div>';
+  parasEl.appendChild(block);
+});
+
+/* ════ WAVEFORM ════ */
+var waveEl = document.getElementById('waveform');
+var WH = [4,8,14,20,28,36,28,20,14,8,4,10,18,26,34,26,18,10,16,24,32,24,16,8,12,20,28,20,12,6];
+for (var b = 0; b < 30; b++) {
+  var bar = document.createElement('div');
+  bar.className = 'wb';
+  bar.style.setProperty('--h', WH[b%WH.length] + 'px');
+  bar.style.setProperty('--d', (0.4+Math.random()*0.6).toFixed(2)+'s');
+  bar.style.setProperty('--dl', (b*0.022).toFixed(3)+'s');
+  waveEl.appendChild(bar);
+}
+
+/* ════ AUDIO ════ */
+var audio = document.getElementById('audioEl');
+var curIdx = 0;
+var isPlaying = false;
+var rafId = null;
+
+function fmt(s) {
+  if (!s||isNaN(s)) return '--:--';
+  return Math.floor(s/60)+':'+(Math.floor(s%60)<10?'0':'')+Math.floor(s%60);
+}
+
+function loadPara(idx, play) {
+  curIdx = idx;
+  var p = PARAS[idx];
+
+  // Highlight
+  document.querySelectorAll('.para-block').forEach(function(el,i){
+    el.classList.remove('active','done');
+    if (i < idx) el.classList.add('done');
+    if (i === idx) {
+      el.classList.add('active');
+      el.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+  });
+
+  // Player info
+  document.getElementById('piTitle').textContent = p.label + ' / ' + PARAS.length;
+  document.getElementById('piSub').textContent = p.en.substring(0,50) + '...';
+
+  // Audio
+  audio.src = CDN + 'p' + String(idx+1).padStart(2,'0') + '.mp3';
+  audio.load();
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('timeTxt').textContent = '0:00 / --:--';
+
+  audio.addEventListener('loadedmetadata', function onM(){
+    document.getElementById('timeTxt').textContent = '0:00 / ' + fmt(audio.duration);
+    audio.removeEventListener('loadedmetadata', onM);
+  });
+
+  if (play !== false) {
+    audio.play().then(function(){ setPlaying(true); }).catch(function(){});
+  }
+}
+
+function togglePlay() {
+  if (!audio.src || audio.src === window.location.href) {
+    loadPara(0, true); return;
+  }
+  if (audio.paused) {
+    audio.play().then(function(){ setPlaying(true); }).catch(function(){});
+  } else {
+    audio.pause(); setPlaying(false);
+  }
+}
+
+function setPlaying(p) {
+  isPlaying = p;
+  var btn = document.getElementById('playBtn');
+  btn.textContent = p ? '⏸' : '▶';
+  btn.classList.toggle('playing', p);
+  waveEl.classList.toggle('on', p);
+  if (p) { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(uiLoop); }
+  else cancelAnimationFrame(rafId);
+}
+
+function uiLoop() {
+  if (!audio||audio.paused) return;
+  var t = audio.currentTime, dur = audio.duration||1;
+  document.getElementById('progressFill').style.width = Math.min(t/dur*100,100)+'%';
+  document.getElementById('timeTxt').textContent = fmt(t)+' / '+fmt(dur);
+  rafId = requestAnimationFrame(uiLoop);
+}
+
+function seekAudio(e) {
+  var rect = e.currentTarget.getBoundingClientRect();
+  if (audio.duration) audio.currentTime = (e.clientX-rect.left)/rect.width*audio.duration;
+}
+
+function prevPara() { if (curIdx > 0) loadPara(curIdx-1, isPlaying); }
+function nextPara() { if (curIdx < PARAS.length-1) loadPara(curIdx+1, isPlaying); }
+
+audio.addEventListener('ended', function(){
+  if (curIdx < PARAS.length-1) {
+    setTimeout(function(){ loadPara(curIdx+1, true); }, 600);
+  } else {
+    setPlaying(false);
+    document.getElementById('piTitle').textContent = '완료! 🎉 독후감을 써봐요!';
+  }
+});
+audio.addEventListener('pause', function(){ if(isPlaying) setPlaying(false); });
+
+/* ════ PARTICLES ════ */
+var pc = document.getElementById('particles');
+for (var i=0;i<24;i++){
+  var p=document.createElement('div'); p.className='pt';
+  p.style.setProperty('--d',(8+Math.random()*12).toFixed(1)+'s');
+  p.style.setProperty('--dl',(Math.random()*10).toFixed(1)+'s');
+  p.style.setProperty('--o',(0.15+Math.random()*0.3).toFixed(2));
+  p.style.setProperty('--dx',(Math.random()*80-40).toFixed(0)+'px');
+  p.style.left=(Math.random()*100)+'%';
+  var sz=(1+Math.random()*2).toFixed(1)+'px';
+  p.style.width=p.style.height=sz;
+  pc.appendChild(p);
+}
+</script>
+</body>
+</html>
