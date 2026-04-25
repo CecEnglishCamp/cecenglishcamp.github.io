@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Adventures of Tom Sawyer — CEC Library</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Sans+KR:wght@400;500;700&family=Nunito:wght@400;600;700;800;900&display=swap');
+:root{--bg:#100a00;--panel:rgba(10,10,15,0.88);--border:rgba(245,158,11,0.25);--gold:#c9a84c;--gold2:#e8c96a;--gold-pale:rgba(201,168,76,0.08);--cream:#f5ead8;--mid:#9a8050;--light:#6a5820;--acc:#f59e0b;--acc-pale:rgba(245,158,11,0.10);--acc-b:rgba(245,158,11,0.25);--acc-dark:#b45309;}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);color:var(--cream);min-height:100vh;}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.pt{position:absolute;border-radius:50%;opacity:0;animation:ptf var(--d) var(--dl) infinite ease-in-out;}
+@keyframes ptf{0%{opacity:0;transform:translateY(100vh);}10%{opacity:var(--o);}90%{opacity:var(--o);}100%{opacity:0;transform:translateY(-20px) translateX(var(--dx));}}
+.back-btn{position:fixed;top:20px;left:20px;z-index:100;padding:8px 16px;border-radius:99px;background:rgba(0,0,0,0.9);backdrop-filter:blur(12px);border:1px solid var(--border);color:var(--gold);font-size:.78rem;font-weight:700;text-decoration:none;}
+.book-header{position:relative;z-index:10;padding:72px 24px 48px;text-align:center;max-width:800px;margin:0 auto;}
+.bh-eyebrow{font-size:.7rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--acc);margin-bottom:12px;}
+.bh-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--cream);margin-bottom:8px;line-height:1.1;}
+.bh-title em{font-style:italic;color:#fcd34d;}
+.bh-author{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--mid);margin-bottom:20px;}
+.bh-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.bhtag{padding:5px 13px;border-radius:99px;font-size:.72rem;font-weight:700;background:var(--acc-pale);border:1px solid var(--acc-b);color:#fcd34d;}
+.player-bar{position:sticky;top:0;z-index:50;background:rgba(0,0,0,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 20px;}
+.player-inner{max-width:800px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+.play-btn{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all .25s;background:linear-gradient(135deg,var(--acc),var(--acc-dark));color:white;box-shadow:0 4px 16px var(--acc-pale);}
+.play-btn.playing{background:linear-gradient(135deg,#ef4444,#b91c1c);}
+.player-info{flex:1;min-width:0;}
+.pi-title{font-size:.8rem;font-weight:700;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pi-sub{font-size:.7rem;color:var(--mid);margin-top:2px;}
+.progress-wrap{flex:1;display:flex;flex-direction:column;gap:4px;}
+.progress-track{height:4px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;cursor:pointer;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--gold));border-radius:99px;width:0%;transition:width .3s linear;}
+.time-txt{font-size:.68rem;color:var(--mid);text-align:right;}
+.nav-btns{display:flex;gap:6px;}
+.nav-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.waveform{height:36px;display:flex;align-items:center;gap:0;padding:0 8px;}
+.wb{width:2.5px;border-radius:99px;background:var(--acc-pale);margin:0 1px;height:3px;transform-origin:center;}
+.waveform.on .wb{background:var(--acc);animation:wbA var(--d) ease-in-out infinite alternate;animation-delay:var(--dl);}
+@keyframes wbA{0%{height:3px;}100%{height:var(--h);}}
+.main{position:relative;z-index:10;max-width:800px;margin:0 auto;padding:32px 24px 80px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:#fcd34d;margin:36px 0 20px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.section-num{width:28px;height:28px;border-radius:50%;background:var(--acc-pale);border:1px solid var(--acc-b);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--acc);flex-shrink:0;}
+.para-block{margin-bottom:4px;border-radius:16px;overflow:hidden;transition:all .35s;border:1.5px solid transparent;}
+.para-block.active{border-color:var(--acc-b);box-shadow:0 0 0 4px var(--acc-pale);}
+.para-block.done{opacity:.6;}
+.para-inner{display:grid;grid-template-columns:1fr 1fr;}
+@media(max-width:600px){.para-inner{grid-template-columns:1fr;}}
+.para-en{padding:18px 20px;background:rgba(0,0,0,0.4);border-right:1px solid var(--border);}
+.para-ko{padding:18px 20px;background:rgba(0,0,0,0.25);}
+.para-block.active .para-en{background:var(--acc-pale);}
+.para-block.active .para-ko{background:rgba(0,0,0,0.15);}
+.lang-badge{font-size:.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.lang-badge.en{color:var(--acc);}.lang-badge.ko{color:var(--gold);}
+.lang-dot{width:6px;height:6px;border-radius:50%;}.lang-dot.en{background:var(--acc);}.lang-dot.ko{background:var(--gold);}
+.para-text-en{font-size:.95rem;line-height:1.85;color:var(--cream);font-family:'Nunito',sans-serif;}
+.para-text-ko{font-size:.88rem;line-height:1.9;color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.para-block.active .para-text-en{color:white;}.para-block.active .para-text-ko{color:#d4c8a0;}
+.para-play-btn{display:flex;align-items:center;gap:6px;margin-top:10px;padding:5px 12px;border-radius:99px;background:var(--acc-pale);border:none;color:var(--acc);font-size:.7rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.content-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px 24px;}
+.vocab-table{width:100%;border-collapse:collapse;}
+.vocab-table th{font-size:.7rem;font-weight:800;color:var(--gold);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.vocab-table td{padding:10px 14px;font-size:.85rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+.vocab-table td:first-child{font-family:'Nunito',sans-serif;font-weight:700;color:var(--cream);}
+.vocab-table td:nth-child(2){color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.vocab-table td:last-child{color:var(--light);font-size:.78rem;font-family:'Noto Sans KR',sans-serif;}
+.disc-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.disc-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--acc-pale);border:1px solid var(--acc-b);border-radius:12px;}
+.disc-num{width:26px;height:26px;border-radius:50%;background:var(--acc);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;flex-shrink:0;}
+.disc-text{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;line-height:1.6;padding-top:3px;}
+.report-section{margin-top:48px;padding:28px;background:var(--gold-pale);border:1px solid rgba(201,168,76,0.25);border-radius:20px;text-align:center;}
+.report-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--cream);margin-bottom:8px;}
+.report-sub{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;margin-bottom:18px;}
+.report-btn{display:inline-block;padding:13px 28px;border-radius:14px;background:linear-gradient(135deg,var(--gold),#a07828);color:#1a110a;font-size:.9rem;font-weight:800;text-decoration:none;font-family:'Nunito',sans-serif;}
+</style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+<a href="index.html" class="back-btn">← Library</a>
+<div class="book-header">
+  <div class="bh-eyebrow">CEC Library · Grade 4</div>
+  <div class="bh-title"><em>The Adventures of Tom Sawyer</em></div>
+  <div class="bh-author">Mark Twain · 1876</div>
+  <div class="bh-tags">
+    <span class="bhtag">⚡ G4</span>
+    <span class="bhtag">🎧 MP3 15단락</span>
+    <span class="bhtag">🇰🇷 한국어 번역</span>
+    <span class="bhtag">✍️ 독후감 쓰기</span>
+  </div>
+</div>
+<div class="player-bar">
+  <div class="player-inner">
+    <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+    <div class="waveform" id="waveform"></div>
+    <div class="player-info">
+      <div class="pi-title" id="piTitle">재생 버튼을 눌러 시작하세요</div>
+      <div class="pi-sub">The Adventures of Tom Sawyer · 15 paragraphs</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track" onclick="seekAudio(event)"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="time-txt" id="timeTxt">0:00 / --:--</div>
+    </div>
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="prevPara()">⏮</button>
+      <button class="nav-btn" onclick="nextPara()">⏭</button>
+    </div>
+  </div>
+</div>
+<div class="main">
+  <div id="paras"></div>
+  <div class="section-title" style="margin-top:48px;"><div class="section-num">2</div>오늘의 단어 · Key Vocabulary</div>
+  <div class="content-box">
+    <table class="vocab-table">
+      <thead><tr><th>영어</th><th>한국어</th><th>예문</th></tr></thead>
+      <tbody><tr><td>whitewash</td><td>흰 페인트칠</td><td>whitewash the fence</td></tr><tr><td>reluctantly</td><td>마지못해</td><td>gave up reluctantly</td></tr><tr><td>superintendent</td><td>원장</td><td>Sunday school superintendent</td></tr><tr><td>engaged</td><td>약혼한</td><td>let us get engaged</td></tr><tr><td>complicated</td><td>복잡한</td><td>girls are so complicated</td></tr><tr><td>envy</td><td>부러워하다</td><td>envied by every boy</td></tr></tbody>
+    </table>
+  </div>
+  <div class="section-title" style="margin-top:48px;"><div class="section-num">3</div>아이와 대화해보세요 · Discussion</div>
+  <div class="content-box"><ul class="disc-list"><li class="disc-item"><div class="disc-num">1</div><div class="disc-text">톰은 어떻게 울타리를 친구들이 칠하게 만들었나요?</div></li><li class="disc-item"><div class="disc-num">2</div><div class="disc-text">주일 학교에서 톰이 한 말이 왜 웃겼을까요?</div></li><li class="disc-item"><div class="disc-num">3</div><div class="disc-text">톰과 헉은 어떻게 달라요?</div></li><li class="disc-item"><div class="disc-num">4</div><div class="disc-text">여러분이 싫어하는 일을 즐겁게 만들 수 있는 방법은?</div></li></ul></div>
+  <div class="report-section">
+    <div class="report-title">다 읽었나요? 🎉</div>
+    <div class="report-sub">영어로 독후감을 써보아요!</div>
+    <a href="book-report.html" class="report-btn">✍️ 독후감 쓰기</a>
+  </div>
+</div>
+<audio id="audioEl" preload="none"></audio>
+<script>
+var CDN='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/library/tom_sawyer/';
+var PARAS=[{"part": "Ch.1-2 — Tom's Saturday · 톰의 토요일", "en": "TOM! No answer. TOM! No answer. Where is that boy, I wonder? Old Aunt Polly looked everywhere — under the bed, behind the door, in the cupboard. Tom Sawyer was nowhere to be found.", "ko": "톰! 대답 없음. 톰! 대답 없음. 도대체 저 녀석이 어디 있는 거야? 폴리 이모할머니는 사방을 찾았어요 — 침대 아래, 문 뒤, 찬장 안. 톰 소여는 어디에도 없었어요.", "label": "Paragraph 1"}, {"en": "Then she heard a sound in the garden. Tom had been in the jam cupboard. His mouth was sticky with jam and there was jam on his hands. What have you been doing in there? she demanded. Tom gave no answer, but his guilty face told the whole story. I will have to punish you, said Aunt Polly. Saturday — you will whitewash the fence.", "ko": "그때 정원에서 소리가 들렸어요. 톰은 잼 찬장에 들어가 있었어요. 입이 잼으로 끈적했고 손에도 잼이 묻어 있었어요. 거기서 뭘 했어? 이모할머니가 따졌어요. 톰은 대답하지 않았지만 죄책감 어린 얼굴이 모든 것을 말해줬어요. 벌을 줘야겠어, 폴리 이모할머니가 말했어요. 토요일에 울타리 페인트칠 해.", "label": "Paragraph 2"}, {"en": "On the way to school, Tom met a stranger — a new boy, well-dressed and proud. Tom stared at him. The boy stared back. They circled each other like dogs. Then they fought — rolling in the dirt, pulling hair, scratching. Tom won, and chased the boy home. He arrived at school very late.", "ko": "학교 가는 길에 톰은 낯선 아이를 만났어요 — 잘 차려입고 거만한 새 아이. 톰이 노려봤어요. 아이도 노려봤어요. 개처럼 서로 빙글빙글 돌았어요. 그리고 싸웠어요 — 흙 속에서 뒹굴고, 머리를 잡아당기고, 할퀴었어요. 톰이 이겼고 아이를 집까지 쫓아갔어요. 학교에 아주 늦게 도착했어요.", "label": "Paragraph 3"}, {"part": "Ch.2 — The Glorious Whitewasher · 멋진 페인트공", "en": "Saturday morning came bright and fresh. Tom appeared with a bucket of whitewash and a long-handled brush. He looked at the fence — thirty yards long and nine feet high. The joy of life went out of him. He sat down, defeated. Life seemed very hollow.", "ko": "토요일 아침이 밝고 신선하게 왔어요. 톰은 흰 페인트 통과 긴 솔을 들고 나타났어요. 울타리를 바라봤어요 — 30야드 길이에 9피트 높이. 삶의 기쁨이 사라졌어요. 풀이 죽어 앉았어요. 인생이 너무 공허하게 느껴졌어요.", "label": "Paragraph 4"}, {"en": "Then a wonderful idea struck him. He began to whitewash — slowly, carefully, stepping back to admire the result. His friend Ben came by, eating an apple and laughing. Hah! You have to WORK on Saturday! Tom looked at him thoughtfully. What do you call work? Well — is not THAT work? Tom resumed his whitewashing. Well, maybe it is, and maybe it is not. All I know is, it suits Tom Sawyer.", "ko": "그때 멋진 생각이 떠올랐어요. 페인트칠을 시작했어요 — 천천히, 조심스럽게, 뒤로 물러서서 결과를 감상하면서. 친구 벤이 사과를 먹으며 웃으면서 지나가다 멈췄어요. 하! 토요일에 일해야 해! 톰이 생각에 잠긴 듯 그를 바라봤어요. 이게 일이라고 생각해? 그럼 저게 일이 아니고 뭐야? 톰은 다시 페인트칠을 했어요. 글쎄, 일일 수도 있고 아닐 수도 있지. 내가 아는 건, 톰 소여한테는 딱 맞는다는 거야.", "label": "Paragraph 5"}, {"en": "Ben watched for a while. Then: Tom, let me whitewash a little. No — no — I reckon it would hardly do. Aunt Polly is awful particular about this fence. Oh, come on — I will give you the core of my apple! Tom gave up the brush reluctantly. By afternoon, every boy in the village had whitewashed the fence — and Tom had collected an apple, a kite, a dead cat, and twelve marbles.", "ko": "벤이 잠시 구경했어요. 그리고 톰, 나도 조금만 칠해도 돼? 안 돼 — 안 돼 — 잘 안 될 것 같아. 폴리 이모할머니가 이 울타리에 엄청 까다로워. 아, 제발 — 사과 속 줄게! 톰은 마지못해 솔을 넘겨줬어요. 오후가 될 때까지 마을의 모든 남자아이들이 울타리를 칠했어요 — 그리고 톰은 사과 하나, 연 하나, 죽은 고양이 하나, 구슬 열두 개를 모았어요.", "label": "Paragraph 6"}, {"part": "Ch.3 — Tom Falls in Love · 톰이 사랑에 빠지다", "en": "After the fence was done, Aunt Polly gave Tom an apple and let him go. On the way out he passed the garden gate — and there he saw her. A lovely little girl with yellow hair in two long tails. Tom fell in love.", "ko": "울타리가 다 되자, 폴리 이모할머니는 톰에게 사과를 주고 보내줬어요. 나가는 길에 정원 문을 지나쳤어요 — 그리고 그녀를 봤어요. 긴 머리를 두 갈래로 땋은 사랑스러운 소녀. 톰은 사랑에 빠졌어요.", "label": "Paragraph 7"}, {"en": "The girl's name was Becky Thatcher. She was new in town. Tom showed off terribly — turning somersaults, standing on his head, doing handstands. The girl seemed to notice but pretended not to. Then she tossed a flower over the fence and went inside. Tom picked up the flower and put it inside his jacket, next to his heart.", "ko": "소녀의 이름은 베키 대처였어요. 마을에 새로 온 아이였어요. 톰은 엄청나게 과시했어요 — 공중제비를 넘고, 물구나무를 서고, 옆돌기를 했어요. 소녀가 보는 것 같았지만 못 본 척했어요. 그리고 소녀는 울타리 너머로 꽃을 던지고 안으로 들어갔어요. 톰은 꽃을 주워 재킷 안, 심장 옆에 넣었어요.", "label": "Paragraph 8"}, {"part": "Ch.4 — Sunday School · 주일 학교", "en": "Sunday came. Tom had to go to Sunday school. He hated it — except that he had a plan. Children could earn tickets for memorizing Bible verses, and enough tickets could win you a Bible. Tom had traded boys out of their tickets using marbles, chalk, and candy. Now he had enough.", "ko": "일요일이 왔어요. 톰은 주일 학교에 가야 했어요. 싫었어요 — 하지만 계획이 있었어요. 아이들은 성경 구절을 외우면 표를 받을 수 있었고, 표가 충분하면 성경책을 받을 수 있었어요. 톰은 구슬, 분필, 사탕을 주고 친구들에게서 표를 샀어요. 이제 충분했어요.", "label": "Paragraph 9"}, {"en": "The superintendent called Tom up to receive his Bible. He was very proud. Then he saw that the new girl — Becky Thatcher — was there, sitting with her father, Judge Thatcher. When they asked him the name of the first two disciples, Tom answered confidently: DAVID AND GOLIATH! The room went silent. Even the superintendent did not know what to say.", "ko": "원장이 톰을 불러 성경책을 주려 했어요. 톰은 매우 의기양양했어요. 그런데 새 소녀 — 베키 대처 — 가 거기 있었어요. 아버지 대처 판사와 함께 앉아 있었어요. 처음 두 제자의 이름을 묻자, 톰은 자신있게 대답했어요. 다윗과 골리앗이요! 방이 조용해졌어요. 원장조차 뭐라고 해야 할지 몰랐어요.", "label": "Paragraph 10"}, {"part": "Ch.5 — The Pinch-Bug · 딱정벌레", "en": "In church that Sunday, Tom was bored. He took out a large black pinch-bug from a box in his pocket. He put it on the bench. It grabbed his finger. He shook it off. It landed on a sleeping dog. The dog yelped, leaped up, and ran around the church. Every person tried not to laugh. Some failed.", "ko": "그날 교회에서 톰은 심심했어요. 주머니 상자에서 큰 검정 딱정벌레를 꺼냈어요. 벤치 위에 올려놨어요. 딱정벌레가 손가락을 물었어요. 팔을 흔들어 떼어냈어요. 자고 있던 개 위에 떨어졌어요. 개가 깨어 깽 하고 교회를 뛰어다녔어요. 모두 웃지 않으려고 했어요. 몇몇은 실패했어요.", "label": "Paragraph 11"}, {"en": "After church, Tom ran to find Becky. He wrote her a note: I love you. She turned red and told him to go away. Then she turned back: What did the note say again? He told her. She turned red again — but she smiled. Tom walked home walking on clouds.", "ko": "교회가 끝나고 톰은 베키를 찾으러 달렸어요. 쪽지를 썼어요. 좋아해. 베키는 얼굴이 빨개지며 저리 가라고 했어요. 그러다 다시 돌아봤어요. 쪽지에 뭐라고 썼어? 톰이 말해줬어요. 베키는 다시 얼굴이 빨개졌어요 — 하지만 미소를 지었어요. 톰은 구름 위를 걷는 것 같았어요.", "label": "Paragraph 12"}, {"en": "Let us get engaged, said Tom. We like each other, so it means we can never love anybody else. And then when we walk to school, I carry your books. Is that all? said Becky. No — you kiss the person you like. Like this. He kissed her. She pushed him away — then looked pleased. It was the beginning of a great adventure.", "ko": "약혼하자, 톰이 말했어요. 우리 서로 좋아하니까, 다른 사람을 좋아하면 안 돼. 그리고 학교 갈 때 내가 네 책 들어줄게. 그게 다야? 베키가 말했어요. 아니 — 좋아하는 사람한테 뽀뽀해. 이렇게. 톰이 뽀뽀했어요. 베키가 밀쳐냈어요 — 그리고 기쁜 표정을 지었어요. 위대한 모험의 시작이었어요.", "label": "Paragraph 13"}, {"en": "But then Tom made a mistake. He mentioned Amy Lawrence — his old girlfriend. Becky's eyes filled with tears. She told him to go away and never speak to her again. Tom walked away, angry and sad. Why did girls have to be so complicated? He went to the woods alone to think.", "ko": "하지만 톰은 실수를 했어요. 에이미 로렌스 — 예전 여자친구 — 를 언급했어요. 베키의 눈에 눈물이 차올랐어요. 저리 가고 다시는 말 걸지 말라고 했어요. 톰은 화가 나고 슬프게 떠났어요. 왜 여자아이들은 이렇게 복잡한 걸까? 혼자 생각하러 숲으로 갔어요.", "label": "Paragraph 14"}, {"en": "In the woods, Tom met his best friend Huckleberry Finn — the son of the town drunk, free and wild and envied by every boy. Huck had a dead cat. What is a dead cat good for? asked Tom. Good for curing warts, said Huck. You go to the graveyard at midnight... And so began one of the greatest adventures of Tom's life.", "ko": "숲에서 톰은 절친한 친구 허클베리 핀을 만났어요 — 마을 술꾼의 아들로, 자유롭고 야생적이며 모든 남자아이들의 부러움을 받는 아이. 헉에게는 죽은 고양이가 있었어요. 죽은 고양이가 뭐에 좋아? 톰이 물었어요. 사마귀 치료에 좋아, 헉이 말했어요. 자정에 묘지에 가서... 그렇게 톰 인생 최대의 모험 중 하나가 시작됐어요.", "label": "Paragraph 15"}];
+
+var parasEl=document.getElementById('paras'),currentPart=null;
+PARAS.forEach(function(p,i){
+  if(p.part&&p.part!==currentPart){currentPart=p.part;var h=document.createElement('div');h.className='section-title';h.style.marginTop=i===0?'0':'36px';h.innerHTML='<div class="section-num">'+(i+1)+'</div>'+p.part;parasEl.appendChild(h);}
+  var block=document.createElement('div');block.className='para-block';block.id='para_'+i;
+  block.innerHTML='<div class="para-inner"><div class="para-en"><div class="lang-badge en"><div class="lang-dot en"></div>English</div><div class="para-text-en">'+p.en+'</div><button class="para-play-btn" onclick="loadPara('+i+',true)">▶ 이 단락 듣기</button></div><div class="para-ko"><div class="lang-badge ko"><div class="lang-dot ko"></div>한국어</div><div class="para-text-ko">'+p.ko+'</div></div></div>';
+  parasEl.appendChild(block);
+});
+var waveEl=document.getElementById('waveform');
+var WH=[4,8,14,20,28,36,28,20,14,8,4,10,18,26,34,26,18,10,16,24,32,24,16,8,12,20,28,20,12,6];
+for(var b=0;b<30;b++){var bar=document.createElement('div');bar.className='wb';bar.style.setProperty('--h',WH[b%WH.length]+'px');bar.style.setProperty('--d',(0.4+Math.random()*0.6).toFixed(2)+'s');bar.style.setProperty('--dl',(b*0.022).toFixed(3)+'s');waveEl.appendChild(bar);}
+var audio=document.getElementById('audioEl'),curIdx=0,isPlaying=false,rafId=null;
+function fmt(s){if(!s||isNaN(s))return'--:--';return Math.floor(s/60)+':'+(Math.floor(s%60)<10?'0':'')+Math.floor(s%60);}
+function loadPara(idx,play){curIdx=idx;var p=PARAS[idx];document.querySelectorAll('.para-block').forEach(function(el,i){el.classList.remove('active','done');if(i<idx)el.classList.add('done');if(i===idx){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'center'});}});document.getElementById('piTitle').textContent=p.label+' / '+PARAS.length;audio.src=CDN+'p'+String(idx+1).padStart(2,'0')+'.mp3';audio.load();document.getElementById('progressFill').style.width='0%';document.getElementById('timeTxt').textContent='0:00 / --:--';audio.addEventListener('loadedmetadata',function onM(){document.getElementById('timeTxt').textContent='0:00 / '+fmt(audio.duration);audio.removeEventListener('loadedmetadata',onM);});if(play!==false)audio.play().then(function(){setPlaying(true);}).catch(function(){});}
+function togglePlay(){if(!audio.src||audio.src===window.location.href){loadPara(0,true);return;}if(audio.paused){audio.play().then(function(){setPlaying(true);}).catch(function(){});}else{audio.pause();setPlaying(false);}}
+function setPlaying(p){isPlaying=p;var btn=document.getElementById('playBtn');btn.textContent=p?'⏸':'▶';btn.classList.toggle('playing',p);waveEl.classList.toggle('on',p);if(p){cancelAnimationFrame(rafId);rafId=requestAnimationFrame(uiLoop);}else cancelAnimationFrame(rafId);}
+function uiLoop(){if(!audio||audio.paused)return;var t=audio.currentTime,dur=audio.duration||1;document.getElementById('progressFill').style.width=Math.min(t/dur*100,100)+'%';document.getElementById('timeTxt').textContent=fmt(t)+' / '+fmt(dur);rafId=requestAnimationFrame(uiLoop);}
+function seekAudio(e){var rect=e.currentTarget.getBoundingClientRect();if(audio.duration)audio.currentTime=(e.clientX-rect.left)/rect.width*audio.duration;}
+function prevPara(){if(curIdx>0)loadPara(curIdx-1,isPlaying);}
+function nextPara(){if(curIdx<PARAS.length-1)loadPara(curIdx+1,isPlaying);}
+audio.addEventListener('ended',function(){if(curIdx<PARAS.length-1){setTimeout(function(){loadPara(curIdx+1,true);},600);}else{setPlaying(false);document.getElementById('piTitle').textContent='완료! 독후감을 써봐요!';}});
+audio.addEventListener('pause',function(){if(isPlaying)setPlaying(false);});
+var pc=document.getElementById('particles');
+for(var i=0;i<24;i++){var p=document.createElement('div');p.className='pt';p.style.background="#f59e0b";p.style.setProperty('--d',(8+Math.random()*12).toFixed(1)+'s');p.style.setProperty('--dl',(Math.random()*10).toFixed(1)+'s');p.style.setProperty('--o',(0.15+Math.random()*0.3).toFixed(2));p.style.setProperty('--dx',(Math.random()*80-40).toFixed(0)+'px');p.style.left=(Math.random()*100)+'%';var sz=(1+Math.random()*2).toFixed(1)+'px';p.style.width=p.style.height=sz;pc.appendChild(p);}
+
+</script>
+</body>
+</html>

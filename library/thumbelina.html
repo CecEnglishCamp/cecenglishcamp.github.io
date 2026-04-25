@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thumbelina — CEC Library</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Sans+KR:wght@400;500;700&family=Nunito:wght@400;600;700;800;900&display=swap');
+:root{--bg:#120a10;--panel:rgba(10,10,15,0.88);--border:rgba(244,114,182,0.25);--gold:#c9a84c;--gold2:#e8c96a;--gold-pale:rgba(201,168,76,0.08);--cream:#f5ead8;--mid:#9a608a;--light:#6a3060;--acc:#f472b6;--acc-pale:rgba(244,114,182,0.10);--acc-b:rgba(244,114,182,0.25);--acc-dark:#be185d;}
+*{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{font-family:'Nunito','Noto Sans KR',sans-serif;background:var(--bg);color:var(--cream);min-height:100vh;}
+.particles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.pt{position:absolute;border-radius:50%;opacity:0;animation:ptf var(--d) var(--dl) infinite ease-in-out;}
+@keyframes ptf{0%{opacity:0;transform:translateY(100vh);}10%{opacity:var(--o);}90%{opacity:var(--o);}100%{opacity:0;transform:translateY(-20px) translateX(var(--dx));}}
+.back-btn{position:fixed;top:20px;left:20px;z-index:100;padding:8px 16px;border-radius:99px;background:rgba(0,0,0,0.9);backdrop-filter:blur(12px);border:1px solid var(--border);color:var(--gold);font-size:.78rem;font-weight:700;text-decoration:none;}
+.book-header{position:relative;z-index:10;padding:72px 24px 48px;text-align:center;max-width:800px;margin:0 auto;}
+.bh-eyebrow{font-size:.7rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--acc);margin-bottom:12px;}
+.bh-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:var(--cream);margin-bottom:8px;line-height:1.1;}
+.bh-title em{font-style:italic;color:#fbcfe8;}
+.bh-author{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--mid);margin-bottom:20px;}
+.bh-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.bhtag{padding:5px 13px;border-radius:99px;font-size:.72rem;font-weight:700;background:var(--acc-pale);border:1px solid var(--acc-b);color:#fbcfe8;}
+.player-bar{position:sticky;top:0;z-index:50;background:rgba(0,0,0,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 20px;}
+.player-inner{max-width:800px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+.play-btn{width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all .25s;background:linear-gradient(135deg,var(--acc),var(--acc-dark));color:white;box-shadow:0 4px 16px var(--acc-pale);}
+.play-btn.playing{background:linear-gradient(135deg,#ef4444,#b91c1c);}
+.player-info{flex:1;min-width:0;}
+.pi-title{font-size:.8rem;font-weight:700;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pi-sub{font-size:.7rem;color:var(--mid);margin-top:2px;}
+.progress-wrap{flex:1;display:flex;flex-direction:column;gap:4px;}
+.progress-track{height:4px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;cursor:pointer;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--gold));border-radius:99px;width:0%;transition:width .3s linear;}
+.time-txt{font-size:.68rem;color:var(--mid);text-align:right;}
+.nav-btns{display:flex;gap:6px;}
+.nav-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--mid);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.waveform{height:36px;display:flex;align-items:center;gap:0;padding:0 8px;}
+.wb{width:2.5px;border-radius:99px;background:var(--acc-pale);margin:0 1px;height:3px;transform-origin:center;}
+.waveform.on .wb{background:var(--acc);animation:wbA var(--d) ease-in-out infinite alternate;animation-delay:var(--dl);}
+@keyframes wbA{0%{height:3px;}100%{height:var(--h);}}
+.main{position:relative;z-index:10;max-width:800px;margin:0 auto;padding:32px 24px 80px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:#fbcfe8;margin:36px 0 20px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.section-num{width:28px;height:28px;border-radius:50%;background:var(--acc-pale);border:1px solid var(--acc-b);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--acc);flex-shrink:0;}
+.para-block{margin-bottom:4px;border-radius:16px;overflow:hidden;transition:all .35s;border:1.5px solid transparent;}
+.para-block.active{border-color:var(--acc-b);box-shadow:0 0 0 4px var(--acc-pale);}
+.para-block.done{opacity:.6;}
+.para-inner{display:grid;grid-template-columns:1fr 1fr;}
+@media(max-width:600px){.para-inner{grid-template-columns:1fr;}}
+.para-en{padding:18px 20px;background:rgba(0,0,0,0.4);border-right:1px solid var(--border);}
+.para-ko{padding:18px 20px;background:rgba(0,0,0,0.25);}
+.para-block.active .para-en{background:var(--acc-pale);}
+.para-block.active .para-ko{background:rgba(0,0,0,0.15);}
+.lang-badge{font-size:.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.lang-badge.en{color:var(--acc);}.lang-badge.ko{color:var(--gold);}
+.lang-dot{width:6px;height:6px;border-radius:50%;}.lang-dot.en{background:var(--acc);}.lang-dot.ko{background:var(--gold);}
+.para-text-en{font-size:.95rem;line-height:1.85;color:var(--cream);font-family:'Nunito',sans-serif;}
+.para-text-ko{font-size:.88rem;line-height:1.9;color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.para-block.active .para-text-en{color:white;}.para-block.active .para-text-ko{color:#d4c8a0;}
+.para-play-btn{display:flex;align-items:center;gap:6px;margin-top:10px;padding:5px 12px;border-radius:99px;background:var(--acc-pale);border:none;color:var(--acc);font-size:.7rem;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;}
+.content-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px 24px;}
+.vocab-table{width:100%;border-collapse:collapse;}
+.vocab-table th{font-size:.7rem;font-weight:800;color:var(--gold);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);}
+.vocab-table td{padding:10px 14px;font-size:.85rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+.vocab-table td:first-child{font-family:'Nunito',sans-serif;font-weight:700;color:var(--cream);}
+.vocab-table td:nth-child(2){color:var(--mid);font-family:'Noto Sans KR',sans-serif;}
+.vocab-table td:last-child{color:var(--light);font-size:.78rem;font-family:'Noto Sans KR',sans-serif;}
+.disc-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.disc-item{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;background:var(--acc-pale);border:1px solid var(--acc-b);border-radius:12px;}
+.disc-num{width:26px;height:26px;border-radius:50%;background:var(--acc);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:900;flex-shrink:0;}
+.disc-text{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;line-height:1.6;padding-top:3px;}
+.report-section{margin-top:48px;padding:28px;background:var(--gold-pale);border:1px solid rgba(201,168,76,0.25);border-radius:20px;text-align:center;}
+.report-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--cream);margin-bottom:8px;}
+.report-sub{font-size:.85rem;color:var(--mid);font-family:'Noto Sans KR',sans-serif;margin-bottom:18px;}
+.report-btn{display:inline-block;padding:13px 28px;border-radius:14px;background:linear-gradient(135deg,var(--gold),#a07828);color:#1a110a;font-size:.9rem;font-weight:800;text-decoration:none;font-family:'Nunito',sans-serif;}
+</style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+<a href="index.html" class="back-btn">← Library</a>
+<div class="book-header">
+  <div class="bh-eyebrow">CEC Library · Grade 3</div>
+  <div class="bh-title"><em>Thumbelina</em></div>
+  <div class="bh-author">Hans Christian Andersen · 1835</div>
+  <div class="bh-tags">
+    <span class="bhtag">🌸 G3</span>
+    <span class="bhtag">🎧 MP3 14단락</span>
+    <span class="bhtag">🇰🇷 한국어 번역</span>
+    <span class="bhtag">✍️ 독후감 쓰기</span>
+  </div>
+</div>
+<div class="player-bar">
+  <div class="player-inner">
+    <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+    <div class="waveform" id="waveform"></div>
+    <div class="player-info">
+      <div class="pi-title" id="piTitle">재생 버튼을 눌러 시작하세요</div>
+      <div class="pi-sub">Thumbelina · 14 paragraphs</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track" onclick="seekAudio(event)"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="time-txt" id="timeTxt">0:00 / --:--</div>
+    </div>
+    <div class="nav-btns">
+      <button class="nav-btn" onclick="prevPara()">⏮</button>
+      <button class="nav-btn" onclick="nextPara()">⏭</button>
+    </div>
+  </div>
+</div>
+<div class="main">
+  <div id="paras"></div>
+  <div class="section-title" style="margin-top:48px;"><div class="section-num">2</div>오늘의 단어 · Key Vocabulary</div>
+  <div class="content-box">
+    <table class="vocab-table">
+      <thead><tr><th>영어</th><th>한국어</th><th>예문</th></tr></thead>
+      <tbody><tr><td>petal</td><td>꽃잎</td><td>rose petal blanket</td></tr><tr><td>snatch</td><td>낚아채다</td><td>snatched Thumbelina</td></tr><tr><td>recover</td><td>회복하다</td><td>the swallow recovered</td></tr><tr><td>eternal</td><td>영원한</td><td>eternal sunshine</td></tr><tr><td>fairy</td><td>요정</td><td>flower fairies</td></tr><tr><td>nest</td><td>둥지</td><td>made his nest</td></tr></tbody>
+    </table>
+  </div>
+  <div class="section-title" style="margin-top:48px;"><div class="section-num">3</div>아이와 대화해보세요 · Discussion</div>
+  <div class="content-box"><ul class="disc-list"><li class="disc-item"><div class="disc-num">1</div><div class="disc-text">엄지공주는 왜 처음에 제비와 함께 가지 않았나요?</div></li><li class="disc-item"><div class="disc-num">2</div><div class="disc-text">아픈 제비를 돌봐준 것은 왜 중요한 행동이었나요?</div></li><li class="disc-item"><div class="disc-num">3</div><div class="disc-text">엄지공주에게 가장 친절했던 사람은 누구였나요?</div></li><li class="disc-item"><div class="disc-num">4</div><div class="disc-text">여러분이 엄지공주라면 두더지 씨와 결혼했을까요?</div></li></ul></div>
+  <div class="report-section">
+    <div class="report-title">다 읽었나요? 🎉</div>
+    <div class="report-sub">영어로 독후감을 써보아요!</div>
+    <a href="book-report.html" class="report-btn">✍️ 독후감 쓰기</a>
+  </div>
+</div>
+<audio id="audioEl" preload="none"></audio>
+<script>
+var CDN='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/library/thumbelina/';
+var PARAS=[{"part": "Part 1 — The Tiny Girl · 작은 소녀", "en": "Once there was a woman who wanted very much to have a little child. She went to a wise old fairy and asked for help. The fairy gave her a magic seed. She planted it in a flowerpot, and soon a beautiful flower grew. When the petals opened — inside sat a tiny, beautiful girl, no bigger than a thumb. The woman called her Thumbelina.", "ko": "옛날에 작은 아이를 너무 갖고 싶은 여인이 살았어요. 지혜로운 늙은 요정을 찾아가 도움을 청했어요. 요정이 마법의 씨앗을 줬어요. 화분에 심었더니 곧 아름다운 꽃이 자랐어요. 꽃잎이 열리자 — 안에 손가락보다 작은 작고 아름다운 소녀가 앉아 있었어요. 여인은 그 아이를 엄지공주라고 불렀어요.", "label": "Paragraph 1"}, {"en": "Thumbelina slept in a walnut shell, with violet petals for a mattress and a rose petal for a blanket. During the day she played on a table with a plate of water as her lake. She could row herself across it on a tulip petal, using two white horsehairs as oars. She sang in the sweetest voice anyone had ever heard.", "ko": "엄지공주는 호두 껍데기에서 잠을 잤어요. 제비꽃 꽃잎이 매트리스였고 장미 꽃잎이 담요였어요. 낮에는 테이블 위에서 물이 담긴 접시를 호수 삼아 놀았어요. 튤립 꽃잎 위에 앉아 흰 말 털 두 개를 노 삼아 저으며 건넜어요. 누구나 들어본 것 중 가장 달콤한 목소리로 노래했어요.", "label": "Paragraph 2"}, {"part": "Part 2 — The Toad · 두꺼비", "en": "One night a big, ugly toad crept through the window and snatched Thumbelina while she was sleeping. She will make a perfect wife for my son, croaked the toad. She carried Thumbelina to the muddy river and put her on a lily pad so she could not escape.", "ko": "어느 밤, 크고 못생긴 두꺼비가 창문으로 기어 들어와 자고 있는 엄지공주를 낚아챘어요. 내 아들의 완벽한 아내가 되겠어, 두꺼비가 꽥꽥거렸어요. 엄지공주를 진흙투성이 강으로 데려가 도망치지 못하도록 수련 잎 위에 올려놨어요.", "label": "Paragraph 3"}, {"en": "Thumbelina sat on the lily pad and cried. Little fish heard her weeping and felt sorry for her. They nibbled at the stem of the lily pad until it broke free, and the current carried Thumbelina safely down the river and far away from the ugly toad.", "ko": "엄지공주는 수련 잎 위에 앉아 울었어요. 작은 물고기들이 우는 소리를 듣고 가여워했어요. 수련 줄기를 갉아 끊었고, 물줄기가 엄지공주를 강 아래로, 못생긴 두꺼비에게서 멀리 안전하게 데려갔어요.", "label": "Paragraph 4"}, {"en": "A butterfly helped pull her along, tied to the lily pad with a blade of grass. A cockchafer beetle saw her and thought she was pretty. He grabbed her and flew her up into a tree. But his friends said she was too strange-looking — no feelers, only two legs. So he let her go. Poor Thumbelina was alone again.", "ko": "나비가 수련 잎에 풀줄기로 묶여 끌어줬어요. 풍뎅이가 엄지공주를 보고 예쁘다고 생각했어요. 잡아서 나무 위로 날아갔어요. 하지만 친구들이 이상하게 생겼다고 했어요 — 더듬이도 없고 다리도 두 개뿐이라고. 그래서 보내줬어요. 가엾은 엄지공주는 다시 혼자가 됐어요.", "label": "Paragraph 5"}, {"part": "Part 3 — The Field Mouse · 들쥐", "en": "Summer passed and winter came. It was very cold and Thumbelina had nowhere to go. She found a little door under a corn-stalk and knocked. A field mouse opened it. She was kind and gave Thumbelina food and a warm place to stay in exchange for telling stories and doing housework.", "ko": "여름이 지나고 겨울이 왔어요. 너무 추웠고 엄지공주는 갈 곳이 없었어요. 옥수수 줄기 아래 작은 문을 발견하고 두드렸어요. 들쥐가 문을 열었어요. 들쥐는 친절해서 이야기를 들려주고 집안일을 해주는 대신 음식과 따뜻한 자리를 줬어요.", "label": "Paragraph 6"}, {"en": "The field mouse's neighbor was Mr. Mole — rich and learned, but blind. He visited often and fell in love with Thumbelina's voice. The mouse said: He would make you a fine husband, Thumbelina. You would never be cold or hungry. But Thumbelina did not love the mole. He lived underground and never saw the sun or flowers.", "ko": "들쥐의 이웃은 두더지 씨였어요 — 부유하고 박학했지만 눈이 멀었어요. 자주 방문하다가 엄지공주의 목소리에 반해버렸어요. 들쥐가 말했어요. 훌륭한 남편이 될 거야, 엄지야. 춥거나 배고픈 일이 없을 거야. 하지만 엄지공주는 두더지를 사랑하지 않았어요. 땅속에 살며 해와 꽃을 절대 보지 않았거든요.", "label": "Paragraph 7"}, {"en": "In the tunnel leading to the mole's house, Thumbelina found a swallow lying still on the ground. The mole said the bird was dead. But Thumbelina pressed her ear to the swallow's heart — and heard a faint beat. She visited him every night with food and blankets, and slowly the swallow recovered.", "ko": "두더지 집으로 가는 통로에서 엄지공주는 땅 위에 가만히 누워 있는 제비를 발견했어요. 두더지가 죽었다고 했어요. 하지만 엄지공주는 귀를 제비 심장에 대보았어요 — 약하지만 박동 소리가 들렸어요. 매일 밤 음식과 담요를 갖다주며 돌봤고 제비는 서서히 회복했어요.", "label": "Paragraph 8"}, {"en": "When spring came, the swallow was strong enough to fly. Come with me, he called to Thumbelina. I will carry you to a warm, beautiful land. Thumbelina wanted to go. But she felt she could not leave the field mouse who had been kind to her. Goodbye, she said, with tears in her eyes.", "ko": "봄이 오자, 제비는 날 수 있을 만큼 건강해졌어요. 함께 가요, 제비가 엄지공주를 불렀어요. 따뜻하고 아름다운 나라로 데려다줄게요. 엄지공주는 가고 싶었어요. 하지만 친절하게 대해준 들쥐를 떠날 수 없다고 생각했어요. 안녕히 가세요, 눈물을 흘리며 말했어요.", "label": "Paragraph 9"}, {"part": "Part 4 — The Flower Prince · 꽃의 왕자", "en": "Summer passed again. Winter came again. The field mouse said: Now you must marry Mr. Mole. He is rich and everything is ready. Thumbelina was very sad. She went outside one last time to say goodbye to the sun. And there — above her — she heard a familiar sound.", "ko": "여름이 또 지났어요. 겨울이 또 왔어요. 들쥐가 말했어요. 이제 두더지 씨랑 결혼해야 해. 부자이고 모든 준비가 됐어. 엄지공주는 매우 슬펐어요. 마지막으로 밖으로 나가 태양에게 작별 인사를 하려 했어요. 그리고 — 위에서 — 익숙한 소리가 들렸어요.", "label": "Paragraph 10"}, {"en": "Tweet! Tweet! It was the swallow! Come with me now, he called. I am going to the warm countries. Come — it is almost winter. This time, Thumbelina climbed onto his back. Up they flew, over forests and seas, over snowy mountains, until they reached a land of eternal sunshine.", "ko": "짹! 짹! 제비였어요! 지금 같이 가요, 불렀어요. 따뜻한 나라로 가는 길이에요. 어서 — 거의 겨울이에요. 이번엔 엄지공주가 제비 등에 올라탔어요. 위로 날아올라, 숲과 바다 위를, 눈 덮인 산을 넘어, 영원한 햇살이 있는 나라에 도착했어요.", "label": "Paragraph 11"}, {"en": "The swallow set her down on a large white flower. Inside the flower sat a tiny prince — no bigger than Thumbelina herself. He had wings and a golden crown. He was the king of the flower fairies. When he saw Thumbelina, he fell in love at once. Will you be my queen? he asked.", "ko": "제비가 큰 하얀 꽃 위에 내려줬어요. 꽃 안에 작은 왕자가 앉아 있었어요 — 엄지공주만큼이나 작았어요. 날개와 황금 왕관이 있었어요. 꽃 요정들의 왕이었어요. 엄지공주를 보자 바로 사랑에 빠졌어요. 나의 여왕이 돼줄래요? 물었어요.", "label": "Paragraph 12"}, {"en": "Thumbelina looked at the kind young prince. She thought of the toad, and the mole, and all the dark places she had been taken to. And then she looked at the sunlight and the flowers. Yes, she said softly. Yes, I will.", "ko": "엄지공주는 친절한 왕자를 바라봤어요. 두꺼비와, 두더지와, 데려가졌던 모든 어두운 곳들을 떠올렸어요. 그리고 햇빛과 꽃들을 바라봤어요. 네, 부드럽게 말했어요. 네, 그럴게요.", "label": "Paragraph 13"}, {"en": "The flower fairies gave Thumbelina wings and a new name — Maia. The swallow who had carried her sang his sweetest song at the wedding. Then he flew away, back to the north — and there he made his nest by the window of a storyteller who wrote down everything the swallow told him. And that is how this story was written.", "ko": "꽃 요정들이 엄지공주에게 날개와 새 이름을 줬어요 — 마이아. 데려다준 제비가 결혼식에서 가장 달콤한 노래를 불렀어요. 그리고 날아갔어요, 다시 북쪽으로 — 거기서 이야기를 쓰는 사람의 창문 옆에 둥지를 틀었어요. 제비가 들려준 모든 걸 적은 그 사람이. 그렇게 이 이야기가 쓰여졌어요.", "label": "Paragraph 14"}];
+
+var parasEl=document.getElementById('paras'),currentPart=null;
+PARAS.forEach(function(p,i){
+  if(p.part&&p.part!==currentPart){currentPart=p.part;var h=document.createElement('div');h.className='section-title';h.style.marginTop=i===0?'0':'36px';h.innerHTML='<div class="section-num">'+(i+1)+'</div>'+p.part;parasEl.appendChild(h);}
+  var block=document.createElement('div');block.className='para-block';block.id='para_'+i;
+  block.innerHTML='<div class="para-inner"><div class="para-en"><div class="lang-badge en"><div class="lang-dot en"></div>English</div><div class="para-text-en">'+p.en+'</div><button class="para-play-btn" onclick="loadPara('+i+',true)">▶ 이 단락 듣기</button></div><div class="para-ko"><div class="lang-badge ko"><div class="lang-dot ko"></div>한국어</div><div class="para-text-ko">'+p.ko+'</div></div></div>';
+  parasEl.appendChild(block);
+});
+var waveEl=document.getElementById('waveform');
+var WH=[4,8,14,20,28,36,28,20,14,8,4,10,18,26,34,26,18,10,16,24,32,24,16,8,12,20,28,20,12,6];
+for(var b=0;b<30;b++){var bar=document.createElement('div');bar.className='wb';bar.style.setProperty('--h',WH[b%WH.length]+'px');bar.style.setProperty('--d',(0.4+Math.random()*0.6).toFixed(2)+'s');bar.style.setProperty('--dl',(b*0.022).toFixed(3)+'s');waveEl.appendChild(bar);}
+var audio=document.getElementById('audioEl'),curIdx=0,isPlaying=false,rafId=null;
+function fmt(s){if(!s||isNaN(s))return'--:--';return Math.floor(s/60)+':'+(Math.floor(s%60)<10?'0':'')+Math.floor(s%60);}
+function loadPara(idx,play){curIdx=idx;var p=PARAS[idx];document.querySelectorAll('.para-block').forEach(function(el,i){el.classList.remove('active','done');if(i<idx)el.classList.add('done');if(i===idx){el.classList.add('active');el.scrollIntoView({behavior:'smooth',block:'center'});}});document.getElementById('piTitle').textContent=p.label+' / '+PARAS.length;audio.src=CDN+'p'+String(idx+1).padStart(2,'0')+'.mp3';audio.load();document.getElementById('progressFill').style.width='0%';document.getElementById('timeTxt').textContent='0:00 / --:--';audio.addEventListener('loadedmetadata',function onM(){document.getElementById('timeTxt').textContent='0:00 / '+fmt(audio.duration);audio.removeEventListener('loadedmetadata',onM);});if(play!==false)audio.play().then(function(){setPlaying(true);}).catch(function(){});}
+function togglePlay(){if(!audio.src||audio.src===window.location.href){loadPara(0,true);return;}if(audio.paused){audio.play().then(function(){setPlaying(true);}).catch(function(){});}else{audio.pause();setPlaying(false);}}
+function setPlaying(p){isPlaying=p;var btn=document.getElementById('playBtn');btn.textContent=p?'⏸':'▶';btn.classList.toggle('playing',p);waveEl.classList.toggle('on',p);if(p){cancelAnimationFrame(rafId);rafId=requestAnimationFrame(uiLoop);}else cancelAnimationFrame(rafId);}
+function uiLoop(){if(!audio||audio.paused)return;var t=audio.currentTime,dur=audio.duration||1;document.getElementById('progressFill').style.width=Math.min(t/dur*100,100)+'%';document.getElementById('timeTxt').textContent=fmt(t)+' / '+fmt(dur);rafId=requestAnimationFrame(uiLoop);}
+function seekAudio(e){var rect=e.currentTarget.getBoundingClientRect();if(audio.duration)audio.currentTime=(e.clientX-rect.left)/rect.width*audio.duration;}
+function prevPara(){if(curIdx>0)loadPara(curIdx-1,isPlaying);}
+function nextPara(){if(curIdx<PARAS.length-1)loadPara(curIdx+1,isPlaying);}
+audio.addEventListener('ended',function(){if(curIdx<PARAS.length-1){setTimeout(function(){loadPara(curIdx+1,true);},600);}else{setPlaying(false);document.getElementById('piTitle').textContent='완료! 독후감을 써봐요!';}});
+audio.addEventListener('pause',function(){if(isPlaying)setPlaying(false);});
+var pc=document.getElementById('particles');
+for(var i=0;i<24;i++){var p=document.createElement('div');p.className='pt';p.style.background="#f472b6";p.style.setProperty('--d',(8+Math.random()*12).toFixed(1)+'s');p.style.setProperty('--dl',(Math.random()*10).toFixed(1)+'s');p.style.setProperty('--o',(0.15+Math.random()*0.3).toFixed(2));p.style.setProperty('--dx',(Math.random()*80-40).toFixed(0)+'px');p.style.left=(Math.random()*100)+'%';var sz=(1+Math.random()*2).toFixed(1)+'px';p.style.width=p.style.height=sz;pc.appendChild(p);}
+
+</script>
+</body>
+</html>
