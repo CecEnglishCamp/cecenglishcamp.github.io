@@ -104,11 +104,18 @@ function ko(err){
   return '오류: ' + (err.message || err);
 }
 
-// 이미 로그인 상태면 메인으로
+// next= 파라미터 (require-auth가 보내는 원래 경로)
+function nextDest() {
+  var p = new URLSearchParams(location.search).get('next');
+  if (p && p[0] === '/') return p;
+  return '/';
+}
+
+// 이미 로그인 상태면 next 또는 메인으로
 sb.auth.getSession().then(({ data }) => {
   if (data?.session) {
-    showMsg('이미 로그인되어 있습니다. 메인으로 이동합니다…', 'ok');
-    setTimeout(() => location.href = '/', 800);
+    showMsg('이미 로그인되어 있습니다. 이동합니다…', 'ok');
+    setTimeout(() => location.href = nextDest(), 800);
   }
 });
 
@@ -137,7 +144,7 @@ form.addEventListener('submit', async (e) => {
     const { data, error } = await sb.auth.signInWithPassword({ email, password });
     if (error) throw error;
     showMsg('✓ 로그인 성공! 이동합니다…', 'ok');
-    setTimeout(() => location.href = '/', 600);
+    setTimeout(() => location.href = nextDest(), 600);
   } catch (err) {
     showMsg('❌ ' + ko(err), 'error');
     btn.disabled = false;
