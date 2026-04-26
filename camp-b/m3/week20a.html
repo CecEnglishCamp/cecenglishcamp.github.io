@@ -266,9 +266,10 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
   padding: 0.4rem 0 !important;
   text-shadow: 0 1px 6px rgba(0,0,0,0.8) !important;
 }
-.sent-1 { color: #aaccff !important; }
-.sent-2 { color: #ccddff !important; }
-.sent-3 { color: #ffffff !important; font-weight: 600 !important; }
+.sent-1 { color: #aaccff !important; font-weight: 400 !important; }
+.sent-2 { color: #ccddff !important; font-weight: 400 !important; }
+.sent-3 { color: #ffffff !important; font-weight: 400 !important; }
+.day-sent.sent-today { font-weight: 700 !important; }
 
 /* Scene reveal — 영화 자막 스타일 */
 .story-box {
@@ -1443,6 +1444,22 @@ function openGrammar(e) {
   var returnUrl = window.location.href;
   window.location.href = 'https://cecenglishcamp.com/grammar-camp/G05/G05_simple_past_tense.html?return=' + encodeURIComponent(returnUrl);
 }
+</script>
+
+<script id="cec-sent-today-bootstrap">
+(function(){
+  if (typeof PAGE_DATA === 'undefined' || !PAGE_DATA || !PAGE_DATA.day) return;
+  var m = String(PAGE_DATA.day).match(/(\d)/);
+  if (!m) return;
+  var sel = '.day-sent.sent-' + m[1];
+  function apply(){
+    var el = document.querySelector(sel);
+    if (el) el.classList.add('sent-today');
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', apply);
+  } else { apply(); }
+})();
 </script>
 </body>
 </html>
