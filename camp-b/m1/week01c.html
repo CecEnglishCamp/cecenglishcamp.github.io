@@ -570,7 +570,7 @@ section.sh > *{float:none !important;}
 </head>
 <body>
 <header><div class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">Middle School 1</span></div></div></header>
-<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">The Time Machine &middot; W01 / 06</div><h1 class="hero-title">The Time Machine</h1><p class="hero-sub">시간 여행의 발명</p><div class="day-badge"><span class="day-pill done">● Day 1 (월)</span><span class="day-pill done">● Day 2 (수)</span><span class="day-pill today">● Day 3 (금) 완성!</span></div></div></div>
+<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">W01 · Day 3 · 금요일 (OUTPUT DAY)</div><h1 class="hero-title">The Time Machine</h1><p class="hero-sub">시간 여행의 발명</p><div class="day-badge"><span class="day-pill done">● Day 1 (월)</span><span class="day-pill done">● Day 2 (수)</span><span class="day-pill today">● Day 3 (금) 완성!</span></div></div></div>
 <main class="content-wrap">
   <section class="sh" aria-label="핵심 표현"><div class="sh-bar"><span class="sh-num">1</span><h2>핵심 표현 <span class="sh-en">KEY EXPRESSION</span></h2></div>
     <div class="day-block">
@@ -1048,12 +1048,17 @@ function launchChatGPTPractice(){
     window.gbFetch(GB_CONTEXT()+'\n학생 질문: '+buttonText+'\n중고등학생 수준으로 한국어로 친절하게 답해줘.');
   };
   function gbInit(){
-    var ts=document.querySelector('.top-sub')||document.querySelector('.hero-meta');
-    if(ts&&ts.textContent){
-      var raw=ts.textContent.trim();
-      var parts=raw.split(/\s*[·•]\s*/);
-      GB_BOOK=(parts[0]||raw).trim();
-      if(parts[1])GB_WEEK=parts[1].trim();
+    if(typeof PAGE_DATA!=='undefined'&&PAGE_DATA){
+      GB_BOOK=PAGE_DATA.book||'';
+      GB_WEEK=(PAGE_DATA.week||'')+(PAGE_DATA.day?' · '+PAGE_DATA.day:'');
+    } else {
+      var ts=document.querySelector('.top-sub')||document.querySelector('.hero-meta');
+      if(ts&&ts.textContent){
+        var raw=ts.textContent.trim();
+        var parts=raw.split(/\s*[·•]\s*/);
+        GB_BOOK=(parts[0]||raw).trim();
+        if(parts[1])GB_WEEK=parts[1].trim();
+      }
     }
     var ke=document.querySelector('.ke-en');
     if(ke&&ke.textContent){
