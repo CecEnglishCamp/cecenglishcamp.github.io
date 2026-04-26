@@ -83,7 +83,7 @@
         (u.user_metadata && (u.user_metadata.name || u.user_metadata.full_name)) ||
         (u.email ? u.email.split('@')[0] : '사용자');
       widget.querySelector('.nav-user-name').textContent = name;
-      widget.style.display = '';
+      widget.style.display = 'inline-flex';   // CSS .nav-user{display:none} 오버라이드
       if (reg) reg.style.display = 'none';
     } else {
       widget.style.display = 'none';
