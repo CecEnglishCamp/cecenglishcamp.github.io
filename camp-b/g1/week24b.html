@@ -266,9 +266,10 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
   padding: 0.4rem 0 !important;
   text-shadow: 0 1px 6px rgba(0,0,0,0.8) !important;
 }
-.sent-1 { color: #aaccff !important; }
-.sent-2 { color: #ccddff !important; }
-.sent-3 { color: #ffffff !important; font-weight: 600 !important; }
+.sent-1 { color: #aaccff !important; font-weight: 400 !important; }
+.sent-2 { color: #ccddff !important; font-weight: 400 !important; }
+.sent-3 { color: #ffffff !important; font-weight: 400 !important; }
+.day-sent.sent-today { font-weight: 700 !important; }
 
 /* Scene reveal — 영화 자막 스타일 */
 .story-box {
@@ -381,7 +382,7 @@ section.sh .sh-en{font-size:0.7rem;color:rgba(255,255,255,0.4);margin-left:6px;f
 .hero-inner{max-width:860px;margin:0 auto}
 .hero-meta{font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:10px}
 .hero-title{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:2.4rem;color:#00f2ff;margin-bottom:8px}
-.hero-sub{color:rgba(255,255,255,0.6);font-size:0.95rem}
+.hero-sub{color:rgba(255,255,255,0.6);font-size:0.95rem}.day-badge{display:flex;justify-content:center;gap:6px;margin-top:14px;flex-wrap:wrap}.day-pill{padding:5px 14px;border-radius:20px;font-size:0.72rem;font-weight:700;border:2px solid transparent}.day-pill.done{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.65);border-color:rgba(255,255,255,0.15)}.day-pill.today{background:#00f2ff;color:#0a1628;border-color:#00f2ff}.day-pill.future{background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.3);border-color:rgba(255,255,255,0.08)}
 .pw-wrap{position:fixed;bottom:80px;right:24px;z-index:999;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
 .pw-bubble{background:#4a6741;color:#fff;padding:8px 16px;border-radius:100px;font-size:0.85rem;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,0.3);cursor:pointer}
 .pw-robo{width:64px;height:64px;border-radius:50%;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
@@ -570,7 +571,7 @@ section.sh > *{float:none !important;}
 </head>
 <body>
 <header><div class="hd-wrap"><div class="hd-inner"><a href="/camp-b/" class="hd-logo">CEC English Camp B</a><span class="hd-badge">High School 1</span></div></div></header>
-<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">A Farewell to Arms &middot; W24 / 06</div><h1 class="hero-title">A Farewell to Arms</h1><p class="hero-sub">모든 것의 끝</p></div></div>
+<div class="hero-wrap"><div class="hero-inner"><div class="hero-meta">W24 · Day 2 · 수요일 (PROCESS DAY)</div><h1 class="hero-title">A Farewell to Arms</h1><p class="hero-sub">모든 것의 끝</p><div class="day-badge"><span class="day-pill done">● Day 1 (월)</span><span class="day-pill today">● Day 2 (수) 오늘</span><span class="day-pill future">● Day 3 (금)</span></div></div></div>
 <main class="content-wrap">
   <section class="sh" aria-label="핵심 표현"><div class="sh-bar"><span class="sh-num">1</span><h2>핵심 표현 <span class="sh-en">KEY EXPRESSION</span></h2></div>
     <div class="day-block">
@@ -711,12 +712,37 @@ section.sh > *{float:none !important;}
 
 <!-- ═══ SECTION 6: GRAMMAR ═══ -->
 <section class="sh" aria-label="문법 포인트">
-    <div style="background:rgba(188,140,255,.06);border:1px solid rgba(188,140,255,.2);border-left:3px solid #bc8cff;border-radius:6px;padding:1.25rem 1.5rem;margin-bottom:1rem;">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:#bc8cff;margin-bottom:.75rem;">
-        📌 분사구문 / with + 명사 + 현재분사
-        <a href="https://cecenglishcamp.com/grammar-camp/" target="_blank" style="margin-left:.75rem;padding:.2rem .7rem;background:rgba(188,140,255,.15);border:1px solid rgba(188,140,255,.3);border-radius:4px;color:#bc8cff;font-size:.72rem;text-decoration:none;">Grammar Base Camp →</a>
-      </div>
-    </div>
+    <div class="grammar-point" style="background:rgba(30,111,255,0.1);border:1px solid rgba(30,111,255,0.25);border-left:3px solid #1e6fff;border-radius:8px;padding:0.875rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+  <div>
+    <div style="font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;">이번 주 문법 포인트</div>
+    <div id="gp-text" style="font-size:15px;font-weight:500;color:#6ab4ff;"></div>
+  </div>
+  <a id="gp-link" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#0f1d2e;background:#6ab4ff;border-radius:6px;padding:6px 14px;text-decoration:none;cursor:pointer;">📐 Grammar 바로가기 →</a>
+</div>
+<script class="cec-gp-init">
+(function(){
+  if (typeof PAGE_DATA === 'undefined' || !PAGE_DATA) return;
+  var info = {"id": "G13", "topic": "분사구문 / with + 명사 + 현재분사"};
+  function init(){
+    var t = document.getElementById("gp-text");
+    var a = document.getElementById("gp-link");
+    if (!t || !a) return;
+    t.textContent = info.topic;
+    var d = String(PAGE_DATA.day || "");
+    var dm = d.match(/(\d)/);
+    var dayCode = "a";
+    if (dm) { dayCode = ({1:"a",2:"b",3:"c"})[dm[1]] || "a"; }
+    else { var am = d.match(/[A-C]/i); if (am) dayCode = am[0].toLowerCase(); }
+    var ww = String(PAGE_DATA.week||"").replace("W","");
+    var fromPath = "camp-b/" + (PAGE_DATA.grade||"").toLowerCase() + "/week" + ww + dayCode + ".html";
+    a.href = "/grammar-camp/" + info.id + "/" + info.id + "_new.html?from=" + encodeURIComponent(fromPath);
+    a.innerHTML = "📐 Grammar " + info.id + " 바로가기 →";
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else { init(); }
+})();
+</script>
     
         <div style="margin-bottom:.75rem;">
           <div style="font-size:.9rem;color:#e6edf3;margin-bottom:.4rem;">The novel's ending forces readers to ___ the brutal reality that love offers no guaranteed protection against life's random tragedies.</div>
@@ -822,22 +848,130 @@ section.sh > *{float:none !important;}
   </section>
 
 <!-- ═══ SECTION 8: WRITE ═══ -->
-<section class="sh" aria-label="짧은 글쓰기">
+<section class="sh" aria-label="짧은 글쓰기" id="essay-section">
   <h2>짧은 글쓰기 <span class="sh-en">WRITE</span></h2>
-  <div style="background:#1c2230;border:1px solid #30363d;border-left:3px solid #d4a843;border-radius:6px;padding:1rem 1.2rem;font-size:.95rem;color:#e6edf3;margin-bottom:.75rem;line-height:1.6;">
-    <strong style="color:#d4a843;">주제:</strong> What Hemingway's ending says about the relationship between love and loss<br><br>
-    <strong>예시 답안:</strong> Hemingway's conclusion establishes that love and loss are fundamentally intertwined, suggesting that profound connection necessarily involves accepting the possibility of devastating separation.</div>
-  <textarea rows="5" placeholder="Write your answer here..." style="width:100%;background:#1c2230;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-family:'Source Serif 4',Georgia,serif;font-size:.95rem;padding:1rem;resize:vertical;outline:none;line-height:1.7;"></textarea>
-  <button style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.75rem;padding:.5rem 1.2rem;background:rgba(63,185,80,.12);border:1px solid rgba(63,185,80,.35);border-radius:5px;color:#3fb950;font-size:.85rem;cursor:pointer;">✓ 제출하기</button>
-  <a href="https://cecenglishcamp.com/essay-camp/" target="_blank"
-     style="display:inline-flex;align-items:center;gap:.5rem;
-            margin-top:.75rem;padding:.55rem 1.2rem;
-            background:rgba(212,168,67,.12);
-            border:1px solid rgba(212,168,67,.35);
-            border-radius:5px;color:#d4a843;
-            font-size:.85rem;text-decoration:none;">
-    ✏️ Essay Camp에서 더 공부하기 →
-  </a>
+  <style>
+    #essay-section .essay-tips{display:grid;grid-template-columns:1fr;gap:10px;margin:14px 0 18px;}
+    #essay-section .tip-card{padding:12px 14px;border-radius:8px;border-left:3px solid;background:rgba(255,255,255,0.02);}
+    #essay-section .tip-card.t1{border-left-color:#6ab4ff;background:rgba(30,111,255,0.08);}
+    #essay-section .tip-card.t2{border-left-color:#4dffa0;background:rgba(77,255,160,0.06);}
+    #essay-section .tip-card.t3{border-left-color:#f0c060;background:rgba(201,168,76,0.08);}
+    #essay-section .tip-card.t4{border-left-color:#ff80cc;background:rgba(255,128,204,0.06);}
+    #essay-section .tip-card.t5{border-left-color:#e080ff;background:rgba(200,75,154,0.08);}
+    #essay-section .tip-num{display:inline-block;font-size:11px;font-weight:800;letter-spacing:0.1em;margin-bottom:5px;}
+    #essay-section .tip-card.t1 .tip-num{color:#6ab4ff;}
+    #essay-section .tip-card.t2 .tip-num{color:#4dffa0;}
+    #essay-section .tip-card.t3 .tip-num{color:#f0c060;}
+    #essay-section .tip-card.t4 .tip-num{color:#ff80cc;}
+    #essay-section .tip-card.t5 .tip-num{color:#e080ff;}
+    #essay-section .tip-title{font-size:14px;font-weight:600;color:#e6edf3;margin-bottom:8px;}
+    #essay-section .ex-bad,#essay-section .ex-good{font-size:12.5px;padding:6px 10px;border-radius:5px;margin:5px 0;line-height:1.5;}
+    #essay-section .ex-bad{background:rgba(255,80,80,0.1);border-left:2px solid #ff5050;color:#ffb5b5;}
+    #essay-section .ex-good{background:rgba(77,255,160,0.08);border-left:2px solid #4dffa0;color:#bffdd9;}
+    #essay-section .ex-bad::before{content:"✕ ";color:#ff5050;font-weight:700;}
+    #essay-section .ex-good::before{content:"✓ ";color:#4dffa0;font-weight:700;}
+    #essay-section .essay-topic-yellow{background:rgba(240,192,96,0.08);border-left:3px solid #f0c060;border-radius:6px;padding:12px 14px;margin:14px 0 12px;}
+    #essay-section .essay-topic-yellow .lbl{font-size:10px;color:#f0c060;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;}
+    #essay-section .essay-topic-yellow .text{font-size:14px;color:#e6edf3;line-height:1.55;}
+    #essay-section .essay-3step{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+    #essay-section .essay-3step label{font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.55);letter-spacing:0.06em;}
+    #essay-section .essay-3step textarea{width:100%;background:#1c2230;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-family:'Source Serif 4',Georgia,serif;font-size:0.92rem;padding:0.8rem;resize:vertical;outline:none;line-height:1.65;}
+    #essay-section .essay-3step textarea:focus{border-color:#6ab4ff;}
+    #essay-section .essay-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+    #essay-section .essay-actions button{display:inline-flex;align-items:center;gap:6px;padding:0.55rem 1rem;border-radius:6px;font-size:0.85rem;font-weight:700;cursor:pointer;border:1px solid;font-family:inherit;}
+    #essay-section .btn-copy{background:rgba(63,185,80,0.12);border-color:rgba(63,185,80,0.4);color:#3fb950;}
+    #essay-section .btn-gpt{background:rgba(106,180,255,0.15);border-color:rgba(106,180,255,0.4);color:#6ab4ff;}
+    #essay-section .btn-copy:hover{background:rgba(63,185,80,0.2);}
+    #essay-section .btn-gpt:hover{background:rgba(106,180,255,0.22);}
+  </style>
+  <div class="essay-tips">
+    <div class="tip-card t1">
+      <div class="tip-num">TIP 1</div>
+      <div class="tip-title">명확한 주제문 (Topic Sentence)</div>
+      <div class="ex-bad">"Beauty is important."</div>
+      <div class="ex-good">"Beauty without morality leads to corruption."</div>
+    </div>
+    <div class="tip-card t2">
+      <div class="tip-num">TIP 2</div>
+      <div class="tip-title">구체적 근거 + 예시</div>
+      <div class="ex-bad">"Because it is bad."</div>
+      <div class="ex-good">"For example, the story shows how..."</div>
+    </div>
+    <div class="tip-card t3">
+      <div class="tip-num">TIP 3</div>
+      <div class="tip-title">반대 의견 인정하기</div>
+      <div class="ex-good">"Although some argue that..., I believe..."</div>
+    </div>
+    <div class="tip-card t4">
+      <div class="tip-num">TIP 4</div>
+      <div class="tip-title">연결어 (Transition Words)</div>
+      <div class="ex-good">First &middot; Furthermore &middot; However &middot; Therefore &middot; In conclusion</div>
+    </div>
+    <div class="tip-card t5">
+      <div class="tip-num">TIP 5</div>
+      <div class="tip-title">강한 마무리 (Conclusion)</div>
+      <div class="ex-bad">"So, that is my opinion."</div>
+      <div class="ex-good">"This story teaches us that true courage begins within."</div>
+    </div>
+  </div>
+  <div class="essay-topic-yellow">
+    <div class="lbl">이번 주 주제</div>
+    <div class="text" id="essayTopicText">…</div>
+  </div>
+  <div class="essay-3step">
+    <label>① Topic Sentence</label>
+    <textarea id="essayTopic" rows="2" placeholder="주제 문장을 한 줄로 써보세요"></textarea>
+    <label>② Supporting Idea</label>
+    <textarea id="essaySupporting" rows="3" placeholder="근거 + 구체적 예시를 작성"></textarea>
+    <label>③ Conclusion</label>
+    <textarea id="essayConclusion" rows="2" placeholder="강한 마무리"></textarea>
+  </div>
+  <div class="essay-actions">
+    <button class="btn-copy" type="button" onclick="copyEssayDraft(this)">📋 전달사항 복사</button>
+    <button class="btn-gpt" type="button" onclick="launchEssayChatGPT(this)">🚀 ChatGPT 열기</button>
+  </div>
+  <script class="cec-essay-init">
+  (function(){
+    if (typeof PAGE_DATA !== 'undefined' && PAGE_DATA && PAGE_DATA.essay_topic) {
+      var el = document.getElementById('essayTopicText');
+      if (el) el.textContent = PAGE_DATA.essay_topic;
+    }
+  })();
+  function _essayBuildPrompt(){
+    var topic = (typeof PAGE_DATA!=='undefined' && PAGE_DATA) ? (PAGE_DATA.essay_topic||'') : '';
+    var grade = (typeof PAGE_DATA!=='undefined' && PAGE_DATA) ? (PAGE_DATA.grade||'') : '';
+    var book  = (typeof PAGE_DATA!=='undefined' && PAGE_DATA) ? (PAGE_DATA.book||'') : '';
+    var t = (document.getElementById('essayTopic')||{}).value || '';
+    var s = (document.getElementById('essaySupporting')||{}).value || '';
+    var c = (document.getElementById('essayConclusion')||{}).value || '';
+    return '📝 [Essay · ' + grade + ' · ' + book + ']\n' +
+      '주제: ' + topic + '\n\n' +
+      '① Topic Sentence: ' + t + '\n' +
+      '② Supporting Idea: ' + s + '\n' +
+      '③ Conclusion: ' + c + '\n\n' +
+      '위 글을 영어로 다듬고 5가지 팁(Topic Sentence, 근거+예시, 반대 의견 인정, 연결어, 강한 마무리) 기준으로 피드백 해줘.';
+  }
+  function copyEssayDraft(btn){
+    var msg = _essayBuildPrompt();
+    var done = function(){
+      var orig = btn.textContent;
+      btn.textContent = '✅ 복사됨!';
+      setTimeout(function(){ btn.textContent = orig; }, 1500);
+    };
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(msg).then(done, done);
+    } else { done(); }
+  }
+  function launchEssayChatGPT(btn){
+    copyEssayDraft(btn);
+    setTimeout(function(){
+      var w = Math.floor(screen.width * 0.5);
+      var h = screen.height;
+      var l = Math.floor(screen.width * 0.5);
+      window.open('https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166','chatgpt','width='+w+',height='+h+',left='+l+',top=0');
+    }, 250);
+  }
+  </script>
 </section>
 
 <!-- ═══ SECTION 9: AI 튜터 ═══ -->
@@ -866,9 +1000,9 @@ section.sh > *{float:none !important;}
 </section>
 </main>
 <div class="wk-nav">
-<a href="week24a.html" class="wk-btn">← W24</a>
-<span class="wk-current">week24b</span>
-<a href="week24c.html" class="wk-btn">W24 →</a>
+<a href="week24a.html" class="wk-btn">← Day 1</a>
+<span class="wk-current">G1 · W24 · Day 2</span>
+<a href="week24c.html" class="wk-btn">Day 3 →</a>
 </div>
 <!-- ===== CEC Robo Helper (Camp B) ===== -->
 <div class="gb">
@@ -1036,12 +1170,17 @@ function launchChatGPTPractice(){
     window.gbFetch(GB_CONTEXT()+'\n학생 질문: '+buttonText+'\n중고등학생 수준으로 한국어로 친절하게 답해줘.');
   };
   function gbInit(){
-    var ts=document.querySelector('.top-sub')||document.querySelector('.hero-meta');
-    if(ts&&ts.textContent){
-      var raw=ts.textContent.trim();
-      var parts=raw.split(/\s*[·•]\s*/);
-      GB_BOOK=(parts[0]||raw).trim();
-      if(parts[1])GB_WEEK=parts[1].trim();
+    if(typeof PAGE_DATA!=='undefined'&&PAGE_DATA){
+      GB_BOOK=PAGE_DATA.book||'';
+      GB_WEEK=(PAGE_DATA.week||'')+(PAGE_DATA.day?' · '+PAGE_DATA.day:'');
+    } else {
+      var ts=document.querySelector('.top-sub')||document.querySelector('.hero-meta');
+      if(ts&&ts.textContent){
+        var raw=ts.textContent.trim();
+        var parts=raw.split(/\s*[·•]\s*/);
+        GB_BOOK=(parts[0]||raw).trim();
+        if(parts[1])GB_WEEK=parts[1].trim();
+      }
     }
     var ke=document.querySelector('.ke-en');
     if(ke&&ke.textContent){
@@ -1482,6 +1621,28 @@ function openGrammar(e) {
   var returnUrl = window.location.href;
   window.location.href = 'https://cecenglishcamp.com/grammar-camp/G05/G05_simple_past_tense.html?return=' + encodeURIComponent(returnUrl);
 }
+</script>
+
+<script id="cec-sent-today-bootstrap">
+(function(){
+  if (typeof PAGE_DATA === 'undefined' || !PAGE_DATA || !PAGE_DATA.day) return;
+  var d = String(PAGE_DATA.day);
+  var dm = d.match(/(\d)/);
+  var n = dm ? dm[1] : null;
+  if (!n) {
+    var am = d.match(/[A-C]/i);
+    if (am) n = ({A:'1',B:'2',C:'3'})[am[0].toUpperCase()];
+  }
+  if (!n) return;
+  var sel = '.day-sent.sent-' + n;
+  function apply(){
+    var el = document.querySelector(sel);
+    if (el) el.classList.add('sent-today');
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', apply);
+  } else { apply(); }
+})();
 </script>
 </body>
 </html>
