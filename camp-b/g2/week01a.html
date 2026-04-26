@@ -776,9 +776,9 @@
     </div>
     <script class="cec-gp-init">
     (function(){
-      if (typeof PAGE_DATA === 'undefined' || !PAGE_DATA) return;
       var info = {"id": "G19", "topic": "관계부사 where (반복) / in the name of"};
       function init(){
+        if (typeof PAGE_DATA === 'undefined' || !PAGE_DATA) return;
         var t = document.getElementById("gp-text");
         var a = document.getElementById("gp-link");
         if (!t || !a) return;
@@ -866,10 +866,15 @@
       </div>
       <script class="cec-essay-init">
       (function(){
-        var el = document.getElementById("essayTopicText");
-        if (el && typeof PAGE_DATA !== 'undefined' && PAGE_DATA && PAGE_DATA.essay_topic) {
-          el.textContent = PAGE_DATA.essay_topic;
+        function init(){
+          var el = document.getElementById("essayTopicText");
+          if (el && typeof PAGE_DATA !== 'undefined' && PAGE_DATA && PAGE_DATA.essay_topic) {
+            el.textContent = PAGE_DATA.essay_topic;
+          }
         }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+        } else { init(); }
       })();
       function copyEssayDraft(btn){
         var pd = (typeof PAGE_DATA!=='undefined' && PAGE_DATA) ? PAGE_DATA : {};
