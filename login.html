@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In | CEC English Camp</title>
+<meta name="description" content="CEC English Camp 로그인">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:'Outfit',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:32px;text-decoration:none}
+.brand img{width:42px;height:42px;border-radius:8px;object-fit:contain}
+.brand span{font-size:1.15rem;font-weight:800;color:#fff}
+.card{width:100%;max-width:420px;background:#0a0a0a;border:1px solid rgba(0,255,255,.13);border-radius:18px;padding:36px 32px;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+.title{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:2rem;color:#fff;text-align:center;letter-spacing:-.01em;margin-bottom:6px}
+.sub{text-align:center;color:#00f2ff;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.05rem;margin-bottom:28px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.78rem;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:6px}
+.field input{width:100%;padding:13px 16px;background:#000;border:1px solid rgba(255,255,255,.15);border-radius:10px;color:#fff;font-size:.95rem;font-family:inherit;transition:border-color .2s,background .2s}
+.field input:focus{outline:none;border-color:#00bcd4;background:#050505}
+.btn{width:100%;padding:15px;background:#00bcd4;color:#000;border:none;border-radius:50px;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.3px;transition:opacity .2s,transform .15s}
+.btn:hover{opacity:.85;transform:translateY(-1px)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.alt{text-align:center;font-size:.85rem;color:rgba(255,255,255,.55);margin-top:20px}
+.alt a{color:#00bcd4;text-decoration:none;font-weight:700}
+.alt a:hover{color:#4dd0e1}
+.msg{margin-top:14px;padding:12px 14px;border-radius:10px;font-size:.85rem;line-height:1.5;display:none}
+.msg.error{background:rgba(255,77,109,.1);border:1px solid rgba(255,77,109,.3);color:#ff7d96;display:block}
+.msg.ok{background:rgba(0,242,255,.08);border:1px solid rgba(0,242,255,.3);color:#00f2ff;display:block}
+</style>
+</head>
+<body>
+
+<a href="/" class="brand">
+  <img src="/assets/robo.png" alt="Robo" onerror="this.style.display='none'">
+  <span>CEC English Camp</span>
+</a>
+
+<div class="card">
+  <h1 class="title">로그인</h1>
+  <p class="sub">Welcome Back</p>
+
+  <form id="loginForm" autocomplete="on">
+    <div class="field">
+      <label for="email">이메일</label>
+      <input type="email" id="email" required autocomplete="email" placeholder="you@example.com">
+    </div>
+    <div class="field">
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" required autocomplete="current-password" placeholder="••••••">
+    </div>
+    <button type="submit" class="btn" id="submitBtn">로그인</button>
+  </form>
+
+  <div id="msg" class="msg"></div>
+
+  <p class="alt">계정이 없으신가요? <a href="/signup.html">회원가입 →</a></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://rzlqlokqplhyntuirsmd.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const form = document.getElementById('loginForm');
+const msg = document.getElementById('msg');
+const btn = document.getElementById('submitBtn');
+
+function showMsg(text, type){ msg.textContent = text; msg.className = 'msg ' + type; }
+
+// 이미 로그인 상태면 메인으로
+sb.auth.getSession().then(({ data }) => {
+  if (data?.session) {
+    showMsg('이미 로그인되어 있습니다. 메인으로 이동합니다…', 'ok');
+    setTimeout(() => location.href = '/', 800);
+  }
+});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  btn.disabled = true; btn.textContent = '로그인 중…';
+  msg.className = 'msg';
+
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    showMsg('✓ 로그인 성공! 이동합니다…', 'ok');
+    setTimeout(() => location.href = '/', 600);
+  } catch (err) {
+    showMsg('❌ ' + (err.message || '로그인 실패'), 'error');
+    btn.disabled = false;
+    btn.textContent = '로그인';
+  }
+});
+</script>
+</body>
+</html>
