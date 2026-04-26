@@ -97,20 +97,31 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px
 .week-card{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;text-decoration:none;color:rgba(255,255,255,.65);font-size:.72rem;font-weight:500;gap:3px;transition:all .2s;min-height:64px;touch-action:manipulation}
 .week-card:active{transform:scale(.97)}
 .wnum{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;line-height:1;color:#fff;transition:color .2s}
+.week-card-trio{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:8px 5px 7px;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:64px;transition:border-color .2s}
+.week-card-trio .wnum{font-size:1.05rem;line-height:1}
+.day-row{display:flex;gap:3px;width:100%}
+.day-btn{flex:1;padding:5px 0;text-align:center;font-size:.62rem;font-weight:700;border-radius:5px;text-decoration:none;background:rgba(255,255,255,.05);color:rgba(255,255,255,.65);transition:all .15s;letter-spacing:.5px}
+.day-btn:active{transform:scale(.92)}
 
 /* Grade-specific hover colors */
-#m1 .week-card:hover{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.45)}
-#m1 .week-card:hover .wnum{color:#4ade80}
-#m2 .week-card:hover{background:rgba(96,165,250,.1);border-color:rgba(96,165,250,.45)}
-#m2 .week-card:hover .wnum{color:#60a5fa}
-#m3 .week-card:hover{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.45)}
-#m3 .week-card:hover .wnum{color:#C4956A}
-#g1 .week-card:hover{background:rgba(244,114,182,.1);border-color:rgba(244,114,182,.45)}
-#g1 .week-card:hover .wnum{color:#8b5e3c}
-#g2 .week-card:hover{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.45)}
-#g2 .week-card:hover .wnum{color:#3D2B1F}
-#g3 .week-card:hover{background:rgba(251,146,60,.1);border-color:rgba(251,146,60,.45)}
-#g3 .week-card:hover .wnum{color:#fb923c}
+#m1 .week-card:hover,#m1 .week-card-trio:hover{background:rgba(74,222,128,.1);border-color:rgba(74,222,128,.45)}
+#m1 .week-card:hover .wnum,#m1 .week-card-trio:hover .wnum{color:#4ade80}
+#m1 .day-btn:hover{background:rgba(74,222,128,.22);color:#4ade80}
+#m2 .week-card:hover,#m2 .week-card-trio:hover{background:rgba(96,165,250,.1);border-color:rgba(96,165,250,.45)}
+#m2 .week-card:hover .wnum,#m2 .week-card-trio:hover .wnum{color:#60a5fa}
+#m2 .day-btn:hover{background:rgba(96,165,250,.22);color:#60a5fa}
+#m3 .week-card:hover,#m3 .week-card-trio:hover{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.45)}
+#m3 .week-card:hover .wnum,#m3 .week-card-trio:hover .wnum{color:#C4956A}
+#m3 .day-btn:hover{background:rgba(245,158,11,.22);color:#C4956A}
+#g1 .week-card:hover,#g1 .week-card-trio:hover{background:rgba(244,114,182,.1);border-color:rgba(244,114,182,.45)}
+#g1 .week-card:hover .wnum,#g1 .week-card-trio:hover .wnum{color:#8b5e3c}
+#g1 .day-btn:hover{background:rgba(244,114,182,.22);color:#8b5e3c}
+#g2 .week-card:hover,#g2 .week-card-trio:hover{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.45)}
+#g2 .week-card:hover .wnum,#g2 .week-card-trio:hover .wnum{color:#3D2B1F}
+#g2 .day-btn:hover{background:rgba(167,139,250,.22);color:#3D2B1F}
+#g3 .week-card:hover,#g3 .week-card-trio:hover{background:rgba(251,146,60,.1);border-color:rgba(251,146,60,.45)}
+#g3 .week-card:hover .wnum,#g3 .week-card-trio:hover .wnum{color:#fb923c}
+#g3 .day-btn:hover{background:rgba(251,146,60,.22);color:#fb923c}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
@@ -533,7 +544,16 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 36px
       html+='<div class="week-grid-b">';
       book.w.forEach(function(w){
         var ww=w<10?'0'+w:''+w;
-        html+='<a class="week-card" href="/camp-b/'+g+'/week'+ww+'a.html"><span class="wnum">W'+ww+'</span><span>Week '+w+'</span></a>';
+        if(g==='m1'){
+          html+='<div class="week-card-trio"><span class="wnum">W'+ww+'</span>'
+            +'<div class="day-row">'
+            +'<a class="day-btn" href="/camp-b/'+g+'/week'+ww+'a.html">D1</a>'
+            +'<a class="day-btn" href="/camp-b/'+g+'/week'+ww+'b.html">D2</a>'
+            +'<a class="day-btn" href="/camp-b/'+g+'/week'+ww+'c.html">D3</a>'
+            +'</div></div>';
+        }else{
+          html+='<a class="week-card" href="/camp-b/'+g+'/week'+ww+'a.html"><span class="wnum">W'+ww+'</span><span>Week '+w+'</span></a>';
+        }
       });
       html+='</div></div>';
     });
