@@ -346,6 +346,17 @@
   /* ===== /CEC Robo Helper styles ===== */
 
 </style>
+<style id="cec-g23-additions">
+.day-badge{display:flex;justify-content:center;gap:6px;margin:16px 0 24px;flex-wrap:wrap}
+.day-pill{padding:5px 14px;border-radius:20px;font-size:0.72rem;font-weight:700;border:2px solid transparent}
+.day-pill.done{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.65);border-color:rgba(255,255,255,0.15)}
+.day-pill.today{background:#00f2ff;color:#0a1628;border-color:#00f2ff}
+.day-pill.future{background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.3);border-color:rgba(255,255,255,0.08)}
+.wk-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:3rem;padding:1.5rem 0;border-top:1px solid rgba(255,255,255,0.08)}
+.wk-btn{padding:8px 16px;border:1px solid rgba(0,242,255,0.2);border-radius:6px;color:#00f2ff;font-size:14px;text-decoration:none;font-weight:500}
+.wk-btn:hover{background:rgba(0,242,255,0.1)}
+.wk-current{font-size:14px;color:#aab0c0;font-weight:600;letter-spacing:0.02em}
+</style>
 </head>
 <body>
 
@@ -362,6 +373,9 @@
     <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2.4rem;font-style:italic;color:#00f2ff;margin:0 0 4px;font-weight:400;">Utopia</h1>
     <div style="font-size:14px;color:#8a9aaa;">모두의 노동</div>
   </div>
+
+  
+  <div class="day-badge"><span class="day-pill today">● Day 1 (월) 오늘</span><span class="day-pill future">● Day 2 (수)</span><span class="day-pill future">● Day 3 (금)</span></div>
 
   <!-- ============ SECTION 1: KEY EXPRESSION ============ -->
   <div class="section">
@@ -746,20 +760,37 @@
       <span class="section-title-en">Grammar</span>
       <span class="section-title-ko">· 문법 포인트</span>
     </div>
-    <div class="grammar-card">
-      <span class="grammar-focus">when-절 / become + 형용사</span>
-      <div class="grammar-sentence">When necessary labor was shared equally among all able citizens, the ___ on each individual became light and sufficient time remained for education, culture, and genuine leisure.</div>
-      <div class="gram-options"><button class="gram-opt" onclick="checkGram(this,'burden')">burden</button>
-        <button class="gram-opt" onclick="checkGram(this,'work')">work</button>
-        <button class="gram-opt" onclick="checkGram(this,'job')">job</button>
-        <button class="gram-opt" onclick="checkGram(this,'duty')">duty</button>
-        </div>
-      <div class="grammar-exp" id="gramExp">'Burden'이 정답입니다. 'become + 형용사(light)' 구조 앞에는 주어가 와야 하며, '부담'이 가벼워진다는 의미상 'burden'이 가장 적합합니다. 'work'나 'job'은 셀 수 없는 명사이거나 구체적인 직업을 지칭하여 이 문맥에는 어울리지 않습니다.</div>
-      <div class="grammar-link">
-        📖 <a href="/grammar-camp/G28/G28_new.html" target="_blank">Grammar BaseCamp에서 G28 더 배우기 →</a>
+    <div class="grammar-point" style="background:rgba(30,111,255,0.1);border:1px solid rgba(30,111,255,0.25);border-left:3px solid #1e6fff;border-radius:8px;padding:0.875rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+      <div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;">이번 주 문법 포인트</div>
+        <div id="gp-text" style="font-size:15px;font-weight:500;color:#6ab4ff;"></div>
       </div>
+      <a id="gp-link" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#0f1d2e;background:#6ab4ff;border-radius:6px;padding:6px 14px;text-decoration:none;cursor:pointer;">📐 Grammar 바로가기 →</a>
     </div>
-  </div>
+    <script class="cec-gp-init">
+    (function(){
+      var info = {"id": "G23", "topic": "when-절 / become + 형용사"};
+      function init(){
+        if (typeof PAGE_DATA === 'undefined' || !PAGE_DATA) return;
+        var t = document.getElementById("gp-text");
+        var a = document.getElementById("gp-link");
+        if (!t || !a) return;
+        t.textContent = info.topic;
+        var d = String(PAGE_DATA.day || "");
+        var dm = d.match(/(\d)/);
+        var dayCode = "a";
+        if (dm) { dayCode = ({1:"a",2:"b",3:"c"})[dm[1]] || "a"; }
+        else { var am = d.match(/[A-C]/i); if (am) dayCode = am[0].toLowerCase(); }
+        var ww = String(PAGE_DATA.week||"").replace("W","");
+        var fromPath = "camp-b/" + (PAGE_DATA.grade||"").toLowerCase() + "/week" + ww + dayCode + ".html";
+        a.href = "/grammar-camp/" + info.id + "/" + info.id + "_new.html?from=" + encodeURIComponent(fromPath);
+        a.innerHTML = "📐 Grammar " + info.id + " 바로가기 →";
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else { init(); }
+    })();
+    </script></div>
 
   <!-- ============ SECTION 6: ESSAY ============ -->
   <div class="section">
@@ -768,20 +799,103 @@
       <span class="section-title-en">Essay</span>
       <span class="section-title-ko">· 에세이 쓰기</span>
     </div>
-    <div class="essay-card">
-      <div class="essay-topic">
-        <strong>주제:</strong> 안전과 편안함을 위해 개인의 자유와 사생활을 포기할 수 있나요? D-503의 삶을 생각하며 자신의 생각을 써보세요.
+    <div id="essay-section" class="essay-block">
+      <style>
+        #essay-section .essay-tips{display:grid;grid-template-columns:1fr;gap:10px;margin:14px 0 18px;}
+        #essay-section .tip-card{padding:12px 14px;border-radius:8px;border-left:3px solid;background:rgba(255,255,255,0.02);}
+        #essay-section .tip-card.t1{border-left-color:#6ab4ff;background:rgba(30,111,255,0.08);}
+        #essay-section .tip-card.t2{border-left-color:#4dffa0;background:rgba(77,255,160,0.06);}
+        #essay-section .tip-card.t3{border-left-color:#f0c060;background:rgba(201,168,76,0.08);}
+        #essay-section .tip-card.t4{border-left-color:#ff80cc;background:rgba(255,128,204,0.06);}
+        #essay-section .tip-card.t5{border-left-color:#e080ff;background:rgba(200,75,154,0.08);}
+        #essay-section .tip-num{display:inline-block;font-size:11px;font-weight:800;letter-spacing:0.1em;margin-bottom:5px;}
+        #essay-section .tip-card.t1 .tip-num{color:#6ab4ff;}
+        #essay-section .tip-card.t2 .tip-num{color:#4dffa0;}
+        #essay-section .tip-card.t3 .tip-num{color:#f0c060;}
+        #essay-section .tip-card.t4 .tip-num{color:#ff80cc;}
+        #essay-section .tip-card.t5 .tip-num{color:#e080ff;}
+        #essay-section .tip-title{font-size:14px;font-weight:600;color:#e6edf3;margin-bottom:8px;}
+        #essay-section .ex-bad,#essay-section .ex-good{font-size:12.5px;padding:6px 10px;border-radius:5px;margin:5px 0;line-height:1.5;}
+        #essay-section .ex-bad{background:rgba(255,80,80,0.1);border-left:2px solid #ff5050;color:#ffb5b5;}
+        #essay-section .ex-good{background:rgba(77,255,160,0.08);border-left:2px solid #4dffa0;color:#bffdd9;}
+        #essay-section .ex-bad::before{content:"\2715  ";color:#ff5050;font-weight:700;}
+        #essay-section .ex-good::before{content:"\2713  ";color:#4dffa0;font-weight:700;}
+        #essay-section .essay-topic-yellow{background:rgba(240,192,96,0.08);border-left:3px solid #f0c060;border-radius:6px;padding:12px 14px;margin:14px 0 12px;}
+        #essay-section .essay-topic-yellow .lbl{font-size:10px;color:#f0c060;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;}
+        #essay-section .essay-topic-yellow .text{font-size:14px;color:#e6edf3;line-height:1.55;}
+        #essay-section .essay-3step{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+        #essay-section .essay-3step label{font-size:11.5px;font-weight:700;color:rgba(255,255,255,0.55);letter-spacing:0.06em;}
+        #essay-section .essay-3step textarea{width:100%;background:#1c2230;border:1px solid #30363d;border-radius:6px;color:#e6edf3;font-family:'Source Serif 4',Georgia,serif;font-size:0.92rem;padding:0.8rem;resize:vertical;outline:none;line-height:1.65;}
+        #essay-section .essay-3step textarea:focus{border-color:#6ab4ff;}
+        #essay-section .essay-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;}
+        #essay-section .essay-actions button{display:inline-flex;align-items:center;gap:6px;padding:0.55rem 1rem;border-radius:6px;font-size:0.85rem;font-weight:700;cursor:pointer;border:1px solid;font-family:inherit;}
+        #essay-section .btn-copy{background:rgba(63,185,80,0.12);border-color:rgba(63,185,80,0.4);color:#3fb950;}
+        #essay-section .btn-gpt{background:rgba(106,180,255,0.15);border-color:rgba(106,180,255,0.4);color:#6ab4ff;}
+        #essay-section .btn-copy:hover{background:rgba(63,185,80,0.2);}
+        #essay-section .btn-gpt:hover{background:rgba(106,180,255,0.22);}
+      </style>
+      <div class="essay-tips">
+        <div class="tip-card t1"><div class="tip-num">TIP 1</div><div class="tip-title">명확한 주제문 (Topic Sentence)</div><div class="ex-bad">"Beauty is important."</div><div class="ex-good">"Beauty without morality leads to corruption."</div></div>
+        <div class="tip-card t2"><div class="tip-num">TIP 2</div><div class="tip-title">구체적 근거 + 예시</div><div class="ex-bad">"Because it is bad."</div><div class="ex-good">"For example, the story shows how..."</div></div>
+        <div class="tip-card t3"><div class="tip-num">TIP 3</div><div class="tip-title">반대 의견 인정하기</div><div class="ex-good">"Although some argue that..., I believe..."</div></div>
+        <div class="tip-card t4"><div class="tip-num">TIP 4</div><div class="tip-title">연결어 (Transition Words)</div><div class="ex-good">First &middot; Furthermore &middot; However &middot; Therefore &middot; In conclusion</div></div>
+        <div class="tip-card t5"><div class="tip-num">TIP 5</div><div class="tip-title">강한 마무리 (Conclusion)</div><div class="ex-bad">"So, that is my opinion."</div><div class="ex-good">"This story teaches us that true courage begins within."</div></div>
       </div>
-      <div class="essay-sample-label">샘플 에세이</div>
-      <div class="essay-sample">While society provides security and opportunity, I believe each individual owes it a commitment to contribute to the common good. In Utopia, this debt is paid through shared necessary labor, which sustains the community and frees time for collective betterment. Our debt might not be identical hours of farming, but a similar principle applies: using our skills to support and improve the systems we depend on, whether through work, civic participation, or cultural enrichment. This reciprocal effort is the foundation of a healthy society.</div>
-      <div class="essay-write-area">
-        <div style="font-size:12px; color:#888; margin-bottom:6px;">✏️ 나의 에세이 (80-100 words 목표)</div>
-        <textarea placeholder="여기에 에세이를 써보세요..."></textarea>
-        <button class="essay-write-btn" style="background:#00f2ff;color:#0a1628;font-weight:700;">제출하기</button>
-      <div style="margin-top:12px; font-size:12px; color:#7a8a9a;">✏️ 더 깊이 쓰고 싶다면 → <a href="/essay-camp/" target="_blank" style="color:#00f2ff;">Essay Camp 바로가기</a></div>
+      <div class="essay-topic-yellow">
+        <div class="lbl">이번 주 주제</div>
+        <div class="text" id="essayTopicText">안전과 편안함을 위해 개인의 자유와 사생활을 포기할 수 있나요? D-503의 삶을 생각하며 자신의 생각을 써보세요.</div>
       </div>
-    </div>
-  </div>
+      <div class="essay-3step">
+        <label>① Topic Sentence</label>
+        <textarea id="essayTopic" rows="2" placeholder="주제 문장을 한 줄로 써보세요"></textarea>
+        <label>② Supporting Idea</label>
+        <textarea id="essaySupporting" rows="3" placeholder="근거 + 구체적 예시를 작성"></textarea>
+        <label>③ Conclusion</label>
+        <textarea id="essayConclusion" rows="2" placeholder="강한 마무리"></textarea>
+      </div>
+      <div class="essay-actions">
+        <button class="btn-copy" type="button" onclick="copyEssayDraft(this)">📋 전달사항 복사</button>
+        <button class="btn-gpt" type="button" onclick="launchEssayChatGPT(this)">🚀 ChatGPT 열기</button>
+      </div>
+      <script class="cec-essay-init">
+      (function(){
+        function init(){
+          var el = document.getElementById("essayTopicText");
+          if (el && typeof PAGE_DATA !== 'undefined' && PAGE_DATA && PAGE_DATA.essay_topic) {
+            el.textContent = PAGE_DATA.essay_topic;
+          }
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+        } else { init(); }
+      })();
+      function copyEssayDraft(btn){
+        var pd = (typeof PAGE_DATA!=='undefined' && PAGE_DATA) ? PAGE_DATA : {};
+        var topicEl = document.getElementById("essayTopicText");
+        var topic = (topicEl ? topicEl.textContent : (pd.essay_topic || ""));
+        var t = (document.getElementById("essayTopic")||{}).value || "";
+        var s = (document.getElementById("essaySupporting")||{}).value || "";
+        var c = (document.getElementById("essayConclusion")||{}).value || "";
+        var msg = "\ud83d\udcdd [Essay \u00b7 " + (pd.grade||"") + " \u00b7 " + (pd.book||"") + "]\n" +
+          "\uc8fc\uc81c: " + topic + "\n\n" +
+          "\u2460 Topic Sentence: " + t + "\n" +
+          "\u2461 Supporting Idea: " + s + "\n" +
+          "\u2462 Conclusion: " + c + "\n\n" +
+          "\uc704 \uae00\uc744 \uc601\uc5b4\ub85c \ub2e4\ub4ec\uace0 5\uac00\uc9c0 \ud301(Topic Sentence, \uadfc\uac70+\uc608\uc2dc, \ubc18\ub300 \uc758\uacac \uc778\uc815, \uc5f0\uacb0\uc5b4, \uac15\ud55c \ub9c8\ubb34\ub9ac) \uae30\uc900\uc73c\ub85c \ud53c\ub4dc\ubc31 \ud574\uc918.";
+        var done = function(){ var orig = btn.textContent; btn.textContent = "\u2705 \ubcf5\uc0ac\ub428!"; setTimeout(function(){ btn.textContent = orig; }, 1500); };
+        if (navigator.clipboard) { navigator.clipboard.writeText(msg).then(done, done); } else { done(); }
+      }
+      function launchEssayChatGPT(btn){
+        copyEssayDraft(btn);
+        setTimeout(function(){
+          var w = Math.floor(screen.width * 0.5);
+          var h = screen.height;
+          var l = Math.floor(screen.width * 0.5);
+          window.open('https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166','chatgpt','width='+w+',height='+h+',left='+l+',top=0');
+        }, 250);
+      }
+      </script>
+    </div></div>
 
   <!-- ============ SECTION 7: 디베이트 ============ -->
   <div class="section">
@@ -848,9 +962,10 @@
 
   
   <!-- NAV -->
-  <div class="nav">
-    <div class="nav-current">W33a</div>
-    <a href="week33b.html" class="nav-next">W33b →</a>
+  <div class="wk-nav">
+    <a href="week32c.html" class="wk-btn">← Week 32</a>
+    <span class="wk-current">G2 · W33 · Day 1</span>
+    <a href="week33b.html" class="wk-btn">Day 2 →</a>
   </div>
 
 </div>
