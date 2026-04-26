@@ -1,62 +1,94 @@
 /* CEC English Camp · 공용 nav 인증 위젯
- * 사용: <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
- *       <script src="/assets/auth-nav.js" defer></script>
+ * 사용 (둘 다 defer 없이 같은 순서로):
+ *   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ *   <script src="/assets/auth-nav.js"></script>
  *
  * 로그인 안 됨 → .nav-register Register 버튼 그대로
- * 로그인 됨   → Register 숨기고 👤 [이름] ▾ 드롭다운 표시 (내 정보 / 로그아웃)
+ * 로그인 됨   → Register 숨기고 👤 [이름] ▾ 드롭다운 (내 정보 / 로그아웃)
+ *
+ * 디버그: window.__cecAuth.debug() — 현재 세션/위젯 상태 콘솔 출력
  */
 (function () {
   'use strict';
 
   var SUPABASE_URL = 'https://rzlqlokqplhyntuirsmd.supabase.co';
   var SUPABASE_KEY = 'sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
+  var TAG = '[auth-nav]';
 
-  function init() {
-    if (!window.supabase) {
-      console.warn('[auth-nav] supabase-js 미로드 — script src 순서 확인');
+  // supabase-js가 늦게 로드될 가능성 대비 — 최대 5초 retry
+  function whenSupabaseReady(cb, retries) {
+    if (window.supabase && window.supabase.createClient) return cb();
+    if (retries === undefined) retries = 50;   // 50 × 100ms = 5s
+    if (retries <= 0) {
+      console.error(TAG, 'supabase-js 로드 실패 — CDN 차단/네트워크 확인. <script src="…@supabase/supabase-js@2"> 가 이 스크립트 앞에 있는지 확인.');
       return;
     }
-    var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    setTimeout(function () { whenSupabaseReady(cb, retries - 1); }, 100);
+  }
+
+  var sb;
+  var widget;
+
+  function init() {
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+    });
     window.__cecSb = sb;
 
     injectStyles();
-    var widget = injectMarkup();
-    if (!widget) return;
-
-    function refresh(session) {
-      var reg = document.querySelector('.nav-register');
-      if (session && session.user) {
-        var u = session.user;
-        var name =
-          (u.user_metadata && (u.user_metadata.name || u.user_metadata.full_name)) ||
-          (u.email ? u.email.split('@')[0] : '사용자');
-        widget.querySelector('.nav-user-name').textContent = name;
-        widget.style.display = '';
-        if (reg) reg.style.display = 'none';
-      } else {
-        widget.style.display = 'none';
-        if (reg) reg.style.display = '';
-      }
+    widget = injectMarkup();
+    if (!widget) {
+      console.warn(TAG, '위젯 주입 실패 (host element 없음)');
+      return;
     }
 
-    sb.auth.getSession().then(function (r) { refresh(r.data ? r.data.session : null); });
-    sb.auth.onAuthStateChange(function (_event, session) { refresh(session); });
-
-    // 드롭다운 클릭 토글 (모바일 hover 안 됨 보완)
-    widget.querySelector('.nav-user-btn').addEventListener('click', function (e) {
-      e.preventDefault(); e.stopPropagation();
-      widget.classList.toggle('open');
-    });
-    document.addEventListener('click', function (e) {
-      if (!widget.contains(e.target)) widget.classList.remove('open');
+    sb.auth.getSession().then(function (r) {
+      var s = r && r.data ? r.data.session : null;
+      console.log(TAG, 'getSession:', s ? '✓ logged in (' + (s.user.email || s.user.id) + ')' : '✗ no session');
+      refresh(s);
+    }).catch(function (err) {
+      console.error(TAG, 'getSession error:', err);
+      refresh(null);
     });
 
-    // 로그아웃
-    widget.querySelector('[data-action="signout"]').addEventListener('click', async function (e) {
-      e.preventDefault();
-      await sb.auth.signOut();
-      location.href = '/';
+    sb.auth.onAuthStateChange(function (event, session) {
+      console.log(TAG, 'auth event:', event, session ? 'has session' : 'null');
+      refresh(session);
     });
+
+    bindWidgetEvents();
+    window.__cecAuth = {
+      sb: sb,
+      widget: widget,
+      debug: function () {
+        sb.auth.getSession().then(function (r) {
+          console.log(TAG, '=== DEBUG ===');
+          console.log('  session :', r.data.session);
+          console.log('  user    :', r.data.session ? r.data.session.user : null);
+          console.log('  widget  :', widget);
+          console.log('  display :', widget.style.display || '(default)');
+          console.log('  reg btn :', document.querySelector('.nav-register'));
+          console.log('  storage :', Object.keys(localStorage).filter(function(k){return k.indexOf('supabase') >= 0 || k.indexOf('sb-') >= 0;}));
+        });
+      }
+    };
+  }
+
+  function refresh(session) {
+    if (!widget) return;
+    var reg = document.querySelector('.nav-register');
+    if (session && session.user) {
+      var u = session.user;
+      var name =
+        (u.user_metadata && (u.user_metadata.name || u.user_metadata.full_name)) ||
+        (u.email ? u.email.split('@')[0] : '사용자');
+      widget.querySelector('.nav-user-name').textContent = name;
+      widget.style.display = '';
+      if (reg) reg.style.display = 'none';
+    } else {
+      widget.style.display = 'none';
+      if (reg) reg.style.display = '';
+    }
   }
 
   function injectStyles() {
@@ -80,10 +112,10 @@
   }
 
   function injectMarkup() {
+    if (document.getElementById('navUserWidget')) return document.getElementById('navUserWidget');
     var reg = document.querySelector('.nav-register');
     var host = reg ? reg.parentNode : null;
     if (!host) {
-      // nav-register가 없는 페이지(예: library/) — 우측 상단 fixed 위젯으로
       var nav = document.querySelector('nav, header.topbar, header.site-header');
       host = nav || document.body;
     }
@@ -100,19 +132,31 @@
         '<a href="/profile.html">내 정보</a>' +
         '<a href="#" data-action="signout">로그아웃</a>' +
       '</div>';
-    if (reg) {
-      host.insertBefore(w, reg);   // Register 바로 앞
-    } else {
-      // fallback: 페이지 우상단 fixed
-      w.style.cssText = 'position:fixed;top:14px;right:18px;z-index:1100';
-      host.appendChild(w);
-    }
+    if (reg) host.insertBefore(w, reg);
+    else { w.style.cssText = 'position:fixed;top:14px;right:18px;z-index:1100'; host.appendChild(w); }
     return w;
   }
 
+  function bindWidgetEvents() {
+    widget.querySelector('.nav-user-btn').addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      widget.classList.toggle('open');
+    });
+    document.addEventListener('click', function (e) {
+      if (!widget.contains(e.target)) widget.classList.remove('open');
+    });
+    widget.querySelector('[data-action="signout"]').addEventListener('click', async function (e) {
+      e.preventDefault();
+      try { await sb.auth.signOut(); } catch (err) { console.error(TAG, 'signOut error:', err); }
+      location.href = '/';
+    });
+  }
+
+  function bootstrap() { whenSupabaseReady(init); }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', bootstrap);
   } else {
-    init();
+    bootstrap();
   }
 })();
