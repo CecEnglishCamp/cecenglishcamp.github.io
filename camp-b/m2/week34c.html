@@ -704,12 +704,37 @@ section.sh > *{float:none !important;}
 
 <!-- ═══ SECTION 6: GRAMMAR ═══ -->
 <section class="sh" aria-label="문법 포인트">
-    <div style="background:rgba(30,111,255,0.1);border:1px solid rgba(30,111,255,0.25);border-left:3px solid #1e6fff;border-radius:6px;padding:1.25rem 1.5rem;margin-bottom:1rem;">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:#6ab4ff;margin-bottom:.75rem;">
-        📌 비교급 than before / came out + 형용사
-        <a href="https://cecenglishcamp.com/grammar-camp/" target="_blank" style="margin-left:.75rem;padding:.2rem .7rem;background:rgba(106,180,255,0.18);border:1px solid rgba(106,180,255,0.35);border-radius:4px;color:#6ab4ff;font-size:.72rem;text-decoration:none;">Grammar Base Camp →</a>
+    <div class="grammar-point" style="background:rgba(30,111,255,0.1);border:1px solid rgba(30,111,255,0.25);border-left:3px solid #1e6fff;border-radius:8px;padding:0.875rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+      <div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;">이번 주 문법 포인트</div>
+        <div id="gp-text" style="font-size:15px;font-weight:500;color:#6ab4ff;"></div>
       </div>
+      <a id="gp-link" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#0f1d2e;background:#6ab4ff;border-radius:6px;padding:6px 14px;text-decoration:none;cursor:pointer;">📐 Grammar 바로가기 →</a>
     </div>
+    <script class="cec-gp-init">
+    (function(){
+      var info = {"id": "G10", "topic": "비교급 than before / came out + 형용사"};
+      function init(){
+        if (typeof PAGE_DATA === 'undefined' || !PAGE_DATA) return;
+        var t = document.getElementById("gp-text");
+        var a = document.getElementById("gp-link");
+        if (!t || !a) return;
+        t.textContent = info.topic;
+        var d = String(PAGE_DATA.day || "");
+        var dm = d.match(/(\d)/);
+        var dayCode = "a";
+        if (dm) { dayCode = ({1:"a",2:"b",3:"c"})[dm[1]] || "a"; }
+        else { var am = d.match(/[A-C]/i); if (am) dayCode = am[0].toLowerCase(); }
+        var ww = String(PAGE_DATA.week||"").replace("W","");
+        var fromPath = "camp-b/" + (PAGE_DATA.grade||"").toLowerCase() + "/week" + ww + dayCode + ".html";
+        a.href = "/grammar-camp/" + info.id + "/" + info.id + "_new.html?from=" + encodeURIComponent(fromPath);
+        a.innerHTML = "📐 Grammar " + info.id + " 바로가기 →";
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else { init(); }
+    })();
+    </script>
     
         <div style="margin-bottom:.75rem;">
           <div style="font-size:.9rem;color:#e6edf3;margin-bottom:.4rem;">After the difficult winter, the family came out ___ and more united.</div>
