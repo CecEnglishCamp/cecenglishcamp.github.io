@@ -763,7 +763,25 @@ document.querySelectorAll('.grade-tab').forEach(function(btn){
     if(el)el.classList.add('active');
   });
 });
+
+// Auto-jump to grade tabs on initial load (skip hero, show actionable area first).
+// Skipped if user arrives with a #fragment (browser handles that).
+(function(){
+  if (location.hash) return;
+  // Disable browser's automatic scroll restoration so refresh starts from top.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.addEventListener('load', function(){
+    var el = document.getElementById('grade-tabs');
+    if (!el) return;
+    // Use 'auto' (instant) to avoid a visible scroll animation on first paint.
+    el.scrollIntoView({behavior:'auto', block:'start'});
+  });
+})();
 </script>
+<style>
+/* Compensate for fixed top nav (~68px) when scrolling to grade-tabs */
+#grade-tabs { scroll-margin-top: 80px; }
+</style>
 
 <script>
 function navToggle(){var b=document.querySelector('.nav-hamburger');var l=document.querySelector('.nav-links');if(b&&l){b.classList.toggle('open');l.classList.toggle('open');}}
