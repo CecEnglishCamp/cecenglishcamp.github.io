@@ -1061,6 +1061,11 @@ async function submitForm() {
       householdId = hh.id;
     }
 
+    // households 확보 직후 쿠키 발급 (trials INSERT 결과와 무관하게)
+    var trialExpires = new Date();
+    trialExpires.setDate(trialExpires.getDate() + 7);
+    document.cookie = 'cec_trial=active; expires=' + trialExpires.toUTCString() + '; path=/; SameSite=Lax';
+
     // 3. trials INSERT — 트리거가 expires_at 자동 계산
     const now = new Date().toISOString();
     const { error: trialErr } = await sb
@@ -1094,11 +1099,6 @@ async function submitForm() {
       note.innerHTML = '<span>AI Practice Discount</span><span style="color:var(--cyan)">$20 할인 적용 예정</span>';
       document.getElementById('trialSummary').appendChild(note);
     }
-
-    // 7일짜리 무료체험 쿠키 발급 (require-auth.js 통과용)
-    var trialExpires = new Date();
-    trialExpires.setDate(trialExpires.getDate() + 7);
-    document.cookie = 'cec_trial=active; expires=' + trialExpires.toUTCString() + '; path=/; SameSite=Lax';
 
     goStep(4);
 
