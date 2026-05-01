@@ -557,6 +557,23 @@ body::after {
   line-height: 1.8;
 }
 
+/* 잠금 안내 배너 */
+.lock-banner {
+  display: none;
+  max-width: 720px;
+  margin: 0 auto 2rem;
+  padding: 14px 20px;
+  background: rgba(201,168,76,0.08);
+  border: 0.5px solid var(--gold);
+  border-radius: 10px;
+  color: var(--cream);
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+.lock-banner.show { display: block; }
+.lock-banner strong { color: var(--gold); font-weight: 500; }
+
 /* 반응형 */
 @media (max-width: 600px) {
   .input-grid { grid-template-columns: 1fr; }
@@ -576,6 +593,10 @@ body::after {
 </header>
 
 <main class="main">
+  <div class="lock-banner" id="lockBanner">
+    🔒 <strong>무료체험은 1주차까지 제공됩니다.</strong> 전체 콘텐츠를 이용하려면 아래에서 플랜을 선택해 주세요.
+  </div>
+
   <div class="hero">
     <div class="badge">Grand Opening · 7일 무료체험</div>
     <h1>온 가족의 영어를<br><em>여기서</em> 시작하세요</h1>
@@ -784,6 +805,11 @@ body::after {
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
+// ── 잠금 배너 (week02+ 진입 차단으로 리다이렉트된 경우) ──
+if (new URLSearchParams(location.search).get('locked') === 'true') {
+  document.getElementById('lockBanner').classList.add('show');
+}
+
 // ── Supabase 초기화 ──────────────────────────────────────
 const SUPABASE_URL = 'https://rzlqlokqplhyntuirsmd.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
