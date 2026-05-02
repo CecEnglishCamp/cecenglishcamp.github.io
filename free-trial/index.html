@@ -869,8 +869,9 @@ body::after {
           <div class="trial-row"><span>플랜</span><span id="summaryPlan">—</span></div>
           <div class="trial-row"><span>체험 기간</span><span>7일 무료</span></div>
           <div class="trial-row"><span>카드 등록</span><span>불필요</span></div>
-          <div class="trial-row"><span>체험 후 첫 달</span><span id="summaryPrice">—</span></div>
-          <div class="trial-row"><span>정규 수업료</span><span id="summaryRegular">—</span></div>
+          <div class="trial-row"><span>수업료</span><span id="summaryPrice">—</span></div>
+          <div class="trial-row" id="summaryDiscountRow" style="display:none;"><span>ChatGPT Plus 할인</span><span id="summaryDiscount" style="color:var(--cyan)">—</span></div>
+          <div class="trial-row" id="summaryFinalRow" style="display:none;"><span>실제 납부</span><span id="summaryFinal">—</span></div>
         </div>
 
         <button class="btn-start" onclick="location.href='https://cecenglishcamp.com'">CEC English Camp 시작하기 →</button>
@@ -1088,16 +1089,15 @@ async function submitForm() {
     }
 
     // 4. 성공 → 완료 화면
-    document.getElementById('summaryPlan').textContent    = planInfo.name;
-    document.getElementById('summaryPrice').textContent   = planInfo.first;
-    document.getElementById('summaryRegular').textContent = planInfo.regular;
+    document.getElementById('summaryPlan').textContent  = planInfo.name;
+    document.getElementById('summaryPrice').textContent = planInfo.first + '/월';
 
-    // ChatGPT Plus 할인 안내
+    // ChatGPT Plus 사용자만 할인·실제 납부 행 표시
     if (chatgpt === 'plus') {
-      const note = document.createElement('div');
-      note.className = 'trial-row';
-      note.innerHTML = '<span>AI Practice Discount</span><span style="color:var(--cyan)">$20 할인 적용 예정</span>';
-      document.getElementById('trialSummary').appendChild(note);
+      document.getElementById('summaryDiscountRow').style.display = '';
+      document.getElementById('summaryFinalRow').style.display    = '';
+      document.getElementById('summaryDiscount').textContent      = '-$20';
+      document.getElementById('summaryFinal').textContent         = planInfo.chatgpt_first + '/월';
     }
 
     goStep(4);
