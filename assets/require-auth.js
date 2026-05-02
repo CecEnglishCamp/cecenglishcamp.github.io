@@ -4,8 +4,8 @@
  *   <script src="/assets/require-auth.js?v=3"></script>
  *
  * 통과 조건:
- *   - 무료체험 쿠키(cec_trial) 보유 시 → week01a/b/c (또는 week 패턴 없는 인덱스) 만 허용,
- *     week02 이상은 /free-trial/?locked=true 로 리다이렉트
+ *   - 무료체험 쿠키(cec_trial) 보유 시 → week01a/b/c · ep01 (또는 week/ep 패턴 없는 인덱스) 만 허용,
+ *     week02+ / ep02+ 는 /free-trial/?locked=true 로 리다이렉트
  *   - 쿠키 없으면 Supabase 세션 확인, 미로그인 시 /login.html?next=현재경로 로 리다이렉트
  */
 (function () {
@@ -19,7 +19,7 @@
   var trialToken = getCookie('cec_trial');
 
   if (trialToken) {
-    // 무료체험 쿠키 있음 → 1주차만 허용
+    // 무료체험 쿠키 있음 → 1주차/1에피소드만 허용
     var path = location.pathname;
     var weekMatch = path.match(/week(\d+)/);
     if (weekMatch) {
@@ -29,7 +29,15 @@
         return;
       }
     }
-    // 1주차 또는 인덱스 페이지 → 통과
+    var epMatch = path.match(/ep(\d+)/);
+    if (epMatch) {
+      var epNum = parseInt(epMatch[1], 10);
+      if (epNum > 1) {
+        window.location.replace('/free-trial/?locked=true');
+        return;
+      }
+    }
+    // 1주차 / 1에피소드 또는 인덱스 페이지 → 통과
     return;
   }
 
