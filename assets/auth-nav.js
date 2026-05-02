@@ -1,6 +1,6 @@
 /* CEC English Camp · auth-nav (v3 simple)
  * <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
- * <script src="/assets/auth-nav.js?v=3"></script>
+ * <script src="/assets/auth-nav.js?v=4"></script>
  */
 (function () {
   'use strict';
