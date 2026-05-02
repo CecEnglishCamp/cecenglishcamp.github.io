@@ -80,10 +80,13 @@
       if (!widget.contains(e.target)) widget.classList.remove('open');
     });
 
-    // 로그아웃
+    // 로그아웃 — Supabase 세션 + 무료체험 쿠키 동시 정리
     widget.querySelector('.cec-logout').addEventListener('click', async function (e) {
       e.preventDefault();
       await sb.auth.signOut();
+      document.cookie = 'cec_trial=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      document.cookie = 'cec_trial_name=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+      document.cookie = 'cec_trial_expires=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
       location.href = '/';
     });
   }
