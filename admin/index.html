@@ -382,7 +382,10 @@ tbody tr:last-child td { border-bottom: none; }
 <script>
 const SUPABASE_URL = 'https://rzlqlokqplhyntuirsmd.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
-const ADMIN_EMAIL  = 'cecenglishcamp@gmail.com';
+const ADMIN_EMAILS = [
+  'cecenglishcamp@gmail.com',
+  'cecsungkim@gmail.com'
+];
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── View toggles ────────────────────────────────────────
@@ -416,7 +419,7 @@ async function init() {
   }
 
   const email = session.user && session.user.email;
-  if (email !== ADMIN_EMAIL) {
+  if (ADMIN_EMAILS.indexOf(email) === -1) {
     document.getElementById('deniedEmail').textContent = email || '(이메일 없음)';
     show('deniedView');
     return;
