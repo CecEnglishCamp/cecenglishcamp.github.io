@@ -821,6 +821,28 @@ function toggleG6Books(){
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/assets/require-auth.js?v=4"></script>
+<!-- trial-card-gate v1 -->
+<script>
+// 무료체험 쿠키 보유자: week02+ / ep02+ 카드 클릭 차단
+(function () {
+  function getCookie(n) {
+    var m = document.cookie.match(new RegExp('(?:^|;\\s*)' + n + '=([^;]+)'));
+    return m ? m[1] : null;
+  }
+  if (!getCookie('cec_trial')) return;
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    var m = href.match(/week(\d+)/) || href.match(/ep(\d+)/);
+    if (m && parseInt(m[1], 10) > 1) {
+      e.preventDefault();
+      e.stopPropagation();
+      window.location.href = '/free-trial/?locked=true';
+    }
+  }, true);
+})();
+</script>
 <script src="/assets/auth-nav.js?v=3"></script>
 <script src="/assets/security.js"></script>
 <a href="/free-trial/" class="postit-trial">무료<br>체험 →</a>
