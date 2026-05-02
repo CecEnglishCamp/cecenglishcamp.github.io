@@ -252,6 +252,18 @@ tbody tr:last-child td { border-bottom: none; }
 .pill-active   { background: rgba(0,242,255,0.15); color: var(--cyan); }
 .pill-expired  { background: rgba(138,155,176,0.18); color: var(--muted); }
 .pill-converted{ background: rgba(201,168,76,0.18); color: var(--gold); }
+.pill-new      { background: #c9a84c; color: #0a1628; font-weight: 700; }
+.pill-handled  { background: rgba(122,184,74,0.15); color: #7ad87a; }
+
+/* 메시지 셀 — 긴 텍스트 줄바꿈 */
+.msg-cell {
+  max-width: 320px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
 
 /* Plan badge */
 .plan {
@@ -328,6 +340,11 @@ tbody tr:last-child td { border-bottom: none; }
         <div class="num" id="cnt_members">—</div>
         <div class="sub">auth_user_id 보유</div>
       </div>
+      <div class="s-card">
+        <div class="label">파트너십 문의</div>
+        <div class="num" id="cnt_franchise">—</div>
+        <div class="sub">franchise_inquiries 누적</div>
+      </div>
     </div>
 
     <!-- Households -->
@@ -370,6 +387,32 @@ tbody tr:last-child td { border-bottom: none; }
             </thead>
             <tbody id="trials_tbody">
               <tr><td class="empty" colspan="4">로딩 중…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Franchise Inquiries -->
+    <section class="block">
+      <h2>파트너십 문의 <span class="badge" id="fr_count_badge">—</span></h2>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>연락처</th>
+                <th>지역</th>
+                <th>직업</th>
+                <th>문의내용</th>
+                <th>신청일</th>
+                <th>상태</th>
+              </tr>
+            </thead>
+            <tbody id="franchise_tbody">
+              <tr><td class="empty" colspan="8">로딩 중…</td></tr>
             </tbody>
           </table>
         </div>
@@ -450,6 +493,8 @@ function statusPill(s) {
   const cls = s === 'active' ? 'pill-active'
     : s === 'expired' ? 'pill-expired'
     : s === 'converted' ? 'pill-converted'
+    : s === 'new' ? 'pill-new'
+    : s === 'handled' ? 'pill-handled'
     : 'pill-expired';
   return '<span class="pill ' + cls + '">' + escapeHtml(s || '—') + '</span>';
 }
@@ -457,14 +502,16 @@ function statusPill(s) {
 async function loadData() {
   // 1. Counts
   try {
-    const [{ count: total }, { count: active }, { count: members }] = await Promise.all([
+    const [{ count: total }, { count: active }, { count: members }, { count: franchise }] = await Promise.all([
       sb.from('households').select('*', { count: 'exact', head: true }),
       sb.from('trials').select('*', { count: 'exact', head: true }).eq('status','active'),
       sb.from('households').select('*', { count: 'exact', head: true }).not('auth_user_id','is',null),
+      sb.from('franchise_inquiries').select('*', { count: 'exact', head: true }),
     ]);
-    document.getElementById('cnt_total').textContent   = total ?? 0;
-    document.getElementById('cnt_active').textContent  = active ?? 0;
-    document.getElementById('cnt_members').textContent = members ?? 0;
+    document.getElementById('cnt_total').textContent     = total ?? 0;
+    document.getElementById('cnt_active').textContent    = active ?? 0;
+    document.getElementById('cnt_members').textContent   = members ?? 0;
+    document.getElementById('cnt_franchise').textContent = franchise ?? 0;
   } catch (e) {
     console.error('count error', e);
   }
@@ -495,6 +542,20 @@ async function loadData() {
   } catch (e) {
     document.getElementById('trials_tbody').innerHTML =
       '<tr><td class="empty" colspan="4">불러오기 실패: ' + escapeHtml(e.message || e) + '</td></tr>';
+  }
+
+  // 4. franchise inquiries (latest 100)
+  try {
+    const { data, error } = await sb
+      .from('franchise_inquiries')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(100);
+    if (error) throw error;
+    renderFranchise(data || []);
+  } catch (e) {
+    document.getElementById('franchise_tbody').innerHTML =
+      '<tr><td class="empty" colspan="8">불러오기 실패: ' + escapeHtml(e.message || e) + '</td></tr>';
   }
 }
 
@@ -535,6 +596,27 @@ function renderTrials(rows) {
       </tr>
     `;
   }).join('');
+}
+
+function renderFranchise(rows) {
+  document.getElementById('fr_count_badge').textContent = rows.length + '건';
+  if (!rows.length) {
+    document.getElementById('franchise_tbody').innerHTML =
+      '<tr><td class="empty" colspan="8">파트너십 문의가 없습니다.</td></tr>';
+    return;
+  }
+  document.getElementById('franchise_tbody').innerHTML = rows.map(r => `
+    <tr>
+      <td>${escapeHtml(r.name)}</td>
+      <td class="muted-cell">${escapeHtml(r.email)}</td>
+      <td class="muted-cell">${escapeHtml(r.phone || '—')}</td>
+      <td><span class="plan">${escapeHtml(r.region || '—')}</span></td>
+      <td class="muted-cell">${escapeHtml(r.occupation || '—')}</td>
+      <td class="msg-cell">${escapeHtml(r.message || '')}</td>
+      <td class="muted-cell">${fmtDate(r.created_at)}</td>
+      <td>${statusPill(r.status || 'new')}</td>
+    </tr>
+  `).join('');
 }
 
 // OAuth 리다이렉트 후 세션 갱신 감지
