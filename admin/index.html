@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>관리자 대시보드 | CEC English Camp</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --cyan: #00f2ff;
+  --cream: #f5f0e8;
+  --gold: #c9a84c;
+  --muted: #8a9bb0;
+  --border: rgba(0,242,255,0.18);
+  --row-border: rgba(255,255,255,0.06);
+  --card: rgba(255,255,255,0.04);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--navy);
+  color: var(--cream);
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* Header */
+header.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 0.5px solid var(--border);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--cyan);
+}
+.brand small {
+  display: block;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-style: normal;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.btn {
+  background: transparent;
+  color: var(--cyan);
+  border: 0.5px solid var(--cyan);
+  padding: 7px 16px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn:hover { background: rgba(0,242,255,0.1); }
+.btn-primary {
+  background: var(--cyan);
+  color: var(--navy);
+  border: none;
+  font-weight: 700;
+}
+.btn-primary:hover { background: #00d4e0; }
+
+/* Login screen */
+.center-screen {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+.center-screen .icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  border: 0.5px solid var(--cyan);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  margin-bottom: 1.5rem;
+}
+.center-screen h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 500;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+.center-screen p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  max-width: 360px;
+}
+
+.btn-github {
+  background: #24292e;
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.15s;
+}
+.btn-github:hover { background: #1b1f23; }
+.btn-github svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* Summary cards */
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 2.5rem;
+}
+.s-card {
+  background: var(--card);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  padding: 1.4rem 1.6rem;
+}
+.s-card .label {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.s-card .num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--cyan);
+  line-height: 1;
+}
+.s-card .sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* Section */
+section.block {
+  margin-bottom: 2.5rem;
+}
+.block h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.block h2 .badge {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-style: normal;
+  font-size: 11px;
+  background: rgba(201,168,76,0.15);
+  color: var(--gold);
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-weight: 500;
+}
+
+/* Table */
+.table-wrap {
+  background: var(--card);
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.table-scroll { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 720px;
+}
+thead {
+  background: rgba(0,242,255,0.04);
+}
+th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--cyan);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 0.5px solid var(--border);
+  white-space: nowrap;
+}
+td {
+  padding: 12px 16px;
+  border-bottom: 0.5px solid var(--row-border);
+  color: var(--cream);
+}
+tbody tr:hover { background: rgba(255,255,255,0.02); }
+tbody tr:last-child td { border-bottom: none; }
+.empty {
+  padding: 2rem;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Status pill */
+.pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.pill-active   { background: rgba(0,242,255,0.15); color: var(--cyan); }
+.pill-expired  { background: rgba(138,155,176,0.18); color: var(--muted); }
+.pill-converted{ background: rgba(201,168,76,0.18); color: var(--gold); }
+
+/* Plan badge */
+.plan {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.06);
+  font-size: 11px;
+  color: var(--cream);
+}
+
+.muted-cell { color: var(--muted); font-size: 12px; }
+
+@media (max-width: 600px) {
+  .container { padding: 1rem; }
+  .summary { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .s-card .num { font-size: 28px; }
+  th, td { padding: 10px 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loadingView" class="center-screen">
+  <div class="icon">⋯</div>
+  <p style="color:var(--muted);">로딩 중…</p>
+</div>
+
+<!-- Login -->
+<div id="loginView" class="center-screen" style="display:none;">
+  <div class="icon">🔒</div>
+  <h1>관리자 로그인</h1>
+  <p>CEC English Camp 관리자 계정으로 GitHub 로그인해 주세요.</p>
+  <button class="btn-github" onclick="loginWithGitHub()">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.36-3.87-1.36-.52-1.31-1.27-1.66-1.27-1.66-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.76 2.69 1.25 3.34.96.1-.74.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18.92-.26 1.9-.39 2.88-.39s1.97.13 2.88.39c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.13v3.16c0 .31.21.67.79.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/></svg>
+    GitHub으로 관리자 로그인
+  </button>
+</div>
+
+<!-- Access Denied -->
+<div id="deniedView" class="center-screen" style="display:none;">
+  <div class="icon" style="border-color:#e74c3c;color:#e74c3c;">⛔</div>
+  <h1>접근 권한 없음</h1>
+  <p><span id="deniedEmail" style="color:var(--cream);"></span><br>관리자 계정이 아닙니다.</p>
+  <button class="btn" onclick="logout()">로그아웃</button>
+</div>
+
+<!-- Dashboard -->
+<div id="dashView" style="display:none;">
+  <div class="container">
+    <header class="topbar">
+      <div class="brand">CEC Admin<small>Dashboard · Realtime</small></div>
+      <div class="user-area">
+        <span id="userEmailLabel"></span>
+        <button class="btn" onclick="logout()">로그아웃</button>
+      </div>
+    </header>
+
+    <!-- Summary -->
+    <div class="summary">
+      <div class="s-card">
+        <div class="label">총 무료체험 신청자</div>
+        <div class="num" id="cnt_total">—</div>
+        <div class="sub">households 누적</div>
+      </div>
+      <div class="s-card">
+        <div class="label">활성 체험자</div>
+        <div class="num" id="cnt_active">—</div>
+        <div class="sub">trials.status = active</div>
+      </div>
+      <div class="s-card">
+        <div class="label">총 가입 회원</div>
+        <div class="num" id="cnt_members">—</div>
+        <div class="sub">auth_user_id 보유</div>
+      </div>
+    </div>
+
+    <!-- Households -->
+    <section class="block">
+      <h2>무료체험 신청자 <span class="badge" id="hh_count_badge">—</span></h2>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>전화번호</th>
+                <th>플랜</th>
+                <th>국가</th>
+                <th>신청일</th>
+              </tr>
+            </thead>
+            <tbody id="households_tbody">
+              <tr><td class="empty" colspan="6">로딩 중…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trials -->
+    <section class="block">
+      <h2>체험 현황 <span class="badge" id="tr_count_badge">—</span></h2>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>이름</th>
+                <th>시작일</th>
+                <th>만료일</th>
+                <th>상태</th>
+              </tr>
+            </thead>
+            <tbody id="trials_tbody">
+              <tr><td class="empty" colspan="4">로딩 중…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://rzlqlokqplhyntuirsmd.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
+const ADMIN_EMAIL  = 'cecenglishcamp@gmail.com';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── View toggles ────────────────────────────────────────
+function show(viewId) {
+  ['loadingView','loginView','deniedView','dashView'].forEach(id => {
+    document.getElementById(id).style.display = (id === viewId) ? '' : 'none';
+  });
+}
+
+// ── Auth ────────────────────────────────────────────────
+async function loginWithGitHub() {
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'github',
+    options: { redirectTo: 'https://cecenglishcamp.com/admin/' }
+  });
+  if (error) alert('로그인 오류: ' + error.message);
+}
+
+async function logout() {
+  await sb.auth.signOut();
+  location.reload();
+}
+
+// ── Init / session check ────────────────────────────────
+async function init() {
+  const { data: { session } } = await sb.auth.getSession();
+
+  if (!session) {
+    show('loginView');
+    return;
+  }
+
+  const email = session.user && session.user.email;
+  if (email !== ADMIN_EMAIL) {
+    document.getElementById('deniedEmail').textContent = email || '(이메일 없음)';
+    show('deniedView');
+    return;
+  }
+
+  document.getElementById('userEmailLabel').textContent = email;
+  show('dashView');
+  loadData();
+}
+
+// ── Data loaders ────────────────────────────────────────
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  if (isNaN(d)) return iso;
+  return d.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })
+    + ' ' + d.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+}
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function statusPill(s) {
+  const cls = s === 'active' ? 'pill-active'
+    : s === 'expired' ? 'pill-expired'
+    : s === 'converted' ? 'pill-converted'
+    : 'pill-expired';
+  return '<span class="pill ' + cls + '">' + escapeHtml(s || '—') + '</span>';
+}
+
+async function loadData() {
+  // 1. Counts
+  try {
+    const [{ count: total }, { count: active }, { count: members }] = await Promise.all([
+      sb.from('households').select('*', { count: 'exact', head: true }),
+      sb.from('trials').select('*', { count: 'exact', head: true }).eq('status','active'),
+      sb.from('households').select('*', { count: 'exact', head: true }).not('auth_user_id','is',null),
+    ]);
+    document.getElementById('cnt_total').textContent   = total ?? 0;
+    document.getElementById('cnt_active').textContent  = active ?? 0;
+    document.getElementById('cnt_members').textContent = members ?? 0;
+  } catch (e) {
+    console.error('count error', e);
+  }
+
+  // 2. households (latest 100)
+  try {
+    const { data, error } = await sb
+      .from('households')
+      .select('parent_name, email, phone, plan_type, country, created_at')
+      .order('created_at', { ascending: false })
+      .limit(100);
+    if (error) throw error;
+    renderHouseholds(data || []);
+  } catch (e) {
+    document.getElementById('households_tbody').innerHTML =
+      '<tr><td class="empty" colspan="6">불러오기 실패: ' + escapeHtml(e.message || e) + '</td></tr>';
+  }
+
+  // 3. trials (latest 100, joined with household name)
+  try {
+    const { data, error } = await sb
+      .from('trials')
+      .select('started_at, expires_at, status, households(parent_name)')
+      .order('started_at', { ascending: false })
+      .limit(100);
+    if (error) throw error;
+    renderTrials(data || []);
+  } catch (e) {
+    document.getElementById('trials_tbody').innerHTML =
+      '<tr><td class="empty" colspan="4">불러오기 실패: ' + escapeHtml(e.message || e) + '</td></tr>';
+  }
+}
+
+function renderHouseholds(rows) {
+  document.getElementById('hh_count_badge').textContent = rows.length + '명';
+  if (!rows.length) {
+    document.getElementById('households_tbody').innerHTML =
+      '<tr><td class="empty" colspan="6">신청자가 없습니다.</td></tr>';
+    return;
+  }
+  document.getElementById('households_tbody').innerHTML = rows.map(r => `
+    <tr>
+      <td>${escapeHtml(r.parent_name)}</td>
+      <td class="muted-cell">${escapeHtml(r.email)}</td>
+      <td class="muted-cell">${escapeHtml(r.phone || '—')}</td>
+      <td><span class="plan">${escapeHtml(r.plan_type || '—')}</span></td>
+      <td class="muted-cell">${escapeHtml(r.country || '—')}</td>
+      <td class="muted-cell">${fmtDate(r.created_at)}</td>
+    </tr>
+  `).join('');
+}
+
+function renderTrials(rows) {
+  document.getElementById('tr_count_badge').textContent = rows.length + '건';
+  if (!rows.length) {
+    document.getElementById('trials_tbody').innerHTML =
+      '<tr><td class="empty" colspan="4">체험 데이터가 없습니다.</td></tr>';
+    return;
+  }
+  document.getElementById('trials_tbody').innerHTML = rows.map(r => {
+    const name = (r.households && r.households.parent_name) || '—';
+    return `
+      <tr>
+        <td>${escapeHtml(name)}</td>
+        <td class="muted-cell">${fmtDate(r.started_at)}</td>
+        <td class="muted-cell">${fmtDate(r.expires_at)}</td>
+        <td>${statusPill(r.status)}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// OAuth 리다이렉트 후 세션 갱신 감지
+sb.auth.onAuthStateChange((event) => {
+  if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') init();
+});
+
+init();
+</script>
+</body>
+</html>
