@@ -380,12 +380,14 @@ function copyPrompt() {
 
 function launchChatGPTPractice() {
   var summary = buildSummary();
-  var camp = getCampType();
-  var guideUrl = 'https://cecenglishcamp.github.io/cec_guide.html'
-    + '?camp=' + camp
-    + '&url=' + encodeURIComponent(window.location.href)
-    + '&summary=' + encodeURIComponent(summary);
-  window.location.href = guideUrl;
+  if(navigator.clipboard) navigator.clipboard.writeText(summary);
+  setTimeout(function(){
+    window.open('https://chatgpt.com/g/g-69b48918e32c81919f5a6c6c6d187df3',
+      'chatgpt',
+      'width='+Math.round(screen.width/2)+
+      ',height='+screen.height+
+      ',left='+Math.round(screen.width/2)+',top=0');
+  },300);
 }
 
 window.addEventListener('load', function() {

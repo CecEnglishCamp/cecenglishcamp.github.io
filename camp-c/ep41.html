@@ -1170,7 +1170,17 @@ window.addEventListener('message',function(e){if(!e.data||!e.data.type)return;if
 <script>
 function pwBuild(){var w=[];document.querySelectorAll('.key-expression,.expression-en,.vocab-en,.v-eng,.word-en,.key-word').forEach(function(e){var t=e.textContent.trim();if(t&&t.length<40)w.push(t);});var s=document.querySelector('.story-en,.dialogue p,.story-content p,.ep-story p');var st=s?s.textContent.replace(/\s+/g,' ').trim().substring(0,100)+'...':'';return['안녕! 나는 CEC English Camp 학생이야.','오늘 '+document.title+' 을 공부했어.','','📚 오늘 배운 내용:',w.length?'- 표현/단어: '+w.slice(0,8).join(', '):'',st?'- 내용: '+st:'','','[할 것 - 5분] 오늘 배운 표현으로 짧은 대화를 도와줘.','[할 것 - 10분] 오늘 상황과 비슷한 롤플레이를 해줘.','[할 것 - 5분] 내가 말하는 영어를 듣고 자연스럽게 대화해줘.'].filter(Boolean).join('\n');}
 function pwCopy(){navigator.clipboard.writeText(pwBuild()).then(function(){var e=document.getElementById('pwOk');if(e){e.style.display='block';setTimeout(function(){e.style.display='none';},3000);}});}
-function pwLaunch(){window.location.href='https://cecenglishcamp.github.io/cec_guide.html?camp=c&url='+encodeURIComponent(window.location.href)+'&summary='+encodeURIComponent(pwBuild());}
+function pwLaunch(){
+  var text = pwBuild();
+  if(navigator.clipboard) navigator.clipboard.writeText(text);
+  setTimeout(function(){
+    window.open('https://chatgpt.com/g/g-69b48918e32c81919f5a6c6c6d187df3',
+      'chatgpt',
+      'width='+Math.round(screen.width/2)+
+      ',height='+screen.height+
+      ',left='+Math.round(screen.width/2)+',top=0');
+  },300);
+}
 window.addEventListener('load',function(){var e=document.getElementById('pwBody');if(e)e.textContent=pwBuild();});
 </script>
 </div>
