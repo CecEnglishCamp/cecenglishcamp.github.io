@@ -889,6 +889,7 @@ body::after {
         </div>
 
         <button class="btn-start" onclick="location.href='https://cecenglishcamp.com'">CEC English Camp 시작하기 →</button>
+        <div id="countdownText" style="margin-top:1rem;font-size:13px;color:var(--muted);">3초 후 자동으로 이동합니다...</div>
       </div>
     </div>
 
@@ -1120,6 +1121,22 @@ async function submitForm() {
     }
 
     goStep(4);
+
+    // 3초 카운트다운 후 자동 홈 이동
+    var countdownEl = document.getElementById('countdownText');
+    var seconds = 3;
+    if (countdownEl) {
+      countdownEl.textContent = seconds + '초 후 자동으로 이동합니다...';
+      var ci = setInterval(function () {
+        seconds--;
+        if (seconds > 0) {
+          countdownEl.textContent = seconds + '초 후 자동으로 이동합니다...';
+        } else {
+          clearInterval(ci);
+          location.href = 'https://cecenglishcamp.com';
+        }
+      }, 1000);
+    }
 
   } catch(e) {
     alert('네트워크 오류가 발생했습니다. 다시 시도해 주세요.');

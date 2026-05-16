@@ -10,7 +10,6 @@ const PRECACHE = [
   '/index.html',
   '/offline.html',
   '/assets/require-auth.js',
-  '/assets/trial-banner.js',
   '/favicon.ico',
   '/apple-touch-icon.png',
   '/manifest.json'
