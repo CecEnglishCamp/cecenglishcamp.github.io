@@ -163,6 +163,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(2,8,24,.95);backdrop-filte
     <div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div>
     <div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div>
   </div>
+  <a href="/space-camp/" style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:rgba(0,242,255,.06);border:1px solid rgba(0,242,255,.2);border-radius:4px;color:var(--cyan);font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;text-decoration:none;">← SPACE CAMP</a>
   <div class="nav-info">WEEK 1 · DAY 4</div>
 </nav>
 
@@ -186,7 +187,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(2,8,24,.95);backdrop-filte
     </div>
     <div class="hero-btns">
       <a href="#mission" class="btn-p">▶ 미션 시작하기</a>
-      <a href="https://youtu.be/FVpO_rctmqM" id="video-btn" class="btn-s">▶ 영상 보기</a>
+      <a href="#" id="video-btn" class="btn-s" onclick="openVideo('FVpO_rctmqM');return false;">▶ 영상 보기</a>
     </div>
   </div>
 </section>
@@ -457,5 +458,38 @@ function switchGrade(id, el) {
 
 updatePrompt();
 </script>
+
+<!-- 영상 모달 -->
+<div id="video-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;">
+  <div style="position:relative;width:90%;max-width:960px;">
+    <button onclick="closeVideo()" style="position:absolute;top:-44px;right:0;background:none;border:none;color:#fff;font-size:28px;cursor:pointer;font-family:Orbitron,monospace;">✕ 닫기</button>
+    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;">
+      <iframe id="yt-frame" src="" allow="autoplay;encrypted-media" allowfullscreen
+        style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+function openVideo(vid) {
+  document.getElementById('yt-frame').src =
+    'https://www.youtube.com/embed/' + vid + '?autoplay=1&rel=0&modestbranding=1';
+  const m = document.getElementById('video-modal');
+  m.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeVideo() {
+  document.getElementById('yt-frame').src = '';
+  document.getElementById('video-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('video-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeVideo();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeVideo();
+});
+</script>
+
 </body>
 </html>
