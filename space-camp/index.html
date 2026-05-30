@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space Camp — CEC English Camp</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --space:#020818;--deep:#0a1628;--panel:#0d1f3c;
+  --cyan:#00f2ff;--gold:#ffd700;--orange:#ff6b35;
+  --white:#e8f4ff;--dim:#4a6fa5;--green:#00ff88;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--space);color:var(--white);font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* 별 배경 */
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(1px 1px at 8% 15%,rgba(255,255,255,.9) 0%,transparent 100%),
+  radial-gradient(1px 1px at 25% 40%,rgba(255,255,255,.7) 0%,transparent 100%),
+  radial-gradient(1px 1px at 45% 8%,rgba(255,255,255,.8) 0%,transparent 100%),
+  radial-gradient(1px 1px at 65% 55%,rgba(255,255,255,.6) 0%,transparent 100%),
+  radial-gradient(1px 1px at 82% 25%,rgba(255,255,255,.9) 0%,transparent 100%),
+  radial-gradient(1px 1px at 18% 72%,rgba(255,255,255,.5) 0%,transparent 100%),
+  radial-gradient(1px 1px at 55% 85%,rgba(255,255,255,.7) 0%,transparent 100%),
+  radial-gradient(1px 1px at 90% 65%,rgba(255,255,255,.6) 0%,transparent 100%),
+  radial-gradient(1px 1px at 35% 92%,rgba(255,255,255,.5) 0%,transparent 100%),
+  radial-gradient(2px 2px at 12% 38%,rgba(0,242,255,.4) 0%,transparent 100%),
+  radial-gradient(2px 2px at 70% 12%,rgba(0,242,255,.3) 0%,transparent 100%),
+  radial-gradient(2px 2px at 50% 50%,rgba(255,215,0,.2) 0%,transparent 100%);
+pointer-events:none;z-index:0;}
+
+/* 헤더 */
+.site-header{
+  position:relative;z-index:10;
+  background:rgba(2,8,24,.95);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(0,242,255,.2);
+  padding:0 48px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.site-logo{
+  font-family:'Orbitron',monospace;
+  font-size:14px;
+  color:var(--cyan);
+  letter-spacing:2px;
+  font-weight:700;
+  text-decoration:none;
+}
+.back-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 18px;
+  background:rgba(0,242,255,.06);
+  border:1px solid rgba(0,242,255,.2);
+  border-radius:4px;
+  color:var(--cyan);
+  font-family:'Orbitron',monospace;
+  font-size:9px;
+  letter-spacing:2px;
+  text-decoration:none;
+  transition:all .2s;
+}
+.back-btn:hover{background:rgba(0,242,255,.12);}
+
+/* 히어로 */
+.hero{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  padding:80px 48px 60px;
+}
+
+.robo-wrap{
+  position:relative;
+  display:inline-block;
+  margin-bottom:32px;
+}
+.robo-wrap img{
+  width:140px;
+  height:auto;
+  filter:drop-shadow(0 0 24px rgba(0,242,255,.4));
+  animation:float 3s ease infinite;
+}
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-12px);}
+}
+.robo-glow{
+  position:absolute;
+  bottom:-10px;
+  left:50%;
+  transform:translateX(-50%);
+  width:100px;
+  height:20px;
+  background:radial-gradient(ellipse,rgba(0,242,255,.3) 0%,transparent 70%);
+  border-radius:50%;
+  animation:glow 3s ease infinite;
+}
+@keyframes glow{
+  0%,100%{opacity:.6;transform:translateX(-50%) scaleX(1);}
+  50%{opacity:.3;transform:translateX(-50%) scaleX(.7);}
+}
+
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(0,242,255,.08);
+  border:1px solid rgba(0,242,255,.3);
+  border-radius:4px;
+  padding:6px 16px;
+  margin-bottom:20px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  color:var(--cyan);
+  letter-spacing:2px;
+}
+.hero-badge .dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  animation:blink 1.8s ease infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.hero-title{
+  font-family:'Orbitron',monospace;
+  font-size:52px;
+  font-weight:900;
+  color:var(--white);
+  line-height:1.1;
+  margin-bottom:10px;
+}
+.hero-title span{color:var(--cyan);}
+
+.hero-subtitle{
+  font-size:18px;
+  color:var(--dim);
+  font-weight:300;
+  margin-bottom:20px;
+}
+
+.hero-desc{
+  font-size:15px;
+  color:#7a9cc0;
+  line-height:1.85;
+  max-width:600px;
+  margin:0 auto 40px;
+}
+
+/* 진행 바 */
+.progress-wrap{
+  max-width:600px;
+  margin:0 auto 48px;
+}
+.progress-label{
+  display:flex;
+  justify-content:space-between;
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  color:var(--dim);
+  margin-bottom:8px;
+}
+.progress-bar{
+  height:6px;
+  background:rgba(0,242,255,.1);
+  border-radius:3px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  width:30%;
+  background:linear-gradient(to right,var(--cyan),var(--green));
+  border-radius:3px;
+  position:relative;
+}
+.progress-fill::after{
+  content:'';
+  position:absolute;
+  right:0;
+  top:50%;
+  transform:translateY(-50%);
+  width:10px;height:10px;
+  border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px var(--green);
+}
+
+/* 주차 헤더 */
+.week-header{
+  position:relative;
+  z-index:1;
+  padding:0 48px;
+  margin-bottom:24px;
+}
+.week-title{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:6px;
+}
+.week-badge{
+  font-family:'Orbitron',monospace;
+  font-size:10px;
+  letter-spacing:3px;
+  color:var(--cyan);
+  background:rgba(0,242,255,.08);
+  border:1px solid rgba(0,242,255,.2);
+  border-radius:4px;
+  padding:4px 12px;
+}
+.week-name{
+  font-family:'Orbitron',monospace;
+  font-size:14px;
+  color:var(--white);
+  font-weight:700;
+}
+.week-kr{font-size:13px;color:var(--dim);font-weight:300;}
+.week-line{
+  height:1px;
+  background:linear-gradient(to right,rgba(0,242,255,.25),transparent);
+  margin-top:12px;
+}
+
+/* Step 카드 그리드 */
+.steps-grid{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:16px;
+  padding:0 48px;
+  margin-bottom:48px;
+}
+
+.step-card{
+  background:var(--panel);
+  border:1px solid rgba(0,242,255,.12);
+  border-radius:12px;
+  overflow:hidden;
+  transition:all .25s;
+  text-decoration:none;
+  display:block;
+  position:relative;
+}
+.step-card.available:hover{
+  border-color:var(--cyan);
+  transform:translateY(-4px);
+  box-shadow:0 12px 32px rgba(0,242,255,.15);
+}
+.step-card.coming{
+  opacity:.45;
+  cursor:default;
+  pointer-events:none;
+}
+
+.step-thumb{
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  display:block;
+  filter:brightness(.85) saturate(1.1);
+  transition:filter .25s;
+}
+.step-card.available:hover .step-thumb{filter:brightness(1) saturate(1.2);}
+.step-thumb-placeholder{
+  width:100%;
+  height:120px;
+  background:linear-gradient(135deg,#0a1628 0%,#0d2040 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+}
+
+.step-card-body{padding:14px 16px 16px;}
+.step-card-num{
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  color:var(--dim);
+  letter-spacing:2px;
+  margin-bottom:4px;
+}
+.step-card-title{
+  font-family:'Orbitron',monospace;
+  font-size:11px;
+  font-weight:700;
+  color:var(--white);
+  line-height:1.3;
+  margin-bottom:6px;
+}
+.step-card-kr{
+  font-size:11px;
+  color:var(--dim);
+  margin-bottom:10px;
+}
+.step-card-status{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  letter-spacing:1px;
+}
+.status-live{color:var(--green);}
+.status-live::before{content:'●';margin-right:3px;font-size:8px;}
+.status-soon{color:var(--dim);}
+.status-soon::before{content:'○';margin-right:3px;font-size:8px;}
+
+/* 완료 표시 리본 */
+.step-card.available::before{
+  content:'LIVE';
+  position:absolute;
+  top:10px;right:-2px;
+  font-family:'Orbitron',monospace;
+  font-size:8px;
+  font-weight:700;
+  letter-spacing:1px;
+  background:var(--green);
+  color:var(--space);
+  padding:3px 8px;
+  border-radius:2px 0 0 2px;
+}
+
+/* CTA 섹션 */
+.cta-section{
+  position:relative;
+  z-index:1;
+  margin:32px 48px 64px;
+  padding:40px 48px;
+  background:rgba(0,242,255,.04);
+  border:1px solid rgba(0,242,255,.15);
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:32px;
+}
+.cta-text h3{
+  font-family:'Orbitron',monospace;
+  font-size:16px;
+  color:var(--white);
+  margin-bottom:8px;
+}
+.cta-text p{font-size:14px;color:var(--dim);line-height:1.7;}
+.cta-btns{display:flex;gap:12px;flex-shrink:0;}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 24px;
+  background:var(--cyan);color:var(--space);
+  font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;
+  border:none;border-radius:4px;cursor:pointer;transition:all .2s;text-decoration:none;
+}
+.btn-primary:hover{background:var(--white);transform:translateY(-2px);}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 20px;
+  background:transparent;color:var(--orange);
+  font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;
+  border:1px solid rgba(255,107,53,.4);border-radius:4px;cursor:pointer;transition:all .2s;text-decoration:none;
+}
+.btn-secondary:hover{background:rgba(255,107,53,.08);}
+
+/* 푸터 */
+.site-footer{
+  position:relative;z-index:1;
+  text-align:center;
+  padding:32px 48px;
+  border-top:1px solid rgba(0,242,255,.08);
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  color:var(--dim);
+}
+
+@media(max-width:1100px){.steps-grid{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:900px){
+  .steps-grid{grid-template-columns:repeat(3,1fr);padding:0 24px;}
+  .hero{padding:60px 24px 40px;}
+  .hero-title{font-size:36px;}
+  .week-header{padding:0 24px;}
+  .cta-section{flex-direction:column;margin:24px;padding:28px 24px;}
+  .site-header{padding:0 24px;}
+}
+@media(max-width:600px){.steps-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<header class="site-header">
+  <a href="/" class="site-logo">CEC ENGLISH CAMP</a>
+  <a href="/" class="back-btn">← 메인으로</a>
+</header>
+
+<!-- 히어로 -->
+<section class="hero">
+  <div class="robo-wrap">
+    <img src="/assets/videos/robo_jump.gif" alt="Robo" onerror="this.src='/assets/img/robo_jump.png'">
+    <div class="robo-glow"></div>
+  </div>
+
+  <div class="hero-badge">
+    <div class="dot"></div>
+    <span>CEC SPACE CAMP · NASA ASCAN 기반</span>
+  </div>
+
+  <h1 class="hero-title">Space <span>Camp</span></h1>
+  <div class="hero-subtitle">우주비행사 영어 훈련 프로그램</div>
+
+  <p class="hero-desc">
+    NASA 우주비행사 후보생 훈련 과정을 영어로 경험하세요.<br>
+    20단계 미션을 완주하면 Junior Astronaut Certificate를 받습니다.<br>
+    4학년 A2 · 5학년 B1 · 6학년 B2 — 학년별 맞춤 커리큘럼
+  </p>
+
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>진행 현황</span>
+      <span>6 / 20 STEPS LIVE</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+  </div>
+</section>
+
+<!-- WEEK 1 -->
+<div class="week-header">
+  <div class="week-title">
+    <span class="week-badge">WEEK 1</span>
+    <span class="week-name">Astronaut Candidate Basic Training</span>
+  </div>
+  <div class="week-kr">우주비행사 후보생 기초 훈련</div>
+  <div class="week-line"></div>
+</div>
+
+<div class="steps-grid">
+  <a href="/space-camp/step01.html" class="step-card available">
+    <img src="/space-camp/Going_Tower.png" class="step-thumb" alt="Step 1" onerror="this.style.display='none'">
+    <div class="step-card-body">
+      <div class="step-card-num">STEP 01 · WEEK 1</div>
+      <div class="step-card-title">Astronaut Candidate Check-In</div>
+      <div class="step-card-kr">우주비행사 후보생 입소</div>
+      <div class="step-card-status status-live">LIVE</div>
+    </div>
+  </a>
+
+  <a href="/space-camp/step02.html" class="step-card available">
+    <img src="/space-camp/Step2-a.png" class="step-thumb" alt="Step 2">
+    <div class="step-card-body">
+      <div class="step-card-num">STEP 02 · WEEK 1</div>
+      <div class="step-card-title">International Crew Orientation</div>
+      <div class="step-card-kr">국제 승무원 오리엔테이션</div>
+      <div class="step-card-status status-live">LIVE</div>
+    </div>
+  </a>
+
+  <a href="/space-camp/step03.html" class="step-card available">
+    <img src="/space-camp/Step3-a.png" class="step-thumb" alt="Step 3">
+    <div class="step-card-body">
+      <div class="step-card-num">STEP 03 · WEEK 1</div>
+      <div class="step-card-title">Space Systems Briefing</div>
+      <div class="step-card-kr">우주선 시스템 브리핑</div>
+      <div class="step-card-status status-live">LIVE</div>
+    </div>
+  </a>
+
+  <a href="/space-camp/step04.html" class="step-card available">
+    <img src="/space-camp/Step4-a.png" class="step-thumb" alt="Step 4">
+    <div class="step-card-body">
+      <div class="step-card-num">STEP 04 · WEEK 1</div>
+      <div class="step-card-title">Spacesuit & Life Support</div>
+      <div class="step-card-kr">우주복과 생명유지장치</div>
+      <div class="step-card-status status-live">LIVE</div>
+    </div>
+  </a>
+
+  <a href="/space-camp/step05.html" class="step-card available">
+    <img src="/space-camp/Step5-a.png" class="step-thumb" alt="Step 5">
+    <div class="step-card-body">
+      <div class="step-card-num">STEP 05 · WEEK 1</div>
+      <div class="step-card-title">Spacecraft Mock-up</div>
+      <div class="step-card-kr">우주선 모형 적응 훈련</div>
+      <div class="step-card-status status-live">LIVE</div>
+    </div>
+  </a>
+</div>
+
+<!-- WEEK 2 -->
+<div class="week-header">
+  <div class="week-title">
+    <span class="week-badge">WEEK 2</span>
+    <span class="week-name">Launch & Operations Training</span>
+  </div>
+  <div class="week-kr">발사와 운용 훈련</div>
+  <div class="week-line"></div>
+</div>
+
+<div class="steps-grid">
+  <a href="/space-camp/step06.html" class="step-card available">
+    <img src="/space-camp/Step6-a.png" class="step-thumb" alt="Step 6">
+    <div class="step-card-body">
+      <div class="step-card-num">STEP 06 · WEEK 2</div>
+      <div class="step-card-title">Crew Procedure Training</div>
+      <div class="step-card-kr">승무원 절차 훈련</div>
+      <div class="step-card-status status-live">LIVE</div>
+    </div>
+  </a>
+
+  <div class="step-card coming">
+    <div class="step-thumb-placeholder">🚀</div>
+    <div class="step-card-body">
+      <div class="step-card-num">STEP 07 · WEEK 2</div>
+      <div class="step-card-title">Seat Ingress & Harness</div>
+      <div class="step-card-kr">탑승·안전벨트 훈련</div>
+      <div class="step-card-status status-soon">COMING SOON</div>
+    </div>
+  </div>
+
+  <div class="step-card coming">
+    <div class="step-thumb-placeholder">📡</div>
+    <div class="step-card-body">
+      <div class="step-card-num">STEP 08 · WEEK 2</div>
+      <div class="step-card-title">Mission Control Comm</div>
+      <div class="step-card-kr">관제센터 교신 훈련</div>
+      <div class="step-card-status status-soon">COMING SOON</div>
+    </div>
+  </div>
+
+  <div class="step-card coming">
+    <div class="step-thumb-placeholder">🔥</div>
+    <div class="step-card-body">
+      <div class="step-card-num">STEP 09 · WEEK 2</div>
+      <div class="step-card-title">Launch Simulation</div>
+      <div class="step-card-kr">발사 시뮬레이션</div>
+      <div class="step-card-status status-soon">COMING SOON</div>
+    </div>
+  </div>
+
+  <div class="step-card coming">
+    <div class="step-thumb-placeholder">🌍</div>
+    <div class="step-card-body">
+      <div class="step-card-num">STEP 10 · WEEK 2</div>
+      <div class="step-card-title">Orbit Operations</div>
+      <div class="step-card-kr">궤도 운용 훈련</div>
+      <div class="step-card-status status-soon">COMING SOON</div>
+    </div>
+  </div>
+</div>
+
+<!-- WEEK 3 -->
+<div class="week-header">
+  <div class="week-title">
+    <span class="week-badge">WEEK 3</span>
+    <span class="week-name">EVA & Space Life Training</span>
+  </div>
+  <div class="week-kr">우주유영과 우주생활 훈련</div>
+  <div class="week-line"></div>
+</div>
+
+<div class="steps-grid">
+  <div class="step-card coming"><div class="step-thumb-placeholder">🏊</div><div class="step-card-body"><div class="step-card-num">STEP 11 · WEEK 3</div><div class="step-card-title">NBL Pool Training</div><div class="step-card-kr">수중 EVA 훈련</div><div class="step-card-status status-soon">COMING SOON</div></div></div>
+  <div class="step-card coming"><div class="step-thumb-placeholder">🔧</div><div class="step-card-body"><div class="step-card-num">STEP 12 · WEEK 3</div><div class="step-card-title">EVA Tools Training</div><div class="step-card-kr">EVA 도구 훈련</div><div class="step-card-status status-soon">COMING SOON</div></div></div>
+  <div class="step-card coming"><div class="step-thumb-placeholder">🦾</div><div class="step-card-body"><div class="step-card-num">STEP 13 · WEEK 3</div><div class="step-card-title">Robotics Arm Training</div><div class="step-card-kr">로봇팔 조작 훈련</div><div class="step-card-status status-soon">COMING SOON</div></div></div>
+  <div class="step-card coming"><div class="step-thumb-placeholder">🚨</div><div class="step-card-body"><div class="step-card-num">STEP 14 · WEEK 3</div><div class="step-card-title">Emergency Response</div><div class="step-card-kr">비상 대응 훈련</div><div class="step-card-status status-soon">COMING SOON</div></div></div>
+  <div class="step-card coming"><div class="step-thumb-placeholder">🦷</div><div class="step-card-body"><div class="step-card-num">STEP 15 · WEEK 3</div><div class="step-card-title">Space Life & Medical</div><div class="step-card-kr">우주생활 건강 훈련</div><div class="step-card-status status-soon">COMING SOON</div></div></div>
+</div>
+
+<!-- WEEK 4 -->
+<div class="week-header">
+  <div class="week-title">
+    <span class="week-badge">WEEK 4</span>
+    <span class="week-name">Field, Survival & Final Mission</span>
+  </div>
+  <div class="week-kr">현장·생존·최종 임무</div>
+  <div class="week-line"></div>
+</div>
+
+<div class="steps-grid">
+  <div class="step-card coming"><div class="step-thumb-placeholder">🌿</div><div class="step-card-body"><div class="step-card-num">STEP 16 · WEEK 4</div><div class="step-card-title">Land Survival Training</div><div class="step-card-kr">지상 생존 훈련</div><div class="step-card-status status-soon">COMING SOON</div></div></div>
+  <div class="step-card coming"><div class="step-thumb-placeholder">🌊</div><div class="step-card-body"><div class="step-card-num">STEP 17 · WEEK 4</div><div class="step-card-title">Water Survival Training</div><div class="step-card-kr">해상 생존 훈련</div><div class="step-card-status status-soon">COMING SOON</div></div></div>
+  <div class="step-card coming"><div class="step-thumb-placeholder">🔬</div><div class="step-card-body"><div class="step-card-num">STEP 18 · WEEK 4</div><div class="step-card-title">Scientific Field Mission</div><div class="step-card-kr">과학 현장 탐사</div><div class="step-card-status status-soon">COMING SOON</div></div></div>
+  <div class="step-card coming"><div class="step-thumb-placeholder">🔥</div><div class="step-card-body"><div class="step-card-num">STEP 19 · WEEK 4</div><div class="step-card-title">Re-entry & Landing</div><div class="step-card-kr">재진입과 착륙</div><div class="step-card-status status-soon">COMING SOON</div></div></div>
+  <div class="step-card coming"><div class="step-thumb-placeholder">🎓</div><div class="step-card-body"><div class="step-card-num">STEP 20 · WEEK 4</div><div class="step-card-title">Final Mission & Graduation</div><div class="step-card-kr">최종 임무와 수료식</div><div class="step-card-status status-soon">COMING SOON</div></div></div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-text">
+    <h3>CEC Camp A GPT와 함께 훈련하세요</h3>
+    <p>각 Step 페이지에서 Camp A GPT Mission Control과 실제 영어 교신 훈련을 진행합니다.<br>학년별 맞춤 프롬프트 자동 생성 — 4학년 A2 · 5학년 B1 · 6학년 B2</p>
+  </div>
+  <div class="cta-btns">
+    <a href="/space-camp/step01.html" class="btn-primary">▶ STEP 1 시작</a>
+    <a href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b" target="_blank" class="btn-secondary">Camp A GPT →</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  CEC English Camp · Space Camp Program · cecenglishcamp.com
+</footer>
+
+</body>
+</html>

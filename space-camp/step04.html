@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STEP 4 — Spacesuit & Life Support Training | CEC Space Camp</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--space:#020818;--deep:#0a1628;--panel:#0d1f3c;--cyan:#00f2ff;--gold:#ffd700;--orange:#ff6b35;--white:#e8f4ff;--dim:#4a6fa5;--green:#00ff88;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--space);color:var(--white);font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(1px 1px at 10% 20%,rgba(255,255,255,.8) 0%,transparent 100%),radial-gradient(1px 1px at 30% 50%,rgba(255,255,255,.6) 0%,transparent 100%),radial-gradient(1px 1px at 55% 15%,rgba(255,255,255,.9) 0%,transparent 100%),radial-gradient(2px 2px at 15% 45%,rgba(0,242,255,.4) 0%,transparent 100%),radial-gradient(2px 2px at 75% 15%,rgba(0,242,255,.3) 0%,transparent 100%);pointer-events:none;z-index:0;}
+nav{position:sticky;top:0;z-index:100;background:rgba(2,8,24,.95);backdrop-filter:blur(16px);border-bottom:1px solid rgba(0,242,255,.2);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{font-family:'Orbitron',monospace;font-size:13px;color:var(--cyan);letter-spacing:3px;font-weight:700;}
+.pips{display:flex;gap:5px;align-items:center;}
+.pip{width:9px;height:9px;border-radius:50%;background:rgba(74,111,165,.5);}
+.pip.active{background:var(--cyan);box-shadow:0 0 8px var(--cyan);width:24px;border-radius:4px;}
+.pip.done{background:var(--green);}
+.nav-info{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--dim);}
+.hero{position:relative;z-index:1;display:grid;grid-template-columns:1.15fr .85fr;min-height:100vh;}
+.hero-img{position:relative;overflow:hidden;}
+.hero-img img{width:100%;height:100%;object-fit:cover;animation:kb 14s ease infinite alternate;}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.07)}}
+.hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 50%,var(--space) 95%);}
+.hero-content{position:relative;padding:64px 52px 64px 44px;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(160deg,var(--deep) 0%,#060f1e 100%);}
+.badge{display:inline-flex;align-items:center;gap:10px;background:rgba(0,242,255,.07);border:1px solid rgba(0,242,255,.3);border-radius:4px;padding:8px 16px;margin-bottom:22px;width:fit-content;}
+.ldot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 1.8s ease infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.badge-txt{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:2.5px;}
+.step-num{font-family:'Orbitron',monospace;font-size:10px;color:var(--dim);letter-spacing:5px;margin-bottom:14px;}
+.step-title{font-family:'Orbitron',monospace;font-size:28px;font-weight:900;color:var(--white);line-height:1.2;margin-bottom:10px;}
+.step-title em{color:var(--cyan);font-style:normal;}
+.step-kr{font-size:17px;color:var(--dim);font-weight:300;margin-bottom:28px;}
+.divider{width:56px;height:2px;background:linear-gradient(to right,var(--cyan),transparent);margin-bottom:26px;}
+.step-desc{font-size:14px;line-height:1.95;color:#7a9cc0;margin-bottom:32px;max-width:460px;}
+.phrases-lbl{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:4px;color:var(--dim);margin-bottom:14px;}
+.phrases{display:flex;flex-direction:column;gap:8px;margin-bottom:36px;}
+.phrase{display:flex;gap:12px;align-items:flex-start;padding:13px 16px;background:rgba(0,242,255,.04);border:1px solid rgba(0,242,255,.1);border-left:3px solid var(--cyan);border-radius:4px;transition:all .25s;cursor:default;}
+.phrase:hover{background:rgba(0,242,255,.08);border-left-color:var(--gold);transform:translateX(4px);}
+.p-num{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);min-width:20px;padding-top:3px;}
+.p-en{font-family:'Share Tech Mono',monospace;font-size:12.5px;color:var(--white);margin-bottom:3px;}
+.p-kr{font-size:11.5px;color:var(--dim);}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-p{display:inline-flex;align-items:center;gap:9px;padding:13px 26px;background:var(--cyan);color:var(--space);font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;border:none;border-radius:4px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.btn-p:hover{background:var(--white);transform:translateY(-2px);}
+.btn-s{display:inline-flex;align-items:center;gap:9px;padding:13px 22px;background:transparent;color:var(--orange);font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;border:1px solid rgba(255,107,53,.4);border-radius:4px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.btn-s:hover{background:rgba(255,107,53,.08);}
+.body-wrap{position:relative;z-index:1;padding:72px 56px;background:var(--deep);border-top:1px solid rgba(0,242,255,.08);}
+.sec-header{display:flex;align-items:center;gap:18px;margin-bottom:36px;}
+.sec-label{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:4px;color:var(--cyan);}
+.sec-line{flex:1;height:1px;background:linear-gradient(to right,rgba(0,242,255,.25),transparent);}
+.sec-tag{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--dim);}
+
+/* 체크리스트 */
+.checklist-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:48px;}
+.cl-card{padding:20px 16px;background:rgba(0,255,136,.03);border:1px solid rgba(0,255,136,.15);border-radius:10px;text-align:center;transition:all .2s;}
+.cl-card:hover{background:rgba(0,255,136,.08);transform:translateY(-2px);}
+.cl-icon{font-size:24px;margin-bottom:8px;}
+.cl-name{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--green);margin-bottom:4px;}
+.cl-kr{font-size:12px;color:var(--dim);}
+.cl-status{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--green);margin-top:6px;}
+
+.lesson-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:64px;}
+.l-card{padding:22px 18px;background:rgba(0,242,255,.03);border:1px solid rgba(0,242,255,.1);border-radius:8px;position:relative;overflow:hidden;}
+.l-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.l-card:nth-child(1)::before{background:var(--cyan);}
+.l-card:nth-child(2)::before{background:var(--gold);}
+.l-card:nth-child(3)::before{background:var(--orange);}
+.l-card:nth-child(4)::before{background:var(--green);}
+.l-time{font-family:'Share Tech Mono',monospace;font-size:24px;font-weight:700;margin-bottom:4px;}
+.l-card:nth-child(1) .l-time{color:var(--cyan);}
+.l-card:nth-child(2) .l-time{color:var(--gold);}
+.l-card:nth-child(3) .l-time{color:var(--orange);}
+.l-card:nth-child(4) .l-time{color:var(--green);}
+.l-name{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--dim);margin-bottom:10px;}
+.l-desc{font-size:12.5px;color:#5a7a9e;line-height:1.65;}
+
+.grade-tabs{display:flex;gap:6px;margin-bottom:36px;border-bottom:1px solid rgba(0,242,255,.08);}
+.g-tab{padding:11px 22px;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;}
+.g-tab:hover{color:var(--white);}
+.g-tab.active{color:var(--cyan);border-bottom-color:var(--cyan);}
+.g-content{display:none;}
+.g-content.active{display:block;}
+.vocab-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:36px;}
+.v-card{display:flex;gap:14px;align-items:flex-start;padding:15px 18px;background:var(--panel);border:1px solid rgba(255,255,255,.05);border-radius:6px;transition:all .2s;}
+.v-card:hover{border-color:rgba(0,242,255,.18);background:rgba(0,242,255,.04);}
+.v-num{font-family:'Share Tech Mono',monospace;font-size:16px;font-weight:700;color:rgba(0,242,255,.28);min-width:26px;}
+.v-word{font-family:'Share Tech Mono',monospace;font-size:13.5px;color:var(--white);margin-bottom:3px;}
+.v-kr{font-size:11.5px;color:var(--dim);}
+.v-ex{font-size:11px;color:rgba(0,242,255,.45);font-style:italic;margin-top:4px;}
+.phase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:36px;}
+.ph-card{padding:26px 22px;background:var(--panel);border:1px solid rgba(255,255,255,.05);border-radius:8px;position:relative;transition:all .2s;}
+.ph-card:hover{border-color:rgba(0,242,255,.18);transform:translateY(-2px);}
+.ph-big{font-family:'Orbitron',monospace;font-size:40px;font-weight:900;color:rgba(0,242,255,.08);position:absolute;top:14px;right:18px;line-height:1;}
+.ph-title{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--cyan);margin-bottom:10px;}
+.ph-time{font-size:11px;color:var(--gold);margin-bottom:10px;font-family:'Share Tech Mono',monospace;}
+.ph-desc{font-size:12.5px;color:#5a7a9e;line-height:1.7;}
+
+.gpt-box{background:linear-gradient(135deg,rgba(255,107,53,.06) 0%,rgba(0,242,255,.04) 100%);border:1px solid rgba(255,107,53,.22);border-radius:12px;padding:40px 44px;margin-bottom:64px;}
+.gpt-top{display:flex;align-items:flex-start;gap:20px;margin-bottom:24px;}
+.gpt-icon-wrap{width:56px;height:56px;background:rgba(255,107,53,.15);border:1px solid rgba(255,107,53,.3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+.gpt-title{font-family:'Orbitron',monospace;font-size:16px;font-weight:700;color:var(--orange);margin-bottom:6px;}
+.gpt-subtitle{font-size:13px;color:#7a9cc0;line-height:1.7;}
+.gpt-how{background:rgba(0,0,0,.25);border:1px solid rgba(0,242,255,.12);border-radius:8px;padding:18px 22px;margin-bottom:26px;}
+.gpt-how-title{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;color:var(--cyan);margin-bottom:12px;}
+.gpt-steps{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.gpt-step{display:flex;gap:10px;font-size:12.5px;color:#7a9cc0;line-height:1.55;}
+.gpt-step-num{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--orange);min-width:18px;font-weight:700;}
+.inp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.inp-group{display:flex;flex-direction:column;gap:7px;}
+.inp-label{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--dim);}
+.inp-field{background:rgba(255,255,255,.05);border:1px solid rgba(0,242,255,.18);border-radius:5px;padding:11px 15px;color:var(--white);font-family:'Share Tech Mono',monospace;font-size:13px;outline:none;transition:all .2s;}
+.inp-field:focus{border-color:var(--cyan);background:rgba(0,242,255,.06);}
+.inp-field::placeholder{color:rgba(74,111,165,.6);}
+.grade-sel{display:flex;gap:8px;margin-bottom:20px;}
+.gs-btn{padding:9px 18px;background:transparent;border:1px solid rgba(0,242,255,.2);border-radius:4px;color:var(--dim);font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;cursor:pointer;transition:all .2s;}
+.gs-btn.active{background:rgba(255,107,53,.12);border-color:var(--orange);color:var(--orange);}
+.gs-btn:hover:not(.active){border-color:rgba(0,242,255,.4);color:var(--white);}
+.prompt-lbl{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;color:var(--dim);margin-bottom:8px;}
+.prompt-box{background:var(--space);border:1px solid rgba(0,242,255,.12);border-radius:8px;padding:18px 20px;margin-bottom:22px;font-family:'Share Tech Mono',monospace;font-size:11.5px;color:#4a6fa5;line-height:1.85;min-height:110px;max-height:220px;overflow-y:auto;white-space:pre-wrap;}
+.gpt-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.btn-copy{display:inline-flex;align-items:center;gap:9px;padding:13px 24px;background:rgba(255,107,53,.1);color:var(--orange);font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;border:1px solid rgba(255,107,53,.35);border-radius:4px;cursor:pointer;transition:all .2s;}
+.btn-gpt{display:inline-flex;align-items:center;gap:9px;padding:13px 26px;background:var(--orange);color:var(--space);font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;border:none;border-radius:4px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.btn-gpt:hover{background:#ff8c5a;transform:translateY(-2px);}
+.copy-ok{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--green);display:none;align-items:center;gap:8px;}
+.copy-ok.show{display:flex;}
+.eval-row{display:flex;gap:14px;margin-top:36px;}
+.ev-card{flex:1;padding:20px;border-radius:6px;border:1px solid rgba(255,255,255,.05);background:var(--panel);text-align:center;}
+.ev-stars{font-size:20px;margin-bottom:8px;}
+.ev-level{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--dim);margin-bottom:8px;}
+.ev-desc{font-size:12px;color:#5a7a9e;line-height:1.55;}
+.hw-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.hw-card{padding:28px 26px;border-radius:8px;border:1px solid rgba(255,255,255,.05);}
+.hw-card.n{background:rgba(0,100,255,.04);border-color:rgba(0,100,255,.12);}
+.hw-card.k{background:rgba(255,107,53,.04);border-color:rgba(255,107,53,.12);}
+.hw-flag{font-size:22px;margin-bottom:10px;}
+.hw-title{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;margin-bottom:6px;}
+.hw-card.n .hw-title{color:var(--cyan);}
+.hw-card.k .hw-title{color:var(--orange);}
+.hw-time{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--dim);margin-bottom:16px;}
+.hw-list{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.hw-list li{display:flex;gap:9px;font-size:12.5px;color:#5a7a9e;line-height:1.55;}
+.hw-list li::before{content:'→';flex-shrink:0;}
+.hw-card.n .hw-list li::before{color:var(--cyan);}
+.hw-card.k .hw-list li::before{color:var(--orange);}
+.step-nav{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:28px 56px;background:var(--space);border-top:1px solid rgba(0,242,255,.08);}
+.nav-center-info{text-align:center;}
+.nav-week-lbl{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;color:var(--dim);margin-bottom:4px;}
+.nav-step-lbl{font-family:'Orbitron',monospace;font-size:12px;color:var(--white);}
+.nav-btn{display:flex;align-items:center;gap:9px;padding:11px 22px;background:rgba(0,242,255,.05);border:1px solid rgba(0,242,255,.18);border-radius:4px;color:var(--cyan);font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.nav-btn:hover{background:rgba(0,242,255,.1);}
+@media(max-width:900px){.hero{grid-template-columns:1fr;}.hero-img{height:300px;}.hero-img::after{background:linear-gradient(to bottom,transparent 40%,var(--space) 100%);}.hero-content{padding:40px 24px;}.body-wrap{padding:48px 24px;}.checklist-grid{grid-template-columns:repeat(2,1fr);}.lesson-grid{grid-template-columns:1fr 1fr;}.vocab-grid{grid-template-columns:1fr 1fr;}.phase-grid,.hw-grid{grid-template-columns:1fr;}nav{padding:0 20px;}.step-nav{padding:20px;flex-wrap:wrap;gap:12px;}.gpt-box{padding:28px 24px;}.inp-grid,.gpt-steps{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">CEC SPACE CAMP</div>
+  <div class="pips">
+    <div class="pip done"></div><div class="pip done"></div><div class="pip done"></div>
+    <div class="pip active"></div>
+    <div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div>
+    <div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div>
+    <div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div>
+  </div>
+  <div class="nav-info">WEEK 1 · DAY 4</div>
+</nav>
+
+<section class="hero">
+  <div class="hero-img">
+    <img src="Step4-a.png" alt="Spacesuit Training — EMU Suit-Up">
+  </div>
+  <div class="hero-content">
+    <div class="badge"><div class="ldot"></div><span class="badge-txt">MISSION DELTA-FOUR · LIVE</span></div>
+    <div class="step-num">STEP 04 / 20 — WEEK 1</div>
+    <h1 class="step-title">Spacesuit &<br><em>Life Support</em><br>Training</h1>
+    <div class="step-kr">우주복과 생명유지장치 훈련</div>
+    <div class="divider"></div>
+    <p class="step-desc">NASA 우주복 EMU는 220억 원짜리 입는 우주선입니다. 헬멧, 장갑, 산소, 냉각, 통신 — 8단계 체크리스트를 완료해야 EVA 허가를 받을 수 있습니다.</p>
+    <div class="phrases-lbl">▸ 오늘의 핵심 표현 4가지</div>
+    <div class="phrases">
+      <div class="phrase"><span class="p-num">01</span><div><div class="p-en">"Helmet on and locked!"</div><div class="p-kr">헬멧 착용 및 잠금 완료!</div></div></div>
+      <div class="phrase"><span class="p-num">02</span><div><div class="p-en">"Oxygen supply connected. Nominal!"</div><div class="p-kr">산소 공급 연결. 정상!</div></div></div>
+      <div class="phrase"><span class="p-num">03</span><div><div class="p-en">"Suit-up checklist complete. All systems go!"</div><div class="p-kr">우주복 체크리스트 완료. 모든 시스템 이상 없음!</div></div></div>
+      <div class="phrase"><span class="p-num">04</span><div><div class="p-en">"Requesting EVA clearance. Over."</div><div class="p-kr">EVA 허가 요청합니다. 이상.</div></div></div>
+    </div>
+    <div class="hero-btns">
+      <a href="#mission" class="btn-p">▶ 미션 시작하기</a>
+      <a href="https://youtu.be/FVpO_rctmqM" id="video-btn" class="btn-s">▶ 영상 보기</a>
+    </div>
+  </div>
+</section>
+
+<div class="body-wrap" id="mission">
+
+  <div class="sec-header">
+    <span class="sec-label">▸ EMU 8단계 체크리스트</span>
+    <div class="sec-line"></div>
+    <span class="sec-tag">ALL SYSTEMS GO ✅</span>
+  </div>
+  <div class="checklist-grid">
+    <div class="cl-card"><div class="cl-icon">🪖</div><div class="cl-name">HELMET LOCK</div><div class="cl-kr">헬멧 잠금</div><div class="cl-status">✅ CONFIRMED</div></div>
+    <div class="cl-card"><div class="cl-icon">🔒</div><div class="cl-name">PRESSURE SEAL</div><div class="cl-kr">기압 밀봉</div><div class="cl-status">✅ CONFIRMED</div></div>
+    <div class="cl-card"><div class="cl-icon">🫁</div><div class="cl-name">OXYGEN SUPPLY</div><div class="cl-kr">산소 공급</div><div class="cl-status">✅ NOMINAL</div></div>
+    <div class="cl-card"><div class="cl-icon">📡</div><div class="cl-name">COMMUNICATION</div><div class="cl-kr">통신 장비</div><div class="cl-status">✅ NOMINAL</div></div>
+    <div class="cl-card"><div class="cl-icon">❄️</div><div class="cl-name">COOLING SYSTEM</div><div class="cl-kr">냉각 시스템</div><div class="cl-status">✅ NOMINAL</div></div>
+    <div class="cl-card"><div class="cl-icon">🧤</div><div class="cl-name">GLOVES LOCKED</div><div class="cl-kr">장갑 잠금</div><div class="cl-status">✅ CONFIRMED</div></div>
+    <div class="cl-card"><div class="cl-icon">🚶</div><div class="cl-name">MOBILITY CHECK</div><div class="cl-kr">이동성 확인</div><div class="cl-status">✅ CONFIRMED</div></div>
+    <div class="cl-card"><div class="cl-icon">🪢</div><div class="cl-name">SAFETY TETHERS</div><div class="cl-kr">안전줄</div><div class="cl-status">✅ SECURED</div></div>
+  </div>
+
+  <div class="sec-header">
+    <span class="sec-label">▸ 수업 구조</span>
+    <div class="sec-line"></div>
+    <span class="sec-tag">45 MIN</span>
+  </div>
+  <div class="lesson-grid">
+    <div class="l-card"><div class="l-time">5'</div><div class="l-name">MISSION BRIEF</div><div class="l-desc">STEP 3 복습 + 오늘 미션 목표 + Mission Code DELTA-FOUR</div></div>
+    <div class="l-card"><div class="l-time">10'</div><div class="l-name">WORD TRAINING</div><div class="l-desc">EMU 부품 명칭 + 체크리스트 패턴 + EVA 허가 요청</div></div>
+    <div class="l-card"><div class="l-time">25'</div><div class="l-name">MISSION TIME</div><div class="l-desc">영상 시청 → 짝꿍 체크리스트 → Camp A GPT EVA 허가</div></div>
+    <div class="l-card"><div class="l-time">5'</div><div class="l-name">DEBRIEF</div><div class="l-desc">8단계 확인 + 개인 평가 + STEP 5 예고</div></div>
+  </div>
+
+  <div class="sec-header"><span class="sec-label">▸ 학년별 커리큘럼</span><div class="sec-line"></div></div>
+  <div class="grade-tabs">
+    <button class="g-tab" onclick="switchGrade('g4',this)">4학년 A2</button>
+    <button class="g-tab active" onclick="switchGrade('g5',this)">5학년 B1</button>
+    <button class="g-tab" onclick="switchGrade('g6',this)">6학년 B2</button>
+  </div>
+
+  <div class="g-content" id="g4">
+    <div class="vocab-grid">
+      <div class="v-card"><div class="v-num">01</div><div><div class="v-word">helmet</div><div class="v-kr">헬멧</div><div class="v-ex">"My helmet is on and locked."</div></div></div>
+      <div class="v-card"><div class="v-num">02</div><div><div class="v-word">glove</div><div class="v-kr">장갑</div><div class="v-ex">"My gloves are locked. Both hands!"</div></div></div>
+      <div class="v-card"><div class="v-num">03</div><div><div class="v-word">oxygen</div><div class="v-kr">산소</div><div class="v-ex">"Oxygen supply is connected."</div></div></div>
+      <div class="v-card"><div class="v-num">04</div><div><div class="v-word">ready</div><div class="v-kr">준비된</div><div class="v-ex">"I am ready for EVA!"</div></div></div>
+    </div>
+    <div class="phase-grid">
+      <div class="ph-card"><div class="ph-big">1</div><div class="ph-title">부품 명칭 게임</div><div class="ph-time">⏱ 7분</div><div class="ph-desc">Step4-b 그림을 보며 8개 부품을 영어로 가리키고 말합니다.</div></div>
+      <div class="ph-card"><div class="ph-big">2</div><div class="ph-title">짝꿍 체크리스트</div><div class="ph-time">⏱ 10분</div><div class="ph-desc">한 명이 체크관, 한 명이 우주비행사. "Helmet?" → "On and locked!" 연습.</div></div>
+      <div class="ph-card"><div class="ph-big">3</div><div class="ph-title">Camp A GPT EVA 요청</div><div class="ph-time">⏱ 8분</div><div class="ph-desc">Camp A GPT에게 EVA 허가를 영어로 요청합니다.</div></div>
+    </div>
+  </div>
+
+  <div class="g-content active" id="g5">
+    <div class="vocab-grid">
+      <div class="v-card"><div class="v-num">01</div><div><div class="v-word">helmet</div><div class="v-kr">헬멧</div><div class="v-ex">"Helmet on and locked. Confirmed."</div></div></div>
+      <div class="v-card"><div class="v-num">02</div><div><div class="v-word">sealed</div><div class="v-kr">밀봉된</div><div class="v-ex">"Suit is sealed. Pressure holding."</div></div></div>
+      <div class="v-card"><div class="v-num">03</div><div><div class="v-word">integrity</div><div class="v-kr">밀폐 상태</div><div class="v-ex">"Suit integrity confirmed. No leaks."</div></div></div>
+      <div class="v-card"><div class="v-num">04</div><div><div class="v-word">EVA</div><div class="v-kr">우주유영</div><div class="v-ex">"Requesting EVA clearance. Over."</div></div></div>
+      <div class="v-card"><div class="v-num">05</div><div><div class="v-word">clearance</div><div class="v-kr">허가</div><div class="v-ex">"EVA clearance granted. Proceed."</div></div></div>
+    </div>
+    <div class="phase-grid">
+      <div class="ph-card"><div class="ph-big">1</div><div class="ph-title">STEP 4 영상 시청</div><div class="ph-time">⏱ 5분</div><div class="ph-desc">EMU 착용 과정을 보며 8단계 체크리스트 항목을 확인합니다.</div></div>
+      <div class="ph-card"><div class="ph-big">2</div><div class="ph-title">8단계 체크리스트 릴레이</div><div class="ph-time">⏱ 10분</div><div class="ph-desc">짝꿍이 체크관 역할. 각 단계를 영어로 보고하며 8단계 완주.</div></div>
+      <div class="ph-card"><div class="ph-big">3</div><div class="ph-title">Camp A GPT EVA 허가</div><div class="ph-time">⏱ 10분</div><div class="ph-desc">Camp A GPT Mission Control에게 8단계 완료 후 EVA 허가를 영어로 요청합니다.</div></div>
+    </div>
+  </div>
+
+  <div class="g-content" id="g6">
+    <div class="vocab-grid">
+      <div class="v-card"><div class="v-num">01</div><div><div class="v-word">pressurization</div><div class="v-kr">가압</div><div class="v-ex">"Suit pressurization at 4.3 psi. Nominal."</div></div></div>
+      <div class="v-card"><div class="v-num">02</div><div><div class="v-word">thermal regulation</div><div class="v-kr">체온 조절</div><div class="v-ex">"Thermal regulation system: active."</div></div></div>
+      <div class="v-card"><div class="v-num">03</div><div><div class="v-word">integrity</div><div class="v-kr">밀폐 상태</div><div class="v-ex">"Suit integrity confirmed. No anomalies."</div></div></div>
+      <div class="v-card"><div class="v-num">04</div><div><div class="v-word">consumable</div><div class="v-kr">소모품</div><div class="v-ex">"Oxygen consumables: 8 hours remaining."</div></div></div>
+      <div class="v-card"><div class="v-num">05</div><div><div class="v-word">abort</div><div class="v-kr">중단</div><div class="v-ex">"If PLSS fails, abort EVA immediately."</div></div></div>
+      <div class="v-card"><div class="v-num">06</div><div><div class="v-word">PLSS</div><div class="v-kr">생명유지팩</div><div class="v-ex">"PLSS oxygen at 850 psi. Within range."</div></div></div>
+    </div>
+    <div class="phase-grid">
+      <div class="ph-card"><div class="ph-big">1</div><div class="ph-title">Component Analysis</div><div class="ph-time">⏱ 8분</div><div class="ph-desc">EMU 부품 1개 선택 → 이중 기능 + 고장 시 결과 기술 분석 발표.</div></div>
+      <div class="ph-card"><div class="ph-big">2</div><div class="ph-title">12-Step Certification</div><div class="ph-time">⏱ 10분</div><div class="ph-desc">조건절 포함 12단계 체크리스트 완주. "If pressure drops below 750 psi, then abort."</div></div>
+      <div class="ph-card"><div class="ph-big">3</div><div class="ph-title">Camp A GPT EVA 브리핑</div><div class="ph-time">⏱ 7분</div><div class="ph-desc">기술적 수치 포함 EVA 허가 요청 + 비상 시나리오 즉흥 대응.</div></div>
+    </div>
+  </div>
+
+  <!-- Camp A GPT -->
+  <div class="sec-header" style="margin-top:64px;">
+    <span class="sec-label">▸ CEC Camp A GPT 교신 훈련</span>
+    <div class="sec-line"></div>
+    <span class="sec-tag" style="color:var(--orange);">MISSION TIME 25MIN</span>
+  </div>
+  <div class="gpt-box">
+    <div class="gpt-top">
+      <div class="gpt-icon-wrap">🚀</div>
+      <div>
+        <div class="gpt-title">EVA 허가 요청 교신 훈련</div>
+        <div class="gpt-subtitle">Camp A GPT가 Mission Control 역할로 EVA 허가 절차를 진행합니다.<br>8단계 체크리스트를 영어로 보고하고 EVA 허가를 받으세요!</div>
+      </div>
+    </div>
+    <div class="gpt-how">
+      <div class="gpt-how-title">▸ 훈련 방법 (4단계)</div>
+      <div class="gpt-steps">
+        <div class="gpt-step"><span class="gpt-step-num">01</span>이름·팀·번호를 입력하세요</div>
+        <div class="gpt-step"><span class="gpt-step-num">02</span>학년을 선택하세요</div>
+        <div class="gpt-step"><span class="gpt-step-num">03</span>프롬프트 복사하기</div>
+        <div class="gpt-step"><span class="gpt-step-num">04</span>Camp A GPT 열기 → 붙여넣기 → EVA 훈련 시작!</div>
+      </div>
+    </div>
+    <div class="inp-grid">
+      <div class="inp-group"><label class="inp-label">▸ YOUR NAME</label><input class="inp-field" id="inp-name" type="text" placeholder="예: Kim Jisu" oninput="updatePrompt()"></div>
+      <div class="inp-group"><label class="inp-label">▸ TEAM NAME</label><input class="inp-field" id="inp-team" type="text" placeholder="예: Team Alpha" oninput="updatePrompt()"></div>
+      <div class="inp-group"><label class="inp-label">▸ CANDIDATE NUMBER</label><input class="inp-field" id="inp-num" type="text" placeholder="예: 047" oninput="updatePrompt()"></div>
+      <div class="inp-group"><label class="inp-label">▸ SCENARIO</label>
+        <select class="inp-field" id="inp-scenario" onchange="updatePrompt()">
+          <option value="normal">정상 EVA 허가 요청</option>
+          <option value="problem">착용 중 문제 발생</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-bottom:20px;">
+      <div class="inp-label" style="margin-bottom:10px;">▸ GRADE LEVEL</div>
+      <div class="grade-sel">
+        <button class="gs-btn" onclick="selGrade(4,this)">4학년 A2</button>
+        <button class="gs-btn active" onclick="selGrade(5,this)">5학년 B1</button>
+        <button class="gs-btn" onclick="selGrade(6,this)">6학년 B2</button>
+      </div>
+    </div>
+    <div class="prompt-lbl">▸ CAMP A GPT 프롬프트 미리보기</div>
+    <div class="prompt-box" id="prompt-box">정보를 입력하면 프롬프트가 여기에 표시됩니다...</div>
+    <div class="gpt-actions">
+      <button class="btn-copy" onclick="copyPrompt()">📋 프롬프트 복사하기</button>
+      <a href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b" target="_blank" class="btn-gpt">🚀 CEC Camp A GPT 열기</a>
+      <div class="copy-ok" id="copy-ok">✅ 복사 완료! Camp A GPT에 붙여넣으세요.</div>
+    </div>
+  </div>
+
+  <div class="sec-header"><span class="sec-label">▸ 평가 기준</span><div class="sec-line"></div></div>
+  <div class="eval-row">
+    <div class="ev-card"><div class="ev-stars">⭐</div><div class="ev-level">PASS</div><div class="ev-desc">8개 부품 이름 + 체크리스트 4단계</div></div>
+    <div class="ev-card"><div class="ev-stars">⭐⭐</div><div class="ev-level">GOOD</div><div class="ev-desc">8단계 완주 + EVA 허가 요청 완성</div></div>
+    <div class="ev-card"><div class="ev-stars">⭐⭐⭐</div><div class="ev-level">EXCELLENT</div><div class="ev-desc">문제 시나리오 대응 + GPT 즉흥 답변</div></div>
+  </div>
+
+  <div class="sec-header" style="margin-top:64px;"><span class="sec-label">▸ 오늘의 복습 과제</span><div class="sec-line"></div></div>
+  <div class="hw-grid">
+    <div class="hw-card n">
+      <div class="hw-flag">🇺🇸</div>
+      <div class="hw-title">미국 원어민 5학년</div>
+      <div class="hw-time">⏱ 약 1~1.5시간</div>
+      <ul class="hw-list">
+        <li>8개 체크리스트 항목 암기 (20분)</li>
+        <li>체크리스트 8단계 소리 내어 말하기 5회 (25분)</li>
+        <li>Camp A GPT와 EVA 허가 재연습 (20분)</li>
+        <li>내일 예습: 우주선 내부 구조 찾아오기 (10분)</li>
+      </ul>
+    </div>
+    <div class="hw-card k">
+      <div class="hw-flag">🇰🇷</div>
+      <div class="hw-title">한국 5학년</div>
+      <div class="hw-time">⏱ 약 2~2.5시간</div>
+      <ul class="hw-list">
+        <li>단어 5개 + 8개 체크리스트 완전 암기 (35분)</li>
+        <li>체크리스트 8단계 외워서 말하기 + EVA 허가 요청 암기 (40분)</li>
+        <li>Camp A GPT와 정상+문제 시나리오 교신 (30분)</li>
+        <li>NASA EMU 실제 착용 영상 찾아보기 (15분)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="step-nav">
+  <a href="step03.html" class="nav-btn">← PREV</a>
+  <div class="nav-center-info">
+    <div class="nav-week-lbl">WEEK 1 — ASTRONAUT CANDIDATE BASIC TRAINING</div>
+    <div class="nav-step-lbl">STEP 4 of 20 — Spacesuit & Life Support Training</div>
+  </div>
+  <a href="step05.html" class="nav-btn">NEXT →</a>
+</div>
+
+<script>
+let currentGrade = 5;
+const PROMPTS = {
+  4: (n,t,num,sc) => `[CEC Space Camp — STEP 4 훈련 / 4학년 A2]
+
+안녕! 저는 CEC 스페이스 캠프 4학년 훈련생이에요.
+Mission Control 역할을 해주세요. 쉬운 영어로요!
+
+정보: 이름 ${n||'(입력)'} / 팀 ${t||'(입력)'} / 번호 ${num||'???'}
+시나리오: ${sc==='normal'?'정상 EVA 허가':'착용 중 문제 발생'}
+
+훈련 순서:
+1. 헬멧 확인 요청 → "Helmet?" → "On and locked!"
+2. 산소 확인 → "Oxygen?" → "Connected!"
+3. 장갑 확인 → "Gloves?" → "Both locked!"
+4. "I am ready for EVA!" 연습
+5. 틀리면 친절하게 고쳐주세요!
+
+시작: "Ready for suit-up check? Let's go! Helmet?"`,
+
+  5: (n,t,num,sc) => `[CEC Space Camp — STEP 4 훈련 / 5학년 B1]
+
+저는 CEC 스페이스 캠프 5학년 ASCAN입니다.
+Mission Control 역할로 EVA suit-up 체크리스트 훈련을 진행해주세요.
+
+정보: Name ${n||'[입력]'} / Team ${t||'[입력]'} / ASCAN-${num||'???'}
+시나리오: ${sc==='normal'?'정상 EVA 허가 요청':'Step 4에서 문제 발생 (pressure issue)'}
+
+훈련 순서:
+1. 8단계 체크리스트 차례로 확인
+   (Helmet / Pressure Seal / Oxygen / Communication / Cooling / Gloves / Mobility / Tethers)
+2. 각 단계 영어 보고 패턴: "Step N: [항목] — confirmed/nominal"
+3. ${sc==='normal'?'모든 단계 완료 후 EVA 허가 요청: "Requesting EVA clearance. Over."':'Step 4에서 이상 발생 → 대응 방법 영어로'}
+4. 영어 실수 교정 + NASA 표현 안내
+
+시작: "ASCAN ${num||'???'}, this is Mission Control. Begin suit-up checklist. Step 1: Helmet status. Over."`,
+
+  6: (n,t,num,sc) => `[CEC Space Camp — STEP 4 훈련 / 6학년 B2]
+
+저는 CEC 스페이스 캠프 6학년 ASCAN입니다.
+Flight Director로서 EMU suit-up 공식 인증을 진행해주세요.
+
+Profile: ${n||'[이름]'} / ${t||'[팀]'} / ASCAN-${num||'???'}
+시나리오: ${sc==='normal'?'기술적 수치 포함 정상 EVA 허가':'PLSS 압력 이상 → 비상 중단 절차'}
+
+인증 절차:
+1. 기술적 수치 포함 체크리스트 요구
+   예: "Suit pressure: 4.3 psi / O2: 850 psi / Temp: 72°F"
+2. 각 단계 조건절 포함 보고
+   예: "If PLSS drops below 750 psi, then abort EVA."
+3. ${sc==='normal'?'전체 12단계 완료 + EVA 허가 공식 요청':'PLSS 이상 발생 → 비상 절차 즉흥 대응 + Mission Control 보고'}
+4. 기술 정확도 + 교신 프로토콜 상세 피드백
+
+NASA 용어: EMU / PLSS / nominal / integrity / abort / clearance
+
+시작: "Flight Director to ASCAN ${num||'???'}. Initiate EMU certification. Report suit pressure with current readings. Over."`
+};
+
+function updatePrompt() {
+  const n = document.getElementById('inp-name').value.trim();
+  const t = document.getElementById('inp-team').value.trim();
+  const num = document.getElementById('inp-num').value.trim();
+  const sc = document.getElementById('inp-scenario').value;
+  document.getElementById('prompt-box').innerText = PROMPTS[currentGrade](n,t,num,sc);
+}
+
+function selGrade(g, el) {
+  currentGrade = g;
+  document.querySelectorAll('.gs-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  updatePrompt();
+}
+
+function copyPrompt() {
+  navigator.clipboard.writeText(document.getElementById('prompt-box').innerText).then(() => {
+    const ok = document.getElementById('copy-ok');
+    ok.classList.add('show');
+    setTimeout(() => ok.classList.remove('show'), 3500);
+  });
+}
+
+function switchGrade(id, el) {
+  document.querySelectorAll('.g-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.g-content').forEach(c => c.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+updatePrompt();
+</script>
+</body>
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STEP 1 — Astronaut Candidate Check-In | CEC Space Camp</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --space:#020818;--deep:#0a1628;--panel:#0d1f3c;
+  --cyan:#00f2ff;--gold:#ffd700;--orange:#ff6b35;
+  --white:#e8f4ff;--dim:#4a6fa5;--green:#00ff88;
+  --blue:#1a56db;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--space);color:var(--white);font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(1px 1px at 10% 20%,rgba(255,255,255,.8) 0%,transparent 100%),
+  radial-gradient(1px 1px at 30% 50%,rgba(255,255,255,.6) 0%,transparent 100%),
+  radial-gradient(1px 1px at 50% 10%,rgba(255,255,255,.9) 0%,transparent 100%),
+  radial-gradient(1px 1px at 70% 70%,rgba(255,255,255,.7) 0%,transparent 100%),
+  radial-gradient(1px 1px at 85% 30%,rgba(255,255,255,.8) 0%,transparent 100%),
+  radial-gradient(1px 1px at 20% 80%,rgba(255,255,255,.5) 0%,transparent 100%),
+  radial-gradient(2px 2px at 15% 45%,rgba(0,242,255,.4) 0%,transparent 100%),
+  radial-gradient(2px 2px at 75% 15%,rgba(0,242,255,.3) 0%,transparent 100%);
+pointer-events:none;z-index:0;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(2,8,24,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,242,255,.2);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;}
+.nb{font-family:'Orbitron',monospace;font-size:14px;color:var(--cyan);letter-spacing:3px;font-weight:700;}
+.pips{display:flex;gap:5px;align-items:center;}
+.pip{width:9px;height:9px;border-radius:50%;background:var(--dim);cursor:pointer;transition:all .3s;}
+.pip.active{background:var(--cyan);box-shadow:0 0 8px var(--cyan);width:24px;border-radius:4px;}
+.pip.done{background:var(--green);}
+.nw{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--dim);}
+
+/* HERO */
+.hero{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;min-height:100vh;align-items:stretch;}
+.hi{position:relative;overflow:hidden;}
+.hi img{width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(.85) saturate(1.1);animation:kb 12s ease infinite alternate;}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.06)}}
+.hi::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,var(--space) 100%);}
+.hc{position:relative;padding:80px 56px 80px 48px;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(135deg,var(--deep) 0%,var(--space) 100%);}
+.badge{display:inline-flex;align-items:center;gap:10px;background:rgba(0,242,255,.08);border:1px solid rgba(0,242,255,.3);border-radius:4px;padding:8px 16px;margin-bottom:24px;width:fit-content;}
+.ldot{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.badge span{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:3px;}
+.sn{font-family:'Orbitron',monospace;font-size:11px;color:var(--dim);letter-spacing:4px;margin-bottom:12px;}
+.st{font-family:'Orbitron',monospace;font-size:32px;font-weight:900;color:var(--white);line-height:1.2;margin-bottom:8px;}
+.st em{color:var(--cyan);font-style:normal;}
+.sk{font-size:18px;color:var(--dim);margin-bottom:32px;font-weight:300;}
+.dv{width:60px;height:2px;background:linear-gradient(to right,var(--cyan),transparent);margin-bottom:28px;}
+.desc{font-size:15px;line-height:1.9;color:#8ca8cc;margin-bottom:36px;max-width:480px;}
+.pl{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:4px;color:var(--dim);margin-bottom:16px;}
+.phrases{display:flex;flex-direction:column;gap:10px;margin-bottom:40px;}
+.phrase{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:rgba(0,242,255,.04);border:1px solid rgba(0,242,255,.12);border-left:3px solid var(--cyan);border-radius:4px;transition:all .25s;cursor:default;}
+.phrase:hover{background:rgba(0,242,255,.08);border-left-color:var(--gold);transform:translateX(4px);}
+.pn{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan);min-width:20px;margin-top:2px;}
+.pe{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--white);margin-bottom:4px;}
+.pk{font-size:12px;color:var(--dim);}
+.btns{display:flex;gap:14px;flex-wrap:wrap;}
+.bp{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:var(--cyan);color:var(--space);font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;border:none;border-radius:4px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.bp:hover{background:var(--white);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,242,255,.3);}
+.bs{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:transparent;color:var(--cyan);font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;border:1px solid rgba(0,242,255,.4);border-radius:4px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.bs:hover{background:rgba(0,242,255,.08);border-color:var(--cyan);}
+
+/* BODY */
+.bw{position:relative;z-index:1;padding:80px 56px;background:var(--deep);border-top:1px solid rgba(0,242,255,.1);}
+.sh{display:flex;align-items:center;gap:20px;margin-bottom:48px;}
+.sl{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:4px;color:var(--cyan);}
+.sline{flex:1;height:1px;background:linear-gradient(to right,rgba(0,242,255,.3),transparent);}
+
+/* 수업구조 */
+.lg{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:64px;}
+.lc{padding:24px 20px;background:rgba(0,242,255,.03);border:1px solid rgba(0,242,255,.12);border-radius:8px;position:relative;overflow:hidden;}
+.lc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.lc:nth-child(1)::before{background:var(--cyan);}
+.lc:nth-child(2)::before{background:var(--gold);}
+.lc:nth-child(3)::before{background:var(--orange);}
+.lc:nth-child(4)::before{background:var(--green);}
+.lt{font-family:'Share Tech Mono',monospace;font-size:22px;font-weight:700;margin-bottom:4px;}
+.lc:nth-child(1) .lt{color:var(--cyan);}
+.lc:nth-child(2) .lt{color:var(--gold);}
+.lc:nth-child(3) .lt{color:var(--orange);}
+.lc:nth-child(4) .lt{color:var(--green);}
+.ln{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--dim);margin-bottom:12px;}
+.ld{font-size:13px;color:#6a8ab0;line-height:1.6;}
+
+/* 학년 탭 */
+.tabs{display:flex;gap:8px;margin-bottom:40px;border-bottom:1px solid rgba(0,242,255,.1);}
+.tab{padding:12px 24px;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:var(--dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;}
+.tab:hover{color:var(--white);}
+.tab.active{color:var(--cyan);border-bottom-color:var(--cyan);}
+.gc{display:none;}
+.gc.active{display:block;}
+
+/* 어휘 */
+.vg{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:40px;}
+.vc{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:6px;transition:all .2s;}
+.vc:hover{border-color:rgba(0,242,255,.2);background:rgba(0,242,255,.04);}
+.vnum{font-family:'Share Tech Mono',monospace;font-size:18px;font-weight:700;color:rgba(0,242,255,.3);min-width:28px;}
+.vw{font-family:'Share Tech Mono',monospace;font-size:14px;color:var(--white);margin-bottom:3px;}
+.vk{font-size:12px;color:var(--dim);}
+.vex{font-size:11px;color:rgba(0,242,255,.5);font-style:italic;margin-top:4px;}
+
+/* 미션 단계 */
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:40px;}
+.pc{padding:28px 24px;background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:8px;position:relative;}
+.pnb{font-family:'Orbitron',monospace;font-size:36px;font-weight:900;color:rgba(0,242,255,.1);position:absolute;top:16px;right:20px;line-height:1;}
+.pt{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:var(--cyan);margin-bottom:12px;}
+.ptm{font-size:12px;color:var(--gold);margin-bottom:12px;font-family:'Share Tech Mono',monospace;}
+.pd{font-size:13px;color:#6a8ab0;line-height:1.7;}
+
+/* ===== CHATGPT 연계 섹션 ===== */
+.gpt-section{background:rgba(255,107,53,.04);border:1px solid rgba(255,107,53,.25);border-radius:12px;padding:36px 40px;margin-bottom:64px;}
+.gpt-header{display:flex;align-items:center;gap:16px;margin-bottom:8px;}
+.gpt-icon{font-size:28px;}
+.gpt-title{font-family:'Orbitron',monospace;font-size:16px;font-weight:700;color:var(--orange);}
+.gpt-sub{font-size:14px;color:#6a8ab0;margin-bottom:28px;line-height:1.7;}
+
+.gpt-info{background:rgba(0,242,255,.05);border:1px solid rgba(0,242,255,.15);border-radius:8px;padding:20px 24px;margin-bottom:28px;}
+.gpt-info-title{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:var(--cyan);margin-bottom:12px;}
+.gpt-info-text{font-size:13px;color:#8ca8cc;line-height:1.8;}
+
+.student-form{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.form-group{display:flex;flex-direction:column;gap:8px;}
+.form-label{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:var(--dim);}
+.form-input{background:rgba(255,255,255,.06);border:1px solid rgba(0,242,255,.2);border-radius:6px;padding:12px 16px;color:var(--white);font-family:'Share Tech Mono',monospace;font-size:13px;outline:none;transition:all .2s;}
+.form-input:focus{border-color:var(--cyan);background:rgba(0,242,255,.06);}
+.form-input::placeholder{color:var(--dim);}
+
+.grade-select{display:flex;gap:10px;margin-bottom:24px;}
+.gs{padding:10px 20px;background:transparent;border:1px solid rgba(0,242,255,.2);border-radius:4px;color:var(--dim);font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;cursor:pointer;transition:all .2s;}
+.gs.active{background:rgba(0,242,255,.1);border-color:var(--cyan);color:var(--cyan);}
+
+.prompt-preview{background:var(--space);border:1px solid rgba(0,242,255,.15);border-radius:8px;padding:20px 24px;margin-bottom:24px;font-family:'Share Tech Mono',monospace;font-size:12px;color:#6a8ab0;line-height:1.8;min-height:120px;max-height:200px;overflow-y:auto;}
+.prompt-preview .highlight{color:var(--cyan);}
+.prompt-preview .student-val{color:var(--gold);}
+
+.gpt-btns{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-copy{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:rgba(255,107,53,.15);color:var(--orange);font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;border:1px solid rgba(255,107,53,.4);border-radius:4px;cursor:pointer;transition:all .2s;}
+.btn-copy:hover{background:rgba(255,107,53,.25);border-color:var(--orange);}
+.btn-gpt{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:var(--orange);color:var(--space);font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;border:none;border-radius:4px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.btn-gpt:hover{background:#ff8c5a;transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,107,53,.3);}
+.copied-msg{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--green);display:none;align-items:center;gap:8px;padding:14px;}
+.copied-msg.show{display:flex;}
+
+/* 평가 */
+.eg{display:flex;gap:16px;margin-top:32px;}
+.ec{flex:1;padding:20px;border-radius:6px;border:1px solid rgba(255,255,255,.06);background:var(--panel);text-align:center;}
+.es{font-size:20px;margin-bottom:8px;}
+.el{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:2px;color:var(--dim);margin-bottom:8px;}
+.ed{font-size:12px;color:#6a8ab0;line-height:1.5;}
+
+/* 복습 */
+.hg{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.hw{padding:28px 24px;border-radius:8px;border:1px solid rgba(255,255,255,.06);}
+.hw.n{background:rgba(0,100,255,.04);border-color:rgba(0,100,255,.15);}
+.hw.k{background:rgba(255,107,53,.04);border-color:rgba(255,107,53,.15);}
+.hf{font-size:20px;margin-bottom:8px;}
+.ht{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;margin-bottom:6px;}
+.hw.n .ht{color:var(--cyan);}
+.hw.k .ht{color:var(--orange);}
+.htm{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--dim);margin-bottom:16px;}
+.hl{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.hl li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#6a8ab0;line-height:1.5;}
+.hl li::before{content:'→';flex-shrink:0;margin-top:1px;}
+.hw.n .hl li::before{color:var(--cyan);}
+.hw.k .hl li::before{color:var(--orange);}
+
+/* 하단 네비 */
+.snav{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:32px 56px;background:var(--space);border-top:1px solid rgba(0,242,255,.1);}
+.nc{text-align:center;}
+.nwl{font-family:'Orbitron',monospace;font-size:9px;letter-spacing:3px;color:var(--dim);margin-bottom:4px;}
+.nst{font-family:'Orbitron',monospace;font-size:13px;color:var(--white);}
+.nb2{display:flex;align-items:center;gap:10px;padding:12px 24px;background:rgba(0,242,255,.06);border:1px solid rgba(0,242,255,.2);border-radius:4px;color:var(--cyan);font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.nb2:hover{background:rgba(0,242,255,.12);}
+.nb2.dis{opacity:.3;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nb">CEC SPACE CAMP</div>
+  <div class="pips">
+    <div class="pip active"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div>
+    <div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div>
+    <div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div>
+    <div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div>
+  </div>
+  <div class="nw">WEEK 1 · DAY 1</div>
+</nav>
+
+<!-- HERO - 기존 어두운 스타일 -->
+<section class="hero">
+  <div class="hi">
+    <img src="Going_Tower.png" alt="Astronaut Candidate Check-In">
+  </div>
+  <div class="hc">
+    <div class="badge">
+      <div class="ldot"></div>
+      <span>MISSION ALPHA-ONE · LIVE</span>
+    </div>
+    <div class="sn">STEP 01 / 20</div>
+    <h1 class="st">Astronaut<br><em>Candidate</em><br>Check-In</h1>
+    <div class="sk">우주비행사 후보생 입소</div>
+    <div class="dv"></div>
+    <p class="desc">NASA의 첫날처럼, 여러분은 지금 이 순간부터 학생이 아닙니다. 우주비행사 후보생 — ASCAN입니다. 영어로 자신을 소개하고, 팀을 구성하고, Mission Control에 첫 보고를 완료하세요.</p>
+    <div class="pl">▸ 오늘의 핵심 표현</div>
+    <div class="phrases">
+      <div class="phrase"><span class="pn">01</span><div><div class="pe">"I am ready for training!"</div><div class="pk">저는 훈련 준비가 되어있습니다!</div></div></div>
+      <div class="phrase"><span class="pn">02</span><div><div class="pe">"My name is ___. I am from ___."</div><div class="pk">제 이름은 ___. 저는 ___ 출신입니다.</div></div></div>
+      <div class="phrase"><span class="pn">03</span><div><div class="pe">"Mission Control, this is Team ___."</div><div class="pk">관제센터, 여기는 ___ 팀입니다.</div></div></div>
+      <div class="phrase"><span class="pn">04</span><div><div class="pe">"Our crew is ready. Over."</div><div class="pk">저희 팀은 준비됐습니다. 이상.</div></div></div>
+    </div>
+    <div class="btns">
+      <a href="#mission" class="bp">▶ 미션 시작하기</a>
+      <a href="https://youtu.be/tagfcHEs77E" target="_blank" class="bs">▶ 영상 보기</a>
+    </div>
+  </div>
+</section>
+
+<!-- BODY -->
+<div class="bw" id="mission">
+
+  <!-- 수업 구조 -->
+  <div class="sh">
+    <span class="sl">▸ 수업 구조</span>
+    <div class="sline"></div>
+    <span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--dim);">45 MIN</span>
+  </div>
+  <div class="lg">
+    <div class="lc"><div class="lt">5'</div><div class="ln">MISSION BRIEF</div><div class="ld">전날 복습 확인 + 오늘 미션 목표 발표 + Mission Code 제시</div></div>
+    <div class="lc"><div class="lt">10'</div><div class="ln">WORD TRAINING</div><div class="ld">핵심 단어 학습 + 패턴 연습 + 드릴 활동</div></div>
+    <div class="lc"><div class="lt">25'</div><div class="ln">MISSION TIME</div><div class="ld">영상 시청 → ChatGPT 교신 훈련 → 팀 미션 수행</div></div>
+    <div class="lc"><div class="lt">5'</div><div class="ln">DEBRIEF</div><div class="ld">핵심 표현 확인 + 개인 평가 + 내일 미션 예고</div></div>
+  </div>
+
+  <!-- 학년별 탭 -->
+  <div class="sh">
+    <span class="sl">▸ 학년별 커리큘럼</span>
+    <div class="sline"></div>
+  </div>
+  <div class="tabs">
+    <button class="tab" onclick="sw('g4',this)">4학년 A2</button>
+    <button class="tab active" onclick="sw('g5',this)">5학년 B1</button>
+    <button class="tab" onclick="sw('g6',this)">6학년 B2</button>
+  </div>
+
+  <!-- 4학년 -->
+  <div class="gc" id="g4">
+    <div class="vg">
+      <div class="vc"><div class="vnum">01</div><div><div class="vw">astronaut</div><div class="vk">우주비행사</div><div class="vex">"I am an astronaut candidate."</div></div></div>
+      <div class="vc"><div class="vnum">02</div><div><div class="vw">candidate</div><div class="vk">후보생</div><div class="vex">"I am Candidate number 001."</div></div></div>
+      <div class="vc"><div class="vnum">03</div><div><div class="vw">crew</div><div class="vk">팀, 승무원</div><div class="vex">"My crew has 4 members."</div></div></div>
+      <div class="vc"><div class="vnum">04</div><div><div class="vw">ready</div><div class="vk">준비된</div><div class="vex">"I am ready for training!"</div></div></div>
+    </div>
+    <div class="pg">
+      <div class="pc"><div class="pnb">1</div><div class="pt">자기소개 카드 만들기</div><div class="ptm">⏱ 8분</div><div class="pd">이름·나라·팀을 카드에 적고 옆 친구에게 패턴 A로 소개합니다.</div></div>
+      <div class="pc"><div class="pnb">2</div><div class="pt">교사에게 영어로 보고</div><div class="ptm">⏱ 8분</div><div class="pd">카드를 보며 Mission Control(교사)에게 공식 보고합니다.</div></div>
+      <div class="pc"><div class="pnb">3</div><div class="pt">팀 배정 + 팀 보고</div><div class="ptm">⏱ 9분</div><div class="pd">팀 이름 정하고 팀장이 Mission Control에 영어로 보고합니다.</div></div>
+    </div>
+  </div>
+
+  <!-- 5학년 -->
+  <div class="gc active" id="g5">
+    <div class="vg">
+      <div class="vc"><div class="vnum">01</div><div><div class="vw">candidate</div><div class="vk">후보생</div><div class="vex">"I am Astronaut Candidate number 047."</div></div></div>
+      <div class="vc"><div class="vnum">02</div><div><div class="vw">crew</div><div class="vk">승무원, 팀</div><div class="vex">"My crew has 4 members."</div></div></div>
+      <div class="vc"><div class="vnum">03</div><div><div class="vw">mission</div><div class="vk">임무</div><div class="vex">"Our mission begins today."</div></div></div>
+      <div class="vc"><div class="vnum">04</div><div><div class="vw">report</div><div class="vk">보고하다</div><div class="vex">"I will report to Mission Control."</div></div></div>
+      <div class="vc"><div class="vnum">05</div><div><div class="vw">ready</div><div class="vk">준비된</div><div class="vex">"I am ready for training!"</div></div></div>
+    </div>
+    <div class="pg">
+      <div class="pc"><div class="pnb">1</div><div class="pt">STEP 1 영상 시청</div><div class="ptm">⏱ 5분</div><div class="pd">영상에서 핵심 단어를 찾고 본 것 1가지를 한국어로 말합니다.</div></div>
+      <div class="pc"><div class="pnb">2</div><div class="pt">ChatGPT 교신 훈련</div><div class="ptm">⏱ 15분</div><div class="pd">아래 ChatGPT 훈련 버튼을 클릭해 Mission Control과 실제 교신을 연습합니다.</div></div>
+      <div class="pc"><div class="pnb">3</div><div class="pt">팀 배정 + 팀 보고</div><div class="ptm">⏱ 5분</div><div class="pd">팀 구성 후 팀장이 패턴 3으로 Mission Control에 공식 보고합니다.</div></div>
+    </div>
+  </div>
+
+  <!-- 6학년 -->
+  <div class="gc" id="g6">
+    <div class="vg">
+      <div class="vc"><div class="vnum">01</div><div><div class="vw">articulate</div><div class="vk">명확히 표현하다</div><div class="vex">"I can articulate my goals clearly."</div></div></div>
+      <div class="vc"><div class="vnum">02</div><div><div class="vw">qualification</div><div class="vk">자격, 역량</div><div class="vex">"My qualification is systems analysis."</div></div></div>
+      <div class="vc"><div class="vnum">03</div><div><div class="vw">proficiency</div><div class="vk">능숙함, 숙달</div><div class="vex">"I have proficiency in mathematics."</div></div></div>
+      <div class="vc"><div class="vnum">04</div><div><div class="vw">contingency</div><div class="vk">비상 계획</div><div class="vex">"We need a contingency plan."</div></div></div>
+      <div class="vc"><div class="vnum">05</div><div><div class="vw">designated</div><div class="vk">지정된, 배정된</div><div class="vex">"My designated role is Engineer."</div></div></div>
+      <div class="vc"><div class="vnum">06</div><div><div class="vw">evaluate</div><div class="vk">평가하다</div><div class="vex">"Mission Control will evaluate us."</div></div></div>
+    </div>
+    <div class="pg">
+      <div class="pc"><div class="pnb">1</div><div class="pt">ASCAN Profile Presentation</div><div class="ptm">⏱ 8분</div><div class="pd">패턴 1+2로 완전한 ASCAN 프로필 발표. 즉흥 추가 질문 2개 답변.</div></div>
+      <div class="pc"><div class="pnb">2</div><div class="pt">ChatGPT 심화 교신</div><div class="ptm">⏱ 10분</div><div class="pd">6학년 프롬프트로 더 도전적인 Mission Control 교신 훈련을 진행합니다.</div></div>
+      <div class="pc"><div class="pnb">3</div><div class="pt">Cross-Examination</div><div class="ptm">⏱ 7분</div><div class="pd">Mission Control의 도전적 질문에 팀이 영어로 즉흥 대응합니다.</div></div>
+    </div>
+  </div>
+
+  <!-- ===== ChatGPT 연계 훈련 ===== -->
+  <div class="sh" style="margin-top:64px;">
+    <span class="sl">▸ ChatGPT 교신 훈련</span>
+    <div class="sline"></div>
+    <span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--orange);">MISSION TIME</span>
+  </div>
+
+  <div class="gpt-section">
+    <div class="gpt-header">
+      <span class="gpt-icon">🤖</span>
+      <span class="gpt-title">Mission Control 교신 훈련</span>
+    </div>
+    <p class="gpt-sub">
+      아래에 여러분의 정보를 입력하면, ChatGPT가 NASA Mission Control 역할을 합니다.<br>
+      영어로 자신을 소개하고, 팀을 보고하고, 질문에 답하세요. 실수해도 괜찮습니다 — 교정해 줄 것입니다!
+    </p>
+
+    <div class="gpt-info">
+      <div class="gpt-info-title">▸ 훈련 방법</div>
+      <div class="gpt-info-text">
+        1. 아래에 이름·나라·팀 이름을 입력하세요<br>
+        2. 학년을 선택하세요 (4학년 / 5학년 / 6학년)<br>
+        3. "프롬프트 복사하기" 버튼을 클릭하세요<br>
+        4. "ChatGPT 열기" 버튼으로 ChatGPT에 접속하세요<br>
+        5. 붙여넣기(Ctrl+V)하고 Enter — 훈련 시작!
+      </div>
+    </div>
+
+    <!-- 학생 정보 입력 -->
+    <div class="student-form">
+      <div class="form-group">
+        <label class="form-label">▸ YOUR NAME (이름)</label>
+        <input class="form-input" id="inp-name" type="text" placeholder="예: Kim Jisu" oninput="updatePrompt()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">▸ YOUR COUNTRY (나라)</label>
+        <input class="form-input" id="inp-country" type="text" placeholder="예: Republic of Korea" oninput="updatePrompt()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">▸ TEAM NAME (팀 이름)</label>
+        <input class="form-input" id="inp-team" type="text" placeholder="예: Team Alpha" oninput="updatePrompt()">
+      </div>
+      <div class="form-group">
+        <label class="form-label">▸ CANDIDATE NUMBER (번호)</label>
+        <input class="form-input" id="inp-num" type="text" placeholder="예: 047" oninput="updatePrompt()">
+      </div>
+    </div>
+
+    <!-- 학년 선택 -->
+    <div style="margin-bottom:16px;">
+      <div class="form-label" style="margin-bottom:12px;">▸ GRADE LEVEL (학년)</div>
+      <div class="grade-select">
+        <button class="gs" onclick="selectGrade(4,this)">4학년 A2</button>
+        <button class="gs active" onclick="selectGrade(5,this)">5학년 B1</button>
+        <button class="gs" onclick="selectGrade(6,this)">6학년 B2</button>
+      </div>
+    </div>
+
+    <!-- 프롬프트 미리보기 -->
+    <div style="margin-bottom:8px;">
+      <div class="form-label">▸ CHATGPT 프롬프트 미리보기</div>
+    </div>
+    <div class="prompt-preview" id="prompt-preview">
+      정보를 입력하면 프롬프트가 여기에 표시됩니다...
+    </div>
+
+    <!-- 버튼 -->
+    <div class="gpt-btns">
+      <button class="btn-copy" onclick="copyPrompt()">📋 프롬프트 복사하기</button>
+      <a href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b" target="_blank" class="btn-gpt">🚀 ChatGPT 열기</a>
+      <div class="copied-msg" id="copied-msg">✅ 복사 완료! ChatGPT에 붙여넣으세요.</div>
+    </div>
+  </div>
+
+  <!-- 평가 기준 -->
+  <div class="sh">
+    <span class="sl">▸ 평가 기준</span>
+    <div class="sline"></div>
+  </div>
+  <div class="eg">
+    <div class="ec"><div class="es">⭐</div><div class="el">PASS</div><div class="ed">핵심 표현 3개 이상 + ChatGPT 교신 완료</div></div>
+    <div class="ec"><div class="es">⭐⭐</div><div class="el">GOOD</div><div class="ed">핵심 표현 5개 + 팀 보고 자연스럽게</div></div>
+    <div class="ec"><div class="es">⭐⭐⭐</div><div class="el">EXCELLENT</div><div class="ed">즉흥 응용 + ChatGPT 추가 질문 5개 이상 답변</div></div>
+  </div>
+
+  <!-- 복습 -->
+  <div class="sh" style="margin-top:64px;">
+    <span class="sl">▸ 오늘의 복습 과제</span>
+    <div class="sline"></div>
+  </div>
+  <div class="hg">
+    <div class="hw n">
+      <div class="hf">🇺🇸</div>
+      <div class="ht">미국 원어민 5학년</div>
+      <div class="htm">⏱ 약 1~1.5시간</div>
+      <ul class="hl">
+        <li>단어 5개 암기 + 예문 각 1개 작성 (20분)</li>
+        <li>패턴 1+2를 자신의 정보로 완성 + 외우기 (30분)</li>
+        <li>ChatGPT 혼자서 다시 교신 연습 (20분)</li>
+        <li>내일 예습: "What is your crew role?" 준비 (10분)</li>
+      </ul>
+    </div>
+    <div class="hw k">
+      <div class="hf">🇰🇷</div>
+      <div class="ht">한국 5학년</div>
+      <div class="htm">⏱ 약 2~2.5시간</div>
+      <ul class="hl">
+        <li>단어 5개 뜻 + 영어 철자 완전 암기 (30분)</li>
+        <li>패턴 1+2+3 한국어→영어 번역 연습 (40분)</li>
+        <li>ChatGPT와 혼자서 교신 연습 — 최소 10번 주고받기 (30분)</li>
+        <li>"I am good at ___" 5가지 생각해오기 (20분)</li>
+        <li>추가: NASA ASCAN 프로그램 조사 (20분)</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- 하단 네비 -->
+<div class="snav">
+  <a href="#" class="nb2 dis">← PREV</a>
+  <div class="nc">
+    <div class="nwl">WEEK 1 — ASTRONAUT CANDIDATE BASIC TRAINING</div>
+    <div class="nst">STEP 1 of 20 — Astronaut Candidate Check-In</div>
+  </div>
+  <a href="step02.html" class="nb2">NEXT →</a>
+</div>
+
+<script>
+let currentGrade = 5;
+
+const PROMPTS = {
+  4: (name, country, team, num) => `You are a friendly NASA instructor at the CEC Space Camp Training Center. I am a 4th grade student (age 9-10) who is an astronaut candidate. Please use simple, encouraging English that a 9-year-old can understand.
+
+My information:
+- Name: ${name || '[my name]'}
+- Country: ${country || '[my country]'}
+- Team: ${team || '[my team]'}
+- Candidate Number: ${num || '[number]'}
+
+Please do this step by step:
+1. Welcome me warmly and ask me to introduce myself
+2. Ask me to say "I am ready for training!"
+3. Ask what team I am on
+4. Ask me to say "Our crew is ready. Over."
+5. Give me simple corrections if I make mistakes
+6. Use easy words and short sentences
+
+Start with: "Welcome, young astronaut! This is Mission Control..."`,
+
+  5: (name, country, team, num) => `You are Mission Control at NASA's Johnson Space Center for CEC Space Camp. I am a 5th grade astronaut candidate (ASCAN). Use real NASA communication phrases and help me practice formal English reporting.
+
+My information:
+- Name: ${name || '[my name]'}
+- Country: ${country || '[my country]'}
+- Team: ${team || '[my team]'}
+- Candidate Number: ASCAN-${num || '???'}
+
+Please guide me through this mission:
+1. Ask me to formally check in with my name and country
+2. Ask me to report my team and candidate number
+3. Ask me to say "I am ready for training!"
+4. Have me do a full team report: "Mission Control, this is Team ___. Our crew is ready. Over."
+5. Correct my English politely and explain why
+6. Ask me 2-3 follow-up questions about my team
+
+Start with: "Attention candidates. This is Mission Control. Please begin check-in procedure. State your name and country. Over."`,
+
+  6: (name, country, team, num) => `You are the Flight Director at NASA's Johnson Space Center. I am a 6th grade ASCAN candidate entering formal training. Evaluate my communication skills rigorously and use authentic NASA protocol.
+
+My profile:
+- Candidate: ${name || '[candidate name]'}
+- Origin: ${country || '[country]'}
+- Crew: ${team || '[team designation]'}
+- ASCAN ID: ${num || '???'}
+
+Conduct a formal ASCAN check-in evaluation:
+1. Begin with a formal mission brief about today's objectives
+2. Request my formal identification report (name, country, candidate number)
+3. Ask me to articulate my primary qualification for this mission
+4. Require me to state my contingency role and why I was designated for it
+5. Evaluate my team report: does it include all required information?
+6. Ask two challenging follow-up questions that require me to think critically
+7. Provide detailed feedback on vocabulary, grammar, and communication protocol
+
+Use authentic NASA terminology: nominal, ASCAN, roger, wilco, over, out.
+Start with: "This is Flight Director Chen at JSC Mission Control. Initiating formal ASCAN evaluation. Candidate, state your identification. Over."`
+};
+
+function getPrompt() {
+  const name = document.getElementById('inp-name').value.trim() || '[이름 입력]';
+  const country = document.getElementById('inp-country').value.trim() || '[나라 입력]';
+  const team = document.getElementById('inp-team').value.trim() || '[팀 이름 입력]';
+  const num = document.getElementById('inp-num').value.trim() || '???';
+  return PROMPTS[currentGrade](name, country, team, num);
+}
+
+function updatePrompt() {
+  const p = getPrompt();
+  const el = document.getElementById('prompt-preview');
+  el.innerHTML = p.replace(/\n/g, '<br>');
+}
+
+function selectGrade(g, el) {
+  currentGrade = g;
+  document.querySelectorAll('.gs').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  updatePrompt();
+}
+
+function copyPrompt() {
+  const text = getPrompt();
+  navigator.clipboard.writeText(text).then(() => {
+    const msg = document.getElementById('copied-msg');
+    msg.classList.add('show');
+    setTimeout(() => msg.classList.remove('show'), 3000);
+  });
+}
+
+function sw(id, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.gc').forEach(c => c.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+}
+
+updatePrompt();
+</script>
+</body>
+</html>
