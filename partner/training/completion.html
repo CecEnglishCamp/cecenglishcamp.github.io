@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>파트너 인증 기초과정 수료증 | CEC English Camp</title>
+<meta name="robots" content="noindex,nofollow">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a1628;color:#e6edf3;font-family:'Noto Sans KR',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.box{max-width:600px;width:100%;text-align:center}
+.state{display:none}
+
+/* 잠금/안내 상태 */
+.lock-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:40px 28px}
+.lock-card h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#fff;margin-bottom:10px}
+.lock-card p{color:rgba(230,237,243,.65);margin-bottom:20px}
+.lock-card a{display:inline-block;background:#00bcd4;color:#04141f;padding:12px 26px;border-radius:50px;text-decoration:none;font-weight:800}
+
+/* 수료증 */
+.cert{background:linear-gradient(135deg,#fffdf5,#fbf6e6);color:#1a2b5e;border:2px solid #c9a84c;border-radius:18px;padding:44px 34px;position:relative;box-shadow:0 24px 70px rgba(0,0,0,.45)}
+.cert::before{content:"";position:absolute;inset:10px;border:1px solid rgba(201,168,76,.5);border-radius:12px;pointer-events:none}
+.seal{width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,#fef3c7,#c9a84c);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;box-shadow:0 6px 18px rgba(201,168,76,.4)}
+.cert .org{font-size:.8rem;letter-spacing:.22em;color:#7c6a2e;font-weight:700;text-transform:uppercase}
+.cert h1{font-family:'Cormorant Garamond',serif;font-size:2.2rem;color:#1a2b5e;margin:6px 0 18px}
+.cert .lead{font-size:.95rem;color:#475569}
+.cert .name{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;color:#0a1628;margin:14px 0;border-bottom:2px solid #c9a84c;display:inline-block;padding:0 24px 6px}
+.cert .body{font-size:.95rem;color:#334155;line-height:1.9;margin:10px auto 0;max-width:420px}
+.cert .meta{display:flex;justify-content:space-between;margin-top:28px;font-size:.8rem;color:#64748b}
+.actions{margin-top:22px;display:flex;gap:10px;justify-content:center}
+.actions button,.actions a{padding:12px 24px;border-radius:50px;font-weight:800;font-size:.92rem;cursor:pointer;border:none;text-decoration:none}
+.btn-print{background:#c9a84c;color:#0a1628}
+.btn-home{background:rgba(255,255,255,.1);color:#fff}
+@media print{body{background:#fff;padding:0}.actions,.state .lock-card{display:none!important}.cert{box-shadow:none;border-color:#c9a84c}}
+</style>
+</head>
+<body>
+<div class="box">
+
+  <!-- 로딩 -->
+  <div class="state" id="loading" style="display:block"><p style="color:rgba(230,237,243,.6)">수료 여부를 확인하는 중...</p></div>
+
+  <!-- 미완료/미로그인 안내 -->
+  <div class="state" id="locked">
+    <div class="lock-card">
+      <div style="font-size:2.4rem;margin-bottom:10px">🔒</div>
+      <h2 id="lockTitle">아직 수료증을 받을 수 없습니다</h2>
+      <p id="lockMsg">기초과정 5강을 모두 완료하면 수료증이 발급됩니다.</p>
+      <a href="/partner/training/">인증교육으로 가기 →</a>
+    </div>
+  </div>
+
+  <!-- 수료증 -->
+  <div class="state" id="cert">
+    <div class="cert">
+      <div class="seal">🎓</div>
+      <div class="org">CEC English Camp · Partner Certification</div>
+      <h1>수료증 · Certificate of Completion</h1>
+      <div class="lead">아래 파트너가 CEC 파트너 인증 <b>기초과정(5강)</b>을<br>성실히 이수하였음을 증명합니다.</div>
+      <div class="name" id="cName">Partner</div>
+      <div class="body">
+        과정: <b>파트너 인증 기초과정</b> (CEC 플랫폼 · 첫 수업 진행법 · 학부모 상담법 · ChatGPT 활용 · 학생 동기부여)
+      </div>
+      <div class="meta">
+        <span>수료일: <b id="cDate">—</b></span>
+        <span>인증번호: <b id="cId">—</b></span>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn-print" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+      <a class="btn-home" href="/partner/training/">← 진도 현황</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var SUPA_URL='https://rzlqlokqplhyntuirsmd.supabase.co';
+var SUPA_KEY='sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
+var sb=window.supabase.createClient(SUPA_URL,SUPA_KEY);
+var NEED=[1,2,3,4,5];
+
+function show(id){['loading','locked','cert'].forEach(function(s){document.getElementById(s).style.display=(s===id)?'block':'none';});}
+
+(async function(){
+  try{
+    var u=await sb.auth.getUser(); var user=u&&u.data?u.data.user:null;
+    if(!user){
+      document.getElementById('lockTitle').textContent='로그인이 필요합니다';
+      document.getElementById('lockMsg').textContent='수료증은 로그인 후, 5강을 모두 완료한 계정에서 발급됩니다.';
+      return show('locked');
+    }
+    var r=await sb.from('partner_training_progress').select('lesson_number,completed_at').eq('user_id',user.id);
+    var done=new Set((r.data||[]).map(function(x){return x.lesson_number;}));
+    var allDone=NEED.every(function(n){return done.has(n);});
+    if(!allDone){
+      var cnt=NEED.filter(function(n){return done.has(n);}).length;
+      document.getElementById('lockMsg').textContent='현재 '+cnt+'/5강 완료. 5강을 모두 마치면 수료증이 발급됩니다.';
+      return show('locked');
+    }
+    // 수료증 렌더
+    var name=(user.user_metadata&&(user.user_metadata.full_name||user.user_metadata.name))||user.email||'Partner';
+    document.getElementById('cName').textContent=name;
+    // 최종 완료일
+    var last=(r.data||[]).map(function(x){return x.completed_at;}).filter(Boolean).sort().pop();
+    var d=last?new Date(last):new Date();
+    document.getElementById('cDate').textContent=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0');
+    document.getElementById('cId').textContent='CEC-PT-'+String(user.id).replace(/-/g,'').slice(0,8).toUpperCase();
+    show('cert');
+  }catch(e){
+    console.error(e);
+    document.getElementById('lockTitle').textContent='확인 중 오류';
+    document.getElementById('lockMsg').textContent='네트워크 오류로 수료 여부를 확인하지 못했습니다. 새로고침 해주세요.';
+    show('locked');
+  }
+})();
+</script>
+</body>
+</html>
