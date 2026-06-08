@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>파트너 인증 기초과정 5강 — 학생 동기부여 | CEC English Camp</title>
+<meta name="robots" content="noindex,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0a1628;--blue:#1e3a8a;--cyan:#00bcd4;--gold:#c9a84c;--green:#16a34a;--red:#dc2626;
+  --bg:#f4f6fb;--card:#fff;--text:#1e293b;--text2:#475569;--border:rgba(10,22,40,.1)}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;line-height:1.85;font-size:16px}
+h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif}
+.hdr{background:var(--navy);color:#fff;padding:22px 20px 16px;position:sticky;top:0;z-index:50;box-shadow:0 4px 20px rgba(10,22,40,.2)}
+.hdr-inner{max-width:760px;margin:0 auto}
+.hdr .eyebrow{font-size:.72rem;letter-spacing:.2em;color:var(--cyan);font-weight:700;text-transform:uppercase}
+.hdr h1{font-size:clamp(1.6rem,5vw,2.3rem);font-weight:700;line-height:1.2;margin:4px 0 14px}
+.prog-row{display:flex;align-items:center;gap:12px}
+.prog-label{font-size:.8rem;color:rgba(255,255,255,.7);white-space:nowrap;font-weight:500}
+.prog-track{flex:1;height:8px;background:rgba(255,255,255,.15);border-radius:6px;overflow:hidden}
+.prog-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--gold),var(--cyan));border-radius:6px}
+.wrap{max-width:760px;margin:0 auto;padding:24px 18px 40px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 22px;margin-bottom:20px;box-shadow:0 6px 20px rgba(10,22,40,.05)}
+.sec-num{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.1em;color:var(--cyan);margin-bottom:6px}
+.card h2{font-size:1.5rem;font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.25}
+.card h3{font-size:1.1rem;color:var(--blue);margin:16px 0 8px}
+.card p{color:var(--text2);margin-bottom:10px}
+.goal-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.goal-list li{display:flex;gap:10px;background:#f0f7ff;border:1px solid #dbeafe;border-radius:10px;padding:11px 14px;font-weight:500;color:var(--navy)}
+.goal-list .n{flex:0 0 24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.struct{list-style:none;display:flex;flex-direction:column;gap:8px}
+.struct li{padding:11px 14px;background:#f8faff;border-left:4px solid var(--cyan);border-radius:8px;color:var(--text2)}
+.struct b{color:var(--navy)}
+.tt li{border-left-color:var(--gold)}
+.prompt-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.prompt-list li{padding:11px 14px;background:#0a1628;color:#e2eefc;border-radius:10px;font-size:.95rem}
+.note{background:#fffbe8;border:1px solid #fde68a;border-radius:10px;padding:12px 14px;font-size:.9rem;color:#854d0e;margin-top:10px}
+.quote{background:#f0f7ff;border-left:4px solid var(--blue);border-radius:8px;padding:14px 16px;color:var(--navy);font-style:italic;line-height:1.9}
+.cmp{display:flex;flex-direction:column;gap:8px}
+.cmp .bad{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;color:#b91c1c}
+.cmp .good{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;color:#15803d;font-weight:600}
+.quiz-card{border:2px solid var(--gold)}
+.q{margin-bottom:18px;padding-bottom:16px;border-bottom:1px dashed var(--border)}
+.q:last-of-type{border-bottom:none}
+.q .qt{font-weight:700;color:var(--navy);margin-bottom:10px}
+.opt{display:block;background:#f8faff;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:8px;cursor:pointer;transition:.15s;font-size:.95rem}
+.opt:hover{border-color:var(--blue)}
+.opt input{margin-right:8px}
+.opt.correct{background:#dcfce7;border-color:var(--green);color:#15803d;font-weight:600}
+.opt.wrong{background:#fee2e2;border-color:var(--red);color:#b91c1c}
+.grade-btn{width:100%;padding:15px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:1.05rem;font-weight:700;font-family:inherit;cursor:pointer;margin-top:6px}
+.grade-btn:hover{background:#1d4ed8}
+.result{display:none;margin-top:16px;padding:16px;border-radius:12px;text-align:center;font-weight:600}
+.result.pass{display:block;background:#dcfce7;border:1px solid var(--green);color:#15803d}
+.result.fail{display:block;background:#fee2e2;border:1px solid var(--red);color:#b91c1c}
+.sync{font-size:.82rem;color:var(--text2);margin-top:8px}
+.botnav{max-width:760px;margin:0 auto;padding:6px 18px 40px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nav-btn{flex:1;text-align:center;padding:13px 10px;border-radius:12px;text-decoration:none;font-weight:700;font-size:.92rem}
+.nav-prev{background:#e2e8f0;color:var(--navy)}
+.nav-mid{flex:0 0 auto;color:var(--text2);font-size:.85rem;font-weight:600}
+.nav-next{background:#cbd5e1;color:#64748b;pointer-events:none}
+.nav-next.unlocked{background:var(--blue);color:#fff;pointer-events:auto}
+@media(max-width:560px){.card{padding:20px 16px}.botnav{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<header class="hdr"><div class="hdr-inner">
+  <div class="eyebrow">CEC 파트너 인증 · 기초과정</div>
+  <h1>5강 · 학생 동기부여</h1>
+  <div class="prog-row">
+    <span class="prog-label">진도 5 / 5강</span>
+    <div class="prog-track"><div class="prog-fill"></div></div>
+    <span class="prog-label">100%</span>
+  </div>
+</div></header>
+<div class="wrap">
+  <section class="card"><span class="sec-num">SECTION 1</span><h2>학습 목표</h2><ul class="goal-list"><li><span class="n">1</span><span>구체적인 칭찬으로 학생 자신감을 높일 수 있다.</span></li><li><span class="n">2</span><span>슬럼프 학생을 효과적으로 케어할 수 있다.</span></li><li><span class="n">3</span><span>하루 30분 학습 루틴을 만들어줄 수 있다.</span></li></ul></section>  <section class="card"><span class="sec-num">SECTION 2</span><h2>구체적 칭찬 vs 막연한 칭찬</h2>  <div class="cmp">    <div class="bad">❌ "잘했어요" (막연)</div>    <div class="good">✅ "방금 R 발음이 정말 좋아졌어요!" (구체적)</div>    <div class="bad">❌ "똑똑하네요" (막연)</div>    <div class="good">✅ "어려운 문제를 포기하지 않고 끝까지 풀었네요!" (과정 칭찬)</div>  </div></section>  <section class="card"><span class="sec-num">SECTION 3</span><h2>슬럼프 극복 방법</h2><ul class="struct "><li><b>원인 파악</b>: 학교 시험? 친구 문제? 지루함?</li><li><b>레벨 조정</b>: 너무 어려우면 한 단계 낮추기</li><li><b>목표 재설정</b>: 작은 목표로 성취감 회복</li><li><b>학부모 소통</b>: 집에서 상황 파악</li></ul></section>  <section class="card"><span class="sec-num">SECTION 4</span><h2>하루 30분 루틴 만들기</h2><ul class="struct "><li><b>같은 시간, 같은 장소</b></li><li>숙제 전 or 저녁 식사 후</li><li><b>핸드폰 멀리</b> 두기</li><li>완료 시 <b>작은 보상</b> (스티커, 칭찬)</li><li><b>주간 달력</b>에 체크하기</li></ul></section>  <section class="card"><span class="sec-num">SECTION 5</span><h2>동기부여 영어 표현 10개</h2><ul class="prompt-list"><li>1. "You've improved so much!"</li><li>2. "I'm really proud of you."</li><li>3. "That was challenging, but you did it!"</li><li>4. "Your hard work is paying off."</li><li>5. "Don't give up, you're almost there!"</li><li>6. "Every mistake helps you learn."</li><li>7. "You're getting better every week."</li><li>8. "I believe in you!"</li><li>9. "Look how far you've come!"</li><li>10. "You should be proud of yourself."</li></ul></section>
+  <section class="card quiz-card">
+    <span class="sec-num">QUIZ</span>
+    <h2>확인 퀴즈 (5문제)</h2>
+    <p>4문제 이상 맞히면 이 강이 완료 처리됩니다.</p>
+    <form id="quizForm">
+      <div class="q" data-answer="2">
+        <div class="qt">Q1. 좋은 칭찬의 특징은?</div>
+        <label class="opt"><input type="radio" name="q1" value="1">① 막연하게</label>
+        <label class="opt"><input type="radio" name="q1" value="2">② 구체적으로</label>
+        <label class="opt"><input type="radio" name="q1" value="3">③ 자주 안 하기</label>
+        <label class="opt"><input type="radio" name="q1" value="4">④ 결과만 칭찬</label>
+      </div>
+      <div class="q" data-answer="2">
+        <div class="qt">Q2. 슬럼프 학생에게 먼저 할 것은?</div>
+        <label class="opt"><input type="radio" name="q2" value="1">① 더 많은 숙제</label>
+        <label class="opt"><input type="radio" name="q2" value="2">② 원인 파악</label>
+        <label class="opt"><input type="radio" name="q2" value="3">③ 무시</label>
+        <label class="opt"><input type="radio" name="q2" value="4">④ 부모에게만 연락</label>
+      </div>
+      <div class="q" data-answer="2">
+        <div class="qt">Q3. 하루 학습 루틴의 핵심은?</div>
+        <label class="opt"><input type="radio" name="q3" value="1">① 매일 다른 시간</label>
+        <label class="opt"><input type="radio" name="q3" value="2">② 같은 시간, 같은 장소</label>
+        <label class="opt"><input type="radio" name="q3" value="3">③ 주말만</label>
+        <label class="opt"><input type="radio" name="q3" value="4">④ 학원 숙제만</label>
+      </div>
+      <div class="q" data-answer="2">
+        <div class="qt">Q4. "Every mistake helps you learn"의 의미는?</div>
+        <label class="opt"><input type="radio" name="q4" value="1">① 실수하면 안 돼</label>
+        <label class="opt"><input type="radio" name="q4" value="2">② 실수는 배움이야</label>
+        <label class="opt"><input type="radio" name="q4" value="3">③ 틀리면 혼나</label>
+        <label class="opt"><input type="radio" name="q4" value="4">④ 완벽해야 해</label>
+      </div>
+      <div class="q" data-answer="2">
+        <div class="qt">Q5. 슬럼프 시 레벨 조정 방향은?</div>
+        <label class="opt"><input type="radio" name="q5" value="1">① 더 높은 단계로</label>
+        <label class="opt"><input type="radio" name="q5" value="2">② 한 단계 낮추기</label>
+        <label class="opt"><input type="radio" name="q5" value="3">③ 중단</label>
+        <label class="opt"><input type="radio" name="q5" value="4">④ 레벨 상관없음</label>
+      </div>
+      <button type="button" class="grade-btn" id="gradeBtn">채점하기</button>
+    </form>
+    <div class="result" id="result"></div>
+    <div class="sync" id="sync"></div>
+  </section>
+</div>
+<nav class="botnav">
+  <a class="nav-btn nav-prev" href="lesson4.html">← 4강</a>
+  <span class="nav-mid">5강 / 5강</span>
+  <a class="nav-btn nav-next" id="nextBtn" href="javascript:void(0)"><span>🔒 수료 (5강 완료 후)</span></a>
+</nav>
+<script>
+var SUPA_URL='https://rzlqlokqplhyntuirsmd.supabase.co';
+var SUPA_KEY='sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
+var sb=window.supabase.createClient(SUPA_URL,SUPA_KEY);
+var LESSON=5, PASS=4, NEXT='';
+document.getElementById('gradeBtn').addEventListener('click',function(){
+  var qs=document.querySelectorAll('#quizForm .q'); var score=0, answered=0;
+  qs.forEach(function(q){
+    var ans=q.getAttribute('data-answer'); var sel=q.querySelector('input:checked');
+    q.querySelectorAll('.opt').forEach(function(o){o.classList.remove('correct','wrong');});
+    if(sel){answered++; var picked=sel.closest('.opt');
+      q.querySelector('input[value="'+ans+'"]').closest('.opt').classList.add('correct');
+      if(sel.value===ans){score++;} else {picked.classList.add('wrong');}
+    } else { q.querySelector('input[value="'+ans+'"]').closest('.opt').classList.add('correct'); }
+  });
+  var res=document.getElementById('result');
+  if(answered<qs.length){res.className='result fail';res.textContent='⚠️ 모든 문제에 답해주세요. ('+answered+'/'+qs.length+')';return;}
+  if(score>=PASS){res.className='result pass';res.textContent='🎉 '+score+'/5 정답 — '+LESSON+'강 완료!'+(NEXT?' 다음 강이 열렸습니다.':' 모든 강을 마쳤습니다!');unlockNext();recordProgress(score);}
+  else{res.className='result fail';res.textContent='아쉽지만 '+score+'/5 — 4문제 이상 맞혀야 완료됩니다. 복습 후 다시 채점하세요.';}
+});
+function unlockNext(){var n=document.getElementById('nextBtn');if(!NEXT){n.classList.add('unlocked');n.setAttribute('href','index.html');n.innerHTML='수료 현황 →';return;}n.classList.add('unlocked');n.setAttribute('href',NEXT);n.innerHTML=(LESSON+1)+'강 →';}
+async function recordProgress(score){var sync=document.getElementById('sync');
+  try{var u=await sb.auth.getUser();var user=u&&u.data?u.data.user:null;
+    if(!user){sync.innerHTML='※ 진도 저장은 <a href="/signup.html">로그인</a> 후 가능합니다. (이번 완료는 이 기기에만 표시)';return;}
+    var r=await sb.from('partner_training_progress').upsert({user_id:user.id,lesson_number:LESSON,quiz_score:score,completed_at:new Date().toISOString()},{onConflict:'user_id,lesson_number'});
+    if(r.error)throw r.error; sync.textContent='✅ 진도가 저장되었습니다. ('+score+'/5)';
+  }catch(e){sync.textContent='⚠️ 진도 저장 중 오류가 발생했습니다. 인터넷 연결을 확인하세요.';console.error(e);}}
+(async function(){try{var u=await sb.auth.getUser();var user=u&&u.data?u.data.user:null;if(!user)return;
+  var r=await sb.from('partner_training_progress').select('lesson_number').eq('user_id',user.id).eq('lesson_number',LESSON).maybeSingle();
+  if(r.data){unlockNext();}}catch(e){}})();
+</script>
+</body>
+</html>

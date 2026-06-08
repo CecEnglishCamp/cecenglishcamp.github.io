@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>파트너 인증 기초과정 — 진도 현황 | CEC English Camp</title>
+<meta name="robots" content="noindex,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0a1628;--blue:#1e3a8a;--cyan:#00bcd4;--gold:#c9a84c;--green:#16a34a;
+  --bg:#f4f6fb;--card:#fff;--text:#1e293b;--text2:#475569;--border:rgba(10,22,40,.1)}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;line-height:1.8}
+h1,h2{font-family:'Cormorant Garamond',serif}
+.hdr{background:var(--navy);color:#fff;padding:26px 20px 20px}
+.hdr-inner{max-width:720px;margin:0 auto}
+.hdr .eyebrow{font-size:.72rem;letter-spacing:.2em;color:var(--cyan);font-weight:700;text-transform:uppercase}
+.hdr h1{font-size:clamp(1.7rem,5vw,2.4rem);font-weight:700;margin:4px 0 16px}
+.ov{display:flex;align-items:center;gap:12px}
+.ov-label{font-size:.85rem;color:rgba(255,255,255,.75);white-space:nowrap;font-weight:600}
+.ov-track{flex:1;height:10px;background:rgba(255,255,255,.15);border-radius:6px;overflow:hidden}
+.ov-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--cyan));border-radius:6px;transition:width .5s}
+.wrap{max-width:720px;margin:0 auto;padding:24px 18px 50px}
+.who{font-size:.85rem;color:var(--text2);margin-bottom:14px}
+.who a{color:var(--blue);font-weight:600}
+.lessons{display:flex;flex-direction:column;gap:12px}
+.lesson{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;text-decoration:none;color:inherit;box-shadow:0 4px 14px rgba(10,22,40,.05);transition:.15s}
+.lesson:hover{border-color:var(--blue);transform:translateX(2px)}
+.lesson .ln{flex:0 0 52px;height:52px;border-radius:12px;background:#eef4ff;color:var(--blue);font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.lesson .lt{flex:1}
+.lesson .lt b{display:block;color:var(--navy);font-size:1.05rem}
+.lesson .lt span{font-size:.82rem;color:var(--text2)}
+.lesson .lst{flex:0 0 auto;font-size:1.5rem}
+.lesson.done .ln{background:#dcfce7;color:var(--green)}
+.lesson.locked{opacity:.6;pointer-events:none}
+.lesson.locked .ln{background:#f1f5f9;color:#94a3b8}
+.cert{margin-top:24px}
+.cert-btn{display:block;width:100%;text-align:center;padding:18px;border-radius:14px;font-weight:700;font-size:1.05rem;text-decoration:none;background:#cbd5e1;color:#64748b;pointer-events:none}
+.cert-btn.ready{background:linear-gradient(135deg,var(--gold),#e0c878);color:var(--navy);pointer-events:auto;box-shadow:0 8px 24px rgba(201,168,76,.35)}
+.cert-note{text-align:center;font-size:.8rem;color:var(--text2);margin-top:8px}
+.back{display:inline-block;margin-top:22px;color:var(--text2);text-decoration:none;font-size:.9rem;font-weight:600}
+</style>
+</head>
+<body>
+<header class="hdr"><div class="hdr-inner">
+  <div class="eyebrow">CEC 파트너 인증</div>
+  <h1>기초과정 · 진도 현황</h1>
+  <div class="ov">
+    <span class="ov-label" id="ovLabel">0 / 5강 완료</span>
+    <div class="ov-track"><div class="ov-fill" id="ovFill"></div></div>
+    <span class="ov-label" id="ovPct">0%</span>
+  </div>
+</div></header>
+
+<div class="wrap">
+  <div class="who" id="who">진도를 저장하려면 <a href="/signup.html">로그인</a> 하세요.</div>
+
+  <div class="lessons" id="lessons">
+    <a class="lesson" data-num="1" href="lesson1.html">
+      <div class="ln">1</div><div class="lt"><b>1강 · CEC 플랫폼 완전정복</b><span>사이트 구조 · 교재 찾기 · GPT튜터 · 영자씨</span></div><div class="lst" data-icon>▶</div>
+    </a>
+    <a class="lesson" data-num="2" href="lesson2.html">
+      <div class="ln">2</div><div class="lt"><b>2강 · 첫 수업 진행법</b><span>45분 타임테이블 · 4명 그룹 운영 · 첫날</span></div><div class="lst" data-icon>▶</div>
+    </a>
+    <a class="lesson" data-num="3" href="lesson3.html">
+      <div class="ln">3</div><div class="lt"><b>3강 · 학부모 상담법</b><span>첫 상담 · 진도 리포트 · 불만 응대</span></div><div class="lst" data-icon>▶</div>
+    </a>
+    <a class="lesson" data-num="4" href="lesson4.html">
+      <div class="ln">4</div><div class="lt"><b>4강 · ChatGPT 수업 활용법</b><span>기본 사용 · 프롬프트 10개 · 레벨별 조정</span></div><div class="lst" data-icon>▶</div>
+    </a>
+    <a class="lesson" data-num="5" href="lesson5.html">
+      <div class="ln">5</div><div class="lt"><b>5강 · 학생 동기부여</b><span>구체적 칭찬 · 슬럼프 케어 · 30분 루틴</span></div><div class="lst" data-icon>▶</div>
+    </a>
+  </div>
+
+  <div class="cert">
+    <a class="cert-btn" id="certBtn" href="javascript:void(0)">🎓 수료증 발급 (5강 모두 완료 시)</a>
+    <div class="cert-note" id="certNote">5강을 모두 완료하면 수료증이 활성화됩니다.</div>
+  </div>
+
+  <a class="back" href="/">← CEC 홈으로</a>
+</div>
+
+<script>
+var SUPA_URL='https://rzlqlokqplhyntuirsmd.supabase.co';
+var SUPA_KEY='sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
+var sb=window.supabase.createClient(SUPA_URL,SUPA_KEY);
+var TOTAL=5;
+
+function render(doneSet){
+  var lessons=document.querySelectorAll('.lesson');
+  var prevDone=true; // 1강은 항상 열림
+  lessons.forEach(function(el){
+    var n=parseInt(el.getAttribute('data-num'),10);
+    var icon=el.querySelector('[data-icon]');
+    el.classList.remove('done','locked');
+    if(doneSet.has(n)){
+      el.classList.add('done'); icon.textContent='✅';
+    } else if(n===1 || prevDone){
+      icon.textContent='▶'; // 학습 가능
+    } else {
+      el.classList.add('locked'); icon.textContent='🔒';
+    }
+    prevDone = doneSet.has(n);
+  });
+  var cnt=doneSet.size, pct=Math.round(cnt/TOTAL*100);
+  document.getElementById('ovLabel').textContent=cnt+' / '+TOTAL+'강 완료';
+  document.getElementById('ovPct').textContent=pct+'%';
+  document.getElementById('ovFill').style.width=pct+'%';
+  var cert=document.getElementById('certBtn'), note=document.getElementById('certNote');
+  if(cnt>=TOTAL){
+    cert.classList.add('ready'); cert.setAttribute('href','certificate.html');
+    cert.textContent='🎓 수료증 발급받기';
+    note.textContent='축하합니다! 기초과정을 모두 수료하셨습니다.';
+  }
+}
+
+(async function(){
+  var doneSet=new Set();
+  try{
+    var u=await sb.auth.getUser(); var user=u&&u.data?u.data.user:null;
+    if(user){
+      document.getElementById('who').textContent='로그인됨 · 진도가 자동 저장됩니다.';
+      var r=await sb.from('partner_training_progress').select('lesson_number').eq('user_id',user.id);
+      if(r.data){ r.data.forEach(function(row){ doneSet.add(row.lesson_number); }); }
+    }
+  }catch(e){ console.error(e); }
+  render(doneSet);
+})();
+</script>
+</body>
+</html>

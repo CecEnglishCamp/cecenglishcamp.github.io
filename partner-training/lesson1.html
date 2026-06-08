@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>파트너 인증 기초과정 1강 — CEC 플랫폼 완전정복 | CEC English Camp</title>
+<meta name="robots" content="noindex,follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0a1628;--blue:#1e3a8a;--cyan:#00bcd4;--gold:#c9a84c;--green:#16a34a;--red:#dc2626;
+  --bg:#f4f6fb;--card:#fff;--text:#1e293b;--text2:#475569;--border:rgba(10,22,40,.1)}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;line-height:1.85;font-size:16px}
+h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif}
+
+/* HEADER */
+.hdr{background:var(--navy);color:#fff;padding:22px 20px 16px;position:sticky;top:0;z-index:50;box-shadow:0 4px 20px rgba(10,22,40,.2)}
+.hdr-inner{max-width:760px;margin:0 auto}
+.hdr .eyebrow{font-size:.72rem;letter-spacing:.2em;color:var(--cyan);font-weight:700;text-transform:uppercase}
+.hdr h1{font-size:clamp(1.6rem,5vw,2.3rem);font-weight:700;line-height:1.2;margin:4px 0 14px}
+.prog-row{display:flex;align-items:center;gap:12px}
+.prog-label{font-size:.8rem;color:rgba(255,255,255,.7);white-space:nowrap;font-weight:500}
+.prog-track{flex:1;height:8px;background:rgba(255,255,255,.15);border-radius:6px;overflow:hidden}
+.prog-fill{height:100%;width:20%;background:linear-gradient(90deg,var(--gold),var(--cyan));border-radius:6px}
+
+/* LAYOUT */
+.wrap{max-width:760px;margin:0 auto;padding:24px 18px 40px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 22px;margin-bottom:20px;box-shadow:0 6px 20px rgba(10,22,40,.05)}
+.sec-num{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.1em;color:var(--cyan);margin-bottom:6px}
+.card h2{font-size:1.5rem;font-weight:700;color:var(--navy);margin-bottom:14px;line-height:1.25}
+.card h3{font-size:1.15rem;color:var(--blue);margin:16px 0 8px}
+.card p{color:var(--text2);margin-bottom:10px}
+.goal-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.goal-list li{display:flex;gap:10px;background:#f0f7ff;border:1px solid #dbeafe;border-radius:10px;padding:11px 14px;font-weight:500;color:var(--navy)}
+.goal-list .n{flex:0 0 24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.struct{list-style:none;display:flex;flex-direction:column;gap:8px}
+.struct li{padding:11px 14px;background:#f8faff;border-left:4px solid var(--cyan);border-radius:8px}
+.struct b{color:var(--navy)}
+.steps{counter-reset:step;list-style:none;display:flex;flex-direction:column;gap:8px}
+.steps li{counter-increment:step;position:relative;padding:11px 14px 11px 46px;background:#f8faff;border:1px solid var(--border);border-radius:10px}
+.steps li::before{content:counter(step);position:absolute;left:12px;top:50%;transform:translateY(-50%);width:24px;height:24px;background:var(--gold);color:#fff;border-radius:50%;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;font-family:'Noto Sans KR'}
+.prompt-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.prompt-list li{padding:11px 14px;background:#0a1628;color:#e2eefc;border-radius:10px;font-size:.95rem}
+.prompt-list li .ko{display:block;color:var(--cyan);font-size:.8rem;margin-top:3px}
+.note{background:#fffbe8;border:1px solid #fde68a;border-radius:10px;padding:12px 14px;font-size:.9rem;color:#854d0e}
+.summary li{font-weight:600;color:var(--navy)}
+
+/* QUIZ */
+.quiz-card{border:2px solid var(--gold)}
+.q{margin-bottom:18px;padding-bottom:16px;border-bottom:1px dashed var(--border)}
+.q:last-of-type{border-bottom:none}
+.q .qt{font-weight:700;color:var(--navy);margin-bottom:10px}
+.opt{display:block;background:#f8faff;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:8px;cursor:pointer;transition:.15s;font-size:.95rem}
+.opt:hover{border-color:var(--blue)}
+.opt input{margin-right:8px}
+.opt.correct{background:#dcfce7;border-color:var(--green);color:#15803d;font-weight:600}
+.opt.wrong{background:#fee2e2;border-color:var(--red);color:#b91c1c}
+.grade-btn{width:100%;padding:15px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:1.05rem;font-weight:700;font-family:inherit;cursor:pointer;margin-top:6px}
+.grade-btn:hover{background:#1d4ed8}
+.result{display:none;margin-top:16px;padding:16px;border-radius:12px;text-align:center;font-weight:600}
+.result.pass{display:block;background:#dcfce7;border:1px solid var(--green);color:#15803d}
+.result.fail{display:block;background:#fee2e2;border:1px solid var(--red);color:#b91c1c}
+.sync{font-size:.82rem;color:var(--text2);margin-top:8px}
+
+/* BOTTOM NAV */
+.botnav{max-width:760px;margin:0 auto;padding:6px 18px 40px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nav-btn{flex:1;text-align:center;padding:13px 10px;border-radius:12px;text-decoration:none;font-weight:700;font-size:.92rem}
+.nav-home{background:#e2e8f0;color:var(--navy)}
+.nav-mid{flex:0 0 auto;color:var(--text2);font-size:.85rem;font-weight:600}
+.nav-next{background:#cbd5e1;color:#64748b;pointer-events:none;position:relative}
+.nav-next.unlocked{background:var(--blue);color:#fff;pointer-events:auto}
+.nav-next .lock{font-size:.78rem}
+@media(max-width:560px){.card{padding:20px 16px}.botnav{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <div class="eyebrow">CEC 파트너 인증 · 기초과정</div>
+    <h1>1강 · CEC 플랫폼 완전정복</h1>
+    <div class="prog-row">
+      <span class="prog-label">진도 1 / 5강</span>
+      <div class="prog-track"><div class="prog-fill"></div></div>
+      <span class="prog-label">20%</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 섹션 1: 학습 목표 -->
+  <section class="card">
+    <span class="sec-num">SECTION 1</span>
+    <h2>학습 목표</h2>
+    <ul class="goal-list">
+      <li><span class="n">1</span><span>CEC 사이트 전체 구조를 설명할 수 있다.</span></li>
+      <li><span class="n">2</span><span>학년별 교재를 찾아 수업에 활용할 수 있다.</span></li>
+      <li><span class="n">3</span><span>GPT튜터와 영자씨 영상을 수업에 활용할 수 있다.</span></li>
+    </ul>
+  </section>
+
+  <!-- 섹션 2: 사이트 구조 -->
+  <section class="card">
+    <span class="sec-num">SECTION 2</span>
+    <h2>CEC 사이트 구조</h2>
+    <ul class="struct">
+      <li><b>Camp A</b> — 초등 G3~G6 (읽기 / 문법 / 말하기)</li>
+      <li><b>Camp B</b> — 중·고등 (문법 심화)</li>
+      <li><b>Camp C / Camp C2</b> — 성인·주부 (영자씨 시리즈)</li>
+      <li><b>Space Camp</b> — 초등 우주 테마 20단계</li>
+      <li><b>Grammar BaseCamp</b> — 문법 G01~G80</li>
+      <li><b>Mom Teacher</b> — 학부모 지도용</li>
+    </ul>
+  </section>
+
+  <!-- 섹션 3: 교재 찾는 법 -->
+  <section class="card">
+    <span class="sec-num">SECTION 3</span>
+    <h2>학년별 교재 찾는 법</h2>
+    <p>(아래 순서대로 따라 하면 됩니다 — 실제 화면을 함께 열어보세요.)</p>
+    <ol class="steps">
+      <li><b>cecenglishcamp.com</b> 접속</li>
+      <li>상단 메뉴 → <b>Camp A</b> 클릭</li>
+      <li>학년 선택 (<b>G3 / G4 / G5 / G6</b>)</li>
+      <li>주차별 레슨 선택 (<b>W01 ~ W36</b>)</li>
+      <li><b>a / b / c</b> 레벨 확인 (a=기본, b·c=심화)</li>
+    </ol>
+  </section>
+
+  <!-- 섹션 4: GPT튜터 -->
+  <section class="card">
+    <span class="sec-num">SECTION 4</span>
+    <h2>GPT튜터 활용법</h2>
+    <p>수업 중 학생이 바로 쓸 수 있는 프롬프트 5가지:</p>
+    <ul class="prompt-list">
+      <li>1. "Let's practice reading together."<span class="ko">같이 읽기 연습해요</span></li>
+      <li>2. "Can you help me pronounce this word?"<span class="ko">이 단어 발음 도와줄래?</span></li>
+      <li>3. "Please give me 3 example sentences."<span class="ko">예문 3개 만들어줘</span></li>
+      <li>4. "What does this word mean in simple English?"<span class="ko">이 단어 쉬운 영어로 뜻은?</span></li>
+      <li>5. "Let's do a short conversation practice."<span class="ko">짧은 회화 연습하자</span></li>
+    </ul>
+  </section>
+
+  <!-- 섹션 5: 영자씨 영상 -->
+  <section class="card">
+    <span class="sec-num">SECTION 5</span>
+    <h2>영자씨 영상 활용법</h2>
+    <ul class="struct">
+      <li><b>Camp C2</b> 접속 → 에피소드 선택</li>
+      <li>영상 시청 → <b>대화문 따라 읽기</b></li>
+      <li>한국인 <b>실생활 영어 상황</b>을 자연스럽게 설명</li>
+    </ul>
+    <p class="note">💡 영자씨 영상은 "교과서 영어"가 아니라 미국 생활 속 진짜 상황이라, 학생이 "이럴 때 이렇게 말하는구나"를 체감합니다.</p>
+  </section>
+
+  <!-- 섹션 6: 핵심 정리 -->
+  <section class="card">
+    <span class="sec-num">SECTION 6</span>
+    <h2>핵심 정리 (3줄)</h2>
+    <ul class="goal-list summary">
+      <li><span class="n">1</span><span>CEC는 초등~성인까지 모든 레벨을 커버한다.</span></li>
+      <li><span class="n">2</span><span>학년별 교재는 Camp A에서 G3~G6을 선택한다.</span></li>
+      <li><span class="n">3</span><span>GPT튜터와 영자씨 영상으로 말하기 연습이 가능하다.</span></li>
+    </ul>
+  </section>
+
+  <!-- 섹션 7: 확인 퀴즈 -->
+  <section class="card quiz-card">
+    <span class="sec-num">SECTION 7 · QUIZ</span>
+    <h2>확인 퀴즈 (5문제)</h2>
+    <p>4문제 이상 맞히면 1강이 완료 처리됩니다.</p>
+    <form id="quizForm">
+      <div class="q" data-answer="2">
+        <div class="qt">Q1. Camp A는 몇 학년을 위한 교재인가?</div>
+        <label class="opt"><input type="radio" name="q1" value="1">① G1~G3</label>
+        <label class="opt"><input type="radio" name="q1" value="2">② G3~G6</label>
+        <label class="opt"><input type="radio" name="q1" value="3">③ G5~G8</label>
+        <label class="opt"><input type="radio" name="q1" value="4">④ 전학년</label>
+      </div>
+      <div class="q" data-answer="3">
+        <div class="qt">Q2. 주당 레슨 번호 형식은?</div>
+        <label class="opt"><input type="radio" name="q2" value="1">① L01</label>
+        <label class="opt"><input type="radio" name="q2" value="2">② EP01</label>
+        <label class="opt"><input type="radio" name="q2" value="3">③ W01</label>
+        <label class="opt"><input type="radio" name="q2" value="4">④ U01</label>
+      </div>
+      <div class="q" data-answer="3">
+        <div class="qt">Q3. 성인/주부용 콘텐츠는?</div>
+        <label class="opt"><input type="radio" name="q3" value="1">① Camp A</label>
+        <label class="opt"><input type="radio" name="q3" value="2">② Camp B</label>
+        <label class="opt"><input type="radio" name="q3" value="3">③ Camp C</label>
+        <label class="opt"><input type="radio" name="q3" value="4">④ Space Camp</label>
+      </div>
+      <div class="q" data-answer="2">
+        <div class="qt">Q4. GPT튜터에서 발음 도움을 요청하는 표현은?</div>
+        <label class="opt"><input type="radio" name="q4" value="1">① "Let's read a book"</label>
+        <label class="opt"><input type="radio" name="q4" value="2">② "Can you help me pronounce this word?"</label>
+        <label class="opt"><input type="radio" name="q4" value="3">③ "What is your name?"</label>
+        <label class="opt"><input type="radio" name="q4" value="4">④ "Let's play a game"</label>
+      </div>
+      <div class="q" data-answer="3">
+        <div class="qt">Q5. 영자씨 영상의 주요 목적은?</div>
+        <label class="opt"><input type="radio" name="q5" value="1">① 문법 학습</label>
+        <label class="opt"><input type="radio" name="q5" value="2">② 단어 암기</label>
+        <label class="opt"><input type="radio" name="q5" value="3">③ 실생활 영어 회화</label>
+        <label class="opt"><input type="radio" name="q5" value="4">④ 시험 준비</label>
+      </div>
+      <button type="button" class="grade-btn" id="gradeBtn">채점하기</button>
+    </form>
+    <div class="result" id="result"></div>
+    <div class="sync" id="sync"></div>
+  </section>
+
+</div>
+
+<!-- 하단 네비게이션 -->
+<nav class="botnav">
+  <a class="nav-btn nav-home" href="/partner-training/">← 파트너 홈</a>
+  <span class="nav-mid">1강 / 5강</span>
+  <a class="nav-btn nav-next" id="nextBtn" href="javascript:void(0)"><span class="lock">🔒 2강 (완료 후)</span></a>
+</nav>
+
+<script>
+// ── Supabase (사이트 공통 설정) ──
+var SUPA_URL = 'https://rzlqlokqplhyntuirsmd.supabase.co';
+var SUPA_KEY = 'sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
+var sb = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+var LESSON = 1, PASS = 4;
+
+// ── 채점 ──
+document.getElementById('gradeBtn').addEventListener('click', function(){
+  var qs = document.querySelectorAll('#quizForm .q');
+  var score = 0, answered = 0;
+  qs.forEach(function(q){
+    var ans = q.getAttribute('data-answer');
+    var sel = q.querySelector('input:checked');
+    // 기존 표시 초기화
+    q.querySelectorAll('.opt').forEach(function(o){o.classList.remove('correct','wrong');});
+    if(sel){
+      answered++;
+      var picked = sel.closest('.opt');
+      var correctOpt = q.querySelector('input[value="'+ans+'"]').closest('.opt');
+      correctOpt.classList.add('correct');
+      if(sel.value === ans){ score++; }
+      else { picked.classList.add('wrong'); }
+    } else {
+      q.querySelector('input[value="'+ans+'"]').closest('.opt').classList.add('correct');
+    }
+  });
+
+  var res = document.getElementById('result');
+  if(answered < qs.length){
+    res.className = 'result fail';
+    res.textContent = '⚠️ 모든 문제에 답해주세요. (' + answered + '/' + qs.length + ')';
+    return;
+  }
+  if(score >= PASS){
+    res.className = 'result pass';
+    res.textContent = '🎉 ' + score + '/5 정답 — 1강 완료! 2강이 열렸습니다.';
+    unlockNext();
+    recordProgress(score);
+  } else {
+    res.className = 'result fail';
+    res.textContent = '아쉽지만 ' + score + '/5 — 4문제 이상 맞혀야 완료됩니다. 복습 후 다시 채점하세요.';
+  }
+});
+
+function unlockNext(){
+  var n = document.getElementById('nextBtn');
+  n.classList.add('unlocked');
+  n.setAttribute('href','lesson2.html');
+  n.innerHTML = '2강 →';
+}
+
+// ── Supabase 진도 기록 ──
+async function recordProgress(score){
+  var sync = document.getElementById('sync');
+  try{
+    var u = await sb.auth.getUser();
+    var user = u && u.data ? u.data.user : null;
+    if(!user){
+      sync.innerHTML = '※ 진도 저장은 <a href="/signup.html">로그인</a> 후 가능합니다. (이번 완료는 이 기기에만 표시)';
+      return;
+    }
+    var { error } = await sb.from('partner_training_progress').upsert({
+      user_id: user.id,
+      lesson_number: LESSON,
+      quiz_score: score,
+      completed_at: new Date().toISOString()
+    }, { onConflict: 'user_id,lesson_number' });
+    if(error) throw error;
+    sync.textContent = '✅ 진도가 저장되었습니다. (' + score + '/5)';
+  }catch(e){
+    sync.textContent = '⚠️ 진도 저장 중 오류가 발생했습니다. 인터넷 연결을 확인하세요.';
+    console.error('progress save failed:', e);
+  }
+}
+
+// ── 재방문 시 이미 완료했으면 2강 열어두기 ──
+(async function(){
+  try{
+    var u = await sb.auth.getUser();
+    var user = u && u.data ? u.data.user : null;
+    if(!user) return;
+    var { data } = await sb.from('partner_training_progress')
+      .select('lesson_number,quiz_score').eq('user_id', user.id).eq('lesson_number', LESSON).maybeSingle();
+    if(data){ unlockNext(); }
+  }catch(e){ /* 미로그인/네트워크 무시 */ }
+})();
+</script>
+</body>
+</html>
