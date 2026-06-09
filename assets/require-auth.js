@@ -32,6 +32,11 @@
     sb.auth.getSession().then(function (result) {
       var session = result && result.data && result.data.session;
 
+      // ── 관리자 계정: 체크 없이 모든 페이지 즉시 통과 ──
+      if (session && session.user && session.user.email === 'cecenglishcamp@gmail.com') {
+        return;
+      }
+
       // ── Space Camp 전용 게이트 ──
       if (isSpaceCamp) {
         if (!session) { gotoLogin(); return; }
