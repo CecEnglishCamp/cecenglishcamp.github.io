@@ -407,7 +407,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
     <div class="xp-pill">⭐ <span id="xp">0</span> XP</div>
-    <a class="ai-tutor-btn" href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center">🤖 AI 튜터</a>
+    <button class="ai-tutor-btn" onclick="window.open('https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b','_blank')">🤖 AI 튜터</button>
   </div>
 </header>
 <main class="container">
@@ -592,16 +592,12 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
                font-weight:800;cursor:pointer">
         📋 전달사항 복사
       </button>
-      <a href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b"
-        target="_blank"
-        rel="noopener noreferrer"
-        onclick="copyPromptOnly()"
+      <button onclick="openChatGPT()"
         style="padding:.9rem 1.8rem;background:#2d6a4f;border:none;
                border-radius:12px;color:#fff;font-size:1rem;
-               font-weight:800;cursor:pointer;text-decoration:none;
-               display:inline-block">
+               font-weight:800;cursor:pointer">
         🚀 ChatGPT 열기
-      </a>
+      </button>
     </div>
   </div>
 </div>
@@ -711,9 +707,15 @@ function copyPrompt(btn){
     }).catch(function(){prompt('아래 텍스트를 복사하세요:',text);});
   } else { prompt('아래 텍스트를 복사하세요:',text); }
 }
-function copyPromptOnly(){
+function openChatGPT(){
   var text=buildPrompt();
   if(navigator.clipboard)navigator.clipboard.writeText(text);
+  setTimeout(function(){
+    window.open(CHATGPT_URL,'chatgpt',
+      'width='+Math.round(screen.width/2)+
+      ',height='+screen.height+
+      ',left='+Math.round(screen.width/2)+',top=0');
+  },300);
 }
 </script>
 <script>
