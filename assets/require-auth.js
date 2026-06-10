@@ -14,6 +14,12 @@
  *     3. 둘 다 없으면 → /login.html?next=현재경로
  */
 (function () {
+  // 항상 정식 도메인(cecenglishcamp.com)에서 동작 — 로그인 세션이 도메인별로 분리돼 생기는 로그인 루프 방지
+  var _H = location.hostname;
+  if (_H === 'cecenglishcamp.github.io' || _H === 'www.cecenglishcamp.com') {
+    location.replace('https://cecenglishcamp.com' + location.pathname + location.search + location.hash);
+    return;
+  }
   function getCookie(name) {
     var match = document.cookie.match(new RegExp('(?:^|;\\s*)' + name + '=([^;]+)'));
     return match ? match[1] : null;
