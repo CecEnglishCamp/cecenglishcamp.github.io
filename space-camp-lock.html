@@ -2,6 +2,45 @@
 <html lang="ko">
 <head>
 <script>(function(){var h=location.hostname;if(h==='cecenglishcamp.github.io'||h==='www.cecenglishcamp.com'){location.replace('https://cecenglishcamp.com'+location.pathname+location.search+location.hash);}})();</script>
+<script>
+(function(){
+  var SUPABASE_URL = 'https://rzlqlokqplhyntuirsmd.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
+  function run() {
+    var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    sb.auth.getSession().then(function(res) {
+      var session = res && res.data && res.data.session;
+      if (!session) return; // 비로그인 → lock 페이지 그대로 표시
+      var email = session.user.email;
+      // 관리자 → 바로 입장
+      if (email === 'cecenglishcamp@gmail.com') {
+        window.location.replace('/space-camp/');
+        return;
+      }
+      // space_camp_access 또는 활성 구독자 확인
+      sb.from('households')
+        .select('space_camp_access,plan_type,canceled_at')
+        .eq('auth_user_id', session.user.id)
+        .maybeSingle()
+        .then(function(r) {
+          if (r && r.error) return;
+          var h = r && r.data;
+          var paidSub = h && !!h.plan_type && !h.canceled_at;
+          var hasSpaceCamp = h && h.space_camp_access === true;
+          if (paidSub || hasSpaceCamp) window.location.replace('/space-camp/');
+        });
+    });
+  }
+  if (window.supabase) {
+    run();
+  } else {
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    s.onload = run;
+    document.head.appendChild(s);
+  }
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Space Camp — CEC English Camp</title>
