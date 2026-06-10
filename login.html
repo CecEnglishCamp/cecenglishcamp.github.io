@@ -135,11 +135,17 @@ function nextDest() {
   return '/';
 }
 
-// 이미 로그인 상태면 next 또는 메인으로
+// 이미 로그인 상태 — 자동으로 휙 넘기지 않고, 사용자가 직접 이동(또는 다른 계정으로 다시 로그인) 가능
 sb.auth.getSession().then(({ data }) => {
   if (data?.session) {
-    showMsg('이미 로그인되어 있습니다. 이동합니다…', 'ok');
-    setTimeout(() => location.href = nextDest(), 800);
+    var dest = nextDest();
+    showMsg('이미 로그인되어 있습니다. 아래 버튼으로 이동하거나, 다른 계정으로 다시 로그인할 수 있어요.', 'ok');
+    var go = document.createElement('a');
+    go.href = dest;
+    go.textContent = (dest === '/' ? '메인으로 이동 →' : '계속 이동하기 →');
+    go.className = 'btn';
+    go.style.cssText = 'display:block;text-align:center;text-decoration:none;margin-top:12px;line-height:2.6';
+    msg.appendChild(go);
   }
 });
 

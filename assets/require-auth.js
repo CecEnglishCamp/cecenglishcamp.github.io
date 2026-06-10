@@ -45,6 +45,9 @@
           .eq('auth_user_id', session.user.id)
           .maybeSingle()
           .then(function (r) {
+            // 설정 오류(예: space_camp_access 컬럼 미생성)로 쿼리가 실패하면
+            // 로그인 사용자를 막지 않고 통과시킨다(잠금 루프 방지). SQL 적용 후 정상 판별.
+            if (r && r.error) { return; }
             var h = r && r.data;
             var paidSub = h && !!h.plan_type && !h.canceled_at;       // $40 등 활성 구독자
             var hasSpaceCamp = h && h.space_camp_access === true;       // $99 Space Camp 결제자
