@@ -1,9 +1,9 @@
 /* CEC English Camp · 콘텐츠 페이지 로그인 게이트
  * 사용:
- *   <script src="/assets/require-auth.js?v=7"></script>
+ *   <script src="/assets/require-auth.js?v=8"></script>
  *   (supabase-js 미로드 시 자동 동적 로드)
  *
- * 우선순위 (v=7):
+ * 우선순위 (v=8):
  *   [/space-camp/ 경로]  ← Space Camp 전용 강화 게이트
  *     1. 미로그인 → /login.html?next=현재경로
  *     2. 로그인 + (구독자(plan_type 있고 canceled_at 없음) 또는 space_camp_access=true) → 통과
@@ -35,8 +35,12 @@
     var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     var isSpaceCamp = location.pathname.indexOf('/space-camp/') === 0;
 
-    sb.auth.getSession().then(function (result) {
-      var session = result && result.data && result.data.session;
+    // onAuthStateChange: INITIAL_SESSION은 클라이언트 생성 직후 즉시 발행
+    // → localStorage 세션 있으면 session 객체 포함, 없으면 null
+    // SIGNED_IN: OAuth 코드 교환 완료 후 발행 (login.html에서 처리 후 여기 도달 시 INITIAL_SESSION에 이미 세션 있음)
+    var _authSub = sb.auth.onAuthStateChange(function (event, session) {
+      if (event !== 'INITIAL_SESSION' && event !== 'SIGNED_IN') return;
+      _authSub.data.subscription.unsubscribe(); // 한 번만 실행
 
       // ── 관리자 계정: 체크 없이 모든 페이지 즉시 통과 ──
       if (session && session.user && session.user.email === 'cecenglishcamp@gmail.com') {

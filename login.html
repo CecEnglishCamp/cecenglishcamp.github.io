@@ -150,18 +150,31 @@ sb.auth.getSession().then(({ data }) => {
   }
 });
 
+// Google OAuth 완료 후 원래 목적지로 이동
+sb.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN' && session) {
+    const dest = sessionStorage.getItem('cec_oauth_dest') || '/';
+    sessionStorage.removeItem('cec_oauth_dest');
+    location.href = dest;
+  }
+});
+
 gBtn.addEventListener('click', async () => {
   gBtn.disabled = true;
   msg.className = 'msg';
+  // next 목적지 저장 (OAuth 리다이렉트 후 복원용)
+  const dest = nextDest();
+  if (dest !== '/') sessionStorage.setItem('cec_oauth_dest', dest);
   try {
     const { error } = await sb.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: 'https://cecenglishcamp.com/' }
+      options: { redirectTo: 'https://cecenglishcamp.com/login.html' }
     });
     if (error) throw error;
   } catch (err) {
     showMsg('❌ Google 로그인 오류: ' + (err.message || err), 'error');
     gBtn.disabled = false;
+    sessionStorage.removeItem('cec_oauth_dest');
   }
 });
 
