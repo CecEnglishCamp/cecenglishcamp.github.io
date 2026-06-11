@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NASA Space Camp at CEC English Camp</title>
+<link rel="stylesheet" href="/assets/style.css" onerror="">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Noto+Sans+KR:wght@400;500;700&family=Nunito:wght@400;600;700;800&display=swap');
+
+:root {
+  --bg: #0a1628;
+  --bg-deep: #050b18;
+  --panel: rgba(15, 30, 55, 0.75);
+  --border: rgba(0, 242, 255, 0.18);
+  --cyan: #00f2ff;
+  --cyan-soft: rgba(0, 242, 255, 0.10);
+  --gold: #f0c674;
+  --cream: #e8edf5;
+  --mid: #7a8aa3;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Nunito','Noto Sans KR',sans-serif;
+  background: radial-gradient(ellipse at 50% 0%, #1a2a4a 0%, var(--bg) 40%, var(--bg-deep) 100%);
+  color: var(--cream); min-height: 100vh;
+}
+
+/* Star field */
+.stars { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .55; }
+.stars::before, .stars::after {
+  content:''; position:absolute; inset:0;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+    radial-gradient(1px 1px at 60% 70%, #fff, transparent),
+    radial-gradient(1px 1px at 80% 10%, #fff, transparent),
+    radial-gradient(2px 2px at 30% 80%, rgba(0,242,255,.6), transparent),
+    radial-gradient(1px 1px at 75% 50%, #fff, transparent),
+    radial-gradient(1px 1px at 10% 60%, #fff, transparent),
+    radial-gradient(2px 2px at 90% 85%, rgba(240,198,116,.5), transparent);
+  background-size: 100% 100%;
+}
+.stars::after { background-size: 50% 50%; opacity: .5; }
+
+.page { position: relative; z-index: 10; max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
+
+/* HERO */
+.hero { text-align: center; margin-bottom: 56px; }
+.hero-badge {
+  display: inline-block; font-size: .72rem; font-weight: 800; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--cyan); margin-bottom: 14px;
+  padding: 5px 14px; border: 1px solid var(--border); border-radius: 99px; background: var(--cyan-soft);
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.9rem, 4.2vw, 3.1rem); font-weight: 600; color: #fff;
+  line-height: 1.08; letter-spacing: -.01em; margin-bottom: 18px;
+}
+.hero-title em { font-style: italic; color: var(--cyan); }
+.hero-sub {
+  font-family: 'Noto Sans KR', sans-serif; color: var(--mid);
+  font-size: clamp(.95rem, 1.6vw, 1.15rem); line-height: 1.7; max-width: 720px; margin: 0 auto;
+}
+
+/* VIDEO */
+.video-wrap { margin: 0 0 72px; }
+.video-frame {
+  position: relative; max-width: 880px; margin: 0 auto;
+  aspect-ratio: 16/9; border-radius: 18px; overflow: hidden;
+  box-shadow: 0 18px 60px rgba(0,0,0,.55), 0 0 0 1px var(--border);
+  background: #000;
+}
+.video-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+/* SECTION TITLE */
+.sec-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.6rem, 2.8vw, 2.2rem); font-weight: 700; color: var(--cream);
+  text-align: center; line-height: 1.15; margin-bottom: 14px;
+}
+.sec-sub {
+  text-align: center; color: var(--mid); font-size: .92rem; margin-bottom: 36px;
+}
+
+/* EP GRID */
+.ep-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px; margin-bottom: 72px;
+}
+.ep-card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+  padding: 22px 18px; backdrop-filter: blur(12px);
+  display: flex; flex-direction: column; gap: 8px;
+  transition: transform .25s, border-color .25s, box-shadow .25s;
+}
+.ep-card:hover { transform: translateY(-3px); border-color: rgba(0,242,255,.35); box-shadow: 0 8px 28px rgba(0,0,0,.4); }
+.ep-num {
+  font-size: .68rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--cyan); font-family: 'Nunito', sans-serif;
+}
+.ep-step {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; font-weight: 600; color: var(--cream); line-height: 1.3;
+  min-height: 2.6em;
+}
+.ep-soon {
+  margin-top: 6px; font-size: .68rem; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--gold); align-self: flex-start;
+  padding: 3px 10px; border-radius: 99px; background: rgba(240,198,116,.10); border: 1px solid rgba(240,198,116,.2);
+}
+
+/* CTA */
+.cta-wrap { text-align: center; padding: 48px 24px; border-top: 1px solid var(--border); }
+.cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 700; color: #fff; margin-bottom: 12px;
+}
+.cta-sub { color: var(--mid); margin-bottom: 28px; }
+.cta-btn {
+  display: inline-block; padding: 16px 44px;
+  background: var(--cyan); color: #0a1628;
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.05rem;
+  letter-spacing: .5px; text-decoration: none; border-radius: 99px;
+  transition: transform .2s, box-shadow .2s, background .2s;
+  box-shadow: 0 6px 24px rgba(0,242,255,.35);
+}
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(0,242,255,.5); background: #4ff7ff; }
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/assets/robo.png" alt="Robo" onerror="this.style.display='none'">
+    <span class="nav-logo-text">CEC English Camp</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/about.html">About</a></li>
+    <li class="nav-sep">&middot;</li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-btn">Camps &#9662;</a>
+      <div class="nav-dropdown-menu">
+        <a href="/camp-a/">Camp A &mdash; Elementary</a>
+        <a href="/camp-b/">Camp B &mdash; Middle &amp; High</a>
+        <a href="/camp-c/">Camp C &mdash; Adult</a>
+      </div>
+    </li>
+    <li class="nav-sep">&middot;</li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-btn">Courses &#9662;</a>
+      <div class="nav-dropdown-menu">
+        <a href="/grammar-camp/">Grammar Base Camp</a>
+        <a href="/essay-camp/">Essay Camp</a>
+        <a href="/speaking/">Speaking</a>
+        <a href="/mom-teacher/">Mom Teacher</a>
+      </div>
+    </li>
+    <li class="nav-sep">&middot;</li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-btn">Programs &#9662;</a>
+      <div class="nav-dropdown-menu">
+        <a href="/library/">🍵 CEC Library Cafe</a>
+        <a href="https://www.youtube.com/@cecenglishcamp" target="_blank">📺 YouTube Channel</a>
+        <a href="/nasa-space-camp/">NASA Space Camp</a>
+      </div>
+    </li>
+    <li class="nav-sep">&middot;</li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-btn">AI Tools &#9662;</a>
+      <div class="nav-dropdown-menu">
+        <a href="https://notebooklm.google.com" target="_blank">NotebookLM</a>
+        <a href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b" target="_blank">ChatGPT Coach &mdash; Camp A</a>
+        <a href="https://chatgpt.com/g/g-69b497878a448191b2b2487f4f695166" target="_blank">ChatGPT Coach &mdash; Camp B</a>
+        <a href="https://chatgpt.com/g/g-69b48918e32c81919f5a6c6c6d187df3" target="_blank">ChatGPT Coach &mdash; Camp C</a>
+      </div>
+    </li>
+    <li class="nav-sep">&middot;</li>
+    <li><a href="/games/">🎮 Games</a></li>
+    <li class="nav-sep">&middot;</li>
+    <li><a href="/insights/">💡 Insights</a></li>
+    <li class="nav-sep">&middot;</li>
+    <li><a href="/franchise/">🤝 Partnership</a></li>
+  </ul>
+  <button class="nav-hamburger" onclick="navToggle()" aria-label="메뉴"><span></span><span></span><span></span></button>
+  <div class="nav-register"><a href="/signup.html">Register</a></div>
+</nav>
+
+<div class="stars"></div>
+
+<main class="page">
+
+  <section class="hero">
+    <span class="hero-badge">Junior Astronaut Training Program</span>
+    <h1 class="hero-title">NASA Space Camp <em>at CEC English Camp</em></h1>
+    <p class="hero-sub">
+      실제 우주비행사 훈련을 기반으로 한 20단계 주니어 우주비행사 프로그램.<br>
+      모든 훈련은 영어로 진행되며, 수료 시 Junior Astronaut Certificate가 수여됩니다.
+    </p>
+  </section>
+
+  <section class="video-wrap">
+    <div class="video-frame">
+      <iframe
+        src="https://www.youtube.com/embed/mHY2vh6IF2Q"
+        title="CEC Junior Astronaut Training Program"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+        loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <h2 class="sec-title">20-Step <em style="font-style:italic;color:var(--cyan);">Astronaut Training</em></h2>
+  <p class="sec-sub">EP01~EP20 — 매주 한 단계씩 공개됩니다</p>
+
+  <section class="ep-grid">
+    <div class="ep-card"><span class="ep-num">EP 01</span><div class="ep-step">Check-In &amp; Orientation</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 02</span><div class="ep-step">International Crew Orientation</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 03</span><div class="ep-step">Space Systems Briefing</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 04</span><div class="ep-step">Spacesuit &amp; Life Support</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 05</span><div class="ep-step">Spacecraft Mock-up Familiarization</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 06</span><div class="ep-step">Crew Procedure Training</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 07</span><div class="ep-step">Launch Simulation I</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 08</span><div class="ep-step">Mission Control Communication</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 09</span><div class="ep-step">Launch Simulation II</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 10</span><div class="ep-step">Orbit Operations Training</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 11</span><div class="ep-step">Neutral Buoyancy Pool</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 12</span><div class="ep-step">EVA Tools Training</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 13</span><div class="ep-step">Robotics Arm Operations</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 14</span><div class="ep-step">Emergency Response Training</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 15</span><div class="ep-step">Space Life Routine</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 16</span><div class="ep-step">Ground Survival Training</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 17</span><div class="ep-step">Water Survival Training</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 18</span><div class="ep-step">Lunar / Mars Field Mission</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 19</span><div class="ep-step">Re-entry &amp; Landing</div><span class="ep-soon">Coming Soon</span></div>
+    <div class="ep-card"><span class="ep-num">EP 20</span><div class="ep-step">Graduation &amp; Certificate</div><span class="ep-soon">Coming Soon</span></div>
+  </section>
+
+  <section class="cta-wrap">
+    <h3 class="cta-title">Ready for Liftoff?</h3>
+    <p class="cta-sub">한정 인원 · 부모님 동의 필요 · 4주 영어 집중 훈련</p>
+    <a href="/register" class="cta-btn">지금 신청하기 &rarr;</a>
+  </section>
+
+</main>
+
+<script>
+function navToggle(){
+  var b=document.querySelector('.nav-hamburger');
+  var l=document.querySelector('.nav-links');
+  if(b&&l){ b.classList.toggle('open'); l.classList.toggle('open'); }
+}
+</script>
+</body>
+</html>
+</content>
