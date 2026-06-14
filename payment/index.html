@@ -241,6 +241,29 @@ function navToggle(){var b=document.querySelector('.nav-hamburger');var l=docume
 </script>
 
 <script>
+// 접근 차단 후 /payment/ 리다이렉트 시 require-auth.js가 sessionStorage에 저장한 메시지 표시
+document.addEventListener('DOMContentLoaded', function() {
+  var msg = sessionStorage.getItem('cec_lock_msg');
+  if (!msg) return;
+  var banner = document.createElement('div');
+  banner.style.cssText =
+    'background:#fff3cd;border:1px solid #ffc107;color:#856404;' +
+    'padding:1rem 1.5rem;border-radius:8px;margin:0 auto 1rem;' +
+    'max-width:600px;text-align:center;font-weight:600;' +
+    'font-family:\'Noto Sans KR\',sans-serif;font-size:.9rem;';
+  banner.textContent = msg;
+  // .plans-wrap 바로 앞에 삽입 — nav(fixed) 뒤에 숨지 않고 결제 폼 위에 표시됨
+  var plansWrap = document.querySelector('.plans-wrap');
+  if (plansWrap) {
+    plansWrap.parentNode.insertBefore(banner, plansWrap);
+  } else {
+    document.body.insertBefore(banner, document.body.firstChild);
+  }
+  sessionStorage.removeItem('cec_lock_msg');
+});
+</script>
+
+<script>
 // ============================================================
 // Stripe Payment Links 방식 (Stripe.js 불필요, client-only 설정 불필요)
 //
