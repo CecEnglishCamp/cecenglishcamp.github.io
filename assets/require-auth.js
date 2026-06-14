@@ -1,17 +1,21 @@
 /* CEC English Camp · 콘텐츠 페이지 로그인 게이트
  * 사용:
- *   <script src="/assets/require-auth.js?v=8"></script>
+ *   <script src="/assets/require-auth.js?v=9"></script>
  *   (supabase-js 미로드 시 자동 동적 로드)
  *
- * 우선순위 (v=8):
+ * 우선순위 (v=9):
  *   [/space-camp/ 경로]  ← Space Camp 전용 강화 게이트
  *     1. 미로그인 → /login.html?next=현재경로
  *     2. 로그인 + (구독자(plan_type 있고 canceled_at 없음) 또는 space_camp_access=true) → 통과
  *     3. 그 외(무료 계정 등) → /space-camp-lock.html 로 이동
  *   [그 외 일반 콘텐츠]
- *     1. Supabase 로그인 세션 → 통과
- *     2. 무료체험 쿠키(cec_trial) → week01/ep01 만 허용, 이후는 /payment/
- *     3. 둘 다 없으면 → /login.html?next=현재경로
+ *     1. 미로그인 + cec_trial 쿠키 → week01/ep01 만 허용, 이후는 /payment/
+ *     2. 미로그인 + 쿠키 없음 → /login.html?next=현재경로
+ *     3. 로그인 + subscription_status='trial' → 경로별 제한:
+ *          camp-a/camp-b: week01만 허용 (week02+ → /payment/)
+ *          camp-c/camp-c2/young-days: ep01~03만 허용 (ep04+ → /payment/)
+ *          grammar-camp: g01~g10만 허용 (g11+ → /payment/)
+ *     4. 로그인 + 그 외 상태(active 등) → 전체 통과
  */
 (function () {
   // 항상 정식 도메인(cecenglishcamp.com)에서 동작 — 로그인 세션이 도메인별로 분리돼 생기는 로그인 루프 방지
@@ -68,20 +72,54 @@
         return;
       }
 
-      // ── 일반 콘텐츠 게이트 (기존 동작) ──
-      if (session) return; // 로그인 → 통과
-
-      var trialToken = getCookie('cec_trial');
-      if (trialToken) {
-        var path = location.pathname;
-        var weekMatch = path.match(/week(\d+)/);
-        if (weekMatch && parseInt(weekMatch[1], 10) > 1) { window.location.replace('/payment/'); return; }
-        var epMatch = path.match(/ep(\d+)/);
-        if (epMatch && parseInt(epMatch[1], 10) > 1) { window.location.replace('/payment/'); return; }
-        return; // week01/ep01 → 통과
+      // ── 일반 콘텐츠 게이트 ──
+      if (!session) {
+        var trialToken = getCookie('cec_trial');
+        if (trialToken) {
+          var path = location.pathname;
+          var weekMatch = path.match(/week(\d+)/);
+          if (weekMatch && parseInt(weekMatch[1], 10) > 1) { window.location.replace('/payment/'); return; }
+          var epMatch = path.match(/ep(\d+)/);
+          if (epMatch && parseInt(epMatch[1], 10) > 1) { window.location.replace('/payment/'); return; }
+          return; // week01/ep01 → 통과
+        }
+        gotoLogin();
+        return;
       }
 
-      gotoLogin();
+      // 로그인 상태: profiles 테이블에서 subscription_status 확인
+      sb.from('profiles')
+        .select('subscription_status')
+        .eq('id', session.user.id)
+        .maybeSingle()
+        .then(function (r) {
+          if (r && r.error) return; // DB 오류 → 통과(fail-open)
+          var status = r && r.data && r.data.subscription_status;
+          if (status !== 'trial') return; // active 등 → 전체 통과
+
+          // trial 사용자 — 경로별 접근 제한
+          var p = location.pathname;
+          function trialBlock() {
+            sessionStorage.setItem('cec_lock_msg', '7일 무료체험은 각 학년 1주차까지 제공됩니다. 전체 학습은 구독 후 이용하세요.');
+            window.location.replace('/payment/');
+          }
+          // camp-a / camp-b: week01만 허용
+          if (/\/(camp-a|camp-b)\//.test(p)) {
+            var wm = p.match(/week(\d+)/);
+            if (wm && parseInt(wm[1], 10) > 1) { trialBlock(); return; }
+          }
+          // camp-c / camp-c2 / young-days: ep01~03만 허용
+          if (/\/(camp-c|camp-c2|young-days)\//.test(p)) {
+            var em = p.match(/ep(\d+)/);
+            if (em && parseInt(em[1], 10) > 3) { trialBlock(); return; }
+          }
+          // grammar-camp: g01~g10만 허용
+          if (/\/grammar-camp\//.test(p)) {
+            var gm = p.match(/\/g(\d+)/i);
+            if (gm && parseInt(gm[1], 10) > 10) { trialBlock(); return; }
+          }
+        })
+        .catch(function () { /* DB 오류 → 통과 */ });
     });
   }
 
