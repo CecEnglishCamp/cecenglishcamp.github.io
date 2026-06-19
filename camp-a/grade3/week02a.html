@@ -372,7 +372,15 @@ video.scene-img{object-fit:cover;max-width:100%;}
       }
       if(!acc && bubble) bubble.textContent='(응답 없음)';
     }catch(e){
-      if(bubble)bubble.textContent='⚠️ 연결 실패: '+e.message;
+      if(bubble){
+        var _q=(userContent||'').replace(/.*\n질문: /,'').replace(/\n.*/,'').trim();
+        var ctx={book:GB_BOOK,sentence:GB_KEY_SENTENCE};
+        if(typeof gbLocalFallback==='function'){
+          bubble.innerHTML=gbLocalFallback(_q,ctx);
+        }else{
+          bubble.innerHTML='Robo 선생님이 지금 기본 모드로 대답할게요.'+(GB_KEY_SENTENCE?'<br><br>오늘 문장: &ldquo;'+GB_KEY_SENTENCE+'&rdquo; 를 따라 읽어볼까요?':'');
+        }
+      }
     }
   };
   window.gbSend=function(){
@@ -782,6 +790,7 @@ function startA2Scene(){
 </div>
 
 <script src="/assets/security.js"></script>
+<script src="/camp-a/assets/ai-tutor.js"></script>
 </body></html>
 
 
