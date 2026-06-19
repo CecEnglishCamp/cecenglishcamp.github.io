@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>아이가 영어로 'I don't know'만 반복한다면? AI 선생님이 바꾼 실제 사례 | CEC Blog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Nanum+Myeongjo:wght@400;700&family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a1628;--bg2:#0d1a30;--panel:#132040;
+  --cyan:#00f2ff;--cyan2:#4ab8ff;
+  --gold:#c9a961;--gold2:#e8c983;
+  --cream:#f5f0e8;--ash:#8a9ab8;
+  --line:rgba(0,242,255,0.12);
+  --gold-line:rgba(201,169,97,0.2);
+  --green:#4cffb3;--red:#ff4b6e;--violet:#b388ff;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Nanum Myeongjo',serif;background:var(--bg);color:var(--cream);overflow-x:hidden}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 40% at 15% 5%,rgba(0,242,255,.06),transparent),
+    radial-gradient(ellipse 50% 35% at 85% 90%,rgba(201,169,97,.05),transparent);
+}
+.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(10,22,40,.95);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--gold-line);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 2rem;gap:1rem;flex-wrap:wrap;
+}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--gold);letter-spacing:.08em;text-decoration:none}
+.nav-logo span{color:var(--cyan)}
+.nav-back{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ash);text-decoration:none;padding:.4rem .9rem;border:1px solid rgba(138,154,184,.3);border-radius:2px;transition:all .2s}
+.nav-back:hover{color:var(--gold);border-color:var(--gold)}
+.hero{
+  position:relative;z-index:1;
+  max-width:860px;margin:0 auto;
+  padding:6rem 2rem 4rem;
+  border-bottom:1px solid var(--gold-line);
+}
+.hero-cat{
+  font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:.8rem;
+}
+.hero-cat::before{content:'';width:32px;height:1px;background:var(--gold)}
+.hero h1{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2.5rem,6vw,4.5rem);font-weight:400;line-height:1.05;
+  letter-spacing:-.02em;margin-bottom:1.2rem;
+}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-deck{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1.15rem,2.2vw,1.5rem);line-height:1.65;
+  color:var(--ash);max-width:640px;
+}
+.article{
+  position:relative;z-index:1;
+  max-width:860px;margin:0 auto;
+  padding:4rem 2rem 8rem;
+}
+.pull-quote{
+  position:relative;
+  margin:3rem 0;
+  padding:2.5rem 2.5rem 2.5rem 3.5rem;
+  background:linear-gradient(135deg,rgba(201,169,97,.06),rgba(10,22,40,0));
+  border:1px solid var(--gold-line);
+  border-left:4px solid var(--gold);
+}
+.pull-quote::before{
+  content:'"';position:absolute;top:.5rem;left:1rem;
+  font-family:'DM Serif Display',serif;font-size:5rem;
+  color:var(--gold);opacity:.2;line-height:1;
+}
+.pull-quote-text{
+  font-family:'DM Serif Display',serif;font-style:italic;
+  font-size:clamp(1.2rem,2.5vw,1.65rem);line-height:1.5;
+  color:var(--cream);margin-bottom:.8rem;
+}
+.pull-quote-src{
+  font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--gold);
+}
+.body-p{
+  font-size:1.08rem;line-height:1.9;color:var(--ash);
+  margin-bottom:1.6rem;max-width:680px;
+}
+.body-p strong{color:var(--cream)}
+.body-p em{color:var(--gold2);font-family:'Cormorant Garamond',serif;font-size:1.15em}
+.body-h2{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(1.6rem,3vw,2.2rem);font-weight:400;
+  color:var(--cream);margin:3.5rem 0 1.2rem;
+  padding-top:3.5rem;border-top:1px solid var(--line);
+}
+.body-h2 em{font-style:italic;color:var(--gold)}
+.phrase-list{
+  margin:2.5rem 0;
+  border:1px solid var(--line);
+  background:rgba(0,242,255,.03);
+}
+.phrase-item{
+  display:grid;grid-template-columns:2rem 1fr;gap:1rem;
+  padding:1.2rem 1.5rem;border-bottom:1px solid var(--line);
+  align-items:start;
+}
+.phrase-item:last-child{border-bottom:none}
+.phrase-num{
+  font-family:'Space Mono',monospace;font-size:.65rem;
+  color:var(--cyan);padding-top:.2rem;
+}
+.phrase-en{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.15rem;color:var(--cream);line-height:1.4;margin-bottom:.3rem;
+}
+.phrase-ko{
+  font-size:.88rem;color:var(--ash);line-height:1.5;
+}
+.tip-list{margin:2.5rem 0;border:1px solid var(--line);background:rgba(0,242,255,.03)}
+.tip-item{display:grid;grid-template-columns:2rem 1fr;gap:1rem;padding:1.2rem 1.5rem;border-bottom:1px solid var(--line);align-items:start}
+.tip-item:last-child{border-bottom:none}
+.tip-num{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--cyan);padding-top:.2rem}
+.tip-text{font-size:1rem;color:var(--cream);line-height:1.5;margin-bottom:.3rem}
+.tip-sub{font-size:.88rem;color:var(--ash);line-height:1.5}
+.cta-block{
+  margin-top:5rem;padding:4rem 2.5rem;
+  background:var(--panel);border:1px solid var(--line);
+  text-align:center;position:relative;overflow:hidden;
+}
+.cta-block::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(0,242,255,.05),transparent 60%);
+}
+.cta-label{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;position:relative}
+.cta-title{font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(1.6rem,3vw,2.4rem);color:var(--cream);margin-bottom:.8rem;position:relative}
+.cta-desc{font-size:1rem;color:var(--ash);max-width:460px;margin:0 auto 2rem;line-height:1.7;position:relative}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:.6rem;
+  padding:1rem 2.2rem;
+  background:var(--gold);color:var(--bg);
+  font-family:'Space Mono',monospace;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;
+  text-decoration:none;border-radius:2px;
+  transition:all .3s;position:relative;
+  box-shadow:0 8px 32px rgba(201,169,97,.3);
+}
+.cta-btn:hover{background:var(--gold2);box-shadow:0 12px 40px rgba(201,169,97,.5);transform:translateY(-2px)}
+footer{
+  position:relative;z-index:1;text-align:center;padding:2rem;
+  border-top:1px solid var(--line);
+  font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.15em;color:var(--ash);
+}
+footer a{color:var(--gold);text-decoration:none}
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .65s,transform .65s}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.dialog-box{
+  margin:2.5rem 0;padding:1.8rem 2rem;
+  background:rgba(201,169,97,.04);border:1px solid var(--gold-line);
+  border-radius:4px;
+}
+.dialog-line{margin-bottom:1rem;line-height:1.8}
+.dialog-line:last-child{margin-bottom:0}
+.dialog-speaker{font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);display:inline-block;margin-right:0.5rem;min-width:2.5rem}
+.dialog-speaker.ai{color:var(--cyan)}
+.dialog-speaker.student{color:var(--cream)}
+.dialog-speaker.teacher{color:var(--violet)}
+.dialog-text{font-size:.98rem;color:var(--ash)}
+.dialog-text.en{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--cream);display:block;margin-bottom:.15rem}
+</style>
+  <meta name="description" content="영어 질문에 'I don't know'만 반복하던 초등학교 4학년 아이가 AI 선생님과의 3주 훈련으로 스스로 문장을 만들어 말하게 된 실제 사례를 공유합니다. 부모님을 위한 실전 팁 포함.">
+  <link rel="canonical" href="https://cecenglishcamp.com/blog/child-i-dont-know-real-story.html">
+  <meta property="og:title" content="아이가 영어로 'I don't know'만 반복한다면? AI 선생님이 바꾼 실제 사례 | CEC Blog">
+  <meta property="og:description" content="영어 질문마다 'I don't know'로 회피하던 아이가 AI Robo Teacher와의 3주 훈련으로 'I think...' 문장을 스스로 말하게 된 놀라운 변화 사례와 그 원리를 소개합니다.">
+  <meta property="og:url" content="https://cecenglishcamp.com/blog/child-i-dont-know-real-story.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/og-default.png">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1289672305258488" crossorigin="anonymous"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-58N1MFP27H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-58N1MFP27H');
+  </script>
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wk1mltqlg3");
+  </script>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../index.html" class="nav-logo">CEC <span>English Camp</span></a>
+  <a href="index.html" class="nav-back">← Blog</a>
+</nav>
+
+<header class="hero">
+  <div class="hero-cat">Real Stories</div>
+  <h1>아이가 영어로 'I don't know'만<br>반복한다면? <em>AI 선생님</em>이 바꾼 실제 사례</h1>
+  <p class="hero-deck">
+    "What's your favorite food?" — "I don't know…" 영어 질문마다 이렇게 대답하던 초등학교 4학년 민수(가명). 3주 후, 그는 스스로 "I think pizza is the best!"라고 말했습니다.
+  </p>
+</header>
+
+<article class="article">
+
+  <div class="body-h2 fade-up" style="margin-top:0;padding-top:0;border-top:none">"엄마, 나 영어로 말하는 거 <em>자신 없어</em>"</div>
+
+  <p class="body-p fade-up">
+    민수 엄마는 아이가 영어 학원을 2년 다녔는데도 영어로 한 문장도 말하지 못한다는 사실에 고민이 깊었습니다. 집에서 영어로 질문하면 "I don't know."라고만 대답했고, 억지로 말하게 하려고 하면 울먹이기까지 했습니다.
+  </p>
+  <p class="body-p fade-up">
+    문제는 <strong>실력이 아니라 두려움</strong>이었습니다. 학원에서 시험 문제는 잘 풀었지만, "스스로 문장을 만들어 말해야 하는 상황" 자체가 너무 낯설었던 것입니다.
+  </p>
+
+  <div class="pull-quote fade-up">
+    <div class="pull-quote-text">
+      "'I don't know'는 '모른다'는 뜻이 아닙니다. '말해도 괜찮을지 모르겠다'는 뜻입니다."
+    </div>
+    <div class="pull-quote-src">— CEC English Camp</div>
+  </div>
+
+  <div class="body-h2 fade-up"><em>변화의 시작</em> — AI 선생님과의 첫 대화</div>
+
+  <p class="body-p fade-up">
+    CEC English Camp의 AI Robo Teacher는 민수에게 이렇게 말을 걸었습니다.
+  </p>
+
+  <div class="dialog-box fade-up">
+    <div class="dialog-line">
+      <span class="dialog-speaker ai">ROBO</span>
+      <span class="dialog-text en">"Hi, Minsu! What color is your shirt today?"</span>
+      <span class="dialog-text">"안녕, 민수야! 오늘 네 셔츠는 무슨 색깔이니?"</span>
+    </div>
+    <div class="dialog-line">
+      <span class="dialog-speaker student">MINSU</span>
+      <span class="dialog-text en">"…Blue."</span>
+      <span class="dialog-text">"(한참 침묵 후) 파란색이요."</span>
+    </div>
+    <div class="dialog-line">
+      <span class="dialog-speaker ai">ROBO</span>
+      <span class="dialog-text en">"Blue! Good job! Can you say 'My shirt is blue'?"</span>
+      <span class="dialog-text">"파란색! 잘했어! '내 셔츠는 파란색이야'라고 말해볼래?"</span>
+    </div>
+    <div class="dialog-line">
+      <span class="dialog-speaker student">MINSU</span>
+      <span class="dialog-text en">"My… shirt… is blue."</span>
+      <span class="dialog-text">"(천천히) 내 셔츠는 파란색이에요."</span>
+    </div>
+    <div class="dialog-line">
+      <span class="dialog-speaker ai">ROBO</span>
+      <span class="dialog-text en">"Perfect! Now try: 'I like pizza because it's cheesy.'"</span>
+      <span class="dialog-text">"완벽해! 그럼 이번에는 '나는 피자를 좋아해, 왜냐하면 치즈가 많으니까'라고 말해볼래?"</span>
+    </div>
+  </div>
+
+  <p class="body-p fade-up">
+    AI 선생님의 가장 큰 장점은 <strong>기다려 준다는 것</strong>이었습니다. 민수가 대답을 망설여도 "천천히, 괜찮아"라며 기다려 주었고, 한 단어라도 말하면 바로 칭찬해 주었습니다. 아이를 답답해하지 않고 기다려 주는 존재, 그것이 민수에게는 처음 있는 경험이었습니다.
+  </p>
+
+  <div class="body-h2 fade-up">2주차: <em>한 단어에서 문장으로</em></div>
+
+  <p class="body-p fade-up">
+    2주가 지나자 민수에게 변화가 생기기 시작했습니다.
+  </p>
+
+  <div class="dialog-box fade-up">
+    <div class="dialog-line">
+      <span class="dialog-speaker ai">ROBO</span>
+      <span class="dialog-text en">"Did you have lunch today? What did you eat?"</span>
+      <span class="dialog-text">"오늘 점심 먹었니? 뭐 먹었어?"</span>
+    </div>
+    <div class="dialog-line">
+      <span class="dialog-speaker student">MINSU</span>
+      <span class="dialog-text en">"I eat… no, I ate… rice and soup."</span>
+      <span class="dialog-text">"밥… 아니, 밥하고 국을 먹었어요."</span>
+    </div>
+    <div class="dialog-line">
+      <span class="dialog-speaker ai">ROBO</span>
+      <span class="dialog-text en">"Great! You corrected yourself from 'eat' to 'ate' — that's awesome! Did you like it?"</span>
+      <span class="dialog-text">"대단해! 스스로 'eat'에서 'ate'로 고쳤네? 맛있었어?"</span>
+    </div>
+    <div class="dialog-line">
+      <span class="dialog-speaker student">MINSU</span>
+      <span class="dialog-text en">"Yes! The soup was good!"</span>
+      <span class="dialog-text">"네! 국이 맛있었어요!"</span>
+    </div>
+  </div>
+
+  <p class="body-p fade-up">
+    민수는 더 이상 한 단어로만 대답하지 않았습니다. 실수도 했지만, 스스로 고치는 능력이 생겼습니다. AI 선생님은 실수를 지적하기보다 <strong>스스로 고친 점을 칭찬</strong>함으로써 아이의 자신감을 키워주었습니다.
+  </p>
+
+  <div class="body-h2 fade-up">3주차: <em>'I think…'라는 문장이 나오기 시작했다</em></div>
+
+  <p class="body-p fade-up">
+    3주가 지난 어느 날, 민수 엄마는 깜짝 놀라는 일을 겪었습니다.
+  </p>
+
+  <div class="dialog-box fade-up">
+    <div class="dialog-line">
+      <span class="dialog-speaker ai">ROBO</span>
+      <span class="dialog-text en">"What do you want to be when you grow up?"</span>
+      <span class="dialog-text">"커서 뭐가 되고 싶니?"</span>
+    </div>
+    <div class="dialog-line">
+      <span class="dialog-speaker student">MINSU</span>
+      <span class="dialog-text en">"Hmm… I think I want to be a scientist. Because I like space."</span>
+      <span class="dialog-text">"음… 나는 과학자가 되고 싶은 것 같아. 왜냐하면 우주를 좋아하거든."</span>
+    </div>
+    <div class="dialog-line">
+      <span class="dialog-speaker ai">ROBO</span>
+      <span class="dialog-text en">"A scientist! That's amazing! Why do you like space?"</span>
+      <span class="dialog-text">"과학자! 정말 대단하다! 왜 우주를 좋아하는데?"</span>
+    </div>
+    <div class="dialog-line">
+      <span class="dialog-speaker student">MINSU</span>
+      <span class="dialog-text en">"I watch YouTube about space. Stars are so cool!"</span>
+      <span class="dialog-text">"유튜브에서 우주 영상을 봐요. 별들이 정말 멋져요!"</span>
+    </div>
+  </div>
+
+  <p class="body-p fade-up">
+    "I think…"라는 표현은 단순한 단어 이상이었습니다. 그것은 <strong>자신의 생각을 영어로 표현할 수 있다는 신념</strong>의 증거였습니다. 더 이상 'I don't know'에 숨지 않고, 자신의 의견을 말하기 시작한 것입니다.
+  </p>
+
+  <div class="body-h2 fade-up">왜 AI 선생님이 <em>효과적</em>이었을까?</div>
+
+  <p class="body-p fade-up">
+    민수의 사례는 특별한 것이 아닙니다. CEC English Camp에서 수많은 아이들이 같은 패턴으로 성장하고 있습니다. AI 선생님의 강점은 크게 세 가지입니다.
+  </p>
+
+  <div class="tip-list fade-up">
+    <div class="tip-item">
+      <div class="tip-num">01</div>
+      <div>
+        <div class="tip-text">판단하지 않는다</div>
+        <div class="tip-sub">아이가 틀려도 창피한 표정을 짓지 않습니다. 비웃지 않습니다. 기다려 줍니다. 이것이 아이의 '정서적 안전감'을 만들어 줍니다. 심리적 안정감이 없으면 언어는 절대 입 밖으로 나오지 않습니다.</div>
+      </div>
+    </div>
+    <div class="tip-item">
+      <div class="tip-num">02</div>
+      <div>
+        <div class="tip-text">즉시 피드백을 준다</div>
+        <div class="tip-sub">아이가 말한 직후, 정확히 1~2초 안에 피드백이 옵니다. 시험을 보고 일주일 후에 결과를 받는 것과, 지금 당바로 알려주는 것의 차이는 엄청납니다. 즉각적인 교정은 뇌가 올바른 패턴을 기억하도록 도와줍니다.</div>
+      </div>
+    </div>
+    <div class="tip-item">
+      <div class="tip-num">03</div>
+      <div>
+        <div class="tip-text">아이의 페이스를 존중한다</div>
+        <div class="tip-sub">AI는 30명의 학급에서처럼 "다음, 다음!" 하지 않습니다. 민수처럼 생각할 시간이 필요한 아이도 충분히 기다려 줍니다. 천천히 말해도, 중간에 막혀도 괜찮습니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="body-h2 fade-up">부모님이 집에서 할 수 있는 <em>가장 쉬운 한 가지</em></div>
+
+  <p class="body-p fade-up">
+    "I don't know"가 아이의 입에 붙은 이유는 간단합니다. 그 말이 <strong>가장 안전하기 때문</strong>입니다. 틀릴 위험이 없고, 창피할 일도 없습니다.
+  </p>
+  <p class="body-p fade-up">
+    이 패턴을 바꾸는 가장 쉬운 방법은 아이에게 이렇게 말해주는 것입니다:
+  </p>
+  <p class="body-p fade-up" style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(1.15rem,2vw,1.45rem);color:var(--gold2);padding:1rem 0">
+    "틀려도 돼. 그냥 네 생각을 말해 봐."
+  </p>
+  <p class="body-p fade-up">
+    그리고 AI 선생님에게 말하는 연습을 시켜보세요. 처음에는 한 단어라도 좋습니다. 중요한 것은 <strong>입을 여는 습관</strong>입니다. 한 번 입을 열면, 그 다음은 자연스럽게 따라옵니다.
+  </p>
+
+  <div class="cta-block fade-up">
+    <div class="cta-label">오늘 'I don't know'만 반복하는 아이에게 새로운 시작을 선물하세요</div>
+    <div class="cta-title">CEC English Camp 7일 무료체험 안내 →</div>
+    <div class="cta-desc">
+      AI Robo Teacher는 아이가 마음 편히 영어 말하기를 시작할 수 있도록 도와줍니다. 틀려도 괜찮습니다. 중요한 것은 시작입니다.
+    </div>
+    <a href="https://cecenglishcamp.com/?utm_source=blog&utm_medium=article&utm_campaign=child-i-dont-know-story" class="cta-btn">
+      무료 체험 레슨 보기 →
+    </a>
+  </div>
+
+</article>
+
+<footer>
+  CEC ENGLISH CAMP · <a href="index.html">← Blog</a> · <a href="../index.html">Home</a>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"0a77f8…a349","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
