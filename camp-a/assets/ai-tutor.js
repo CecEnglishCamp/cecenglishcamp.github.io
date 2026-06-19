@@ -1,11 +1,14 @@
 /**
- * CEC 영어캠프 — AI Tutor Fallback Helper v20260619_3
+ * CEC 영어캠프 — AI Tutor Fallback Helper v20260619_4
  * 
  * API(DeepSeek Chat) 연결 실패 시 로컬 fallback 답변을 제공합니다.
  * 기술 오류 메시지를 학생에게 노출하지 않습니다.
+ * 
+ * 모든 AI 메시지는 sanitizeTutorMessage를 통과해야 합니다.
+ * gbAddAI 함수가 호출될 때 자동으로 필터링됩니다.
  */
 
-console.log("[AI Tutor] fallback module loaded v20260619_3");
+console.log("[AI Tutor] fallback module loaded v20260619_4");
 
 (function() {
   // 전역 설정 — 공백이면 fallback 전용으로 작동
@@ -16,6 +19,7 @@ console.log("[AI Tutor] fallback module loaded v20260619_3");
 
   /**
    * 최종 방어 필터 — 화면에 출력되기 전에 모든 오류 메시지를 차단
+   * gbAddAI가 이 함수를 통과하도록 오버라이드됩니다.
    */
   window.sanitizeTutorMessage = function(text, fallbackCtx) {
     var s = String(text || '');
@@ -30,30 +34,56 @@ console.log("[AI Tutor] fallback module loaded v20260619_3");
       '530',
       'tunnel error',
       'ERR_CONNECTION',
-      'ERR_NAME_NOT_RESOLVED',
-      'HTTP 5',
-      'HTTP 4',
-      'Unexpected token',
-      'Unexpected end',
-      'undefined is not',
-      'null is not',
-      'Cannot read',
-      'is not defined',
-      'pending'
+      'ERR_NAME_NOT_RESOLVED'
     ];
     for (var i = 0; i < blocked.length; i++) {
       if (s.indexOf(blocked[i]) >= 0) {
-        console.warn('[AI Tutor] blocked error message:', s);
+        console.warn('[AI Tutor] BLOCKED error message from display:', s);
+        var ctx = fallbackCtx || {};
+        var q = ctx.question || '이 이야기가 뭐야?';
         return window.gbLocalFallback
-          ? window.gbLocalFallback(
-              (fallbackCtx && fallbackCtx.question) || '이 이야기가 뭐야?',
-              fallbackCtx || {}
-            )
+          ? window.gbLocalFallback(q, ctx)
           : 'Robo 선생님이 지금 기본 모드로 대답할게요. 오늘 문장을 다시 읽어볼까요?';
       }
     }
     return s;
   };
+
+  /**
+   * gbAddAI 오버라이드 — 모든 AI 메시지 출력 전 sanitizeTutorMessage 필터링
+   * (week 페이지가 gbAddAI를 선언한 이후에 실행되도록 setTimeout 사용)
+   */
+  setTimeout(function() {
+    if (typeof window.gbAddAI !== 'function') {
+      // gbAddAI가 아직 정의되지 않았으면 기다림
+      var checkExist = setInterval(function() {
+        if (typeof window.gbAddAI === 'function') {
+          clearInterval(checkExist);
+          var origGbAddAI = window.gbAddAI;
+          window.gbAddAI = function(msg, ctx) {
+            var safeMsg = window.sanitizeTutorMessage(msg, ctx || {
+              question: '이 이야기가 뭐야?',
+              title: window.GB_BOOK || 'Peter Rabbit',
+              sentence: window.GB_KEY_SENTENCE || ''
+            });
+            return origGbAddAI(safeMsg);
+          };
+          console.log('[AI Tutor] gbAddAI sanitize wrapper installed');
+        }
+      }, 100);
+    } else {
+      var origGbAddAI = window.gbAddAI;
+      window.gbAddAI = function(msg, ctx) {
+        var safeMsg = window.sanitizeTutorMessage(msg, ctx || {
+          question: '이 이야기가 뭐야?',
+          title: window.GB_BOOK || 'Peter Rabbit',
+          sentence: window.GB_KEY_SENTENCE || ''
+        });
+        return origGbAddAI(safeMsg);
+      };
+      console.log('[AI Tutor] gbAddAI sanitize wrapper installed');
+    }
+  }, 50);
 
   /**
    * 로컬 fallback — API 없이도 Robo가 자연스럽게 대답

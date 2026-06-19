@@ -326,7 +326,10 @@ video.scene-img{object-fit:cover;max-width:100%;}
     if(gbIsOpen)setTimeout(function(){var inp=document.getElementById('gbInput');if(inp)inp.focus();},100);
   };
   window.gbCheckEnter=function(e){if(e.key==='Enter')window.gbSend();};
-  window.gbAddAI=function(msg){
+  window.gbAddAI=function(msg, ctx){
+    if(typeof window.sanitizeTutorMessage==='function'){
+      msg=window.sanitizeTutorMessage(msg,ctx||{title:GB_BOOK,sentence:GB_KEY_SENTENCE});
+    }
     var c=document.getElementById('gbChat');if(!c)return null;
     var d=document.createElement('div');d.className='gb-ai-msg';
     d.innerHTML='<img src="'+GB_IMG+'" alt="Robo"><div class="gb-ai-bubble">'+String(msg).replace(/\n/g,'<br>')+'</div>';
@@ -339,7 +342,7 @@ video.scene-img{object-fit:cover;max-width:100%;}
     d.innerHTML='<div class="gb-user-bubble">'+msg+'</div>';
     c.appendChild(d);c.scrollTop=c.scrollHeight;
   };
-  console.log('[Week01A] AI tutor fallback patch v20260619_3 active');
+  console.log('[Week01A] addBotMessage sanitizer active v20260619_4');
   window.gbFetch=async function(userContent){
     var bubble=window.gbAddAI('생각 중... 🤔');
     var c=document.getElementById('gbChat');
@@ -798,7 +801,7 @@ function startA2Scene(){
 </div>
 
 <script src="/assets/security.js"></script>
-<script src="/camp-a/assets/ai-tutor.js?v=20260619_3"></script>
+<script src="/camp-a/assets/ai-tutor.js?v=20260619_4"></script>
 </body></html>
 
 
