@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<!-- 임시 보호 — 실제 보안은 서버 인증/Supabase Auth로 교체 필요 -->
+<script>
+(function(){
+  var s=localStorage.getItem('cec_mom_trial_session');
+  if(s){try{var d=JSON.parse(s);if(d.exp&&Date.now()<d.exp)return;}catch(e){}}
+  localStorage.removeItem('cec_mom_trial_session');
+  location.replace('/mom-teacher/login.html?next=trial-dashboard');
+})();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>무료체험 대시보드 — Mom Teacher | CEC English Camp</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-58N1MFP27H"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-58N1MFP27H');</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#fff;font-family:'Outfit',sans-serif;min-height:100vh;display:flex;flex-direction:column}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:64px;background:#000;border-bottom:1px solid rgba(0,255,255,.13);position:fixed;top:0;left:0;right:0;z-index:100;gap:12px}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.nav-logo img{width:32px;height:32px;object-fit:contain;border-radius:8px}
+.nav-logo-text{font-size:1rem;font-weight:800;color:#fff}
+.nav-right{display:flex;align-items:center;gap:16px}
+.nav-user{font-size:.82rem;color:rgba(255,255,255,.45)}
+.nav-user span{color:#00ffff;font-weight:700}
+.btn-logout{font-size:.8rem;color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.12);padding:6px 16px;border-radius:50px;background:none;cursor:pointer;font-family:'Outfit',sans-serif;transition:all .2s}
+.btn-logout:hover{color:#fff;border-color:rgba(255,255,255,.4)}
+main{flex:1;padding:100px 24px 60px;max-width:900px;margin:0 auto;width:100%}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#00ffff;margin-bottom:12px}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;line-height:1.12;margin-bottom:10px}
+.sub{font-size:.9rem;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:40px}
+.section-title{font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:16px;margin-top:40px}
+.trial-note{background:rgba(0,255,255,.05);border:1px solid rgba(0,255,255,.18);border-radius:12px;padding:16px 20px;margin-bottom:32px;font-size:.85rem;color:rgba(0,255,255,.8);line-height:1.7}
+.trial-note strong{color:#00ffff}
+/* Lesson grid */
+.lesson-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-bottom:16px}
+.lesson-card{border-radius:14px;padding:22px 18px;display:flex;flex-direction:column;gap:8px;text-decoration:none;border:1.5px solid rgba(0,255,255,.2);background:rgba(0,255,255,.04);transition:all .22s}
+.lesson-card:hover{background:rgba(0,255,255,.09);border-color:rgba(0,255,255,.5);transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,255,255,.12)}
+.lc-num{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#00ffff}
+.lc-title{font-size:1rem;font-weight:700;color:#fff;line-height:1.3}
+.lc-desc{font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.5}
+.lc-badge{display:inline-block;font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:50px;background:rgba(0,255,255,.12);color:#00ffff;border:1px solid rgba(0,255,255,.3);margin-top:4px;width:fit-content}
+/* Speaking card */
+.speak-card{display:flex;align-items:center;gap:18px;padding:24px 28px;border-radius:16px;background:rgba(255,160,50,.04);border:1.5px solid rgba(255,160,50,.2);text-decoration:none;transition:all .22s;margin-bottom:12px}
+.speak-card:hover{background:rgba(255,160,50,.09);border-color:rgba(255,160,50,.5);transform:translateY(-2px)}
+.speak-icon{font-size:2.4rem;flex-shrink:0}
+.speak-info h3{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:6px}
+.speak-info p{font-size:.82rem;color:rgba(255,255,255,.45);line-height:1.5}
+.speak-badge{display:inline-block;font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:50px;background:rgba(255,160,50,.12);color:rgba(255,180,80,.9);border:1px solid rgba(255,160,50,.3);margin-top:6px}
+/* CTA */
+.upgrade-box{margin-top:52px;padding:36px;border-radius:18px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);text-align:center}
+.upgrade-box h3{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;margin-bottom:12px}
+.upgrade-box p{font-size:.9rem;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:24px}
+.btn-upgrade{display:inline-block;padding:14px 36px;background:#00ffff;color:#000;font-weight:800;font-size:.95rem;border-radius:50px;text-decoration:none;transition:all .2s}
+.btn-upgrade:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,255,255,.35)}
+footer{text-align:center;padding:28px 24px;border-top:1px solid rgba(255,255,255,.06)}
+footer a{color:rgba(255,255,255,.3);font-size:.8rem;text-decoration:none;margin:0 10px;transition:color .2s}
+footer a:hover{color:#00ffff}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/assets/images/robo.png" alt="CEC" onerror="this.style.display='none'">
+    <span class="nav-logo-text">CEC English Camp</span>
+  </a>
+  <div class="nav-right">
+    <span class="nav-user" id="navUser"></span>
+    <button class="btn-logout" onclick="logout()">로그아웃</button>
+  </div>
+</nav>
+
+<main>
+  <p class="eyebrow">Mom Teacher 7일 무료체험</p>
+  <h1 id="welcomeTitle">체험 수업에 오신 걸 환영합니다</h1>
+  <p class="sub">아래 체험 수업을 자유롭게 이용하세요. 체험 기간: 등록일로부터 <strong style="color:#00ffff">7일</strong></p>
+
+  <div class="trial-note">
+    <strong>무료체험 안내</strong><br>
+    Peter Rabbit EP01~EP07, Picture Speaking 체험 수업이 포함됩니다.<br>
+    EP08 이후 및 다른 책 수업은 정식 등록 후 이용할 수 있습니다. · 런칭 특별가 월 $40 (정상가 월 $99)
+  </div>
+
+  <!-- Peter Rabbit EP01~EP07 -->
+  <p class="section-title">Peter Rabbit Picture Speaking — EP01~EP07</p>
+  <div class="lesson-grid">
+    <a href="/camp-a/speaking/peter_rabbit_img1.html" class="lesson-card">
+      <div class="lc-num">EP 01</div>
+      <div class="lc-title">엄마 토끼와 아기들</div>
+      <div class="lc-desc">I see a mother rabbit. She has a white apron.</div>
+      <span class="lc-badge">무료체험</span>
+    </a>
+    <a href="/camp-a/speaking/peter_rabbit_img2.html" class="lesson-card">
+      <div class="lc-num">EP 02</div>
+      <div class="lc-title">피터 래빗의 모험</div>
+      <div class="lc-desc">Peter Rabbit goes into the garden.</div>
+      <span class="lc-badge">무료체험</span>
+    </a>
+    <a href="/camp-a/speaking/peter_rabbit_img3.html" class="lesson-card">
+      <div class="lc-num">EP 03</div>
+      <div class="lc-title">맥그리거 밭에서</div>
+      <div class="lc-desc">Peter eats the vegetables in the garden.</div>
+      <span class="lc-badge">무료체험</span>
+    </a>
+    <a href="/camp-a/speaking/peter_rabbit_img4.html" class="lesson-card">
+      <div class="lc-num">EP 04</div>
+      <div class="lc-title">밭에서 뛰어도망가기</div>
+      <div class="lc-desc">Mr. McGregor chases Peter through the garden.</div>
+      <span class="lc-badge">무료체험</span>
+    </a>
+    <a href="/camp-a/speaking/peter_rabbit_img5.html" class="lesson-card">
+      <div class="lc-num">EP 05</div>
+      <div class="lc-title">피터의 위기</div>
+      <div class="lc-desc">Peter gets stuck in the fence.</div>
+      <span class="lc-badge">무료체험</span>
+    </a>
+    <a href="/camp-a/speaking/peter_rabbit_img6.html" class="lesson-card">
+      <div class="lc-num">EP 06</div>
+      <div class="lc-title">잠시 숨는 피터</div>
+      <div class="lc-desc">Peter hides in the watering can.</div>
+      <span class="lc-badge">무료체험</span>
+    </a>
+    <a href="/camp-a/speaking/peter_rabbit_img7.html" class="lesson-card">
+      <div class="lc-num">EP 07</div>
+      <div class="lc-title">숲속으로 탈출</div>
+      <div class="lc-desc">Peter runs back home to the forest.</div>
+      <span class="lc-badge">무료체험</span>
+    </a>
+  </div>
+
+  <!-- Picture Speaking -->
+  <p class="section-title">Picture Speaking 체험</p>
+  <a href="/camp-a/speaking/peter_rabbit_img1.html" class="speak-card">
+    <div class="speak-icon">🎤</div>
+    <div class="speak-info">
+      <h3>Picture Speaking — 그림 보고 영어로 말하기</h3>
+      <p>Peter Rabbit 그림을 보고 AI Robo와 함께 영어 문장을 말하는 훈련입니다.</p>
+      <span class="speak-badge">무료체험 포함</span>
+    </div>
+  </a>
+
+  <div class="upgrade-box">
+    <h3>정식 등록으로 더 많은 수업을</h3>
+    <p>EP08 이후 및 Little Princess, Treasure Island 등 다른 책 수업은 정식 등록 후 이용할 수 있습니다.<br>런칭 특별가 월 $40 (정상가 월 $99) · 카드 등록 없음 · 언제든 취소</p>
+    <a href="/mom-teacher/trial.html" class="btn-upgrade">정식 등록 안내 보기 →</a>
+  </div>
+</main>
+
+<footer>
+  <a href="/">홈</a>
+  <a href="/mom-teacher/">Mom Teacher</a>
+  <a href="/legal/privacy.html">Privacy</a>
+</footer>
+
+<script>
+// 임시 보호 — localStorage 기반 게이트. 실제 보안은 서버 인증/Supabase Auth 필요.
+function logout(){
+  localStorage.removeItem('cec_mom_trial_session');
+  location.href='/mom-teacher/login.html';
+}
+(function(){
+  var s=localStorage.getItem('cec_mom_trial_session');
+  if(!s)return;
+  try{
+    var d=JSON.parse(s);
+    if(d.name){
+      document.getElementById('welcomeTitle').textContent=d.name+'님, 환영합니다';
+      document.getElementById('navUser').innerHTML='<span>'+d.name+'</span>님';
+    }
+    if(d.exp){
+      var days=Math.ceil((d.exp-Date.now())/(86400000));
+      if(days>0){document.querySelector('.sub strong').textContent=days+'일 남음';}
+    }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
