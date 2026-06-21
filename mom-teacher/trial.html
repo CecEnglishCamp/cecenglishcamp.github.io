@@ -55,9 +55,11 @@ select option{background:#111;color:#fff}
 .notice a{color:rgba(0,255,255,.5);text-decoration:none}
 .notice a:hover{color:#00ffff}
 
-/* Success */
+/* Success / Error */
 .success-box{display:none;max-width:540px;width:100%;text-align:center;background:rgba(0,255,255,.05);border:1.5px solid rgba(0,255,255,.3);border-radius:20px;padding:48px 36px}
 .success-box.show{display:block}
+.error-msg{display:none;margin-top:16px;padding:14px 18px;border-radius:10px;background:rgba(255,60,60,.08);border:1px solid rgba(255,60,60,.25);color:rgba(255,120,120,.9);font-size:.85rem;line-height:1.6;text-align:center}
+.error-msg.show{display:block}
 .success-icon{font-size:3rem;margin-bottom:20px}
 .success-box h2{font-family:'Cormorant Garamond',serif;font-size:2rem;margin-bottom:14px}
 .success-box p{color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:28px}
@@ -96,12 +98,13 @@ footer a:hover{color:#00ffff}
   </div>
 
   <div class="form-wrap" id="formWrap">
+    <!-- TODO: Replace action with real Formspree endpoint, e.g. https://formspree.io/f/xxxxxxxx -->
     <form id="trialForm" action="https://formspree.io/f/cecsungkim" method="POST" onsubmit="handleSubmit(event)">
       <input type="hidden" name="form_type" value="mom-teacher-trial">
 
       <div class="field">
-        <label for="name">엄마 이름<span class="req">*</span></label>
-        <input type="text" id="name" name="name" placeholder="성함을 입력하세요" required>
+        <label for="mom_name">엄마 이름<span class="req">*</span></label>
+        <input type="text" id="mom_name" name="mom_name" placeholder="성함을 입력하세요" required>
       </div>
 
       <div class="field">
@@ -131,8 +134,8 @@ footer a:hover{color:#00ffff}
       </div>
 
       <div class="field">
-        <label for="grade">자녀 학년</label>
-        <select id="grade" name="grade">
+        <label for="child_grade">자녀 학년</label>
+        <select id="child_grade" name="child_grade">
           <option value="">선택 안 함</option>
           <option value="elementary1">초등 1학년</option>
           <option value="elementary2">초등 2학년</option>
@@ -163,9 +166,9 @@ footer a:hover{color:#00ffff}
         </div>
       </div>
 
-      <div class="field" style="margin-top:8px">
-        <label for="neighbor_interest">이웃 아이와 함께하는 작은 영어 모임에도 관심이 있으신가요?</label>
-        <select id="neighbor_interest" name="neighbor_interest">
+      <div class="field">
+        <label for="home_group_interest">이웃 아이와 함께하는 작은 영어 모임에도 관심이 있으신가요?</label>
+        <select id="home_group_interest" name="home_group_interest">
           <option value="">선택 안 함</option>
           <option value="yes">예, 관심 있어요</option>
           <option value="no">아니요</option>
@@ -173,7 +176,16 @@ footer a:hover{color:#00ffff}
         </select>
       </div>
 
-      <button type="submit" class="submit-btn">카드 없이 7일 무료체험 신청</button>
+      <div class="field">
+        <label for="message">추가로 남기실 말씀</label>
+        <textarea id="message" name="message" rows="3" placeholder="자녀 학년, 수업 가능 시간, 궁금한 점 등을 적어 주세요." style="resize:vertical;min-height:80px"></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">카드 없이 7일 무료체험 신청</button>
+      <div class="error-msg" id="errorMsg">
+        전송 중 문제가 발생했습니다. 잠시 후 다시 시도하시거나<br>
+        <a href="mailto:cecenglishcamp@gmail.com" style="color:rgba(0,255,255,.7)">cecenglishcamp@gmail.com</a> 으로 연락 주세요.
+      </div>
       <p class="notice">
         제출하신 정보는 체험 안내 목적으로만 사용됩니다.<br>
         신청 후 이메일 또는 문자로 안내를 보내드립니다.<br>
@@ -204,18 +216,30 @@ footer a:hover{color:#00ffff}
 function handleSubmit(e) {
   e.preventDefault();
   var form = document.getElementById('trialForm');
-  var data = new FormData(form);
+  var btn = document.getElementById('submitBtn');
+  var errEl = document.getElementById('errorMsg');
+
+  btn.disabled = true;
+  btn.textContent = '제출 중...';
+  errEl.classList.remove('show');
+
   fetch(form.action, {
     method: 'POST',
-    body: data,
+    body: new FormData(form),
     headers: { 'Accept': 'application/json' }
   }).then(function(res) {
-    document.getElementById('formWrap').style.display = 'none';
-    document.getElementById('successBox').classList.add('show');
+    if (res.ok) {
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('successBox').classList.add('show');
+    } else {
+      btn.disabled = false;
+      btn.textContent = '카드 없이 7일 무료체험 신청';
+      errEl.classList.add('show');
+    }
   }).catch(function() {
-    // fallback: show success anyway (form might not be configured yet)
-    document.getElementById('formWrap').style.display = 'none';
-    document.getElementById('successBox').classList.add('show');
+    btn.disabled = false;
+    btn.textContent = '카드 없이 7일 무료체험 신청';
+    errEl.classList.add('show');
   });
 }
 </script>
