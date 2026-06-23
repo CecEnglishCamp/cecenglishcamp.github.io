@@ -113,66 +113,40 @@ footer a:hover{color:#00ffff}
 
       <div class="field">
         <label for="phone">전화번호<span class="req">*</span></label>
-        <input type="tel" id="phone" name="phone" placeholder="010-0000-0000" required>
+        <input type="tel" id="phone" name="phone" placeholder="000-000-0000" required>
       </div>
 
       <div class="field">
-        <label for="child_name">자녀 이름</label>
-        <input type="text" id="child_name" name="child_name" placeholder="아이 이름을 입력하세요">
-      </div>
-
-      <div class="field">
-        <label for="child_count">자녀 수</label>
-        <select id="child_count" name="child_count">
-          <option value="">선택 안 함</option>
-          <option value="1">1명</option>
-          <option value="2">2명</option>
-          <option value="3명 이상">3명 이상</option>
-        </select>
-        <span style="font-size:.75rem;color:rgba(255,255,255,.3);margin-top:4px;display:block;">자녀 2명 이상은 Family 플랜으로 안내드립니다.</span>
-      </div>
-
-      <div class="field">
-        <label for="child_grade">자녀 학년</label>
-        <select id="child_grade" name="child_grade">
-          <option value="">선택 안 함</option>
-          <option value="elementary1">초등 1학년</option>
-          <option value="elementary2">초등 2학년</option>
-          <option value="elementary3">초등 3학년</option>
-          <option value="elementary4">초등 4학년</option>
-          <option value="elementary5">초등 5학년</option>
-          <option value="elementary6">초등 6학년</option>
-          <option value="middle">중학생</option>
-          <option value="high">고등학생</option>
+        <label for="child_grade">자녀 학년<span class="req">*</span></label>
+        <select id="child_grade" name="child_grade" required>
+          <option value="">선택하세요</option>
+          <option value="Kindergarten">Kindergarten</option>
+          <option value="Grade 1">Grade 1</option>
+          <option value="Grade 2">Grade 2</option>
+          <option value="Grade 3">Grade 3</option>
+          <option value="Grade 4">Grade 4</option>
+          <option value="Grade 5">Grade 5</option>
+          <option value="Grade 6">Grade 6</option>
+          <option value="Middle School">Middle School</option>
         </select>
       </div>
 
       <div class="field">
-        <label>관심 체험 항목</label>
+        <label>관심 있는 체험<span class="req">*</span></label>
         <div class="checkbox-group">
           <label class="checkbox-item">
-            <input type="checkbox" name="interest" value="peter_rabbit">
-            <span>🐰 Peter Rabbit 수업 체험</span>
+            <input type="checkbox" name="interest" value="mom_teacher_ep07">
+            <span>Mom Teacher Program EP07까지</span>
           </label>
           <label class="checkbox-item">
             <input type="checkbox" name="interest" value="picture_speaking">
-            <span>🎤 Picture Speaking 체험</span>
+            <span>Picture Speaking 체험</span>
           </label>
           <label class="checkbox-item">
-            <input type="checkbox" name="interest" value="mom_teacher_program">
-            <span>👩‍🏫 Mom Teacher Program EP07까지</span>
+            <input type="checkbox" name="interest" value="robo_practice">
+            <span>Robo 선생님 영어 연습</span>
           </label>
         </div>
-      </div>
-
-      <div class="field">
-        <label for="home_group_interest">이웃 아이와 함께하는 작은 영어 모임에도 관심이 있으신가요?</label>
-        <select id="home_group_interest" name="home_group_interest">
-          <option value="">선택 안 함</option>
-          <option value="yes">예, 관심 있어요</option>
-          <option value="no">아니요</option>
-          <option value="later">나중에 상담하고 싶어요</option>
-        </select>
       </div>
 
       <div class="field">
@@ -181,15 +155,14 @@ footer a:hover{color:#00ffff}
       </div>
 
       <button type="submit" class="submit-btn" id="submitBtn">카드 없이 7일 무료체험 신청</button>
+      <p class="notice" style="margin-top:14px">
+        ✓ 카드 등록 없음 &nbsp;·&nbsp; ✓ 결제 정보 입력 없음<br>
+        신청 후 이메일 또는 문자로 안내드립니다.
+      </p>
       <div class="error-msg" id="errorMsg">
         전송 중 문제가 발생했습니다. 잠시 후 다시 시도하시거나<br>
         <a href="mailto:cecenglishcamp@gmail.com" style="color:rgba(0,255,255,.7)">cecenglishcamp@gmail.com</a> 으로 연락 주세요.
       </div>
-      <p class="notice">
-        제출하신 정보는 체험 안내 목적으로만 사용됩니다.<br>
-        신청 후 이메일 또는 문자로 안내를 보내드립니다.<br>
-        <a href="/">개인정보 처리방침</a>
-      </p>
     </form>
   </div>
 
@@ -229,6 +202,9 @@ function handleSubmit(e) {
     if (res.ok) {
       document.getElementById('formWrap').style.display = 'none';
       document.getElementById('successBox').classList.add('show');
+      if (typeof gtag === 'function') {
+        gtag('event', 'ads_conversion_signup');
+      }
     } else {
       btn.disabled = false;
       btn.textContent = '카드 없이 7일 무료체험 신청';
