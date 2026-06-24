@@ -59,7 +59,7 @@ Deno.serve(async (req) => {
   // ── 1. Fetch events in window ──
   const { data: events, error: fetchErr } = await sb
     .from('visit_events')
-    .select('page_url, visitor_id, session_id, event_type, referrer, utm_source')
+    .select('normalized_url, url, visitor_id, session_id, event_type, referrer, utm_source')
     .gte('created_at', startISO)
     .lt('created_at', endISO)
     .eq('is_bot', false)
@@ -91,8 +91,9 @@ Deno.serve(async (req) => {
   // Top 5 pages
   const pageCount = new Map<string, number>();
   events?.forEach(e => {
-    if (e.page_url) {
-      pageCount.set(e.page_url, (pageCount.get(e.page_url) || 0) + 1);
+    const page = e.normalized_url || e.url;
+    if (page) {
+      pageCount.set(page, (pageCount.get(page) || 0) + 1);
     }
   });
   const top5 = [...pageCount.entries()]
