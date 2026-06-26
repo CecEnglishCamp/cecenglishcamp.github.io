@@ -1,6 +1,6 @@
-/* CEC English Camp · auth-nav (v3 simple)
+/* CEC English Camp · auth-nav (v4 billing)
  * <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
- * <script src="/assets/auth-nav.js?v=4"></script>
+ * <script src="/assets/auth-nav.js?v=5"></script>
  */
 (function () {
   'use strict';
@@ -25,7 +25,9 @@
     '.cec-user.open .cec-user-menu{display:block}' +
     '.cec-user-menu a{display:block;padding:11px 18px;color:#00bcd4;text-decoration:none;' +
       'font-size:.9rem;font-weight:600;font-family:inherit}' +
-    '.cec-user-menu a:hover{background:rgba(0,188,212,.1);color:#4dd0e1}';
+    '.cec-user-menu a:hover{background:rgba(0,188,212,.1);color:#4dd0e1}' +
+    '.cec-billing-btn{cursor:pointer}' +
+    '.cec-billing-btn.loading{opacity:.6;pointer-events:none}';
   document.head.appendChild(css);
 
   function start() {
@@ -47,6 +49,8 @@
         '<span class="cec-user-arrow">▾</span>' +
       '</button>' +
       '<div class="cec-user-menu">' +
+        '<a href="#" class="cec-billing-btn">💳 결제 관리</a>' +
+        '<a href="/account-help.html">❓ 도움말</a>' +
         '<a href="#" class="cec-logout">로그아웃</a>' +
       '</div>';
     nav.appendChild(widget);
@@ -78,6 +82,36 @@
     });
     document.addEventListener('click', function (e) {
       if (!widget.contains(e.target)) widget.classList.remove('open');
+    });
+
+    // 결제 관리 → Stripe Customer Portal
+    widget.querySelector('.cec-billing-btn').addEventListener('click', async function (e) {
+      e.preventDefault();
+      var btn = this;
+      btn.classList.add('loading');
+      btn.textContent = '⏳ 로딩 중...';
+
+      try {
+        var sessionRes = await sb.auth.getSession();
+        var token = sessionRes.data && sessionRes.data.session && sessionRes.data.session.access_token;
+        if (!token) { alert('로그인이 필요합니다.'); btn.classList.remove('loading'); btn.textContent = '💳 결제 관리'; return; }
+
+        var res = await fetch(
+          'https://rzlqlokqplhyntuirsmd.supabase.co/functions/v1/create-billing-portal',
+          { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' } }
+        );
+        var data = await res.json();
+
+        if (!res.ok || !data.url) {
+          alert(data.error || '결제 관리 페이지를 열 수 없습니다.\n문제가 계속되면 cecenglishcamp@gmail.com으로 문의해 주세요.');
+          btn.classList.remove('loading'); btn.textContent = '💳 결제 관리'; return;
+        }
+        location.href = data.url;
+
+      } catch (ex) {
+        alert('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.\n문의: cecenglishcamp@gmail.com');
+        btn.classList.remove('loading'); btn.textContent = '💳 결제 관리';
+      }
     });
 
     // 로그아웃 — Supabase 세션 + 무료체험 쿠키 동시 정리
