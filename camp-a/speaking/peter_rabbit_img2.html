@@ -84,12 +84,6 @@ h1{text-align:center;color:#00d4ff;font-size:1.5rem;font-weight:900;margin-botto
 .btn-next{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:10px;border:none;cursor:pointer;font-size:.9rem;font-weight:700;width:100%;transition:all .2s;font-family:'Nunito',sans-serif}
 .btn-next:hover{transform:scale(1.02)}
 .btn-ai{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff}
-.ai-practice-box{display:flex;flex-direction:column;gap:8px;width:100%}
-.ai-practice-title{color:#00d4ff;font-size:.88rem;font-weight:800;text-align:center}
-.ai-practice-desc{color:#889;font-size:.78rem;text-align:center;line-height:1.4}
-.copy-practice-btn{background:linear-gradient(135deg,#059669,#047857);color:#fff}
-.chatgpt-practice-btn{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff}
-.copy-status{display:none;text-align:center;font-size:.82rem;color:#4ade80;padding:4px 0;font-weight:700;line-height:1.4}
 </style>
   <meta name="description" content="CEC English Camp Camp A — 초등학생 고전문학 영어 학습">
   <link rel="canonical" href="https://cecenglishcamp.com/camp-a/speaking/peter_rabbit_img2.html">
@@ -166,13 +160,10 @@ h1{text-align:center;color:#00d4ff;font-size:1.5rem;font-weight:900;margin-botto
         <div class="dots-label" id="dotsLabel">-- sentences</div>
       </div>
       <div class="next-steps" id="nextSteps">
-        <div class="ai-practice-box">
-          <div class="ai-practice-title">AI와 다시 말하기 연습</div>
-          <div class="ai-practice-desc">오늘 공부한 문장을 복사한 뒤 ChatGPT에 붙여넣고 연습하세요.</div>
-          <button type="button" class="btn-next copy-practice-btn" onclick="copyPracticePrompt()">📋 오늘 문장 복사</button>
-          <button type="button" class="btn-next chatgpt-practice-btn" onclick="openChatGPTPractice()">🤖 ChatGPT에서 연습하기</button>
-          <div class="copy-status" id="copyStatus" aria-live="polite"></div>
-        </div>
+        <button class="btn-next btn-ai" onclick="goNext()">
+          <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/robo.gif" style="height:20px;width:auto;" alt="Robo 영어 선생님">
+          AI와 영어 공부하기
+        </button>
       </div>
     </div>
   </div>
@@ -358,21 +349,7 @@ function toggleMemo(){
   document.getElementById("btnMemo").textContent=memoMode?"Show Sentences":"Memorize Mode";
   document.querySelectorAll(".sentence").forEach(function(el){el.classList.toggle("hidden-text",memoMode);});
 }
-function buildChatGPTPracticePrompt(){
-  var title=document.title||LESSON_ID;
-  var scene=typeof SCENE_DESC!=="undefined"&&SCENE_DESC?SCENE_DESC:"This is a picture from "+title+".";
-  var cnt=SENTENCES.length;
-  var cntWord=cnt===6?"six":cnt===4?"four":String(cnt);
-  var numbered=SENTENCES.map(function(s,i){return(i+1)+". "+s;}).join("
-");
-  return["I studied CEC English Camp today.","","Lesson: "+title,"","Picture: "+scene,"","Today's sentences:",numbered,"","Please act as my friendly English speaking coach.","Help me practice these sentences one by one.","First, ask me to say sentence 1.","If I make a mistake, correct me simply.","After I say all "+cntWord+" sentences, ask me one easy question about the picture.","Use easy English for an elementary student.","","Korean guide:","나는 오늘 위 문장들을 공부했어.","한 문장씩 영어로 말하는 연습을 시켜줘.","내가 틀리면 쉽게 고쳐줘."].join("
-");
-}
-function showCopyStatus(msg){var el=document.getElementById("copyStatus");if(!el)return;el.textContent=msg;el.style.display="block";setTimeout(function(){el.style.display="none";},4000);}
-function fallbackCopyPracticePrompt(text){var ta=document.createElement("textarea");ta.value=text;ta.style.cssText="position:fixed;top:0;left:0;opacity:0;pointer-events:none";document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand("copy");showCopyStatus("📋 복사됐어요! ChatGPT에 붙여넣고 연습하세요. ✅");}catch(e){showCopyStatus("복사 실패. 직접 복사해주세요.");}document.body.removeChild(ta);}
-function copyPracticePrompt(){var text=buildChatGPTPracticePrompt();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){showCopyStatus("📋 복사됐어요! ChatGPT에 붙여넣고 연습하세요. ✅");}).catch(function(){fallbackCopyPracticePrompt(text);});}else{fallbackCopyPracticePrompt(text);}}
-function openChatGPTPractice(){window.open(typeof GPT_URL!=="undefined"&&GPT_URL?GPT_URL:"https://chatgpt.com/","_blank","noopener");}
-function goNext(){openChatGPTPractice();}
+function goNext(){window.open(GPT_URL,"_blank");}
 </script>
 
 <!-- Mom Teacher 무료체험 안내 박스 -->
