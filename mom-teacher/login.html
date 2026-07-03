@@ -98,6 +98,7 @@ footer a:hover{color:#00ffff}
 <script>
 // 임시 보호 — localStorage 기반 게이트. 실제 보안은 서버 인증/Supabase Auth 필요.
 (function(){
+  if(window.CEC_AUTH && window.CEC_AUTH.ensureAdminTrialSession && window.CEC_AUTH.ensureAdminTrialSession()){location.replace(getNextUrl());return;}
   if(window.CEC_AUTH && window.CEC_AUTH.isCecAdminUser()){location.replace(getNextUrl());return;}
   var s=localStorage.getItem('cec_mom_trial_session');
   if(s){try{var d=JSON.parse(s);if(d.exp&&Date.now()<d.exp){location.replace(getNextUrl());return;}}catch(e){}}
