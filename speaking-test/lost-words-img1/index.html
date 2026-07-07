@@ -200,6 +200,33 @@ body{background:#0a0d14;color:#e0e0e0;font-family:'Segoe UI',sans-serif;display:
   --ink:#3d2d1c;--soft-ink:#7a6040;--gold:#c79532;--gold-dark:#8e6420;
 }
 body.lw-active{background:#fbf9f3}
+
+/* 세로 모드 안내 오버레이 — 작은 화면(휴대폰)이 세로일 때만 덮는다. 태블릿/데스크톱은
+   세로여도(max-width 900px 초과) 뜨지 않는다. 레이아웃 자체는 전혀 건드리지 않고 그
+   위를 덮는 방식이라 가로 화면 경험은 기존과 완전히 동일하다. */
+.lw-rotate-overlay{
+  display:none;position:fixed;inset:0;z-index:99999;
+  flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding:24px;box-sizing:border-box;
+  background:linear-gradient(160deg,rgba(251,246,233,.98),rgba(217,195,154,.98));
+}
+@media (orientation:portrait) and (max-width:640px){
+  .lw-rotate-overlay{display:flex}
+}
+.lw-rotate-icon{font-size:56px;line-height:1;margin-bottom:14px;animation:lwRotateWiggle 1.8s ease-in-out infinite}
+@keyframes lwRotateWiggle{
+  0%,100%{transform:rotate(0deg)}
+  30%{transform:rotate(-88deg)}
+  60%{transform:rotate(-90deg)}
+  85%{transform:rotate(-90deg)}
+}
+.lw-rotate-robo{
+  width:88px;height:88px;object-fit:contain;margin-bottom:16px;border-radius:18px;
+  background:linear-gradient(160deg,var(--paper-light),var(--paper));padding:8px;
+  box-shadow:0 4px 12px rgba(120,100,60,.18);
+}
+.lw-rotate-title-ko{font-family:'Gowun Batang',Georgia,serif;font-size:22px;color:var(--ink);margin-bottom:8px}
+.lw-rotate-title-en{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:17px;color:var(--soft-ink)}
 .lw-root{grid-column:1/-1;padding:28px 18px 48px;display:flex;flex-direction:column;align-items:center;width:100%;box-sizing:border-box}
 .lw-screen{width:100%;max-width:1440px}
 .lw-opening-title{display:none} /* 오른쪽 페이지에서 큰 제목 중복 표시 금지(왼쪽 책 표지와 중복되므로 숨김) */
@@ -543,6 +570,17 @@ body.lw-active{background:#fbf9f3}
 </style>
 </head>
 <body>
+
+<!-- 세로 모드 안내 오버레이 — CSS 미디어쿼리(orientation:portrait AND max-width:640px)로만
+     표시 여부가 결정된다(JS는 이 상태를 읽어서 음성 자동재생만 늦춘다, 레이아웃엔 관여 안 함).
+     640px 기준선은 일반 휴대폰 세로 폭(~375~480px)은 잡고, iPad mini 세로(744px)를 포함한
+     모든 태블릿 세로 폭은 확실히 피하도록 잡았다(iPad는 이 프로그램의 주 타깃 기기). -->
+<div class="lw-rotate-overlay" id="lwRotateOverlay" aria-hidden="true">
+  <div class="lw-rotate-icon">📱</div>
+  <img class="lw-rotate-robo" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/lost-words/shared/img/robo_picture_coach.png" alt="Robo">
+  <div class="lw-rotate-title-ko">화면을 가로로 돌려주세요</div>
+  <div class="lw-rotate-title-en">Please rotate your device</div>
+</div>
 
 <!-- ── Header ── -->
 <header class="header">
@@ -1084,6 +1122,22 @@ function lwResetCurrentSentenceSlot(){
 let programData          = null;
 // Static build (no server.js): text → R2 mp3 URL map, from lesson_img1.json's tts_manifest
 let TTS_MANIFEST          = {};
+
+// 세로 모드 안내 오버레이 상태 — 표시 여부 자체는 CSS 미디어쿼리가 결정하지만(#lwRotateOverlay),
+// JS에서도 같은 조건을 matchMedia로 추적해 speak()가 오버레이 떠 있는 동안 음성을 재생하지
+// 않고 기다리게 한다(가로로 돌리면 그 시점부터 이어서 재생). 레이아웃/기존 로직은 무변경.
+const _rotateMQ = window.matchMedia('(orientation: portrait) and (max-width: 640px)');
+let _rotateOverlayVisible = _rotateMQ.matches;
+function _updateRotateOverlayState() {
+  const wasVisible = _rotateOverlayVisible;
+  _rotateOverlayVisible = _rotateMQ.matches;
+  if (wasVisible && !_rotateOverlayVisible) {
+    document.dispatchEvent(new Event('lw:rotate-overlay-hidden'));
+  }
+}
+if (_rotateMQ.addEventListener) _rotateMQ.addEventListener('change', _updateRotateOverlayState);
+window.addEventListener('resize', _updateRotateOverlayState);
+window.addEventListener('orientationchange', _updateRotateOverlayState);
 let currentStep          = 1;
 let doneSteps            = new Set();
 let selectedChoice       = {};
@@ -3587,6 +3641,14 @@ document.addEventListener('keydown', _unlockAudioOnce, { once: true, capture: tr
 async function speak(text, opts = {}) {
   if (!(document.getElementById('voiceCheck')?.checked)) return;
   const lang = opts.lang || 'en-US';
+
+  // 세로 모드 안내 오버레이가 떠 있으면(작은 화면 세로) 재생을 시작하지 않고 가로로
+  // 돌릴 때까지 기다린다 — 돌리면 바로 이어서 정상 재생된다.
+  if (_rotateOverlayVisible) {
+    await new Promise((resolve) => {
+      document.addEventListener('lw:rotate-overlay-hidden', resolve, { once: true });
+    });
+  }
 
   isSpeaking = true;
   _stopRecognition();
