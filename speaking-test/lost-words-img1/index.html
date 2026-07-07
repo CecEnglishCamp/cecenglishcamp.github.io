@@ -3549,42 +3549,19 @@ function _cancelAudio() {
   window.speechSynthesis?.cancel();
 }
 
-// STEP 7: 볼륨 업 — <audio>.volume은 이미 기본값 1.0(최대)이라 그 자체로는 더 키울 수 없으므로,
-// Web Audio API GainNode로 실제 출력 레벨을 1.25배 증폭한다. DynamicsCompressor를 뒤에 붙여
-// 원본 mp3가 이미 0dB 근처인 구간에서도 찢어짐(클리핑) 없이 부드럽게 리미팅되게 한다.
-// AudioContext는 페이지당 하나만 만들어 재사용한다(매 speak() 호출마다 새로 만들지 않음).
+// static build (R2 배포) 2차 수정: mp3 음성 재생에서 AudioContext/GainNode 증폭 경로를
+// 완전히 제거했다. createMediaElementSource로 <audio>를 Web Audio 그래프에 연결하면,
+// 랩탑·아이패드 실기기에서 그 AudioContext가 running으로 안 잡히는 경우 엘리먼트는
+// paused:false/currentTime 진행에도 실제 소리는 전혀 안 나는 문제가 있었다(첫 제스처에서
+// resume()을 걸어도 재현됨). 1.25배 증폭보다 "확실히 들리는" 게 우선이라, mp3는 이제
+// AudioContext를 전혀 거치지 않는 순수 <audio> 재생(volume=1.0)으로만 나간다.
+// _sharedAudioCtx는 lwPlayFanfare()(폭죽 축하음, Web Audio 합성)에서만 계속 사용한다.
 let _sharedAudioCtx = null;
-function _boostAudioVolume(audioEl, gainValue) {
-  try {
-    const Ctx = window.AudioContext || window.webkitAudioContext;
-    if (!Ctx) return;
-    if (!_sharedAudioCtx) _sharedAudioCtx = new Ctx();
-    if (_sharedAudioCtx.state === 'suspended') _sharedAudioCtx.resume().catch(() => {});
-    const source     = _sharedAudioCtx.createMediaElementSource(audioEl);
-    const gain       = _sharedAudioCtx.createGain();
-    const compressor = _sharedAudioCtx.createDynamicsCompressor();
-    gain.gain.value = gainValue;
-    compressor.threshold.setValueAtTime(-6, _sharedAudioCtx.currentTime);
-    compressor.knee.setValueAtTime(12, _sharedAudioCtx.currentTime);
-    compressor.ratio.setValueAtTime(4, _sharedAudioCtx.currentTime);
-    compressor.attack.setValueAtTime(0.003, _sharedAudioCtx.currentTime);
-    compressor.release.setValueAtTime(0.15, _sharedAudioCtx.currentTime);
-    source.connect(gain);
-    gain.connect(compressor);
-    compressor.connect(_sharedAudioCtx.destination);
-  } catch (e) {
-    // 라우팅 실패 시에도 <audio> 엘리먼트는 기본 출력 경로로 정상 재생된다(볼륨 증폭만 없음).
-    console.warn('[volume-boost] skipped:', e);
-  }
-}
 
-// 오디오 unlock (static build, R2 배포): 위 _boostAudioVolume이 모든 재생을
-// MediaElementSourceNode로 AudioContext에 연결하기 때문에, 그 AudioContext가 아직
-// 'suspended' 상태면 <audio> 엘리먼트는 paused:false/currentTime 진행에도 실제로는
-// 무음 재생된다(브라우저마다 resume()이 진짜 사용자 제스처 콜스택 안에서 호출된 것만
-// 인정 — speak() 안에서 매번 호출하는 resume()은 그 조건을 못 맞출 수 있음). 페이지의
-// 첫 클릭/터치/키 입력에서 한 번만 동기적으로 resume() + 무음 1프레임 재생을 실행해
-// 컨텍스트를 확실히 running으로 만들어둔다(iOS Safari 포함).
+// 오디오 unlock (static build, R2 배포): 페이지의 첫 클릭/터치/키 입력에서 1회,
+// (1) 폭죽용 공유 AudioContext를 resume()하고 (2) 무음 1프레임을 재생해 iOS Safari의
+// "이 세션에서 오디오 재생 허용됨" 상태를 열어둔다. mp3 음성 재생 자체는 이 AudioContext와
+// 무관한 별도 경로(순수 <audio>)라 이 unlock 성공 여부와 상관없이 재생된다.
 let _audioUnlocked = false;
 function _unlockAudioOnce() {
   if (_audioUnlocked) return;
@@ -3633,15 +3610,16 @@ async function speak(text, opts = {}) {
   }
 
   try {
+    // AudioContext를 거치지 않는 순수 재생 — 증폭 없음, 대신 실기기(랩탑/아이패드)에서
+    // 확실히 소리가 난다.
     const audio = new Audio(mp3Url);
-    audio.volume = 1.0; // 최대값 명시 — 추가 증폭은 GainNode(_boostAudioVolume)가 담당
+    audio.volume = 1.0;
     _currentAudio = audio;
     audio.onended = afterSpeak;
     audio.onerror = () => {
       console.warn('[static-tts] mp3 재생 실패 — skip:', mp3Url);
       afterSpeak();
     };
-    _boostAudioVolume(audio, 1.25);
     await audio.play();
   } catch (e) {
     console.warn('[static-tts] audio.play() 실패 — skip:', mp3Url, e);
