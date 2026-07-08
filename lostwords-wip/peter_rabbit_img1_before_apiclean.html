@@ -1869,11 +1869,6 @@ function initFloatingImage() {
 // ── Send Answer ───────────────────────────────────────────
 async function sendAnswer() {
   if (isBusy || isComplete || !programData) return;
-  // Lost Words 레슨은 이 함수(AI Teacher 코치 API)를 쓰지 않는다 — 자체 lw* 미션
-  // 플로우로 완결됨. pageBody(Send 버튼 포함)가 애초에 숨겨져 있어 정상 흐름에서는
-  // 도달 불가능하지만, /api/picture-speaking/coach 호출(정적 배포엔 서버 없음)을
-  // 확실히 막기 위해 명시적으로 한 번 더 막는다.
-  if (programData.is_lost_words) return;
   const input  = document.getElementById('studentInput');
   const answer = input.value.trim();
   if (!answer) { input.focus(); return; }
@@ -3721,26 +3716,47 @@ function _buildWelcomeText() {
   return `안녕하세요. 환영합니다.\n저는 Robo Coach입니다.\n먼저 왼쪽 그림을 천천히 보세요.\n그리고 오른쪽 첫 번째 문장을 확인하세요.\n첫 번째 문장은, ${s1}입니다.\n준비가 되면 Listen ON을 누르고 첫 번째 문장을 말해 보세요.\n말한 다음 Send를 눌러주세요.`;
 }
 
-function playWelcomeOnce() {
+async function playWelcomeOnce() {
   if (welcomePlayed) return;
   if (!document.getElementById('voiceCheck')?.checked) return;
   welcomePlayed = true;
 
   const text = _buildWelcomeText();
+  _pendingWelcome = text;
 
   isSpeaking = true;
   _stopRecognition();
   _cancelAudio();
 
   const afterSpeak = () => {
-    _currentAudio = null;
-    isSpeaking    = false;
+    _currentAudio   = null;
+    isSpeaking      = false;
+    _pendingWelcome = null;
   };
 
-  // Static build(정적 배포)엔 /api/tts 서버가 없다. 이 웰컴 문장은 동적 텍스트라
-  // tts_manifest 사전제작 mp3에도 없으므로, 브라우저 내장 음성(Web Speech API)으로
-  // 바로 재생한다 (예전엔 /api/tts에 먼저 요청했다가 항상 실패 → 소리 없이 조용히 스킵됐음).
-  _speakFallback(text, 'ko-KR', afterSpeak);
+  try {
+    const res = await fetch('/api/tts?text=' + encodeURIComponent(text));
+    if (!res.ok) throw new Error('tts');
+    const blob  = await res.blob();
+    const url   = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    _currentAudio = audio;
+    audio.onended = () => { URL.revokeObjectURL(url); afterSpeak(); };
+    audio.onerror = () => { URL.revokeObjectURL(url); _speakFallback(text, 'ko-KR', afterSpeak); };
+    await audio.play();
+    _pendingWelcome = null;
+  } catch(e) {
+    // Autoplay blocked — defer to first user gesture
+    isSpeaking = false;
+    _currentAudio = null;
+    const once = () => {
+      document.removeEventListener('click',   once);
+      document.removeEventListener('keydown', once);
+      if (_pendingWelcome) speak(_pendingWelcome, { lang: 'ko-KR' });
+    };
+    document.addEventListener('click',   once, { once: true });
+    document.addEventListener('keydown', once, { once: true });
+  }
 }
 
 // ── PWA: Service Worker 등록 ──────────────────────────────
