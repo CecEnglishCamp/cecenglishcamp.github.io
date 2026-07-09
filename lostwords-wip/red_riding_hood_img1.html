@@ -495,8 +495,10 @@ body.lw-active{background:#fbf9f3}
     text-transform:uppercase;color:#4a3520;text-shadow:0 1px 0 rgba(255,235,190,.6);
     white-space:nowrap;overflow:hidden;line-height:1;
   }
-  .lw-nameplate-top{left:46.95%;top:4.68%;width:9.27%;height:4.67%;font-size:11px;letter-spacing:1.4px}
-  .lw-nameplate-bottom{left:46.59%;top:86.72%;width:9.63%;height:3.93%;font-size:9px;letter-spacing:1.1px}
+  /* Task 14: 배경마다 명판 크기/위치가 다를 수 있어 --lw-plaque-* 변수로 파라미터화한다.
+     값이 없으면(Peter Rabbit/class2_red 등) 기존 실측값(Class4 공용)이 그대로 폴백된다. */
+  .lw-nameplate-top{left:var(--lw-plaque-top-left,46.95%);top:var(--lw-plaque-top-top,4.68%);width:var(--lw-plaque-top-width,9.27%);height:var(--lw-plaque-top-height,4.67%);font-size:var(--lw-plaque-top-font,11px);letter-spacing:1.4px}
+  .lw-nameplate-bottom{left:var(--lw-plaque-bottom-left,46.59%);top:var(--lw-plaque-bottom-top,86.72%);width:var(--lw-plaque-bottom-width,9.63%);height:var(--lw-plaque-bottom-height,3.93%);font-size:var(--lw-plaque-bottom-font,9px);letter-spacing:1.1px}
 
   /* 화면 크림 실측색(rgb(250,226,189))과 같은 불투명 배경을 써서 화면과 "한 몸"으로 보이게
      한다. 좌표는 왼쪽 컬럼과 대칭인 우측 칼럼. */
@@ -1124,6 +1126,26 @@ function lwApplyLessonTheme(){
   }
   if (programData.screen_bg_color) {
     root.setProperty('--lw-screen-bg', programData.screen_bg_color);
+  }
+
+  // Task 14: 명판 위치/크기도 배경마다 다를 수 있어 데이터로 오버라이드한다. 값이 없으면
+  // (Peter Rabbit/class2_red 등) CSS 폴백값(Class4 공용 실측치)이 그대로 유지된다.
+  // font-size는 명판 폭 변화 비율에 맞춰 기존 실측 폰트크기(11px/9px)를 스케일링한다.
+  const pTop = programData.plaque_rect_top;
+  if (pTop && typeof pTop.left === 'number') {
+    root.setProperty('--lw-plaque-top-left', pTop.left + '%');
+    root.setProperty('--lw-plaque-top-top', pTop.top + '%');
+    root.setProperty('--lw-plaque-top-width', pTop.width + '%');
+    root.setProperty('--lw-plaque-top-height', pTop.height + '%');
+    root.setProperty('--lw-plaque-top-font', Math.round(11 * (pTop.width / 9.27)) + 'px');
+  }
+  const pBottom = programData.plaque_rect_bottom;
+  if (pBottom && typeof pBottom.left === 'number') {
+    root.setProperty('--lw-plaque-bottom-left', pBottom.left + '%');
+    root.setProperty('--lw-plaque-bottom-top', pBottom.top + '%');
+    root.setProperty('--lw-plaque-bottom-width', pBottom.width + '%');
+    root.setProperty('--lw-plaque-bottom-height', pBottom.height + '%');
+    root.setProperty('--lw-plaque-bottom-font', Math.round(9 * (pBottom.width / 9.63)) + 'px');
   }
 }
 
