@@ -1,0 +1,3857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>CEC Picture Speaking — PS001</title>
+
+<!-- ── PWA ── -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0b1020">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CEC Speaking">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<!-- 개선1(2026-07-05): 작품 소개 블록용 폰트 — 원제(영문 이탤릭)/영문 소개는 Cormorant Garamond, 한글 소개는 Gowun Batang.
+     rel=stylesheet를 바로 쓰면 렌더링 차단 리소스가 되어, 뒤쪽 <script>(onImgLoad 등 정의)의 실행이
+     폰트 다운로드가 끝날 때까지 지연된다 — 그사이 앞쪽 #sceneImg(PS001 레거시, src가 실제 이미지라
+     네트워크 로드가 먼저 끝날 수 있음)의 onload="onImgLoad()"가 함수 정의 전에 실행되어
+     "onImgLoad is not defined" pageerror가 발생했다. media=print→onload로 all 전환하는
+     표준 비차단 로딩 패턴으로 이 경쟁 상태를 없앤다. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Gowun+Batang:wght@400;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Gowun+Batang:wght@400;700&display=swap"></noscript>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;overflow-x:hidden;overflow-y:auto}
+body{background:#0a0d14;color:#e0e0e0;font-family:'Segoe UI',sans-serif;display:flex;flex-direction:column}
+
+/* ── Header ── */
+.header{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 18px;height:54px;background:#0f1117;border-bottom:1px solid #1e2232}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-brand{font-size:.94rem;font-weight:700;color:#7ec8e3;letter-spacing:.04em}
+.header-prog{background:#1a2a3a;color:#4caf90;border:1px solid #2a4a38;border-radius:12px;padding:2px 10px;font-size:.75rem;font-weight:600}
+.header-scene{font-size:.76rem;color:#555}
+.step-badge{background:#1a1d2b;border:1px solid #2a2d3a;border-radius:7px;padding:3px 13px;font-size:.8rem;color:#aaa}
+.step-badge span{color:#7ec8e3;font-weight:700}
+
+/* ── Robo Avatar (image) ── */
+.robo-avatar{object-fit:contain;border-radius:12px;background:rgba(10,20,32,.85);padding:4px;flex-shrink:0;width:42px;height:42px}
+.robo-avatar.coach{width:54px;height:54px}
+.robo-avatar.header{width:44px;height:44px;border-radius:12px}
+
+/* ── Robo Avatar (video) ── */
+.robo-video-frame{width:180px;height:102px;border-radius:16px;background:rgba(10,20,32,.9);overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px rgba(93,224,255,.25);flex-shrink:0}
+.robo-avatar-video{display:block;width:100%;height:100%;object-fit:cover;padding:0;border-radius:16px}
+.robo-avatar-video.coach{width:100%;height:100%}
+
+/* ── Page Body: 2-column ── */
+.page-body{display:grid;grid-template-columns:54% 46%;gap:14px;min-height:calc(100vh - 54px);height:auto;padding:12px 16px 12px;overflow:visible}
+
+/* ── Left Panel ── */
+.left-panel{display:flex;flex-direction:column;gap:10px;min-height:0;overflow:visible;align-self:start;position:relative;z-index:5;will-change:transform}
+.scene-image-wrap{flex:1 1 auto;min-height:0;max-height:440px;background:#0f1117;border-radius:12px;overflow:hidden;position:relative}
+.scene-image-wrap img{width:100%;height:100%;object-fit:cover;display:none}
+.img-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#444;font-size:.82rem}
+.img-label{position:absolute;bottom:6px;left:9px;background:rgba(10,13,20,.78);color:#555;font-size:.65rem;padding:1px 7px;border-radius:5px}
+.key-box{flex:0 0 auto;background:#111825;border-left:3px solid #3a6dbf;border-radius:0 8px 8px 0;padding:9px 13px;font-size:.8rem;color:#7ec8e3;line-height:1.5}
+.key-box-label{font-size:.65rem;color:#4a6a88;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+
+/* ── Right Panel ── */
+.right-panel{display:flex;flex-direction:column;gap:9px;min-height:0;overflow:visible}
+
+/* ── Practice Sentences ── */
+.practice-panel{flex:0 0 auto}
+.panel-title{font-size:.68rem;color:#555;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+.sentence-cards{display:flex;flex-direction:column;gap:5px}
+.s-card{display:flex;align-items:flex-start;gap:9px;background:#0f1117;border:1.5px solid #1e2232;border-radius:8px;padding:7px 10px;transition:all .22s;cursor:default}
+.s-card.active{border:2px solid #34d399;background:linear-gradient(90deg,rgba(16,185,129,.15),rgba(15,23,42,.9));box-shadow:0 0 0 1px rgba(52,211,153,.2),0 0 18px rgba(52,211,153,.1)}
+.s-card.done{border-color:#1e3a2a;opacity:.75}
+.s-card.locked{opacity:.42}
+.s-num{width:34px;height:34px;min-width:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:900;flex-shrink:0}
+.s-card.active  .s-num{background:#1a4a28;color:#4caf90;border:2px solid #34d399;font-size:1rem}
+.s-card.done    .s-num{background:#1a3a22;color:#2a7a40;border:1px solid #1e4a2a}
+.s-card.locked  .s-num{background:#1a1d2b;color:#333;border:1px solid #1e2232}
+.s-body{flex:1;min-width:0}
+.say-this-label{display:none;font-size:.68rem;color:#67e8f9;font-weight:800;letter-spacing:.08em;margin-bottom:3px}
+.s-card.active .say-this-label{display:block}
+.s-text{font-size:.86rem;color:#aaa;line-height:1.4}
+.s-card.active .s-text{font-size:.92rem;font-weight:800;color:#fff}
+.s-card.done   .s-text{color:#4a7a50}
+.choice-row{display:flex;flex-direction:column;gap:5px;margin-top:2px;width:100%}
+.choice-opt{text-align:left;background:#111825;border:1.5px solid #1e3048;border-radius:7px;padding:6px 10px;font-size:.84rem;color:#aaa;cursor:pointer;transition:all .18s;font-family:inherit;width:100%}
+.choice-opt:hover{border-color:#3a6dbf;color:#cde}
+.choice-opt.selected{border-color:#34d399;background:rgba(52,211,153,.14);color:#fff;font-weight:700}
+.s-card.active .choice-opt{font-size:.88rem;color:#ddd}
+.s-card.done .choice-opt{opacity:.6;cursor:default}
+.s-card.locked .choice-opt{opacity:.42;cursor:default;pointer-events:none}
+.s-icon{font-size:.8rem;flex-shrink:0;padding-top:5px}
+.progress-wrap{margin-top:5px}
+.progress-bar{background:#0f1117;border-radius:4px;height:4px;overflow:hidden;border:1px solid #1e2232}
+.progress-fill{height:100%;background:#4caf90;width:0%;transition:width .5s}
+.progress-label{font-size:.63rem;color:#444;text-align:right;margin-top:2px}
+
+/* ── Coach Panel ── */
+.coach-panel{flex:1 1 auto;min-height:120px;display:flex;flex-direction:column;gap:6px;background:#0f1117;border:1px solid #1e2232;border-radius:10px;padding:10px 12px;overflow:visible}
+.coach-header{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.coach-name{font-size:.84rem;font-weight:700;color:#7ec8e3}
+.coach-status-dot{width:6px;height:6px;border-radius:50%;background:#4caf90;margin-left:auto}
+.coach-status-dot.thinking{background:#f39c12;animation:pulse .8s infinite alternate}
+.coach-status-dot.error{background:#e74c3c}
+@keyframes pulse{to{opacity:.3}}
+.coach-bubble{flex:1 1 auto;min-height:0;background:#111825;border:1px solid #1e3048;border-radius:0 8px 8px 8px;padding:9px 12px;font-size:.84rem;line-height:1.55;white-space:pre-wrap;color:#ccc;overflow-y:auto;position:relative}
+.coach-bubble::before{content:'';position:absolute;top:-1px;left:-1px;width:7px;height:7px;background:#111825;border-left:1px solid #1e3048;border-top:1px solid #1e3048;border-radius:2px 0 0 0}
+
+/* ── Voice Controls ── */
+.voice-bar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex-shrink:0}
+.listen-btn{display:inline-flex;align-items:center;gap:5px;background:#0e1e30;color:#7ec8e3;border:1.5px solid #1e4a6a;border-radius:7px;padding:0 13px;height:34px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;flex-shrink:0}
+.listen-btn:hover:not(:disabled){background:#132840}
+.listen-btn.on{background:#0d2a18;color:#34d399;border-color:#34d399;animation:listenGlow 1.5s infinite alternate}
+.listen-btn:disabled{opacity:.35;cursor:not-allowed}
+.stop-btn{display:inline-flex;align-items:center;gap:4px;background:#1a0a0a;color:#e74c3c;border:1px solid #4a1a1a;border-radius:7px;padding:0 10px;height:34px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;flex-shrink:0}
+.stop-btn:hover:not(:disabled){background:#2a1010}
+.stop-btn:disabled{opacity:.25;cursor:not-allowed}
+.read-btn{display:inline-flex;align-items:center;gap:4px;background:#0e1e10;color:#4caf90;border:1px solid #1e4a22;border-radius:7px;padding:0 10px;height:34px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;flex-shrink:0}
+.read-btn:hover:not(:disabled){background:#142018}
+.read-btn:disabled{opacity:.22;cursor:not-allowed}
+.auto-send-lbl,.voice-toggle{display:inline-flex;align-items:center;gap:5px;font-size:.73rem;color:#555;cursor:pointer;user-select:none;white-space:nowrap}
+.auto-send-lbl input,.voice-toggle input{cursor:pointer;accent-color:#4caf90}
+.listening-badge{display:none;align-items:center;gap:5px;background:#0d2a18;color:#34d399;border:1px solid #1a5a28;border-radius:5px;padding:2px 8px;font-size:.7rem;font-weight:700}
+.listening-badge.show{display:inline-flex}
+.listening-dot{width:7px;height:7px;border-radius:50%;background:#34d399;animation:listenGlow .65s infinite alternate}
+@keyframes listenGlow{to{opacity:.2}}
+
+/* ── Input Area ── */
+.input-area{flex:0 0 auto;display:flex;flex-direction:column;gap:6px}
+.input-wrap{display:flex;gap:7px;align-items:center}
+.student-input{flex:1;background:#0a0d14;border:1px solid #2a2d3a;border-radius:7px;padding:7px 12px;color:#fff;font-size:.86rem;outline:none;height:36px;font-family:inherit;transition:border .2s}
+.student-input:focus{border-color:#4caf90}
+.student-input:disabled{opacity:.4}
+.send-btn{background:#4caf90;color:#000;border:none;border-radius:7px;padding:0 17px;height:36px;font-size:.86rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.send-btn:hover{background:#3da070}
+.send-btn:disabled{background:#1e3a2a;color:#2a5a38;cursor:not-allowed}
+.send-btn.restart{background:#3498db;color:#fff}
+.send-btn.restart:hover{background:#2980b9}
+
+/* ── Mom Teacher Hint ── */
+.mom-hint{flex:0 0 auto;display:flex;align-items:center;gap:7px;padding:5px 10px;background:#111825;border:1px solid #1e2232;border-radius:7px;font-size:.76rem;min-height:26px}
+.mom-icon{font-size:.86rem;flex-shrink:0}
+.mom-label{color:#777;font-size:.67rem;font-weight:600;flex-shrink:0}
+.mom-text{color:#a0c0a0;line-height:1.35}
+
+/* ── Completion Screen ── */
+.completion-screen{display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;text-align:center;min-height:calc(100vh - 54px);height:auto}
+.completion-screen.show{display:flex}
+.completion-emoji{font-size:2.6rem}
+.completion-title{font-size:1.2rem;font-weight:700;color:#4caf90}
+.completion-sub{font-size:.86rem;color:#888;max-width:420px;line-height:1.55}
+.expansion-box{background:#0f1117;border:1px solid #1e3048;border-radius:9px;padding:12px 16px;max-width:480px;width:100%;text-align:left}
+.expansion-title{font-size:.68rem;color:#7ec8e3;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.expansion-item{font-size:.85rem;color:#aaa;padding:2px 0;line-height:1.45}
+.restart-btn{background:#4caf90;color:#000;border:none;border-radius:7px;padding:9px 24px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .2s}
+.restart-btn:hover{background:#3da070}
+.restart-btn.secondary{background:#1a1d2b;color:#aaa;border:1px solid #2a2d3a}
+.restart-btn.secondary:hover{background:#20232f}
+.completion-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+/* ── Repeat Practice / Full Challenge / ChatGPT views ── */
+.rp-sub{font-size:.76rem;color:#888;margin:-2px 0 8px}
+.rp-progress{display:flex;gap:8px;margin-bottom:8px}
+.rp-badge{background:#1a2a3a;color:#4caf90;border:1px solid #2a4a38;border-radius:12px;padding:3px 11px;font-size:.75rem;font-weight:700}
+.rp-current-box{background:#0f1117;border:2px solid #34d399;border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.rp-current-label{font-size:.65rem;color:#67e8f9;font-weight:800;letter-spacing:.08em;margin-bottom:6px}
+.rp-current-text{font-size:1.15rem;font-weight:800;color:#fff;line-height:1.4;margin-bottom:10px}
+.rp-read-btn{width:auto;display:inline-flex}
+.rp-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.rp-list{display:flex;flex-direction:column;gap:4px;max-height:150px;overflow-y:auto}
+.rp-row{font-size:.78rem;color:#666;padding:4px 8px;border-radius:6px}
+.rp-row.active{color:#4caf90;background:rgba(52,211,153,.1);font-weight:700}
+.fc-list{list-style:decimal;padding-left:20px;display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.fc-list li{font-size:.9rem;color:#ddd;line-height:1.4}
+.cg-title{font-size:1rem;font-weight:800;color:#7ec8e3;margin-bottom:6px}
+.cg-sub{font-size:.82rem;color:#aaa;line-height:1.5;margin-bottom:12px}
+.cg-sentences{background:#0f1117;border:1px solid #1e3048;border-radius:9px;padding:12px 14px;font-size:.86rem;color:#ddd;line-height:1.7;white-space:pre-line;margin-bottom:12px}
+.cg-btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.cg-copy-status{font-size:.8rem;color:#34d399;min-height:18px;margin-bottom:8px;font-weight:700}
+.cg-steps{font-size:.76rem;color:#777;line-height:1.6;margin-bottom:14px}
+
+/* ── PS005: 선택형 Picture Speaking + AI Teacher Guided Repeat Practice ── */
+.ps005-question{font-size:1rem;font-weight:800;color:#fff;line-height:1.4;margin:10px 0 12px}
+.ps005-choices{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.ps005-choice-btn{text-align:left;background:#0f1117;border:1.5px solid #1e2232;border-radius:9px;padding:10px 13px;cursor:pointer;transition:all .18s;font-family:inherit;width:100%}
+.ps005-choice-btn:hover:not(:disabled){border-color:#3a6dbf;background:#111825}
+.ps005-choice-btn:disabled{cursor:default;opacity:.55}
+.ps005-choice-letter{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:#1a1d2b;color:#7ec8e3;font-weight:800;font-size:.78rem;margin-right:8px}
+.ps005-choice-text{font-size:.9rem;color:#ddd;font-weight:600}
+.ps005-choice-btn.selected{border-color:#34d399;background:rgba(52,211,153,.12)}
+.ps005-choice-btn.selected .ps005-choice-letter{background:#1a4a28;color:#34d399}
+.ps005-choice-btn.correct-reveal{border-color:#34d399;background:rgba(52,211,153,.1)}
+.ps005-choice-btn.wrong-reveal{border-color:#4a1a1a;opacity:.5}
+.ps005-why-box{background:#111825;border:1px solid #1e3048;border-radius:9px;padding:11px 13px}
+.ps005-why-text{font-size:.8rem;color:#a0c0e0;line-height:1.5}
+
+/* ── Standard_PS001_LostWords: 큰 책 화면 기반 새 수업 모드 (기존 화면과 완전히 분리) ──
+   리디자인: 검은 배경 제거, 흰색/아이보리 톤, 넓은 폭, 테두리 최소화, Robo 동영상 + 음성 파형. */
+/* Real Classic Book 템플릿 공용 색상 변수 — 왼쪽/오른쪽 페이지, 제목, 안내문, 그림 프레임이
+   전부 같은 계열 톤을 쓰도록 통일한다(완전 흰색 #fff 사용 금지). */
+:root{
+  --paper:#f5ecd9;--paper-light:#fbf6e9;--paper-edge:#d9c39a;
+  --ink:#3d2d1c;--soft-ink:#7a6040;--gold:#c79532;--gold-dark:#8e6420;
+}
+body.lw-active{background:#fbf9f3}
+
+/* 세로 모드 안내 오버레이 — 작은 화면(휴대폰)이 세로일 때만 덮는다. 태블릿/데스크톱은
+   세로여도(max-width 900px 초과) 뜨지 않는다. 레이아웃 자체는 전혀 건드리지 않고 그
+   위를 덮는 방식이라 가로 화면 경험은 기존과 완전히 동일하다. */
+.lw-rotate-overlay{
+  display:none;position:fixed;inset:0;z-index:99999;
+  flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding:24px;box-sizing:border-box;
+  background:linear-gradient(160deg,rgba(251,246,233,.98),rgba(217,195,154,.98));
+}
+@media (orientation:portrait) and (max-width:640px){
+  .lw-rotate-overlay{display:flex}
+}
+.lw-rotate-icon{font-size:56px;line-height:1;margin-bottom:14px;animation:lwRotateWiggle 1.8s ease-in-out infinite}
+@keyframes lwRotateWiggle{
+  0%,100%{transform:rotate(0deg)}
+  30%{transform:rotate(-88deg)}
+  60%{transform:rotate(-90deg)}
+  85%{transform:rotate(-90deg)}
+}
+.lw-rotate-robo{
+  width:88px;height:88px;object-fit:contain;margin-bottom:16px;border-radius:18px;
+  background:linear-gradient(160deg,var(--paper-light),var(--paper));padding:8px;
+  box-shadow:0 4px 12px rgba(120,100,60,.18);
+}
+.lw-rotate-title-ko{font-family:'Gowun Batang',Georgia,serif;font-size:22px;color:var(--ink);margin-bottom:8px}
+.lw-rotate-title-en{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:500;font-size:17px;color:var(--soft-ink)}
+.lw-root{grid-column:1/-1;padding:28px 18px 48px;display:flex;flex-direction:column;align-items:center;width:100%;box-sizing:border-box}
+.lw-screen{width:100%;max-width:1440px}
+.lw-opening-title{display:none} /* 오른쪽 페이지에서 큰 제목 중복 표시 금지(왼쪽 책 표지와 중복되므로 숨김) */
+/* Big_Book02 왼쪽 페이지에 인쇄된 "Robo & The Lost Words / Treasure Talk" 제목을 가리고
+   장면 캡션("Peter Rabbit · Scene 1")으로 대체한다. 모바일 크롭 뷰에서는 해당 제목이 이미
+   보이지 않거나(미션/스토리텔) 별도 처리가 필요해 기본값은 숨김, 데스크톱(전체 이미지 표시)에서만 표시. */
+.lw-left-title-mask{display:none}
+/* 개선0~4(2026-07-05, Class4 배경): 새 요소들은 모바일 기본값 숨김 — 데스크톱(min-width:641px)
+   미디어쿼리 안에서만 활성화한다(모바일 레이아웃은 이번 개선 범위 밖, 기존 그대로 유지). */
+.lw-scene-bg-full,.lw-nameplate-text,.lw-intro-block,.lw-current-sentence-slot{display:none}
+.lw-opening-title span{display:block;font-size:.95rem;font-weight:700;color:#9a8a6a;margin-top:2px}
+.lw-start-btn-solid{margin-top:14px;padding:12px 32px;border:1px solid #aa9b82;border-radius:30px;background:linear-gradient(135deg,#d9c7a7,#bfae93);color:var(--ink);font-family:Georgia,'Times New Roman',serif;font-size:1rem;font-weight:700;letter-spacing:.02em;cursor:pointer;box-shadow:0 4px 10px rgba(197,180,151,.3);transition:transform .15s,box-shadow .15s}
+.lw-start-btn-solid:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(197,180,151,.4)}
+.lw-book{display:grid;grid-template-columns:1.15fr 1fr;gap:36px;background:#fffdf7;border:1px solid rgba(0,0,0,.05);border-radius:22px;padding:30px 34px;position:relative;box-shadow:0 20px 60px rgba(120,110,90,.14)}
+/* 책의 접힌 가운데 부분 느낌(spine) — 두 페이지 사이에 아주 옅은 음영만 준다(테두리는 최소화 유지) */
+.lw-book::before{content:'';position:absolute;top:26px;bottom:26px;left:53.5%;width:1px;background:linear-gradient(to bottom,transparent,rgba(90,80,60,.14) 15%,rgba(90,80,60,.14) 85%,transparent);pointer-events:none}
+@media(max-width:640px){.lw-book::before{display:none}}
+.lw-stars{position:absolute;top:-16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;font-size:1.35rem;background:#ffffff;border:1px solid rgba(0,0,0,.06);border-radius:20px;padding:5px 20px;box-shadow:0 6px 18px rgba(120,110,90,.12);color:#e0a419}
+.lw-star{opacity:.3;transition:opacity .2s,transform .2s}
+.lw-star.filled{opacity:1;transform:scale(1.12)}
+.lw-page{display:flex;flex-direction:column;align-items:center}
+.lw-page-left{justify-content:flex-start;padding-top:34px}
+/* 오른쪽 페이지 = 책 속 수업 지면(paper page) — 왼쪽 그림 페이지와 하나의 책처럼 보이도록
+   연한 종이색 배경 + 얇은 테두리 + 상단 장식으로 "웹 카드"가 아닌 "책의 오른쪽 지면" 느낌을 준다. */
+.lw-page-right{position:relative;width:100%;background:linear-gradient(180deg,#fffdf6,#fbf5e6);border:1px solid rgba(154,138,106,.18);border-radius:14px;padding:26px 22px 22px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6),0 6px 16px rgba(120,110,90,.07)}
+.lw-page-right::before{content:'❦';display:block;text-align:center;color:#c9b27a;font-size:1rem;letter-spacing:.3em;margin-bottom:8px}
+.lw-img-wrap{position:relative;width:100%;border-radius:16px;overflow:hidden;line-height:0;box-shadow:0 10px 28px rgba(120,110,90,.14)}
+.lw-scene-img{width:100%;display:block}
+/* 오프닝: Big_Book02 전체 이미지 중 왼쪽 페이지(타이틀+그림) 부분만 크롭해서 보여준다.
+   실제 파일은 자르지 않고 확대 + 이동으로 왼쪽 절반만 노출한다. */
+.lw-opening-crop{aspect-ratio:auto}
+.lw-opening-crop-img{width:214%;max-width:none;margin-left:-6%;display:block}
+/* Mission/Story Tell: Big_Book02 왼쪽 페이지 중에서도 삽화(그림) 부분만 더 타이트하게
+   크롭해서 확대한다(타이틀/안내문 없이 그림만 꽉 채움). hotspot 퍼센트 좌표는 이 크롭 영역을
+   기준으로 하므로 기존 PR01.png 좌표 체계를 그대로 재사용할 수 있다. */
+.lw-mission-crop{position:relative;overflow:hidden;aspect-ratio:1.18/1}
+.lw-mission-crop-img{position:absolute;width:298%;height:200%;left:-41.7%;top:-44%;max-width:none;border-radius:0}
+/* 그림 영역 안에서 hotspot 5개가 자리잡는 기준 박스. 모바일(크롭 뷰)에서는 크롭 영역 전체(inset:0)와
+   동일하고, 데스크톱(아래 min-width:641px 블록)에서는 Big_Book02 전체 이미지 안에서 그림이 차지하는
+   실측 영역(left14.0/top22.0/width33.56/height50.0%)으로 재배치된다 — hotspot_rect(%)는 그대로 재사용. */
+.lw-hotspot-zone{position:absolute;inset:0}
+.lw-hotspots{position:absolute;inset:0}
+.lw-hotspot{position:absolute;background:transparent;border:none;cursor:pointer;border-radius:14px;transition:box-shadow .2s,transform .2s;padding:0}
+.lw-hotspot:hover{box-shadow:0 0 0 3px rgba(154,107,31,.45) inset}
+.lw-hotspot.lw-glow{box-shadow:0 0 0 4px #ffd60a,0 0 28px 10px rgba(255,214,10,.65);transform:scale(1.03)}
+/* STEP 7: 5개 완성 폭죽 — 외부 라이브러리 없이 CSS 애니메이션 파티클 60~80개로 구현.
+   전체 화면 위 고정 오버레이(pointer-events:none)라 클릭/터치를 가리지 않는다. */
+.lw-confetti-overlay{position:fixed;inset:0;z-index:9999;pointer-events:none;overflow:hidden}
+.lw-confetti-piece{
+  position:absolute;border-radius:2px;opacity:0;
+  transform:translate(-50%,-50%) translate(0,0) rotate(0deg);
+  animation:lwConfettiBurst 1.8s cubic-bezier(.15,.7,.3,1) forwards;
+  box-shadow:0 0 4px rgba(255,193,7,.5);
+}
+@keyframes lwConfettiBurst{
+  0%{opacity:0;transform:translate(-50%,-50%) translate(0,0) rotate(0deg)}
+  10%{opacity:1}
+  70%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-50%) translate(var(--tx),calc(var(--ty) + 260px)) rotate(var(--rot))}
+}
+/* scene-art-frame: lesson별 실제 삽화(programData.image_src)를 담는 "고정 프레임" — Big_Book02
+   사진(책/아이 배경)과는 완전히 분리된 데이터 기반 이미지다. img2~img7로 lesson이 바뀌어도
+   같은 프레임 크기/위치/장식을 그대로 재사용하고 그림만 교체된다.
+   aspect-ratio는 참고 CSS의 4:3 예시 대신 원본 이미지 실제 비율(1672:941)을 쓰고, object-fit도
+   cover 대신 contain을 쓴다 — hotspot_rect(%) 좌표가 이 그림의 0~100% 전체를 기준으로 계산되어
+   있으므로, cover로 잘라내면 hotspot이 그림과 어긋나기 때문이다(자세한 이유는 완료 보고 참고). */
+.scene-art-frame{
+  position:relative;width:min(86%,620px);margin:0 auto 14px;aspect-ratio:1672/941;
+  padding:10px;border-radius:10px;
+  background:transparent;
+  border:none;
+  box-shadow:none;
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+/* .scene-art-ratio가 프레임을 letterbox로 다 못 채우는 축(데스크톱은 위아래)에 남는 여백을
+   뒤쪽 Big_Book02 배경 사진이 아니라 은은한 종이톤으로 채운다(hotspot 좌표 계산에는 영향 없음,
+   순수 시각 보정). */
+.scene-art-frame.lw-has-ratio{background:var(--paper-light)}
+.scene-art-image{width:100%;height:100%;display:block;object-fit:cover;object-position:50% 38%;border-radius:4px;background:var(--paper-light)}
+/* STEP 7: hotspot 정렬 수정 — .scene-art-frame(배경 사진 위 실측 위치/크기 액자라 그림 실제
+   비율과 다를 수 있음, 특히 데스크톱에서 33.56%/50.0%로 잘려 실제 비율 1672:941과 어긋남) 안에
+   그림 실제 비율(1672:941)로 고정된 내부 래퍼를 하나 더 두고, img와 hotspot 레이어를 그 안에서
+   100%/inset:0으로 함께 넣는다. 프레임의 겉모양(위치/크기, background-art 위 자리)은 그대로 두고,
+   내부에서만 letterbox(위아래 또는 좌우 여백)가 생기므로 그림과 hotspot 좌표계가 항상 정확히
+   1:1로 일치한다. hotspot_rect(%) 값은 전혀 건드리지 않는다. Mission 화면(#lwMissionArtFrame)의
+   .scene-art-ratio에만 적용되고, hotspot이 없는 Opening/StoryTell/Copy는 기존 구조 그대로다. */
+.scene-art-ratio{position:relative;width:100%;aspect-ratio:1672/941}
+.scene-art-ratio>.scene-art-image{object-fit:fill}
+/* 오프닝 화면은 모바일에서 기존 Big_Book02 크롭(제목+그림+책 읽는 아이가 함께 보이는 구도)을
+   그대로 유지한다 — scene-art-frame은 데스크톱에서만 오프닝에 적용(아래 min-width:641px 참고). */
+#lwOpeningArtFrame{display:none}
+@media(max-width:640px){
+  /* Mission/Story Tell/Handoff 모바일: 기존 Big_Book02 크롭 이미지 대신 scene-art-frame이
+     그림을 담당하므로, 크롭 wrapper의 고정 비율/overflow를 해제하고 크롭 img는 숨긴다. */
+  #lwMission .lw-mission-crop,
+  #lwStoryTell .lw-mission-crop,
+  #lwCopy .lw-mission-crop{aspect-ratio:auto;overflow:visible}
+  #lwMission .lw-mission-crop-img,
+  #lwStoryTell .lw-mission-crop-img,
+  #lwCopy .lw-mission-crop-img{display:none}
+}
+/* Robo 영상 = 책 지면 안에 삽입된 작은 스크린처럼 보이도록 종이색/금색 톤의 액자 프레임으로 감싼다. */
+.lw-robo-frame{width:100%;max-width:236px;margin:0 auto 14px;padding:8px;background:linear-gradient(160deg,var(--paper-light),var(--paper));border-radius:20px;box-shadow:0 4px 10px rgba(120,100,60,.05)}
+.lw-robo-wrap{width:100%;max-width:220px;aspect-ratio:1/1;margin:0 0 14px;padding:0;border-radius:16px;overflow:hidden;background:#02060d}
+.lw-robo-frame .lw-robo-wrap{max-width:none;margin:0}
+.lw-robo-video,.lw-robo-img{width:100%;height:100%;object-fit:contain;display:block;background:#02060d}
+.lw-robo-text{background:rgba(251,246,233,.85);border:none;border-radius:10px;padding:16px 18px;font-family:Georgia,'Times New Roman',serif;font-size:.98rem;color:#3a3226;text-align:center;min-height:92px;width:100%;box-sizing:border-box;box-shadow:none}
+/* 지금 Robo가 읽는 줄만 강조 — 굵게 + 포인트 컬러 + 살짝 큰 글자 + 은은한 glow */
+.lw-line{padding:4px 2px;line-height:1.8;font-weight:600;color:#3a3a3a;transition:color .2s,font-weight .2s,font-size .2s,text-shadow .2s}
+.lw-line-active{color:#9a6b1f;font-weight:600;font-size:1.05em;text-shadow:0 0 16px rgba(154,107,31,.3)}
+/* 개선3(2026-07-05): 7bar 고정 CSS 애니메이션 → 24~28개 얇은 바, JS(lwSetWaveformPlaying)가
+   재생 중에만 110ms 간격으로 각 bar 높이를 랜덤 갱신 + 금색 전환, 정지 시 회갈색 낮은 높이로 복귀.
+   기존 .show(display 토글)는 그대로 유지 — 별도 컨테이너 표시 여부와 재생 색상 상태(is-playing)는 분리. */
+.lw-waveform{display:none;align-items:center;justify-content:center;gap:3px;height:36px;margin-top:14px}
+.lw-waveform.show{display:flex}
+.lw-waveform span{width:3px;height:8px;border-radius:2px;background:#9c8a6e;transition:height .1s ease-out,background .2s ease}
+.lw-waveform.is-playing span{background:#c9a13d}
+.lw-story-list{margin:14px auto 0;padding-left:24px;color:#3a3226;width:min(78%,520px);box-sizing:border-box;font-size:1.05rem;font-family:Georgia,'Times New Roman',serif}
+.lw-story-list li{margin-bottom:10px;font-weight:600;line-height:1.6;padding:3px 8px 3px 4px;border-radius:8px;transition:color .2s,font-weight .2s,background .2s}
+.lw-story-list li.lw-line-active{color:#9a6b1f;font-weight:600;background:rgba(154,107,31,.08)}
+
+/* lw-sentence-panel: Opening/Mission/Lost Words 화면에서 story_tell.sentences 1~5번을 항상 표시하는 패널. z-index:6으로 hotspot 영역(5)보다 위에. STEP 4 */
+.lw-sentence-panel{width:min(78%,520px);margin:20px auto 0;display:flex;justify-content:center;position:relative;z-index:6}
+.lw-sentence-list{width:100%;list-style:none;padding:0;margin:0}
+.lw-sentence-row{display:grid;grid-template-columns:34px 1fr;align-items:center;column-gap:10px;min-height:32px;padding:4px 12px;margin:3px auto;border-radius:10px;font-family:Georgia,'Times New Roman',serif;font-size:clamp(16px,0.95vw,18px);font-weight:700;color:#3d2d1c;background:rgba(247,241,230,.55)}
+.lw-sentence-row .num{text-align:right;color:#7a6040;font-size:.85em}
+.lw-sentence-row .text{text-align:left}
+/* STEP 6: hotspot 정답 클릭 시 해당 문장 줄 반짝임(is-active 1회 애니메이션) + 누적 표시(is-found) */
+.lw-sentence-row.is-found{background:rgba(214,166,58,.13);box-shadow:inset 0 0 0 1px rgba(199,149,50,.25)}
+.lw-sentence-row.is-active{animation:sentenceGlow 1.05s ease-in-out 1}
+@keyframes sentenceGlow{0%{background:rgba(214,166,58,.08)}45%{background:rgba(255,224,120,.42);box-shadow:0 0 18px rgba(214,166,58,.55);transform:scale(1.025)}100%{background:rgba(214,166,58,.13)}}
+@media(max-width:640px){
+  .lw-sentence-row{font-size:clamp(11px,2.6vw,14px);min-height:24px;padding:2px 10px;grid-template-columns:26px 1fr;column-gap:6px}
+  .lw-sentence-panel{margin:10px auto 0;width:90%}
+}
+@media(min-width:641px){
+  .lw-sentence-row{background:rgba(247,241,230,.0)}
+  .lw-sentence-panel{margin:20px auto 0}
+}
+/* 오른쪽 페이지 상단 제목 = 책에 인쇄된 장(章) 제목처럼: 세리프체 + 자간 + 하단 얇은 인쇄선 */
+.lw-mission-label{font-family:Georgia,'Times New Roman',serif;font-size:.8rem;font-weight:800;color:#8a7245;letter-spacing:.14em;text-transform:uppercase;text-align:center;margin-bottom:0}
+.lw-mission-label::after{content:'';display:block;width:44px;height:1px;background:rgba(154,138,106,.4);margin:8px auto 14px}
+/* 책 속 장식 버튼(Finish Story) — 공용 .restart-btn과 분리된 Lost Words 전용 버튼 */
+.lw-finish-btn{margin-top:6px;padding:11px 28px;border:1px solid #aa9b82;border-radius:30px;background:linear-gradient(135deg,#d9c7a7,#bfae93);color:var(--ink);font-family:Georgia,'Times New Roman',serif;font-size:.95rem;font-weight:700;letter-spacing:.02em;cursor:pointer;box-shadow:0 4px 10px rgba(197,180,151,.3);transition:transform .15s,box-shadow .15s}
+.lw-finish-btn:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(197,180,151,.4)}
+/* Finish Story → ChatGPT Handoff: 공용 .cg-*(다른 레슨과 공유, 어두운 톤)를 lwCopy 안에서만
+   책 페이지 톤으로 재정의한다(#lwCopy로 범위를 한정해 다른 레슨/모바일 여부와 무관하게 항상 적용). */
+#lwCopy .lw-mission-label{margin-bottom:0}
+#lwCopy .cg-sentences{background:#fffefb;border:1px solid rgba(154,138,106,.24);color:#3a3226;font-family:Georgia,'Times New Roman',serif;font-size:.92rem;line-height:1.6;width:100%;box-sizing:border-box;margin:0 auto 12px}
+#lwCopy .cg-sub{color:#6b5d46;font-size:.85rem;text-align:center;margin-bottom:14px}
+#lwCopy .cg-btn-row{justify-content:center;width:100%;margin:0 auto 8px}
+#lwCopy .send-btn{background:linear-gradient(135deg,#d9c7a7,#bfae93);color:var(--ink);border:1px solid #aa9b82}
+#lwCopy .listen-btn{background:#fffefb;color:#8a7245;border:1px solid rgba(154,138,106,.3)}
+#lwCopy .cg-copy-status{color:#4a7a4a;font-size:.85rem;text-align:center}
+@media(max-width:640px){
+  .lw-root{padding:18px 10px 32px}
+  .lw-book{grid-template-columns:1fr;gap:20px;padding:28px 16px 18px}
+  .lw-page-left{padding-top:14px}
+  .lw-page-right{padding:20px 16px 18px}
+  .lw-stars{font-size:1.1rem;padding:4px 14px;gap:5px}
+  .lw-robo-frame{max-width:170px}
+  .lw-robo-wrap{max-width:150px}
+  .lw-waveform{height:34px;gap:3px}
+  .lw-waveform span{width:3px}
+  .lw-story-list{font-size:.95rem}
+}
+/* ============================================================
+   641px 이상(데스크톱/태블릿): Big_Book02 펼침면 이미지 전체를
+   하나의 무대 배경으로 두고, 왼쪽 hotspot 존과 오른쪽 수업 패널을
+   그 위에 absolute overlay로 얹는다. 오른쪽이 별도 흰 카드로 뜨지
+   않도록 .lw-page-right 자체 배경/테두리/그림자를 모두 제거하고
+   실제 책 그림 위에 텍스트/영상만 놓이게 한다.
+   좌표는 Big_Book02.png(1672x941) 실측값:
+     그림(왼쪽 삽화) 영역   = left14.0% top22.0% width33.56% height50.0%
+     오른쪽 페이지 안전영역 = left55%   top9%   width31%    height77%
+   ============================================================ */
+@media(min-width:641px){
+  /* Class4 배경(2026-07-05): 화면 실측값(Class3와 오차 ±1% 이내로 재사용) =
+     left20.10% top12.22% width63.64% height72.16%, 크림 rgb(250,226,189).
+     .lw-book 자체에 aspect-ratio를 줘서(옛 scene-img의 자연 높이에 기대지 않고) 내부에
+     그림/소개/문장 등 내용이 많아져도 배경-프로그램 비율이 항상 고정되게 한다. */
+  .lw-book{display:block;position:relative;width:100%;aspect-ratio:1672/941;background:none;border:none;border-radius:0;box-shadow:none;padding:0}
+  .lw-book::before{display:none}
+  .lw-book::after{display:none}
+
+  /* 새 전체 배경 사진(class4_bg.png, lwApplyGradeBackground가 src 지정) — .lw-book 전체를
+     채우는 최하단 레이어. 기존 lwXSceneImg(옛 배경 겸 높이-드라이버)는 데스크톱에서 숨김. */
+  .lw-scene-bg-full{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:fill;z-index:0;pointer-events:none}
+  .lw-scene-img.lw-opening-crop-img,
+  .lw-scene-img.lw-mission-crop-img{display:none}
+
+  .lw-page{display:block}
+  /* 잔여 개선A(2026-07-05): 좌:우 = 60:40으로 재구도(그림을 더 크게). flex-column으로 쌓아
+     그림 밑 공백을 소개 블록이 자연스럽게 채운다. 상단에 2~3% 여백을 살짝 둬 그림이 화면 상단에
+     바로 붙지 않게 한다. */
+  .lw-page-left{
+    /* Task 13: 레슨별 screen_rect 지원 — lwApplyLessonTheme()가 programData.screen_rect를
+       읽어 --lw-left-* CSS 변수를 설정하면 여기 반영된다. 값이 없으면(Peter Rabbit 등) 기존
+       Class4 실측값(20.10/14.22/36.98/68.16)이 그대로 폴백되어 동작이 전혀 바뀌지 않는다. */
+    position:absolute;left:var(--lw-left-col-left,20.10%);top:var(--lw-screen-top,14.22%);width:var(--lw-left-col-width,36.98%);height:var(--lw-screen-height,68.16%);
+    display:flex;flex-direction:column;padding-top:18px;z-index:1;
+  }
+  /* ti_ 전용 오버라이드(공유 CSS 파일 아님 — 이 8개 파일에만 inline로 존재, rrh_/ww_/Peter Rabbit
+     파일은 별도 사본이라 무영향): 왼쪽 열이 프레임 안쪽 테두리에 바로 붙어 답답해 보이는 문제를
+     완화하기 위해 screen_rect 너비(60.29%)의 약 3.5% = 2.11%만큼 안쪽 여백을 추가한다.
+     .lw-page-left의 left/width(오른쪽 끝 경계)는 그대로이므로 ROBO MISSION 패널 위치와
+     60:40 비율은 전혀 바뀌지 않고, 내부 콘텐츠(그림+책소개)만 함께 오른쪽으로 이동한다. */
+  body[data-book="ti"] .lw-page-left{padding-left:2.11%}
+  /* ti_ 전용 오버라이드: 책소개(KO/EN) 박스 세로 스크롤바 제거(2026-07-12).
+     .lw-intro-block은 이미 flex:1로 그림 아래 남는 공간을 최대한 차지하므로(우선순위 a는
+     기존 구조가 이미 만족), 실측 결과 폭 641~1920px 전 구간에서 스크롤 없이 들어가려면
+     폰트를 vw 비례로 축소해야 함(우선순위 b). 그림 크기/비율(.scene-art-ratio 1672:941)은
+     전혀 건드리지 않음 — 텍스트 쪽 font-size/line-height/margin만 축소.
+     장식용 "❦" 클로징 라인은 정보가 아니므로 숨겨 여백을 확보(KO/EN 본문 내용은 그대로 유지). */
+  body[data-book="ti"] .lw-intro-block{margin-top:clamp(2px,0.5vw,8px)}
+  body[data-book="ti"] .lw-intro-divider{margin-bottom:clamp(2px,0.3vw,4px)}
+  body[data-book="ti"] .lw-intro-title{font-size:clamp(9px,1.0vw,14px)}
+  body[data-book="ti"] .lw-intro-title-row{margin-bottom:clamp(2px,0.35vw,6px)}
+  body[data-book="ti"] .lw-intro-desc{font-size:clamp(7.5px,0.85vw,11px);line-height:1.22}
+  body[data-book="ti"] .lw-intro-desc-en{font-size:clamp(7.5px,0.85vw,11px);margin-top:clamp(2px,0.3vw,4px)}
+  body[data-book="ti"] .lw-intro-closing{display:none}
+  .lw-img-wrap.lw-opening-crop,
+  .lw-img-wrap.lw-mission-crop{position:static;width:100%;flex:0 0 auto;aspect-ratio:1672/941;overflow:visible;box-shadow:none;border-radius:0;line-height:0}
+
+  /* STEP8a 사전 확인: #lwOpeningArtFrame{display:none}(모바일 기본값, 199줄 근처)이 ID
+     선택자라 .scene-art-frame{display:flex}(클래스, 아래)보다 우선순위가 높아 데스크톱에서도
+     계속 숨겨져 있었다 — Opening 화면 그림이 아예 안 보이는 버그. 한 줄만 재활성화. */
+  #lwOpeningArtFrame{display:flex}
+
+  /* 그림 프레임은 이제 %좌표 계산 없이 부모(.lw-img-wrap, aspect-ratio로 이미 높이 확정)를
+     100%/100%로 채우기만 하면 된다 — 왼쪽 컬럼 폭이 바뀌어도 항상 정확히 맞는다. */
+  .scene-art-frame{
+    display:flex;align-items:center;justify-content:center;
+    position:static;width:100%;height:100%;
+    margin:0;aspect-ratio:auto;
+    padding:0;border-radius:10px;
+    background:transparent;
+    border:none;
+    box-shadow:none;
+  }
+  .scene-art-image{border-radius:6px}
+
+  /* 별점 바 — 책 위에 둥둥 뜬 흰 알약처럼 보이지 않도록 테두리/그림자를 줄이고
+     반투명 크림톤으로 바꿔 책 상단과 자연스럽게 이어지게 한다. */
+  .lw-stars{
+    top:-2%;background:rgba(255,253,248,.78);border:none;
+    box-shadow:0 4px 14px rgba(120,110,90,.10);
+    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  }
+
+  /* 개선1: 그림 아래 작품소개 블록이 캡션 역할을 겸하므로, 옛 좌상단 캡션 마스크는 숨긴다. */
+  .lw-left-title-mask{display:none}
+
+  /* 개선1(2026-07-05): 그림 바로 아래 작품 소개 — 구분선 + 원제/한영토글 + 설명문.
+     남는 세로 공백을 이 블록의 여백/줄간격이 자연스럽게 흡수한다(min-height:0+overflow:auto로
+     내용이 넘치면 이 블록만 스크롤, 그림 비율/hotspot에는 전혀 영향 없음). */
+  /* 잔여 개선A: 그림-소개 간격 margin-top 24px(구분선 포함), 한/영 토글 제거하고 두 언어를
+     동시에 표시(토글 함수 lwToggleIntroLang은 삭제하지 않고 미사용 보존 — 버튼만 숨김). */
+  .lw-intro-block{display:flex;flex-direction:column;flex:1;min-height:0;overflow:auto;width:100%;margin-top:24px}
+  .lw-intro-divider{width:100%;height:1px;flex-shrink:0;margin-bottom:10px;background:linear-gradient(90deg,transparent,rgba(154,138,106,.45),transparent)}
+  .lw-intro-title-row{display:flex;align-items:baseline;justify-content:flex-start;gap:8px;flex-shrink:0;margin-bottom:8px}
+  .lw-intro-title{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600;font-size:clamp(15px,1.4vw,20px);color:#5a4426;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .lw-lang-toggle{display:none}
+  .lw-intro-desc{font-size:13px;line-height:1.55;color:#4a3f2e}
+  .lw-intro-desc-ko{font-family:'Gowun Batang',Georgia,serif;line-height:1.75}
+  .lw-intro-desc-en{font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;color:#7a6a52;margin-top:8px}
+  .lw-intro-closing{display:flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;margin-top:auto;padding-top:10px}
+  .lw-intro-closing-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(154,138,106,.35),transparent)}
+  .lw-intro-closing-text{font-family:'Cormorant Garamond',Georgia,serif;font-variant:small-caps;font-size:12px;letter-spacing:.04em;color:#a3875f;white-space:nowrap}
+  .lw-intro-closing-leaf{flex-shrink:0;color:#b3924f;opacity:.85}
+
+  /* 개선4 재실측(2026-07-05): 리벳/스캘럽 끝단을 뺀 "평평한 금색 면"만 픽셀 재실측
+     (gold color connected-component + 행별 폭 프로파일로 리벳 돌출부 제외):
+       상단: left46.95% top4.68% width9.27% height4.67%
+       하단: left46.59% top86.72% width9.63% height3.93%
+     display:flex+justify-content:center로 글자 길이 무관하게 항상 정중앙.
+     font-size는 vw가 아니라 고정 px — .lw-screen이 max-width:1440px로 캡되어 있어(1920에서는
+     캡, 1366에서는 뷰포트=스테이지) vw 기준이면 두 해상도에서 박스-대비-글자 비율이 어긋난다.
+     고정 px + 짧은 letter-spacing으로 두 해상도 모두에서 안쪽 80% 폭 이내로 들어오게 실측 후 확정. */
+  .lw-nameplate-text{
+    position:absolute;display:flex;align-items:center;justify-content:center;z-index:2;
+    pointer-events:none;font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;
+    text-transform:uppercase;color:#4a3520;text-shadow:0 1px 0 rgba(255,235,190,.6);
+    white-space:nowrap;overflow:hidden;line-height:1;
+  }
+  /* Task 14: 배경마다 명판 크기/위치가 다를 수 있어 --lw-plaque-* 변수로 파라미터화한다.
+     값이 없으면(Peter Rabbit/class2_red 등) 기존 실측값(Class4 공용)이 그대로 폴백된다. */
+  /* Task 14 긴급수정: font-size가 고정 px면 뷰포트가 좁아져 .lw-book 실제 폭이 줄어도 명판
+     텍스트박스(%)만 함께 줄고 글자는 그대로라 좁은 화면(약 700~1280px)에서 글자가 명판 밖으로
+     흘러넘쳐 잘렸다(1920/1440에서만 육안 확인하고 넘어간 것이 기존 검증 실패 원인). clamp()+vw로
+     .lw-book 폭에 비례해 글자도 함께 줄어들게 하고, letter-spacing도 em 단위로 바꿔 글자 크기에
+     비례시킨다. */
+  .lw-nameplate-top{left:var(--lw-plaque-top-left,46.95%);top:var(--lw-plaque-top-top,4.68%);width:var(--lw-plaque-top-width,9.27%);height:var(--lw-plaque-top-height,4.67%);font-size:var(--lw-plaque-top-font,11px);letter-spacing:var(--lw-plaque-top-tracking,1.4px)}
+  .lw-nameplate-bottom{left:var(--lw-plaque-bottom-left,46.59%);top:var(--lw-plaque-bottom-top,86.72%);width:var(--lw-plaque-bottom-width,9.63%);height:var(--lw-plaque-bottom-height,3.93%);font-size:var(--lw-plaque-bottom-font,9px);letter-spacing:var(--lw-plaque-bottom-tracking,1.1px)}
+
+  /* 화면 크림 실측색(rgb(250,226,189))과 같은 불투명 배경을 써서 화면과 "한 몸"으로 보이게
+     한다. 좌표는 왼쪽 컬럼과 대칭인 우측 칼럼. */
+  .lw-page-right{
+    /* Task 13: 왼쪽 컬럼과 동일하게 --lw-right-*/--lw-screen-bg 변수로 screen_rect/screen_bg_color를
+       반영. 값이 없으면 기존 Class4 실측값(59.08/14.22/24.66/68.16, rgb(250,226,189))으로 폴백. */
+    position:absolute;left:var(--lw-right-col-left,59.08%);top:var(--lw-screen-top,14.22%);width:var(--lw-right-col-width,24.66%);height:var(--lw-screen-height,68.16%);
+    background:var(--lw-screen-bg,rgb(250,226,189));
+    border:none;border-radius:0;box-shadow:none;padding:14px 10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    overflow:auto;z-index:1;
+  }
+  .lw-page-right::before{display:none}
+  /* 오른쪽 페이지 하단 장식(잎무늬) — 내용이 적은 화면(오프닝 등)에서 페이지 하단이
+     휑해 보이지 않도록 아주 옅은 코너 장식만 추가한다(과하지 않게 최소한으로). */
+  .lw-page-right::after{
+    content:'❧    ❧';position:absolute;left:0;right:0;bottom:3%;text-align:center;
+    color:rgba(154,138,106,.35);font-size:.85rem;letter-spacing:1.2em;pointer-events:none;
+  }
+  /* flexbox가 공간 부족 시 텍스트 박스를 내용보다 작게 줄여서(overflow:visible로) 다음 요소와
+     겹쳐 보이는 문제가 있었다 — 모든 자식을 flex-shrink:0으로 고정해 항상 실제 내용 높이만큼만
+     차지하게 하고, 전체가 넘치면 .lw-page-right의 overflow:auto로 스크롤되게 한다. */
+  .lw-page-right > *{flex-shrink:0}
+  .lw-mission-label{font-size:.7rem;margin-bottom:0}
+  .lw-mission-label::after{margin:6px auto 8px}
+  /* Robo 영상 = "robot-frame" — 고전 책 톤의 크림 그라데이션 + 실선 테두리 액자로 감싼다.
+     비율은 실제 mp4 원본 비율(16:9)에 맞춰 letterbox(위아래 검은 여백)를 없앤다. */
+  .lw-robo-frame{
+    max-width:min(78%,380px);margin:0 auto 8px;padding:5px;
+    background:linear-gradient(135deg,var(--paper-light),var(--paper));
+    border:none;border-radius:8px;
+    box-shadow:0 4px 10px rgba(58,39,18,.05);
+  }
+  .lw-page-right .lw-robo-wrap{aspect-ratio:16/9;max-width:none;border-radius:6px;box-shadow:none;outline:none}
+  .lw-page-right .lw-line{line-height:1.35;padding:1px 2px}
+  /* 안내문 박스 — 흰색이 아니라 페이지와 같은 계열의 옅은 크림색으로, 테두리 대신 아주 약한
+     그림자만 사용해 "종이 위에 인쇄된 안내문"처럼 보이게 한다. */
+  .lw-robo-text{background:rgba(251,246,233,.78);border:none;box-shadow:none;font-size:.74rem;padding:6px 8px;min-height:0;width:80%;margin:0 auto}
+  .lw-waveform{margin-top:5px;height:24px;gap:2px}
+  .lw-waveform span{width:2px}
+
+  /* 개선2(2026-07-05): Mission 화면은 문장 5개 상시 목록 대신 "현재 문장 1개" 카드만 보여준다.
+     renderSentencePanel/lwFlashSentenceRow는 삭제하지 않고 그대로 두며(Opening/Story Tell에서
+     계속 사용), Mission 화면에서만 시각적으로 숨긴다. */
+  #lwMission .lw-sentence-panel{display:none}
+  .lw-current-sentence-slot{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;min-height:64px;margin-top:10px;flex-shrink:0}
+  .lw-idle-hint{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:13px;color:#9a8a6a;text-align:center}
+  .lw-current-sentence-card{
+    width:min(92%,420px);background:#fdf6e4;border-radius:14px;padding:12px 16px;
+    box-shadow:0 4px 14px rgba(180,140,50,.2);text-align:center;
+    animation:lwCardPop .35s cubic-bezier(.2,.8,.3,1.2);
+  }
+  @keyframes lwCardPop{0%{opacity:0;transform:scale(.9)}100%{opacity:1;transform:scale(1)}}
+  .lw-current-sentence-text{font-family:Georgia,'Times New Roman',serif;font-weight:700;font-size:16px;color:#3d2d1c}
+  .lw-current-sentence-sub{margin-top:5px;font-size:13px;color:#8a7245;font-style:italic}
+
+  /* 잔여 개선A: 우측 컬럼이 60:40으로 좁아져 옛 width:min(78%,520px)이 줄바꿈을 유발 —
+     좁아진 컬럼 안에서 거의 꽉 채워 한 줄에 들어오게 한다. */
+  .lw-sentence-panel{width:96%}
+  .lw-story-list{font-size:16px;margin:6px auto 0;width:96%;padding-left:14px;line-height:1.3}
+  .lw-story-list li{margin-bottom:2px}
+  .lw-start-btn-solid,.lw-finish-btn{margin-top:6px;padding:7px 18px;font-size:.78rem;box-shadow:0 3px 10px rgba(180,130,40,.24)}
+  #lwCopy .cg-sentences{font-size:16px;line-height:1.5;width:96%;margin:0 auto 8px}
+  #lwCopy .cg-sub{font-size:.72rem;margin-bottom:8px}
+  #lwCopy .cg-btn-row{width:86%;margin:0 auto 6px}
+  #lwCopy .send-btn,#lwCopy .listen-btn{font-size:.74rem}
+  #lwCopy .cg-copy-status{font-size:.72rem}
+
+  /* Finish Story 클릭 시 오른쪽 페이지가 살짝 책장 넘어가듯 나타나는 순수 시각 효과.
+     기능(버튼 클릭 등)과는 무관하게 동작하며, 애니메이션 실패 시에도 화면은 정상 표시된다. */
+  .lw-page-turn-in{animation:lwPageTurnIn .6s ease-out}
+  @keyframes lwPageTurnIn{
+    0%{opacity:0;transform:perspective(900px) rotateY(-18deg);transform-origin:left center}
+    100%{opacity:1;transform:perspective(900px) rotateY(0deg);transform-origin:left center}
+  }
+}
+</style>
+</head>
+<body data-book="ti">
+
+<!-- 세로 모드 안내 오버레이 — CSS 미디어쿼리(orientation:portrait AND max-width:640px)로만
+     표시 여부가 결정된다(JS는 이 상태를 읽어서 음성 자동재생만 늦춘다, 레이아웃엔 관여 안 함).
+     640px 기준선은 일반 휴대폰 세로 폭(~375~480px)은 잡고, iPad mini 세로(744px)를 포함한
+     모든 태블릿 세로 폭은 확실히 피하도록 잡았다(iPad는 이 프로그램의 주 타깃 기기). -->
+<div class="lw-rotate-overlay" id="lwRotateOverlay" aria-hidden="true">
+  <div class="lw-rotate-icon">📱</div>
+  <img class="lw-rotate-robo" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/lost-words/shared/img/robo_picture_coach.png" alt="Robo">
+  <div class="lw-rotate-title-ko">화면을 가로로 돌려주세요</div>
+  <div class="lw-rotate-title-en">Please rotate your device</div>
+</div>
+
+<!-- ── Header ── -->
+<header class="header">
+  <div class="header-left">
+    <img class="robo-avatar header" src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/lost-words/shared/img/robo_picture_coach.png" alt="Robo"
+         onerror="this.onerror=null;this.src='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/lost-words/shared/img/robo_picture_coach.svg'">
+    <span class="header-brand">CEC Picture Speaking</span>
+    <span class="header-prog" id="lessonBadge">PS001</span>
+    <span class="header-scene" id="sceneTitle">Loading...</span>
+  </div>
+  <div class="step-badge">Step <span id="stepNum">1</span> / <span id="totalNum">4</span></div>
+</header>
+
+<!-- ── Page Body: 2-column ── -->
+<div class="page-body" id="pageBody">
+
+  <!-- Left: Image + Key -->
+  <div class="left-panel" id="leftPanel">
+    <div class="scene-image-wrap">
+      <div class="img-loading" id="imgLoading">Loading image...</div>
+      <!-- static build: no /api/image route; this legacy 2-column panel is hidden for
+           is_lost_words lessons (img1), so it's left without an initial src -->
+      <img id="sceneImg" alt="Peter Rabbit Scene 1"
+           onload="onImgLoad()" onerror="onImgError()">
+      <div class="img-label" id="imageLabel">Peter Rabbit · Scene 1 · PS001</div>
+    </div>
+    <div class="key-box">
+      <div class="key-box-label">Key Expression</div>
+      <div id="keyText">Loading...</div>
+    </div>
+  </div>
+
+  <!-- Right: Sentences + Coach + Input + Hint -->
+  <div class="right-panel" id="rightPanel">
+
+    <!-- Practice Sentences / Repeat Practice / Full Challenge / ChatGPT — swappable views -->
+    <div class="practice-panel">
+
+      <div id="lessonPractice">
+        <div class="panel-title">Practice Sentences</div>
+        <div class="sentence-cards" id="sentenceCards"></div>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="progress-label" id="progressLabel">0 / 4</div>
+        </div>
+      </div>
+
+      <div id="repeatPractice" style="display:none">
+        <div class="panel-title">Repeat Practice</div>
+        <div class="rp-sub">Alloy teacher reads first. Then you repeat.</div>
+        <div class="rp-progress">
+          <span class="rp-badge" id="rpRoundLabel">Round 1 / 2</span>
+          <span class="rp-badge" id="rpSentenceLabel">Sentence 1 / 5</span>
+        </div>
+        <div class="rp-current-box">
+          <div class="rp-current-label">SAY THIS</div>
+          <div class="rp-current-text" id="rpCurrentText">…</div>
+          <button type="button" class="choice-opt rp-read-btn" onclick="rpAlloyRead()">🔊 Alloy Read</button>
+        </div>
+        <div class="rp-list" id="rpList"></div>
+      </div>
+
+      <div id="fullChallenge" style="display:none">
+        <div class="panel-title">Full Sentence Challenge</div>
+        <div class="rp-sub">Now say all five sentences.</div>
+        <ol class="fc-list" id="fcList"></ol>
+        <div class="rp-controls">
+          <button type="button" class="choice-opt rp-read-btn" onclick="rpAlloyReadAll()">🔊 Alloy Read All</button>
+          <button type="button" class="choice-opt rp-read-btn" onclick="toggleListen()">🎙 I will say all five</button>
+        </div>
+        <button type="button" class="restart-btn" id="finishReviewBtn" onclick="finishReview()">Finish Review →</button>
+      </div>
+
+      <div id="chatgptPractice" style="display:none">
+        <div class="panel-title">ChatGPT Final Practice</div>
+        <div class="cg-title">Great! Now practice with ChatGPT Teacher.</div>
+        <div class="cg-sub">Copy your five sentences.<br>Then click ChatGPT Final Practice.</div>
+        <div class="cg-sentences" id="cgSentenceList"></div>
+        <div class="cg-btn-row">
+          <button type="button" class="send-btn" onclick="copyMySentences()">Copy My Sentences</button>
+          <button type="button" class="listen-btn" onclick="openChatgptFinalPractice()">Open ChatGPT Final Practice</button>
+        </div>
+        <div class="cg-copy-status" id="cgCopyStatus"></div>
+        <div class="cg-steps">
+          1. Click Copy My Sentences.<br>
+          2. Click ChatGPT Final Practice.<br>
+          3. Paste and press Enter.
+        </div>
+        <button type="button" class="restart-btn secondary" onclick="restartSession()">↺ Start Over</button>
+      </div>
+
+      <!-- PS005: 선택형 Picture Speaking + AI Teacher Guided Repeat Practice -->
+      <div id="ps005View" style="display:none">
+        <div class="panel-title">Picture Speaking — Choose &amp; Practice</div>
+        <div class="rp-progress">
+          <span class="rp-badge" id="ps005StepLabel">Step 1 / 5</span>
+          <span class="rp-badge" id="ps005PhaseLabel">Choose</span>
+        </div>
+        <div class="ps005-question" id="ps005Question">Look at the picture. What do you see?</div>
+        <div class="ps005-choices" id="ps005Choices"></div>
+        <div class="ps005-why-box" id="ps005WhyBox" style="display:none">
+          <div class="rp-current-label">WHY?</div>
+          <div class="ps005-why-text">왜 골랐어요? 짧게 말해도 괜찮아요.</div>
+        </div>
+      </div>
+
+      <!-- PS005 Tell: 5문장 연결해서 말하기 -->
+      <div id="ps005Tell" style="display:none">
+        <div class="panel-title">Tell the Story</div>
+        <div class="rp-sub">그림을 보세요. 5문장을 말해요.</div>
+        <ol class="fc-list" id="ps005TellList"></ol>
+        <div class="rp-controls">
+          <button type="button" class="choice-opt rp-read-btn" onclick="ps005AlloyReadAll()">🔊 Alloy Read All</button>
+        </div>
+        <button type="button" class="restart-btn" id="ps005FinishBtn" onclick="ps005GoCopy()">Finish Story →</button>
+      </div>
+
+      <!-- PS005: ChatGPT 선생님과 더 연습하기 -->
+      <div id="ps005Copy" style="display:none">
+        <div class="panel-title">ChatGPT 선생님과 더 연습하기</div>
+        <div class="cg-sentences" id="ps005CopyBox"></div>
+        <div class="cg-sub">이 문장을 복사해서<br>ChatGPT 선생님에게 보내세요.</div>
+        <div class="cg-btn-row">
+          <button type="button" class="send-btn" onclick="ps005CopyToClipboard()">문장 복사하기</button>
+          <button type="button" class="listen-btn" onclick="openChatgptFinalPractice()">ChatGPT로 연습하러 가기</button>
+        </div>
+        <div class="cg-copy-status" id="ps005CopyStatus"></div>
+        <button type="button" class="restart-btn secondary" onclick="restartSession()">↺ Start Over</button>
+      </div>
+
+      <!-- ══ Standard_PS001: CEC Picture Speaking 표준 기법 (PS005와 완전히 분리된 화면) ══ -->
+
+      <!-- 화면 1 — Look & Notice -->
+      <div id="stdLook" style="display:none">
+        <div class="panel-title">Look at the Picture</div>
+        <div class="ps005-question" id="stdLookText"></div>
+        <button type="button" class="restart-btn" onclick="stdGoChoose()">Start →</button>
+      </div>
+
+      <!-- 화면 2~6 — Choose 5 Sentences (Choose → Reason → Meaning, 빠르고 가볍게) -->
+      <div id="stdChoose" style="display:none">
+        <div class="panel-title">Choose the Best Sentence</div>
+        <div class="rp-progress">
+          <span class="rp-badge" id="stdStepLabel">Step 1 / 5</span>
+          <span class="rp-badge" id="stdPhaseLabel">Choose</span>
+        </div>
+        <div class="ps005-choices" id="stdChoices"></div>
+        <div class="ps005-why-box" id="stdReasonBox" style="display:none">
+          <div class="rp-current-label">WHY?</div>
+          <div class="ps005-why-text">왜 골랐어요? 한 단어도 괜찮아요.</div>
+        </div>
+      </div>
+
+      <!-- 화면 7 — AI Teacher Guided Review -->
+      <div id="stdGuided" style="display:none">
+        <div class="panel-title">AI Teacher Guided Review</div>
+        <div class="rp-sub">AI 선생님과 5문장 복습하기</div>
+        <div class="rp-progress">
+          <span class="rp-badge" id="stdGuideLabel">Sentence 1 / 5</span>
+          <span class="rp-badge" id="stdGuidePhaseLabel">Listen</span>
+        </div>
+        <div class="rp-current-box">
+          <div class="rp-current-label">SAY THIS</div>
+          <div class="rp-current-text" id="stdGuideCurrentText">…</div>
+          <button type="button" class="choice-opt rp-read-btn" onclick="stdGuideRead()">🔊 Teacher Read</button>
+        </div>
+        <div class="rp-list" id="stdGuideList"></div>
+      </div>
+
+      <!-- 화면 8 — Tell the Picture -->
+      <div id="stdTell" style="display:none">
+        <div class="panel-title">Tell the Picture</div>
+        <div class="rp-sub">그림을 보세요. 5문장을 말해요.</div>
+        <ol class="fc-list" id="stdTellList"></ol>
+        <div class="rp-controls">
+          <button type="button" class="choice-opt rp-read-btn" onclick="stdTeacherReadAll()">🔊 선생님이 먼저 읽기</button>
+          <button type="button" class="choice-opt rp-read-btn" onclick="toggleListen()">🎙 내가 말하기</button>
+          <button type="button" class="choice-opt rp-read-btn" onclick="stdTellRetry()">↺ 다시 연습하기</button>
+        </div>
+        <button type="button" class="restart-btn" onclick="stdGoCopy()">Finish Story →</button>
+      </div>
+
+      <!-- 화면 9 — ChatGPT Handoff -->
+      <div id="stdCopy" style="display:none">
+        <div class="panel-title">ChatGPT 선생님과 더 연습하기</div>
+        <div class="cg-sentences" id="stdCopyBox"></div>
+        <div class="cg-sub">문장을 복사하세요.<br>ChatGPT 선생님에게 보내세요.<br>더 연습할 수 있어요.</div>
+        <div class="cg-btn-row">
+          <button type="button" class="send-btn" onclick="stdCopyToClipboard()">문장 복사하기</button>
+          <button type="button" class="listen-btn" onclick="openChatgptFinalPractice()">ChatGPT로 연습하러 가기</button>
+        </div>
+        <div class="cg-copy-status" id="stdCopyStatus"></div>
+        <button type="button" class="restart-btn secondary" onclick="restartSession()">↺ Start Over</button>
+      </div>
+
+    </div>
+
+    <!-- Robo Coach / Alloy Teacher -->
+    <div class="coach-panel">
+      <div class="coach-header">
+        <div class="robo-video-frame" id="roboFrame">
+          <video class="robo-avatar-video coach" id="roboVideo"
+                 autoplay muted loop playsinline preload="metadata"
+                 poster="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/lost-words/shared/img/robo_picture_coach.png"
+                 onerror="document.getElementById('roboFrame').innerHTML='<img class=\'robo-avatar coach\' src=\'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/lost-words/shared/img/robo_picture_coach.png\' onerror=\'this.onerror=null;this.src=\\\'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/lost-words/shared/img/robo_picture_coach.svg\\\';\' alt=\'Robo Coach\'>'">
+          </video>
+        </div>
+        <span class="coach-name" id="coachNameLabel">Robo Coach</span>
+        <div class="coach-status-dot" id="statusDot"></div>
+      </div>
+      <div class="coach-bubble" id="coachBubble">Connecting to server...</div>
+    </div>
+
+    <!-- Voice + Input -->
+    <div class="input-area">
+      <div class="voice-bar">
+        <button class="listen-btn" id="listenBtn" onclick="toggleListen()" disabled>🎙 Listen ON</button>
+        <button class="stop-btn"  id="stopBtn"   onclick="stopListening()" disabled>⏹ Stop</button>
+        <span class="listening-badge" id="listeningBadge"><span class="listening-dot"></span>Listening...</span>
+        <label class="auto-send-lbl" title="Auto-send 500ms after speech ends">
+          <input type="checkbox" id="autoSendCheck"> Auto Send
+        </label>
+        <label class="voice-toggle" title="Read coach reply aloud">
+          <input type="checkbox" id="voiceCheck" checked> 🔊 Voice
+        </label>
+        <button class="read-btn" id="readBtn" onclick="readLastReply()" disabled>🔊 Read</button>
+      </div>
+      <div class="input-wrap">
+        <input type="text" class="student-input" id="studentInput"
+               placeholder="Type your sentence here and press Enter..."
+               autocomplete="off" disabled
+               onkeydown="if(event.key==='Enter')activeSendFn()">
+        <button class="send-btn" id="sendBtn" onclick="activeSendFn()" disabled>Send →</button>
+      </div>
+    </div>
+
+    <!-- Mom Teacher Hint -->
+    <div class="mom-hint">
+      <span class="mom-icon">👩‍🏫</span>
+      <span class="mom-label">Mom Teacher&nbsp;·</span>
+      <span class="mom-text" id="momText">Connecting...</span>
+    </div>
+
+  </div><!-- /right-panel -->
+
+</div><!-- /page-body -->
+
+<!-- ══ Standard_PS001_LostWords: 큰 책 화면 기반 새 수업 모드 (기존 pageBody와 완전히 분리) ══ -->
+<div class="lw-root" id="lwRoot" style="display:none">
+
+  <!-- Opening Book Screen — 미션 화면과 동일한 흰 책 프레임 재사용(왼쪽=그림, 오른쪽=Robo Mission 안내+영상) -->
+  <div class="lw-screen lw-opening" id="lwOpening">
+    <div class="lw-book">
+      <img class="lw-scene-bg-full" id="lwOpeningBgFull" src="" alt="">
+      <div class="lw-nameplate-text lw-nameplate-top"></div>
+      <div class="lw-nameplate-text lw-nameplate-bottom"></div>
+      <div class="lw-stars" id="lwOpeningStars"></div>
+      <div class="lw-page lw-page-left">
+        <div class="lw-img-wrap lw-opening-crop">
+          <img class="lw-scene-img lw-opening-crop-img" id="lwOpeningSceneImg" src="" alt="Robo &amp; The Lost Words — Peter Rabbit">
+          <div class="lw-left-title-mask"><span>Treasure Island img8</span></div>
+          <div class="scene-art-frame" id="lwOpeningArtFrame">
+            <img class="scene-art-image" id="lwOpeningArtImg" src="" alt="Treasure Island">
+          </div>
+        </div>
+        <div class="lw-intro-block">
+          <div class="lw-intro-divider"></div>
+          <div class="lw-intro-title-row">
+            <span class="lw-intro-title">Treasure Island</span>
+            <button type="button" class="lw-lang-toggle" onclick="lwToggleIntroLang()" aria-label="한글/English 전환">
+              <span class="lw-lang-toggle-ko">한글</span><span class="lw-lang-toggle-sep">/</span><span class="lw-lang-toggle-en">EN</span>
+            </button>
+          </div>
+          <div class="lw-intro-desc lw-intro-desc-ko">로버트 루이스 스티븐슨(1850–1894)이 1883년 발표한 모험 소설이에요. 소년 짐 호킨스가 보물지도를 손에 넣고 외다리 해적 롱 존 실버와 함께 보물섬을 찾아 떠나는 이야기로, 100년 넘게 전 세계 아이들에게 사랑받아온 영국 모험 문학의 고전입니다.</div>
+          <div class="lw-intro-desc lw-intro-desc-en">Robert Louis Stevenson (1850-1894) published this adventure novel in 1883. Young Jim Hawkins finds a treasure map and sails to a hidden island with one-legged pirate Long John Silver, in one of the most beloved adventure classics in English literature.</div>
+          <div class="lw-intro-closing">
+            <span class="lw-intro-closing-line"></span>
+            <svg class="lw-intro-closing-leaf" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2C7 4 4 8 4 13c0 4 3 7 8 9 5-2 8-5 8-9 0-5-3-9-8-11z" fill="currentColor" opacity=".85"/><path d="M12 4v16" stroke="#fff" stroke-width=".6" opacity=".5"/></svg>
+            <span class="lw-intro-closing-text">CEC Classic Library &middot; Treasure Island Series 1</span>
+            <span class="lw-intro-closing-line"></span>
+          </div>
+        </div>
+      </div>
+      <div class="lw-page lw-page-right">
+        <div class="lw-opening-title" id="lwOpeningTitle">Robo &amp; The Lost Words<br><span>Treasure Talk</span></div>
+        <div class="lw-mission-label">Robo Mission</div>
+        <div class="lw-robo-frame">
+          <div class="lw-robo-wrap">
+            <video class="lw-robo-video" id="lwOpeningRoboVideo" autoplay muted loop playsinline
+                   onerror="lwVideoFallback('lwOpeningRoboVideo','lwOpeningRoboImg')"></video>
+            <img class="lw-robo-img" id="lwOpeningRoboImg" src="" alt="Robo" style="display:none">
+          </div>
+        </div>
+        <div class="lw-robo-text" id="lwOpeningText"></div>
+        <button type="button" class="lw-start-btn-solid" id="lwStartBtn" onclick="lwGoMission(1)">Start Mission!</button>
+        <div class="lw-sentence-panel" id="lwOpeningSentencePanel" aria-label="Story sentences">
+          <ol class="lw-sentence-list" id="lwOpeningSentenceList"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mission 1~5 Screen -->
+  <div class="lw-screen lw-mission" id="lwMission" style="display:none">
+    <div class="lw-book">
+      <img class="lw-scene-bg-full" id="lwMissionBgFull" src="" alt="">
+      <div class="lw-nameplate-text lw-nameplate-top"></div>
+      <div class="lw-nameplate-text lw-nameplate-bottom"></div>
+      <div class="lw-stars" id="lwStars"></div>
+      <div class="lw-page lw-page-left">
+        <div class="lw-img-wrap lw-mission-crop">
+          <img class="lw-scene-img lw-mission-crop-img" id="lwSceneImg" src="" alt="Treasure Island">
+          <div class="lw-left-title-mask"><span>Treasure Island img8</span></div>
+          <div class="scene-art-frame lw-has-ratio" id="lwMissionArtFrame">
+            <div class="scene-art-ratio">
+              <img class="scene-art-image" id="lwMissionArtImg" src="" alt="Treasure Island">
+              <div class="lw-hotspot-zone">
+                <div class="lw-hotspots" id="lwHotspots"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lw-intro-block">
+          <div class="lw-intro-divider"></div>
+          <div class="lw-intro-title-row">
+            <span class="lw-intro-title">Treasure Island</span>
+            <button type="button" class="lw-lang-toggle" onclick="lwToggleIntroLang()" aria-label="한글/English 전환">
+              <span class="lw-lang-toggle-ko">한글</span><span class="lw-lang-toggle-sep">/</span><span class="lw-lang-toggle-en">EN</span>
+            </button>
+          </div>
+          <div class="lw-intro-desc lw-intro-desc-ko">로버트 루이스 스티븐슨(1850–1894)이 1883년 발표한 모험 소설이에요. 소년 짐 호킨스가 보물지도를 손에 넣고 외다리 해적 롱 존 실버와 함께 보물섬을 찾아 떠나는 이야기로, 100년 넘게 전 세계 아이들에게 사랑받아온 영국 모험 문학의 고전입니다.</div>
+          <div class="lw-intro-desc lw-intro-desc-en">Robert Louis Stevenson (1850-1894) published this adventure novel in 1883. Young Jim Hawkins finds a treasure map and sails to a hidden island with one-legged pirate Long John Silver, in one of the most beloved adventure classics in English literature.</div>
+          <div class="lw-intro-closing">
+            <span class="lw-intro-closing-line"></span>
+            <svg class="lw-intro-closing-leaf" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2C7 4 4 8 4 13c0 4 3 7 8 9 5-2 8-5 8-9 0-5-3-9-8-11z" fill="currentColor" opacity=".85"/><path d="M12 4v16" stroke="#fff" stroke-width=".6" opacity=".5"/></svg>
+            <span class="lw-intro-closing-text">CEC Classic Library &middot; Treasure Island Series 1</span>
+            <span class="lw-intro-closing-line"></span>
+          </div>
+        </div>
+      </div>
+      <div class="lw-page lw-page-right">
+        <div class="lw-mission-label" id="lwMissionLabel">Mission 1 / 5</div>
+        <div class="lw-robo-frame">
+          <div class="lw-robo-wrap">
+            <video class="lw-robo-video" id="lwRoboVideo" autoplay muted loop playsinline
+                   onerror="lwVideoFallback('lwRoboVideo','lwRoboImg')"></video>
+            <img class="lw-robo-img" id="lwRoboImg" src="" alt="Robo" style="display:none">
+          </div>
+        </div>
+        <div class="lw-robo-text" id="lwRoboText"></div>
+        <div class="lw-waveform" id="lwWaveform"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="lw-current-sentence-slot" id="lwCurrentSentenceSlot">
+          <div class="lw-idle-hint" id="lwIdleHint">단어를 찾으면 문장이 나타나요.</div>
+          <div class="lw-current-sentence-card" id="lwCurrentSentenceCard" style="display:none">
+            <div class="lw-current-sentence-text" id="lwCurrentSentenceText"></div>
+            <div class="lw-current-sentence-sub">같이 말해요 · Say it with me!</div>
+          </div>
+        </div>
+        <div class="lw-sentence-panel" id="lwMissionSentencePanel" aria-label="Story sentences">
+          <ol class="lw-sentence-list" id="lwMissionSentenceList"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Story Tell -->
+  <div class="lw-screen lw-storytell" id="lwStoryTell" style="display:none">
+    <div class="lw-book">
+      <img class="lw-scene-bg-full" id="lwStoryBgFull" src="" alt="">
+      <div class="lw-nameplate-text lw-nameplate-top"></div>
+      <div class="lw-nameplate-text lw-nameplate-bottom"></div>
+      <div class="lw-page lw-page-left">
+        <div class="lw-img-wrap lw-mission-crop">
+          <img class="lw-scene-img lw-mission-crop-img" id="lwStoryImg" src="" alt="Treasure Island">
+          <div class="lw-left-title-mask"><span>Treasure Island img8</span></div>
+          <div class="scene-art-frame" id="lwStoryArtFrame">
+            <img class="scene-art-image" id="lwStoryArtImg" src="" alt="Treasure Island">
+          </div>
+        </div>
+        <div class="lw-intro-block">
+          <div class="lw-intro-divider"></div>
+          <div class="lw-intro-title-row">
+            <span class="lw-intro-title">Treasure Island</span>
+            <button type="button" class="lw-lang-toggle" onclick="lwToggleIntroLang()" aria-label="한글/English 전환">
+              <span class="lw-lang-toggle-ko">한글</span><span class="lw-lang-toggle-sep">/</span><span class="lw-lang-toggle-en">EN</span>
+            </button>
+          </div>
+          <div class="lw-intro-desc lw-intro-desc-ko">로버트 루이스 스티븐슨(1850–1894)이 1883년 발표한 모험 소설이에요. 소년 짐 호킨스가 보물지도를 손에 넣고 외다리 해적 롱 존 실버와 함께 보물섬을 찾아 떠나는 이야기로, 100년 넘게 전 세계 아이들에게 사랑받아온 영국 모험 문학의 고전입니다.</div>
+          <div class="lw-intro-desc lw-intro-desc-en">Robert Louis Stevenson (1850-1894) published this adventure novel in 1883. Young Jim Hawkins finds a treasure map and sails to a hidden island with one-legged pirate Long John Silver, in one of the most beloved adventure classics in English literature.</div>
+          <div class="lw-intro-closing">
+            <span class="lw-intro-closing-line"></span>
+            <svg class="lw-intro-closing-leaf" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2C7 4 4 8 4 13c0 4 3 7 8 9 5-2 8-5 8-9 0-5-3-9-8-11z" fill="currentColor" opacity=".85"/><path d="M12 4v16" stroke="#fff" stroke-width=".6" opacity=".5"/></svg>
+            <span class="lw-intro-closing-text">CEC Classic Library &middot; Treasure Island Series 1</span>
+            <span class="lw-intro-closing-line"></span>
+          </div>
+        </div>
+      </div>
+      <div class="lw-page lw-page-right">
+        <div class="lw-mission-label">Story Tell</div>
+        <div class="lw-robo-frame">
+          <div class="lw-robo-wrap">
+            <video class="lw-robo-video" id="lwStoryRoboVideo" autoplay muted loop playsinline
+                   onerror="lwVideoFallback('lwStoryRoboVideo','lwStoryRoboImg')"></video>
+            <img class="lw-robo-img" id="lwStoryRoboImg" src="" alt="Robo" style="display:none">
+          </div>
+        </div>
+        <div class="lw-robo-text" id="lwStoryRoboText"></div>
+        <div class="lw-waveform" id="lwStoryWaveform"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <ol class="lw-story-list" id="lwStoryList"></ol>
+        <button type="button" class="lw-finish-btn" onclick="lwGoCopy()">Finish Story →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ChatGPT Handoff — Story Tell과 동일한 책 무대(왼쪽 그림 페이지 유지)를 그대로 이어받아
+       "Finish Story 이후에도 같은 책 안에 있다"는 느낌을 유지한다. -->
+  <div class="lw-screen lw-copy" id="lwCopy" style="display:none">
+    <div class="lw-book">
+      <img class="lw-scene-bg-full" id="lwCopyBgFull" src="" alt="">
+      <div class="lw-nameplate-text lw-nameplate-top"></div>
+      <div class="lw-nameplate-text lw-nameplate-bottom"></div>
+      <div class="lw-page lw-page-left">
+        <div class="lw-img-wrap lw-mission-crop">
+          <img class="lw-scene-img lw-mission-crop-img" id="lwCopySceneImg" src="" alt="Treasure Island">
+          <div class="lw-left-title-mask"><span>Treasure Island img8</span></div>
+          <div class="scene-art-frame" id="lwCopyArtFrame">
+            <img class="scene-art-image" id="lwCopyArtImg" src="" alt="Treasure Island">
+          </div>
+        </div>
+        <div class="lw-intro-block">
+          <div class="lw-intro-divider"></div>
+          <div class="lw-intro-title-row">
+            <span class="lw-intro-title">Treasure Island</span>
+            <button type="button" class="lw-lang-toggle" onclick="lwToggleIntroLang()" aria-label="한글/English 전환">
+              <span class="lw-lang-toggle-ko">한글</span><span class="lw-lang-toggle-sep">/</span><span class="lw-lang-toggle-en">EN</span>
+            </button>
+          </div>
+          <div class="lw-intro-desc lw-intro-desc-ko">로버트 루이스 스티븐슨(1850–1894)이 1883년 발표한 모험 소설이에요. 소년 짐 호킨스가 보물지도를 손에 넣고 외다리 해적 롱 존 실버와 함께 보물섬을 찾아 떠나는 이야기로, 100년 넘게 전 세계 아이들에게 사랑받아온 영국 모험 문학의 고전입니다.</div>
+          <div class="lw-intro-desc lw-intro-desc-en">Robert Louis Stevenson (1850-1894) published this adventure novel in 1883. Young Jim Hawkins finds a treasure map and sails to a hidden island with one-legged pirate Long John Silver, in one of the most beloved adventure classics in English literature.</div>
+          <div class="lw-intro-closing">
+            <span class="lw-intro-closing-line"></span>
+            <svg class="lw-intro-closing-leaf" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2C7 4 4 8 4 13c0 4 3 7 8 9 5-2 8-5 8-9 0-5-3-9-8-11z" fill="currentColor" opacity=".85"/><path d="M12 4v16" stroke="#fff" stroke-width=".6" opacity=".5"/></svg>
+            <span class="lw-intro-closing-text">CEC Classic Library &middot; Treasure Island Series 1</span>
+            <span class="lw-intro-closing-line"></span>
+          </div>
+        </div>
+      </div>
+      <div class="lw-page lw-page-right">
+        <div class="lw-mission-label">Next Practice</div>
+        <div class="cg-sentences" id="lwCopyBox"></div>
+        <div class="cg-sub">방금 연습한 문장과 연습용 프롬프트를 함께 복사합니다.<br>ChatGPT 선생님에게 붙여 넣고 이어서 말하기 연습을 해 보세요.</div>
+        <div class="cg-btn-row">
+          <button type="button" class="send-btn" onclick="lwCopyToClipboard()">문장 복사하기</button>
+          <button type="button" class="listen-btn" onclick="openChatgptFinalPractice()">ChatGPT로 연습하러 가기</button>
+        </div>
+        <div class="cg-copy-status" id="lwCopyStatus"></div>
+        <button type="button" class="lw-finish-btn" onclick="restartSession()">↺ Start Over</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /lw-root -->
+
+<!-- ── Completion Screen ── -->
+<div class="completion-screen" id="completionScreen">
+  <div class="completion-emoji">🎉</div>
+  <div class="completion-title" id="completionTitle">Excellent! All sentences complete!</div>
+  <div class="completion-sub" id="completionSub">You did a great job describing the picture in English.<br>Now try the bonus sentences!</div>
+  <div class="expansion-box" id="expansionBox">
+    <div class="expansion-title">Bonus Sentences</div>
+    <div class="expansion-item" id="exp1"></div>
+    <div class="expansion-item" id="exp2"></div>
+  </div>
+  <div class="completion-btns">
+    <button class="restart-btn" id="goRepeatBtn" onclick="goToRepeatPractice()" style="display:none">Go to Repeat Practice</button>
+    <button class="restart-btn" id="tryAgainBtn" onclick="restartSession()">↺ Try Again</button>
+  </div>
+</div>
+
+<script>
+// B안 최종 + 학년별 아이 레이어(2026-07-05): 학년별 배경판(scene_gX.png) 선택.
+// server.js는 무수정 — assets\ 정적 경로로 직접 서빙되는 파일을 쓴다.
+// 우선순위: URL ?grade= > programData.grade > 기본값 g3.
+function lwGetGrade(){
+  const valid = ['g3','g4','g5','g6'];
+  const urlGrade = new URLSearchParams(window.location.search).get('grade');
+  if (urlGrade && valid.includes(urlGrade)) return urlGrade;
+  if (programData && valid.includes(programData.grade)) return programData.grade;
+  return 'g3';
+}
+function lwApplyGradeBackground(){
+  // Class4 배경(2026-07-05): 새 전체배경 레이어(lwXBgFull)에 class4_bg.png를 적용한다.
+  // 옛 lwXSceneImg는 데스크톱에서 display:none 처리되어 더 이상 보이지 않지만, JS 로직/좌표
+  // 기준으로 계속 쓰일 수 있어 src 지정 자체는 유지한다(등급별 배경 분기는 추후 확장 여지로 남김).
+  // Task 13: programData.background_image가 있으면 그 책 전용 배경(class2_red.png 등)을 쓰고,
+  // 없으면(Peter Rabbit 등 기존 레슨) class4_bg.png로 폴백해 기존 동작을 그대로 유지한다.
+  const bgUrl = (programData && programData.background_image)
+    || 'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/lost-words/shared/img/class4_bg.png';
+  ['lwOpeningSceneImg','lwSceneImg','lwStoryImg','lwCopySceneImg'].forEach(function(id){
+    const el = document.getElementById(id);
+    if (el) el.src = bgUrl;
+  });
+  ['lwOpeningBgFull','lwMissionBgFull','lwStoryBgFull','lwCopyBgFull'].forEach(function(id){
+    const el = document.getElementById(id);
+    if (el) el.src = bgUrl;
+  });
+}
+
+// Task 13: 레슨별 배경/화면좌표/명판 상단 텍스트 지원.
+// Class4(Peter Rabbit) 실측값 20.10/14.22/36.98/68.16(좌) + 59.08/14.22/24.66/68.16(우)를 하나의
+// "screen_rect"(좌우 통합 바깥 경계: left20.10 top14.22 width63.64 height68.16)로 보고, 그 안에서
+// 좌측 컬럼이 차지하는 비율(58.11%)과 우측 컬럼이 시작하는 비율(61.28%, 폭 38.75%)을 고정 상수로
+// 고정한 뒤, 새 screen_rect가 오면 같은 비율로 좌/우 컬럼을 다시 계산해 CSS 변수로 주입한다.
+// programData.screen_rect가 없으면(Peter Rabbit 등 기존 레슨) 아무 것도 하지 않아 CSS의 폴백값이
+// 그대로 적용되고 기존 동작이 100% 유지된다.
+const LW_LEFT_COL_RATIO  = 0.5811;  // 36.98 / 63.64
+const LW_RIGHT_COL_START = 0.6128;  // (59.08-20.10) / 63.64
+const LW_RIGHT_COL_RATIO = 0.3875;  // 24.66 / 63.64
+
+function lwApplyLessonTheme(){
+  if (!programData) return;
+  const root = document.documentElement.style;
+
+  // iPad_Frame.png에 책 제목이 이미 인쇄돼 있어 중복 방지 위해 텍스트 주입을 끈다(요소는 유지, 내용만 비움).
+  document.querySelectorAll('.lw-nameplate-top').forEach(function(el){ el.textContent = ''; });
+
+  const rect = programData.screen_rect;
+  if (rect && typeof rect.left === 'number') {
+    root.setProperty('--lw-screen-top', rect.top + '%');
+    root.setProperty('--lw-screen-height', rect.height + '%');
+    root.setProperty('--lw-left-col-left', rect.left + '%');
+    root.setProperty('--lw-left-col-width', (rect.width * LW_LEFT_COL_RATIO) + '%');
+    root.setProperty('--lw-right-col-left', (rect.left + rect.width * LW_RIGHT_COL_START) + '%');
+    root.setProperty('--lw-right-col-width', (rect.width * LW_RIGHT_COL_RATIO) + '%');
+  }
+  if (programData.screen_bg_color) {
+    root.setProperty('--lw-screen-bg', programData.screen_bg_color);
+  }
+
+  // Task 14: 명판 위치/크기도 배경마다 다를 수 있어 데이터로 오버라이드한다. 값이 없으면
+  // (Peter Rabbit/class2_red 등) CSS 폴백값(Class4 공용 실측치)이 그대로 유지된다.
+  // 긴급수정: font-size를 고정 px 하나로 주면 뷰포트가 좁아질 때 .lw-book 실제 폭도 함께
+  // 줄어들어(명판 박스는 %라 같이 줄지만 글자는 안 줄어듦) 글자가 명판 밖으로 흘러넘친다.
+  // clamp(최소px, Nvw, 최대px)로 바꿔 .lw-book 폭(대략 뷰포트 폭에 비례, 1440px에서 캡)에
+  // 맞춰 글자도 함께 줄어들게 한다. vw 계수는 "1440px 뷰포트에서 기존 스케일링 폰트크기와
+  // 정확히 맞물리도록"(coef = maxPx / 14.4) 역산 — 1440 이상에서는 clamp 상한(maxPx)에서
+  // 자연히 캡되어 기존 큰 화면 렌더링은 그대로 유지된다. letter-spacing도 em 단위로 바꿔
+  // 글자 크기에 비례시킨다(고정 px면 작은 글자에서 자간만 과도하게 벌어져 다시 흘러넘칠 수 있음).
+  const pTop = programData.plaque_rect_top;
+  if (pTop && typeof pTop.left === 'number') {
+    root.setProperty('--lw-plaque-top-left', pTop.left + '%');
+    root.setProperty('--lw-plaque-top-top', pTop.top + '%');
+    root.setProperty('--lw-plaque-top-width', pTop.width + '%');
+    root.setProperty('--lw-plaque-top-height', pTop.height + '%');
+    const topMaxPx = 11 * (pTop.width / 9.27);
+    const topVwCoef = (topMaxPx / 14.4).toFixed(3);
+    root.setProperty('--lw-plaque-top-font', `clamp(6px, ${topVwCoef}vw, ${Math.round(topMaxPx)}px)`);
+    root.setProperty('--lw-plaque-top-tracking', '0.09em');
+  }
+  const pBottom = programData.plaque_rect_bottom;
+  if (pBottom && typeof pBottom.left === 'number') {
+    root.setProperty('--lw-plaque-bottom-left', pBottom.left + '%');
+    root.setProperty('--lw-plaque-bottom-top', pBottom.top + '%');
+    root.setProperty('--lw-plaque-bottom-width', pBottom.width + '%');
+    root.setProperty('--lw-plaque-bottom-height', pBottom.height + '%');
+    const bottomMaxPx = 9 * (pBottom.width / 9.63);
+    const bottomVwCoef = (bottomMaxPx / 14.4).toFixed(3);
+    root.setProperty('--lw-plaque-bottom-font', `clamp(5px, ${bottomVwCoef}vw, ${Math.round(bottomMaxPx)}px)`);
+    root.setProperty('--lw-plaque-bottom-tracking', '0.08em');
+  }
+}
+
+// 개선1(2026-07-05): 작품 소개 블록 한/영 토글 — 세션 변수(새로고침 시 초기화), 모든 화면의
+// 소개 블록(4곳)이 함께 전환된다.
+let lwIntroLang = 'ko';
+function lwToggleIntroLang(){
+  lwIntroLang = (lwIntroLang === 'ko') ? 'en' : 'ko';
+  document.querySelectorAll('.lw-intro-desc-ko').forEach(function(el){ el.style.display = (lwIntroLang === 'ko') ? '' : 'none'; });
+  document.querySelectorAll('.lw-intro-desc-en').forEach(function(el){ el.style.display = (lwIntroLang === 'en') ? '' : 'none'; });
+  document.querySelectorAll('.lw-lang-toggle').forEach(function(btn){ btn.classList.toggle('is-en', lwIntroLang === 'en'); });
+}
+
+// 개선2(2026-07-05): Mission 화면 "현재 문장 1개" 카드. renderSentencePanel/lwFlashSentenceRow는
+// 그대로 두고(Opening/Story Tell 5문장 유지), Mission 화면에서만 정답 문장 1개를 카드로 보여준다.
+function lwShowCurrentSentenceCard(idx){
+  const sentences = programData && programData.story_tell && programData.story_tell.sentences;
+  if (!sentences || !sentences[idx]) return;
+  const hint = document.getElementById('lwIdleHint');
+  const card = document.getElementById('lwCurrentSentenceCard');
+  const text = document.getElementById('lwCurrentSentenceText');
+  if (!card || !text) return;
+  text.textContent = sentences[idx];
+  card.style.display = 'none';
+  void card.offsetWidth; // 재생 애니메이션 재시작(같은 미션 재클릭 대비)
+  card.style.display = '';
+  if (hint) hint.style.display = 'none';
+}
+function lwResetCurrentSentenceSlot(){
+  const hint = document.getElementById('lwIdleHint');
+  const card = document.getElementById('lwCurrentSentenceCard');
+  if (card) card.style.display = 'none';
+  if (hint) hint.style.display = '';
+}
+
+// ── State ─────────────────────────────────────────────────
+let programData          = null;
+// Static build (no server.js): text → R2 mp3 URL map, from lesson_ti_img8.json's tts_manifest
+let TTS_MANIFEST          = {};
+
+// 세로 모드 안내 오버레이 상태 — 표시 여부 자체는 CSS 미디어쿼리가 결정하지만(#lwRotateOverlay),
+// JS에서도 같은 조건을 matchMedia로 추적해 speak()가 오버레이 떠 있는 동안 음성을 재생하지
+// 않고 기다리게 한다(가로로 돌리면 그 시점부터 이어서 재생). 레이아웃/기존 로직은 무변경.
+const _rotateMQ = window.matchMedia('(orientation: portrait) and (max-width: 640px)');
+let _rotateOverlayVisible = _rotateMQ.matches;
+function _updateRotateOverlayState() {
+  const wasVisible = _rotateOverlayVisible;
+  _rotateOverlayVisible = _rotateMQ.matches;
+  if (wasVisible && !_rotateOverlayVisible) {
+    document.dispatchEvent(new Event('lw:rotate-overlay-hidden'));
+  }
+}
+if (_rotateMQ.addEventListener) _rotateMQ.addEventListener('change', _updateRotateOverlayState);
+window.addEventListener('resize', _updateRotateOverlayState);
+window.addEventListener('orientationchange', _updateRotateOverlayState);
+let currentStep          = 1;
+let doneSteps            = new Set();
+let selectedChoice       = {};
+let selectedSentences    = [];   // 학생이 실제로 통과한 문장 (A/B/good_alt), index 0..4
+let selectedChoices      = [];   // { step, label: 'a'|'b'|'good_alt', sentence }, index 0..4
+let appMode              = 'lesson'; // 'lesson' | 'repeat' | 'fullChallenge' | 'chatgpt'
+let activeInputId        = 'studentInput';
+let activeSendFn         = () => sendAnswer();
+let repeatRound          = 1;
+let repeatIndex          = 0;
+let ps005Step            = 1;      // 1..5
+let ps005Phase           = 'choose'; // 'choose' | 'why' | 'repeat' | 'solo'
+// Standard_PS001 전용 상태 (PS005 상태와 완전히 분리)
+let stdStep               = 1;        // 1..5 (Choose 단계)
+let stdSubPhase            = 'choose'; // 'choose' | 'reason'
+let stdSelectedChoices      = [];
+let stdSelectedSentences    = [];
+let stdGuideIndex          = 0;        // 0..4 (Guided Review 단계)
+let stdGuidePhase          = 'repeat'; // 'repeat' | 'solo'
+// Standard_PS001 전용 음성 실행 잠금 (이전 TTS/콜백이 다음 단계 음성과 겹치는 것을 방지)
+let stdSpeechRunId         = 0;
+let stdIsSpeakingSequence  = false;
+// Standard_PS001_LostWords 전용 상태 (std*/ps005* 상태와 완전히 분리)
+let lwMissionIndex         = 0;         // 0..4 (missions 배열 index)
+let lwFoundHotspots        = new Set(); // 이미 성공한 hotspot_id 모음
+let lwIsProcessing         = false;     // hotspot 클릭 중복 처리 방지
+let lwSpeechRunId          = 0;         // Lost Words 전용 음성 겹침 방지 토큰
+let isComplete           = false;
+let isBusy               = false;
+let lastReply            = '';
+let autoSendTimer        = null;
+const params             = new URLSearchParams(window.location.search);
+const requestedLesson    = params.get('lesson') || 'peter_rabbit_img1';
+const LOCAL_LESSONS = {
+  peter_rabbit_img2: {
+    program_id:     'PS002',
+    lesson_id:      'peter_rabbit_img2',
+    display_label:  'PS002',
+    scene_id:       'peter_rabbit_img2',
+    story_title:    'Peter Rabbit',
+    scene_title:    'Peter Rabbit Scene 2 — Under the Garden Gate',
+    scene_number:   2,
+    set_focus:      'Choose A or B for each step and describe the picture.',
+    review_from:    'peter_rabbit_img1',
+    review_sentence:'I see Peter.',
+    key_expression: 'I see Peter. / Peter is under the gate. / He is going into the garden.',
+    sentences: [
+      'I see Peter.',
+      'Peter is under the gate.',
+      'He is going into the garden.',
+      'There are carrots in the garden.',
+      'He looks excited.',
+    ],
+    choice_b: [
+      'I see a rabbit.',
+      'Peter is crawling under the gate.',
+      'He is sneaking into the garden.',
+      'I see carrots in the garden.',
+      'He looks happy.',
+    ],
+    expansion: [
+      'He is wearing a blue jacket.',
+      'Peter wants to explore the garden.',
+    ],
+    mom_hints: [
+      '두 문장 중 하나를 골라 말해도 좋아요.',
+      '문 아래에 있다는 표현을 A 또는 B로 말해보세요.',
+      '정원 안으로 들어가는 장면을 골라서 말해요.',
+      '당근이 보이는지 A 또는 B로 말해 보세요.',
+      '피터의 기분을 A 또는 B로 말해 보세요.',
+    ],
+    start_guide:    '안녕하세요. 오늘은 Peter Rabbit 두 번째 그림입니다.\nLook at the picture. You can say it in two ways.\nChoose A or B, and say it.\n\nStep 1\nA. I see Peter.\nB. I see a rabbit.',
+    completion_message: 'Excellent! You practiced five steps with two ways to say each one.\nYou finished Peter Rabbit Scene 2!',
+    image_src:      '/api/image/PR02',
+    image_alt:      'Peter Rabbit Scene 2 - Under the Garden Gate',
+    image_label:    'Peter Rabbit · Scene 2 · PS002',
+    picture_prompt: 'Peter Rabbit is crawling under a wooden garden gate. He is wearing a blue jacket. There are carrots and cabbages in the garden. He looks curious and excited.',
+    chatgpt_picture_summary: 'Peter Rabbit is crawling under a garden gate. There are carrots and vegetables in the garden.',
+    scene_keywords: ['Peter', 'rabbit', 'gate', 'under', 'garden', 'carrots', 'cabbages', 'blue jacket', 'excited', 'happy', 'curious'],
+    sentence_alternatives: [
+      ['There is Peter.', 'I can see Peter.', 'I see the rabbit.'],
+      ['Peter is going under the gate.', 'The rabbit is under the gate.', 'Peter is sneaking under the gate.'],
+      ['Peter is entering the garden.', 'He is entering the garden.', 'The rabbit is going into the garden.'],
+      ['I can see carrots.', 'There are some carrots.', 'Carrots are in the garden.'],
+      ['Peter looks excited.', 'He looks curious.', 'Peter looks glad.'],
+    ],
+    repeat_comments: [
+      {
+        a: { korean_comment: '좋아요. 너는 "I see Peter."를 골랐네요. 이 말은 "나는 피터를 봐요"라는 뜻이에요. 그림에서 피터가 보이니까 좋은 시작 문장이에요.', english_intro: 'I see Peter.' },
+        b: { korean_comment: '좋아요. 너는 "I see a rabbit."을 골랐네요. 이 말은 "나는 토끼를 봐요"라는 뜻이에요. 피터를 아직 이름으로 말하지 않고 토끼라고 표현해도 괜찮아요.', english_intro: 'I see a rabbit.' },
+      },
+      {
+        a: { korean_comment: '좋아요. 너는 "Peter is under the gate."를 골랐네요. 이 말은 "피터가 문 아래에 있어요"라는 뜻이에요. 위치를 말하는 좋은 표현이에요.', english_intro: 'Peter is under the gate.' },
+        b: { korean_comment: '좋아요. 너는 "Peter is crawling under the gate."를 골랐네요. 이 말은 "피터가 문 아래로 기어가고 있어요"라는 뜻이에요. 피터의 움직임까지 말해 주는 더 자세한 표현이에요.', english_intro: 'Peter is crawling under the gate.' },
+      },
+      {
+        a: { korean_comment: '좋아요. 너는 "He is going into the garden."을 골랐네요. 이 말은 "그가 정원 안으로 들어가고 있어요"라는 뜻이에요. 피터가 어디로 가는지 말해 주는 표현이에요.', english_intro: 'He is going into the garden.' },
+        b: { korean_comment: '좋아요. 너는 "He is sneaking into the garden."을 골랐네요. 이 말은 "그가 몰래 정원 안으로 들어가고 있어요"라는 뜻이에요. 몰래 들어가는 느낌이 있어서 그림과 잘 어울려요.', english_intro: 'He is sneaking into the garden.' },
+      },
+      {
+        a: { korean_comment: '좋아요. 너는 "There are carrots in the garden."을 골랐네요. 이 말은 "정원에 당근들이 있어요"라는 뜻이에요. 그림 속 물건을 설명하는 좋은 문장이에요.', english_intro: 'There are carrots in the garden.' },
+        b: { korean_comment: '좋아요. 너는 "I see carrots in the garden."을 골랐네요. 이 말은 "나는 정원에서 당근들을 봐요"라는 뜻이에요. 내가 보는 것을 직접 말하는 쉬운 표현이에요.', english_intro: 'I see carrots in the garden.' },
+      },
+      {
+        a: { korean_comment: '좋아요. 너는 "He looks excited."를 골랐네요. 이 말은 "그가 신나 보인다"라는 뜻이에요. 피터가 정원에 들어가서 기대하는 느낌을 말할 수 있어요.', english_intro: 'He looks excited.' },
+        b: { korean_comment: '좋아요. 너는 "He looks happy."를 골랐네요. 이 말은 "그가 행복해 보인다"라는 뜻이에요. 피터의 기분을 쉽게 표현하는 좋은 문장이에요.', english_intro: 'He looks happy.' },
+      },
+    ],
+    model:       'local-fallback',
+    total_steps: 5,
+  },
+  peter_rabbit_img2_old: {
+    program_id:     'PS002_OLD',
+    lesson_id:      'peter_rabbit_img2_old',
+    display_label:  'OLD PS002',
+    scene_id:       'peter_rabbit_img2_old',
+    story_title:    'Peter Rabbit',
+    scene_title:    'OLD PS002 — Peter Rabbit Scene 2 — Under the Garden Gate',
+    scene_number:   2,
+    set_focus:      'Review one sentence from Scene 1 and learn four new picture sentences.',
+    review_from:    'peter_rabbit_img1',
+    review_sentence:'I see Peter.',
+    key_expression: 'I see Peter. / Peter is under the gate. / He is going into the garden.',
+    sentences: [
+      'I see Peter.',
+      'Peter is under the gate.',
+      'He is going into the garden.',
+      'There are carrots in the garden.',
+      'He looks excited.',
+    ],
+    expansion: [
+      'He is wearing a blue jacket.',
+      'Peter wants to explore the garden.',
+    ],
+    mom_hints: [
+      '어제 본 피터를 다시 찾아보세요.',
+      '문 아래에 있다는 표현을 연습해요.',
+      '정원 안으로 들어가는 장면이에요.',
+      '당근이 보이는지 말해 보세요.',
+      '피터의 기분을 말해 보세요.',
+    ],
+    start_guide:    '안녕하세요. 오늘은 Peter Rabbit 두 번째 그림입니다 (OLD 버전).\n먼저 어제 배운 문장 하나를 다시 말해 볼게요.\nSay this: I see Peter.',
+    completion_message: 'Excellent! You used one review sentence and four new sentences.\nYou finished Peter Rabbit Scene 2 (OLD)!',
+    image_src:      '/api/image/PR02',
+    image_alt:      'Peter Rabbit Scene 2 - Under the Garden Gate (OLD)',
+    image_label:    'Peter Rabbit · Scene 2 · OLD PS002',
+    picture_prompt: 'Peter Rabbit is crawling under a wooden garden gate. He is wearing a blue jacket. There are carrots and cabbages in the garden. He looks curious and excited.',
+    scene_keywords: ['Peter', 'rabbit', 'gate', 'under', 'garden', 'carrots', 'cabbages', 'blue jacket', 'excited', 'curious'],
+    sentence_alternatives: [
+      ['I can see Peter.', 'I see the rabbit.', 'There is Peter.', 'Peter is here.', 'I see a rabbit.'],
+      ['Peter is under a gate.', 'The rabbit is under the gate.', 'He is under the gate.', 'He is under the wooden gate.', 'Peter is below the gate.'],
+      ['Peter is going into the garden.', 'He is entering the garden.', 'Peter is entering the garden.', 'He goes into the garden.', 'The rabbit is going into the garden.'],
+      ['I see carrots in the garden.', 'There are some carrots.', 'Carrots are in the garden.', 'I can see carrots.', 'There are carrots near Peter.'],
+      ['He is excited.', 'Peter looks happy.', 'He looks happy.', 'He looks curious.', 'Peter looks excited.', 'He is happy.'],
+    ],
+    model:       'local-fallback',
+    total_steps: 5,
+  },
+  peter_rabbit_img4: {
+    program_id:     'PS004',
+    lesson_id:      'peter_rabbit_img4',
+    display_label:  'PS004',
+    scene_id:       'peter_rabbit_img4',
+    story_title:    'Peter Rabbit',
+    scene_title:    'Peter Rabbit Scene 4 — Peter Ran Away',
+    scene_number:   4,
+    set_focus:      'Choose A or B for each step and describe the picture.',
+    key_expression: 'Peter ran away. / Peter ran away fast. / Peter ran away as fast as he could.',
+    sentences: [
+      'The farmer saw Peter.',
+      'Peter looked scared.',
+      'Peter ran away.',
+      'Peter ran away fast.',
+      'Peter ran away as fast as he could.',
+    ],
+    choice_b: [
+      'The farmer found Peter.',
+      'Peter was scared.',
+      'Peter started to run away.',
+      'Peter ran away very fast.',
+      'Peter ran away as fast as possible.',
+    ],
+    expansion: [
+      'The farmer was angry.',
+      'Peter hid in the vegetables.',
+    ],
+    mom_hints: [
+      '농부가 Peter를 어떻게 봤는지 A 또는 B로 말해보세요.',
+      'Peter의 기분을 A 또는 B로 말해보세요.',
+      'Peter가 도망가는 장면을 말해보세요.',
+      '얼마나 빨리 도망갔는지 A 또는 B로 말해보세요.',
+      '최대한 빨리 도망간 표현을 A 또는 B로 말해보세요.',
+    ],
+    start_guide:    '안녕하세요. 오늘은 Peter Rabbit 네 번째 그림입니다.\nLook at the picture. You can say it in two ways.\nChoose A or B, and say it.\n\nStep 1\nA. The farmer saw Peter.\nB. The farmer found Peter.',
+    completion_message: 'Excellent! You practiced five steps with two ways to say each one.\nYou finished Peter Rabbit Scene 4!',
+    image_src:      '/api/image/PR04',
+    image_alt:      'Peter Rabbit Scene 4 - Peter Ran Away',
+    image_label:    'Peter Rabbit · Scene 4 · PS004',
+    picture_prompt: 'The farmer saw Peter in the garden. Peter looked scared. He ran away through the vegetables.',
+    chatgpt_picture_summary: 'The farmer saw Peter in the garden. Peter looked scared. He ran away through the vegetables.',
+    scene_keywords: ['farmer', 'Peter', 'rabbit', 'garden', 'vegetables', 'scared', 'afraid', 'ran', 'away'],
+    sentence_alternatives: [
+      ['The farmer pointed at Peter.', 'The farmer found Peter.'],
+      ['Peter was afraid.', 'Peter looked frightened.'],
+      ['The rabbit ran away.', 'Peter ran off.'],
+      ['Peter ran away very fast.', 'Peter ran away in a hurry.'],
+      ['He ran away as fast as he could.', 'Peter ran away with all his speed.'],
+    ],
+    repeat_comments: [
+      {
+        a: { korean_comment: '좋아요. 너는 "The farmer saw Peter."를 골랐네요. 이 말은 "농부가 피터를 보았다"라는 뜻이에요. 그림에서 농부가 피터를 보고 있으니까 잘 맞는 표현이에요.', english_intro: 'The farmer saw Peter.' },
+        b: { korean_comment: '좋아요. 너는 "The farmer found Peter."를 골랐네요. 이 말은 "농부가 피터를 발견했다"라는 뜻이에요. 그림에서는 피터가 정원에서 들킨 장면이니까 아주 잘 어울려요.', english_intro: 'The farmer found Peter.' },
+      },
+      {
+        a: { korean_comment: '좋아요. 너는 "Peter looked scared."를 골랐네요. 이 말은 "피터가 무서워 보였다"라는 뜻이에요. 피터의 표정을 보면 놀라고 무서워하는 것처럼 보여요.', english_intro: 'Peter looked scared.' },
+        b: { korean_comment: '좋아요. 너는 "Peter was scared."를 골랐네요. 이 말은 "피터가 무서워했다"라는 뜻이에요. 농부에게 들켰기 때문에 피터가 무서워했어요.', english_intro: 'Peter was scared.' },
+      },
+      {
+        a: { korean_comment: '좋아요. 너는 "Peter ran away."를 골랐네요. 이 말은 "피터가 도망갔다"라는 뜻이에요. 오늘의 핵심 표현이에요.', english_intro: 'Peter ran away.' },
+        b: { korean_comment: '좋아요. 너는 "Peter started to run away."를 골랐네요. 이 말은 "피터가 도망가기 시작했다"라는 뜻이에요. 피터가 막 도망가려는 장면에 잘 맞아요.', english_intro: 'Peter started to run away.' },
+      },
+      {
+        a: { korean_comment: '좋아요. 너는 "Peter ran away fast."를 골랐네요. 이 말은 "피터가 빨리 도망갔다"라는 뜻이에요. "ran away"에 "fast"를 붙여서 더 빠르게 말하는 표현이에요.', english_intro: 'Peter ran away fast.' },
+        b: { korean_comment: '좋아요. 너는 "Peter ran away very fast."를 골랐네요. 이 말은 "피터가 아주 빨리 도망갔다"라는 뜻이에요. "very fast"가 들어가서 더 급한 느낌이 나요.', english_intro: 'Peter ran away very fast.' },
+      },
+      {
+        a: { korean_comment: '좋아요. 너는 "Peter ran away as fast as he could."를 골랐네요. 이 말은 "피터가 할 수 있는 만큼 가장 빠르게 도망갔다"라는 뜻이에요. 오늘 가장 중요한 확장 문장이에요.', english_intro: 'Peter ran away as fast as he could.' },
+        b: { korean_comment: '좋아요. 너는 "Peter ran away as fast as possible."을 골랐네요. 이 말은 "피터가 가능한 한 빠르게 도망갔다"라는 뜻이에요. A 문장과 뜻이 비슷한 좋은 표현이에요.', english_intro: 'Peter ran away as fast as possible.' },
+      },
+    ],
+    model:       'local-fallback',
+    total_steps: 5,
+  },
+  peter_rabbit_img5: {
+    lesson_id:      'peter_rabbit_img5',
+    program_id:     'PS005',
+    display_label:  'PS005',
+    scene_id:       'S01',
+    story_title:    'Peter Rabbit',
+    scene_title:    'Peter Rabbit Scene 1 — Mother Rabbit and Little Rabbits',
+    scene_number:   1,
+    set_focus:      'Choose a short sentence for each step, then practice it with the teacher.',
+    key_expression: 'I see a mother rabbit. / They are in the garden.',
+    sentences: [
+      'I see a mother rabbit.',
+      'She is wearing an apron.',
+      'Little rabbits are listening.',
+      'They are in the garden.',
+      'They are ready to go out.',
+    ],
+    expansion: [
+      'The mother rabbit is talking to her children.',
+    ],
+    mom_hints: [
+      '엄마 토끼가 보이는지 골라 보세요.',
+      '엄마 토끼 옷을 골라 보세요.',
+      '아기 토끼들이 뭘 하는지 골라 보세요.',
+      '어디에 있는지 골라 보세요.',
+      '무엇을 할지 골라 보세요.',
+    ],
+    start_guide: '안녕하세요.\n오늘은 짧게 말해요.\nA, B, C 중에서 골라요.\n\nStep 1\nA. I see a mother rabbit.\nB. I see baby rabbits.\nC. I see a garden.',
+    completion_message: 'Great! You said five short sentences!',
+    image_src:      '/api/image/PR01_PS005',
+    image_alt:      'Peter Rabbit Scene 1 - Mother Rabbit and Little Rabbits (PS005)',
+    image_label:    'Peter Rabbit · Scene 1 · PS005',
+    picture_prompt: 'A mother rabbit wearing a white apron stands at the door of her burrow. Four little rabbits in blue, yellow, red and pink clothes stand in front of her. There is a garden with flowers around them.',
+    chatgpt_picture_summary: 'A mother rabbit wearing an apron stands at the door of her burrow. Four little rabbits stand in front of her in a garden with flowers.',
+    scene_keywords: ['mother', 'rabbit', 'little', 'rabbits', 'apron', 'garden', 'flowers', 'listening', 'hole', 'outside'],
+    choice_rounds: [
+      {
+        step: 1,
+        question: 'What do you see first?',
+        choices: {
+          a: { sentence: 'I see a mother rabbit.', korean_meaning: '엄마 토끼가 보여요' },
+          b: { sentence: 'I see baby rabbits.', korean_meaning: '아기 토끼들이 보여요' },
+          c: { sentence: 'I see a garden.', korean_meaning: '정원이 보여요' },
+        },
+        correct: 'a',
+        source_sentence:  'I see a mother rabbit.',
+        student_sentence: 'I see a mother rabbit.',
+        short_hint: '엄마 토끼가 보여요.',
+      },
+      {
+        step: 2,
+        question: 'What is she wearing?',
+        choices: {
+          a: { sentence: 'She is wearing an apron.', korean_meaning: '앞치마를 입고 있어요' },
+          b: { sentence: 'She is holding a carrot.', korean_meaning: '당근을 들고 있어요' },
+          c: { sentence: 'She is wearing a jacket.', korean_meaning: '재킷을 입고 있어요' },
+        },
+        correct: 'a',
+        source_sentence:  'She is wearing an apron.',
+        student_sentence: 'She is wearing an apron.',
+        short_hint: '엄마 토끼 옷을 볼게요.',
+      },
+      {
+        step: 3,
+        question: 'What are they doing?',
+        choices: {
+          a: { sentence: 'Little rabbits are listening.', korean_meaning: '아기 토끼들이 듣고 있어요' },
+          b: { sentence: 'Little rabbits are running.', korean_meaning: '아기 토끼들이 뛰고 있어요' },
+          c: { sentence: 'Little rabbits are eating.', korean_meaning: '아기 토끼들이 먹고 있어요' },
+        },
+        correct: 'a',
+        source_sentence:  'Little rabbits are listening to their mother.',
+        student_sentence: 'Little rabbits are listening.',
+        short_hint: '아기 토끼들이 듣고 있어요.',
+      },
+      {
+        step: 4,
+        question: 'Where are they?',
+        choices: {
+          a: { sentence: 'They are in the garden.', korean_meaning: '정원에 있어요' },
+          b: { sentence: 'They are in the house.', korean_meaning: '집 안에 있어요' },
+          c: { sentence: 'They are under the gate.', korean_meaning: '문 아래에 있어요' },
+        },
+        correct: 'a',
+        source_sentence:  'They are standing in the garden.',
+        student_sentence: 'They are in the garden.',
+        short_hint: '정원에 있어요.',
+      },
+      {
+        step: 5,
+        question: 'What are they ready to do?',
+        choices: {
+          a: { sentence: 'They are ready to go out.', korean_meaning: '나갈 준비가 됐어요' },
+          b: { sentence: 'They are ready to eat.', korean_meaning: '먹을 준비가 됐어요' },
+          c: { sentence: 'They are ready to sleep.', korean_meaning: '잘 준비가 됐어요' },
+        },
+        correct: 'a',
+        source_sentence:  'The little rabbits are ready to go outside.',
+        student_sentence: 'They are ready to go out.',
+        short_hint: '밖에 나갈 준비를 해요.',
+      },
+    ],
+    model:       'local-fallback',
+    total_steps: 5,
+  },
+  standard_ps001: {
+    lesson_id:      'standard_ps001',
+    program_id:     'Standard_PS001',
+    display_label:  'Standard_PS001',
+    scene_id:       'S01',
+    story_title:    'Peter Rabbit',
+    scene_title:    'Standard PS001 — Picture Speaking Method',
+    scene_number:   1,
+    is_standard_method: true,
+    set_focus:      'CEC Picture Speaking Standard Method — Look, Choose, Review, Tell.',
+    key_expression: 'I see a mother rabbit. / They are in the garden.',
+    sentences: [
+      'I see a mother rabbit.',
+      'She is wearing an apron.',
+      'The rabbits are listening.',
+      'They are in the garden.',
+      'They are ready to go out.',
+    ],
+    expansion: [
+      'The mother rabbit is talking to her children.',
+    ],
+    mom_hints: [
+      '그림을 보고 골라 보세요.',
+      '앞치마를 입고 있는지 볼까요.',
+      '토끼들이 무엇을 하는지 볼까요.',
+      '어디에 있는지 볼까요.',
+      '무엇을 할지 볼까요.',
+    ],
+    start_guide: '안녕하세요.\n오늘은 그림을 보고\n짧게 말해요.',
+    completion_message: 'You finished the Standard Picture Speaking Method!',
+    image_src:      '/api/image/PR01_STANDARD',
+    image_alt:      'Peter Rabbit Scene 1 - Mother Rabbit and Little Rabbits (Standard PS001)',
+    image_label:    'Peter Rabbit · Scene 1 · Standard PS001',
+    picture_prompt: 'A mother rabbit wearing a white apron stands at the door of her burrow. Four little rabbits in blue, yellow, red and pink clothes stand in front of her. There is a garden with flowers around them.',
+    chatgpt_picture_summary: 'A mother rabbit wearing an apron stands at the door of her burrow. Four little rabbits stand in front of her in a garden with flowers.',
+    scene_keywords: ['mother', 'rabbit', 'little', 'rabbits', 'apron', 'garden', 'flowers', 'listening', 'hole', 'outside'],
+    choice_rounds: [
+      {
+        step: 1,
+        choices: {
+          a: { sentence: 'I see a mother rabbit.', korean_meaning: '엄마 토끼가 보여요' },
+          b: { sentence: 'I see baby rabbits.', korean_meaning: '아기 토끼들이 보여요' },
+          c: { sentence: 'I see a garden.', korean_meaning: '정원이 보여요' },
+        },
+        correct: 'a',
+        source_sentence:  'I see a mother rabbit.',
+        student_sentence: 'I see a mother rabbit.',
+        short_hint: '엄마 토끼가 보여요.',
+      },
+      {
+        step: 2,
+        choices: {
+          a: { sentence: 'She is wearing an apron.', korean_meaning: '그녀는 앞치마를 입고 있어요' },
+          b: { sentence: 'She is holding a carrot.', korean_meaning: '당근을 들고 있어요' },
+          c: { sentence: 'She is wearing a jacket.', korean_meaning: '재킷을 입고 있어요' },
+        },
+        correct: 'a',
+        source_sentence:  'She is wearing an apron.',
+        student_sentence: 'She is wearing an apron.',
+        short_hint: '앞치마가 보여요.',
+      },
+      {
+        step: 3,
+        choices: {
+          a: { sentence: 'The rabbits are listening.', korean_meaning: '토끼들이 듣고 있어요' },
+          b: { sentence: 'The rabbits are running.', korean_meaning: '토끼들이 뛰고 있어요' },
+          c: { sentence: 'The rabbits are eating.', korean_meaning: '토끼들이 먹고 있어요' },
+        },
+        correct: 'a',
+        source_sentence:  'Little rabbits are listening to their mother.',
+        student_sentence: 'The rabbits are listening.',
+        short_hint: '토끼들이 듣고 있어요.',
+      },
+      {
+        step: 4,
+        choices: {
+          a: { sentence: 'They are in the garden.', korean_meaning: '그들은 정원에 있어요' },
+          b: { sentence: 'They are in the house.', korean_meaning: '집 안에 있어요' },
+          c: { sentence: 'They are under the gate.', korean_meaning: '문 아래에 있어요' },
+        },
+        correct: 'a',
+        source_sentence:  'They are standing in the garden.',
+        student_sentence: 'They are in the garden.',
+        short_hint: '정원에 있어요.',
+      },
+      {
+        step: 5,
+        choices: {
+          a: { sentence: 'They are ready to go out.', korean_meaning: '그들은 밖에 나갈 준비가 되었어요' },
+          b: { sentence: 'They are ready to eat.', korean_meaning: '먹을 준비가 됐어요' },
+          c: { sentence: 'They are ready to sleep.', korean_meaning: '잘 준비가 됐어요' },
+        },
+        correct: 'a',
+        source_sentence:  'The little rabbits are ready to go outside.',
+        student_sentence: 'They are ready to go out.',
+        short_hint: '밖에 나갈 준비를 해요.',
+      },
+    ],
+    model:       'local-fallback',
+    total_steps: 5,
+  },
+  treasure_island_img1: {
+    program_id:     'TREASURE_ISLAND_001',
+    lesson_id:      'treasure_island_img1',
+    display_label:  'Treasure Island — Speaking 1',
+    scene_id:       'treasure_island_img1',
+    scene_title:    'Treasure Island - Speaking 1',
+    set_focus:      'Basic picture description',
+    key_expression: 'Look at the picture and say four sentences.',
+    sentences: [
+      'I see a boy looking at a map.',
+      'The map is on the table.',
+      'There is a treasure chest near him.',
+      'He looks excited.',
+    ],
+    expansion: [
+      'He may be looking for treasure.',
+      'I think he wants to go on an adventure.',
+    ],
+    mom_hints: [
+      '먼저 그림을 보고 문장을 확인하세요.',
+      '오른쪽 첫 번째 문장을 말해 보세요.',
+      '지도, 테이블, 보물 상자, 신난 표정을 차례로 보세요.',
+    ],
+    image_src:   'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/camp-a/speaking/treasure_island_img1.png',
+    image_alt:   'Treasure Island - Speaking 1',
+    image_label: 'Treasure Island · Speaking 1',
+    model:       'local-fallback',
+    total_steps: 4,
+  },
+};
+
+// STT
+let recognition          = null;
+let isRecognizing        = false;
+let continuousListening  = false;
+let isSpeaking           = false;
+
+// TTS
+let _currentAudio        = null;
+
+// Session
+let firstAnswerSent      = false;
+
+// ── Init ──────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => { initVoice(); loadProgram(); initFloatingImage(); });
+
+// Static build (no server.js): lesson data is a local JSON file shipped alongside
+// index.html (not a /api/ call). TTS manifest is merged into it as tts_manifest —
+// its values are full R2 mp3 URLs, so no separate manifest.json fetch is needed
+// (only index.html + lesson_ti_img8.json are deployed to GitHub Pages; audio/images/
+// video live on R2).
+async function loadProgram() {
+  try {
+    const lessonRes = await fetch('./lesson_ti_img8.json');
+    if (!lessonRes.ok) throw new Error(`lesson_ti_img8.json HTTP ${lessonRes.status}`);
+    programData = await lessonRes.json();
+    TTS_MANIFEST = programData.tts_manifest || {};
+    buildUI();
+  } catch (e) {
+    setCoach('정적 파일을 불러올 수 없습니다.\n\nError: ' + e.message);
+    setMom('static_build 폴더를 정적 서버(예: python -m http.server)로 열었는지 확인하세요.');
+  }
+}
+
+function buildUI() {
+  // Standard_PS001_LostWords: 큰 책 화면 기반 새 수업 모드.
+  // pageBody(기존 모든 lesson이 공유하는 2-column 레이아웃)를 전혀 건드리지 않고
+  // 완전히 분리된 lwRoot 컨테이너만 사용하므로, 다른 처리보다 가장 먼저 분기해서 return한다.
+  if (programData.is_lost_words) {
+    document.getElementById('pageBody').style.display = 'none';
+    document.getElementById('completionScreen').classList.remove('show');
+    document.getElementById('lwRoot').style.display = '';
+    document.title = 'CEC Picture Speaking — ' + (programData.display_label || programData.scene_title);
+    document.getElementById('lessonBadge').textContent = programData.display_label || programData.program_id;
+    document.getElementById('sceneTitle').textContent = '— ' + programData.scene_title;
+    lwApplyLessonTheme();
+    lwStart();
+    return;
+  }
+
+  currentStep = 1;
+  doneSteps = new Set();
+  selectedSentences = [];
+  selectedChoices = [];
+  repeatRound = 1;
+  repeatIndex = 0;
+  ps005Step = 1;
+  ps005Phase = 'choose';
+  isComplete = false;
+  switchView(programData.choice_rounds ? 'ps005' : 'lesson');
+  document.getElementById('completionScreen').classList.remove('show');
+  document.getElementById('pageBody').style.display = '';
+  document.getElementById('lwRoot').style.display = 'none';
+  document.body.classList.remove('lw-active');
+
+  const lb = document.getElementById('listenBtn');
+  if (lb && recognition) lb.disabled = false;
+  document.getElementById('readBtn').disabled = true;
+  lastReply = '';
+
+  document.title = 'CEC Picture Speaking — ' + (programData.display_label || programData.scene_title);
+  document.getElementById('lessonBadge').textContent = programData.display_label || programData.program_id;
+  document.getElementById('sceneTitle').textContent = '— ' + programData.scene_title;
+  document.getElementById('totalNum').textContent   = programData.total_steps;
+  document.getElementById('keyText').textContent    = programData.key_expression;
+  document.getElementById('stepNum').textContent    = currentStep;
+
+  const img = document.getElementById('sceneImg');
+  document.getElementById('imgLoading').style.display = 'flex';
+  document.getElementById('imgLoading').textContent = 'Loading image...';
+  img.style.display = 'none';
+  img.alt = programData.image_alt || programData.scene_title;
+  img.src = programData.image_src || '/api/image/S01';
+  document.getElementById('imageLabel').textContent = programData.image_label || programData.display_label || programData.scene_title;
+
+  // Standard_PS001: CEC Picture Speaking 표준 기법 (Look→Notice→Choose→Reason→Meaning→Guided Review→Tell→ChatGPT Handoff)
+  // PS005보다 먼저 검사해야 하며, PS005 쪽 조건/코드는 아래에서 전혀 건드리지 않는다.
+  if (programData.is_standard_method) {
+    document.getElementById('exp1').textContent = '';
+    document.getElementById('exp2').textContent = '';
+    firstAnswerSent = false;
+    welcomePlayed   = false;
+    _pendingWelcome = null;
+    setStatus('ready');
+    enableInput(true);
+    updateProgress();
+    requestFloatingRecalc();
+    // Standard_PS001은 stdGoLook()이 자체적으로 한국어 전용 안내를 재생하므로,
+    // 공통 playWelcomeOnce()(한국어+영어 혼합 웰컴 멘트)를 여기서는 호출하지 않는다.
+    // 이 줄이 있으면 stdGoLook()의 speakSequence 중간에 800ms 뒤 다른 음성이 끼어들어
+    // "두 가지 목소리가 겹쳐 들리는" 문제가 발생했다.
+    stdStart();
+    return;
+  }
+
+  // PS005: A/B/C 선택형 + AI Teacher Guided Repeat Practice 전용 흐름으로 분리
+  if (programData.choice_rounds) {
+    document.getElementById('exp1').textContent = '';
+    document.getElementById('exp2').textContent = '';
+    firstAnswerSent = false;
+    welcomePlayed   = false;
+    _pendingWelcome = null;
+    setStatus('ready');
+    enableInput(true);
+    updateProgress();
+    requestFloatingRecalc();
+    ps005Start();
+    setTimeout(playWelcomeOnce, 800);
+    return;
+  }
+
+  const container = document.getElementById('sentenceCards');
+  container.innerHTML = '';
+  selectedChoice = {};
+  programData.sentences.forEach((sentence, i) => {
+    const step  = i + 1;
+    const bText = programData.choice_b && programData.choice_b[i];
+    const card = document.createElement('div');
+    card.className = 's-card ' + (step === 1 ? 'active' : 'locked');
+    card.id = `card-${step}`;
+    if (bText) {
+      card.innerHTML =
+        `<div class="s-num">${step}</div>` +
+        `<div class="s-body">` +
+          `<div class="say-this-label">CHOOSE A OR B</div>` +
+          `<div class="choice-row">` +
+            `<button type="button" class="choice-opt" id="opt-${step}-a" onclick="selectChoice(${step},'a')">A. ${sentence}</button>` +
+            `<button type="button" class="choice-opt" id="opt-${step}-b" onclick="selectChoice(${step},'b')">B. ${bText}</button>` +
+          `</div>` +
+        `</div>` +
+        `<div class="s-icon" id="icon-${step}">○</div>`;
+    } else {
+      card.innerHTML =
+        `<div class="s-num">${step}</div>` +
+        `<div class="s-body">` +
+          `<div class="say-this-label">SAY THIS</div>` +
+          `<div class="s-text">${sentence}</div>` +
+        `</div>` +
+        `<div class="s-icon" id="icon-${step}">○</div>`;
+    }
+    container.appendChild(card);
+  });
+
+  document.getElementById('exp1').textContent = '5. ' + (programData.expansion[0] || '');
+  document.getElementById('exp2').textContent = '6. ' + (programData.expansion[1] || '');
+
+  firstAnswerSent = false;
+  welcomePlayed   = false;
+  _pendingWelcome = null;
+
+  setCoach(programData.start_guide ||
+    `안녕하세요. 환영합니다.\n\n저는 Robo Coach입니다.\n먼저 왼쪽 그림을 천천히 보세요.\n그리고 오른쪽 첫 번째 문장을 확인하세요.\n\n첫 번째 문장:\n"${programData.sentences[0]}"\n\n아래에서 Listen ON을 누르고 말하거나,\n입력창에 직접 문장을 입력해 보세요.\n말한 다음 Send를 눌러주세요.`
+  );
+  setMom(programData.mom_hints[0]);
+  setStatus('ready');
+  enableInput(true);
+  updateProgress();
+  requestFloatingRecalc();
+  setTimeout(playWelcomeOnce, 800);
+}
+
+function selectChoice(step, letter) {
+  if (step !== currentStep || isBusy || isComplete || !programData) return;
+  selectedChoice[step] = letter;
+  const optA = document.getElementById(`opt-${step}-a`);
+  const optB = document.getElementById(`opt-${step}-b`);
+  if (optA) optA.classList.toggle('selected', letter === 'a');
+  if (optB) optB.classList.toggle('selected', letter === 'b');
+  const text = letter === 'a' ? programData.sentences[step - 1] : programData.choice_b[step - 1];
+  const input = document.getElementById('studentInput');
+  if (input && !input.disabled && text) { input.value = text; input.focus(); }
+}
+
+// 학생이 통과한 step의 문장을 selectedSentences에 저장한다.
+// A/B를 클릭한 경우 입력창에 이미 정확한 A/B 문구가 채워지므로 아래 정확 일치 검사로 함께 처리된다.
+function recordSelectedSentence(step, answer) {
+  if (!programData) return;
+  const aText = programData.sentences[step - 1];
+  const bText = (programData.choice_b && programData.choice_b[step - 1]) || null;
+  const norm  = s => (s || '').toLowerCase().replace(/[^a-z\s]/g, '').trim();
+  const ansN  = norm(answer);
+
+  let chosen, label;
+  if (bText && ansN === norm(bText)) {
+    chosen = bText; label = 'b';
+  } else if (ansN === norm(aText)) {
+    chosen = aText; label = 'a';
+  } else {
+    const trimmed  = (answer || '').trim();
+    const words    = trimmed.split(/\s+/).filter(Boolean);
+    const isStable = words.length >= 2 && words.length <= 12 && /^[A-Za-z0-9'".,!? ]+$/.test(trimmed);
+    chosen = isStable ? trimmed : aText;
+    label  = 'good_alt';
+  }
+  selectedSentences[step - 1] = chosen;
+  selectedChoices[step - 1]   = { step, label, sentence: chosen };
+}
+
+// ── Image ─────────────────────────────────────────────────
+function onImgLoad() {
+  document.getElementById('imgLoading').style.display = 'none';
+  document.getElementById('sceneImg').style.display   = 'block';
+  requestFloatingRecalc();
+}
+function onImgError() {
+  document.getElementById('imgLoading').textContent = '⚠ Image not found';
+}
+
+// ── Floating left image (follows right-panel scroll, dampened) ──
+let _floatMaxMove   = 0;
+let _floatTicking   = false;
+const FLOAT_RATIO   = 0.75;
+
+function _floatComputeMax() {
+  const leftPanel  = document.getElementById('leftPanel');
+  const rightPanel = document.getElementById('rightPanel');
+  if (!leftPanel || !rightPanel) { _floatMaxMove = 0; return; }
+  const prevTransform = leftPanel.style.transform;
+  leftPanel.style.transform = 'none';
+  const slack = rightPanel.offsetHeight - leftPanel.offsetHeight;
+  leftPanel.style.transform = prevTransform;
+  _floatMaxMove = Math.max(0, slack);
+}
+
+function _floatUpdate() {
+  _floatTicking = false;
+  const leftPanel = document.getElementById('leftPanel');
+  if (!leftPanel) return;
+  const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+  const moveY = Math.min(_floatMaxMove, Math.max(0, scrollY * FLOAT_RATIO));
+  leftPanel.style.transform = `translateY(${moveY}px)`;
+}
+
+function _floatOnScroll() {
+  if (_floatTicking) return;
+  _floatTicking = true;
+  requestAnimationFrame(_floatUpdate);
+}
+
+function requestFloatingRecalc() {
+  requestAnimationFrame(() => { _floatComputeMax(); _floatUpdate(); });
+}
+
+function initFloatingImage() {
+  window.addEventListener('scroll', _floatOnScroll, { passive: true });
+  window.addEventListener('resize', () => { _floatComputeMax(); _floatUpdate(); });
+  requestFloatingRecalc();
+}
+
+// ── Send Answer ───────────────────────────────────────────
+async function sendAnswer() {
+  if (isBusy || isComplete || !programData) return;
+  // Lost Words 레슨은 이 함수(AI Teacher 코치 API)를 쓰지 않는다 — 자체 lw* 미션
+  // 플로우로 완결됨. pageBody(Send 버튼 포함)가 애초에 숨겨져 있어 정상 흐름에서는
+  // 도달 불가능하지만, /api/picture-speaking/coach 호출(정적 배포엔 서버 없음)을
+  // 확실히 막기 위해 명시적으로 한 번 더 막는다.
+  if (programData.is_lost_words) return;
+  const input  = document.getElementById('studentInput');
+  const answer = input.value.trim();
+  if (!answer) { input.focus(); return; }
+
+  const target = programData.sentences[currentStep - 1];
+  firstAnswerSent = true;
+  setLoading(true);
+  input.value = '';
+
+  try {
+    const res = await fetch('/api/picture-speaking/coach', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        program_id:      programData.lesson_id || programData.program_id || requestedLesson,
+        step:            currentStep,
+        target_sentence: target,
+        student_answer:  answer,
+      }),
+    });
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
+    const data = await res.json();
+    handleResponse(data, answer);
+  } catch (e) {
+    setCoach('Connection error.\nPlease check the server is running.\n\nTry again!');
+    setStatus('error');
+  } finally {
+    setLoading(false);
+  }
+}
+
+function handleResponse(data, answer) {
+  setCoach(data.coach_reply || '...');
+  if (data.mom_teacher_hint) setMom(data.mom_teacher_hint);
+
+  lastReply = data.speak_text || data.coach_reply || '';
+  const rb = document.getElementById('readBtn');
+  if (rb && lastReply) rb.disabled = false;
+  if (lastReply) speak(lastReply);
+
+  if (data.result === 'correct' || data.result === 'good_alt') {
+    recordSelectedSentence(currentStep, answer);
+    markDone(currentStep);
+    if (data.next_step === 'complete') {
+      showCompletion();
+    } else {
+      currentStep = typeof data.next_step === 'number' ? data.next_step : currentStep + 1;
+      updateCards();
+      updateProgress();
+    }
+  }
+}
+
+// ── UI Helpers ────────────────────────────────────────────
+function markDone(step) {
+  doneSteps.add(step);
+  const card = document.getElementById(`card-${step}`);
+  const icon = document.getElementById(`icon-${step}`);
+  if (card) card.className = 's-card done';
+  if (icon) icon.textContent = '✅';
+}
+
+function updateCards() {
+  programData.sentences.forEach((_, i) => {
+    const step = i + 1;
+    if (doneSteps.has(step)) return;
+    const card = document.getElementById(`card-${step}`);
+    if (card) card.className = 's-card ' + (step === currentStep ? 'active' : 'locked');
+  });
+  document.getElementById('stepNum').textContent = currentStep;
+}
+
+function updateProgress() {
+  const total = programData.total_steps;
+  const done  = doneSteps.size;
+  document.getElementById('progressFill').style.width  = Math.round(done / total * 100) + '%';
+  document.getElementById('progressLabel').textContent = `${done} / ${total}`;
+}
+
+function showCompletion() {
+  isComplete = true;
+  updateProgress();
+  document.getElementById('progressFill').style.width  = '100%';
+  document.getElementById('progressLabel').textContent = `${programData.total_steps} / ${programData.total_steps}`;
+
+  const isReviewLesson = !!programData.choice_b;
+  const hasNoBonusBox  = isReviewLesson || !!programData.choice_rounds;
+  document.getElementById('completionTitle').textContent = isReviewLesson
+    ? 'Excellent! You made 5 picture sentences!'
+    : `Excellent! All ${programData.total_steps} sentences complete!`;
+  document.getElementById('completionSub').textContent = isReviewLesson
+    ? "Now let's practice speaking them again."
+    : (programData.completion_message || 'You did a great job describing the picture in English. Now try the bonus sentences!');
+  document.getElementById('expansionBox').style.display = hasNoBonusBox ? 'none' : '';
+  document.getElementById('goRepeatBtn').style.display  = isReviewLesson ? 'inline-block' : 'none';
+  document.getElementById('tryAgainBtn').className = 'restart-btn' + (isReviewLesson ? ' secondary' : '');
+
+  document.getElementById('pageBody').style.display    = 'none';
+  document.getElementById('completionScreen').classList.add('show');
+  continuousListening = false;
+  _stopRecognition();
+  _updateListenUI();
+}
+
+// ── View switching (lesson / repeat / fullChallenge / chatgpt / ps005 / ps005Tell) ──
+function switchView(mode) {
+  appMode = mode;
+  const slots = {
+    lesson: 'lessonPractice', repeat: 'repeatPractice', fullChallenge: 'fullChallenge', chatgpt: 'chatgptPractice',
+    ps005: 'ps005View', ps005Tell: 'ps005Tell', ps005Copy: 'ps005Copy',
+    stdLook: 'stdLook', stdChoose: 'stdChoose', stdGuided: 'stdGuided', stdTell: 'stdTell', stdCopy: 'stdCopy',
+  };
+  Object.values(slots).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const target = document.getElementById(slots[mode]);
+  if (target) target.style.display = '';
+
+  const inputArea  = document.querySelector('.input-area');
+  const coachPanel = document.querySelector('.coach-panel');
+  const showShared = mode !== 'chatgpt' && mode !== 'ps005Copy' && mode !== 'stdLook' && mode !== 'stdCopy';
+  if (inputArea)  inputArea.style.display  = showShared ? '' : 'none';
+  if (coachPanel) coachPanel.style.display = showShared ? '' : 'none';
+
+  const nameLbl = document.getElementById('coachNameLabel');
+  if (nameLbl) nameLbl.textContent = (mode === 'repeat' || mode === 'fullChallenge' || mode === 'ps005' || mode === 'ps005Tell' || mode === 'ps005Copy' || mode.indexOf('std') === 0) ? 'Alloy Teacher' : 'Robo Coach';
+
+  const input = document.getElementById('studentInput');
+  if (mode === 'lesson') {
+    activeInputId = 'studentInput'; activeSendFn = sendAnswer;
+    if (input) input.placeholder = 'Type your sentence here and press Enter...';
+  } else if (mode === 'repeat') {
+    activeInputId = 'studentInput'; activeSendFn = rpSendAnswer;
+    if (input) input.placeholder = 'Say it, then press Send...';
+  } else if (mode === 'fullChallenge') {
+    activeInputId = 'studentInput'; activeSendFn = fcSendAnswer;
+    if (input) input.placeholder = 'Say all five, then press Send...';
+  } else if (mode === 'ps005') {
+    activeInputId = 'studentInput'; activeSendFn = ps005WhySend;
+    if (input) input.placeholder = 'Choose A, B, or C above...';
+  } else if (mode === 'ps005Tell') {
+    activeInputId = 'studentInput'; activeSendFn = ps005TellSend;
+    if (input) input.placeholder = 'Say all five sentences, then press Send...';
+  } else if (mode === 'stdChoose') {
+    activeInputId = 'studentInput'; activeSendFn = stdReasonSend;
+    if (input) input.placeholder = 'Choose A, B, or C above...';
+  } else if (mode === 'stdGuided') {
+    activeInputId = 'studentInput'; activeSendFn = stdGuideRepeatSend;
+    if (input) input.placeholder = 'Repeat after the teacher...';
+  } else if (mode === 'stdTell') {
+    activeInputId = 'studentInput'; activeSendFn = stdTellSend;
+    if (input) input.placeholder = 'Say all five sentences, then press Send...';
+  }
+}
+
+// ── Page 2: Repeat Practice ──────────────────────────────────
+function goToRepeatPractice() {
+  if (!programData || !programData.choice_b || !selectedSentences.length) {
+    restartSession();
+    return;
+  }
+  document.getElementById('completionScreen').classList.remove('show');
+  document.getElementById('pageBody').style.display = '';
+  isComplete = false;
+  switchView('repeat');
+  repeatRound = 1;
+  repeatIndex = 0;
+  enableInput(true);
+  renderRepeatStep();
+  requestFloatingRecalc();
+}
+
+// step(1-based)에 대해 화면/음성에 쓸 한국어 설명 + 연습 문장을 결정한다.
+// A/B를 정확히 골랐으면 해당 설명을, good_alt(학생 자기 표현)이면 일반 멘트 + 대표 A 문장을 사용한다.
+function _repeatLookup(step) {
+  const choice   = selectedChoices[step - 1];
+  const comments = programData.repeat_comments && programData.repeat_comments[step - 1];
+  const fallbackSentence = programData.sentences[step - 1];
+
+  if (choice && (choice.label === 'a' || choice.label === 'b') && comments && comments[choice.label]) {
+    const c = comments[choice.label];
+    return { sentence: c.english_intro || fallbackSentence, korean: c.korean_comment };
+  }
+  return {
+    sentence: fallbackSentence,
+    korean:   '좋아요. 네가 말한 문장도 그림과 잘 맞아요. 이번에는 기본 표현도 함께 연습해 볼게요.',
+  };
+}
+
+function renderRepeatStep() {
+  const total = selectedSentences.length;
+  const step  = repeatIndex + 1;
+  document.getElementById('rpRoundLabel').textContent    = `Round ${repeatRound} / 2`;
+  document.getElementById('rpSentenceLabel').textContent = `Sentence ${step} / ${total}`;
+
+  const { sentence, korean } = _repeatLookup(step);
+  const chosenSentence = selectedSentences[repeatIndex] || sentence;
+  document.getElementById('rpCurrentText').textContent = sentence;
+
+  const listEl = document.getElementById('rpList');
+  listEl.innerHTML = '';
+  selectedSentences.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'rp-row' + (i === repeatIndex ? ' active' : '');
+    row.textContent = `${i + 1}. ${s}`;
+    listEl.appendChild(row);
+  });
+
+  if (repeatRound === 1) {
+    setCoach(`Round 1 / 2\n\nYou chose:\n"${chosenSentence}"\n\n${korean}\n\nAlloy Teacher:\n"${sentence}"\n\nNow you say it.`);
+  } else {
+    setCoach(`Round 2 / 2\n\n다시 한 번 말해볼게요.\n"${sentence}"\n\n이번에는 더 크게 따라 말해보세요.`);
+  }
+  setMom('Alloy 선생님을 따라 크게 말해보세요.');
+  rpAlloyRead();
+}
+
+function rpAlloyRead() {
+  const step = repeatIndex + 1;
+  const { sentence, korean } = _repeatLookup(step);
+  if (!sentence) return;
+  const text = repeatRound === 1
+    ? `${korean} Now listen. ${sentence} Now you say it.`
+    : `다시 한 번 말해볼게요. ${sentence} 이번에는 더 크게 따라 말해보세요.`;
+  speak(text, { lang: 'ko-KR' });
+}
+
+function rpSendAnswer() {
+  if (isBusy || !programData || appMode !== 'repeat') return;
+  const input  = document.getElementById('studentInput');
+  const answer = input.value.trim();
+  if (!answer) { input.focus(); return; }
+  input.value = '';
+  setCoach(`Nice try!\n"${answer}"\n\nLet's continue.`);
+  setMom('잘했어요! 다음 문장으로 넘어갈게요.');
+  advanceRepeatStep();
+}
+
+function advanceRepeatStep() {
+  repeatIndex++;
+  if (repeatIndex >= selectedSentences.length) {
+    repeatIndex = 0;
+    if (repeatRound === 1) {
+      repeatRound = 2;
+      renderRepeatStep();
+    } else {
+      goToFullChallenge();
+    }
+  } else {
+    renderRepeatStep();
+  }
+}
+
+// ── Full Sentence Challenge ───────────────────────────────────
+function goToFullChallenge() {
+  switchView('fullChallenge');
+  const list = document.getElementById('fcList');
+  list.innerHTML = '';
+  selectedSentences.forEach(s => {
+    const li = document.createElement('li');
+    li.textContent = s;
+    list.appendChild(li);
+  });
+  setCoach('좋아요. 이제 다섯 문장을 모두 이어서 말해볼 거예요.\n먼저 Alloy 선생님이 천천히 읽어줄게요.\n잘 듣고, 그 다음에 따라 말해보세요.\n\nNow say all five sentences.');
+  setMom('전체 5문장을 이어서 말해보세요.');
+  enableInput(true);
+  speak('좋아요. 이제 다섯 문장을 모두 이어서 말해볼 거예요. 먼저 Alloy 선생님이 천천히 읽어줄게요. 잘 듣고 그 다음에 따라 말해보세요.', { lang: 'ko-KR' });
+}
+
+function rpAlloyReadAll() {
+  const text = selectedSentences.join('. ') + '.';
+  speak(text, { lang: 'en-US' });
+}
+
+function fcSendAnswer() {
+  if (isBusy || !programData || appMode !== 'fullChallenge') return;
+  const input  = document.getElementById('studentInput');
+  const answer = input.value.trim();
+  if (!answer) { input.focus(); return; }
+  const norm       = s => (s || '').toLowerCase().replace(/[^a-z\s]/g, '').trim();
+  const answerNorm = norm(answer);
+  let matchCount = 0;
+  selectedSentences.forEach(s => {
+    const words = norm(s).split(/\s+/).filter(Boolean);
+    const hit   = words.filter(w => answerNorm.includes(w)).length;
+    if (words.length && hit / words.length >= 0.5) matchCount++;
+  });
+  input.value = '';
+  setCoach(`Great effort!\nYou included about ${matchCount} / ${selectedSentences.length} sentences.\n\nReady for the next step? Tap Finish Review.`);
+  setMom('잘했어요! Finish Review를 눌러 다음으로 가세요.');
+}
+
+function finishReview() {
+  switchView('chatgpt');
+  renderChatgptView();
+  setMom('문장을 복사한 뒤 ChatGPT 선생님과 마지막 연습을 해보세요.');
+  requestFloatingRecalc();
+}
+
+// ── Page 3: ChatGPT Final Practice ────────────────────────────
+function renderChatgptView() {
+  document.getElementById('cgSentenceList').textContent =
+    selectedSentences.map((s, i) => `${i + 1}. ${s}`).join('\n');
+  document.getElementById('cgCopyStatus').textContent = '';
+}
+
+function buildChatgptPrompt() {
+  const sentencesBlock = selectedSentences.map((s, i) => `${i + 1}. ${s}`).join('\n');
+  const lessonLine  = `${programData.display_label} — ${programData.scene_title}`;
+  const pictureLine = programData.chatgpt_picture_summary || programData.picture_prompt || '';
+  return `Hello ChatGPT Teacher.
+I studied CEC Picture Speaking today.
+
+Lesson:
+${lessonLine}
+
+Picture:
+${pictureLine}
+
+My five sentences:
+${sentencesBlock}
+
+Please help me practice English speaking.
+First, read sentence 1 and ask me to repeat it.
+Then practice sentences 2 to 5 one by one.
+After that, ask me to say all five sentences together.
+If I make a mistake, correct me simply.
+Use easy English for an elementary student.
+You can give short Korean help only when I am confused.`;
+}
+
+async function copyMySentences() {
+  const text = buildChatgptPrompt();
+  const status = document.getElementById('cgCopyStatus');
+  try {
+    await navigator.clipboard.writeText(text);
+    status.textContent = 'Copied! Now click ChatGPT Final Practice.';
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity  = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      status.textContent = 'Copied! Now click ChatGPT Final Practice.';
+    } catch (e2) {
+      status.textContent = 'Copy failed. Please select and copy manually.';
+    }
+    document.body.removeChild(ta);
+  }
+}
+
+function openChatgptFinalPractice() {
+  window.open('https://chatgpt.com/', '_blank', 'noopener');
+}
+
+// ── PS005: 선택형 Picture Speaking + AI Teacher Guided Repeat Practice ──
+function ps005CurrentRound() {
+  return programData.choice_rounds[ps005Step - 1];
+}
+
+// 한국어가 섞여 있으면 ko-KR, 아니면 en-US로 판단해 자연스러운 발음으로 읽는다.
+function _ps005GuessLang(text) {
+  return /[가-힣]/.test(text) ? 'ko-KR' : 'en-US';
+}
+
+// 긴 문장을 한 번에 읽지 않고, 짧은 문장을 순서대로 하나씩 읽는다(초등 3학년 발성 원칙).
+function speakSequence(parts, onAllDone) {
+  let i = 0;
+  function next() {
+    if (i >= parts.length) { onAllDone?.(); return; }
+    const text = parts[i++];
+    if (!text) { next(); return; }
+    speak(text, { lang: _ps005GuessLang(text), onDone: next });
+  }
+  next();
+}
+
+function ps005Start() {
+  ps005Step = 1;
+  ps005Phase = 'choose';
+  ps005RenderChoose();
+}
+
+function ps005RenderChoose() {
+  ps005Phase = 'choose';
+  const total = programData.choice_rounds.length;
+  const round = ps005CurrentRound();
+
+  document.getElementById('stepNum').textContent = ps005Step;
+  document.getElementById('ps005StepLabel').textContent  = `Step ${ps005Step} / ${total}`;
+  document.getElementById('ps005PhaseLabel').textContent = 'Choose';
+  document.getElementById('ps005Question').textContent   = round.question;
+  document.getElementById('ps005WhyBox').style.display   = 'none';
+
+  const wrap = document.getElementById('ps005Choices');
+  wrap.innerHTML = '';
+  ['a', 'b', 'c'].forEach((letter) => {
+    const c = round.choices[letter];
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'ps005-choice-btn';
+    btn.id = `ps005-opt-${letter}`;
+    btn.innerHTML = `<span class="ps005-choice-letter">${letter.toUpperCase()}</span><span class="ps005-choice-text">${c.sentence}</span>`;
+    btn.onclick = () => ps005SelectChoice(letter);
+    wrap.appendChild(btn);
+  });
+
+  setCoach(`Step ${ps005Step} / ${total}\n${round.question}\nChoose A, B, or C.`);
+  setMom(programData.mom_hints[ps005Step - 1] || '그림을 보고 골라 보세요.');
+
+  const input = document.getElementById('studentInput');
+  if (input) { input.value = ''; input.placeholder = 'Choose A, B, or C above...'; input.disabled = true; }
+  document.getElementById('sendBtn').disabled = true;
+  const lb = document.getElementById('listenBtn');
+  if (lb) lb.disabled = true;
+  requestFloatingRecalc();
+}
+
+function ps005SelectChoice(letter) {
+  if (ps005Phase !== 'choose' || !programData) return;
+  const round = ps005CurrentRound();
+  const isCorrect     = letter === round.correct;
+  const chosen        = round.choices[letter];
+  const correctChoice = round.choices[round.correct];
+
+  selectedChoices[ps005Step - 1] = {
+    step_number:       ps005Step,
+    selected_choice:   letter,
+    selected_sentence: chosen.sentence,
+    correct_choice:    round.correct,
+    correct_sentence:  round.student_sentence,
+    source_sentence:   round.source_sentence,
+    is_correct:        isCorrect,
+    korean_meaning:    correctChoice.korean_meaning,
+  };
+  // Tell 단계와 최종 반복 연습은 항상 짧은 student_sentence 기준으로 정리한다.
+  selectedSentences[ps005Step - 1] = round.student_sentence;
+
+  ['a', 'b', 'c'].forEach((l) => {
+    const btn = document.getElementById(`ps005-opt-${l}`);
+    if (!btn) return;
+    btn.disabled = true;
+    if (l === letter) btn.classList.add('selected');
+  });
+
+  ps005ShowWhy();
+}
+
+function ps005ShowWhy() {
+  ps005Phase = 'why';
+  document.getElementById('ps005PhaseLabel').textContent = 'Why?';
+  document.getElementById('ps005WhyBox').style.display   = '';
+
+  const info = selectedChoices[ps005Step - 1];
+  setCoach(`"${info.selected_sentence}"\n\n왜 골랐어요?`);
+  setMom('짧게 말해도 괜찮아요.');
+
+  enableInput(true);
+  const lb = document.getElementById('listenBtn');
+  if (lb) lb.disabled = !recognition;
+  activeSendFn = ps005WhySend;
+  const input = document.getElementById('studentInput');
+  if (input) { input.placeholder = 'Why? (짧게 입력해도 좋아요)'; input.focus(); }
+  requestFloatingRecalc();
+}
+
+function ps005WhySend() {
+  if (isBusy || appMode !== 'ps005' || ps005Phase !== 'why') return;
+  const input  = document.getElementById('studentInput');
+  const answer = input.value.trim();
+  input.value = '';
+  ps005Teach();
+}
+
+// AI Teacher Guided Repeat Practice — 짧은 문장을 순서대로 이어서 안내한다.
+// 1) Step 안내 2) 짧은 상황 힌트 3) 목표 문장 4) 뜻 5) "따라해 봐요" 6) 목표 문장(반복)
+function ps005Teach() {
+  ps005Phase = 'repeat';
+  document.getElementById('ps005PhaseLabel').textContent = 'Listen';
+  document.getElementById('ps005WhyBox').style.display   = 'none';
+
+  const info   = selectedChoices[ps005Step - 1];
+  const round  = ps005CurrentRound();
+  const target = round.student_sentence;
+  const opener = info.is_correct ? '좋아요! 정답이에요.' : '괜찮아요! 이 문장을 연습해요.';
+
+  const lines = [
+    opener,
+    `Step ${ps005Step}이에요.`,
+    round.short_hint,
+    target,
+    `뜻은 "${info.korean_meaning}"예요.`,
+    '따라해 봐요.',
+    target,
+  ];
+
+  setCoach(lines.join('\n'));
+  setMom('선생님을 따라 크게 말해보세요.');
+  speakSequence(lines);
+
+  enableInput(true);
+  const lb = document.getElementById('listenBtn');
+  if (lb) lb.disabled = !recognition;
+  activeSendFn = ps005RepeatSend;
+  const input = document.getElementById('studentInput');
+  if (input) { input.placeholder = `Repeat: ${target}`; input.focus(); }
+  requestFloatingRecalc();
+}
+
+function ps005RepeatSend() {
+  if (isBusy || appMode !== 'ps005' || ps005Phase !== 'repeat') return;
+  const input  = document.getElementById('studentInput');
+  const answer = input.value.trim();
+  if (!answer) { input.focus(); return; }
+  input.value = '';
+  ps005Solo();
+}
+
+function ps005Solo() {
+  ps005Phase = 'solo';
+  document.getElementById('ps005PhaseLabel').textContent = 'Your turn';
+  const round = ps005CurrentRound();
+  setCoach(`좋아요.\n혼자 말해요.\n\n"${round.student_sentence}"`);
+  setMom('이번엔 혼자 말해보세요.');
+  speakSequence(['좋아요.', '혼자 말해요.']);
+  activeSendFn = ps005SoloSend;
+  const input = document.getElementById('studentInput');
+  if (input) { input.placeholder = `Say it alone: ${round.student_sentence}`; input.focus(); }
+  requestFloatingRecalc();
+}
+
+function ps005SoloSend() {
+  if (isBusy || appMode !== 'ps005' || ps005Phase !== 'solo') return;
+  const input  = document.getElementById('studentInput');
+  const answer = input.value.trim();
+  if (!answer) { input.focus(); return; }
+  input.value = '';
+  markDone(ps005Step);
+  updateProgress();
+  ps005Step++;
+  if (ps005Step > programData.choice_rounds.length) {
+    ps005GoTell();
+  } else {
+    ps005RenderChoose();
+  }
+}
+
+// ── PS005 Tell: 5문장 연결해서 말하기 (짧은 안내) ──────────────
+function ps005GoTell() {
+  switchView('ps005Tell');
+  const list = document.getElementById('ps005TellList');
+  list.innerHTML = '';
+  selectedSentences.forEach((s) => {
+    const li = document.createElement('li');
+    li.textContent = s;
+    list.appendChild(li);
+  });
+  const lines = ['그림을 보세요.', '5문장을 말해요.', '천천히 해도 괜찮아요.'];
+  setCoach(lines.join('\n'));
+  setMom('그림 한 장을 영어 이야기처럼 말해보세요.');
+  speakSequence(lines);
+  enableInput(true);
+  requestFloatingRecalc();
+}
+
+function ps005AlloyReadAll() {
+  const text = selectedSentences.join('. ') + '.';
+  speak(text, { lang: 'en-US' });
+}
+
+function ps005TellSend() {
+  if (isBusy || appMode !== 'ps005Tell') return;
+  const input  = document.getElementById('studentInput');
+  const answer = input.value.trim();
+  if (!answer) { input.focus(); return; }
+  input.value = '';
+  setCoach('멋져요!');
+  setMom('정말 잘했어요!');
+  speak('멋져요!', { lang: 'ko-KR' });
+}
+
+// ── PS005: ChatGPT 선생님과 더 연습하기 (짧은 문장 복사) ────────
+function ps005GoCopy() {
+  switchView('ps005Copy');
+  document.getElementById('ps005CopyBox').textContent = selectedSentences.join('\n');
+  document.getElementById('ps005CopyStatus').textContent = '';
+  setCoach('아주 잘했어요!\nChatGPT 선생님과\n더 연습해요.');
+  setMom('문장을 복사해서 ChatGPT 선생님에게 보내세요.');
+  speakSequence(['아주 잘했어요!']);
+  requestFloatingRecalc();
+}
+
+async function ps005CopyToClipboard() {
+  const text   = selectedSentences.join('\n');
+  const status = document.getElementById('ps005CopyStatus');
+  try {
+    await navigator.clipboard.writeText(text);
+    status.textContent = '복사했어요! 이제 ChatGPT로 가요.';
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity  = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      status.textContent = '복사했어요! 이제 ChatGPT로 가요.';
+    } catch (e2) {
+      status.textContent = '복사에 실패했어요. 직접 선택해서 복사해주세요.';
+    }
+    document.body.removeChild(ta);
+  }
+}
+
+// ══ Standard_PS001: CEC Picture Speaking 표준 기법 (PS005 코드와 완전히 분리) ══
+// Look → Notice → Choose → Reason → Meaning → Guided Review → Tell → ChatGPT Handoff
+function stdCurrentRound() {
+  return programData.choice_rounds[stdStep - 1];
+}
+
+// Standard_PS001 전용 speakSequence 래퍼: 이전 음성/콜백이 다음 단계와 겹치지 않도록 막는다.
+// - 호출될 때마다 stdSpeechRunId를 올려서 이전 호출의 콜백 체인이 뒤늦게 실행돼도 무시되게 한다.
+// - 공용 speakSequence()에 그대로 위임하면 "마지막 onAllDone"만 막을 수 있고, 그 사이 개별 줄이
+//   이어서 재생되는 체인(next())까지는 막지 못한다. 그래서 여기서는 줄 단위로 직접 체이닝하면서
+//   매 줄을 재생하기 직전에 runId를 검사해, 취소된 시퀀스의 남은 줄이 새 시퀀스와 섞이지 않게 한다.
+// - 새 음성을 시작하기 전에 재생 중이던 오디오를 확실히 멈춘다.
+// - Voice OFF에서는 speak()가 onDone을 부르지 않으므로, 짧은 지연 후 직접 onDone을 호출해 흐름이 멈추지 않게 한다.
+function stdSpeakSequence(lines, onDone) {
+  stdSpeechRunId++;
+  const runId = stdSpeechRunId;
+  stdIsSpeakingSequence = true;
+
+  if (typeof _cancelAudio === 'function') _cancelAudio();
+
+  const voiceCheck = document.getElementById('voiceCheck');
+  if (voiceCheck && !voiceCheck.checked) {
+    setTimeout(() => {
+      if (runId !== stdSpeechRunId) return;
+      stdIsSpeakingSequence = false;
+      onDone?.();
+    }, 150);
+    return;
+  }
+
+  let i = 0;
+  const next = () => {
+    if (runId !== stdSpeechRunId) return; // 이 시퀀스는 이미 취소/대체됨 — 남은 줄을 읽지 않는다.
+    if (i >= lines.length) {
+      stdIsSpeakingSequence = false;
+      onDone?.();
+      return;
+    }
+    const text = lines[i++];
+    if (!text) { next(); return; }
+    speak(text, { lang: _ps005GuessLang(text), onDone: next });
+  };
+  next();
+}
+
+// 단발성 speak() 호출용 래퍼: Standard_PS001에서 Read 버튼 등으로 즉석 음성을 재생할 때
+// 이전에 재생 중이던(또는 남아있는 콜백 체인의) 음성을 먼저 무효화한다.
+function stdSpeak(text, opts = {}) {
+  stdSpeechRunId++;
+  if (typeof _cancelAudio === 'function') _cancelAudio();
+  speak(text, opts);
+}
+
+function stdStart() {
+  stdStep = 1;
+  stdSubPhase = 'choose';
+  stdSelectedChoices = [];
+  stdSelectedSentences = [];
+  stdGuideIndex = 0;
+  stdGuidePhase = 'repeat';
+  // 이전 세션(Start Over 이전)의 TTS와 콜백 체인을 완전히 무효화한다.
+  stdSpeechRunId++;
+  stdIsSpeakingSequence = false;
+  if (typeof _cancelAudio === 'function') _cancelAudio();
+  stdGoLook();
+}
+
+// 화면 1 — Look & Notice: 영어를 강요하지 않고 그림을 먼저 보게 한다.
+function stdGoLook() {
+  switchView('stdLook');
+  const lines = ['그림을 볼게요.', '누가 보이나요?', '어디에 있나요?', '무엇을 하고 있나요?', '짧게 말해도 괜찮아요.'];
+  document.getElementById('stdLookText').innerHTML = lines.map((l) => `<div>${l}</div>`).join('');
+  setCoach(lines.join('\n'));
+  setMom('그림을 천천히 보세요.');
+  stdSpeakSequence(lines);
+  requestFloatingRecalc();
+}
+
+function stdGoChoose() {
+  stdStep = 1;
+  stdRenderChoose();
+}
+
+// 화면 2~6 — Choose: 빠르고 가볍게, 문장마다 A/B/C 선택 후 Reason만 짧게 확인.
+function stdRenderChoose() {
+  stdSubPhase = 'choose';
+  switchView('stdChoose');
+  const total = programData.choice_rounds.length;
+  const round = stdCurrentRound();
+
+  document.getElementById('stepNum').textContent = stdStep;
+  document.getElementById('stdStepLabel').textContent  = `Step ${stdStep} / ${total}`;
+  document.getElementById('stdPhaseLabel').textContent = 'Choose';
+  document.getElementById('stdReasonBox').style.display = 'none';
+
+  const wrap = document.getElementById('stdChoices');
+  wrap.innerHTML = '';
+  ['a', 'b', 'c'].forEach((letter) => {
+    const c = round.choices[letter];
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'ps005-choice-btn';
+    btn.id = `std-opt-${letter}`;
+    btn.innerHTML = `<span class="ps005-choice-letter">${letter.toUpperCase()}</span><span class="ps005-choice-text">${c.sentence}</span>`;
+    btn.onclick = () => stdSelectChoice(letter);
+    wrap.appendChild(btn);
+  });
+
+  const lines = ['문장을 골라요.', '그림에 가장 잘 맞는 문장은 무엇일까요?', 'A, B, C 중 하나를 골라요.'];
+  setCoach(`Step ${stdStep} / ${total}\n${lines.join('\n')}`);
+  setMom('그림에 맞는 문장을 골라 보세요.');
+  stdSpeakSequence(lines);
+
+  const input = document.getElementById('studentInput');
+  if (input) { input.value = ''; input.placeholder = 'Choose A, B, or C above...'; input.disabled = true; }
+  document.getElementById('sendBtn').disabled = true;
+  const lb = document.getElementById('listenBtn');
+  if (lb) lb.disabled = true;
+  requestFloatingRecalc();
+}
+
+function stdSelectChoice(letter) {
+  if (stdSubPhase !== 'choose' || !programData) return;
+  const round = stdCurrentRound();
+  const isCorrect     = letter === round.correct;
+  const chosen        = round.choices[letter];
+  const correctChoice = round.choices[round.correct];
+
+  stdSelectedChoices[stdStep - 1] = {
+    step_number:       stdStep,
+    selected_choice:   letter,
+    selected_sentence: chosen.sentence,
+    correct_choice:    round.correct,
+    correct_sentence:  round.student_sentence,
+    source_sentence:   round.source_sentence,
+    is_correct:        isCorrect,
+    korean_meaning:    correctChoice.korean_meaning,
+  };
+  stdSelectedSentences[stdStep - 1] = round.student_sentence;
+
+  ['a', 'b', 'c'].forEach((l) => {
+    const btn = document.getElementById(`std-opt-${l}`);
+    if (!btn) return;
+    btn.disabled = true;
+    if (l === letter) btn.classList.add('selected');
+  });
+
+  stdShowReason();
+}
+
+function stdShowReason() {
+  stdSubPhase = 'reason';
+  document.getElementById('stdPhaseLabel').textContent = 'Reason';
+  document.getElementById('stdReasonBox').style.display = '';
+
+  const info = stdSelectedChoices[stdStep - 1];
+  setCoach(`"${info.selected_sentence}"\n\n왜 골랐어요?\n한 단어도 괜찮아요.`);
+  setMom('그림에서 본 것을 짧게 말해도 괜찮아요.');
+  // 선택 직후 음성은 여기(stdShowReason)에서만 재생한다.
+  // stdSelectChoice()에도 음성을 넣으면 이 안내와 겹쳐 들릴 수 있으므로 추가하지 않는다.
+  stdSpeakSequence(['잘 골랐어요.', '왜 골랐어요?', '한 단어도 괜찮아요.']);
+
+  enableInput(true);
+  const lb = document.getElementById('listenBtn');
+  if (lb) lb.disabled = !recognition;
+  activeSendFn = stdReasonSend;
+  const input = document.getElementById('studentInput');
+  if (input) { input.placeholder = 'Why? (짧게 입력해도 좋아요)'; input.focus(); }
+  requestFloatingRecalc();
+}
+
+function stdReasonSend() {
+  if (isBusy || appMode !== 'stdChoose' || stdSubPhase !== 'reason') return;
+  const input  = document.getElementById('studentInput');
+  const answer = input.value.trim();
+  input.value = '';
+  stdConfirmAndNext();
+}
+
+// Reason 직후 Meaning을 짧게 확인하고, 오답이면 부드럽게 안내한 뒤 다음 단계로 넘어간다.
+// (Guided Review 화면이 아니라 Choose 화면이므로 여기서는 반복/혼자 말하기를 하지 않는다.)
+function stdConfirmAndNext() {
+  const info = stdSelectedChoices[stdStep - 1];
+  const lines = info.is_correct
+    ? ['좋아요.', `뜻은 "${info.korean_meaning}"예요.`]
+    : ['괜찮아요.', '이 문장이 그림과 더 잘 맞아요.', `뜻은 "${info.korean_meaning}"예요.`];
+
+  setCoach(lines.join('\n'));
+  setMom(info.is_correct ? '정답이에요!' : '다음 문장으로 가요.');
+
+  // 다음 Send/버튼 클릭이 이 안내 도중 다시 stdConfirmAndNext()를 부르지 않도록 잠깐 입력을 막는다.
+  enableInput(false);
+  const lb = document.getElementById('listenBtn');
+  if (lb) lb.disabled = true;
+
+  const advance = () => {
+    stdStep++;
+    if (stdStep > programData.choice_rounds.length) {
+      stdGoTransitionToGuided();
+    } else {
+      stdRenderChoose();
+    }
+  };
+
+  // Voice ON: 안내 음성이 실제로 끝난 뒤에만 다음 단계로 넘어간다(TTS 완료와 화면 전환을 동기화).
+  // stdSpeakSequence()가 Reason 단계에서 아직 재생 중이던 음성을 먼저 취소하고 콜백 체인을 무효화한 뒤
+  // 정답/오답 안내를 새로 시작하므로, 여기서 두 목소리가 겹치지 않는다.
+  // Voice OFF: speak()가 onDone을 호출하지 않으므로, 화면이 멈추지 않도록 짧은 고정 지연 후 진행한다
+  // (기존에 검증된 900ms 지연을 유지하되, Start Over 등으로 무효화된 경우 advance()가 실행되지 않게 막는다).
+  if (document.getElementById('voiceCheck')?.checked) {
+    stdSpeakSequence(lines, advance);
+  } else {
+    stdSpeechRunId++;
+    const runId = stdSpeechRunId;
+    setTimeout(() => {
+      if (runId !== stdSpeechRunId) return;
+      advance();
+    }, 900);
+  }
+}
+
+// Choose 5단계가 모두 끝난 뒤, Guided Review로 바로 넘어가지 않고 짧은 전환 안내를 먼저 들려준다.
+function stdGoTransitionToGuided() {
+  const text = '좋아요. 이제 선생님과 5문장을 다시 연습해요.';
+  setCoach(text);
+  setMom('선생님과 함께 다시 연습해요.');
+  enableInput(false);
+  stdSpeak(text, { lang: 'ko-KR' });
+  const runId = stdSpeechRunId;
+  setTimeout(() => { if (runId === stdSpeechRunId) stdGoGuided(); }, 1200);
+}
+
+// 화면 7 — AI Teacher Guided Review: 5문장을 하나씩 짧게 지도한다.
+function stdGoGuided() {
+  switchView('stdGuided');
+  stdGuideIndex = 0;
+  stdRenderGuideStep();
+}
+
+const STD_ORDINALS = ['첫 문장이에요.', '두 번째 문장이에요.', '세 번째 문장이에요.', '네 번째 문장이에요.', '다섯 번째 문장이에요.'];
+
+function stdRenderGuideStep() {
+  stdGuidePhase = 'repeat';
+  const total = programData.choice_rounds.length;
+  const round = programData.choice_rounds[stdGuideIndex];
+  const meaning = round.choices[round.correct].korean_meaning;
+
+  document.getElementById('stepNum').textContent = stdGuideIndex + 1;
+  document.getElementById('stdGuideLabel').textContent      = `Sentence ${stdGuideIndex + 1} / ${total}`;
+  document.getElementById('stdGuidePhaseLabel').textContent = 'Listen';
+  document.getElementById('stdGuideCurrentText').textContent = round.student_sentence;
+
+  const listEl = document.getElementById('stdGuideList');
+  listEl.innerHTML = '';
+  programData.choice_rounds.forEach((r, i) => {
+    const row = document.createElement('div');
+    row.className = 'rp-row' + (i === stdGuideIndex ? ' active' : '');
+    row.textContent = `${i + 1}. ${r.student_sentence}`;
+    listEl.appendChild(row);
+  });
+
+  const lines = [
+    STD_ORDINALS[stdGuideIndex] || `Sentence ${stdGuideIndex + 1}이에요.`,
+    round.short_hint,
+    round.student_sentence,
+    `뜻은 "${meaning}"예요.`,
+    '따라해 봐요.',
+    round.student_sentence,
+  ];
+  setCoach(lines.join('\n'));
+  setMom('선생님을 따라 크게 말해보세요.');
+  stdSpeakSequence(lines);
+
+  enableInput(true);
+  const lb = document.getElementById('listenBtn');
+  if (lb) lb.disabled = !recognition;
+  activeSendFn = stdGuideRepeatSend;
+  const input = document.getElementById('studentInput');
+  if (input) { input.placeholder = `Repeat: ${round.student_sentence}`; input.focus(); }
+  requestFloatingRecalc();
+}
+
+function stdGuideRead() {
+  const round = programData.choice_rounds[stdGuideIndex];
+  // Guided Review 자동 음성이 재생 중일 때 Read를 눌러도 겹치지 않도록 먼저 취소하고 새로 재생한다.
+  stdSpeak(round.student_sentence, { lang: 'en-US' });
+}
+
+function stdGuideRepeatSend() {
+  if (isBusy || appMode !== 'stdGuided' || stdGuidePhase !== 'repeat') return;
+  const input  = document.getElementById('studentInput');
+  const answer = input.value.trim();
+  if (!answer) { input.focus(); return; }
+  input.value = '';
+  stdGuideSolo();
+}
+
+function stdGuideSolo() {
+  stdGuidePhase = 'solo';
+  document.getElementById('stdGuidePhaseLabel').textContent = 'Your turn';
+  const round = programData.choice_rounds[stdGuideIndex];
+  setCoach(`혼자 말해요.\n\n"${round.student_sentence}"`);
+  setMom('이번엔 혼자 말해보세요.');
+  stdSpeakSequence(['혼자 말해요.']);
+  activeSendFn = stdGuideSoloSend;
+  const input = document.getElementById('studentInput');
+  if (input) { input.placeholder = `Say it alone: ${round.student_sentence}`; input.focus(); }
+  requestFloatingRecalc();
+}
+
+function stdGuideSoloSend() {
+  if (isBusy || appMode !== 'stdGuided' || stdGuidePhase !== 'solo') return;
+  const input  = document.getElementById('studentInput');
+  const answer = input.value.trim();
+  if (!answer) { input.focus(); return; }
+  input.value = '';
+  markDone(stdGuideIndex + 1);
+  updateProgress();
+  stdGuideIndex++;
+  if (stdGuideIndex >= programData.choice_rounds.length) {
+    stdGoTransitionToTell();
+  } else {
+    stdRenderGuideStep();
+  }
+}
+
+// Guided Review 5문장이 모두 끝난 뒤, Tell 단계로 바로 넘어가지 않고 짧은 전환 안내를 먼저 들려준다.
+function stdGoTransitionToTell() {
+  const lines = ['잘했어요!', '이제 문장을 읽는 시간이 아니에요.', '그림을 보고 이야기처럼 말해요.'];
+  setCoach(lines.join('\n'));
+  setMom('그림을 보고 이야기처럼 말해봐요.');
+  enableInput(false);
+  stdSpeakSequence(lines);
+  const runId = stdSpeechRunId;
+  setTimeout(() => { if (runId === stdSpeechRunId) stdGoTell(); }, 2000);
+}
+
+// 화면 8 — Tell the Picture: 5문장을 이어서 그림을 설명한다.
+function stdGoTell() {
+  switchView('stdTell');
+  stdRenderTellIntro();
+}
+
+function stdRenderTellIntro() {
+  const list = document.getElementById('stdTellList');
+  list.innerHTML = '';
+  stdSelectedSentences.forEach((s) => {
+    const li = document.createElement('li');
+    li.textContent = s;
+    list.appendChild(li);
+  });
+  const lines = ['그림을 보세요.', '5문장을 말해요.', '천천히 해도 괜찮아요.'];
+  setCoach(lines.join('\n'));
+  setMom('그림 한 장을 영어 이야기처럼 말해보세요.');
+  stdSpeakSequence(lines);
+  enableInput(true);
+  requestFloatingRecalc();
+}
+
+function stdTellRetry() {
+  stdRenderTellIntro();
+}
+
+function stdTeacherReadAll() {
+  const text = stdSelectedSentences.join('. ') + '.';
+  stdSpeak(text, { lang: 'en-US' });
+}
+
+function stdTellSend() {
+  if (isBusy || appMode !== 'stdTell') return;
+  const input  = document.getElementById('studentInput');
+  const answer = input.value.trim();
+  if (!answer) { input.focus(); return; }
+  input.value = '';
+  setCoach('멋져요!');
+  setMom('정말 잘했어요!');
+  stdSpeak('멋져요!', { lang: 'ko-KR' });
+}
+
+// 화면 9 — ChatGPT Handoff
+function stdGoCopy() {
+  switchView('stdCopy');
+  document.getElementById('stdCopyBox').textContent = stdSelectedSentences.join('\n');
+  document.getElementById('stdCopyStatus').textContent = '';
+  const lines = ['문장을 복사하세요.', 'ChatGPT 선생님에게 보내세요.', '더 연습할 수 있어요.'];
+  setCoach(lines.join('\n'));
+  setMom('문장을 복사해서 ChatGPT 선생님에게 보내세요.');
+  stdSpeakSequence(lines);
+  requestFloatingRecalc();
+}
+
+async function stdCopyToClipboard() {
+  const text   = stdSelectedSentences.join('\n');
+  const status = document.getElementById('stdCopyStatus');
+  try {
+    await navigator.clipboard.writeText(text);
+    status.textContent = '복사했어요! 이제 ChatGPT로 가요.';
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity  = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      status.textContent = '복사했어요! 이제 ChatGPT로 가요.';
+    } catch (e2) {
+      status.textContent = '복사에 실패했어요. 직접 선택해서 복사해주세요.';
+    }
+    document.body.removeChild(ta);
+  }
+}
+
+// ══ Standard_PS001_LostWords: 큰 책 화면 기반 새 수업 모드 (std*/ps005* 코드와 완전히 분리) ══
+// Opening Book Screen → Mission 1~5(hotspot 찾기) → Story Tell → ChatGPT Handoff
+
+// Lost Words 전용 speakSequence: 줄 단위로 직접 체이닝하면서 매 줄 재생 직전 토큰을 검사해
+// 취소된 시퀀스의 남은 줄이 새 시퀀스와 섞이지 않게 한다(std의 stdSpeakSequence와 동일한 방식,
+// 코드는 별도로 두고 std 쪽 함수는 전혀 건드리지 않는다).
+// onLineStart(index, text) — 지금 재생 중인 줄을 화면에서 강조하기 위한 콜백(선택).
+// Voice OFF에서도 강조가 순서대로 넘어가는 느낌을 유지하도록 줄마다 onLineStart를 호출한다.
+function lwSpeakSequence(lines, onDone, onLineStart) {
+  lwSpeechRunId++;
+  const runId = lwSpeechRunId;
+
+  if (typeof _cancelAudio === 'function') _cancelAudio();
+
+  const voiceCheck = document.getElementById('voiceCheck');
+  if (voiceCheck && !voiceCheck.checked) {
+    let i = 0;
+    const stepOff = () => {
+      if (runId !== lwSpeechRunId) return;
+      if (i >= lines.length) { onDone?.(); return; }
+      onLineStart?.(i, lines[i]);
+      i++;
+      setTimeout(stepOff, 150);
+    };
+    stepOff();
+    return;
+  }
+
+  let i = 0;
+  const next = () => {
+    if (runId !== lwSpeechRunId) return;
+    if (i >= lines.length) { onDone?.(); return; }
+    const idx = i;
+    const text = lines[i++];
+    if (!text) { next(); return; }
+    onLineStart?.(idx, text);
+    speak(text, { lang: _ps005GuessLang(text), onDone: next });
+  };
+  next();
+}
+
+// lines 배열을 <div class="lw-line"> 여러 개로 렌더링한다(각 줄을 개별 강조할 수 있게).
+function lwRenderLines(containerId, lines) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  lines.forEach((text) => {
+    const div = document.createElement('div');
+    div.className = 'lw-line';
+    div.textContent = text;
+    container.appendChild(div);
+  });
+}
+
+// containerId 안의 .lw-line 중 index번째만 강조하고 나머지는 강조 해제한다. index<0이면 전부 해제.
+function lwHighlightLine(containerId, index) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const children = container.querySelectorAll('.lw-line');
+  children.forEach((el, i) => el.classList.toggle('lw-line-active', i === index));
+}
+
+// 짧은 "딩" 성공 효과음 — 외부 파일 없이 Web Audio API로 생성한다.
+function lwPlayDing() {
+  try {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    const ctx = new Ctx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1568, ctx.currentTime + 0.15);
+    gain.gain.setValueAtTime(0.3125, ctx.currentTime); // TTS 볼륨 1.25배 증폭과 동일 비율 유지
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.4);
+  } catch (e) { /* 오디오 컨텍스트 생성 실패는 무시 (효과음 없이 진행) */ }
+}
+
+// STEP 7: 5개 완성 축하 — 폭죽(경량 자체 CSS/JS 파티클, 외부 라이브러리 없음) + 빵빠레(Web
+// Audio API 합성음)를 동시에 시작하고, 빵빠레가 끝나는 시점(약 1.3초 후)에 onDone을 불러
+// 기존 success_lines TTS가 겹치지 않고 이어서 재생되게 한다. 폭죽 자체는 시각 효과라 소리와
+// 달리 조금 더 오래(2초) 화면에 남아도 상관없어 별도 타이머로 정리한다.
+function lwCelebrate(onDone) {
+  try {
+    const colors = ['#ffd60a', '#ffb703', '#fb8500', '#f4c95d', '#e0a419'];
+    const origins = [
+      { x: '50%', y: '48%' }, // 중앙
+      { x: '10%', y: '58%' }, // 좌측
+      { x: '90%', y: '58%' }, // 우측
+    ];
+    const overlay = document.createElement('div');
+    overlay.className = 'lw-confetti-overlay';
+    const perOrigin = Math.ceil(72 / origins.length);
+    origins.forEach((origin) => {
+      for (let i = 0; i < perOrigin; i++) {
+        const p = document.createElement('span');
+        p.className = 'lw-confetti-piece';
+        const angle = Math.random() * Math.PI * 2;
+        const dist  = 90 + Math.random() * 200;
+        const tx    = (Math.cos(angle) * dist).toFixed(1) + 'px';
+        const ty    = (Math.sin(angle) * dist * 0.6 - 60).toFixed(1) + 'px';
+        const rot   = (Math.random() * 720 - 360).toFixed(0) + 'deg';
+        const size  = 6 + Math.random() * 8;
+        p.style.left   = origin.x;
+        p.style.top    = origin.y;
+        p.style.width  = size + 'px';
+        p.style.height = (size * 0.4) + 'px';
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.setProperty('--tx', tx);
+        p.style.setProperty('--ty', ty);
+        p.style.setProperty('--rot', rot);
+        p.style.animationDelay = (Math.random() * 0.12).toFixed(2) + 's';
+        overlay.appendChild(p);
+      }
+    });
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.remove(), 2000);
+  } catch (e) { /* 폭죽 실패해도 진행에는 지장 없음 */ }
+
+  lwPlayFanfare();
+  setTimeout(() => { onDone?.(); }, 1350); // 빵빠레(~1.2초) + 여유 150ms 후 TTS 시작(오디오 겹침 방지)
+}
+
+// 짧은 사인/톱니 톤 하나를 만든다(빵빠레 음표 하나 = 오실레이터+로우패스 필터+게인 엔벨로프).
+function _playTone(ctx, freq, startTime, duration, peakGain) {
+  const osc    = ctx.createOscillator();
+  const filter = ctx.createBiquadFilter();
+  const gain   = ctx.createGain();
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(freq, startTime);
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(1800, startTime);
+  filter.Q.setValueAtTime(1, startTime);
+  gain.gain.setValueAtTime(0.0001, startTime);
+  gain.gain.exponentialRampToValueAtTime(peakGain, startTime + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+  osc.connect(filter);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(startTime);
+  osc.stop(startTime + duration + 0.05);
+}
+
+// 트럼펫풍 상승 3음(C5→E5→G5, sawtooth+lowpass) + 반짝이 아르페지오(C6·E6·G6·C7),
+// 총 1.2초 내외. mp3 파일 없이 전부 Web Audio API로 합성한다.
+function lwPlayFanfare() {
+  try {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    if (!_sharedAudioCtx) _sharedAudioCtx = new Ctx();
+    if (_sharedAudioCtx.state === 'suspended') _sharedAudioCtx.resume().catch(() => {});
+    const ctx = _sharedAudioCtx;
+    const t0 = ctx.currentTime + 0.02;
+
+    _playTone(ctx, 523.25, t0,        0.26, 0.22); // C5
+    _playTone(ctx, 659.25, t0 + 0.24, 0.26, 0.22); // E5
+    _playTone(ctx, 783.99, t0 + 0.48, 0.34, 0.24); // G5 (착지음, 살짝 길게)
+
+    const sparkleStart = t0 + 0.80;
+    [1046.50, 1318.51, 1567.98, 2093.00].forEach((freq, i) => { // C6 E6 G6 C7
+      _playTone(ctx, freq, sparkleStart + i * 0.09, 0.16, 0.14);
+    });
+  } catch (e) { console.warn('[fanfare] skipped:', e); }
+}
+
+// lwRoot 내부 화면 전환 (기존 switchView()의 pageBody 슬롯 시스템과는 완전히 분리된 헬퍼)
+function switchLwScreen(id) {
+  ['lwOpening', 'lwMission', 'lwStoryTell', 'lwCopy'].forEach((s) => {
+    const el = document.getElementById(s);
+    if (el) el.style.display = (s === id) ? '' : 'none';
+  });
+}
+
+// video 로드 실패 시에만 기존 정지 이미지로 폴백한다(요구사항 8번).
+function lwVideoFallback(videoId, imgId) {
+  const v = document.getElementById(videoId);
+  const img = document.getElementById(imgId);
+  if (v) v.style.display = 'none';
+  if (img) img.style.display = '';
+}
+
+// prefix: '' | 'Opening' | 'Story' — 각 화면의 lwRoboVideo/lwRoboImg 세트에 mp4를 세팅한다.
+// key: 'idle' | 'alert' | 'point' | 'listen' | 'repeat' | 'finish' (robo_videos 매핑 키)
+function lwSetRoboMedia(prefix, key) {
+  const videoId = prefix ? `lw${prefix}RoboVideo` : 'lwRoboVideo';
+  const imgId   = prefix ? `lw${prefix}RoboImg`   : 'lwRoboImg';
+  const video = document.getElementById(videoId);
+  const img   = document.getElementById(imgId);
+  const videoSrc = programData.robo_videos && programData.robo_videos[key];
+  if (video && videoSrc) {
+    video.style.display = '';
+    if (img) img.style.display = 'none';
+    const abs = new URL(videoSrc, location.href).href;
+    if (video.getAttribute('src') !== abs) video.src = videoSrc;
+    video.play().catch(() => {});
+  } else if (img) {
+    // robo_videos 매핑이 없으면 기존 정지 이미지로 폴백
+    const fallbackMap = { idle: 'start', alert: 'missing', point: 'point', listen: 'point', repeat: 'success', finish: 'success' };
+    img.src = (programData.robo_images && programData.robo_images[fallbackMap[key] || 'point']) || '';
+    img.style.display = '';
+    if (video) video.style.display = 'none';
+  }
+}
+
+// 음성 파형(바코드) 표시 — Repeat("Say it with me") 단계에서 "말하는 중" 느낌을 준다.
+function lwShowWaveform(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.add('show');
+  lwSetWaveformPlaying(id, true);
+}
+function lwHideWaveform(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove('show');
+  lwSetWaveformPlaying(id, false);
+}
+
+// 개선3(2026-07-05): TTS 재생 상태에 맞춰 파형 bar 높이를 110ms 간격으로 랜덤 갱신(재생 중,
+// 금색) / 정지 시 낮은 높이로 복귀(회갈색). TTS 로직 자체는 건드리지 않고 show/hide 호출 지점에서
+// 클래스만 토글한다.
+const lwWaveformTimers = {};
+function lwSetWaveformPlaying(id, playing) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const bars = el.querySelectorAll('span');
+  if (playing) {
+    el.classList.add('is-playing');
+    if (!lwWaveformTimers[id]) {
+      lwWaveformTimers[id] = setInterval(() => {
+        bars.forEach((s) => { s.style.height = (6 + Math.random() * 28) + 'px'; });
+      }, 110);
+    }
+  } else {
+    el.classList.remove('is-playing');
+    if (lwWaveformTimers[id]) {
+      clearInterval(lwWaveformTimers[id]);
+      delete lwWaveformTimers[id];
+    }
+    bars.forEach((s) => { s.style.height = '8px'; });
+  }
+}
+
+function lwStart() {
+  lwMissionIndex  = 0;
+  lwFoundHotspots = new Set();
+  lwIsProcessing  = false;
+  lwSpeechRunId++;
+  if (typeof _cancelAudio === 'function') _cancelAudio();
+  document.body.classList.add('lw-active');
+  // Lost Words Book-Stage 표준 필드(page_title) — 왼쪽 페이지 마스크 캡션을 lesson 데이터에서
+  // 읽어온다. 다음 책/장면(img2~img7 등)이 추가되어도 이 텍스트만 데이터로 바뀌면 된다.
+  const leftTitle = programData.page_title || programData.scene_title || '';
+  document.querySelectorAll('.lw-left-title-mask span').forEach((el) => { el.textContent = leftTitle; });
+  lwGoOpening();
+}
+
+function lwRenderStars(wrapId) {
+  const wrap = document.getElementById(wrapId || 'lwStars');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  for (let i = 0; i < 5; i++) {
+    const span = document.createElement('span');
+    const filled = i < lwFoundHotspots.size;
+    span.className = 'lw-star' + (filled ? ' filled' : '');
+    span.textContent = filled ? '⭐' : '☆';
+    wrap.appendChild(span);
+  }
+}
+
+// renderSentencePanel: Opening/Mission/Lost Words 화면에서 story_tell.sentences로 1~5번 문장 패널 생성. STEP 4
+function renderSentencePanel(listId) {
+  const list = document.getElementById(listId);
+  if (!list) return;
+  list.innerHTML = '';
+  const sentences = programData.story_tell && programData.story_tell.sentences;
+  if (!sentences || !sentences.length) return;
+  sentences.forEach((s, i) => {
+    const li = document.createElement('li');
+    li.className = 'lw-sentence-row';
+    li.setAttribute('data-sentence-index', i);
+    li.innerHTML = '<span class="num">' + (i + 1) + '.</span><span class="text">' + s + '</span>';
+    list.appendChild(li);
+  });
+}
+
+// Opening Book Screen — 미션 화면과 동일한 흰 책 프레임(왼쪽=그림, 오른쪽=Robo Mission 안내+영상).
+function lwGoOpening() {
+  switchLwScreen('lwOpening');
+  document.getElementById('lwOpeningSceneImg').src = programData.opening_image_src || programData.image_src;
+  lwApplyGradeBackground();
+  // scene-art-frame: lesson별 실제 삽화(image_src)를 고정 프레임 안에 표시한다(책 배경 사진과는 분리된
+  // 데이터 기반 이미지 — img2 이후 다른 그림으로 교체해도 이 프레임/좌표는 그대로 재사용된다).
+  document.getElementById('lwOpeningArtImg').src = programData.image_src;
+  lwRenderStars('lwOpeningStars');
+  renderSentencePanel('lwOpeningSentenceList');
+
+  const lines = programData.opening.voice_lines;
+  // 앞 3줄(삐빅!/쉿…/무언가 이상해요)은 기본 대기(idle), 나머지(단어가 사라졌다는 것을 알린 뒤 미션 안내)는
+  // 문제 발견 영상(alert)으로 전환한다 — 정지 이미지 하나로 고정하지 않고 오프닝 안에서도 상태 변화를 준다.
+  const introLines = lines.slice(0, 3);
+  const restLines  = lines.slice(3);
+  lwSetRoboMedia('Opening', 'idle');
+  lwRenderLines('lwOpeningText', introLines);
+  lwSpeakSequence(introLines, () => {
+    lwSetRoboMedia('Opening', 'alert');
+    lwRenderLines('lwOpeningText', restLines);
+    lwSpeakSequence(restLines, null, (idx) => lwHighlightLine('lwOpeningText', idx));
+  }, (idx) => lwHighlightLine('lwOpeningText', idx));
+}
+
+// 왼쪽 페이지 위에 hotspot 5개를 항상 전부 그린다(missions 배열 그대로, 좌표는 %).
+// 클릭 시 hotspot 배열 index와 현재 미션 index가 같으면 정답, 다르면 오답(힌트)으로 처리한다.
+function lwRenderHotspots() {
+  const wrap = document.getElementById('lwHotspots');
+  wrap.innerHTML = '';
+  programData.missions.forEach((m, idx) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'lw-hotspot';
+    const r = m.hotspot_rect;
+    btn.style.left   = r.left   + '%';
+    btn.style.top    = r.top    + '%';
+    btn.style.width  = r.width  + '%';
+    btn.style.height = r.height + '%';
+    btn.setAttribute('aria-label', m.hotspot_label);
+    btn.onclick = () => lwHotspotClick(idx);
+    wrap.appendChild(btn);
+  });
+}
+
+function lwGoMission(n) {
+  lwMissionIndex = n - 1;
+  lwIsProcessing = false;
+  switchLwScreen('lwMission');
+  lwHideWaveform('lwWaveform');
+  lwResetCurrentSentenceSlot();
+  const total = programData.missions.length;
+  const m = programData.missions[lwMissionIndex];
+
+  document.getElementById('lwMissionLabel').textContent = `Mission ${n} / ${total}`;
+  document.getElementById('lwSceneImg').src = programData.opening_image_src || programData.image_src;
+  lwApplyGradeBackground();
+  document.getElementById('lwMissionArtImg').src = programData.image_src;
+  lwRenderHotspots();
+  lwRenderStars('lwStars');
+  renderSentencePanel('lwMissionSentenceList');
+
+  lwSetRoboMedia('', 'point');
+  lwRenderLines('lwRoboText', m.robo_find_lines);
+  lwSpeakSequence(m.robo_find_lines, null, (idx) => lwHighlightLine('lwRoboText', idx));
+}
+
+// STEP 6: hotspot 정답 클릭 시 Opening/Mission 두 문장 패널 모두에서 해당 줄(mission index ==
+// sentence index, 0-based)을 1회 반짝이고(is-active), 이후에도 찾음 상태를 유지한다(is-found 누적).
+// 0..index를 매번 다시 is-found 처리하는 이유: lwGoMission()이 미션 전환마다 기존 STEP4 로직
+// (renderSentencePanel)으로 lwMissionSentenceList를 새로 그려 이전 클릭의 is-found가 지워지므로,
+// 그 다음 클릭에서 이미 찾은 줄들까지 다시 칠해 누적 상태를 복원한다(기존 로직은 변경하지 않음).
+function lwFlashSentenceRow(index) {
+  ['lwOpeningSentenceList', 'lwMissionSentenceList'].forEach((listId) => {
+    for (let i = 0; i <= index; i++) {
+      const row = document.querySelector('#' + listId + ' .lw-sentence-row[data-sentence-index="' + i + '"]');
+      if (row) row.classList.add('is-found');
+    }
+    const activeRow = document.querySelector('#' + listId + ' .lw-sentence-row[data-sentence-index="' + index + '"]');
+    if (activeRow) {
+      activeRow.classList.add('is-active');
+      setTimeout(() => activeRow.classList.remove('is-active'), 1100);
+    }
+  });
+}
+
+function lwHotspotClick(idx) {
+  if (lwIsProcessing || !programData || !programData.missions) return;
+  const m = programData.missions[lwMissionIndex];
+  const hotspotButtons = document.querySelectorAll('#lwHotspots .lw-hotspot');
+
+  if (idx === lwMissionIndex) {
+    // 정답 — 별 채우기, ding, 성공 영상, 그 다음 "Say it with me" 부분에서 repeat 영상 + 음성 파형 표시
+    lwIsProcessing = true;
+    lwFoundHotspots.add(m.hotspot_id);
+    const btn = hotspotButtons[idx];
+    if (btn) btn.classList.add('lw-glow');
+    lwPlayDing();
+    lwRenderStars('lwStars');
+    lwFlashSentenceRow(idx);
+    lwShowCurrentSentenceCard(idx);
+
+    // robo_success_lines = [찬사, 문장, "Say it with me.", 문장] 구조를 앞 2줄/뒤 2줄로 나눠
+    // 뒤쪽(따라 말하기) 구간에서만 repeat 영상 + 파형을 보여준다.
+    const praiseLines = m.robo_success_lines.slice(0, 2);
+    const repeatLines = m.robo_success_lines.slice(2);
+    lwSetRoboMedia('', 'listen');
+    lwRenderLines('lwRoboText', praiseLines);
+
+    const startPraiseLines = () => {
+      lwSpeakSequence(praiseLines, () => {
+        lwSetRoboMedia('', 'repeat');
+        lwShowWaveform('lwWaveform');
+        lwRenderLines('lwRoboText', repeatLines);
+        lwSpeakSequence(repeatLines, () => {
+          lwHideWaveform('lwWaveform');
+          lwIsProcessing = false;
+          const isLast = (lwMissionIndex + 1) >= programData.missions.length;
+          setTimeout(() => {
+            if (isLast) lwGoStoryTell();
+            else lwGoMission(lwMissionIndex + 2);
+          }, 900);
+        }, (idx) => lwHighlightLine('lwRoboText', idx));
+      }, (idx) => lwHighlightLine('lwRoboText', idx));
+    };
+
+    // STEP 7: 5번째(마지막) hotspot 정답일 때만 폭죽+빵빠레를 먼저 재생하고, 끝난 뒤(오디오
+    // 겹침 없이) 기존 praiseLines TTS를 이어서 시작한다. 마지막이 아니면 기존과 완전히 동일하게
+    // 바로 진행한다.
+    const isFinalHotspot = (lwMissionIndex + 1) >= programData.missions.length;
+    if (isFinalHotspot) lwCelebrate(startPraiseLines);
+    else startPraiseLines();
+  } else {
+    // 오답 — 미션 안내 영상(point)을 다시 보여주며 같은 안내를 반복한다.
+    lwIsProcessing = true;
+    lwSetRoboMedia('', 'point');
+    lwRenderLines('lwRoboText', m.robo_find_lines);
+    lwSpeakSequence(m.robo_find_lines, () => { lwIsProcessing = false; }, (idx) => lwHighlightLine('lwRoboText', idx));
+  }
+}
+
+// lwStoryList(<ol>)의 idx번째 <li>만 강조한다. idx<0이면 전부 해제.
+function lwHighlightStoryLine(idx) {
+  const items = document.querySelectorAll('#lwStoryList li');
+  items.forEach((li, i) => li.classList.toggle('lw-line-active', i === idx));
+}
+
+function lwGoStoryTell() {
+  switchLwScreen('lwStoryTell');
+  document.getElementById('lwStoryImg').src = programData.opening_image_src || programData.image_src;
+  lwApplyGradeBackground();
+  document.getElementById('lwStoryArtImg').src = programData.image_src;
+  lwSetRoboMedia('Story', 'finish');
+  lwHideWaveform('lwStoryWaveform');
+
+  const sentences = programData.story_tell.sentences;
+  const list = document.getElementById('lwStoryList');
+  list.innerHTML = '';
+  sentences.forEach((s) => {
+    const li = document.createElement('li');
+    li.textContent = s;
+    list.appendChild(li);
+  });
+
+  // 안내문(Great job!...Start!)을 먼저 읽어주고, 이어서 5문장을 Robo가 한 줄씩 모범으로
+  // 읽어주며 Story Tell 목록에서 해당 줄만 강조한다("Say it with me" 계열과 같은 원리).
+  const lines = programData.story_tell.robo_lines;
+  const introLines = lines.slice(0, -1);
+  const startLine  = lines.slice(-1);
+  lwRenderLines('lwStoryRoboText', lines);
+
+  lwSpeakSequence(introLines, () => {
+    lwShowWaveform('lwStoryWaveform');
+    lwSpeakSequence(startLine, () => {
+      lwSpeakSequence(sentences, () => {
+        lwHideWaveform('lwStoryWaveform');
+        lwHighlightStoryLine(-1);
+      }, (idx) => lwHighlightStoryLine(idx));
+    }, (idx) => lwHighlightLine('lwStoryRoboText', idx + introLines.length));
+  }, (idx) => lwHighlightLine('lwStoryRoboText', idx));
+}
+
+function lwGoCopy() {
+  switchLwScreen('lwCopy');
+  document.getElementById('lwCopySceneImg').src = programData.opening_image_src || programData.image_src;
+  lwApplyGradeBackground();
+  document.getElementById('lwCopyArtImg').src = programData.image_src;
+  document.getElementById('lwCopyBox').textContent = programData.story_tell.sentences.join('\n');
+  document.getElementById('lwCopyStatus').textContent = '';
+  // Finish Story 이후에도 같은 책 화면 안에서 오른쪽 페이지만 책장이 넘어가듯 전환되는
+  // 느낌을 준다(순수 시각 효과 — 버튼/복사 기능은 애니메이션과 무관하게 즉시 정상 동작).
+  const newRightPage = document.querySelector('#lwCopy .lw-page-right');
+  if (newRightPage) {
+    newRightPage.classList.add('lw-page-turn-in');
+    setTimeout(() => newRightPage.classList.remove('lw-page-turn-in'), 700);
+  }
+}
+
+// Lost Words 공용 ChatGPT 인계 프롬프트 빌더 — book_title/scene_label/story_tell.sentences 등
+// lesson 데이터만으로 조립하므로, 다른 장면/다른 책(img2~img7, 다음 동화책 등)이 추가되어도
+// 이 함수를 그대로 재사용할 수 있다(하드코딩된 "Peter Rabbit"/"img1" 문자열 없음).
+function buildChatGptCopyPrompt(pd) {
+  const bookTitle  = pd.book_title  || pd.story_title  || 'Picture Speaking';
+  const sceneLabel = pd.scene_label || pd.scene_title  || '';
+  const sentences  = (pd.story_tell && pd.story_tell.sentences) || pd.sentences || [];
+  const sentenceLines = sentences.map((s, i) => `${i + 1}. ${s}`).join('\n');
+  // 개선(2026-07-05): lesson.chatgpt_context가 있으면 장면 맥락을 문장 목록 앞에 붙인다.
+  // 없는 lesson(img1 등)은 이 줄이 통째로 빠져 기존 출력과 완전히 동일 — 하위 호환.
+  const contextBlock = pd.chatgpt_context ? [pd.chatgpt_context, ''] : [];
+  return [
+    'You are a friendly English speaking teacher for an elementary student.',
+    '',
+    'The student has just finished a Picture Speaking lesson.',
+    '',
+    `Book: ${bookTitle}`,
+    `Scene: ${sceneLabel}`,
+    'Lesson: Lost Words / Picture Speaking',
+    '',
+    ...contextBlock,
+    'The student practiced these sentences:',
+    sentenceLines,
+    '',
+    'Please continue the speaking practice step by step.',
+    '',
+    'Rules:',
+    '- Use short and easy English.',
+    '- You may give short Korean help if needed.',
+    '- Encourage the student often.',
+    '- Focus on speaking confidence first.',
+    '- Correct gently and briefly.',
+    '- Ask only one thing at a time.',
+    '',
+    'Practice flow:',
+    '1. Greet the student warmly.',
+    '2. Read the 5 sentences once slowly.',
+    '3. Ask the student to repeat one sentence at a time.',
+    '4. Praise the student after each try.',
+    '5. If needed, give a short correction and let the student try again.',
+    '6. Ask 2 or 3 simple follow-up questions about the picture.',
+    '7. Finally, ask the student to tell the picture again in their own words.',
+    '',
+    'Start now.',
+    '',
+    '이 프롬프트를 ChatGPT에 붙여 넣으면 이어서 말하기 연습을 진행할 수 있습니다.',
+  ].join('\n');
+}
+
+async function lwCopyToClipboard() {
+  const text   = buildChatGptCopyPrompt(programData);
+  const status = document.getElementById('lwCopyStatus');
+  try {
+    await navigator.clipboard.writeText(text);
+    status.textContent = '복사했어요! 이제 ChatGPT로 가요.';
+  } catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity  = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      status.textContent = '복사했어요! 이제 ChatGPT로 가요.';
+    } catch (e2) {
+      status.textContent = '복사에 실패했어요. 직접 선택해서 복사해주세요.';
+    }
+    document.body.removeChild(ta);
+  }
+}
+
+function restartSession() {
+  currentStep = 1;
+  doneSteps.clear();
+  isComplete = false;
+  firstAnswerSent  = false;
+  welcomePlayed    = false;
+  _pendingWelcome  = null;
+  continuousListening = false;
+  _stopRecognition();
+  _cancelAudio();
+  _updateListenUI();
+  buildUI();
+}
+
+function setCoach(msg) {
+  const el = document.getElementById('coachBubble');
+  el.textContent = msg;
+  el.scrollTop = 0;
+}
+function setMom(msg)   { document.getElementById('momText').textContent = msg; }
+function setStatus(st) {
+  const d = document.getElementById('statusDot');
+  d.className = 'coach-status-dot' + (st === 'thinking' ? ' thinking' : st === 'error' ? ' error' : '');
+}
+
+function setLoading(busy) {
+  isBusy = busy;
+  setStatus(busy ? 'thinking' : 'ready');
+  enableInput(!busy);
+  const lb = document.getElementById('listenBtn');
+  if (lb) lb.disabled = busy || !recognition;
+}
+
+function enableInput(enabled) {
+  const inp = document.getElementById('studentInput');
+  const btn = document.getElementById('sendBtn');
+  inp.disabled = !enabled;
+  btn.disabled = !enabled;
+  if (enabled) inp.focus();
+}
+
+// ── Voice: STT (Continuous) ───────────────────────────────
+function initVoice() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    ['listenBtn', 'stopBtn'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.disabled = true; el.title = 'Microphone not supported (try Chrome)'; }
+    });
+    return;
+  }
+
+  recognition               = new SR();
+  recognition.lang          = 'en-US';
+  recognition.continuous    = true;
+  recognition.interimResults= true;
+
+  recognition.onresult = (e) => {
+    const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
+    const inp = document.getElementById('studentInput');
+    if (inp) inp.value = transcript;
+
+    if (e.results[e.results.length - 1].isFinal && transcript.trim()) {
+      if (document.getElementById('autoSendCheck')?.checked) {
+        clearTimeout(autoSendTimer);
+        autoSendTimer = setTimeout(() => activeSendFn(), 500);
+      }
+    }
+  };
+
+  recognition.onerror = (e) => {
+    isRecognizing = false;
+    if (e.error === 'not-allowed') {
+      setCoach('Microphone access denied.\nPlease allow microphone in your browser.');
+      continuousListening = false;
+      _updateListenUI();
+    }
+    // 'no-speech' and 'aborted' let onend handle the restart
+  };
+
+  recognition.onend = () => {
+    isRecognizing = false;
+    if (continuousListening && !isSpeaking && !isBusy && !isComplete) {
+      setTimeout(_startRecognition, 300);
+    } else {
+      _updateListenUI();
+    }
+  };
+}
+
+function _startRecognition() {
+  if (!recognition || isRecognizing || isSpeaking || isComplete) return;
+  try {
+    recognition.start();
+    isRecognizing = true;
+    _updateListenUI();
+  } catch(e) {
+    isRecognizing = false;
+  }
+}
+
+function _stopRecognition() {
+  if (!recognition) return;
+  try { recognition.stop(); } catch(e) {}
+  isRecognizing = false;
+}
+
+function toggleListen() {
+  if (!recognition) return;
+  if (continuousListening) {
+    stopListening();
+  } else {
+    continuousListening = true;
+    _cancelAudio();
+    _startRecognition();
+    _updateListenUI();
+  }
+}
+
+function stopListening() {
+  continuousListening = false;
+  _stopRecognition();
+  _updateListenUI();
+}
+
+function _updateListenUI() {
+  const lb = document.getElementById('listenBtn');
+  const sb = document.getElementById('stopBtn');
+  const bg = document.getElementById('listeningBadge');
+  if (lb) {
+    lb.className = 'listen-btn' + (continuousListening ? ' on' : '');
+    lb.textContent = continuousListening ? '🎙 Listening' : '🎙 Listen ON';
+    lb.disabled = !recognition || isBusy;
+  }
+  if (sb) sb.disabled = !continuousListening;
+  if (bg) bg.className = 'listening-badge' + (isRecognizing ? ' show' : '');
+}
+
+// ── Voice: TTS (OpenAI Alloy → SpeechSynthesis fallback) ─
+function _cancelAudio() {
+  if (_currentAudio) { try { _currentAudio.pause(); } catch(e){} _currentAudio = null; }
+  window.speechSynthesis?.cancel();
+}
+
+// static build (R2 배포) 2차 수정: mp3 음성 재생에서 AudioContext/GainNode 증폭 경로를
+// 완전히 제거했다. createMediaElementSource로 <audio>를 Web Audio 그래프에 연결하면,
+// 랩탑·아이패드 실기기에서 그 AudioContext가 running으로 안 잡히는 경우 엘리먼트는
+// paused:false/currentTime 진행에도 실제 소리는 전혀 안 나는 문제가 있었다(첫 제스처에서
+// resume()을 걸어도 재현됨). 1.25배 증폭보다 "확실히 들리는" 게 우선이라, mp3는 이제
+// AudioContext를 전혀 거치지 않는 순수 <audio> 재생(volume=1.0)으로만 나간다.
+// _sharedAudioCtx는 lwPlayFanfare()(폭죽 축하음, Web Audio 합성)에서만 계속 사용한다.
+let _sharedAudioCtx = null;
+
+// 오디오 unlock (static build, R2 배포): 페이지의 첫 클릭/터치/키 입력에서 1회,
+// (1) 폭죽용 공유 AudioContext를 resume()하고 (2) 무음 1프레임을 재생해 iOS Safari의
+// "이 세션에서 오디오 재생 허용됨" 상태를 열어둔다. mp3 음성 재생 자체는 이 AudioContext와
+// 무관한 별도 경로(순수 <audio>)라 이 unlock 성공 여부와 상관없이 재생된다.
+let _audioUnlocked = false;
+function _unlockAudioOnce() {
+  if (_audioUnlocked) return;
+  _audioUnlocked = true;
+  try {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (Ctx) {
+      if (!_sharedAudioCtx) _sharedAudioCtx = new Ctx();
+      _sharedAudioCtx.resume().catch(() => {});
+    }
+  } catch (e) {}
+  try {
+    const silence = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=');
+    silence.play().catch(() => {});
+  } catch (e) {}
+}
+document.addEventListener('click',   _unlockAudioOnce, { once: true, capture: true });
+document.addEventListener('touchend',_unlockAudioOnce, { once: true, capture: true });
+document.addEventListener('keydown', _unlockAudioOnce, { once: true, capture: true });
+
+// opts.lang: 'ko-KR' | 'en-US' (default 'en-US')
+// opts.onDone: callback after speech ends (optional)
+async function speak(text, opts = {}) {
+  if (!(document.getElementById('voiceCheck')?.checked)) return;
+  const lang = opts.lang || 'en-US';
+
+  // 세로 모드 안내 오버레이가 떠 있으면(작은 화면 세로) 재생을 시작하지 않고 가로로
+  // 돌릴 때까지 기다린다 — 돌리면 바로 이어서 정상 재생된다.
+  if (_rotateOverlayVisible) {
+    await new Promise((resolve) => {
+      document.addEventListener('lw:rotate-overlay-hidden', resolve, { once: true });
+    });
+  }
+
+  isSpeaking = true;
+  _stopRecognition();
+  _cancelAudio();
+
+  const afterSpeak = () => {
+    _currentAudio = null;
+    isSpeaking    = false;
+    opts.onDone?.();
+    if (continuousListening && !isBusy && !isComplete) {
+      setTimeout(_startRecognition, 400);
+    }
+  };
+
+  // Static build: pre-baked mp3, R2-hosted — tts_manifest values are full URLs (no /api/tts call).
+  const mp3Url = TTS_MANIFEST[text];
+  if (!mp3Url) {
+    console.warn('[static-tts] tts_manifest에 없는 문장 — 재생 skip:', text);
+    afterSpeak();
+    return;
+  }
+
+  try {
+    // AudioContext를 거치지 않는 순수 재생 — 증폭 없음, 대신 실기기(랩탑/아이패드)에서
+    // 확실히 소리가 난다.
+    const audio = new Audio(mp3Url);
+    audio.volume = 1.0;
+    _currentAudio = audio;
+    audio.onended = afterSpeak;
+    audio.onerror = () => {
+      console.warn('[static-tts] mp3 재생 실패 — skip:', mp3Url);
+      afterSpeak();
+    };
+    await audio.play();
+  } catch (e) {
+    console.warn('[static-tts] audio.play() 실패 — skip:', mp3Url, e);
+    afterSpeak();
+  }
+}
+
+function _speakFallback(text, lang, afterSpeak) {
+  if (!window.speechSynthesis) { afterSpeak?.(); return; }
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang   = lang || 'en-US';
+  utter.rate   = lang === 'ko-KR' ? 0.85 : 0.9;
+  utter.pitch  = 1.0;
+  utter.volume = 1.0; // SpeechSynthesisUtterance는 1.0이 상한이라 이 이상 증폭 불가(플랫폼 제약)
+  utter.onend   = afterSpeak;
+  utter.onerror = afterSpeak;
+  window.speechSynthesis.speak(utter);
+}
+
+function readLastReply() {
+  if (lastReply) speak(lastReply, { lang: 'en-US' });
+}
+
+// ── Welcome (한국어 안내, 1회) ──────────────────────────────
+let welcomePlayed    = false;
+let _pendingWelcome  = null;
+
+function _buildWelcomeText() {
+  const s1 = programData?.sentences[0] || 'I see a mother rabbit.';
+  return `안녕하세요. 환영합니다.\n저는 Robo Coach입니다.\n먼저 왼쪽 그림을 천천히 보세요.\n그리고 오른쪽 첫 번째 문장을 확인하세요.\n첫 번째 문장은, ${s1}입니다.\n준비가 되면 Listen ON을 누르고 첫 번째 문장을 말해 보세요.\n말한 다음 Send를 눌러주세요.`;
+}
+
+function playWelcomeOnce() {
+  if (welcomePlayed) return;
+  if (!document.getElementById('voiceCheck')?.checked) return;
+  welcomePlayed = true;
+
+  const text = _buildWelcomeText();
+
+  isSpeaking = true;
+  _stopRecognition();
+  _cancelAudio();
+
+  const afterSpeak = () => {
+    _currentAudio = null;
+    isSpeaking    = false;
+  };
+
+  // Static build(정적 배포)엔 /api/tts 서버가 없다. 이 웰컴 문장은 동적 텍스트라
+  // tts_manifest 사전제작 mp3에도 없으므로, 브라우저 내장 음성(Web Speech API)으로
+  // 바로 재생한다 (예전엔 /api/tts에 먼저 요청했다가 항상 실패 → 소리 없이 조용히 스킵됐음).
+  _speakFallback(text, 'ko-KR', afterSpeak);
+}
+
+// ── PWA: Service Worker 등록 ──────────────────────────────
+// static build 파일럿 범위 밖(원본 service-worker.js는 /picture_speaking_engine_mvp.html
+// 등 서버 전용 경로를 precache해 이 폴더 구조와 안 맞음) — 이번 단계에서는 등록하지 않는다.
+if (false && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(reg => console.log('[PWA] service worker registered', reg.scope))
+      .catch(err => console.warn('[PWA] service worker failed', err));
+  });
+}
+</script>
+</body>
+</html>
