@@ -1,9 +1,13 @@
 /* CEC English Camp · 콘텐츠 페이지 로그인 게이트
  * 사용:
- *   <script src="/assets/require-auth.js?v=11"></script>
+ *   <script src="/assets/require-auth.js?v=12"></script>
  *   (supabase-js 미로드 시 자동 동적 로드)
  *
- * 우선순위 (v=11):
+ * 우선순위 (v=12):
+ *   [/lostwords-wip/ 경로]  ← Lost Words 전용 게이트 (v12 신규)
+ *     1. 미로그인 → /login.html?next=현재경로
+ *     2. 로그인 + 활성 구독자(plan_type 있고 canceled_at·payment_failed_at 없음) → 통과
+ *     3. 그 외(미결제·해지·무료체험 전부 포함) → /payment/ 로 이동
  *   [/space-camp/ 경로]  ← Space Camp 전용 강화 게이트
  *     1. 미로그인 → /login.html?next=현재경로
  *     2. 로그인 + (구독자(plan_type 있고 canceled_at 없음) 또는 space_camp_access=true) → 통과
@@ -40,6 +44,7 @@
     var SUPABASE_KEY = 'sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
     var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     var isSpaceCamp = location.pathname.indexOf('/space-camp/') === 0;
+    var isLostWords = location.pathname.indexOf('/lostwords-wip/') === 0;
 
     // onAuthStateChange: INITIAL_SESSION은 클라이언트 생성 직후 즉시 발행
     // → localStorage 세션 있으면 session 객체 포함, 없으면 null
@@ -50,6 +55,26 @@
 
       // ── 관리자 계정: 체크 없이 모든 페이지 즉시 통과 ──
       if (session && session.user && session.user.email === 'cecenglishcamp@gmail.com') {
+        return;
+      }
+
+      // ── Lost Words 전용 게이트 (v12 신규): 활성 구독자만 통과, 그 외(체험 포함)는 /payment/ ──
+      if (isLostWords) {
+        if (!session) { gotoLogin(); return; }
+        sb.from('households')
+          .select('plan_type,canceled_at,payment_failed_at')
+          .eq('auth_user_id', session.user.id)
+          .maybeSingle()
+          .then(function (r) {
+            // 설정 오류로 쿼리가 실패하면 로그인 사용자를 막지 않고 통과시킨다(잠금 루프 방지),
+            // 기존 일반 콘텐츠 게이트의 fail-open 방침과 동일.
+            if (r && r.error) { return; }
+            var h = r && r.data;
+            var isPaid = h && !!h.plan_type && !h.canceled_at && !h.payment_failed_at;
+            if (isPaid) return; // 활성 구독자 → 통과
+            window.location.replace('/payment/'); // 미결제·해지·체험 → 결제 페이지
+          })
+          .catch(function () { window.location.replace('/payment/'); });
         return;
       }
 
