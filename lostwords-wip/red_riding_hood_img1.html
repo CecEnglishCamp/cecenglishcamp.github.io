@@ -497,8 +497,13 @@ body.lw-active{background:#fbf9f3}
   }
   /* Task 14: 배경마다 명판 크기/위치가 다를 수 있어 --lw-plaque-* 변수로 파라미터화한다.
      값이 없으면(Peter Rabbit/class2_red 등) 기존 실측값(Class4 공용)이 그대로 폴백된다. */
-  .lw-nameplate-top{left:var(--lw-plaque-top-left,46.95%);top:var(--lw-plaque-top-top,4.68%);width:var(--lw-plaque-top-width,9.27%);height:var(--lw-plaque-top-height,4.67%);font-size:var(--lw-plaque-top-font,11px);letter-spacing:1.4px}
-  .lw-nameplate-bottom{left:var(--lw-plaque-bottom-left,46.59%);top:var(--lw-plaque-bottom-top,86.72%);width:var(--lw-plaque-bottom-width,9.63%);height:var(--lw-plaque-bottom-height,3.93%);font-size:var(--lw-plaque-bottom-font,9px);letter-spacing:1.1px}
+  /* Task 14 긴급수정: font-size가 고정 px면 뷰포트가 좁아져 .lw-book 실제 폭이 줄어도 명판
+     텍스트박스(%)만 함께 줄고 글자는 그대로라 좁은 화면(약 700~1280px)에서 글자가 명판 밖으로
+     흘러넘쳐 잘렸다(1920/1440에서만 육안 확인하고 넘어간 것이 기존 검증 실패 원인). clamp()+vw로
+     .lw-book 폭에 비례해 글자도 함께 줄어들게 하고, letter-spacing도 em 단위로 바꿔 글자 크기에
+     비례시킨다. */
+  .lw-nameplate-top{left:var(--lw-plaque-top-left,46.95%);top:var(--lw-plaque-top-top,4.68%);width:var(--lw-plaque-top-width,9.27%);height:var(--lw-plaque-top-height,4.67%);font-size:var(--lw-plaque-top-font,11px);letter-spacing:var(--lw-plaque-top-tracking,1.4px)}
+  .lw-nameplate-bottom{left:var(--lw-plaque-bottom-left,46.59%);top:var(--lw-plaque-bottom-top,86.72%);width:var(--lw-plaque-bottom-width,9.63%);height:var(--lw-plaque-bottom-height,3.93%);font-size:var(--lw-plaque-bottom-font,9px);letter-spacing:var(--lw-plaque-bottom-tracking,1.1px)}
 
   /* 화면 크림 실측색(rgb(250,226,189))과 같은 불투명 배경을 써서 화면과 "한 몸"으로 보이게
      한다. 좌표는 왼쪽 컬럼과 대칭인 우측 칼럼. */
@@ -1130,14 +1135,23 @@ function lwApplyLessonTheme(){
 
   // Task 14: 명판 위치/크기도 배경마다 다를 수 있어 데이터로 오버라이드한다. 값이 없으면
   // (Peter Rabbit/class2_red 등) CSS 폴백값(Class4 공용 실측치)이 그대로 유지된다.
-  // font-size는 명판 폭 변화 비율에 맞춰 기존 실측 폰트크기(11px/9px)를 스케일링한다.
+  // 긴급수정: font-size를 고정 px 하나로 주면 뷰포트가 좁아질 때 .lw-book 실제 폭도 함께
+  // 줄어들어(명판 박스는 %라 같이 줄지만 글자는 안 줄어듦) 글자가 명판 밖으로 흘러넘친다.
+  // clamp(최소px, Nvw, 최대px)로 바꿔 .lw-book 폭(대략 뷰포트 폭에 비례, 1440px에서 캡)에
+  // 맞춰 글자도 함께 줄어들게 한다. vw 계수는 "1440px 뷰포트에서 기존 스케일링 폰트크기와
+  // 정확히 맞물리도록"(coef = maxPx / 14.4) 역산 — 1440 이상에서는 clamp 상한(maxPx)에서
+  // 자연히 캡되어 기존 큰 화면 렌더링은 그대로 유지된다. letter-spacing도 em 단위로 바꿔
+  // 글자 크기에 비례시킨다(고정 px면 작은 글자에서 자간만 과도하게 벌어져 다시 흘러넘칠 수 있음).
   const pTop = programData.plaque_rect_top;
   if (pTop && typeof pTop.left === 'number') {
     root.setProperty('--lw-plaque-top-left', pTop.left + '%');
     root.setProperty('--lw-plaque-top-top', pTop.top + '%');
     root.setProperty('--lw-plaque-top-width', pTop.width + '%');
     root.setProperty('--lw-plaque-top-height', pTop.height + '%');
-    root.setProperty('--lw-plaque-top-font', Math.round(11 * (pTop.width / 9.27)) + 'px');
+    const topMaxPx = 11 * (pTop.width / 9.27);
+    const topVwCoef = (topMaxPx / 14.4).toFixed(3);
+    root.setProperty('--lw-plaque-top-font', `clamp(6px, ${topVwCoef}vw, ${Math.round(topMaxPx)}px)`);
+    root.setProperty('--lw-plaque-top-tracking', '0.09em');
   }
   const pBottom = programData.plaque_rect_bottom;
   if (pBottom && typeof pBottom.left === 'number') {
@@ -1145,7 +1159,10 @@ function lwApplyLessonTheme(){
     root.setProperty('--lw-plaque-bottom-top', pBottom.top + '%');
     root.setProperty('--lw-plaque-bottom-width', pBottom.width + '%');
     root.setProperty('--lw-plaque-bottom-height', pBottom.height + '%');
-    root.setProperty('--lw-plaque-bottom-font', Math.round(9 * (pBottom.width / 9.63)) + 'px');
+    const bottomMaxPx = 9 * (pBottom.width / 9.63);
+    const bottomVwCoef = (bottomMaxPx / 14.4).toFixed(3);
+    root.setProperty('--lw-plaque-bottom-font', `clamp(5px, ${bottomVwCoef}vw, ${Math.round(bottomMaxPx)}px)`);
+    root.setProperty('--lw-plaque-bottom-tracking', '0.08em');
   }
 }
 
