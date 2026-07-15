@@ -1,6 +1,14 @@
 # CEC Handover
 
-## G3 W05 Red Riding Hood Reading 1/2 + Writing 배치·연결 (최신)
+## G3 W06-08 Red Riding Hood Reading 1/2 + Writing 배치·연결 (최신)
+
+- W06~08 각 주 Reading1/2 + Writing 총 9개 파일 신규 생성(`library/camp-a-readings/grade3/red-riding-hood/w0{6,7,8}_r{1,2}.html`, `camp-a/writing/grade3/red-riding-hood/w0{6,7,8}.html`)
+- grade3.json W06·W07·W08 monday reading / wednesday reading / thursday writing → ready 패치(정확히 9건)
+- 커밋: `96e92ab2c` "feat: G3 W06-08 Red Riding Hood Reading 1/2 + Writing (G3 level)"
+- 검증: W06 Reading1·W07 Reading2 열기→토글/정답보기 정상, W08 Writing Step2·4 저장·Step3 복사 정상
+- **W05~08 네 주 전체(월~금, Listen&Find·Look&Speak 포함) 실측 결과 pending 항목 0건 — Red Riding Hood 4주 완비**
+
+## G3 W05 Red Riding Hood Reading 1/2 + Writing 배치·연결
 
 - `library/camp-a-readings/grade3/red-riding-hood/w05_r1.html`, `w05_r2.html`, `camp-a/writing/grade3/red-riding-hood/w05.html` 신규 생성(W01과 동일 레벨/템플릿)
 - grade3.json W05 monday reading / wednesday reading / thursday writing → status pending→ready 패치(정확히 3건)
