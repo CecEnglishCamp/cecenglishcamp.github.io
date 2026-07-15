@@ -103,7 +103,7 @@
     if (allDone) { root.appendChild(completePanel(pm, entry)); return; }
 
     // ---- checklist
-    var intro = el("p", "mi-intro", "오늘은 아래 항목만 공부합니다.");
+    var intro = el("p", "mi-intro", "오늘은 아래 항목만 공부합니다. 새 창(↗)으로 열린 수업은 끝나면 창을 닫고 ✓ 를 눌러 완료해요.");
     root.appendChild(intro);
 
     var list = el("div", "mi-list");
@@ -132,10 +132,20 @@
       row.appendChild(body);
 
       if (isReady) {
-        var open = el("a", "mi-open", isDone ? "다시 열기" : "열기");
-        var sep = it.url.indexOf("?") === -1 ? "?" : "&";
-        open.href = it.url + sep + "return=" + encodeURIComponent(
-          missionURL(pm.grade, pm.week, pm.day) + "&done=" + idx);
+        var open = el("a", "mi-open");
+        if (it.type === "reading" || it.type === "writing") {
+          // my pages: same tab + return marker (auto-complete on return)
+          open.textContent = isDone ? "다시 열기" : "열기";
+          var sep = it.url.indexOf("?") === -1 ? "?" : "&";
+          open.href = it.url + sep + "return=" + encodeURIComponent(
+            missionURL(pm.grade, pm.week, pm.day) + "&done=" + idx);
+        } else {
+          // existing courseware: new tab, close to come back, tap ✓ when done
+          open.textContent = isDone ? "다시 열기 ↗" : "열기 ↗";
+          open.href = it.url;
+          open.target = "_blank";
+          open.rel = "noopener";
+        }
         row.appendChild(open);
       } else if (meta.text) {
         row.appendChild(el("span", "rm-badge " + meta.badge, meta.text));
@@ -148,9 +158,15 @@
     if (firstOpen !== -1) {
       var cta = el("a", "mi-start", "Let's Go!  →");
       var it = items[firstOpen];
-      var sep2 = it.url.indexOf("?") === -1 ? "?" : "&";
-      cta.href = it.url + sep2 + "return=" + encodeURIComponent(
-        missionURL(pm.grade, pm.week, pm.day) + "&done=" + firstOpen);
+      if (it.type === "reading" || it.type === "writing") {
+        var sep2 = it.url.indexOf("?") === -1 ? "?" : "&";
+        cta.href = it.url + sep2 + "return=" + encodeURIComponent(
+          missionURL(pm.grade, pm.week, pm.day) + "&done=" + firstOpen);
+      } else {
+        cta.href = it.url;
+        cta.target = "_blank";
+        cta.rel = "noopener";
+      }
       root.appendChild(cta);
     }
   }
