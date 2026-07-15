@@ -1,6 +1,14 @@
 # CEC Handover
 
-## Red Riding Hood /lostwords/ 승격 + G3 W05-08 연결 (최신)
+## G3 W05 Red Riding Hood Reading 1/2 + Writing 배치·연결 (최신)
+
+- `library/camp-a-readings/grade3/red-riding-hood/w05_r1.html`, `w05_r2.html`, `camp-a/writing/grade3/red-riding-hood/w05.html` 신규 생성(W01과 동일 레벨/템플릿)
+- grade3.json W05 monday reading / wednesday reading / thursday writing → status pending→ready 패치(정확히 3건)
+- 커밋: `de39be94d` "feat: G3 W05 Red Riding Hood Reading 1/2 + Writing (same level as W01)"
+- 검증: Reading 1 열기→돌아가기 자동완료(✓) 정상 / 쉬운글·기본글 토글·정답보기 정상 / Writing Step2·4 새로고침 후 유지·Step3 복사 정상 / **W05 한 주 전체(월~금) 이제 전부 열림 확인**(더 이상 pending 항목 없음)
+- 이로써 G3 Week01, Week05 두 주가 Camp A+Reading+Writing+Listen&Find+Look&Speak 전 항목 ready 상태로 완비됨
+
+## Red Riding Hood /lostwords/ 승격 + G3 W05-08 연결
 
 - `lostwords-wip/red_riding_hood_img1~9.html` + `lesson_rrh_img1~9.json`(18개) 전부 `/lostwords/`로 승격(보관 목적, 9개 전량 이동). noindex·require-auth v13 전부 유지 확인, 상대경로 정상.
 - G3 grade3.json W05~08 화요일 연결(status: ready) — 완성된 것만 연결, 나머지 주차는 무접촉:
