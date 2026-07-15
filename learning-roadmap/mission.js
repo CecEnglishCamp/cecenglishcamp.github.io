@@ -187,7 +187,7 @@
   var cache = {};
   function load(grade) {
     if (cache[grade]) return Promise.resolve(cache[grade]);
-    return fetch("manifests/grade" + grade + ".json", { cache: "no-cache" })
+    return fetch("manifests/grade" + grade + ".json?t=" + Date.now(), { cache: "no-cache" })
       .then(function (r) { if (!r.ok) throw new Error("manifest " + r.status); return r.json(); })
       .then(function (j) { cache[grade] = j; return j; });
   }

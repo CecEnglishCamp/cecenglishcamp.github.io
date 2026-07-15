@@ -141,7 +141,7 @@
   var cache = {};
   function loadManifest(grade) {
     if (cache[grade]) return Promise.resolve(cache[grade]);
-    return fetch("manifests/grade" + grade + ".json", { cache: "no-cache" })
+    return fetch("manifests/grade" + grade + ".json?t=" + Date.now(), { cache: "no-cache" })
       .then(function (r) {
         if (!r.ok) throw new Error("manifest " + grade + " " + r.status);
         return r.json();
