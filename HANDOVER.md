@@ -1,5 +1,14 @@
 # CEC Handover
 
+## 로드맵 스크립트 4시간 엣지캐시 수정 (최신)
+
+- 증상: 화요일 Listen & Find가 강력 새로고침하면 ready로 보이지만, 홈으로 나갔다 재방문하면 다시 "준비 중"으로 보임
+- 원인: `roadmap.js`/`mission.js`가 Cloudflare 엣지에 `Cache-Control: max-age=14400`(4시간)으로 캐시되어 옛 스크립트 파일이 서빙됨(`grade3.json`은 항상 정상이었음 — 스크립트 파일 자체가 문제)
+- 조치: `learning-roadmap/index.html`·`mission.html`의 `roadmap.css`/`roadmap.js`/`mission.js` 호출부에 `?v=2` 버전 파라미터 추가(`require-auth.js?v=13`과 동일 패턴). JS/CSS 파일 내용 자체는 무수정.
+  - 커밋: `eda181443` "fix: version-bust roadmap css/js to defeat 4h edge cache"
+- **이후 규칙: roadmap.js/mission.js/roadmap.css를 고칠 때마다 index.html·mission.html의 `?v=` 숫자를 반드시 올릴 것(v2→v3…)** — 안 올리면 이번과 같은 4시간 캐시 문제 재발.
+- 검증: 실브라우저로 홈→로드맵 재진입을 W01~04 각각 5회 반복, 전부 "수업 열기" 유지 확인(재발 없음). 요청 로그로 `roadmap.js?v=2` 정상 호출 확인.
+
 ## Peter Rabbit Listen & Find → `/lostwords/` 프로덕션 승격 완료
 
 - `lostwords-wip/`의 Peter Rabbit img1~7(HTML 7 + lesson JSON 7)을 `/lostwords/`로 정식 승격
