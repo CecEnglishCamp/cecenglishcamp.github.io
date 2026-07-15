@@ -1,6 +1,15 @@
 # CEC Handover
 
-## 로드맵 스크립트 4시간 엣지캐시 수정 (최신)
+## Listen & Find 랜딩 + scene 나가는 길 + 메뉴 분리 (최신)
+
+- `lostwords/index.html` 신규 생성 — Listen & Find 전체 랜딩(G3 Peter Rabbit 활성, G3 Red Riding Hood·G4 Wind in the Willows·G5 Treasure Island·G6 A Little Princess는 "준비 중" 표시). noindex 없음(랜딩 1개는 검색 노출 허용, DEPLOY_NOTES §5 정책과 일치)
+- `lostwords/peter_rabbit_img1.html`~`img7.html` 7개에 상단 헤더 우측에 "← Listen & Find 목록"(→`/lostwords/`) + "홈"(→`/`) 링크 추가 — 학습 로직/게이팅(require-auth v13)/noindex는 무수정, 헤더 우측에 링크만 추가(step-badge를 새 wrapper로 감싸 배치)
+- 상단 메뉴 "Speaking" → "Listen & Find"(`/lostwords/`) + "Look & Speak"(`/speaking/`) 2줄로 분리, 18개 파일 전부 반영(모던 드롭다운 15개, `speaking/index.html`의 active-class 케이스 1개, 레거시 flat-`<li>` 구조 2개(`grammar/`, `about/index.html`) 각각 패턴에 맞게 처리)
+- 커밋: `d1b1027f5` "feat: Listen & Find landing + scene nav links + split menu (Listen&Find / Look&Speak)"
+- 백업: 태그 `pre-listenfind-menu-20260715` + 물리백업 `E:\CEC CAMP STORAGE\CEC-Backup\backup-listenfind-20260715\`(25개 파일, 원본 그대로 복사)
+- 검증: 홈 nav에 두 링크 모두 노출 / `/lostwords/` 랜딩→Peter Rabbit 카드→img1 진입→"목록" 클릭 시 `/lostwords/`로 정상 복귀(갇힘 없음) / 비로그인 시 여전히 `/login.html`로 차단 / 로드맵 화요일 미션 "열기 ↗"(새 탭) 그대로 정상
+
+## 로드맵 스크립트 4시간 엣지캐시 수정
 
 - 증상: 화요일 Listen & Find가 강력 새로고침하면 ready로 보이지만, 홈으로 나갔다 재방문하면 다시 "준비 중"으로 보임
 - 원인: `roadmap.js`/`mission.js`가 Cloudflare 엣지에 `Cache-Control: max-age=14400`(4시간)으로 캐시되어 옛 스크립트 파일이 서빙됨(`grade3.json`은 항상 정상이었음 — 스크립트 파일 자체가 문제)
