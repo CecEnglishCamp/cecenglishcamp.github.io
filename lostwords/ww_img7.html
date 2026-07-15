@@ -36,6 +36,9 @@ body{background:#0a0d14;color:#e0e0e0;font-family:'Segoe UI',sans-serif;display:
 .header-scene{font-size:.76rem;color:#555}
 .step-badge{background:#1a1d2b;border:1px solid #2a2d3a;border-radius:7px;padding:3px 13px;font-size:.8rem;color:#aaa}
 .step-badge span{color:#7ec8e3;font-weight:700}
+.header-right{display:flex;align-items:center;gap:10px}
+.header-nav-link{color:#7ec8e3;text-decoration:none;font-size:.72rem;border:1px solid #2a2d3a;border-radius:999px;padding:4px 10px;white-space:nowrap;transition:.15s}
+.header-nav-link:hover{color:#fff;border-color:#7ec8e3}
 
 /* ── Robo Avatar (image) ── */
 .robo-avatar{object-fit:contain;border-radius:12px;background:rgba(10,20,32,.85);padding:4px;flex-shrink:0;width:42px;height:42px}
@@ -581,7 +584,7 @@ body.lw-active{background:#fbf9f3}
   }
 }
 </style>
-<script src="/assets/require-auth.js?v=11"></script>
+<script src="/assets/require-auth.js?v=13"></script>
 </head>
 <body>
 
@@ -605,7 +608,11 @@ body.lw-active{background:#fbf9f3}
     <span class="header-prog" id="lessonBadge">PS001</span>
     <span class="header-scene" id="sceneTitle">Loading...</span>
   </div>
-  <div class="step-badge">Step <span id="stepNum">1</span> / <span id="totalNum">4</span></div>
+  <div class="header-right">
+    <a href="/lostwords/" class="header-nav-link">← Listen &amp; Find 목록</a>
+    <a href="/" class="header-nav-link">홈</a>
+    <div class="step-badge">Step <span id="stepNum">1</span> / <span id="totalNum">4</span></div>
+  </div>
 </header>
 
 <!-- ── Page Body: 2-column ── -->
@@ -855,7 +862,7 @@ body.lw-active{background:#fbf9f3}
       <div class="lw-page lw-page-left">
         <div class="lw-img-wrap lw-opening-crop">
           <img class="lw-scene-img lw-opening-crop-img" id="lwOpeningSceneImg" src="" alt="Robo &amp; The Lost Words — Peter Rabbit">
-          <div class="lw-left-title-mask"><span>Wind in the Willows img4</span></div>
+          <div class="lw-left-title-mask"><span>Wind in the Willows img7</span></div>
           <div class="scene-art-frame" id="lwOpeningArtFrame">
             <img class="scene-art-image" id="lwOpeningArtImg" src="" alt="Wind in the Willows">
           </div>
@@ -907,7 +914,7 @@ body.lw-active{background:#fbf9f3}
       <div class="lw-page lw-page-left">
         <div class="lw-img-wrap lw-mission-crop">
           <img class="lw-scene-img lw-mission-crop-img" id="lwSceneImg" src="" alt="Wind in the Willows">
-          <div class="lw-left-title-mask"><span>Wind in the Willows img4</span></div>
+          <div class="lw-left-title-mask"><span>Wind in the Willows img7</span></div>
           <div class="scene-art-frame lw-has-ratio" id="lwMissionArtFrame">
             <div class="scene-art-ratio">
               <img class="scene-art-image" id="lwMissionArtImg" src="" alt="Wind in the Willows">
@@ -969,7 +976,7 @@ body.lw-active{background:#fbf9f3}
       <div class="lw-page lw-page-left">
         <div class="lw-img-wrap lw-mission-crop">
           <img class="lw-scene-img lw-mission-crop-img" id="lwStoryImg" src="" alt="Wind in the Willows">
-          <div class="lw-left-title-mask"><span>Wind in the Willows img4</span></div>
+          <div class="lw-left-title-mask"><span>Wind in the Willows img7</span></div>
           <div class="scene-art-frame" id="lwStoryArtFrame">
             <img class="scene-art-image" id="lwStoryArtImg" src="" alt="Wind in the Willows">
           </div>
@@ -1019,7 +1026,7 @@ body.lw-active{background:#fbf9f3}
       <div class="lw-page lw-page-left">
         <div class="lw-img-wrap lw-mission-crop">
           <img class="lw-scene-img lw-mission-crop-img" id="lwCopySceneImg" src="" alt="Wind in the Willows">
-          <div class="lw-left-title-mask"><span>Wind in the Willows img4</span></div>
+          <div class="lw-left-title-mask"><span>Wind in the Willows img7</span></div>
           <div class="scene-art-frame" id="lwCopyArtFrame">
             <img class="scene-art-image" id="lwCopyArtImg" src="" alt="Wind in the Willows">
           </div>
@@ -1201,7 +1208,7 @@ function lwResetCurrentSentenceSlot(){
 
 // ── State ─────────────────────────────────────────────────
 let programData          = null;
-// Static build (no server.js): text → R2 mp3 URL map, from lesson_ww_img4.json's tts_manifest
+// Static build (no server.js): text → R2 mp3 URL map, from lesson_ww_img7.json's tts_manifest
 let TTS_MANIFEST          = {};
 
 // 세로 모드 안내 오버레이 상태 — 표시 여부 자체는 CSS 미디어쿼리가 결정하지만(#lwRotateOverlay),
@@ -1707,12 +1714,12 @@ window.addEventListener('DOMContentLoaded', () => { initVoice(); loadProgram(); 
 // Static build (no server.js): lesson data is a local JSON file shipped alongside
 // index.html (not a /api/ call). TTS manifest is merged into it as tts_manifest —
 // its values are full R2 mp3 URLs, so no separate manifest.json fetch is needed
-// (only index.html + lesson_ww_img4.json are deployed to GitHub Pages; audio/images/
+// (only index.html + lesson_ww_img7.json are deployed to GitHub Pages; audio/images/
 // video live on R2).
 async function loadProgram() {
   try {
-    const lessonRes = await fetch('./lesson_ww_img4.json');
-    if (!lessonRes.ok) throw new Error(`lesson_ww_img4.json HTTP ${lessonRes.status}`);
+    const lessonRes = await fetch('./lesson_ww_img7.json');
+    if (!lessonRes.ok) throw new Error(`lesson_ww_img7.json HTTP ${lessonRes.status}`);
     programData = await lessonRes.json();
     TTS_MANIFEST = programData.tts_manifest || {};
     buildUI();
