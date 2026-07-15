@@ -1,10 +1,10 @@
 /* CEC English Camp · 콘텐츠 페이지 로그인 게이트
  * 사용:
- *   <script src="/assets/require-auth.js?v=12"></script>
+ *   <script src="/assets/require-auth.js?v=13"></script>
  *   (supabase-js 미로드 시 자동 동적 로드)
  *
- * 우선순위 (v=12):
- *   [/lostwords-wip/ 경로]  ← Lost Words 전용 게이트 (v12 신규)
+ * 우선순위 (v=13):
+ *   [/lostwords-wip/ 또는 /lostwords/ 경로]  ← Lost Words 전용 게이트 (v12 신규, v13에서 /lostwords/ 정식 경로 추가)
  *     1. 미로그인 → /login.html?next=현재경로
  *     2. 로그인 + 활성 구독자(plan_type 있고 canceled_at·payment_failed_at 없음) → 통과
  *     3. 그 외(미결제·해지·무료체험 전부 포함) → /payment/ 로 이동
@@ -44,7 +44,7 @@
     var SUPABASE_KEY = 'sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
     var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     var isSpaceCamp = location.pathname.indexOf('/space-camp/') === 0;
-    var isLostWords = location.pathname.indexOf('/lostwords-wip/') === 0;
+    var isLostWords = location.pathname.indexOf('/lostwords-wip/') === 0 || location.pathname.indexOf('/lostwords/') === 0;
 
     // onAuthStateChange: INITIAL_SESSION은 클라이언트 생성 직후 즉시 발행
     // → localStorage 세션 있으면 session 객체 포함, 없으면 null
