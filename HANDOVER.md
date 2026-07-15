@@ -1,6 +1,19 @@
 # CEC Handover
 
-## Listen & Find 랜딩 + scene 나가는 길 + 메뉴 분리 (최신)
+## Red Riding Hood /lostwords/ 승격 + G3 W05-08 연결 (최신)
+
+- `lostwords-wip/red_riding_hood_img1~9.html` + `lesson_rrh_img1~9.json`(18개) 전부 `/lostwords/`로 승격(보관 목적, 9개 전량 이동). noindex·require-auth v13 전부 유지 확인, 상대경로 정상.
+- G3 grade3.json W05~08 화요일 연결(status: ready) — 완성된 것만 연결, 나머지 주차는 무접촉:
+  - Listen & Find: W05→rrh_img1, W06→img2, W07→img3, W08→img4
+  - Look & Speak: W05→camp-a/speaking/red_riding_hood_img10, W06→img11, W07→img12, W08→img13
+  - 변경 전 `grade3.json.bak` 로컬 백업(커밋 대상 아님)
+- `lostwords/index.html` 랜딩에서 Red Riding Hood 카드 활성화(Wind in the Willows·Treasure Island·A Little Princess 3권은 계속 "준비 중")
+- Peter Rabbit과 동일한 `.header-right` 패턴으로 9개 scene에 "← Listen & Find 목록"/"홈" 나가는 링크 추가
+- 커밋: `d7847c622` "feat: promote Red Riding Hood Listen&Find, link G3 W05-08, activate landing, add scene nav"
+- 검증: W05~08 미션 Listen&Find·Look&Speak 전부 "열기 ↗"(새 탭) 정상 매칭 / scene "목록" 클릭 시 `/lostwords/` 복귀(갇힘 없음) / 비로그인 시 `/login.html` 차단 정상 / 랜딩 카드 상태 정상
+- **재고 조사 결과 참고**: Jack and the Beanstalk·Frog Prince·Elves and the Shoemaker·Thumbelina·Emperor's New Clothes·Lucky Hans·Velveteen Rabbit(G3 W09~36)은 Listen & Find·Look & Speak 자료가 전혀 없음 — 이후 자료 제작 전까지 pending 유지가 정답. Little Princess(G6)·Treasure Island(G5)·Wind in the Willows(G4)는 완성돼 있으나 grade4/5/6.json 자체가 아직 없어 미연결 상태.
+
+## Listen & Find 랜딩 + scene 나가는 길 + 메뉴 분리
 
 - `lostwords/index.html` 신규 생성 — Listen & Find 전체 랜딩(G3 Peter Rabbit 활성, G3 Red Riding Hood·G4 Wind in the Willows·G5 Treasure Island·G6 A Little Princess는 "준비 중" 표시). noindex 없음(랜딩 1개는 검색 노출 허용, DEPLOY_NOTES §5 정책과 일치)
 - `lostwords/peter_rabbit_img1.html`~`img7.html` 7개에 상단 헤더 우측에 "← Listen & Find 목록"(→`/lostwords/`) + "홈"(→`/`) 링크 추가 — 학습 로직/게이팅(require-auth v13)/noindex는 무수정, 헤더 우측에 링크만 추가(step-badge를 새 wrapper로 감싸 배치)
