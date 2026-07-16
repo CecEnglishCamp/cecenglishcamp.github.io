@@ -1,6 +1,18 @@
 # CEC Handover
 
-## Start Here 히어로 제목 축소 + About/Start Here nav 초기 3회 반짝임 (최신)
+## Start Here 히어로 fold 재설계 + Free Learning 출구 교체 + 비초등 안내 강화 + 우클릭 방지 (최신)
+
+- **히어로 구조 분리(핵심 변경)**: 기존 `.hero`(단일 flex-center 박스에 kicker+h1+lead+mantra+stats 전부 포함, `min-height:78vh`)는 실측 결과 이미 뷰포트보다 짧아(예: 1440×900에서 실제 높이 702px) **다음 섹션이 로드 시 이미 보이는 상태**였음. 지시받은 대로 min-height를 64~68vh로 더 줄이면 오히려 다음 섹션이 더 잘 보이는 역효과가 실측으로 확인되어, `.hero-titleblock`(kicker+h1+lead, `min-height:calc(100vh - 64px)`, 세로 중앙정렬)과 `.hero-below`(mantra+stats, 일반 문서 흐름)로 마크업을 분리하는 방식으로 목표(제목만 첫 화면에 노출, stats·다음 섹션 미노출)를 달성. 모바일(≤640px)은 `.hero-titleblock{min-height:88vh}`로 별도 조정(80vh 테스트 중 414×896 폭에서 stats가 43px 정도 살짝 보여 88vh로 올려 안전마진 확보)
+  - Playwright로 데스크톱(1440×900, 1920×1080)·랩탑(1366×768)·모바일(414×896, 375×812, 320×568) 6개 뷰포트 + 라이브 서버(1440×900, 414×896) 실측: 제목 100% 노출, stats/다음 섹션 전부 미노출, 가로 스크롤 없음 확인
+- **Free Learning 출구 교체**: "Explore Freely" 버튼 `href="/camp-a/"` → `href="#choose-camp"`로 변경(비초등 학생이 Camp A로 잘못 유입되지 않도록), Step 1 섹션에 `id="choose-camp"` 부여. 클릭 시 정상 스크롤 확인(로컬 3457px, 라이브 hash 확인)
+- **비-초등 안내 강화**: Step 1 h2 아래 `👉 먼저 나이에 맞는 캠프를 고르세요.`(초록 강조 배지 문구) 추가. 카드 4개 대상 표기(초등학생/중·고등학생/성인·학부모/엄마가 선생님)는 기존에 이미 명확해 문구·href 무수정
+- **우클릭 방지(start-here.html 한정)**: `</body>` 직전에 `contextmenu` 이벤트만 `preventDefault()`하는 스크립트 추가. `user-select`/`selectstart`/`copy` 차단은 넣지 않아 텍스트 선택·복사·모바일 길게 누르기는 그대로 유지(Playwright로 `getSelection()` 정상 동작 확인, `user-select` computed 값 `auto` 확인)
+- 백업: `E:\CEC CAMP STORAGE\CEC-Backup\backup-starthere-20260716\start-here.html` 최신본으로 갱신 복사(태그는 기존 `pre-starthere-20260716` 재사용)
+- 커밋: `e79c44df4` "fix: shorten hero, route Free Learning to camp picker, non-elementary paths + disable right-click" (start-here.html 단일 파일, index.html 무수정)
+- 검증: `gh run list` pages-build-deployment 성공 확인. 라이브 재확인 — fold 실측(위 수치), contextmenu preventDefault + 텍스트 선택 정상, Explore Freely→`#choose-camp` 스크롤 정상, Step1 카드 4개 href 무결
+- **⚠️ 미완료 항목(참고)**: "실제 스마트폰으로 직접 열어 길게 누르기 확인"은 이 세션에서 물리 기기 접근이 없어 수행하지 못함 — iPhone 13 프로필 Playwright 터치 에뮬레이션 + 라이브 서버 대상 contextmenu/selection 검증으로 대체함. 실기기에서 길게 누르기 시 메뉴가 실제로 안 뜨는지는 사용자가 직접 폰으로 한 번 확인 권장
+
+## Start Here 히어로 제목 축소 + About/Start Here nav 초기 3회 반짝임
 
 - `start-here.html` 히어로 제목 한 단계 축소: `.hero h1` font-size `clamp(52px,8.8vw,104px)`→`clamp(40px,7.5vw,84px)`, `.hero .lead` `clamp(18px,2.2vw,24px)`→`clamp(16px,2vw,21px)`. mantra·stats 등 나머지 무수정.
 - 공통 nav의 About 드롭다운에 "로드 후 3회만 반짝이고 멈춤" 연출 추가: `@keyframes cecBlink`(opacity 1↔.35) + `.cec-flash`/`.cec-flash-cyan`(`animation:cecBlink 0.7s ease-in-out 3` — iteration-count 3 고정, 무한 반복 아님) + `@media (prefers-reduced-motion: reduce)`로 애니메이션 차단. 지난 세션에서 About 드롭다운을 적용한 동일 17개 파일에 각각 `<style>` 1블록(공통 `<nav>` 태그 직전 삽입) + About 토글에 `cec-flash`, 드롭다운 안 "Start Here" 항목에 `cec-flash-cyan`(기존 시안 강조 유지) 클래스 부여. 파일당 diff는 정확히 +10/-2(스타일 블록 6줄 + 클래스 부여 2곳)로 균일.
