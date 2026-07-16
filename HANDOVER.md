@@ -1,6 +1,29 @@
 # CEC Handover
 
-## G3 W06-08 Red Riding Hood Reading 1/2 + Writing 배치·연결 (최신)
+## G5 Treasure Island: 매니페스트 신설 + W01 배치 + Listen&Find/Look&Speak 승격·연결(3단계 Reading) + G4 표기 수정 (최신)
+
+- `learning-roadmap/manifests/grade5.json` 신규 생성(36주, G5 커리큘럼 5권: Treasure Island(W01~09)·The Jungle Book·The Call of the Wild·Around the World in 80 Days·Anne of Green Gables)
+- G5 W01 Treasure Island Reading1/2(**쉬운 글/기본 글/도전 글 3단계 토글**, G3/G4의 2단계보다 한 단계 더) + Writing 배치
+- **G4 표기 버그 수정**: G4 W01 Reading1/2·Writing 페이지가 이전에 "Grade 3"로 잘못 표기되던 것을 "Grade 4"로 정정(라이브 확인 완료)
+- `lostwords-wip/ti_img1~8.html` + `lesson_ti_img1~8.json`(16개) → `/lostwords/` 승격(require-auth v13 이미 적용 상태 확인), 고아 상태였던 `ti_index.html`도 정리. 8개 scene에 Peter Rabbit과 동일한 나가는 링크 추가.
+- G5 grade5.json W01~08 화요일 Listen&Find(`ti_img1~8`)·Look&Speak(`treasure_island_img1~8`) 연결(ready), W09는 scene이 8개뿐이라 pending 유지
+- `lostwords/index.html` 랜딩 Treasure Island 카드 활성화(A Little Princess만 "준비 중")
+- 커밋: `a39e470b7`(grade5.json+G5 W01+G4 표기수정), `973e2ad91`(승격+연결+랜딩+nav), `8e7a2740b`(누락된 스테이징 삭제 반영 후속 수정)
+- **⚠️ 작업 중 발견한 실수(투명 공개)**: 두 번째 커밋을 경로 지정(`git commit -- <path>...`)으로 나눠 커밋하는 과정에서 옛 `lostwords-wip/ti_img*.html` 경로의 **삭제분을 pathspec에 빠뜨려**, 약 7~10분간 `/lostwords/ti_img1.html`과 `/lostwords-wip/ti_img1.html`이 동시에 라이브 상태였음(중복 콘텐츠). 발견 즉시 세 번째 커밋(`8e7a2740b`)으로 누락된 삭제를 반영해 push, 현재는 `/lostwords-wip/ti_img1.html` 404 확인됨. **교훈: 앞으로 rename(이동) 파일이 포함된 작업을 경로 지정 커밋으로 나눌 때는 옛 경로도 pathspec에 반드시 포함할 것.**
+- 검증: Grade 5 탭·W01 전체 확인, Reading1 3단계 토글(쉬운/기본/도전) 정상, W01~08 Listen&Find·Look&Speak 전부 "열기 ↗" 정상(W09는 pending 유지 확인), scene "목록" 클릭 시 정상 복귀, 비로그인 차단 정상, G4 Wind 페이지 "Grade 4" 표기 확인
+
+## G4 Wind in the Willows: 매니페스트 신설 + W01 배치 + Listen&Find/Look&Speak 승격·연결
+
+- `learning-roadmap/manifests/grade4.json` 신규 생성(36주, G4 커리큘럼 9권: Wind in the Willows·Wizard of Oz·Secret Garden·Tom Sawyer·Railway Children·Black Beauty·Pollyanna·Alice in Wonderland·A Christmas Carol)
+- G4 W01 Wind in the Willows Reading1/2 + Writing 배치(W01과 동일 레벨), grade4.json W01 monday/wednesday reading·thursday writing → ready
+- `lostwords-wip/ww_img1~8.html` + `lesson_ww_img1~8.json`(16개) → `/lostwords/`로 승격. **발견/수정**: ww_img 8개가 require-auth.js `?v=11`에 머물러 있던 것을 나머지와 동일하게 `?v=13`으로 정정(로직은 공유 파일이라 이미 적용되지만 캐시 방지 목적)
+- G4 grade4.json W01~04 화요일 Listen&Find(`/lostwords/ww_img1~4.html`)·Look&Speak(`/camp-a/speaking/wind_willows_img1~4.html`) 연결(status ready), W05(Wizard of Oz, 미완성) 이후 무접촉
+- `lostwords/index.html` 랜딩 Wind in the Willows 카드 활성화(Treasure Island·A Little Princess 2권은 계속 "준비 중")
+- Peter Rabbit·Red Riding Hood와 동일한 `.header-right` 패턴으로 8개 scene에 나가는 링크 추가
+- 커밋: `55d791b41`(grade4.json+W01자료), `fc1ce7fda`(승격+연결+랜딩+scene nav)
+- 검증: W01~04 Listen&Find·Look&Speak 전부 "열기 ↗"(새 탭) 정상 / scene "목록" 클릭 시 `/lostwords/` 복귀(갇힘 없음) / 비로그인 `/login.html` 차단 정상 / noindex 유지 / 랜딩 카드 상태 정상(Grade 4 탭도 정상 작동 확인)
+
+## G3 W06-08 Red Riding Hood Reading 1/2 + Writing 배치·연결
 
 - W06~08 각 주 Reading1/2 + Writing 총 9개 파일 신규 생성(`library/camp-a-readings/grade3/red-riding-hood/w0{6,7,8}_r{1,2}.html`, `camp-a/writing/grade3/red-riding-hood/w0{6,7,8}.html`)
 - grade3.json W06·W07·W08 monday reading / wednesday reading / thursday writing → ready 패치(정확히 9건)
