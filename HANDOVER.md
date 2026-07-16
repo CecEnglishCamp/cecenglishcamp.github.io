@@ -1,6 +1,18 @@
 # CEC Handover
 
-## Start Here 페이지 신설 + About 드롭다운(Start Here 먼저·시안 강조) (최신)
+## Start Here 히어로 제목 축소 + About/Start Here nav 초기 3회 반짝임 (최신)
+
+- `start-here.html` 히어로 제목 한 단계 축소: `.hero h1` font-size `clamp(52px,8.8vw,104px)`→`clamp(40px,7.5vw,84px)`, `.hero .lead` `clamp(18px,2.2vw,24px)`→`clamp(16px,2vw,21px)`. mantra·stats 등 나머지 무수정.
+- 공통 nav의 About 드롭다운에 "로드 후 3회만 반짝이고 멈춤" 연출 추가: `@keyframes cecBlink`(opacity 1↔.35) + `.cec-flash`/`.cec-flash-cyan`(`animation:cecBlink 0.7s ease-in-out 3` — iteration-count 3 고정, 무한 반복 아님) + `@media (prefers-reduced-motion: reduce)`로 애니메이션 차단. 지난 세션에서 About 드롭다운을 적용한 동일 17개 파일에 각각 `<style>` 1블록(공통 `<nav>` 태그 직전 삽입) + About 토글에 `cec-flash`, 드롭다운 안 "Start Here" 항목에 `cec-flash-cyan`(기존 시안 강조 유지) 클래스 부여. 파일당 diff는 정확히 +10/-2(스타일 블록 6줄 + 클래스 부여 2곳)로 균일.
+- 커밋: `a67cee018` "style: reduce Start Here hero title, add initial 3x flash to About/Start Here nav"
+- 검증: Playwright headless로 실측 —
+  - 375px/414px 뷰포트에서 `document.documentElement.scrollWidth === clientWidth`(가로 스크롤 없음), 히어로 h1 `scrollWidth`가 box `width`와 동일(줄바꿈 넘침 없음), `.stats`(2열)·`.five/.steps-grid/.ways`(1열)·`.week`(2열) grid-template-columns 정상 접힘 확인
+  - `getComputedStyle`로 `.cec-flash`/`.cec-flash-cyan`의 `animation-iteration-count: 3`, `animation-duration: 0.7s` 확인(무한 반복 아님)
+  - `page.emulateMedia({reducedMotion:'reduce'})` 상태에서 `animation-name: none` 확인(접근성 정상 차단)
+  - 모바일 hamburger 메뉴 오픈 시 About/Camps 등 항목 정상 노출(기존 사이트 전반의 hover-only 드롭다운은 터치 기기에서 서브메뉴가 탭으로 안 열리는 pre-existing 한계이며 오늘 변경과 무관 — 별도 이슈로 인지만 해둠, 이번 작업 범위 아님)
+  - 라이브 재확인: `/start-here.html` clamp 값, `/about.html` CSS 블록·class 부여 전부 raw HTML로 확인
+
+## Start Here 페이지 신설 + About 드롭다운(Start Here 먼저·시안 강조)
 
 - `/start-here.html` 신규 생성(Sung 완성본 그린 톤 그대로 사용). 데스크톱 원본 대비 변경한 것은 딱 두 가지: (1) `noindex` 메타 제거(첫 진입 페이지라 색인 허용) (2) 임시 상단 링크(`.top` 블록)를 사이트 공통 `<nav>`(About 드롭다운 포함)로 교체하고 `</body>` 앞에 공통 `<footer>` 삽입 — 본문/디자인은 무수정
 - **`/#camps` 앵커 이슈 발견 및 해결**: 홈(index.html)에는 Camp A/B/C를 고르는 카드 섹션 자체가 없어(히어로+nav+footer+플로팅 CTA뿐) Start Here 원본의 `/#camps` 링크 5곳이 전부 무효 앵커였음. Sung 결정에 따라 각 카드를 해당 캠프로 직접 연결(Camp A→`/camp-a/`, Camp B→`/camp-b/`, Camp C→`/camp-c/`, Mom Teacher→`/mom-teacher/`, "Explore Freely"→`/camp-a/`). index.html은 무수정.
