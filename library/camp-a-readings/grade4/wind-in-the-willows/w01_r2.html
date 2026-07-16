@@ -73,7 +73,7 @@ textarea{width:100%;background:var(--panel);color:var(--text);border:1px solid v
 <header class="head">
   <p class="eyebrow">READING 2</p>
   <h1 class="title">🦫 Wind in the Willows</h1>
-  <p class="meta">Week 01 · Grade 3 · Reading 2</p>
+  <p class="meta">Week 01 · Grade 4 · Reading 2</p>
 </header>
 
 <div class="toggle" role="group" aria-label="난이도 선택">
@@ -82,11 +82,8 @@ textarea{width:100%;background:var(--panel);color:var(--text);border:1px solid v
 </div>
 
 <div class="card">
-  <div class="passage" id="p-standard"><p>Rat had a little blue boat, and he asked Mole to come aboard. Mole climbed in carefully.</p>
-<p>They floated down the river together while the sun shone warmly. Mole watched the water birds fly above them.</p>
-<p>&ldquo;There is nothing better than being on the river,&rdquo; said Rat happily. Mole thought this was the best day of his life.</p></div>
-  <div class="passage" id="p-easy" style="display:none"><p>Rat had a small blue boat. He asked Mole to get in.</p>
-<p>They floated down the river together. Mole was very happy.</p></div>
+  <div class="passage" id="p-easy" style="display:none"><p>Rat had a small blue boat. He asked Mole to get in.</p><p>They floated down the river together. Mole was very happy.</p></div>
+  <div class="passage" id="p-standard"><p>Rat had a little blue boat, and he asked Mole to come aboard. Mole climbed in carefully.</p><p>They floated down the river together while the sun shone warmly. Mole watched the water birds fly above them.</p><p>&ldquo;There is nothing better than being on the river,&rdquo; said Rat happily. Mole thought this was the best day of his life.</p></div>
 </div>
 
 <div class="card">
@@ -114,16 +111,19 @@ textarea{width:100%;background:var(--panel);color:var(--text);border:1px solid v
 <script src="/learning-roadmap/return-link.js" defer></script>
 <script>
 (function(){
-  var std=document.getElementById('p-standard'), esy=document.getElementById('p-easy');
-  var bStd=document.getElementById('t-standard'), bEsy=document.getElementById('t-easy');
+  var keys=["easy","standard"];
   function show(mode){
-    var isStd=mode==='standard';
-    std.style.display=isStd?'':'none'; esy.style.display=isStd?'none':'';
-    bStd.setAttribute('aria-current',isStd?'true':'false');
-    bEsy.setAttribute('aria-current',isStd?'false':'true');
+    keys.forEach(function(k){
+      var p=document.getElementById('p-'+k), b=document.getElementById('t-'+k);
+      if(!p||!b) return;
+      p.style.display=(k===mode)?'':'none';
+      b.setAttribute('aria-current',(k===mode)?'true':'false');
+    });
   }
-  bStd.addEventListener('click',function(){show('standard')});
-  bEsy.addEventListener('click',function(){show('easy')});
+  keys.forEach(function(k){
+    var b=document.getElementById('t-'+k);
+    if(b) b.addEventListener('click',function(){show(k)});
+  });
   show('standard');
 })();
 </script>
