@@ -1,6 +1,16 @@
 # CEC Handover
 
-## G5 Treasure Island: 매니페스트 신설 + W01 배치 + Listen&Find/Look&Speak 승격·연결(3단계 Reading) + G4 표기 수정 (최신)
+## Start Here 페이지 신설 + About 드롭다운(Start Here 먼저·시안 강조) (최신)
+
+- `/start-here.html` 신규 생성(Sung 완성본 그린 톤 그대로 사용). 데스크톱 원본 대비 변경한 것은 딱 두 가지: (1) `noindex` 메타 제거(첫 진입 페이지라 색인 허용) (2) 임시 상단 링크(`.top` 블록)를 사이트 공통 `<nav>`(About 드롭다운 포함)로 교체하고 `</body>` 앞에 공통 `<footer>` 삽입 — 본문/디자인은 무수정
+- **`/#camps` 앵커 이슈 발견 및 해결**: 홈(index.html)에는 Camp A/B/C를 고르는 카드 섹션 자체가 없어(히어로+nav+footer+플로팅 CTA뿐) Start Here 원본의 `/#camps` 링크 5곳이 전부 무효 앵커였음. Sung 결정에 따라 각 카드를 해당 캠프로 직접 연결(Camp A→`/camp-a/`, Camp B→`/camp-b/`, Camp C→`/camp-c/`, Mom Teacher→`/mom-teacher/`, "Explore Freely"→`/camp-a/`). index.html은 무수정.
+- **About 메뉴 → 드롭다운 전환**: 공통 nav에 About 단일 링크가 있는 파일 22개 중, Camps/Courses 드롭다운 마크업·CSS를 실제로 갖춘 17개 파일에만 적용(about.html, account-help.html, index.html, index_black.html, index_space.html, camp-a/b/c/c2, franchise, essay-camp, grammar-camp, young-days, speaking, payment, mom-teacher/curriculum, nasa-space-camp). 각 파일이 기존에 쓰던 `-inner` wrapper 유무 패턴을 그대로 따라 삽입(about/account-help/franchise/payment는 `-inner` 있음, 나머지 13개는 없음). 항목 순서: **Start Here**(위, `color:#00f2ff;font-weight:700`로 강조) → **About CEC**(아래, 기본색). 파일당 diff는 About `<li>` 한 줄 → 드롭다운 블록 교체분만.
+  - **범위 제외**(다음 세션 참고): `mom-teacher/index.html`은 드롭다운 CSS/마크업 자체가 없는 별도 심플 nav라 무수정 유지. `404.html·trial.html·terms.html·privacy.html·prestep.html`은 About이 footer 링크이거나 독립 버튼이라 nav 드롭다운 대상이 아니라 무수정.
+- 백업: 태그 `pre-starthere-20260716`(push 완료) + `E:\CEC CAMP STORAGE\CEC-Backup\backup-starthere-20260716\`(수정 대상 17개 파일 원본, 리포 상대경로 유지)
+- 커밋: `9d968d723` "feat: add Start Here guide + About dropdown (Start Here first, cyan highlight)"
+- 검증: `gh run list` pages-build-deployment 성공 확인. 라이브 `https://cecenglishcamp.com/start-here.html`(noindex 없음, nav/footer 정상, Camp 카드 4개 각 캠프 페이지 연결, Explore Freely→camp-a, Roadmap/Start Your Journey→learning-roadmap 정상), `/about.html`·`/`(About 드롭다운: 위 Start Here 시안 강조 `color:#00f2ff;font-weight:700`, 아래 About CEC 기본색) 전부 raw HTML로 재확인 완료
+
+## G5 Treasure Island: 매니페스트 신설 + W01 배치 + Listen&Find/Look&Speak 승격·연결(3단계 Reading) + G4 표기 수정
 
 - `learning-roadmap/manifests/grade5.json` 신규 생성(36주, G5 커리큘럼 5권: Treasure Island(W01~09)·The Jungle Book·The Call of the Wild·Around the World in 80 Days·Anne of Green Gables)
 - G5 W01 Treasure Island Reading1/2(**쉬운 글/기본 글/도전 글 3단계 토글**, G3/G4의 2단계보다 한 단계 더) + Writing 배치
