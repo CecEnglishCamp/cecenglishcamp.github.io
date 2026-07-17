@@ -1,6 +1,20 @@
 # CEC Handover
 
-## G6 A Little Princess: grade6.json 신설 + W01 단일지문 Reading/Writing + Listen&Find 승격·연결·랜딩 활성화 (최신)
+## 관리자 = 회사 이메일 1개(cecenglishcamp@gmail.com) 전 구간 통과 + Mom Teacher v14 + /legal/ 죽은링크 수정 (최신)
+
+- **관리자 화이트리스트 = 회사 이메일 1개로 통일**(`cecsungkim@gmail.com` 미포함, 정책 확정): `assets/require-auth.js`의 관리자 체크(line 56-59)는 이미 Lost Words·Space Camp·일반 콘텐츠 게이트 전부보다 앞선 early return 구조였음(로직 변경 없이 주석만 보강). `assets/cec-admin-check.js`(CEC_ADMIN_EMAILS)도 원래부터 회사 이메일 1개
+- **`admin/index.html`은 `.gitignore`(41번째 줄)로 git 추적·라이브 배포 대상이 아님을 확인**(`/admin/` 라이브 404, `git show HEAD:admin/index.html` → 커밋 이력에 없음). 로컬 파일에서 `cecsungkim@gmail.com`을 제거해 회사 이메일 1개로 맞췄으나 이 변경은 git/배포에 영향 없는 로컬 전용 조치 — franchise-lead 내부 대시보드로 mom-teacher 게이트와 무관
+- **Mom Teacher 게이팅 페이지 캐시 무효화**: `mom-teacher/curriculum/index.html` + `mom-teacher/grade{3,4,5,6}/epNN.html` 중 require-auth.js를 로드하는 113개를 `?v=11`→`?v=14`로 교체(사이트 전체 1330개 중 이 범위만, 나머지 1177개는 무접촉 — 전체 일괄 교체는 블라스트 반경이 너무 커 이번 범위에서 제외). **참고**: `mom-teacher/grade4/ep13~ep20.html`(8개)은 애초에 require-auth.js 자체를 로드하지 않는 별도 이슈 발견(무접촉, 다음 과제로만 기록)
+- **죽은 링크 수정**: `/legal/privacy.html`→`/privacy.html`, `/legal/terms.html`→`/terms.html`을 `mom-teacher/index.html`(306-307)·`login.html`(95)·`register.html`(112,120-121) + grep으로 추가 발견한 `mom-teacher/trial-dashboard.html`(162)까지 총 4개 파일에서 교체. 리포 전체 `/legal/` 참조 0건 확인
+- 백업: 태그 `pre-adminfix-20260716`(push 완료) + `E:\CEC CAMP STORAGE\CEC-Backup\backup-adminfix-20260716\`(require-auth.js·cec-admin-check.js·admin/index.html·mom-teacher/index.html·login.html·register.html 원본)
+- 커밋: `ec82070ca` "feat: company admin bypass (annotate early return), v14 mom-teacher gate, fix dead /legal links" (118개 파일)
+- 검증: `gh run list` pages-build-deployment 성공. 라이브 재확인 — `/legal/` 참조 0건, `require-auth.js?v=14`(mom-teacher/curriculum, grade3/ep01 확인), require-auth.js 로직이 커밋 diff상 주석만 추가(결제/비로그인 게이트 회귀 없음, 코드 레벨로 확인), privacy/terms 200
+- **⚠️ 미확인 항목(실브라우저 로그인 필요, 계정 자격 증명 없어 이번 세션에서 수행 불가)**: `cecenglishcamp@gmail.com`으로 실제 로그인해 camp-a·grammar-camp·mom-teacher/curriculum·lostwords·space-camp 5개 경로가 결제 무관하게 통과되는지는 Sung이 직접 확인 필요
+- **[다음 과제] 캐시버스터 파편화**: `?v=` 번호가 리포 전체 1330개 파일에 하드코딩으로 흩어져 있음 → 공통 include/템플릿으로 스크립트 로드를 일원화하면 다음부터는 한 곳만 바꾸면 됨
+- **[다음 과제] Mom Teacher 트라이얼 인증 교체**: localStorage 가짜 인증(비밀번호 base64 저장) + 리드가 Formspree로만 전송되는 구조 → Supabase Auth 기반으로 전면 교체 필요(이번 세션 무수정, 기록만)
+- **[다음 과제] grade4 ep13~20 require-auth 누락**: 8개 파일이 애초에 게이트 스크립트 자체를 로드하지 않음 — 별도 확인/수정 필요
+
+## G6 A Little Princess: grade6.json 신설 + W01 단일지문 Reading/Writing + Listen&Find 승격·연결·랜딩 활성화
 
 - `learning-roadmap/manifests/grade6.json` 신규 생성(36주 골격, G6 커리큘럼: A Little Princess(W01~08)·Five Children and It·The Jungle Book·Pinocchio·The Princess and the Goblin·Eight Cousins·Little Men). W01만 Reading/Writing `ready`, 나머지 주차는 전부 `pending` 유지(무접촉)
 - G6 W01 A Little Princess Reading1/2(**단일 지문, 난이도 토글 없음** — G3~G5와 달리 이 학년은 토글 자체가 없는 설계, 라이브 확인 결과 `.tg` 토글 버튼 0개·`p-standard` 지문 1개만 렌더링) + Writing(자유작문 4단계: 빈칸채우기→나의글쓰기→ChatGPT 제출→다시쓰기) 배치
