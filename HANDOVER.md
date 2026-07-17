@@ -1,6 +1,20 @@
 # CEC Handover
 
-## 관리자 = 회사 이메일 1개(cecenglishcamp@gmail.com) 전 구간 통과 + Mom Teacher v14 + /legal/ 죽은링크 수정 (최신)
+## Mom Teacher에 관리자 Google 로그인 추가 (유료 게이트 유지) (최신)
+
+- **배경**: 회사 관리자(`cecenglishcamp@gmail.com`)는 Supabase에 Google(Social)로만 존재(비밀번호 없음). 본체 `/login.html`은 구글 로그인이 있지만, Mom Teacher는 자체 localStorage 트라이얼 로그인 흐름이라 구글 버튼이 없어 관리자가 진입할 방법이 없었음
+- **조사 결과 — 게이트는 이미 관리자 Supabase 세션을 인식**(수정 불필요, 그대로 재사용):
+  - `assets/cec-admin-check.js`의 `ensureAdminTrialSession()`이 localStorage의 `sb-*-auth-token`을 스캔해 관리자 이메일이면 `cec_mom_trial_session`을 자동 생성 → 트라이얼 콘텐츠(Peter Rabbit EP01~07 등) 게이트 통과
+  - `assets/require-auth.js` line 56-59가 이미 관리자 이메일 early return으로 `mom-teacher/curriculum/`·`gradeX/epNN.html` 결제 게이트를 통과시킴
+  - 즉 진짜 빠진 것은 "Supabase 세션을 만들 입구(구글 버튼)"뿐이었음
+- **적용**: `mom-teacher/login.html` 단 1개 파일에 본체 `/login.html`과 동일한 "Google로 로그인" 버튼 + `supabase-js` 로드 + `signInWithOAuth('google', {redirectTo:'https://cecenglishcamp.com/login.html'})` 추가. 본체 login.html이 이미 `sessionStorage.cec_oauth_dest`를 읽어 임의 목적지로 이동시켜주는 구조라 별도 콜백 페이지 없이 연결. diff는 **순수 추가만(42줄, 삭제 0)** — 기존 이메일/비밀번호 트라이얼 폼(`cec_mom_users` 비교), `register.html`, 게이트 로직 전부 무수정
+- 백업: 태그 `pre-momteacher-google-20260716`(push 완료) + `E:\CEC CAMP STORAGE\CEC-Backup\backup-momteacher-google-20260716\`
+- 커밋: `ccca15846` "feat: add Google login to Mom Teacher (admin entry, paid gate intact)"
+- 검증(Playwright, 라이브 https): 구글 버튼 표시 확인, 클릭 시 `https://rzlqlokqplhyntuirsmd.supabase.co/auth/v1/authorize?provider=google&redirect_to=...login.html` 요청이 실제로 발생해 구글 로그인 페이지까지 정상 도달(네트워크 레벨로 확인). 기존 트라이얼 폼(틀린 계정 시 에러 정상 표시) 회귀 없음. 비로그인 상태에서 `mom-teacher/curriculum/`·`grade3/ep01.html` 전부 `login.html?next=...`로 정상 리다이렉트(유료 게이트 유지 확인)
+- **⚠️ 미확인 항목(회사 구글 계정 자격증명 필요, 이번 세션에서 수행 불가)**: 실제 구글 계정으로 로그인 완료 후 curriculum/에피소드가 결제 없이 열리는지는 Sung이 직접 확인 필요(코드 로직상 통과해야 함이 확실하나 최종 E2E 확인 남음)
+- **[다음 큰 과제] Mom Teacher 트라이얼 인증 정식 이관**: localStorage 가짜 인증(비밀번호 base64 저장) + 리드가 Formspree로만 전송되는 구조 → Supabase Auth 기반으로 전면 교체 필요(이번에도 무수정, 기록만 유지)
+
+## 관리자 = 회사 이메일 1개(cecenglishcamp@gmail.com) 전 구간 통과 + Mom Teacher v14 + /legal/ 죽은링크 수정
 
 - **관리자 화이트리스트 = 회사 이메일 1개로 통일**(`cecsungkim@gmail.com` 미포함, 정책 확정): `assets/require-auth.js`의 관리자 체크(line 56-59)는 이미 Lost Words·Space Camp·일반 콘텐츠 게이트 전부보다 앞선 early return 구조였음(로직 변경 없이 주석만 보강). `assets/cec-admin-check.js`(CEC_ADMIN_EMAILS)도 원래부터 회사 이메일 1개
 - **`admin/index.html`은 `.gitignore`(41번째 줄)로 git 추적·라이브 배포 대상이 아님을 확인**(`/admin/` 라이브 404, `git show HEAD:admin/index.html` → 커밋 이력에 없음). 로컬 파일에서 `cecsungkim@gmail.com`을 제거해 회사 이메일 1개로 맞췄으나 이 변경은 git/배포에 영향 없는 로컬 전용 조치 — franchise-lead 내부 대시보드로 mom-teacher 게이트와 무관
