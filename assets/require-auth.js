@@ -53,7 +53,8 @@
       if (event !== 'INITIAL_SESSION' && event !== 'SIGNED_IN') return;
       _authSub.data.subscription.unsubscribe(); // 한 번만 실행
 
-      // ── 관리자 계정: 체크 없이 모든 페이지 즉시 통과 ──
+      // ── 관리자 계정: 결제/경로별 게이트(Lost Words·Space Camp·일반 콘텐츠) 전부보다 먼저 체크,
+      // 일치하면 그 어떤 분기도 거치지 않고 즉시 통과(early return) ──
       if (session && session.user && session.user.email === 'cecenglishcamp@gmail.com') {
         return;
       }
