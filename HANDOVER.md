@@ -1,6 +1,17 @@
 # CEC Handover
 
-## Mom Teacher에 관리자 Google 로그인 추가 (유료 게이트 유지) (최신)
+## Mom Teacher 트라이얼 대시보드: 관리자 세션이면 전체 커리큘럼 안내로 전환 (최신)
+
+- **배경(런타임 실측으로 발견)**: 구글 로그인 후 관리자 Supabase 세션(`sb-rzlqlokqplhyntuirsmd-auth-token`, `user.email=cecenglishcamp@gmail.com`)이 정상 존재하는데도 `mom-teacher/trial-dashboard.html`이 여전히 "7일 체험(Peter Rabbit EP01~07만)" 화면을 보여줌
+- **정확한 원인**: `cec-admin-check.js`의 `ensureAdminTrialSession()`은 실제로 정상 실행 중이었음(게이트 자체는 통과 — 그렇지 않았다면 애초에 이 페이지에 진입도 못했을 것). 이메일 파싱 경로(`user.email`, 정규식 `^sb-.*-auth-token$`, `toLowerCase().trim()`)도 실제 런타임 구조와 이미 일치해 수정 불필요. **진짜 원인은 페이지 콘텐츠(EP01~07 카드·체험 제한 안내·업그레이드 박스)가 전부 정적 HTML로 하드코딩되어 있어 "게이트 통과 여부"와 "콘텐츠 범위"가 애초에 연결되어 있지 않았던 것**
+- **수정**: `mom-teacher/trial-dashboard.html` 단 1개 파일, 순수 추가 15줄(삭제 0). `cec-admin-check.js`가 관리자 세션에 대해 이미 생성해주는 `cec_mom_trial_session`의 `admin:true` 필드를 재사용 → `document.body.classList.add('is-admin')` → CSS로 체험 제한 안내(`.trial-note`)·업그레이드 박스(`.upgrade-box`)·무료체험 배지(`.lc-badge`/`.speak-badge`)를 숨기고, 새로 추가한 `.admin-banner`("관리자 모드 — 전체 커리큘럼 바로가기", `/mom-teacher/curriculum/` 링크)를 노출. 일반 트라이얼 사용자는 `admin` 필드가 없어 `is-admin` 클래스가 안 붙으므로 완전히 기존 그대로
+- 백업: 태그 `pre-momadmin-fix-20260716`(push 완료) + `E:\CEC CAMP STORAGE\CEC-Backup\backup-momadmin-fix-20260716\`
+- 커밋: `5ab836689` "feat: admin sees full curriculum on Mom Teacher trial dashboard (trial UI intact for others)"
+- 검증(Playwright): 로컬 정적서버 + 라이브 https 양쪽에서 관리자 세션(admin:true) → is-admin 부여·trial-note/upgrade-box/배지 전부 숨김(0개)·admin-banner 노출 확인. 일반 세션 → 완전 회귀 없음(배지 7개 그대로). 비로그인 → `login.html`로 정상 리다이렉트(회귀 없음)
+- **⚠️ 검증 중 발견한 테스트 방법의 한계(버그 아님)**: 라이브에서 가짜 Supabase 토큰(`access_token:'dummy'`)으로 "전체 커리큘럼" 링크를 클릭하면 `require-auth.js`가 실제 Supabase SDK로 세션을 서버 검증하기 때문에 가짜 토큰은 통과 못하고 `login.html`로 리다이렉트됨(오히려 정상 — 가짜 토큰으로 결제 게이트를 우회할 수 없다는 뜻). `cec-admin-check.js`는 raw localStorage 파싱이라 가짜 토큰도 통과시키지만, `require-auth.js`는 SDK 레벨 검증이라 통과 못함 — 이 차이 때문에 진짜 계정 로그인 상태에서의 최종 E2E(curriculum/gradeX 결제 없이 열람)는 Sung이 직접 확인 필요
+- **[다음 큰 과제] Mom Teacher 트라이얼 인증 정식 이관**: localStorage 가짜 인증(비밀번호 base64 저장) + 리드가 Formspree로만 전송되는 구조 → Supabase Auth 기반으로 전면 교체 필요(이번에도 무수정, 기록만 유지)
+
+## Mom Teacher에 관리자 Google 로그인 추가 (유료 게이트 유지)
 
 - **배경**: 회사 관리자(`cecenglishcamp@gmail.com`)는 Supabase에 Google(Social)로만 존재(비밀번호 없음). 본체 `/login.html`은 구글 로그인이 있지만, Mom Teacher는 자체 localStorage 트라이얼 로그인 흐름이라 구글 버튼이 없어 관리자가 진입할 방법이 없었음
 - **조사 결과 — 게이트는 이미 관리자 Supabase 세션을 인식**(수정 불필요, 그대로 재사용):
