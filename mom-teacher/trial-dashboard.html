@@ -63,6 +63,13 @@ h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);fon
 .upgrade-box p{font-size:.9rem;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:24px}
 .btn-upgrade{display:inline-block;padding:14px 36px;background:#00ffff;color:#000;font-weight:800;font-size:.95rem;border-radius:50px;text-decoration:none;transition:all .2s}
 .btn-upgrade:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,255,255,.35)}
+/* 관리자 모드: 체험 제한 UI 숨기고 전체 커리큘럼 안내로 교체 */
+.admin-banner{display:none}
+.is-admin .trial-note,.is-admin .upgrade-box,.is-admin .lc-badge,.is-admin .speak-badge{display:none}
+.is-admin .admin-banner{display:block;background:rgba(0,255,255,.06);border:1px solid rgba(0,255,255,.25);border-radius:12px;padding:18px 22px;margin-bottom:32px}
+.admin-banner strong{color:#00ffff}
+.admin-banner a{display:inline-block;margin-top:10px;color:#00ffff;font-weight:700;text-decoration:none;border:1px solid rgba(0,255,255,.4);border-radius:50px;padding:8px 18px;font-size:.85rem;transition:all .2s}
+.admin-banner a:hover{background:rgba(0,255,255,.1)}
 footer{text-align:center;padding:28px 24px;border-top:1px solid rgba(255,255,255,.06)}
 footer a{color:rgba(255,255,255,.3);font-size:.8rem;text-decoration:none;margin:0 10px;transition:color .2s}
 footer a:hover{color:#00ffff}
@@ -89,6 +96,11 @@ footer a:hover{color:#00ffff}
     <strong>무료체험 안내</strong><br>
     Peter Rabbit EP01~EP07, Picture Speaking 체험 수업이 포함됩니다.<br>
     EP08 이후 및 다른 책 수업은 정식 등록 후 이용할 수 있습니다. · 런칭 특별가 월 $40 (정상가 월 $99)
+  </div>
+
+  <div class="admin-banner">
+    <strong>관리자 모드</strong> — 체험 제한 없이 전체 커리큘럼(전체 학년·전체 책·전체 에피소드)을 열람할 수 있습니다.<br>
+    <a href="/mom-teacher/curriculum/">전체 커리큘럼 바로가기 →</a>
   </div>
 
   <!-- Peter Rabbit EP01~EP07 -->
@@ -173,6 +185,9 @@ function logout(){
   if(!s)return;
   try{
     var d=JSON.parse(s);
+    // 관리자 세션(cec-admin-check.js의 ensureAdminTrialSession()이 admin:true로 생성)이면
+    // 체험 제한 UI를 숨기고 전체 커리큘럼 안내 배너를 노출한다. 일반 트라이얼 사용자는 무영향.
+    if(d.admin===true){document.body.classList.add('is-admin');}
     if(d.name){
       document.getElementById('welcomeTitle').textContent=d.name+'님, 환영합니다';
       document.getElementById('navUser').innerHTML='<span>'+d.name+'</span>님';
