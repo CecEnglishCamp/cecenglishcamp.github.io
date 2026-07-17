@@ -1,6 +1,19 @@
 # CEC Handover
 
-## Mom Teacher 트라이얼 대시보드: 관리자 세션이면 전체 커리큘럼 안내로 전환 (최신)
+## Mom Teacher 랜딩(index.html)에도 관리자 전체 커리큘럼 배너 추가 (최신)
+
+- **배경**: 관리자가 `trial-dashboard.html`에서는 전체 커리큘럼 배너를 보고 접근할 수 있게 됐지만(직전 세션), 랜딩(`mom-teacher/index.html`)에는 이 입구가 없어 관리자가 `/mom-teacher/curriculum/` 주소를 직접 쳐야 했음
+- **적용**: `mom-teacher/index.html` 단 1개 파일, 순수 추가 26줄(삭제 0). `trial-dashboard.html`에서 검증된 패턴 그대로 재사용:
+  - head에 `<script src="/assets/cec-admin-check.js">` 추가(이 페이지엔 원래 없었음)
+  - 히어로 섹션 최상단(`.hero-badge` 바로 앞)에 `.admin-banner`("관리자 모드 — 전체 커리큘럼 바로가기", `/mom-teacher/curriculum/` 링크) 추가, 기본 `display:none`
+  - body 하단 스크립트에서 `ensureAdminTrialSession()` 호출 후 `cec_mom_trial_session.admin===true`면 `document.body.classList.add('is-admin')` → CSS로 배너만 노출(다른 요소는 이 페이지에 트라이얼 제한 UI가 없어 숨길 대상 자체가 없음)
+- 백업: 태그 `pre-momlanding-admin-20260716`(push 완료) + `E:\CEC CAMP STORAGE\CEC-Backup\backup-momlanding-admin-20260716\`
+- 커밋: `7b36f7c8f` "feat: admin curriculum shortcut banner on Mom Teacher landing (hidden for others)"
+- 검증(Playwright, 로컬 정적서버 + 라이브 https 양쪽): 관리자 세션 → `is-admin` 부여·배너 노출·링크 `/mom-teacher/curriculum/` 정상. 일반 방문자 → `is-admin` 없음·배너 숨김·기존 `cta-group`/`hero-badge` 전부 정상(회귀 없음)
+- **⚠️ 동일한 테스트 한계 재확인(버그 아님)**: 배너 클릭 후 `curriculum/` 실제 열람은 `require-auth.js`가 Supabase SDK로 세션을 서버 검증하기 때문에 가짜 토큰으로는 확인 불가 — 직전 trial-dashboard 작업 때와 같은 구조적 한계. 실제 회사 계정 로그인 상태에서의 최종 확인은 Sung이 직접 필요
+- **[다음 큰 과제] Mom Teacher 트라이얼 인증 정식 이관**: localStorage 가짜 인증(비밀번호 base64 저장) + 리드가 Formspree로만 전송되는 구조 → Supabase Auth 기반으로 전면 교체 필요(계속 무수정, 기록만 유지)
+
+## Mom Teacher 트라이얼 대시보드: 관리자 세션이면 전체 커리큘럼 안내로 전환
 
 - **배경(런타임 실측으로 발견)**: 구글 로그인 후 관리자 Supabase 세션(`sb-rzlqlokqplhyntuirsmd-auth-token`, `user.email=cecenglishcamp@gmail.com`)이 정상 존재하는데도 `mom-teacher/trial-dashboard.html`이 여전히 "7일 체험(Peter Rabbit EP01~07만)" 화면을 보여줌
 - **정확한 원인**: `cec-admin-check.js`의 `ensureAdminTrialSession()`은 실제로 정상 실행 중이었음(게이트 자체는 통과 — 그렇지 않았다면 애초에 이 페이지에 진입도 못했을 것). 이메일 파싱 경로(`user.email`, 정규식 `^sb-.*-auth-token$`, `toLowerCase().trim()`)도 실제 런타임 구조와 이미 일치해 수정 불필요. **진짜 원인은 페이지 콘텐츠(EP01~07 카드·체험 제한 안내·업그레이드 박스)가 전부 정적 HTML로 하드코딩되어 있어 "게이트 통과 여부"와 "콘텐츠 범위"가 애초에 연결되어 있지 않았던 것**
