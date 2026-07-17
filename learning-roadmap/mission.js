@@ -168,6 +168,8 @@
         cta.rel = "noopener";
       }
       root.appendChild(cta);
+    } else {
+      root.appendChild(el("p", "mi-pending-notice", "오늘은 준비 중입니다. 자료가 준비되면 다시 안내해 드릴게요."));
     }
   }
 

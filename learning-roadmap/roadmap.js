@@ -129,8 +129,15 @@
       items.forEach(function (it) { list.appendChild(itemNode(it)); });
       day.appendChild(list);
 
-      var enter = el("a", "rm-enter", done ? "다시 보기 →" : "들어가기 →");
-      enter.href = "mission.html?grade=" + cur.grade + "&week=" + pad(entry.week) + "&day=" + dk;
+      var hasReady = items.some(function (it) { return it.status === "ready" && it.url; });
+      var enter;
+      if (hasReady) {
+        enter = el("a", "rm-enter", done ? "다시 보기 →" : "들어가기 →");
+        enter.href = "mission.html?grade=" + cur.grade + "&week=" + pad(entry.week) + "&day=" + dk;
+      } else {
+        enter = el("span", "rm-enter is-disabled", "준비 중");
+        enter.setAttribute("aria-disabled", "true");
+      }
       day.appendChild(enter);
 
       days.appendChild(day);
