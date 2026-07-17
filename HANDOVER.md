@@ -1,6 +1,21 @@
 # CEC Handover
 
-## Mom Teacher 랜딩(index.html)에도 관리자 전체 커리큘럼 배너 추가 (최신)
+## Learning Roadmap: 전체 노출 + ready만 활성/pending 비활성(회색) (최신)
+
+- **선행 사실 확인**: 직전 세션에서 지시받은 "pending 비활성화" 작업이 백업 태그(`pre-disable-pending-20260716`)만 생성되고 **실제 커밋은 안 된 상태**였음을 git log로 확인 후 이번에 실제 적용함(iPad에서 "준비 중"이 여전히 선명하게 보인다는 증상이 정확했음)
+- **정확한 원인**: `roadmap.js`/`mission.js`의 pending 항목은 원래부터 클릭 핸들러·링크 자체가 없는 구조라 "클릭 차단"은 이미 충족돼 있었음. 진짜 문제는 `roadmap.css`의 `.is-blocked { opacity: 0.72 }`가 너무 높고 배지 색(진한 주황 `--pending`)을 그대로 둬서 시각적으로 "비활성화 안 된 것"처럼 보였던 것. 추가로 "들어가기" 버튼이 그 요일에 ready 항목이 전무해도 항상 활성화돼 있었고, mission.js에는 "오늘은 준비 중" 안내가 없었음
+- **적용**:
+  - `roadmap.css`: `.is-blocked` 항목 `opacity:0.5`+`grayscale(0.65)`, 배지를 회색조로 오버라이드. `.rm-enter.is-disabled` 신규(회색, `pointer-events:none`)
+  - `roadmap.js`: 그 요일에 `status==='ready'`인 항목이 하나도 없으면 "들어가기"를 `href` 없는 `<span class="rm-enter is-disabled">준비 중</span>`으로 교체
+  - `mission.js`: 오늘 요일에 ready 항목이 전무하면(Let's Go 버튼 자리에) "오늘은 준비 중입니다..." 안내 문구 추가
+  - 주차 버튼(1~36)은 원래부터 잠금 로직이 없어 전부 노출·선택 가능 — 수정 불필요(요구사항 이미 충족)
+  - `grade{3,4,5,6}.json`은 전혀 무수정(확인 완료), 표시/활성화 로직만 코드에서 처리 — **나중에 json의 status를 ready로만 바꾸면 코드 수정 없이 자동 활성화됨**
+  - 캐시: `index.html`/`mission.html`의 `roadmap.js?v=2→v3`, `mission.js?v=2→v3`, `roadmap.css?v=2→v3`(CSS도 수정했으므로 함께 상향)
+- 백업: 태그 `pre-disable-pending-20260717`(push 완료) + `E:\CEC CAMP STORAGE\CEC-Backup\backup-disable-pending-20260717\learning-roadmap\`
+- 커밋: `311b6aa58` "feat: roadmap pending items greyed/disabled, disabled enter button, mission empty-day notice, v3 cache"
+- 검증(Playwright, iPad Pro 11 뷰포트, 라이브 https): Grade3 W02 — Reading1/Look&Speak/Reading2/Writing/Mom Teacher Review 전부 `opacity:0.5`·회색 배지("준비 중")·`is-blocked`, Camp A/Listen&Find는 `opacity:1`·초록 배지("수업 열기"). 목/토(ready 없음) "들어가기"→"준비 중" 비활성 정상 전환. Grade3 W01(전체 ready) pendingCount 0·disabledEnter 0(회귀 없음). W05~08·Grade4/5/6 W01도 로컬·라이브 결과 완전 일치. **홈 나갔다 재진입 후에도 Reading1이 여전히 회색·비활성 유지**(v3 캐시 정상, "준비 중" 선명 재발 없음)
+
+## Mom Teacher 랜딩(index.html)에도 관리자 전체 커리큘럼 배너 추가
 
 - **배경**: 관리자가 `trial-dashboard.html`에서는 전체 커리큘럼 배너를 보고 접근할 수 있게 됐지만(직전 세션), 랜딩(`mom-teacher/index.html`)에는 이 입구가 없어 관리자가 `/mom-teacher/curriculum/` 주소를 직접 쳐야 했음
 - **적용**: `mom-teacher/index.html` 단 1개 파일, 순수 추가 26줄(삭제 0). `trial-dashboard.html`에서 검증된 패턴 그대로 재사용:
