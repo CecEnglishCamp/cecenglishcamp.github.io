@@ -1,6 +1,18 @@
 # CEC Handover
 
-## Start Here 히어로 fold 재설계 + Free Learning 출구 교체 + 비초등 안내 강화 + 우클릭 방지 (최신)
+## G6 A Little Princess: grade6.json 신설 + W01 단일지문 Reading/Writing + Listen&Find 승격·연결·랜딩 활성화 (최신)
+
+- `learning-roadmap/manifests/grade6.json` 신규 생성(36주 골격, G6 커리큘럼: A Little Princess(W01~08)·Five Children and It·The Jungle Book·Pinocchio·The Princess and the Goblin·Eight Cousins·Little Men). W01만 Reading/Writing `ready`, 나머지 주차는 전부 `pending` 유지(무접촉)
+- G6 W01 A Little Princess Reading1/2(**단일 지문, 난이도 토글 없음** — G3~G5와 달리 이 학년은 토글 자체가 없는 설계, 라이브 확인 결과 `.tg` 토글 버튼 0개·`p-standard` 지문 1개만 렌더링) + Writing(자유작문 4단계: 빈칸채우기→나의글쓰기→ChatGPT 제출→다시쓰기) 배치
+- `lostwords-wip/lp_img1~8.html` + `lesson_lp_img1~8.json`(16개) → `/lostwords/`로 git mv 승격. require-auth `?v=13`·noindex 이미 적용된 상태였음(버전 통일 불필요, 이전 책들과 달리 처음부터 최신). 고아 파일 `lostwords-wip/lp_index.html`(어디서도 참조 안 됨, 이전 G5 `ti_index.html`과 동일 전례로 삭제) 정리. 8개 scene에 Peter Rabbit/Treasure Island와 동일한 `.header-right`/`.header-nav-link` 패턴으로 "← Listen & Find 목록"/"홈" 나가는 링크 추가(파일당 diff +8/-1로 균일)
+- G6 grade6.json W01~08 화요일 Listen&Find(`/lostwords/lp_img1~8.html`)·Look&Speak(`/camp-a/speaking/little_princess_img1~8.html`, 사전 존재 확인 후 연결) 연결(status ready), W09(Five Children and It)부터는 pending 유지
+- `lostwords/index.html` 랜딩 A Little Princess 카드 "준비 중" 배지 해제 → 다른 4권과 동일한 `<a class="card">` 패턴으로 활성화. **이로써 Listen & Find 랜딩 5권(Peter Rabbit·Red Riding Hood·Wind in the Willows·Treasure Island·A Little Princess) 전부 프로덕션 승격 완료, "준비 중" 0건**
+- 변경 전 `grade6.json.bak` 로컬 백업(커밋 대상 아님)
+- 커밋: `843d93f80` "feat: G6 A Little Princess — grade6.json + W01 single-passage Reading/Writing, promote Listen&Find, link W01-08, activate landing"
+- 백업: 태그 `pre-g6-20260716`(push 완료) + `E:\CEC CAMP STORAGE\CEC-Backup\backup-g6-20260716\lostwords-wip\`(lp_ 16개 원본)
+- 검증: `gh run list` pages-build-deployment 성공. 라이브 재확인 — `/learning-roadmap/?grade=6&week=01`·`/lostwords/lp_img1.html` 200, `/lostwords/` 랜딩 "준비 중" 0건, grade6.json W01 월/화/목 전부 실제 경로로 응답, lp_img1~8·little_princess_img1~8 16개 전부 200, 나가는 링크·require-auth v13·noindex 라이브 확인 완료
+
+## Start Here 히어로 fold 재설계 + Free Learning 출구 교체 + 비초등 안내 강화 + 우클릭 방지
 
 - **히어로 구조 분리(핵심 변경)**: 기존 `.hero`(단일 flex-center 박스에 kicker+h1+lead+mantra+stats 전부 포함, `min-height:78vh`)는 실측 결과 이미 뷰포트보다 짧아(예: 1440×900에서 실제 높이 702px) **다음 섹션이 로드 시 이미 보이는 상태**였음. 지시받은 대로 min-height를 64~68vh로 더 줄이면 오히려 다음 섹션이 더 잘 보이는 역효과가 실측으로 확인되어, `.hero-titleblock`(kicker+h1+lead, `min-height:calc(100vh - 64px)`, 세로 중앙정렬)과 `.hero-below`(mantra+stats, 일반 문서 흐름)로 마크업을 분리하는 방식으로 목표(제목만 첫 화면에 노출, stats·다음 섹션 미노출)를 달성. 모바일(≤640px)은 `.hero-titleblock{min-height:88vh}`로 별도 조정(80vh 테스트 중 414×896 폭에서 stats가 43px 정도 살짝 보여 88vh로 올려 안전마진 확보)
   - Playwright로 데스크톱(1440×900, 1920×1080)·랩탑(1366×768)·모바일(414×896, 375×812, 320×568) 6개 뷰포트 + 라이브 서버(1440×900, 414×896) 실측: 제목 100% 노출, stats/다음 섹션 전부 미노출, 가로 스크롤 없음 확인
