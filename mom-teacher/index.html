@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<script src="/assets/cec-admin-check.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mom Teacher — CEC English Camp | 7일 무료체험</title>
 <meta name="description" content="엄마가 직접 만들지 않아도 됩니다. CEC가 준비한 흐름을 따라 아이와 함께 시작하세요. 7일 무료체험, 카드 등록 없음.">
@@ -57,6 +58,13 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 36px
 .btn-outline-sm{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.6);font-size:.82rem;font-weight:500;padding:11px 22px;border-radius:50px;text-decoration:none;transition:all .2s}
 .btn-outline-sm:hover{border-color:rgba(0,255,255,.4);color:#00ffff}
 .hero-note{margin-top:22px;font-size:.8rem;color:rgba(255,255,255,.3);animation:fadeUp .7s .3s ease both}
+
+/* 관리자 모드: 히어로 최상단에 전체 커리큘럼 바로가기 배너(일반 사용자에겐 숨김) */
+.admin-banner{display:none}
+.is-admin .admin-banner{display:block;max-width:560px;background:rgba(0,255,255,.06);border:1px solid rgba(0,255,255,.3);border-radius:14px;padding:20px 26px;margin-bottom:28px;text-align:center}
+.admin-banner strong{color:#00ffff;font-size:.85rem;letter-spacing:.05em}
+.admin-banner a{display:inline-block;margin-top:10px;color:#00ffff;font-weight:800;text-decoration:none;border:1px solid rgba(0,255,255,.5);border-radius:50px;padding:9px 22px;font-size:.88rem;transition:all .2s}
+.admin-banner a:hover{background:rgba(0,255,255,.12)}
 
 /* ── Section base ── */
 section{padding:90px 24px}
@@ -150,6 +158,10 @@ footer a:hover{color:rgba(255,255,255,.5)}
 
 <!-- Hero -->
 <section class="hero">
+  <div class="admin-banner">
+    <strong>관리자 모드</strong> — 체험 제한 없이 전체 커리큘럼(전체 학년·전체 책·전체 에피소드)을 열람할 수 있습니다.<br>
+    <a href="/mom-teacher/curriculum/">전체 커리큘럼 바로가기 →</a>
+  </div>
   <span class="hero-badge">CEC Mom Teacher Program</span>
   <h1>엄마가 <em>모든 것을</em><br>준비하지 않아도 됩니다</h1>
   <p class="hero-sub">CEC가 준비한 흐름을 따라,<br>아이와 함께 듣고 읽고 말하면 됩니다.</p>
@@ -310,5 +322,19 @@ footer a:hover{color:rgba(255,255,255,.5)}
 </footer>
 
 <script src="/assets/security.js"></script>
+<script>
+// 관리자 세션(cec-admin-check.js가 admin:true로 생성)이면 히어로 최상단에
+// 전체 커리큘럼 바로가기 배너를 노출한다. 일반 사용자는 무영향(기존 랜딩 그대로).
+(function(){
+  if(window.CEC_AUTH && window.CEC_AUTH.ensureAdminTrialSession){window.CEC_AUTH.ensureAdminTrialSession();}
+  try{
+    var s=localStorage.getItem('cec_mom_trial_session');
+    if(s){
+      var d=JSON.parse(s);
+      if(d.admin===true){document.body.classList.add('is-admin');}
+    }
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
