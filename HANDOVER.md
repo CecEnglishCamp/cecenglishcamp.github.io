@@ -1,7 +1,23 @@
 # CEC Handover
 
-## camp-a/speaking 44개 게이트 통일(require-auth) + noindex 적용 (최신)
+## Space Camp 재노출: Camps 드롭다운 17개 + About/Start Here 카드 (Four→Five Worlds) (최신)
 
+- **배경**: `/space-camp/`(20단계 스텝 + 수료증, 우주 주제 영어)는 실제로 존재·운영 중인 콘텐츠였으나 과거 커밋 `4a4c6385b`(2026-06-12, Programs 드롭다운의 `/nasa-space-camp/`를 CSS 미비 이유로 제거한 것 — 이번과는 다른 메뉴·다른 페이지)와는 별개로, Camps 드롭다운에는 애초부터 노출된 적이 없었음. 현행 진입점 `/space-camp/`(step01~20, certificate) 확인 후 재노출 진행
+- **적용**:
+  - **Camps 드롭다운 17개 파일**에 `<a href="/space-camp/">Space Camp &mdash; Summer Special</a>`을 Camp C 다음(Camp A→B→C→Space Camp 순)에 추가: about.html, account-help.html, camp-a/b/c/c2/index.html, essay-camp, franchise, grammar-camp, index.html, index_black.html, mom-teacher/curriculum, nasa-space-camp, payment, speaking, start-here, young-days
+  - `camp-c/index.html`은 CRLF 파일이라 최초 perl 치환 시 매치 실패 → LF 패턴으로 재처리해 정상 반영(git이 자동으로 CRLF/LF 정규화하여 diff상 다른 파일과 동일하게 1줄만 추가됨)
+  - **about.html**: "Four Worlds, One Vision" → **"Five Worlds, One Vision"**, Space Camp 카드(🚀, "Summer Special" 태그) 신규 추가(Camp C와 Mom Teacher 사이)
+  - **start-here.html**: 상단 통계 "4 Learning Camps" → **"5 Learning Camps"**, Step 1 캠프 카드에 Space Camp 추가(Camp C와 Mom Teacher 사이)
+  - 게이팅·noindex·`/space-camp/` 내부 콘텐츠는 이번 작업에서 전혀 손대지 않음(현행 유지 지시)
+- **작업 중 발견·즉시 수정한 실수**: 12개 파일(camp-a/b/c/c2, essay-camp, grammar-camp, index, index_black, mom-teacher/curriculum, nasa-space-camp, speaking, young-days) 최초 치환 시 정규식 캡처 그룹 순서를 잘못 잡아 `<a href="/camp-c/">Camp C ...` 태그가 새 링크에 의해 둘로 쪼개지는 사고 발생 → 커밋 전 diff 검토 단계에서 즉시 발견, `git checkout --`으로 12개 파일 전부 원복 후 올바른 패턴으로 재적용. 최종 커밋 전 17개 파일 전부 Camp A/B/C 링크 태그 무결성 재검증 완료(사고 있었던 파일은 커밋에 포함되지 않음)
+- 백업: 태그 `pre-spacecamp-nav-20260718-1600`(push 완료) + `E:\CEC CAMP STORAGE\CEC-Backup\backup-spacecamp-nav-20260718\`(18개 원본)
+- 커밋: `644eab74b` "feat: restore Space Camp in Camps dropdown, add program cards to About/Start Here (Five Worlds)"
+- 검증(Playwright, 라이브 https): 홈 Camps 드롭다운 4개 링크(Camp A/B/C/Space Camp) 정상, JS 에러 0. about.html block-label "Five Worlds, One Vision" 확인, Space Camp 카드 존재 확인. start-here.html stats "5 Learning Camps" 확인, Step1 Space Camp 카드 클릭 → `/space-camp/` 정상 진입. `step01.html`(비로그인 열림, 무료 맛보기)·`step02.html`(비로그인 → `login.html` 리다이렉트, 차단) 게이팅 현행 그대로 정상 작동 확인
+- **[남은 것] `index_space.html`**: 18개 표준 목록에 포함되지만 이미 자체 Space Camp 항목(`<a href="/space-camp-lock.html">`, 로보 gif와 함께 "잠김" 형태로 표시)이 있는 특수 페이지라 이번 표준 패턴 적용에서 **제외**(미변경). 계절 프로모션 전환 시 `/space-camp-lock.html` → `/space-camp/`로 갱신하는 별도 작업 필요
+
+## camp-a/speaking 44개 게이트 통일(require-auth) + noindex 적용
+
+- 시점: 2026-07-18
 - **배경**: `camp-a/speaking/peter_rabbit_img1~7.html` 7개가 `cec-admin-check.js`(households를 전혀 조회하지 않는 Mom Teacher 트라이얼 전용 게이트) 기반이라 **Camp A 결제자가 로그인해도 households 미조회로 통과 못 하고 막히던 사고**였음. 나머지 36개(little_princess/red_riding_hood/treasure_island/wind_willows/wizard_of_oz)는 게이트 자체가 아예 없어 비로그인도 열람 가능했음
 - **적용(2단계)**:
   - **1단계**: `wind_willows_img1.html` 1개만 먼저 `cec-admin-check.js` → `require-auth.js?v=11`로 교체해 시험 커밋(`e9a502d9b`) 후 라이브 검증(비로그인 차단·JS 에러 0) 완료 후 확산
