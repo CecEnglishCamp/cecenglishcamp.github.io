@@ -1,6 +1,16 @@
 # CEC Handover
 
-## iPad safe-area 상단 여백 적용 (로드맵/Listen&Find/Picture Speaking 헤더) (최신)
+## 사이트 전체 점검 후속 — 긴급 수정 2건: peter_rabbit_img1 게이트 복구 + nasa-space-camp nav 복구 (최신)
+
+- **배경**: 직전 세션의 읽기 전용 전체 점검(수정 없음)에서 발견한 [치명] 항목 2건을 이번에 수정
+- **1) `camp-a/speaking/peter_rabbit_img1.html`**: `isCecAdminUser()))return;`(닫는 괄호 1개 초과)로 인해 게이트 스크립트 전체가 `SyntaxError`로 죽어 로그인 없이 완전 열람 가능했던 문제. 괄호 1개 제거해 다른 41개 파일과 동일한 정상 구문으로 통일. 다른 41개 파일에는 이 오타가 없었음(이 파일 1개만의 국소 버그)
+- **2) `nasa-space-camp/index.html`**: nav CSS를 전부 외부 `/assets/style.css`에만 의존했는데 그 파일이 **git 히스토리상 생성된 적이 없는 파일**(최초 제작 시점부터의 실수)이라 404 → nav가 `position:static`·높이 1493px(전체 페이지)로 렌더링되어 로고 이미지가 화면 전체를 뒤덮는 완전한 레이아웃 붕괴. `/assets/style.css` 참조 제거 후, 동일한 non-inner 드롭다운 마크업 구조를 쓰는 `index.html`의 nav CSS(nav·로고·드롭다운·햄버거·반응형 미디어쿼리 전체)를 그대로 이식해 복구
+  - 참고로 발견했으나 이번 범위 밖이라 손대지 않은 것: 파일 맨 끝에 `</content>`라는 정체불명 잔여 태그(HTML 표준 아님, 브라우저가 무시해 렌더링엔 무해)
+- 백업: 태그 `pre-urgentfix-20260718`(push 완료, 날짜 표기 1회 실수 후 정정) + `E:\CEC CAMP STORAGE\CEC-Backup\backup-urgentfix-20260718\`
+- 커밋: `866bf6dc2` "fix: syntax error breaking auth gate on peter_rabbit_img1, restore nasa-space-camp nav layout"
+- 검증(Playwright, 라이브 https): `peter_rabbit_img1.html` — JS 에러 0건, 비로그인 접속 시 `mom-teacher/login.html?next=...`로 정상 리다이렉트(게이트 작동 확인). `nasa-space-camp/` — nav `position:fixed`·높이 68px 정상, 네트워크 에러 0건, 데스크톱 드롭다운 hover·모바일 햄버거 메뉴 전부 스크린샷으로 확인
+
+## iPad safe-area 상단 여백 적용 (로드맵/Listen&Find/Picture Speaking 헤더)
 
 - **배경**: iPad에서 상단 헤더(홈/목록/뒤로 버튼)가 상태바에 붙어 겹치거나 눌리기 힘든 문제. `lostwords/` scene은 `apple-mobile-web-app-status-bar-style: black-translucent` PWA 메타가 이미 있어 홈 화면 앱 모드에서 콘텐츠가 상태바 뒤까지 확장되는 것이 핵심 원인이었음
 - **적용(85개 파일, 전부 +1/-1 균일)**:
