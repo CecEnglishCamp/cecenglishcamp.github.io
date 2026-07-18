@@ -1,6 +1,19 @@
 # CEC Handover
 
-## Learning Roadmap: 전체 노출 + ready만 활성/pending 비활성(회색) (최신)
+## iPad safe-area 상단 여백 적용 (로드맵/Listen&Find/Picture Speaking 헤더) (최신)
+
+- **배경**: iPad에서 상단 헤더(홈/목록/뒤로 버튼)가 상태바에 붙어 겹치거나 눌리기 힘든 문제. `lostwords/` scene은 `apple-mobile-web-app-status-bar-style: black-translucent` PWA 메타가 이미 있어 홈 화면 앱 모드에서 콘텐츠가 상태바 뒤까지 확장되는 것이 핵심 원인이었음
+- **적용(85개 파일, 전부 +1/-1 균일)**:
+  - `learning-roadmap/index.html`·`mission.html`: viewport에 `viewport-fit=cover` 추가. `roadmap.css`의 `.rm-topbar` → `padding: max(16px, env(safe-area-inset-top)) 0 0`
+  - `lostwords/*.html` 40개(scene만, 랜딩 `index.html` 제외 — PWA 메타·fixed 헤더 없어 범위 밖): `.header`의 `height:54px`→`min-height:54px`, `padding:0 18px`→`padding: max(14px, env(safe-area-inset-top)) 18px 0`. viewport-fit=cover는 이미 전부 있었음
+  - `camp-a/speaking/*.html` 42개(scene만, index류 8개·`wizard_of_oz_img1.html`은 다른 템플릿이라 제외): `.spk-nav`의 `height:52px`→`min-height:52px`, `padding:0 20px`→`padding: max(10px, env(safe-area-inset-top)) 20px 0`. viewport-fit=cover 신규 추가(원래 없었음)
+- 백업: 태그 `pre-ipad-safearea-20260717`(push 완료) + `E:\CEC CAMP STORAGE\CEC-Backup\backup-ipad-safearea-20260717\`(94개 파일 원본)
+- 커밋: `2583a6093` "fix: iPad safe-area top padding on roadmap/lostwords/speaking headers, viewport-fit=cover, v4 cache"
+- **⚠️ 검증 한계(구조적, 자동화로 넘을 수 없음)**: `env(safe-area-inset-top)`은 iOS/iPadOS Safari(WebKit) 전용 값이라 Chromium 기반 Playwright로는 실측 불가(항상 0으로 평가됨). `max(Xpx, env(...))` 로직이 최소 패딩을 보장하는 것과 iPad 4개 해상도(820×1180/1180×820/768×1024/1024×768) 스크린샷에서 레이아웃 안 깨지는 것까지만 코드·시각 레벨로 확인. **실제 iPad 실기기에서 상태바와의 최종 겹침 해소 여부는 Sung이 직접 확인 필요**
+- 검증 중 발견(버그 아님): 좁은 세로 폭에서 "CEC Picture Speaking" 브랜드명이 2줄로 줄바꿈되는 현상 — `height→min-height` 전환으로 인한 자연스러운 결과(원래 고정 height였다면 텍스트가 잘렸을 것이 오히려 자동으로 커져 개선됨)
+- 라이브 확인: `/learning-roadmap/`(viewport-fit=cover·roadmap.css?v=4), `/lostwords/ww_img1.html`, `/camp-a/speaking/wind_willows_img1.html` 3개 URL 전부 safe-area CSS 반영 확인
+
+## Learning Roadmap: 전체 노출 + ready만 활성/pending 비활성(회색)
 
 - **선행 사실 확인**: 직전 세션에서 지시받은 "pending 비활성화" 작업이 백업 태그(`pre-disable-pending-20260716`)만 생성되고 **실제 커밋은 안 된 상태**였음을 git log로 확인 후 이번에 실제 적용함(iPad에서 "준비 중"이 여전히 선명하게 보인다는 증상이 정확했음)
 - **정확한 원인**: `roadmap.js`/`mission.js`의 pending 항목은 원래부터 클릭 핸들러·링크 자체가 없는 구조라 "클릭 차단"은 이미 충족돼 있었음. 진짜 문제는 `roadmap.css`의 `.is-blocked { opacity: 0.72 }`가 너무 높고 배지 색(진한 주황 `--pending`)을 그대로 둬서 시각적으로 "비활성화 안 된 것"처럼 보였던 것. 추가로 "들어가기" 버튼이 그 요일에 ready 항목이 전무해도 항상 활성화돼 있었고, mission.js에는 "오늘은 준비 중" 안내가 없었음
