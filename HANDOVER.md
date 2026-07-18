@@ -1,6 +1,25 @@
 # CEC Handover
 
-## 사이트 전체 점검 후속 — 긴급 수정 2건: peter_rabbit_img1 게이트 복구 + nasa-space-camp nav 복구 (최신)
+## camp-a/speaking 44개 게이트 통일(require-auth) + noindex 적용 (최신)
+
+- **배경**: `camp-a/speaking/peter_rabbit_img1~7.html` 7개가 `cec-admin-check.js`(households를 전혀 조회하지 않는 Mom Teacher 트라이얼 전용 게이트) 기반이라 **Camp A 결제자가 로그인해도 households 미조회로 통과 못 하고 막히던 사고**였음. 나머지 36개(little_princess/red_riding_hood/treasure_island/wind_willows/wizard_of_oz)는 게이트 자체가 아예 없어 비로그인도 열람 가능했음
+- **적용(2단계)**:
+  - **1단계**: `wind_willows_img1.html` 1개만 먼저 `cec-admin-check.js` → `require-auth.js?v=11`로 교체해 시험 커밋(`e9a502d9b`) 후 라이브 검증(비로그인 차단·JS 에러 0) 완료 후 확산
+  - **2단계(이번 커밋)**: 나머지 43개 처리
+    - 게이트 없던 36개: `<meta charset="UTF-8">` 다음에 `<script src="/assets/require-auth.js?v=11"></script>` 삽입
+    - `cec-admin-check.js` 기반이던 7개(peter_rabbit_img1~7): 12줄 블록 전체를 `require-auth.js?v=11` 한 줄로 교체
+    - noindex 신규 43개 + 기존 위치 유지 wizard_of_oz_img1(이미 있었음) → **44개 scene 전체 noindex 확보**(index류 5개·`index.html`은 대상 아님, 미변경)
+  - 각 파일 치환 전 패턴 1회 매치 검증(Python 스크립트, OK 43/FAIL 0 × 2회) 후 적용, `cec-admin-check.js` 잔존 0건·require-auth 1회 매치 44/44 재검증 완료
+- 백업: 태그 `pre-gatefix-20260718`, `pre-gatefix2-20260718-1446`(push 완료)
+- 커밋: `e9a502d9b`(1단계 wind_willows_img1) + `f796efe4a`(2단계 43개 게이트+noindex) "fix: unify camp-a/speaking gates to require-auth + add noindex (44 scenes)"
+- 검증(Playwright, 라이브 https):
+  - 비로그인: `peter_rabbit_img1.html`·`little_princess_img1.html` → `login.html?next=...` 정상 리다이렉트, JS 에러 0건
+  - noindex: peter_rabbit_img1/little_princess_img1/wind_willows_img1/wizard_of_oz_img1 4개 샘플 전부 `noindex` 확인
+  - 로드맵 화요일 "Look & Speak" 링크(grade3~6.json): `red_riding_hood_img10`·`wind_willows_img1`·`treasure_island_img1`·`little_princess_img1` 4개 전부 이번 44개에 포함되어 있고 응답 200 정상
+  - 관리자 통과: require-auth.js의 관리자 early-return 로직은 44개 파일 모두 동일 스크립트(코드 자체는 무수정, 참조만 통일)라 로직상 보장됨. 실제 관리자 계정 로그인 자격 증명이 세션에 없어 Playwright로 직접 로그인 통과는 미실측 — **Sung이 실기기/실계정으로 1회 육안 확인 권장**
+- **[다음 정리 과제] 진도 제한 로직 미매치**: `camp-a/speaking/*`, `mom-teacher/ep*` 계열은 파일명에 `week` 번호가 없어 require-auth.js의 미결제자 진도 제한 정규식(`week(\d+)`)이 매치되지 않음 → **로그인만 하면 미결제자도 전체 열람 가능**(비로그인 차단 자체는 정상). 유료화를 더 조일 때 이 경로/파일명 체계에 맞는 진도 제한 재설계 필요(이번엔 결제자 사고 위험 때문에 미변경, 현상 유지)
+
+## 사이트 전체 점검 후속 — 긴급 수정 2건: peter_rabbit_img1 게이트 복구 + nasa-space-camp nav 복구
 
 - **배경**: 직전 세션의 읽기 전용 전체 점검(수정 없음)에서 발견한 [치명] 항목 2건을 이번에 수정
 - **1) `camp-a/speaking/peter_rabbit_img1.html`**: `isCecAdminUser()))return;`(닫는 괄호 1개 초과)로 인해 게이트 스크립트 전체가 `SyntaxError`로 죽어 로그인 없이 완전 열람 가능했던 문제. 괄호 1개 제거해 다른 41개 파일과 동일한 정상 구문으로 통일. 다른 41개 파일에는 이 오타가 없었음(이 파일 1개만의 국소 버그)
