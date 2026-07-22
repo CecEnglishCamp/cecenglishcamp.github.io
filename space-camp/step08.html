@@ -345,6 +345,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(2,8,24,.95);backdrop-filte
       <button class="btn-copy" onclick="copyPrompt()">📋 프롬프트 복사하기</button>
       <a href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b" target="_blank" class="btn-gpt">🚀 CEC Camp A GPT 열기</a>
       <div class="copy-ok" id="copy-ok">✅ 복사 완료! Camp A GPT에 붙여넣으세요.</div>
+      <div class="mc-return-note" style="margin-top:14px;padding:14px 16px;border:1px solid rgba(0,242,255,.18);border-radius:8px;background:rgba(0,242,255,.05);color:#a9c7e8;font-size:12.5px;line-height:1.7;">Mission Control practice opens in ChatGPT.<br>After practice, come back here and open the next Reading Homework.<br>Mission Control 연습은 ChatGPT에서 진행합니다.<br>연습이 끝나면 이 페이지로 돌아와 다음 Reading Homework를 열어 주세요.</div>
     </div>
   </div>
 
@@ -586,6 +587,12 @@ nav{position:sticky;top:0;z-index:100;background:rgba(2,8,24,.95);backdrop-filte
 
 <script>
 let currentGrade=5;
+const RETURN_GUIDANCE=`
+When this Mission Control practice is finished, please tell the student:
+"Great job. Now go back to your Space Camp page and open the next Reading Homework to prepare for tomorrow's mission."
+
+이 Mission Control 연습이 끝나면 학생에게 이렇게 말해 주세요.
+"잘했어요. 이제 Space Camp 페이지로 돌아가서 다음 Reading Homework를 열고 내일 미션을 준비하세요."`;
 const PROMPTS={
   4:(n,t,s,sc)=>`[CEC Space Camp — STEP 8 훈련 / 4학년 A2]
 안녕! 저는 CEC 스페이스 캠프 4학년이에요. Mission Control 역할을 해주세요!
@@ -630,7 +637,7 @@ function updatePrompt(){
   const t=document.getElementById('inp-team').value.trim();
   const s=document.getElementById('inp-ship').value.trim();
   const sc=document.getElementById('inp-sc').value;
-  document.getElementById('prompt-box').innerText=PROMPTS[currentGrade](n,t,s,sc);
+  document.getElementById('prompt-box').innerText=PROMPTS[currentGrade](n,t,s,sc) + RETURN_GUIDANCE;
 }
 function selGrade(g,el){
   currentGrade=g;
@@ -669,6 +676,14 @@ document.getElementById('video-modal').addEventListener('click',function(e){if(e
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeVideo();});
 updatePrompt();
 </script>
+
+  <!-- Next Reading Homework -->
+  <div class="next-reading" style="margin:48px auto 0;max-width:980px;padding:24px 28px;background:rgba(76,255,179,.055);border:1px solid rgba(76,255,179,.24);border-left:4px solid #4cffb3;border-radius:8px;box-shadow:0 18px 52px rgba(0,0,0,.16);">
+    <div style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:2px;color:#4cffb3;text-transform:uppercase;margin-bottom:10px;">Next Reading Homework</div>
+    <h2 style="font-size:24px;line-height:1.25;color:#f4f8ff;margin:0 0 10px;">Read Step 09 before your next mission.</h2>
+    <p style="color:#c8d8ee;font-size:15px;line-height:1.7;margin:0 0 16px;">다음 미션 전에 Step 09 Reading Homework를 먼저 읽고 오세요.</p>
+    <a href="readings/step09.html" style="display:inline-flex;min-height:42px;align-items:center;justify-content:center;padding:12px 18px;border-radius:4px;background:#00f2ff;color:#020818;font-family:'Orbitron',monospace;font-size:11px;font-weight:900;letter-spacing:1px;text-decoration:none;">Open Step 09 Reading</a>
+  </div>
   <script src="/assets/visitor-track.js" defer></script>
   <script src="/assets/require-auth.js?v=11"></script>
 </body>

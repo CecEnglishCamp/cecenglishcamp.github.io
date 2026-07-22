@@ -332,6 +332,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(2,8,24,.95);backdrop-filte
       <button class="btn-copy" onclick="copyPrompt()">📋 프롬프트 복사하기</button>
       <a href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b" target="_blank" class="btn-gpt">🚀 CEC Camp A GPT 열기</a>
       <div class="copy-ok" id="copy-ok">✅ 복사 완료!</div>
+      <div class="mc-return-note" style="margin-top:14px;padding:14px 16px;border:1px solid rgba(0,242,255,.18);border-radius:8px;background:rgba(0,242,255,.05);color:#a9c7e8;font-size:12.5px;line-height:1.7;">Mission Control practice opens in ChatGPT.<br>After practice, come back here and finish your final mission.<br>Mission Control 연습은 ChatGPT에서 진행합니다.<br>연습이 끝나면 이 페이지로 돌아와 최종 미션을 마무리하세요.</div>
     </div>
   </div>
 
@@ -553,7 +554,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(2,8,24,.95);backdrop-filte
     <div class="nav-week-lbl">WEEK 4 — ORBITAL OPERATIONS</div>
     <div class="nav-step-lbl">STEP 20 of 20 — Final Mission & Graduation 🎓</div>
   </div>
-  <a href="space-camp/" class="nav-btn">NEXT →</a>
+  <a href="/space-camp/" class="nav-btn">SPACE CAMP HOME →</a>
 </div>
 
 <div id="video-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;">
@@ -567,6 +568,12 @@ nav{position:sticky;top:0;z-index:100;background:rgba(2,8,24,.95);backdrop-filte
 
 <script>
 let currentGrade=5;
+const RETURN_GUIDANCE=`
+When this final Mission Control practice is finished, please tell the student:
+"Great job. Now go back to your Space Camp page and finish your final mission and certificate step."
+
+이 최종 Mission Control 연습이 끝나면 학생에게 이렇게 말해 주세요.
+"잘했어요. 이제 Space Camp 페이지로 돌아가서 최종 미션과 수료 단계까지 마무리하세요."`;
 const PROMPTS={
   4:(n,t,sc)=>`[CEC Space Camp — STEP 20 / 4학년 A2 — 최종 수료]
 안녕! 저는 CEC 스페이스 캠프 4학년이에요.
@@ -607,7 +614,7 @@ function updatePrompt(){
   const n=document.getElementById('inp-name').value.trim();
   const t=document.getElementById('inp-team').value.trim();
   const sc=document.getElementById('inp-sc').value;
-  document.getElementById('prompt-box').innerText=PROMPTS[currentGrade](n,t,sc);
+  document.getElementById('prompt-box').innerText=PROMPTS[currentGrade](n,t,sc) + RETURN_GUIDANCE;
 }
 function selGrade(g,el){
   currentGrade=g;

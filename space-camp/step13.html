@@ -332,6 +332,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(2,8,24,.95);backdrop-filte
       <button class="btn-copy" onclick="copyPrompt()">📋 프롬프트 복사하기</button>
       <a href="https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b" target="_blank" class="btn-gpt">🚀 CEC Camp A GPT 열기</a>
       <div class="copy-ok" id="copy-ok">✅ 복사 완료!</div>
+      <div class="mc-return-note" style="margin-top:14px;padding:14px 16px;border:1px solid rgba(0,242,255,.18);border-radius:8px;background:rgba(0,242,255,.05);color:#a9c7e8;font-size:12.5px;line-height:1.7;">Mission Control practice opens in ChatGPT.<br>After practice, come back here and open the next Reading Homework.<br>Mission Control 연습은 ChatGPT에서 진행합니다.<br>연습이 끝나면 이 페이지로 돌아와 다음 Reading Homework를 열어 주세요.</div>
     </div>
   </div>
 
@@ -546,7 +547,11 @@ nav{position:sticky;top:0;z-index:100;background:rgba(2,8,24,.95);backdrop-filte
   </div>
 </div>
 
-<div class="step-nav">
+<section class="lesson-card" style="margin:28px auto;max-width:960px;border:1px solid rgba(255,209,102,.35);background:rgba(255,209,102,.08);border-radius:14px;padding:22px;">
+  <h2 style="margin:0 0 8px;color:#ffd166;">Next Reading Homework</h2>
+  <p style="margin:0 0 14px;color:#eaf6ff;">Read Step 14 before your next mission.<br>다음 미션 전에 Step 14 Reading Homework를 먼저 읽고 오세요.</p>
+  <a href="readings/step14.html" style="display:inline-block;background:#ffd166;color:#07111f;text-decoration:none;font-weight:900;border-radius:8px;padding:10px 16px;">Open Step 14 Reading</a>
+</section><div class="step-nav">
   <a href="/space-camp/" class="nav-btn">🏠 SPACE CAMP</a>
   <a href="step12.html" class="nav-btn">← PREV</a>
   <div class="nav-center-info">
@@ -567,6 +572,12 @@ nav{position:sticky;top:0;z-index:100;background:rgba(2,8,24,.95);backdrop-filte
 
 <script>
 let currentGrade=5;
+const RETURN_GUIDANCE=`
+When this Mission Control practice is finished, please tell the student:
+"Great job. Now go back to your Space Camp page and open the next Reading Homework to prepare for tomorrow's mission."
+
+이 Mission Control 연습이 끝나면 학생에게 이렇게 말해 주세요.
+"잘했어요. 이제 Space Camp 페이지로 돌아가서 다음 Reading Homework를 열고 내일 미션을 준비하세요."`;
 const PROMPTS={
   4:(n,t,sc)=>`[CEC Space Camp — STEP 13 / 4학년 A2]
 안녕! 저는 CEC 스페이스 캠프 4학년이에요.
@@ -608,7 +619,7 @@ function updatePrompt(){
   const n=document.getElementById('inp-name').value.trim();
   const t=document.getElementById('inp-team').value.trim();
   const sc=document.getElementById('inp-sc').value;
-  document.getElementById('prompt-box').innerText=PROMPTS[currentGrade](n,t,sc);
+  document.getElementById('prompt-box').innerText=PROMPTS[currentGrade](n,t,sc) + RETURN_GUIDANCE;
 }
 function selGrade(g,el){
   currentGrade=g;
