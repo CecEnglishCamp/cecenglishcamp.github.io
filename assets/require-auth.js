@@ -39,6 +39,39 @@
     window.location.replace('/login.html?next=' + next);
   }
 
+  function isMomTeacherTrialRoute(path) {
+    return path === '/mom-teacher/curriculum/' ||
+      path === '/mom-teacher/curriculum/index.html' ||
+      /^\/mom-teacher\/grade[0-9]+\/ep[0-9]+\.html$/.test(path);
+  }
+
+  function checkMomTeacherTrialAccess(session, path) {
+    if (!session || !session.access_token) return Promise.resolve(false);
+
+    var controller = new AbortController();
+    var timeout = setTimeout(function () { controller.abort(); }, 5000);
+
+    return fetch('https://cec-robo-router-production.cecenglishcamp.workers.dev/robo/v1/access/mom-teacher', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + session.access_token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ route: path }),
+      signal: controller.signal
+    })
+      .then(function (response) {
+        if (!response.ok) return false;
+        return response.json()
+          .then(function (body) {
+            return body && body.allowed === true && body.code === 'ALLOWED';
+          })
+          .catch(function () { return false; });
+      })
+      .catch(function () { return false; })
+      .finally(function () { clearTimeout(timeout); });
+  }
+
   function checkAccess() {
     var SUPABASE_URL = 'https://rzlqlokqplhyntuirsmd.supabase.co';
     var SUPABASE_KEY = 'sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
@@ -136,6 +169,14 @@
           function trialBlock() {
             sessionStorage.setItem('cec_lock_msg', lockMsg);
             window.location.replace('/payment/');
+          }
+          // Mom Teacher의 authenticated DB 무료체험은 서버가 household/trial을 판정한다.
+          // 기존 유료 사용자는 위 isPaid early return으로 이 요청을 거치지 않는다.
+          if (isMomTeacherTrialRoute(p)) {
+            checkMomTeacherTrialAccess(session, p).then(function (allowed) {
+              if (!allowed) trialBlock();
+            });
+            return;
           }
           // camp-a / camp-b: week01만 허용
           if (/\/(camp-a|camp-b)\//.test(p)) {

@@ -81,6 +81,10 @@ header.topbar {
   transition: all 0.15s;
 }
 .btn:hover { background: rgba(0,242,255,0.1); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.review-actions { display: flex; gap: 6px; white-space: nowrap; }
+.review-action { padding: 5px 10px; }
+.review-reject { color: #ff9b9b; border-color: #ff9b9b; }
 .btn-primary {
   background: var(--cyan);
   color: var(--navy);
@@ -419,15 +423,15 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </section>
 
-    <!-- Free Trial (read-only) -->
-    <section class="block" id="freeTrialReadOnly">
+    <!-- Free Trial review -->
+    <section class="block" id="freeTrialReview">
       <h2>Free Trial 신청 <span class="badge" id="ft_count_badge">—</span></h2>
       <button class="btn" id="ft_refresh" type="button">새로고침</button>
       <div class="table-wrap">
         <div class="table-scroll">
           <table>
-            <thead><tr><th>신청일</th><th>학년</th><th>프로그램</th><th>상태</th><th>검토일</th></tr></thead>
-            <tbody id="free_trials_tbody"><tr><td class="empty" colspan="5">로딩 중…</td></tr></tbody>
+            <thead><tr><th>신청일</th><th>학년</th><th>프로그램</th><th>상태</th><th>검토일</th><th>검토</th></tr></thead>
+            <tbody id="free_trials_tbody"><tr><td class="empty" colspan="6">로딩 중…</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -577,6 +581,9 @@ async function loadData() {
 async function loadFreeTrials() {
   const body = document.getElementById('free_trials_tbody');
   const count = document.getElementById('ft_count_badge');
+  const refresh = document.getElementById('ft_refresh');
+  const loadId = ++freeTrialLoadId;
+  refresh.disabled = true;
   try {
     const { data: { session } } = await sb.auth.getSession();
     if (!session) throw new Error('AUTH');
@@ -591,17 +598,62 @@ async function loadFreeTrials() {
     const rows = Array.isArray(payload?.data?.free_trials) ? payload.data.free_trials : [];
     const allowed = new Set(['id', 'created_at', 'student_grade', 'requested_program', 'status', 'reviewed_at']);
     if (rows.some(row => Object.keys(row).some(key => !allowed.has(key)))) throw new Error('RESPONSE');
+    if (loadId !== freeTrialLoadId) return;
     count.textContent = rows.length + '건';
     body.innerHTML = rows.length ? rows.map(row => '<tr>' +
       '<td class="muted-cell">' + fmtDate(row.created_at) + '</td>' +
       '<td>' + escapeHtml(row.student_grade) + '</td>' +
       '<td>' + escapeHtml(row.requested_program) + '</td>' +
       '<td>' + statusPill(row.status) + '</td>' +
-      '<td class="muted-cell">' + fmtDate(row.reviewed_at) + '</td></tr>').join('') :
-      '<tr><td class="empty" colspan="5">Free Trial 신청이 없습니다.</td></tr>';
+      '<td class="muted-cell">' + fmtDate(row.reviewed_at) + '</td>' +
+      '<td>' + reviewControls(row) + '</td></tr>').join('') :
+      '<tr><td class="empty" colspan="6">Free Trial 신청이 없습니다.</td></tr>';
   } catch (e) {
+    if (loadId !== freeTrialLoadId) return;
     count.textContent = '—';
-    body.innerHTML = '<tr><td class="empty" colspan="5">Free Trial 목록을 불러오지 못했습니다.</td></tr>';
+    body.innerHTML = '<tr><td class="empty" colspan="6">Free Trial 목록을 불러오지 못했습니다.</td></tr>';
+  } finally {
+    if (loadId === freeTrialLoadId) refresh.disabled = false;
+  }
+}
+
+const FREE_TRIAL_REVIEW_URL = 'https://cec-robo-router-production.cecenglishcamp.workers.dev/robo/v1/admin/free-trials/review';
+const freeTrialReviewsInFlight = new Set();
+let freeTrialLoadId = 0;
+
+function reviewControls(row) {
+  if (row.status !== 'pending') return '<span class="muted-cell">—</span>';
+  const id = escapeHtml(row.id);
+  return '<div class="review-actions" data-review-id="' + id + '">' +
+    '<button class="btn review-action" type="button" data-action="approve">Approve</button>' +
+    '<button class="btn review-action review-reject" type="button" data-action="reject">Reject</button></div>';
+}
+
+async function submitFreeTrialReview(requestId, action, controls) {
+  if (freeTrialReviewsInFlight.has(requestId)) return;
+  if (action !== 'approve' && action !== 'reject') return;
+  freeTrialReviewsInFlight.add(requestId);
+  controls.querySelectorAll('button').forEach(button => { button.disabled = true; });
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) throw new Error('AUTH');
+    const response = await fetch(FREE_TRIAL_REVIEW_URL, {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + session.access_token,
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({ request_id: requestId, action }),
+      cache: 'no-store'
+    });
+    if (!response.ok) throw new Error('REVIEW');
+    await loadFreeTrials();
+  } catch (e) {
+    controls.querySelectorAll('button').forEach(button => { button.disabled = false; });
+    window.alert('Free Trial 검토를 완료하지 못했습니다. 잠시 후 다시 시도해 주세요.');
+  } finally {
+    freeTrialReviewsInFlight.delete(requestId);
   }
 }
 
@@ -671,6 +723,13 @@ sb.auth.onAuthStateChange((event) => {
 });
 
 document.getElementById('ft_refresh').addEventListener('click', loadFreeTrials);
+document.getElementById('free_trials_tbody').addEventListener('click', event => {
+  const button = event.target.closest('button[data-action]');
+  if (!button || button.disabled) return;
+  const controls = button.closest('[data-review-id]');
+  if (!controls) return;
+  submitFreeTrialReview(controls.dataset.reviewId, button.dataset.action, controls);
+});
 
 init();
 </script>
