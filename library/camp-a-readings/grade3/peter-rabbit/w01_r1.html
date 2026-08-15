@@ -65,7 +65,13 @@ textarea{width:100%;background:var(--panel);color:var(--text);border:1px solid v
 .rm-return-link{display:inline-block;text-decoration:none;color:#0a1712;background:var(--accent);
   border-radius:12px;padding:13px 26px;font-weight:500;font-size:16px}
 .ok{color:var(--accent);font-size:14px;margin-left:10px}
+.reading-finish{text-align:center}
+.reading-finish[hidden]{display:none}
+.finish-status{color:var(--accent);font-size:14px;margin:10px 0 0;min-height:24px}
+.btn:disabled{opacity:.55;cursor:default;filter:none}
 </style>
+<script src="/assets/require-auth.js?v=13"></script>
+<script src="/assets/learning-progress.js?v=1"></script>
 </head>
 <body>
 <div class="topbar"><a class="home" href="/">← CEC English Camp</a></div>
@@ -96,19 +102,26 @@ textarea{width:100%;background:var(--panel);color:var(--text);border:1px solid v
   
     <div class="q" id="q0">
       <p class="q-text">1. Where does Peter live?</p>
-      <button class="q-btn" onclick="document.getElementById('q0').classList.add('show')">정답 보기</button>
+      <button class="q-btn" onclick="document.getElementById('q0').classList.add('show');markReadingCheck(0)">정답 보기</button>
       <p class="q-ans">He lives under a big tree with his mother and three sisters.</p>
     </div>
     <div class="q" id="q1">
       <p class="q-text">2. What does Mother Rabbit say?</p>
-      <button class="q-btn" onclick="document.getElementById('q1').classList.add('show')">정답 보기</button>
+      <button class="q-btn" onclick="document.getElementById('q1').classList.add('show');markReadingCheck(1)">정답 보기</button>
       <p class="q-ans">She says, “Do not go into Mr. McGregor’s garden.”</p>
     </div>
     <div class="q" id="q2">
       <p class="q-text">3. Does Peter listen to his mother?</p>
-      <button class="q-btn" onclick="document.getElementById('q2').classList.add('show')">정답 보기</button>
+      <button class="q-btn" onclick="document.getElementById('q2').classList.add('show');markReadingCheck(2)">정답 보기</button>
       <p class="q-ans">No. He does not listen. He runs to the garden.</p>
     </div>
+</div>
+
+<div class="card reading-finish" id="reading-finish" hidden>
+  <p class="step-tag">Reading Complete</p>
+  <h2 class="step-h">세 가지 내용을 모두 확인했어요!</h2>
+  <button class="btn" id="reading-finish-button" type="button" onclick="completeReading()">Reading 1 완료</button>
+  <p class="finish-status" id="reading-finish-status" aria-live="polite"></p>
 </div>
 
 <div class="ret" id="rm-return"></div>
@@ -127,6 +140,30 @@ textarea{width:100%;background:var(--panel);color:var(--text);border:1px solid v
   bEsy.addEventListener('click',function(){show('easy')});
   show('standard');
 })();
+</script>
+<script>
+var readingChecks={};
+var readingCompletionSent=false;
+function markReadingCheck(index){
+  readingChecks[index]=true;
+  if(Object.keys(readingChecks).length===3){
+    var finish=document.getElementById('reading-finish');
+    if(finish)finish.hidden=false;
+  }
+}
+function completeReading(){
+  if(Object.keys(readingChecks).length!==3||readingCompletionSent)return;
+  readingCompletionSent=true;
+  var button=document.getElementById('reading-finish-button');
+  var status=document.getElementById('reading-finish-status');
+  if(button){button.disabled=true;button.textContent='Reading 1 완료 ✓';}
+  if(status)status.textContent='잘했어요! Reading 1을 완료했어요.';
+  try{
+    if(window.CECLearningProgress&&typeof window.CECLearningProgress.complete==='function'){
+      window.CECLearningProgress.complete('g3-w01-reading1');
+    }
+  }catch(_progressError){}
+}
 </script>
 </body>
 </html>

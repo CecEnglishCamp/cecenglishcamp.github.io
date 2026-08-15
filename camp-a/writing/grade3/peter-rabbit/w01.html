@@ -65,7 +65,12 @@ textarea{width:100%;background:var(--panel);color:var(--text);border:1px solid v
 .rm-return-link{display:inline-block;text-decoration:none;color:#0a1712;background:var(--accent);
   border-radius:12px;padding:13px 26px;font-weight:500;font-size:16px}
 .ok{color:var(--accent);font-size:14px;margin-left:10px}
+.btn:disabled{opacity:.55;cursor:default;filter:none}
+.finish-status{color:var(--muted);font-size:14px;margin:10px 0 0;min-height:24px}
+.finish-status.done{color:var(--accent)}
 </style>
+<script src="/assets/require-auth.js?v=13"></script>
+<script src="/assets/learning-progress.js?v=1"></script>
 </head>
 <body>
 <div class="topbar"><a class="home" href="/">← CEC English Camp</a></div>
@@ -111,6 +116,10 @@ My writing:</p>
   <h2 class="step-h">다시 쓰기</h2>
   <p>ChatGPT의 도움을 받은 뒤, 더 좋아진 글을 여기에 다시 써 보세요.</p>
   <textarea id="rewrite" rows="5" placeholder="고친 글을 여기에 써 보세요."></textarea>
+  <div class="btn-row">
+    <button class="btn" id="writing-finish-button" type="button" onclick="completeWriting()" disabled>글쓰기 완료</button>
+  </div>
+  <p class="finish-status" id="writing-finish-status" aria-live="polite">영어 문장 2개 이상을 쓰면 완료할 수 있어요.</p>
 </div>
 
 <div class="ret" id="rm-return"></div>
@@ -121,7 +130,7 @@ My writing:</p>
   var my=document.getElementById('my'), rw=document.getElementById('rewrite');
   try{ my.value=localStorage.getItem(K+'my')||''; rw.value=localStorage.getItem(K+'rewrite')||''; }catch(e){}
   function save(){ try{ localStorage.setItem(K+'my',my.value); localStorage.setItem(K+'rewrite',rw.value); }catch(e){} }
-  my.addEventListener('input',save); rw.addEventListener('input',save);
+  my.addEventListener('input',save); rw.addEventListener('input',function(){save();updateWritingFinishState();});
   var PRE=document.getElementById('cgp').textContent;
   document.getElementById('copy').addEventListener('click',function(){
     var text=PRE+"\n\n"+(my.value||'(여기에 내 글을 씁니다)');
@@ -132,6 +141,39 @@ My writing:</p>
   });
   function fallback(text,done){ my.focus(); try{ var t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);done.style.display='inline'; }catch(e){ alert('복사가 안 되면 내 글을 직접 복사해서 ChatGPT에 붙여넣으세요.'); } }
 })();
+</script>
+<script>
+var writingCompletionSent=false;
+function writingSentenceCount(text){
+  return String(text||'').split(/[.!?]+|\n+/).map(function(part){return part.trim();}).filter(function(part){
+    return part.split(/\s+/).filter(Boolean).length>=2;
+  }).length;
+}
+function updateWritingFinishState(){
+  var rewrite=document.getElementById('rewrite');
+  var button=document.getElementById('writing-finish-button');
+  if(!rewrite||!button||writingCompletionSent)return;
+  button.disabled=writingSentenceCount(rewrite.value)<2;
+}
+function completeWriting(){
+  var rewrite=document.getElementById('rewrite');
+  var button=document.getElementById('writing-finish-button');
+  var status=document.getElementById('writing-finish-status');
+  if(!rewrite||writingSentenceCount(rewrite.value)<2){
+    if(status)status.textContent='영어 문장 2개 이상을 작성해 주세요.';
+    return;
+  }
+  if(writingCompletionSent)return;
+  writingCompletionSent=true;
+  if(button){button.disabled=true;button.textContent='글쓰기 완료 ✓';}
+  if(status){status.textContent='잘했어요! 글쓰기를 완료했어요.';status.classList.add('done');}
+  try{
+    if(window.CECLearningProgress&&typeof window.CECLearningProgress.complete==='function'){
+      window.CECLearningProgress.complete('g3-w01-writing');
+    }
+  }catch(_progressError){}
+}
+updateWritingFinishState();
 </script>
 </body>
 </html>
