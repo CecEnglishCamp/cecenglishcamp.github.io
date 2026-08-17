@@ -1,9 +1,9 @@
 /* CEC English Camp · 콘텐츠 페이지 로그인 게이트
  * 사용:
- *   <script src="/assets/require-auth.js?v=13"></script>
+ *   <script src="/assets/require-auth.js?v=14"></script>
  *   (supabase-js 미로드 시 자동 동적 로드)
  *
- * 우선순위 (v=13):
+ * 우선순위 (v=14):
  *   [/lostwords-wip/ 또는 /lostwords/ 경로]  ← Lost Words 전용 게이트 (v12 신규, v13에서 /lostwords/ 정식 경로 추가)
  *     1. 미로그인 → /login.html?next=현재경로
  *     2. 로그인 + 활성 구독자(plan_type 있고 canceled_at·payment_failed_at 없음) → 통과
@@ -37,6 +37,29 @@
   function gotoLogin() {
     var next = encodeURIComponent(location.pathname + location.search);
     window.location.replace('/login.html?next=' + next);
+  }
+
+  var G3_WEEK1_TRIAL_PATHS = [
+    '/camp-a/grade3/week01a.html',
+    '/library/camp-a-readings/grade3/peter-rabbit/w01_r1.html',
+    '/lostwords/peter_rabbit_img4.html',
+    '/camp-a/speaking/peter_rabbit_img8.html',
+    '/camp-a/grade3/week01b.html',
+    '/library/camp-a-readings/grade3/peter-rabbit/w01_r2.html',
+    '/camp-a/writing/grade3/peter-rabbit/w01.html',
+    '/camp-a/grade3/week01c.html'
+  ];
+
+  function isG3Week1TrialPath(path) {
+    return G3_WEEK1_TRIAL_PATHS.indexOf(path) !== -1;
+  }
+
+  function isG3PeterRabbitAuxiliaryPath(path) {
+    return path.indexOf('/library/camp-a-readings/grade3/peter-rabbit/') === 0 ||
+      path.indexOf('/lostwords/peter_rabbit_') === 0 ||
+      path.indexOf('/lostwords-wip/peter_rabbit_') === 0 ||
+      path.indexOf('/camp-a/speaking/peter_rabbit_') === 0 ||
+      path.indexOf('/camp-a/writing/grade3/peter-rabbit/') === 0;
   }
 
   function isMomTeacherTrialRoute(path) {
@@ -93,7 +116,7 @@
       }
 
       // ── Lost Words 전용 게이트 (v12 신규): 활성 구독자만 통과, 그 외(체험 포함)는 /payment/ ──
-      if (isLostWords) {
+      if (isLostWords && !isG3Week1TrialPath(location.pathname)) {
         if (!session) { gotoLogin(); return; }
         sb.from('households')
           .select('plan_type,canceled_at,payment_failed_at')
@@ -170,6 +193,10 @@
             sessionStorage.setItem('cec_lock_msg', lockMsg);
             window.location.replace('/payment/');
           }
+          // Grade 3 Week 1 학습묶음은 exact canonical 경로만 무료체험 허용.
+          if (isG3Week1TrialPath(p)) return;
+          // 같은 Peter Rabbit 보조영역의 비-canonical 페이지는 우연히 통과시키지 않는다.
+          if (isG3PeterRabbitAuxiliaryPath(p)) { trialBlock(); return; }
           // Mom Teacher의 authenticated DB 무료체험은 서버가 household/trial을 판정한다.
           // 기존 유료 사용자는 위 isPaid early return으로 이 요청을 거치지 않는다.
           if (isMomTeacherTrialRoute(p)) {
