@@ -4,12 +4,11 @@
  *   - Network First: HTML 페이지 (오프라인 시 캐시 → /offline.html 폴백)
  *   - Cross-origin (R2 CDN, Google Fonts 등) 은 통과 (브라우저 기본 처리)
  */
-const CACHE = 'cec-pwa-v1';
+const CACHE = 'cec-pwa-v2';
 const PRECACHE = [
   '/',
   '/index.html',
   '/offline.html',
-  '/assets/require-auth.js',
   '/favicon.ico',
   '/apple-touch-icon.png',
   '/manifest.json'
@@ -45,6 +44,23 @@ self.addEventListener('fetch', e => {
   if (url.origin !== location.origin) return;
 
   const accept = e.request.headers.get('accept') || '';
+
+  // ── 인증 스크립트: Network First → 현재 캐시 ──
+  if (url.pathname === '/assets/require-auth.js') {
+    e.respondWith(
+      fetch(e.request)
+        .then(res => {
+          const clone = res.clone();
+          return caches.open(CACHE)
+            .then(c => c.put(e.request, clone))
+            .then(() => res);
+        })
+        .catch(() =>
+          caches.open(CACHE).then(c => c.match(e.request))
+        )
+    );
+    return;
+  }
 
   // ── HTML: Network First → 캐시 → /offline.html ──
   if (accept.includes('text/html')) {
