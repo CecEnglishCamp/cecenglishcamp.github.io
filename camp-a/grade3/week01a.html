@@ -346,7 +346,32 @@ video.scene-img{object-fit:cover;max-width:100%;}
     c.appendChild(d);c.scrollTop=c.scrollHeight;
   };
   console.log('[Week01A] addBotMessage sanitizer active v20260619_4');
+  function gbExtractQuestion(userContent){
+    var content=String(userContent||'');
+    var delimiter='학생 질문: ';
+    var start=content.lastIndexOf(delimiter);
+    if(start<0)return content.trim();
+    return content.slice(start+delimiter.length).split(/\r?\n/,1)[0].trim();
+  }
+  function gbKnownLocalIntent(question){
+    var q=(question||'').toLowerCase();
+    if(q.indexOf('누가 쓴')>=0||q.indexOf('누가 썼')>=0||q.indexOf('저자')>=0||q.indexOf('작가')>=0||q.indexOf('지은 사람')>=0||q.indexOf('author')>=0)return 'AUTHOR';
+    if(q.indexOf('이야기')>=0||q.indexOf('내용')>=0||q.indexOf('뭐')===0||q.indexOf('story')>=0)return 'STORY';
+    if(q.indexOf('교훈')>=0||q.indexOf('배우')>=0||q.indexOf('lesson')>=0||q.indexOf('의미')>=0)return 'MORAL';
+    if(q.indexOf('주인공')>=0||q.indexOf('character')>=0||q.indexOf('누구')>=0)return 'PROTAGONIST';
+    if(q.indexOf('왜')>=0||q.indexOf('이유')>=0||q.indexOf('why')>=0||q.indexOf('because')>=0)return 'WHY';
+    return '';
+  }
+  function gbFallbackContext(question){
+    return {question:question,title:GB_BOOK,bookTitle:GB_BOOK_TITLE,author:GB_AUTHOR,sentence:GB_KEY_SENTENCE,camp:'Camp A'};
+  }
   window.gbFetch=async function(userContent){
+    var _q=gbExtractQuestion(userContent);
+    if(gbKnownLocalIntent(_q)&&typeof window.gbLocalFallback==='function'){
+      var localCtx=gbFallbackContext(_q);
+      window.gbAddAI(window.gbLocalFallback(_q,localCtx),localCtx);
+      return;
+    }
     var bubble=window.gbAddAI('생각 중... 🤔');
     var c=document.getElementById('gbChat');
     try{
@@ -386,10 +411,9 @@ video.scene-img{object-fit:cover;max-width:100%;}
     }catch(e){
       console.warn('[AI Tutor] API failed, using local fallback:', e);
       if(bubble){
-        var _q=(userContent||'').replace(/.*(?:학생 )?질문: /,'').replace(/\n.*/,'').trim();
         if(!_q)_q='이 이야기가 뭐야?';
         var fallback=typeof window.gbLocalFallback==='function'
-          ? window.gbLocalFallback(_q,{title:GB_BOOK,bookTitle:GB_BOOK_TITLE,author:GB_AUTHOR,sentence:GB_KEY_SENTENCE,camp:'Camp A'})
+          ? window.gbLocalFallback(_q,gbFallbackContext(_q))
           : 'Robo 선생님이 지금 기본 모드로 대답할게요. 오늘 문장을 다시 읽어볼까요?';
         var safe=typeof window.sanitizeTutorMessage==='function'
           ? window.sanitizeTutorMessage(fallback,{question:_q,title:GB_BOOK,bookTitle:GB_BOOK_TITLE,author:GB_AUTHOR,sentence:GB_KEY_SENTENCE})
