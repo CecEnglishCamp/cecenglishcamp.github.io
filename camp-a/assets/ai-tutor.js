@@ -90,9 +90,23 @@ console.log("[AI Tutor] fallback module loaded v20260619_4");
    */
   window.gbLocalFallback = function(question, ctx) {
     var book = ctx && ctx.title ? ctx.title : 'Peter Rabbit';
+    var bookTitle = ctx && ctx.bookTitle ? ctx.bookTitle : book;
+    var author = ctx && ctx.author ? ctx.author : '';
     var sentence = ctx && ctx.sentence ? ctx.sentence : '';
 
     var q = (question || '').toLowerCase();
+
+    var isAuthorQuestion =
+      q.indexOf('누가 쓴') >= 0 ||
+      q.indexOf('누가 썼') >= 0 ||
+      q.indexOf('저자') >= 0 ||
+      q.indexOf('작가') >= 0 ||
+      q.indexOf('지은 사람') >= 0 ||
+      q.indexOf('author') >= 0;
+
+    if (isAuthorQuestion && author) {
+      return '<b>' + bookTitle + '</b>의 저자는 <b>' + author + '</b>예요.';
+    }
 
     if (q.indexOf('이야기') >= 0 || q.indexOf('내용') >= 0 || q.indexOf('뭐') === 0 || q.indexOf('story') >= 0) {
       var s = '이 이야기는 <b>' + book + '</b> 이야기예요.';
