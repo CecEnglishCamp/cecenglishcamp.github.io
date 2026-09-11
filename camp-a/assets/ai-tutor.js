@@ -1,5 +1,5 @@
 /**
- * CEC 영어캠프 — AI Tutor Fallback Helper v20260908_1
+ * CEC 영어캠프 — AI Tutor Fallback Helper v20260910_1
  * 
  * API(OpenAI gpt-4o-mini) 연결 실패 시 로컬 fallback 답변을 제공합니다.
  * 기술 오류 메시지를 학생에게 노출하지 않습니다.
@@ -8,9 +8,19 @@
  * gbAddAI 함수가 호출될 때 자동으로 필터링됩니다.
  */
 
-console.log("[AI Tutor] fallback module loaded v20260908_1");
+console.log("[AI Tutor] fallback module loaded v20260910_1");
 
 (function() {
+  window.AI_TUTOR_FREE_TEXT_SYSTEM_PROMPT = [
+    "Answer the student's actual question directly first.",
+    'Use the supplied lesson or story context when relevant.',
+    'Keep the answer short and suitable for a Grade 3 English learner.',
+    'A short Korean explanation may follow when useful.',
+    'Do not redirect the student to an unrelated memorized sentence.',
+    'Do not replace the answer with generic coaching.',
+    'Do not claim facts not supported by the lesson context.'
+  ].join(' ');
+
   // 전역 설정 — 공백이면 fallback 전용으로 작동
   window.AI_TUTOR_ENDPOINT =
     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
@@ -127,10 +137,6 @@ console.log("[AI Tutor] fallback module loaded v20260908_1");
       return '좋은 질문이에요! 문장을 다시 읽어보고 <b>누가 무엇을 했는지</b> 찾아보세요. 행동에는 항상 이유가 있어요.';
     }
 
-    if (sentence) {
-      return '좋은 질문이에요. 오늘 문장 "<b>' + sentence + '</b>"를 먼저 읽어볼까요? 영어 문장을 따라 말한 뒤, 무슨 뜻인지 생각해 봐요.';
-    }
-
-    return '좋은 질문이에요! <b>' + book + '</b> 이야기를 함께 살펴보면서 영어 문장을 따라 말해 봐요.';
+    return '지금은 연결 문제로 그 질문에 정확히 답하기 어려워요. 잠시 후 같은 질문을 다시 보내 주세요.';
   };
 })();

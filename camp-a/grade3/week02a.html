@@ -307,6 +307,7 @@ video.scene-img{object-fit:cover;max-width:100%;}
   if(window.__gbRoboInit)return;window.__gbRoboInit=true;
   var GB_API_URL='https://api.cecenglishcamp.com/api/ai/chat/completions';
   var GB_MODEL='gpt-4o-mini';
+  var GB_FREE_TEXT_SYSTEM_PROMPT="Answer the student's actual question directly first. Use the supplied lesson or story context when relevant. Keep the answer short and suitable for a Grade 3 English learner. A short Korean explanation may follow when useful. Do not redirect the student to an unrelated memorized sentence. Do not replace the answer with generic coaching. Do not claim facts not supported by the lesson context.";
   var GB_IMG='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif';
   var GB_KEY_SENTENCE='';
   var GB_BOOK='Peter Rabbit';
@@ -345,7 +346,7 @@ video.scene-img{object-fit:cover;max-width:100%;}
       var res=await fetch(GB_API_URL,{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({model:GB_MODEL,messages:[{role:'system',content:'마크다운 기호(#, *, **, ##, - 등)를 절대 사용하지 말고 일반 텍스트로만 답해줘. 이모지는 사용 가능.'},{role:'user',content:userContent}],max_tokens:300,stream:true})
+        body:JSON.stringify({model:GB_MODEL,messages:[{role:'system',content:GB_FREE_TEXT_SYSTEM_PROMPT+' 마크다운 기호(#, *, **, ##, - 등)를 절대 사용하지 말고 일반 텍스트로만 답해줘. 이모지는 사용 가능.'},{role:'user',content:userContent}],max_tokens:300,stream:true})
       });
       if(!res.ok) throw new Error('HTTP '+res.status);
       var reader=res.body.getReader();
@@ -797,7 +798,6 @@ function startA2Scene(){
 </div>
 
 <script src="/assets/security.js"></script>
-<script src="/camp-a/assets/ai-tutor.js?v=20260909_1"></script>
+<script src="/camp-a/assets/ai-tutor.js?v=20260910_1"></script>
 </body></html>
-
 
