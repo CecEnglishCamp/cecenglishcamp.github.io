@@ -24,6 +24,16 @@
  *            grammar-camp: g01~g10만 허용 (g11+ → /payment/)
  */
 (function () {
+  var _resolveAuthSession;
+  var _studentContextLoadPromise = null;
+  var _studentContextBootstrapPromise = null;
+  var _authSessionPromise = new Promise(function (resolve) {
+    _resolveAuthSession = resolve;
+  });
+  window.CECAuthSession = Object.freeze({
+    getSession: function () { return _authSessionPromise; }
+  });
+
   // 항상 정식 도메인(cecenglishcamp.com)에서 동작 — 로그인 세션이 도메인별로 분리돼 생기는 로그인 루프 방지
   var _H = location.hostname;
   if (_H === 'cecenglishcamp.github.io' || _H === 'www.cecenglishcamp.com') {
@@ -68,6 +78,68 @@
       /^\/mom-teacher\/grade[0-9]+\/ep[0-9]+\.html$/.test(path);
   }
 
+  function isCampAStudentContextRoute(path) {
+    return [
+      '/camp-a/grade3/',
+      '/camp-a/grade4/',
+      '/camp-a/grade5/',
+      '/camp-a/grade6/',
+      '/camp-a/speaking/',
+      '/camp-a/writing/'
+    ].some(function (prefix) { return path.indexOf(prefix) === 0; });
+  }
+
+  function loadStudentContext() {
+    if (window.CECStudentContext &&
+        typeof window.CECStudentContext.getStudentContext === 'function') {
+      return Promise.resolve(window.CECStudentContext);
+    }
+    if (_studentContextLoadPromise) return _studentContextLoadPromise;
+
+    _studentContextLoadPromise = new Promise(function (resolve, reject) {
+      var existing = document.querySelector && document.querySelector(
+        'script[data-cec-student-context-loader],script[src^="/assets/student-context.js"]'
+      );
+      var script = existing || document.createElement('script');
+      function loaded() {
+        if (window.CECStudentContext &&
+            typeof window.CECStudentContext.getStudentContext === 'function') {
+          resolve(window.CECStudentContext);
+        } else {
+          reject(new Error('STUDENT_CONTEXT_UNAVAILABLE'));
+        }
+      }
+      script.addEventListener('load', loaded, { once: true });
+      script.addEventListener('error', function () {
+        reject(new Error('STUDENT_CONTEXT_LOAD_FAILED'));
+      }, { once: true });
+      if (!existing) {
+        script.src = '/assets/student-context.js';
+        script.setAttribute('data-cec-student-context-loader', 'true');
+        document.head.appendChild(script);
+      }
+    });
+    return _studentContextLoadPromise;
+  }
+
+  function bootstrapStudentContext(session, path) {
+    if (!session || typeof session.access_token !== 'string' || !session.access_token) {
+      return Promise.resolve(null);
+    }
+    if (!isCampAStudentContextRoute(path) && !isMomTeacherTrialRoute(path)) {
+      return Promise.resolve(null);
+    }
+    if (_studentContextBootstrapPromise) return _studentContextBootstrapPromise;
+
+    if (document.documentElement && document.documentElement.classList) {
+      document.documentElement.classList.add('cec-student-context-pending');
+    }
+    _studentContextBootstrapPromise = loadStudentContext()
+      .then(function (api) { return api.getStudentContext(); })
+      .catch(function () { return null; });
+    return _studentContextBootstrapPromise;
+  }
+
   function checkMomTeacherTrialAccess(session, path) {
     if (!session || !session.access_token) return Promise.resolve(false);
 
@@ -108,10 +180,12 @@
     var _authSub = sb.auth.onAuthStateChange(function (event, session) {
       if (event !== 'INITIAL_SESSION' && event !== 'SIGNED_IN') return;
       _authSub.data.subscription.unsubscribe(); // 한 번만 실행
+      _resolveAuthSession(session || null);
 
       // ── 관리자 계정: 결제/경로별 게이트(Lost Words·Space Camp·일반 콘텐츠) 전부보다 먼저 체크,
       // 일치하면 그 어떤 분기도 거치지 않고 즉시 통과(early return) ──
       if (session && session.user && session.user.email === 'cecenglishcamp@gmail.com') {
+        bootstrapStudentContext(session, location.pathname);
         return;
       }
 
@@ -182,7 +256,10 @@
           var h = r && r.data;
           // 유료 활성 = plan_type 있고 canceled_at 없음 AND payment_failed_at 없음
           var isPaid = h && !!h.plan_type && !h.canceled_at && !h.payment_failed_at;
-          if (isPaid) return; // 유료 활성 → 전체 통과
+          if (isPaid) {
+            bootstrapStudentContext(session, location.pathname);
+            return; // 유료 활성 → 전체 통과
+          }
 
           // 결제 실패 / 미결제·해지 → 경로별 접근 제한 (메시지 분기)
           var p = location.pathname;
@@ -194,14 +271,18 @@
             window.location.replace('/payment/');
           }
           // Grade 3 Week 1 학습묶음은 exact canonical 경로만 무료체험 허용.
-          if (isG3Week1TrialPath(p)) return;
+          if (isG3Week1TrialPath(p)) {
+            bootstrapStudentContext(session, p);
+            return;
+          }
           // 같은 Peter Rabbit 보조영역의 비-canonical 페이지는 우연히 통과시키지 않는다.
           if (isG3PeterRabbitAuxiliaryPath(p)) { trialBlock(); return; }
           // Mom Teacher의 authenticated DB 무료체험은 서버가 household/trial을 판정한다.
           // 기존 유료 사용자는 위 isPaid early return으로 이 요청을 거치지 않는다.
           if (isMomTeacherTrialRoute(p)) {
             checkMomTeacherTrialAccess(session, p).then(function (allowed) {
-              if (!allowed) trialBlock();
+              if (!allowed) { trialBlock(); return; }
+              bootstrapStudentContext(session, p);
             });
             return;
           }
@@ -220,6 +301,7 @@
             var gm = p.match(/\/g(\d+)/i);
             if (gm && parseInt(gm[1], 10) > 10) { trialBlock(); return; }
           }
+          bootstrapStudentContext(session, p);
         })
         .catch(function () { /* DB 오류 → 통과 */ });
     });
@@ -231,6 +313,7 @@
     var script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
     script.onload = function () { checkAccess(); };
+    script.onerror = function () { _resolveAuthSession(null); };
     document.head.appendChild(script);
   }
 })();

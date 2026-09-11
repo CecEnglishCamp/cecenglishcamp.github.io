@@ -9,6 +9,8 @@
   var SUPABASE_KEY = 'sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
   var PRODUCTION_PROGRESS_URL = 'https://cec-robo-router-production.cecenglishcamp.workers.dev/robo/v1/learning/progress';
   var PROGRESS_PATH = '/robo/v1/learning/progress';
+  var CURRICULUM_YEAR = 2026;
+  var CURRICULUM_VERSION = 'prelaunch-1';
   var attemptedLessons = {};
   var pendingLessons = {};
   var authClient = null;
@@ -45,6 +47,19 @@
     return { ok: ok === true, code: code };
   }
 
+  async function getStudentContext() {
+    var api = window.CECStudentContext;
+    if (!api || typeof api.getStudentContext !== 'function') return null;
+    try {
+      var context = await api.getStudentContext();
+      if (!context || context.status !== 'ready' || !context.student ||
+          typeof context.student.id !== 'string' || !context.student.id) return null;
+      return context;
+    } catch (_error) {
+      return null;
+    }
+  }
+
   async function complete(lessonId) {
     if (typeof lessonId !== 'string' || !lessonId || lessonId.length > 80) {
       return safeResult(false, 'INVALID_REQUEST');
@@ -56,6 +71,12 @@
       return safeResult(false, 'DUPLICATE_SKIPPED');
     }
     pendingLessons[lessonId] = true;
+
+    var studentContext = await getStudentContext();
+    if (!studentContext) {
+      delete pendingLessons[lessonId];
+      return safeResult(false, 'STUDENT_CONTEXT_BLOCKED');
+    }
 
     var client = getAuthClient();
     if (!client || !client.auth || typeof client.auth.getSession !== 'function') {
@@ -87,7 +108,13 @@
           'Authorization': 'Bearer ' + session.access_token,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ lesson_id: lessonId, event: 'completed' }),
+        body: JSON.stringify({
+          student_id: studentContext.student.id,
+          lesson_id: lessonId,
+          event: 'completed',
+          curriculum_year: CURRICULUM_YEAR,
+          curriculum_version: CURRICULUM_VERSION
+        }),
         signal: controller ? controller.signal : undefined
       });
       var body = null;
@@ -104,5 +131,8 @@
     }
   }
 
-  window.CECLearningProgress = Object.freeze({ complete: complete });
+  window.CECLearningProgress = Object.freeze({
+    complete: complete,
+    getStudentContext: getStudentContext
+  });
 })();
