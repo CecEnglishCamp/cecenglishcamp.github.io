@@ -1,20 +1,20 @@
 /**
- * CEC 영어캠프 — AI Tutor Fallback Helper v20260619_4
+ * CEC 영어캠프 — AI Tutor Fallback Helper v20260908_1
  * 
- * API(DeepSeek Chat) 연결 실패 시 로컬 fallback 답변을 제공합니다.
+ * API(OpenAI gpt-4o-mini) 연결 실패 시 로컬 fallback 답변을 제공합니다.
  * 기술 오류 메시지를 학생에게 노출하지 않습니다.
  * 
  * 모든 AI 메시지는 sanitizeTutorMessage를 통과해야 합니다.
  * gbAddAI 함수가 호출될 때 자동으로 필터링됩니다.
  */
 
-console.log("[AI Tutor] fallback module loaded v20260619_4");
+console.log("[AI Tutor] fallback module loaded v20260908_1");
 
 (function() {
   // 전역 설정 — 공백이면 fallback 전용으로 작동
   window.AI_TUTOR_ENDPOINT =
     window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      ? 'https://api.cecenglishcamp.com/api/deepseek/chat/completions'
+      ? 'https://api.cecenglishcamp.com/api/ai/chat/completions'
       : null; // live: fallback only (API tunnel unstable)
 
   /**
