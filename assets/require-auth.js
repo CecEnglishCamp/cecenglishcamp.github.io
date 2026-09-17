@@ -114,7 +114,7 @@
         reject(new Error('STUDENT_CONTEXT_LOAD_FAILED'));
       }, { once: true });
       if (!existing) {
-        script.src = '/assets/student-context.js';
+        script.src = '/assets/student-context.js?v=57b2643ae';
         script.setAttribute('data-cec-student-context-loader', 'true');
         document.head.appendChild(script);
       }
