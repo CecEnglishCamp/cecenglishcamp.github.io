@@ -206,6 +206,7 @@
     if (!validDiscovery(body)) return blockLearning();
     if (body.students.length === 0) {
       clearStoredSelection();
+      if (await canUseAdminPreview(base, session.access_token)) return adminPreview();
       return blockLearning();
     }
     if (body.students.length === 1) {
