@@ -9,6 +9,7 @@
 
   var STORAGE_KEY = 'cec_student_context_v1';
   var STUDENT_PATH = '/robo/v1/learning/students';
+  var ADMIN_CHECK_PATH = '/robo/v1/admin/free-trials?limit=1';
   var PRODUCTION_BASE = 'https://cec-robo-router-production.cecenglishcamp.workers.dev';
   var PREVIEW_BASE = 'https://cec-robo-router-preview.cecenglishcamp.workers.dev';
   var memoryContext = null;
@@ -122,6 +123,22 @@
     return memoryContext;
   }
 
+  function adminPreview() {
+    clearStoredSelection();
+    memoryContext = Object.freeze({ status: 'admin_preview', selectionMode: 'admin_preview', student: null });
+    unlockLearning();
+    return memoryContext;
+  }
+
+  async function canUseAdminPreview(base, accessToken) {
+    try {
+      var response = await window.fetch(base + ADMIN_CHECK_PATH, {
+        method: 'GET', headers: { 'Authorization': 'Bearer ' + accessToken }, cache: 'no-store'
+      });
+      return !!response && response.status === 200;
+    } catch (_error) { return false; }
+  }
+
   function chooseStudent(students) {
     var storedId = storedSelection();
     var storedStudent = storedId && students.find(function (student) { return student.id === storedId; });
@@ -174,7 +191,15 @@
     } catch (_error) {
       return blockLearning();
     }
-    if (!response || !response.ok) return blockLearning();
+    if (!response) return blockLearning();
+    if (!response.ok) {
+      var errorBody = null;
+      try { errorBody = await response.json(); } catch (_error) { /* fail closed */ }
+      if (response.status === 404 && errorBody && errorBody.code === 'HOUSEHOLD_NOT_FOUND') {
+        if (await canUseAdminPreview(base, session.access_token)) return adminPreview();
+      }
+      return blockLearning();
+    }
 
     var body;
     try { body = await response.json(); } catch (_error) { return blockLearning(); }
