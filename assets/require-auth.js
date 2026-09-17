@@ -25,13 +25,21 @@
  */
 (function () {
   var _resolveAuthSession;
+  var _authClient = null;
   var _studentContextLoadPromise = null;
   var _studentContextBootstrapPromise = null;
   var _authSessionPromise = new Promise(function (resolve) {
     _resolveAuthSession = resolve;
   });
   window.CECAuthSession = Object.freeze({
-    getSession: function () { return _authSessionPromise; }
+    getSession: function () {
+      if (_authClient && _authClient.auth && typeof _authClient.auth.getSession === 'function') {
+        return _authClient.auth.getSession().then(function (result) {
+          return result && result.data ? (result.data.session || null) : null;
+        }).catch(function () { return _authSessionPromise; });
+      }
+      return _authSessionPromise;
+    }
   });
 
   // 항상 정식 도메인(cecenglishcamp.com)에서 동작 — 로그인 세션이 도메인별로 분리돼 생기는 로그인 루프 방지
@@ -171,6 +179,7 @@
     var SUPABASE_URL = 'https://rzlqlokqplhyntuirsmd.supabase.co';
     var SUPABASE_KEY = 'sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
     var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    _authClient = sb;
     var isSpaceCamp = location.pathname.indexOf('/space-camp/') === 0;
     var isLostWords = location.pathname.indexOf('/lostwords-wip/') === 0 || location.pathname.indexOf('/lostwords/') === 0;
 
