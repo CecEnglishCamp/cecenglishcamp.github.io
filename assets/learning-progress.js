@@ -122,9 +122,11 @@
       if (response.ok && body && body.ok === true && body.lesson_id === lessonId && body.status === 'completed') {
         return safeResult(true, 'COMPLETED');
       }
+      delete attemptedLessons[lessonId];
       var code = body && typeof body.code === 'string' ? body.code : 'PROGRESS_WRITE_FAILED';
       return safeResult(false, code);
     } catch (_error) {
+      delete attemptedLessons[lessonId];
       return safeResult(false, 'PROGRESS_WRITE_FAILED');
     } finally {
       if (timeout !== null) clearTimeout(timeout);
