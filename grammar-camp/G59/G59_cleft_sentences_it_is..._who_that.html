@@ -22,6 +22,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <!-- CEC GA4 측정 ID: G-58N1MFP27H (실제 ID로 교체 필요) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-58N1MFP27H"></script>
+  <script src="/assets/cec-tutor.js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -443,21 +444,14 @@
   };
 
   // ===== AI API (Gemma4 via ngrok) — Camp A style: single user role =====
-  var GB_API_URL='https://cec-robo.cecenglishcamp.workers.dev/api/ai/chat/completions';
-  var GB_MODEL='gpt-4o-mini';
+
+
 
   window.gbFetch=async function(userMsg){
     var bubble=window.gbAddAI('생각 중... 🤔');
     var c=document.getElementById('gbChat');
-    var fullContent = '오늘 문법: ' + GB_TOPIC
-      + '\n학생 질문: ' + userMsg
-      + '\n중고등학생 수준으로 한국어로 친절하게 답해줘.';
     try{
-      var res=await fetch(GB_API_URL,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({model:GB_MODEL,messages:[{role:'system',content:'마크다운 기호(#, *, **, ##, - 등)를 절대 사용하지 말고 일반 텍스트로만 답해줘. 이모지는 사용 가능.'},{role:'user',content:fullContent}],max_tokens:300,stream:true})
-      });
+      var res=await window.CECTutor.request({lesson_id:"/grammar-camp/G59/G59_cleft_sentences_it_is..._who_that.html",student_message:userMsg});
       if(!res.ok) throw new Error('HTTP '+res.status);
       var reader=res.body.getReader();
       var decoder=new TextDecoder();
