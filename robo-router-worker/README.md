@@ -18,6 +18,11 @@ owns the system instructions, safety rules, OpenAI model, and output-token limit
 Any additional browser field is rejected, including `messages`, `system`,
 `developer`, `model`, and `max_tokens`.
 
+Before forwarding `student_message`, the router applies simple pattern-based
+redaction for email addresses and phone-number-like strings containing 7–15
+digits. This is a narrow safeguard, not comprehensive PII detection: unusual
+formats may be missed and unrelated numeric text may be redacted.
+
 Run synthetic tests without a live OpenAI request:
 
 ```sh

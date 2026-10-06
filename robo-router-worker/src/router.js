@@ -7,12 +7,21 @@ export const MAX_TOKENS = 300;
 export const MAX_STUDENT_MESSAGE_CHARS = 4000;
 export const ALLOWED_REQUEST_FIELDS = Object.freeze(['lesson_id', 'student_message']);
 export const EMAIL_REDACTION = '[EMAIL REDACTED]';
+export const PHONE_REDACTION = '[PHONE REDACTED]';
 
 const ALLOWED_FIELDS = new Set(ALLOWED_REQUEST_FIELDS);
 const SIMPLE_EMAIL_PATTERN = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi;
+const SIMPLE_PHONE_CANDIDATE_PATTERN = /\+?\d[\d().\s-]{5,}\d/g;
 
 export function redactEmailAddresses(value) {
   return value.replace(SIMPLE_EMAIL_PATTERN, EMAIL_REDACTION);
+}
+
+export function redactPhoneNumbers(value) {
+  return value.replace(SIMPLE_PHONE_CANDIDATE_PATTERN, candidate => {
+    const digitCount = candidate.replace(/\D/g, '').length;
+    return digitCount >= 7 && digitCount <= 15 ? PHONE_REDACTION : candidate;
+  });
 }
 
 function json(body, status, origin) {
@@ -45,7 +54,7 @@ function validateBody(body) {
   const lessonId = body.lesson_id.trim();
   const studentMessage = body.student_message.trim();
   if (!lessonId || !studentMessage || studentMessage.length > MAX_STUDENT_MESSAGE_CHARS) return null;
-  const redactedStudentMessage = redactEmailAddresses(studentMessage);
+  const redactedStudentMessage = redactPhoneNumbers(redactEmailAddresses(studentMessage));
 
   const profile = profileForLesson(lessonId);
   return profile ? { lessonId, studentMessage: redactedStudentMessage, profile } : null;
