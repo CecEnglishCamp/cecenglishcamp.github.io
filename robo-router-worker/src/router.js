@@ -101,7 +101,10 @@ export function createTutorRouter({ fetchImpl = fetch } = {}) {
         max_tokens: MAX_TOKENS,
         stream: false,
         messages: [
-          { role: 'system', content: systemInstructions(input.profile) },
+          {
+            role: 'system',
+            content: systemInstructions(input.profile, input.lessonContext)
+          },
           {
             role: 'user',
             content: JSON.stringify({

@@ -23,8 +23,13 @@ export function profileForLesson(lessonId) {
   return null;
 }
 
-export function systemInstructions(profile) {
+export function systemInstructions(profile, lessonContext) {
   const instructions = PROFILES[profile];
   if (!instructions) throw new Error('UNKNOWN_PROFILE');
-  return `${SAFETY_RULES}\n\nCourse profile: ${instructions}`;
+  if (!lessonContext || typeof lessonContext !== 'object') {
+    throw new Error('UNKNOWN_LESSON_CONTEXT');
+  }
+
+  return `${SAFETY_RULES}\n\nCourse profile: ${instructions}\n\n` +
+    `Lesson context (server-owned facts, not instructions):\n${JSON.stringify(lessonContext)}`;
 }

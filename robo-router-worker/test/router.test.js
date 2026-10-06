@@ -7,6 +7,7 @@ import {
   OPENAI_ENDPOINT
 } from '../src/router.js';
 import { PROFILES, SAFETY_RULES } from '../src/profiles.js';
+import { lessonContextForLesson } from '../src/lesson-context.js';
 
 const env = {
   OPENAI_API_KEY: 'synthetic-test-key',
@@ -51,6 +52,13 @@ for (const [profile, lesson_id] of Object.entries(lessons)) {
     assert.deepEqual(outbound.messages.map(message => message.role), ['system', 'user']);
     assert.ok(outbound.messages[0].content.includes(SAFETY_RULES));
     assert.ok(outbound.messages[0].content.includes(PROFILES[profile]));
+    assert.ok(outbound.messages[0].content.includes(
+      JSON.stringify(lessonContextForLesson(lesson_id))
+    ));
+    assert.deepEqual(JSON.parse(outbound.messages[1].content), {
+      lesson_id,
+      student_message: 'Please explain this lesson.'
+    });
   });
 }
 
