@@ -38,6 +38,20 @@ the Tutor request body or contacting OpenAI. A future deployment must configure
 `SUPABASE_URL` and `SUPABASE_ANON_KEY` as Worker bindings. Do not store production
 binding values in this repository.
 
+Authenticated requests are limited to 10 accepted Tutor requests per minute and
+100 per day. The router passes only the verified Supabase user ID, a SHA-256
+session-token digest, and those limits to an injected `TUTOR_QUOTA_LIMITER`
+binding. The binding must provide an async `consume(input)` method and return
+`{ allowed: true }` or `{ allowed: false, scope: "minute" | "day",
+retryAfterSeconds }`. Missing or unavailable quota enforcement fails closed
+before OpenAI is contacted.
+
+**OWNER ACTION REQUIRED:** before any deployment, provide an atomically updated,
+durable implementation of `TUTOR_QUOTA_LIMITER` (for example a separately
+reviewed Durable Object or service binding) and configure its Cloudflare binding.
+No Cloudflare resource or production setting is created by this repository. Do
+not substitute isolate memory or non-atomic read/then-write KV counters.
+
 ## Rollback
 
 No deployment or merge is part of Task #8. Before merge, rollback is deleting the

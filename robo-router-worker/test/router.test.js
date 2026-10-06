@@ -14,7 +14,12 @@ const env = {
   OPENAI_API_KEY: 'synthetic-test-key',
   ALLOWED_ORIGINS: 'https://cecenglishcamp.com',
   SUPABASE_URL: 'https://auth.test',
-  SUPABASE_ANON_KEY: 'synthetic-public-key'
+  SUPABASE_ANON_KEY: 'synthetic-public-key',
+  TUTOR_QUOTA_LIMITER: {
+    async consume() {
+      return { allowed: true };
+    }
+  }
 };
 
 const ACCESS_TOKEN = 'synthetic-access-token';

@@ -1,14 +1,25 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { createTutorRouter, MAX_TOKENS, MODEL } from '../src/router.js';
+import {
+  createTutorRouter,
+  MAX_TOKENS,
+  MODEL,
+  QUOTA_PER_DAY,
+  QUOTA_PER_MINUTE
+} from '../src/router.js';
 import { SAFETY_RULES } from '../src/profiles.js';
 
 const env = {
   OPENAI_API_KEY: 'synthetic-e2e-key',
   ALLOWED_ORIGINS: 'https://cecenglishcamp.com',
   SUPABASE_URL: 'https://auth.test',
-  SUPABASE_ANON_KEY: 'synthetic-public-key'
+  SUPABASE_ANON_KEY: 'synthetic-public-key',
+  TUTOR_QUOTA_LIMITER: {
+    async consume() {
+      return { allowed: true };
+    }
+  }
 };
 
 const ACCESS_TOKEN = 'synthetic-access-token';
@@ -108,4 +119,62 @@ test('the standalone router does not claim the old production route', async () =
     'utf8'
   );
   assert.ok(unchangedPage.includes('https://cec-robo.cecenglishcamp.workers.dev/api/ai/chat/completions'));
+});
+
+test('enforces minute and daily quotas for the authenticated user session', async () => {
+  const quotaCalls = [];
+  let upstreamCalls = 0;
+  const quotaLimiter = {
+    async consume(input) {
+      quotaCalls.push(input);
+      return quotaCalls.length === 1
+        ? { allowed: false, scope: 'minute', retryAfterSeconds: 17 }
+        : { allowed: false, scope: 'day', retryAfterSeconds: 3600 };
+    }
+  };
+  const router = createTutorRouter({
+    quotaLimiter,
+    fetchImpl: verifiedFetch(async () => {
+      upstreamCalls += 1;
+      throw new Error('upstream must not be called');
+    })
+  });
+  const body = { lesson_id: lessonIds[0], student_message: 'Hello' };
+
+  const minuteResponse = await router.fetch(request(body), env);
+  assert.equal(minuteResponse.status, 429);
+  assert.equal(minuteResponse.headers.get('Retry-After'), '17');
+  assert.equal((await minuteResponse.json()).code, 'QUOTA_MINUTE_EXCEEDED');
+
+  const dailyResponse = await router.fetch(request(body), env);
+  assert.equal(dailyResponse.status, 429);
+  assert.equal(dailyResponse.headers.get('Retry-After'), '3600');
+  assert.equal((await dailyResponse.json()).code, 'QUOTA_DAILY_EXCEEDED');
+
+  assert.equal(upstreamCalls, 0);
+  assert.equal(quotaCalls[0].userId, 'synthetic-user-id');
+  assert.match(quotaCalls[0].sessionId, /^[a-f0-9]{64}$/);
+  assert.notEqual(quotaCalls[0].sessionId, ACCESS_TOKEN);
+  assert.deepEqual(quotaCalls[0].limits, {
+    perMinute: QUOTA_PER_MINUTE,
+    perDay: QUOTA_PER_DAY
+  });
+});
+
+test('fails closed before upstream when durable quota enforcement is missing', async () => {
+  let upstreamCalls = 0;
+  const router = createTutorRouter({
+    fetchImpl: verifiedFetch(async () => {
+      upstreamCalls += 1;
+      throw new Error('upstream must not be called');
+    })
+  });
+  const response = await router.fetch(
+    request({ lesson_id: lessonIds[0], student_message: 'Hello' }),
+    { ...env, TUTOR_QUOTA_LIMITER: undefined }
+  );
+
+  assert.equal(response.status, 503);
+  assert.deepEqual(await response.json(), { ok: false, code: 'QUOTA_NOT_CONFIGURED' });
+  assert.equal(upstreamCalls, 0);
 });

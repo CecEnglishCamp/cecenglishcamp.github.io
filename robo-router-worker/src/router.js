@@ -7,6 +7,8 @@ export const MAX_TOKENS = 300;
 export const MAX_STUDENT_MESSAGE_CHARS = 4000;
 export const MAX_REQUEST_BYTES = 16 * 1024;
 export const UPSTREAM_TIMEOUT_MS = 15_000;
+export const QUOTA_PER_MINUTE = 10;
+export const QUOTA_PER_DAY = 100;
 export const ALLOWED_REQUEST_FIELDS = Object.freeze(['lesson_id', 'student_message']);
 export const EMAIL_REDACTION = '[EMAIL REDACTED]';
 export const PHONE_REDACTION = '[PHONE REDACTED]';
@@ -26,10 +28,11 @@ export function redactPhoneNumbers(value) {
   });
 }
 
-function json(body, status, origin) {
+function json(body, status, origin, extraHeaders = {}) {
   const headers = {
     'Content-Type': 'application/json; charset=utf-8',
-    'Cache-Control': 'no-store'
+    'Cache-Control': 'no-store',
+    ...extraHeaders
   };
   if (origin) {
     headers['Access-Control-Allow-Origin'] = origin;
@@ -76,9 +79,52 @@ async function verifyAuthenticatedUser(request, env, fetchImpl) {
     if (!user || typeof user.id !== 'string' || !user.id) {
       return { ok: false, status: 401, code: 'AUTH_INVALID' };
     }
-    return { ok: true, userId: user.id };
+    const sessionDigest = await crypto.subtle.digest(
+      'SHA-256',
+      new TextEncoder().encode(match[1])
+    );
+    const sessionId = Array.from(new Uint8Array(sessionDigest), byte =>
+      byte.toString(16).padStart(2, '0')
+    ).join('');
+    return { ok: true, userId: user.id, sessionId };
   } catch {
     return { ok: false, status: 401, code: 'AUTH_INVALID' };
+  }
+}
+
+async function consumeQuota(authentication, env, injectedLimiter) {
+  const limiter = injectedLimiter || env.TUTOR_QUOTA_LIMITER;
+  if (!limiter || typeof limiter.consume !== 'function') {
+    return { ok: false, status: 503, code: 'QUOTA_NOT_CONFIGURED' };
+  }
+
+  try {
+    const result = await limiter.consume({
+      userId: authentication.userId,
+      sessionId: authentication.sessionId,
+      limits: {
+        perMinute: QUOTA_PER_MINUTE,
+        perDay: QUOTA_PER_DAY
+      }
+    });
+    if (result?.allowed === true) return { ok: true };
+    if (result?.allowed !== false || !['minute', 'day'].includes(result.scope)) {
+      return { ok: false, status: 503, code: 'QUOTA_UNAVAILABLE' };
+    }
+    const retryAfterSeconds = Number.isInteger(result.retryAfterSeconds) &&
+        result.retryAfterSeconds > 0
+      ? result.retryAfterSeconds
+      : result.scope === 'minute' ? 60 : 86_400;
+    return {
+      ok: false,
+      status: 429,
+      code: result.scope === 'minute'
+        ? 'QUOTA_MINUTE_EXCEEDED'
+        : 'QUOTA_DAILY_EXCEEDED',
+      retryAfterSeconds
+    };
+  } catch {
+    return { ok: false, status: 503, code: 'QUOTA_UNAVAILABLE' };
   }
 }
 
@@ -98,7 +144,8 @@ function validateBody(body) {
 
 export function createTutorRouter({
   fetchImpl = fetch,
-  upstreamTimeoutMs = UPSTREAM_TIMEOUT_MS
+  upstreamTimeoutMs = UPSTREAM_TIMEOUT_MS,
+  quotaLimiter
 } = {}) {
   return {
     async fetch(request, env = {}) {
@@ -164,6 +211,18 @@ export function createTutorRouter({
       }
       if (!env.OPENAI_API_KEY) {
         return json({ ok: false, code: 'TUTOR_NOT_CONFIGURED' }, 503, originCheck.origin);
+      }
+
+      const quota = await consumeQuota(authentication, env, quotaLimiter);
+      if (!quota.ok) {
+        return json(
+          { ok: false, code: quota.code },
+          quota.status,
+          originCheck.origin,
+          quota.retryAfterSeconds
+            ? { 'Retry-After': String(quota.retryAfterSeconds) }
+            : {}
+        );
       }
 
       const upstreamBody = {
