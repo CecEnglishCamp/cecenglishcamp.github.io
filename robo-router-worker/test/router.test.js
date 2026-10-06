@@ -257,8 +257,33 @@ test('does not expose upstream errors or credentials', async () => {
   }), env);
   const text = await response.text();
   assert.equal(response.status, 502);
+  assert.deepEqual(JSON.parse(text), { ok: false, code: 'AI_UPSTREAM_ERROR' });
   assert.ok(!text.includes('private upstream detail'));
   assert.ok(!text.includes(env.OPENAI_API_KEY));
+});
+
+test('returns a structured timeout without retrying the upstream request', async () => {
+  let upstreamCalls = 0;
+  const router = createTutorRouter({
+    upstreamTimeoutMs: 5,
+    fetchImpl: verifiedFetch(async (_url, options) => {
+      upstreamCalls += 1;
+      await new Promise((_resolve, reject) => {
+        options.signal.addEventListener('abort', () => {
+          reject(new DOMException('synthetic timeout detail', 'AbortError'));
+        }, { once: true });
+      });
+    })
+  });
+
+  const response = await router.fetch(tutorRequest({
+    lesson_id: lessons.grammar,
+    student_message: 'Explain be verbs.'
+  }), env);
+
+  assert.equal(response.status, 504);
+  assert.deepEqual(await response.json(), { ok: false, code: 'AI_UPSTREAM_TIMEOUT' });
+  assert.equal(upstreamCalls, 1);
 });
 
 test('requires a bearer token before contacting Supabase or OpenAI', async () => {

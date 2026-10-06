@@ -6,6 +6,7 @@ export const MODEL = 'gpt-4o-mini';
 export const MAX_TOKENS = 300;
 export const MAX_STUDENT_MESSAGE_CHARS = 4000;
 export const MAX_REQUEST_BYTES = 16 * 1024;
+export const UPSTREAM_TIMEOUT_MS = 15_000;
 export const ALLOWED_REQUEST_FIELDS = Object.freeze(['lesson_id', 'student_message']);
 export const EMAIL_REDACTION = '[EMAIL REDACTED]';
 export const PHONE_REDACTION = '[PHONE REDACTED]';
@@ -95,7 +96,10 @@ function validateBody(body) {
   return profile ? { lessonId, studentMessage: redactedStudentMessage, profile } : null;
 }
 
-export function createTutorRouter({ fetchImpl = fetch } = {}) {
+export function createTutorRouter({
+  fetchImpl = fetch,
+  upstreamTimeoutMs = UPSTREAM_TIMEOUT_MS
+} = {}) {
   return {
     async fetch(request, env = {}) {
       const url = new URL(request.url);
@@ -178,6 +182,12 @@ export function createTutorRouter({ fetchImpl = fetch } = {}) {
         ]
       };
 
+      const upstreamController = new AbortController();
+      const upstreamTimeout = setTimeout(
+        () => upstreamController.abort(),
+        upstreamTimeoutMs
+      );
+
       try {
         const upstream = await fetchImpl(OPENAI_ENDPOINT, {
           method: 'POST',
@@ -185,7 +195,8 @@ export function createTutorRouter({ fetchImpl = fetch } = {}) {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${env.OPENAI_API_KEY}`
           },
-          body: JSON.stringify(upstreamBody)
+          body: JSON.stringify(upstreamBody),
+          signal: upstreamController.signal
         });
 
         if (!upstream.ok) {
@@ -198,7 +209,12 @@ export function createTutorRouter({ fetchImpl = fetch } = {}) {
         }
         return json({ ok: true, lesson_id: input.lessonId, reply }, 200, originCheck.origin);
       } catch {
+        if (upstreamController.signal.aborted) {
+          return json({ ok: false, code: 'AI_UPSTREAM_TIMEOUT' }, 504, originCheck.origin);
+        }
         return json({ ok: false, code: 'AI_UPSTREAM_ERROR' }, 502, originCheck.origin);
+      } finally {
+        clearTimeout(upstreamTimeout);
       }
     }
   };
