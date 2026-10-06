@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   createTutorRouter,
+  MAX_REQUEST_BYTES,
   MAX_STUDENT_MESSAGE_CHARS,
   MAX_TOKENS,
   MODEL,
@@ -161,6 +162,29 @@ test('rejects oversized student_message payloads', async () => {
     lesson_id: lessons['camp-a'],
     student_message: 'a'.repeat(MAX_STUDENT_MESSAGE_CHARS + 1)
   }), env);
+  assert.equal(response.status, 400);
+  assert.equal((await response.json()).code, 'INVALID_REQUEST');
+});
+
+test('rejects oversized request bodies before model forwarding', async () => {
+  const router = createTutorRouter({
+    fetchImpl: verifiedFetch(async () => { throw new Error('upstream must not be called'); })
+  });
+  const body = JSON.stringify({
+    lesson_id: lessons['camp-a'],
+    student_message: 'Hello'
+  }) + ' '.repeat(MAX_REQUEST_BYTES);
+  const response = await router.fetch(new Request(
+    'https://worker.test/robo/v1/tutor',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${ACCESS_TOKEN}`
+      },
+      body
+    }
+  ), env);
   assert.equal(response.status, 400);
   assert.equal((await response.json()).code, 'INVALID_REQUEST');
 });

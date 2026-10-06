@@ -5,6 +5,7 @@ export const OPENAI_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
 export const MODEL = 'gpt-4o-mini';
 export const MAX_TOKENS = 300;
 export const MAX_STUDENT_MESSAGE_CHARS = 4000;
+export const MAX_REQUEST_BYTES = 16 * 1024;
 export const ALLOWED_REQUEST_FIELDS = Object.freeze(['lesson_id', 'student_message']);
 export const EMAIL_REDACTION = '[EMAIL REDACTED]';
 export const PHONE_REDACTION = '[PHONE REDACTED]';
@@ -137,9 +138,18 @@ export function createTutorRouter({ fetchImpl = fetch } = {}) {
         return json({ ok: false, code: 'INVALID_REQUEST' }, 400, originCheck.origin);
       }
 
+      const contentLength = Number(request.headers.get('Content-Length'));
+      if (Number.isFinite(contentLength) && contentLength > MAX_REQUEST_BYTES) {
+        return json({ ok: false, code: 'INVALID_REQUEST' }, 400, originCheck.origin);
+      }
+
       let requestBody;
       try {
-        requestBody = await request.json();
+        const rawBody = await request.text();
+        if (new TextEncoder().encode(rawBody).byteLength > MAX_REQUEST_BYTES) {
+          return json({ ok: false, code: 'INVALID_REQUEST' }, 400, originCheck.origin);
+        }
+        requestBody = JSON.parse(rawBody);
       } catch {
         return json({ ok: false, code: 'INVALID_REQUEST' }, 400, originCheck.origin);
       }
