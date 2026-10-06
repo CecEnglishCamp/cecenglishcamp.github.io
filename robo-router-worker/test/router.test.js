@@ -262,6 +262,24 @@ test('does not expose upstream errors or credentials', async () => {
   assert.ok(!text.includes(env.OPENAI_API_KEY));
 });
 
+test('returns a structured upstream error when the network request rejects', async () => {
+  const router = createTutorRouter({
+    fetchImpl: verifiedFetch(async () => {
+      throw new Error('synthetic private network detail');
+    })
+  });
+  const response = await router.fetch(tutorRequest({
+    lesson_id: lessons.grammar,
+    student_message: 'Explain be verbs.'
+  }), env);
+  const text = await response.text();
+
+  assert.equal(response.status, 502);
+  assert.deepEqual(JSON.parse(text), { ok: false, code: 'AI_UPSTREAM_ERROR' });
+  assert.ok(!text.includes('synthetic private network detail'));
+  assert.ok(!text.includes(env.OPENAI_API_KEY));
+});
+
 test('returns a structured timeout without retrying the upstream request', async () => {
   let upstreamCalls = 0;
   const router = createTutorRouter({
