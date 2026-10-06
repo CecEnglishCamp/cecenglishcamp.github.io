@@ -26,3 +26,12 @@ npm test --prefix robo-router-worker
 
 `OPENAI_API_KEY` must be supplied as a Worker secret in any separately reviewed
 future deployment. No secret value belongs in this repository.
+
+## Rollback
+
+No deployment or merge is part of Task #8. Before merge, rollback is deleting the
+Task #8 branches or closing their PR. If these commits are merged later, revert the
+Task #8 commits together so the shared transport and four sample-page references
+are removed in the same change. If a future deployment occurs, restore the prior
+Worker version and the four prior page versions together; do not leave sample pages
+pointing at an unavailable `/robo/v1/tutor` route.
