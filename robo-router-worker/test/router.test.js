@@ -70,18 +70,27 @@ for (const field of ['messages', 'system', 'developer', 'model', 'max_tokens']) 
   });
 }
 
-test('rejects unexpected structured fields', async () => {
-  const router = createTutorRouter({
-    fetchImpl: async () => { throw new Error('upstream must not be called'); }
+for (const [field, value] of Object.entries({
+  student_name: 'Synthetic Student',
+  email: 'student@example.test',
+  phone: '202-555-0147',
+  school: 'Synthetic School',
+  account_id: 'synthetic-account-123',
+  parent_name: 'Synthetic Parent'
+})) {
+  test(`rejects structured PII field ${field}`, async () => {
+    const router = createTutorRouter({
+      fetchImpl: async () => { throw new Error('upstream must not be called'); }
+    });
+    const response = await router.fetch(tutorRequest({
+      lesson_id: lessons['camp-a'],
+      student_message: 'Hello',
+      [field]: value
+    }), env);
+    assert.equal(response.status, 400);
+    assert.equal((await response.json()).code, 'INVALID_REQUEST');
   });
-  const response = await router.fetch(tutorRequest({
-    lesson_id: lessons['camp-a'],
-    student_message: 'Hello',
-    student_name: 'Synthetic Student'
-  }), env);
-  assert.equal(response.status, 400);
-  assert.equal((await response.json()).code, 'INVALID_REQUEST');
-});
+}
 
 test('rejects malformed JSON payloads', async () => {
   const router = createTutorRouter({
