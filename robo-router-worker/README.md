@@ -52,6 +52,25 @@ reviewed Durable Object or service binding) and configure its Cloudflare binding
 No Cloudflare resource or production setting is created by this repository. Do
 not substitute isolate memory or non-atomic read/then-write KV counters.
 
+## Durable quota and metadata logging (Claude local patch, not deployed)
+
+`src/quota.js` provides `TutorQuota`, a Durable Object class that counts accepted
+requests per verified Supabase user id (fixed windows: 10 per minute, 100 per day).
+The router uses it automatically when a Durable Object namespace is bound as
+`TUTOR_QUOTA`; an injected `TUTOR_QUOTA_LIMITER` still takes priority. If neither is
+configured the router still fails closed (503 `QUOTA_NOT_CONFIGURED`) before OpenAI.
+
+**OWNER ACTION REQUIRED (Cloudflare, not done here):** after review, add to the
+Worker configuration a Durable Object binding named `TUTOR_QUOTA` with class
+`TutorQuota` and the matching migration (`new_sqlite_classes` or `new_classes`).
+No Cloudflare resource was created by this repository change.
+
+Each request emits one JSON log line with only: `request_id`, `method`, `status`,
+`code`, `latency_ms`, `profile`, `quota` outcome and token `usage` counts. It never
+contains the student message, prompts, replies, bearer tokens, API keys or user ids.
+The same `request_id` is returned in the `X-Request-Id` response header. Cloudflare
+Worker Logs for the real Worker must also be enabled by the owner to retain them.
+
 ## Rollback
 
 No deployment or merge is part of Task #8. Before merge, rollback is deleting the

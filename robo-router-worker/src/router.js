@@ -1,4 +1,5 @@
 import { profileForLesson, systemInstructions } from './profiles.js';
+import { createDurableQuotaLimiter } from './quota.js';
 
 export const TUTOR_PATH = '/robo/v1/tutor';
 export const OPENAI_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
@@ -26,6 +27,15 @@ export function redactPhoneNumbers(value) {
     const digitCount = candidate.replace(/\D/g, '').length;
     return digitCount >= 7 && digitCount <= 15 ? PHONE_REDACTION : candidate;
   });
+}
+
+function numberOrNull(value) {
+  return Number.isFinite(value) && value >= 0 ? value : null;
+}
+
+// Metadata-only event. Never add student_message, prompts, replies, tokens or user ids here.
+export function defaultLogger(event) {
+  console.log(JSON.stringify(event));
 }
 
 function json(body, status, origin, extraHeaders = {}) {
@@ -93,7 +103,10 @@ async function verifyAuthenticatedUser(request, env, fetchImpl) {
 }
 
 async function consumeQuota(authentication, env, injectedLimiter) {
-  const limiter = injectedLimiter || env.TUTOR_QUOTA_LIMITER;
+  const limiter = injectedLimiter || env.TUTOR_QUOTA_LIMITER ||
+    (env.TUTOR_QUOTA && typeof env.TUTOR_QUOTA.idFromName === 'function'
+      ? createDurableQuotaLimiter(env.TUTOR_QUOTA)
+      : null);
   if (!limiter || typeof limiter.consume !== 'function') {
     return { ok: false, status: 503, code: 'QUOTA_NOT_CONFIGURED' };
   }
@@ -145,10 +158,11 @@ function validateBody(body) {
 export function createTutorRouter({
   fetchImpl = fetch,
   upstreamTimeoutMs = UPSTREAM_TIMEOUT_MS,
-  quotaLimiter
+  quotaLimiter,
+  logger = defaultLogger
 } = {}) {
-  return {
-    async fetch(request, env = {}) {
+  async function handle(request, env, ctx) {
+    {
       const url = new URL(request.url);
       if (url.pathname !== TUTOR_PATH) {
         return json({ ok: false, code: 'NOT_FOUND' }, 404, null);
@@ -209,11 +223,13 @@ export function createTutorRouter({
       if (!input) {
         return json({ ok: false, code: 'INVALID_REQUEST' }, 400, originCheck.origin);
       }
+      ctx.profile = input.profile;
       if (!env.OPENAI_API_KEY) {
         return json({ ok: false, code: 'TUTOR_NOT_CONFIGURED' }, 503, originCheck.origin);
       }
 
       const quota = await consumeQuota(authentication, env, quotaLimiter);
+      ctx.quota = quota.ok ? 'allowed' : quota.code;
       if (!quota.ok) {
         return json(
           { ok: false, code: quota.code },
@@ -263,6 +279,11 @@ export function createTutorRouter({
         }
         const data = await upstream.json();
         const reply = data?.choices?.[0]?.message?.content;
+        ctx.usage = {
+          prompt_tokens: numberOrNull(data?.usage?.prompt_tokens),
+          completion_tokens: numberOrNull(data?.usage?.completion_tokens),
+          total_tokens: numberOrNull(data?.usage?.total_tokens)
+        };
         if (typeof reply !== 'string' || !reply.trim()) {
           return json({ ok: false, code: 'AI_INVALID_RESPONSE' }, 502, originCheck.origin);
         }
@@ -275,6 +296,47 @@ export function createTutorRouter({
       } finally {
         clearTimeout(upstreamTimeout);
       }
+    }
+  }
+
+  return {
+    async fetch(request, env = {}) {
+      const startedAt = Date.now();
+      const requestId = crypto.randomUUID();
+      const ctx = {};
+      let response;
+      try {
+        response = await handle(request, env, ctx);
+      } catch {
+        response = json({ ok: false, code: 'INTERNAL_ERROR' }, 500, null);
+      }
+      let code = null;
+      try {
+        const body = await response.clone().json();
+        code = typeof body?.code === 'string' ? body.code : null;
+      } catch {
+        code = null;
+      }
+      try {
+        response.headers.set('X-Request-Id', requestId);
+      } catch {
+        // immutable response headers are not fatal
+      }
+      try {
+        logger({
+          request_id: requestId,
+          method: request.method,
+          status: response.status,
+          code,
+          latency_ms: Date.now() - startedAt,
+          profile: ctx.profile || null,
+          quota: ctx.quota || null,
+          usage: ctx.usage || null
+        });
+      } catch {
+        // logging must never break a tutor response
+      }
+      return response;
     }
   };
 }
