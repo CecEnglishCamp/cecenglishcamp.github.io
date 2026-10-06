@@ -38,9 +38,20 @@
       throw new Error('INVALID_REQUEST');
     }
 
+    if (!window.CECAuthSession || typeof window.CECAuthSession.getSession !== 'function') {
+      throw new Error('AUTH_REQUIRED');
+    }
+    var session = await window.CECAuthSession.getSession();
+    if (!session || typeof session.access_token !== 'string' || !session.access_token) {
+      throw new Error('AUTH_REQUIRED');
+    }
+
     var response = await window.fetch(endpoint(), {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + session.access_token
+      },
       body: JSON.stringify({
         lesson_id: input.lesson_id,
         student_message: input.student_message

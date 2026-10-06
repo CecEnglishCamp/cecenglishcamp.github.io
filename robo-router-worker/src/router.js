@@ -46,6 +46,40 @@ function allowedOrigin(request, env) {
   return { origin, allowed: configured.includes(origin) };
 }
 
+async function verifyAuthenticatedUser(request, env, fetchImpl) {
+  const authorization = request.headers.get('Authorization') || '';
+  const match = authorization.match(/^Bearer\s+(\S+)$/i);
+  if (!match) return { ok: false, status: 401, code: 'AUTH_REQUIRED' };
+  if (!env.SUPABASE_URL || !env.SUPABASE_ANON_KEY) {
+    return { ok: false, status: 503, code: 'AUTH_NOT_CONFIGURED' };
+  }
+
+  let authUrl;
+  try {
+    authUrl = new URL('/auth/v1/user', env.SUPABASE_URL).href;
+  } catch {
+    return { ok: false, status: 503, code: 'AUTH_NOT_CONFIGURED' };
+  }
+
+  try {
+    const response = await fetchImpl(authUrl, {
+      method: 'GET',
+      headers: {
+        apikey: env.SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${match[1]}`
+      }
+    });
+    if (!response.ok) return { ok: false, status: 401, code: 'AUTH_INVALID' };
+    const user = await response.json();
+    if (!user || typeof user.id !== 'string' || !user.id) {
+      return { ok: false, status: 401, code: 'AUTH_INVALID' };
+    }
+    return { ok: true, userId: user.id };
+  } catch {
+    return { ok: false, status: 401, code: 'AUTH_INVALID' };
+  }
+}
+
 function validateBody(body) {
   if (!body || typeof body !== 'object' || Array.isArray(body)) return null;
   if (Object.keys(body).some(key => !ALLOWED_FIELDS.has(key))) return null;
@@ -82,13 +116,22 @@ export function createTutorRouter({ fetchImpl = fetch } = {}) {
               Vary: 'Origin'
             } : {}),
             'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type'
+            'Access-Control-Allow-Headers': 'Authorization, Content-Type'
           }
         });
       }
 
       if (request.method !== 'POST') {
         return json({ ok: false, code: 'METHOD_NOT_ALLOWED' }, 405, originCheck.origin);
+      }
+
+      const authentication = await verifyAuthenticatedUser(request, env, fetchImpl);
+      if (!authentication.ok) {
+        return json(
+          { ok: false, code: authentication.code },
+          authentication.status,
+          originCheck.origin
+        );
       }
       if (!(request.headers.get('Content-Type') || '').toLowerCase().startsWith('application/json')) {
         return json({ ok: false, code: 'INVALID_REQUEST' }, 400, originCheck.origin);

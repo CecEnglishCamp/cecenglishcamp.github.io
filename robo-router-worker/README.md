@@ -32,6 +32,12 @@ npm test --prefix robo-router-worker
 `OPENAI_API_KEY` must be supplied as a Worker secret in any separately reviewed
 future deployment. No secret value belongs in this repository.
 
+`/robo/v1/tutor` also requires `Authorization: Bearer <Supabase access token>`.
+The Worker independently validates the token through Supabase Auth before reading
+the Tutor request body or contacting OpenAI. A future deployment must configure
+`SUPABASE_URL` and `SUPABASE_ANON_KEY` as Worker bindings. Do not store production
+binding values in this repository.
+
 ## Rollback
 
 No deployment or merge is part of Task #8. Before merge, rollback is deleting the
