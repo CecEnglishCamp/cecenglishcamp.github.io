@@ -55,3 +55,13 @@ Scope: the four lesson pages that currently call `POST /robo/v1/tutor`. This fil
 2. `/camp-b/g1/week01a.html`
 3. `/camp-c/ep01.html`
 4. `/grammar-camp/G01/G01_be_verb_present_tense.html`
+
+## Task 8-F1 completion evidence
+
+- Item 1 — `c983bf10b`: audited the four existing sample pages; documentation-only.
+- Item 2 — `c9ce127e5`: defined the server-owned lesson-context schema; item run passed 23/23 tests.
+- Item 3 — `a9c3a8afd`: implemented lookup for the four audited lesson IDs; item run passed 26/26 tests.
+- Item 4 — `d4f49abff`: injected resolved context into the server-fixed tutor prompt.
+- Item 5 — `6d5dae839`: verified context selection, unknown-ID rejection, browser override rejection, and Camp A/B/C/Grammar routing.
+- Item 6 final suite: `npm test --prefix robo-router-worker` passed 26/26 tests.
+- Scope confirmation: no lesson page was edited and no bulk migration was performed.
