@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   createTutorRouter,
+  MAX_STUDENT_MESSAGE_CHARS,
   MAX_TOKENS,
   MODEL,
   OPENAI_ENDPOINT
@@ -77,6 +78,56 @@ test('rejects unexpected structured fields', async () => {
     lesson_id: lessons['camp-a'],
     student_message: 'Hello',
     student_name: 'Synthetic Student'
+  }), env);
+  assert.equal(response.status, 400);
+  assert.equal((await response.json()).code, 'INVALID_REQUEST');
+});
+
+test('rejects malformed JSON payloads', async () => {
+  const router = createTutorRouter({
+    fetchImpl: async () => { throw new Error('upstream must not be called'); }
+  });
+  const response = await router.fetch(new Request(
+    'https://worker.test/robo/v1/tutor',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{"lesson_id":'
+    }
+  ), env);
+  assert.equal(response.status, 400);
+  assert.equal((await response.json()).code, 'INVALID_REQUEST');
+});
+
+test('rejects payloads missing lesson_id', async () => {
+  const router = createTutorRouter({
+    fetchImpl: async () => { throw new Error('upstream must not be called'); }
+  });
+  const response = await router.fetch(tutorRequest({
+    student_message: 'Hello'
+  }), env);
+  assert.equal(response.status, 400);
+  assert.equal((await response.json()).code, 'INVALID_REQUEST');
+});
+
+test('rejects payloads missing student_message', async () => {
+  const router = createTutorRouter({
+    fetchImpl: async () => { throw new Error('upstream must not be called'); }
+  });
+  const response = await router.fetch(tutorRequest({
+    lesson_id: lessons['camp-a']
+  }), env);
+  assert.equal(response.status, 400);
+  assert.equal((await response.json()).code, 'INVALID_REQUEST');
+});
+
+test('rejects oversized student_message payloads', async () => {
+  const router = createTutorRouter({
+    fetchImpl: async () => { throw new Error('upstream must not be called'); }
+  });
+  const response = await router.fetch(tutorRequest({
+    lesson_id: lessons['camp-a'],
+    student_message: 'a'.repeat(MAX_STUDENT_MESSAGE_CHARS + 1)
   }), env);
   assert.equal(response.status, 400);
   assert.equal((await response.json()).code, 'INVALID_REQUEST');
