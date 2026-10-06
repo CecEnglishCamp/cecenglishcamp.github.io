@@ -5,10 +5,16 @@ import { runInNewContext, Script } from 'node:vm';
 
 const source = readFileSync(new URL('../../assets/cec-tutor.js', import.meta.url), 'utf8');
 
-function client(configured, fetchImpl) {
+function client(configured, fetchImpl, session) {
+  const resolvedSession = arguments.length < 3
+    ? { access_token: 'synthetic-access-token' }
+    : session;
   const window = {
     location: { origin: 'http://127.0.0.1:8000', hostname: '127.0.0.1' },
     CEC_TUTOR_ENDPOINT: configured,
+    CECAuthSession: resolvedSession === undefined ? undefined : {
+      getSession: async () => resolvedSession
+    },
     fetch: fetchImpl
   };
   runInNewContext(source, { window, URL, Response });
@@ -19,6 +25,7 @@ test('transport sends exactly lesson_id and student_message and preserves SSE co
   let wireBody;
   const transport = client('http://127.0.0.1:8787/robo/v1/tutor', async (url, options) => {
     assert.equal(url, 'http://127.0.0.1:8787/robo/v1/tutor');
+    assert.equal(options.headers.Authorization, 'Bearer synthetic-access-token');
     wireBody = JSON.parse(options.body);
     return Response.json({ ok: true, lesson_id: wireBody.lesson_id, reply: '<b>Safe reply</b>' });
   });
@@ -37,6 +44,30 @@ test('transport sends exactly lesson_id and student_message and preserves SSE co
   const sse = await response.text();
   assert.match(sse, /data: .*&lt;b&gt;Safe reply&lt;\/b&gt;/);
   assert.match(sse, /data: \[DONE\]/);
+});
+
+test('transport requires a verified browser session before sending a request', async () => {
+  let calls = 0;
+  const fetchImpl = async () => { calls += 1; };
+  const input = {
+    lesson_id: '/camp-a/grade3/week01a.html',
+    student_message: 'Please explain.'
+  };
+
+  const missingSessionApi = client(
+    'http://127.0.0.1:8787/robo/v1/tutor',
+    fetchImpl,
+    undefined
+  );
+  await assert.rejects(missingSessionApi.request(input), /AUTH_REQUIRED/);
+
+  const missingToken = client(
+    'http://127.0.0.1:8787/robo/v1/tutor',
+    fetchImpl,
+    null
+  );
+  await assert.rejects(missingToken.request(input), /AUTH_REQUIRED/);
+  assert.equal(calls, 0);
 });
 
 const samplePages = {
