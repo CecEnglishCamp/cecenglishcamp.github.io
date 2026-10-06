@@ -5,8 +5,9 @@ export const OPENAI_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
 export const MODEL = 'gpt-4o-mini';
 export const MAX_TOKENS = 300;
 export const MAX_STUDENT_MESSAGE_CHARS = 4000;
+export const ALLOWED_REQUEST_FIELDS = Object.freeze(['lesson_id', 'student_message']);
 
-const ALLOWED_FIELDS = new Set(['lesson_id', 'student_message']);
+const ALLOWED_FIELDS = new Set(ALLOWED_REQUEST_FIELDS);
 
 function json(body, status, origin) {
   const headers = {
