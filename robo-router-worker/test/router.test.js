@@ -69,6 +69,59 @@ for (const field of ['messages', 'system', 'developer', 'model', 'max_tokens']) 
   });
 }
 
+test('rejects unexpected structured fields', async () => {
+  const router = createTutorRouter({
+    fetchImpl: async () => { throw new Error('upstream must not be called'); }
+  });
+  const response = await router.fetch(tutorRequest({
+    lesson_id: lessons['camp-a'],
+    student_message: 'Hello',
+    student_name: 'Synthetic Student'
+  }), env);
+  assert.equal(response.status, 400);
+  assert.equal((await response.json()).code, 'INVALID_REQUEST');
+});
+
+test('redacts simple email addresses before model forwarding', async () => {
+  let outbound;
+  const router = createTutorRouter({
+    fetchImpl: async (_url, options) => {
+      outbound = JSON.parse(options.body);
+      return Response.json({ choices: [{ message: { content: 'Synthetic tutor reply.' } }] });
+    }
+  });
+  const email = 'student@example.test';
+  const response = await router.fetch(tutorRequest({
+    lesson_id: lessons['camp-a'],
+    student_message: `Please reply to ${email}.`
+  }), env);
+
+  assert.equal(response.status, 200);
+  const modelInput = JSON.parse(outbound.messages[1].content);
+  assert.equal(modelInput.student_message, 'Please reply to [EMAIL REDACTED].');
+  assert.ok(!outbound.messages[1].content.includes(email));
+});
+
+test('redacts simple phone numbers before model forwarding', async () => {
+  let outbound;
+  const router = createTutorRouter({
+    fetchImpl: async (_url, options) => {
+      outbound = JSON.parse(options.body);
+      return Response.json({ choices: [{ message: { content: 'Synthetic tutor reply.' } }] });
+    }
+  });
+  const phone = '202-555-0147';
+  const response = await router.fetch(tutorRequest({
+    lesson_id: lessons['camp-a'],
+    student_message: `Call ${phone} after class.`
+  }), env);
+
+  assert.equal(response.status, 200);
+  const modelInput = JSON.parse(outbound.messages[1].content);
+  assert.equal(modelInput.student_message, 'Call [PHONE REDACTED] after class.');
+  assert.ok(!outbound.messages[1].content.includes(phone));
+});
+
 test('rejects unknown lesson families and preserves the legacy API path', async () => {
   const router = createTutorRouter();
   const unknown = await router.fetch(tutorRequest({
