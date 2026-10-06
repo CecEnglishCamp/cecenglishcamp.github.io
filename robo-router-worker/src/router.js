@@ -1,4 +1,5 @@
 import { profileForLesson, systemInstructions } from './profiles.js';
+import { lessonContextForLesson } from './lesson-context.js';
 
 export const TUTOR_PATH = '/robo/v1/tutor';
 export const OPENAI_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
@@ -40,7 +41,10 @@ function validateBody(body) {
   if (!lessonId || !studentMessage || studentMessage.length > MAX_STUDENT_MESSAGE_CHARS) return null;
 
   const profile = profileForLesson(lessonId);
-  return profile ? { lessonId, studentMessage, profile } : null;
+  const lessonContext = lessonContextForLesson(lessonId);
+  return profile && lessonContext
+    ? { lessonId, studentMessage, profile, lessonContext }
+    : null;
 }
 
 export function createTutorRouter({ fetchImpl = fetch } = {}) {
