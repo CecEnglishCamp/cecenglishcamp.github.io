@@ -6,8 +6,14 @@ export const MODEL = 'gpt-4o-mini';
 export const MAX_TOKENS = 300;
 export const MAX_STUDENT_MESSAGE_CHARS = 4000;
 export const ALLOWED_REQUEST_FIELDS = Object.freeze(['lesson_id', 'student_message']);
+export const EMAIL_REDACTION = '[EMAIL REDACTED]';
 
 const ALLOWED_FIELDS = new Set(ALLOWED_REQUEST_FIELDS);
+const SIMPLE_EMAIL_PATTERN = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi;
+
+export function redactEmailAddresses(value) {
+  return value.replace(SIMPLE_EMAIL_PATTERN, EMAIL_REDACTION);
+}
 
 function json(body, status, origin) {
   const headers = {
@@ -39,9 +45,10 @@ function validateBody(body) {
   const lessonId = body.lesson_id.trim();
   const studentMessage = body.student_message.trim();
   if (!lessonId || !studentMessage || studentMessage.length > MAX_STUDENT_MESSAGE_CHARS) return null;
+  const redactedStudentMessage = redactEmailAddresses(studentMessage);
 
   const profile = profileForLesson(lessonId);
-  return profile ? { lessonId, studentMessage, profile } : null;
+  return profile ? { lessonId, studentMessage: redactedStudentMessage, profile } : null;
 }
 
 export function createTutorRouter({ fetchImpl = fetch } = {}) {
