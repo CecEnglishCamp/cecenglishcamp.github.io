@@ -18,6 +18,17 @@ owns the system instructions, safety rules, OpenAI model, and output-token limit
 Any additional browser field is rejected, including `messages`, `system`,
 `developer`, `model`, and `max_tokens`.
 
+## Server-controlled eligibility boundary
+
+The browser cannot assert or override age eligibility, protected-learner status,
+guardian approval, or ZDR approval. Request JSON is limited to `lesson_id` and
+`student_message`; extra fields are rejected. `TUTOR_ELIGIBILITY_RESOLVER` is the
+only authority for eligibility flags and must derive them from authenticated
+identity plus server-held policy/consent records, never browser body, query, or
+header claims. Missing or invalid resolver results fail closed, and guardian
+consent alone does not permit a protected learner to use generative AI without
+server-confirmed ZDR approval.
+
 Run synthetic tests without a live OpenAI request:
 
 ```sh
