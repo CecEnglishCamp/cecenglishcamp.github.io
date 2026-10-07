@@ -11,7 +11,10 @@ import { lessonContextForLesson } from '../src/lesson-context.js';
 
 const env = {
   OPENAI_API_KEY: 'synthetic-test-key',
-  ALLOWED_ORIGINS: 'https://cecenglishcamp.com'
+  ALLOWED_ORIGINS: 'https://cecenglishcamp.com',
+  TUTOR_ELIGIBILITY_RESOLVER: {
+    resolve: async () => ({ policy: 'eligible' })
+  }
 };
 
 function tutorRequest(body, extra = {}) {
@@ -28,6 +31,40 @@ const lessons = {
   'camp-c': '/camp-c/ep01.html',
   grammar: '/grammar-camp/G01/G01_be_verb_present_tense.html'
 };
+
+test('fails closed before upstream and guardian consent alone cannot bypass ZDR', async () => {
+  let upstreamCalls = 0;
+  const protectedEnv = {
+    ...env,
+    TUTOR_ELIGIBILITY_RESOLVER: {
+      resolve: async () => ({
+        policy: 'protected',
+        guardianConsentConfirmed: true,
+        zdrApproved: false
+      })
+    }
+  };
+  const router = createTutorRouter({
+    fetchImpl: async () => {
+      upstreamCalls += 1;
+      throw new Error('blocked request must not reach upstream');
+    }
+  });
+
+  const response = await router.fetch(tutorRequest({
+    lesson_id: lessons['camp-a'],
+    student_message: 'Private learner message'
+  }), protectedEnv);
+
+  assert.equal(response.status, 403);
+  assert.deepEqual(await response.json(), {
+    ok: false,
+    code: 'GENERATIVE_AI_BLOCKED',
+    reason: 'ZDR_APPROVAL_REQUIRED',
+    fallback: { mode: 'rules_based', plan: 'PLAN_B_2' }
+  });
+  assert.equal(upstreamCalls, 0);
+});
 
 for (const [profile, lesson_id] of Object.entries(lessons)) {
   test(`routes ${profile} and applies server-owned controls`, async () => {

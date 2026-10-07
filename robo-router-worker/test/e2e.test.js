@@ -7,7 +7,10 @@ import { PROFILES, SAFETY_RULES } from '../src/profiles.js';
 
 const env = {
   OPENAI_API_KEY: 'synthetic-e2e-key',
-  ALLOWED_ORIGINS: 'https://cecenglishcamp.com'
+  ALLOWED_ORIGINS: 'https://cecenglishcamp.com',
+  TUTOR_ELIGIBILITY_RESOLVER: {
+    resolve: async () => ({ policy: 'eligible' })
+  }
 };
 
 function request(body, path = '/robo/v1/tutor') {

@@ -1,5 +1,10 @@
 import { profileForLesson, systemInstructions } from './profiles.js';
 import { lessonContextForLesson } from './lesson-context.js';
+import {
+  eligibilityDecision,
+  PLAN_B_2_FALLBACK,
+  resolveServerEligibility
+} from './eligibility.js';
 
 export const TUTOR_PATH = '/robo/v1/tutor';
 export const OPENAI_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
@@ -91,6 +96,26 @@ export function createTutorRouter({ fetchImpl = fetch } = {}) {
       const input = validateBody(requestBody);
       if (!input) {
         return json({ ok: false, code: 'INVALID_REQUEST' }, 400, originCheck.origin);
+      }
+
+      let eligibility;
+      try {
+        eligibility = await resolveServerEligibility({
+          request,
+          env,
+          lessonId: input.lessonId
+        });
+      } catch {
+        eligibility = null;
+      }
+      const eligibilityResult = eligibilityDecision(eligibility);
+      if (!eligibilityResult.allowed) {
+        return json({
+          ok: false,
+          code: 'GENERATIVE_AI_BLOCKED',
+          reason: eligibilityResult.reason,
+          fallback: PLAN_B_2_FALLBACK
+        }, 403, originCheck.origin);
       }
       if (!env.OPENAI_API_KEY) {
         return json({ ok: false, code: 'TUTOR_NOT_CONFIGURED' }, 503, originCheck.origin);
