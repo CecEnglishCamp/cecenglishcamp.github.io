@@ -5,7 +5,7 @@ const PRECACHE = [
   '/camp-a/',
   '/camp-b/',
   '/camp-c/',
-  '/speaking/',
+  '/camp-a/speaking/',
   '/mom-teacher/',
   '/grammar-camp/',
   '/manifest.json'
