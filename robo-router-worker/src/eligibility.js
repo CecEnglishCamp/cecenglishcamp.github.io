@@ -5,11 +5,11 @@ export const PLAN_B_2_FALLBACK = Object.freeze({
 
 const VALID_POLICY_FLAGS = new Set(['eligible', 'protected']);
 
-export async function resolveServerEligibility({ request, env, lessonId }) {
+export async function resolveServerEligibility({ env, userId, lessonId }) {
   const resolver = env?.TUTOR_ELIGIBILITY_RESOLVER;
   if (!resolver || typeof resolver.resolve !== 'function') return null;
 
-  const result = await resolver.resolve({ request, lessonId });
+  const result = await resolver.resolve({ userId, lessonId });
   if (!result || !VALID_POLICY_FLAGS.has(result.policy)) return null;
   return {
     policy: result.policy,

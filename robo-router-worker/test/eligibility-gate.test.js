@@ -3,37 +3,69 @@ import assert from 'node:assert/strict';
 import { createTutorRouter, OPENAI_ENDPOINT } from '../src/router.js';
 
 const lessonId = '/camp-a/grade3/week01a.html';
+const accessToken = 'synthetic-access-token';
+const authUrl = 'https://auth.test/auth/v1/user';
 
-function request(body) {
+function request(body, authorization = `Bearer ${accessToken}`) {
   return new Request('https://worker.test/robo/v1/tutor', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: authorization
+    },
     body: JSON.stringify(body)
   });
 }
 
-function environment(eligibility) {
+function environment(eligibility, overrides = {}) {
   return {
     OPENAI_API_KEY: 'synthetic-test-key',
     ALLOWED_ORIGINS: 'https://cecenglishcamp.com',
+    SUPABASE_URL: 'https://auth.test',
+    SUPABASE_ANON_KEY: 'synthetic-public-key',
+    TUTOR_QUOTA_LIMITER: {
+      consume: async () => ({ allowed: true })
+    },
     TUTOR_ELIGIBILITY_RESOLVER: {
-      resolve: async () => eligibility
-    }
+      resolve: async ({ userId, lessonId: resolvedLessonId }) => {
+        assert.equal(userId, 'synthetic-user-id');
+        assert.equal(resolvedLessonId, lessonId);
+        return eligibility;
+      }
+    },
+    ...overrides
   };
 }
 
-async function blockedResponse(eligibility, studentMessage = 'Private learner message') {
+function authenticatedFetch(
+  upstreamFetch,
+  authResponse = () => Response.json({ id: 'synthetic-user-id' })
+) {
+  return async (url, options) => {
+    if (url === authUrl) {
+      assert.equal(options.headers.Authorization, `Bearer ${accessToken}`);
+      return authResponse();
+    }
+    return upstreamFetch(url, options);
+  };
+}
+
+async function blockedResponse(
+  eligibility,
+  studentMessage = 'Private learner message',
+  envOverrides = {}
+) {
   let upstreamCalls = 0;
   const router = createTutorRouter({
-    fetchImpl: async () => {
+    fetchImpl: authenticatedFetch(async () => {
       upstreamCalls += 1;
-      throw new Error('blocked request must not reach upstream');
-    }
+      throw new Error('blocked request must not reach AI upstream');
+    })
   });
   const response = await router.fetch(request({
     lesson_id: lessonId,
     student_message: studentMessage
-  }), environment(eligibility));
+  }), environment(eligibility, envOverrides));
   return { response, upstreamCalls, studentMessage };
 }
 
@@ -66,55 +98,32 @@ test('guardian consent alone does not bypass the ZDR gate', async () => {
   assert.equal(upstreamCalls, 0);
 });
 
-test('eligible learner follows the normal tutor route', async () => {
-  let upstreamCalls = 0;
-  const router = createTutorRouter({
-    fetchImpl: async (url, options) => {
-      upstreamCalls += 1;
-      assert.equal(url, OPENAI_ENDPOINT);
-      assert.deepEqual(JSON.parse(JSON.parse(options.body).messages[1].content), {
-        lesson_id: lessonId,
-        student_message: 'Explain this lesson.'
-      });
-      return Response.json({ choices: [{ message: { content: 'Synthetic tutor reply.' } }] });
-    }
-  });
-
-  const response = await router.fetch(request({
-    lesson_id: lessonId,
-    student_message: 'Explain this lesson.'
-  }), environment({ policy: 'eligible', guardianConsentConfirmed: false, zdrApproved: false }));
-
-  assert.equal(response.status, 200);
-  assert.equal((await response.json()).reply, 'Synthetic tutor reply.');
-  assert.equal(upstreamCalls, 1);
-});
-
-test('browser age, protection, and ZDR overrides cannot alter server eligibility', async () => {
+test('browser ZDR, age, consent, and allow_ai claims cannot bypass server policy', async () => {
   let resolverCalls = 0;
   let upstreamCalls = 0;
-  const protectedEnv = {
-    OPENAI_API_KEY: 'synthetic-test-key',
-    ALLOWED_ORIGINS: 'https://cecenglishcamp.com',
+  const protectedEnv = environment(null, {
     TUTOR_ELIGIBILITY_RESOLVER: {
       resolve: async () => {
         resolverCalls += 1;
-        return { policy: 'protected', zdrApproved: false };
+        return { policy: 'protected', guardianConsentConfirmed: false, zdrApproved: false };
       }
     }
-  };
+  });
   const router = createTutorRouter({
-    fetchImpl: async () => {
+    fetchImpl: authenticatedFetch(async () => {
       upstreamCalls += 1;
-      throw new Error('browser override must not reach upstream');
-    }
+      throw new Error('browser override must not reach AI upstream');
+    })
   });
   const overrides = [
-    { age_eligible: true },
-    { policy: 'eligible' },
-    { protected: false },
-    { zdrApproved: true },
-    { zdr_approved: true }
+    { age: 99 },
+    { birthdate: '2000-01-01' },
+    { is_minor: false },
+    { guardian_consent: true },
+    { zdr: true },
+    { zdr_approved: true },
+    { policy_mode: 'eligible' },
+    { allow_ai: true }
   ];
 
   for (const override of overrides) {
@@ -130,15 +139,135 @@ test('browser age, protection, and ZDR overrides cannot alter server eligibility
   assert.equal(upstreamCalls, 0);
 });
 
-test('blocked request sends no student message upstream or back to the browser', async () => {
+test('eligible learner follows the normal tutor route', async () => {
+  let upstreamCalls = 0;
+  const router = createTutorRouter({
+    fetchImpl: authenticatedFetch(async (url, options) => {
+      upstreamCalls += 1;
+      assert.equal(url, OPENAI_ENDPOINT);
+      assert.deepEqual(JSON.parse(JSON.parse(options.body).messages[1].content), {
+        lesson_id: lessonId,
+        student_message: 'Explain this lesson.'
+      });
+      return Response.json({ choices: [{ message: { content: 'Synthetic tutor reply.' } }] });
+    })
+  });
+
+  const response = await router.fetch(request({
+    lesson_id: lessonId,
+    student_message: 'Explain this lesson.'
+  }), environment({ policy: 'eligible', guardianConsentConfirmed: false, zdrApproved: false }));
+
+  assert.equal(response.status, 200);
+  assert.equal((await response.json()).reply, 'Synthetic tutor reply.');
+  assert.equal(upstreamCalls, 1);
+});
+
+for (const [label, resolver] of [
+  ['missing policy resolver', undefined],
+  ['invalid policy result', { resolve: async () => ({ policy: 'unknown' }) }]
+]) {
+  test(`${label} fails closed before API key, quota, or AI upstream`, async () => {
+    let quotaCalls = 0;
+    let upstreamCalls = 0;
+    const router = createTutorRouter({
+      fetchImpl: authenticatedFetch(async () => {
+        upstreamCalls += 1;
+        throw new Error('fail-closed request must not reach AI upstream');
+      })
+    });
+    const response = await router.fetch(request({
+      lesson_id: lessonId,
+      student_message: 'Do not forward this text.'
+    }), environment(null, {
+      OPENAI_API_KEY: '',
+      TUTOR_ELIGIBILITY_RESOLVER: resolver,
+      TUTOR_QUOTA_LIMITER: {
+        consume: async () => {
+          quotaCalls += 1;
+          return { allowed: true };
+        }
+      }
+    }));
+
+    assert.equal(response.status, 403);
+    assert.equal((await response.json()).reason, 'ELIGIBILITY_UNAVAILABLE');
+    assert.equal(quotaCalls, 0);
+    assert.equal(upstreamCalls, 0);
+  });
+}
+
+test('blocked request needs no OpenAI key and never echoes the learner message', async () => {
   const { response, upstreamCalls, studentMessage } = await blockedResponse({
     policy: 'protected',
     guardianConsentConfirmed: true,
     zdrApproved: false
-  }, 'Never forward this learner text');
+  }, 'Never forward this learner text', { OPENAI_API_KEY: '' });
   const responseText = await response.text();
 
   assert.equal(response.status, 403);
   assert.equal(upstreamCalls, 0);
   assert.ok(!responseText.includes(studentMessage));
+});
+
+test('lesson_id and student_message remain the only client fields and inline PII is minimized', async () => {
+  let outbound;
+  const router = createTutorRouter({
+    fetchImpl: authenticatedFetch(async (_url, options) => {
+      outbound = JSON.parse(options.body);
+      return Response.json({ choices: [{ message: { content: 'Synthetic tutor reply.' } }] });
+    })
+  });
+  const eligibleEnv = environment({ policy: 'eligible' });
+  const rejected = await router.fetch(request({
+    lesson_id: lessonId,
+    student_message: 'Hello',
+    student_name: 'Synthetic Student'
+  }), eligibleEnv);
+  assert.equal(rejected.status, 400);
+
+  const accepted = await router.fetch(request({
+    lesson_id: lessonId,
+    student_message: 'Email learner@example.test or call 202-555-0147.'
+  }), eligibleEnv);
+  assert.equal(accepted.status, 200);
+  assert.deepEqual(JSON.parse(outbound.messages[1].content), {
+    lesson_id: lessonId,
+    student_message: 'Email [EMAIL REDACTED] or call [PHONE REDACTED].'
+  });
+});
+
+test('authentication failure occurs before eligibility, quota, or AI upstream', async () => {
+  let resolverCalls = 0;
+  let quotaCalls = 0;
+  let upstreamCalls = 0;
+  const router = createTutorRouter({
+    fetchImpl: authenticatedFetch(async () => {
+      upstreamCalls += 1;
+      throw new Error('unauthenticated request must not reach AI upstream');
+    }, () => new Response(null, { status: 401 }))
+  });
+  const response = await router.fetch(request({
+    lesson_id: lessonId,
+    student_message: 'Hello'
+  }), environment(null, {
+    TUTOR_ELIGIBILITY_RESOLVER: {
+      resolve: async () => {
+        resolverCalls += 1;
+        return { policy: 'eligible' };
+      }
+    },
+    TUTOR_QUOTA_LIMITER: {
+      consume: async () => {
+        quotaCalls += 1;
+        return { allowed: true };
+      }
+    }
+  }));
+
+  assert.equal(response.status, 401);
+  assert.equal((await response.json()).code, 'AUTH_INVALID');
+  assert.equal(resolverCalls, 0);
+  assert.equal(quotaCalls, 0);
+  assert.equal(upstreamCalls, 0);
 });
