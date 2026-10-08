@@ -22,12 +22,13 @@ Any additional browser field is rejected, including `messages`, `system`,
 
 The browser cannot assert or override age eligibility, protected-learner status,
 guardian approval, or ZDR approval. Request JSON is limited to `lesson_id` and
-`student_message`; extra fields are rejected. `TUTOR_ELIGIBILITY_RESOLVER` is the
-only authority for eligibility flags and must derive them from authenticated
-identity plus server-held policy/consent records, never browser body, query, or
-header claims. Missing or invalid resolver results fail closed, and guardian
-consent alone does not permit a protected learner to use generative AI without
-server-confirmed ZDR approval.
+`student_message`; extra fields are rejected. Eligibility comes from a trusted
+server-code policy source injected when the router is created, not from an
+arbitrary runtime JavaScript object in `env`. The source interface can later wrap
+a reviewed Cloudflare Service Binding/RPC or another trusted server-side data
+source. Until one is wired, eligibility is `unknown` and fails closed. Guardian
+consent alone does not permit generative AI without server-confirmed ZDR
+approval.
 
 ## PII minimization
 

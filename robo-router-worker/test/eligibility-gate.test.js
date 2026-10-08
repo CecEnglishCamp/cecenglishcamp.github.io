@@ -17,7 +17,16 @@ function request(body, authorization = `Bearer ${accessToken}`) {
   });
 }
 
-function environment(eligibility, overrides = {}) {
+function trustedSource(eligibility, onResolve = () => {}) {
+  return async ({ userId, lessonId: resolvedLessonId }) => {
+    onResolve();
+    assert.equal(userId, 'synthetic-user-id');
+    assert.equal(resolvedLessonId, lessonId);
+    return eligibility;
+  };
+}
+
+function environment(_eligibility, overrides = {}) {
   return {
     OPENAI_API_KEY: 'synthetic-test-key',
     ALLOWED_ORIGINS: 'https://cecenglishcamp.com',
@@ -26,13 +35,6 @@ function environment(eligibility, overrides = {}) {
     SUPABASE_ANON_KEY: 'synthetic-public-key',
     TUTOR_QUOTA_LIMITER: {
       consume: async () => ({ allowed: true })
-    },
-    TUTOR_ELIGIBILITY_RESOLVER: {
-      resolve: async ({ userId, lessonId: resolvedLessonId }) => {
-        assert.equal(userId, 'synthetic-user-id');
-        assert.equal(resolvedLessonId, lessonId);
-        return eligibility;
-      }
     },
     ...overrides
   };
@@ -58,8 +60,13 @@ async function blockedResponse(
   routerOverrides = {}
 ) {
   let upstreamCalls = 0;
+  const {
+    trustedEligibilitySource = trustedSource(eligibility),
+    ...otherRouterOverrides
+  } = routerOverrides;
   const router = createTutorRouter({
-    ...routerOverrides,
+    ...otherRouterOverrides,
+    trustedEligibilitySource,
     fetchImpl: authenticatedFetch(async () => {
       upstreamCalls += 1;
       throw new Error('blocked request must not reach AI upstream');
@@ -163,15 +170,12 @@ test('guardian consent alone does not bypass the ZDR gate', async () => {
 test('browser ZDR, age, consent, and allow_ai claims cannot bypass server policy', async () => {
   let resolverCalls = 0;
   let upstreamCalls = 0;
-  const protectedEnv = environment(null, {
-    TUTOR_ELIGIBILITY_RESOLVER: {
-      resolve: async () => {
-        resolverCalls += 1;
-        return { policy: 'protected', guardianConsentConfirmed: false, zdrApproved: false };
-      }
-    }
-  });
+  const protectedEnv = environment(null);
   const router = createTutorRouter({
+    trustedEligibilitySource: trustedSource(
+      { policy: 'protected', guardianConsentConfirmed: false, zdrApproved: false },
+      () => { resolverCalls += 1; }
+    ),
     fetchImpl: authenticatedFetch(async () => {
       upstreamCalls += 1;
       throw new Error('browser override must not reach AI upstream');
@@ -205,6 +209,7 @@ test('browser ZDR, age, consent, and allow_ai claims cannot bypass server policy
 test('eligible learner follows the normal tutor route', async () => {
   let upstreamCalls = 0;
   const router = createTutorRouter({
+    trustedEligibilitySource: trustedSource({ policy: 'eligible' }),
     fetchImpl: authenticatedFetch(async (url, options) => {
       upstreamCalls += 1;
       assert.equal(url, OPENAI_ENDPOINT);
@@ -229,20 +234,21 @@ test('eligible learner follows the normal tutor route', async () => {
   assert.equal(upstreamCalls, 1);
 });
 
-for (const [label, resolver, routerOverrides = {}] of [
-  ['missing resolver', undefined],
-  ['null result', { resolve: async () => null }],
-  ['invalid result', { resolve: async () => ({ policy: 'invalid' }) }],
-  ['undefined policy', { resolve: async () => ({}) }],
-  ['resolver throw', { resolve: () => { throw new Error('synthetic resolver error'); } }],
-  ['resolver reject', { resolve: async () => { throw new Error('synthetic rejection'); } }],
-  ['resolver timeout', { resolve: async () => new Promise(() => {}) }, { eligibilityResolverTimeoutMs: 5 }]
+for (const [label, source, routerOverrides = {}] of [
+  ['missing trusted source', undefined],
+  ['null result', async () => null],
+  ['invalid result', async () => ({ policy: 'invalid' })],
+  ['undefined policy', async () => ({})],
+  ['trusted source throw', () => { throw new Error('synthetic source error'); }],
+  ['trusted source reject', async () => { throw new Error('synthetic rejection'); }],
+  ['trusted source timeout', async () => new Promise(() => {}), { eligibilityPolicyTimeoutMs: 5 }]
 ]) {
   test(`${label} becomes unknown and fails closed before AI upstream`, async () => {
     let quotaCalls = 0;
     let upstreamCalls = 0;
     const router = createTutorRouter({
       ...routerOverrides,
+      trustedEligibilitySource: source,
       fetchImpl: authenticatedFetch(async () => {
         upstreamCalls += 1;
         throw new Error('fail-closed request must not reach AI upstream');
@@ -254,7 +260,6 @@ for (const [label, resolver, routerOverrides = {}] of [
     }), environment(null, {
       OPENAI_API_KEY: '',
       ZDR_APPROVED: 'true',
-      TUTOR_ELIGIBILITY_RESOLVER: resolver,
       TUTOR_QUOTA_LIMITER: {
         consume: async () => {
           quotaCalls += 1;
@@ -275,6 +280,34 @@ for (const [label, resolver, routerOverrides = {}] of [
   });
 }
 
+test('legacy runtime JS-object resolver binding is ignored without a trusted source', async () => {
+  let legacyBindingCalls = 0;
+  let upstreamCalls = 0;
+  const router = createTutorRouter({
+    fetchImpl: authenticatedFetch(async () => {
+      upstreamCalls += 1;
+      throw new Error('unknown eligibility must not reach AI upstream');
+    })
+  });
+  const response = await router.fetch(request({
+    lesson_id: lessonId,
+    student_message: 'Do not forward this text.'
+  }), environment(null, {
+    ZDR_APPROVED: 'true',
+    TUTOR_ELIGIBILITY_RESOLVER: {
+      resolve: async () => {
+        legacyBindingCalls += 1;
+        return { policy: 'eligible' };
+      }
+    }
+  }));
+
+  assert.equal(response.status, 403);
+  assert.equal((await response.json()).reason, 'ELIGIBILITY_UNAVAILABLE');
+  assert.equal(legacyBindingCalls, 0);
+  assert.equal(upstreamCalls, 0);
+});
+
 test('blocked request needs no OpenAI key and never echoes the learner message', async () => {
   const { response, upstreamCalls, studentMessage } = await blockedResponse({
     policy: 'protected',
@@ -291,6 +324,7 @@ test('blocked request needs no OpenAI key and never echoes the learner message',
 test('lesson_id and student_message remain the only client fields and inline PII is minimized', async () => {
   let outbound;
   const router = createTutorRouter({
+    trustedEligibilitySource: trustedSource({ policy: 'eligible' }),
     fetchImpl: authenticatedFetch(async (_url, options) => {
       outbound = JSON.parse(options.body);
       return Response.json({ choices: [{ message: { content: 'Synthetic tutor reply.' } }] });
@@ -320,6 +354,10 @@ test('authentication failure occurs before eligibility, quota, or AI upstream', 
   let quotaCalls = 0;
   let upstreamCalls = 0;
   const router = createTutorRouter({
+    trustedEligibilitySource: trustedSource(
+      { policy: 'eligible' },
+      () => { resolverCalls += 1; }
+    ),
     fetchImpl: authenticatedFetch(async () => {
       upstreamCalls += 1;
       throw new Error('unauthenticated request must not reach AI upstream');
@@ -329,12 +367,6 @@ test('authentication failure occurs before eligibility, quota, or AI upstream', 
     lesson_id: lessonId,
     student_message: 'Hello'
   }), environment(null, {
-    TUTOR_ELIGIBILITY_RESOLVER: {
-      resolve: async () => {
-        resolverCalls += 1;
-        return { policy: 'eligible' };
-      }
-    },
     TUTOR_QUOTA_LIMITER: {
       consume: async () => {
         quotaCalls += 1;

@@ -1,10 +1,10 @@
 import { profileForLesson, systemInstructions } from './profiles.js';
 import { lessonContextForLesson } from './lesson-context.js';
 import {
+  createServerEligibilityPolicy,
   ELIGIBILITY_RESOLVER_TIMEOUT_MS,
   eligibilityDecision,
   PLAN_B_2_FALLBACK,
-  resolveServerEligibility,
   serverZdrApproved
 } from './eligibility.js';
 import { createDurableQuotaLimiter } from './quota.js';
@@ -169,10 +169,16 @@ function validateBody(body) {
 export function createTutorRouter({
   fetchImpl = fetch,
   upstreamTimeoutMs = UPSTREAM_TIMEOUT_MS,
-  eligibilityResolverTimeoutMs = ELIGIBILITY_RESOLVER_TIMEOUT_MS,
+  eligibilityPolicyTimeoutMs = ELIGIBILITY_RESOLVER_TIMEOUT_MS,
+  trustedEligibilitySource,
   quotaLimiter,
   logger = defaultLogger
 } = {}) {
+  const eligibilityPolicy = createServerEligibilityPolicy({
+    trustedSource: trustedEligibilitySource,
+    timeoutMs: eligibilityPolicyTimeoutMs
+  });
+
   async function handle(request, env, ctx) {
     {
       const url = new URL(request.url);
@@ -239,11 +245,10 @@ export function createTutorRouter({
 
       let eligibility;
       try {
-        eligibility = await resolveServerEligibility({
+        eligibility = await eligibilityPolicy.resolve({
           env,
           userId: authentication.userId,
-          lessonId: input.lessonId,
-          timeoutMs: eligibilityResolverTimeoutMs
+          lessonId: input.lessonId
         });
       } catch {
         eligibility = 'unknown';

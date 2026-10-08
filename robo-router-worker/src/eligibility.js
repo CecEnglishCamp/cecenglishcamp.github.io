@@ -22,31 +22,35 @@ function normalizeEligibility(result) {
   return VALID_STATES.has(state) ? state : ELIGIBILITY_STATES.UNKNOWN;
 }
 
-export async function resolveServerEligibility({
-  env,
-  userId,
-  lessonId,
+export function createServerEligibilityPolicy({
+  trustedSource,
   timeoutMs = ELIGIBILITY_RESOLVER_TIMEOUT_MS
-}) {
-  const resolver = env?.TUTOR_ELIGIBILITY_RESOLVER;
-  if (!resolver || typeof resolver.resolve !== 'function') {
-    return ELIGIBILITY_STATES.UNKNOWN;
-  }
+} = {}) {
+  // Server bootstrap owns this function. A future adapter may call a Cloudflare
+  // Service Binding/RPC or another trusted data source through `env`; request
+  // data and arbitrary env objects are never treated as an eligibility source.
+  const source = typeof trustedSource === 'function' ? trustedSource : null;
 
-  let timeout;
-  try {
-    const resolverResult = Promise.resolve()
-      .then(() => resolver.resolve({ userId, lessonId }))
-      .then(normalizeEligibility, () => ELIGIBILITY_STATES.UNKNOWN);
-    const timeoutResult = new Promise(resolve => {
-      timeout = setTimeout(() => resolve(ELIGIBILITY_STATES.UNKNOWN), timeoutMs);
-    });
-    return await Promise.race([resolverResult, timeoutResult]);
-  } catch {
-    return ELIGIBILITY_STATES.UNKNOWN;
-  } finally {
-    clearTimeout(timeout);
-  }
+  return Object.freeze({
+    async resolve({ env, userId, lessonId }) {
+      if (!source) return ELIGIBILITY_STATES.UNKNOWN;
+
+      let timeout;
+      try {
+        const sourceResult = Promise.resolve()
+          .then(() => source({ env, userId, lessonId }))
+          .then(normalizeEligibility, () => ELIGIBILITY_STATES.UNKNOWN);
+        const timeoutResult = new Promise(resolve => {
+          timeout = setTimeout(() => resolve(ELIGIBILITY_STATES.UNKNOWN), timeoutMs);
+        });
+        return await Promise.race([sourceResult, timeoutResult]);
+      } catch {
+        return ELIGIBILITY_STATES.UNKNOWN;
+      } finally {
+        clearTimeout(timeout);
+      }
+    }
+  });
 }
 
 export function eligibilityDecision(state, zdrApproved = false) {
