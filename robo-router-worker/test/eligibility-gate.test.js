@@ -21,6 +21,7 @@ function environment(eligibility, overrides = {}) {
   return {
     OPENAI_API_KEY: 'synthetic-test-key',
     ALLOWED_ORIGINS: 'https://cecenglishcamp.com',
+    ZDR_APPROVED: 'false',
     SUPABASE_URL: 'https://auth.test',
     SUPABASE_ANON_KEY: 'synthetic-public-key',
     TUTOR_QUOTA_LIMITER: {
@@ -86,6 +87,43 @@ test('protected learner without ZDR approval is blocked before AI upstream', asy
   assert.equal(upstreamCalls, 0);
 });
 
+test('server ZDR false blocks eligible, protected, restricted, and unknown results', async () => {
+  for (const policy of ['eligible', 'protected', 'restricted', 'unknown']) {
+    const { response, upstreamCalls } = await blockedResponse({
+      policy,
+      zdrApproved: true
+    });
+
+    assert.equal(response.status, 403);
+    assert.equal((await response.json()).reason, 'ZDR_APPROVAL_REQUIRED');
+    assert.equal(upstreamCalls, 0);
+  }
+});
+
+test('only the exact server string true enables the ZDR policy gate', async () => {
+  for (const configured of [undefined, false, true, 'TRUE', 'True', '1', 'approved']) {
+    const { response, upstreamCalls } = await blockedResponse(
+      { policy: 'eligible', zdrApproved: true },
+      'Do not forward this text.',
+      { ZDR_APPROVED: configured }
+    );
+    assert.equal(response.status, 403);
+    assert.equal(upstreamCalls, 0);
+  }
+});
+
+test('resolver-provided ZDR approval cannot grant access', async () => {
+  const { response, upstreamCalls } = await blockedResponse({
+    policy: 'eligible',
+    guardianConsentConfirmed: true,
+    zdrApproved: true
+  });
+
+  assert.equal(response.status, 403);
+  assert.equal((await response.json()).reason, 'ZDR_APPROVAL_REQUIRED');
+  assert.equal(upstreamCalls, 0);
+});
+
 test('guardian consent alone does not bypass the ZDR gate', async () => {
   const { response, upstreamCalls } = await blockedResponse({
     policy: 'protected',
@@ -119,6 +157,7 @@ test('browser ZDR, age, consent, and allow_ai claims cannot bypass server policy
     { age: 99 },
     { birthdate: '2000-01-01' },
     { is_minor: false },
+    { consent: true },
     { guardian_consent: true },
     { zdr: true },
     { zdr_approved: true },
@@ -156,7 +195,10 @@ test('eligible learner follows the normal tutor route', async () => {
   const response = await router.fetch(request({
     lesson_id: lessonId,
     student_message: 'Explain this lesson.'
-  }), environment({ policy: 'eligible', guardianConsentConfirmed: false, zdrApproved: false }));
+  }), environment(
+    { policy: 'eligible', guardianConsentConfirmed: false, zdrApproved: false },
+    { ZDR_APPROVED: 'true' }
+  ));
 
   assert.equal(response.status, 200);
   assert.equal((await response.json()).reply, 'Synthetic tutor reply.');
@@ -181,6 +223,7 @@ for (const [label, resolver] of [
       student_message: 'Do not forward this text.'
     }), environment(null, {
       OPENAI_API_KEY: '',
+      ZDR_APPROVED: 'true',
       TUTOR_ELIGIBILITY_RESOLVER: resolver,
       TUTOR_QUOTA_LIMITER: {
         consume: async () => {
@@ -218,7 +261,7 @@ test('lesson_id and student_message remain the only client fields and inline PII
       return Response.json({ choices: [{ message: { content: 'Synthetic tutor reply.' } }] });
     })
   });
-  const eligibleEnv = environment({ policy: 'eligible' });
+  const eligibleEnv = environment({ policy: 'eligible' }, { ZDR_APPROVED: 'true' });
   const rejected = await router.fetch(request({
     lesson_id: lessonId,
     student_message: 'Hello',

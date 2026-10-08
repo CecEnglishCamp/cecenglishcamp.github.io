@@ -3,7 +3,8 @@ import { lessonContextForLesson } from './lesson-context.js';
 import {
   eligibilityDecision,
   PLAN_B_2_FALLBACK,
-  resolveServerEligibility
+  resolveServerEligibility,
+  serverZdrApproved
 } from './eligibility.js';
 import { createDurableQuotaLimiter } from './quota.js';
 
@@ -244,7 +245,10 @@ export function createTutorRouter({
       } catch {
         eligibility = null;
       }
-      const eligibilityResult = eligibilityDecision(eligibility);
+      const eligibilityResult = eligibilityDecision(
+        eligibility,
+        serverZdrApproved(env)
+      );
       if (!eligibilityResult.allowed) {
         return json({
           ok: false,
@@ -253,6 +257,7 @@ export function createTutorRouter({
           fallback: PLAN_B_2_FALLBACK
         }, 403, originCheck.origin);
       }
+
       if (!env.OPENAI_API_KEY) {
         return json({ ok: false, code: 'TUTOR_NOT_CONFIGURED' }, 503, originCheck.origin);
       }
