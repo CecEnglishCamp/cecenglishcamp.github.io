@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  createTutorRouter,
+  createTutorRouter as createBaseTutorRouter,
   MAX_REQUEST_BYTES,
   MAX_STUDENT_MESSAGE_CHARS,
   MAX_TOKENS,
@@ -14,9 +14,7 @@ import { lessonContextForLesson } from '../src/lesson-context.js';
 const env = {
   OPENAI_API_KEY: 'synthetic-test-key',
   ALLOWED_ORIGINS: 'https://cecenglishcamp.com',
-  TUTOR_ELIGIBILITY_RESOLVER: {
-    resolve: async () => ({ policy: 'eligible' })
-  },
+  ZDR_APPROVED: 'true',
   SUPABASE_URL: 'https://auth.test',
   SUPABASE_ANON_KEY: 'synthetic-public-key',
   TUTOR_QUOTA_LIMITER: {
@@ -25,6 +23,12 @@ const env = {
     }
   }
 };
+
+const trustedEligibilitySource = async () => ({ state: 'eligible' });
+
+function createTutorRouter(options = {}) {
+  return createBaseTutorRouter({ trustedEligibilitySource, ...options });
+}
 
 const ACCESS_TOKEN = 'synthetic-access-token';
 
@@ -63,15 +67,9 @@ test('fails closed before upstream and guardian consent alone cannot bypass ZDR'
   let upstreamCalls = 0;
   const protectedEnv = {
     ...env,
-    TUTOR_ELIGIBILITY_RESOLVER: {
-      resolve: async () => ({
-        policy: 'protected',
-        guardianConsentConfirmed: true,
-        zdrApproved: false
-      })
-    }
+    ZDR_APPROVED: 'false'
   };
-  const router = createTutorRouter({
+  const router = createBaseTutorRouter({
     fetchImpl: verifiedFetch(async () => {
       upstreamCalls += 1;
       throw new Error('blocked request must not reach upstream');

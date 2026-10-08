@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createTutorRouter } from '../src/router.js';
+import { createTutorRouter as createBaseTutorRouter } from '../src/router.js';
 import { TutorQuota, createDurableQuotaLimiter } from '../src/quota.js';
 
 const LIMITS = { perMinute: 2, perDay: 3 };
@@ -89,10 +89,14 @@ const env = {
   ALLOWED_ORIGINS: 'https://cecenglishcamp.com',
   SUPABASE_URL: 'https://auth.test',
   SUPABASE_ANON_KEY: 'synthetic-public-key',
-  TUTOR_ELIGIBILITY_RESOLVER: {
-    resolve: async () => ({ policy: 'eligible' })
-  }
+  ZDR_APPROVED: 'true'
 };
+
+const trustedEligibilitySource = async () => ({ state: 'eligible' });
+
+function createTutorRouter(options = {}) {
+  return createBaseTutorRouter({ trustedEligibilitySource, ...options });
+}
 
 test('router uses the TUTOR_QUOTA Durable Object binding when present', async () => {
   const events = [];

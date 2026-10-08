@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
-  createTutorRouter,
+  createTutorRouter as createBaseTutorRouter,
   MAX_TOKENS,
   MODEL,
   QUOTA_PER_DAY,
@@ -14,9 +14,7 @@ import { PROFILES, SAFETY_RULES } from '../src/profiles.js';
 const env = {
   OPENAI_API_KEY: 'synthetic-e2e-key',
   ALLOWED_ORIGINS: 'https://cecenglishcamp.com',
-  TUTOR_ELIGIBILITY_RESOLVER: {
-    resolve: async () => ({ policy: 'eligible' })
-  },
+  ZDR_APPROVED: 'true',
   SUPABASE_URL: 'https://auth.test',
   SUPABASE_ANON_KEY: 'synthetic-public-key',
   TUTOR_QUOTA_LIMITER: {
@@ -25,6 +23,12 @@ const env = {
     }
   }
 };
+
+const trustedEligibilitySource = async () => ({ state: 'eligible' });
+
+function createTutorRouter(options = {}) {
+  return createBaseTutorRouter({ trustedEligibilitySource, ...options });
+}
 
 const ACCESS_TOKEN = 'synthetic-access-token';
 
