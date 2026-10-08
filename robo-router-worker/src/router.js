@@ -1,6 +1,7 @@
 import { profileForLesson, systemInstructions } from './profiles.js';
 import { lessonContextForLesson } from './lesson-context.js';
 import {
+  ELIGIBILITY_RESOLVER_TIMEOUT_MS,
   eligibilityDecision,
   PLAN_B_2_FALLBACK,
   resolveServerEligibility,
@@ -168,6 +169,7 @@ function validateBody(body) {
 export function createTutorRouter({
   fetchImpl = fetch,
   upstreamTimeoutMs = UPSTREAM_TIMEOUT_MS,
+  eligibilityResolverTimeoutMs = ELIGIBILITY_RESOLVER_TIMEOUT_MS,
   quotaLimiter,
   logger = defaultLogger
 } = {}) {
@@ -240,10 +242,11 @@ export function createTutorRouter({
         eligibility = await resolveServerEligibility({
           env,
           userId: authentication.userId,
-          lessonId: input.lessonId
+          lessonId: input.lessonId,
+          timeoutMs: eligibilityResolverTimeoutMs
         });
       } catch {
-        eligibility = null;
+        eligibility = 'unknown';
       }
       const eligibilityResult = eligibilityDecision(
         eligibility,

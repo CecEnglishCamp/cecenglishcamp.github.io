@@ -54,10 +54,12 @@ function authenticatedFetch(
 async function blockedResponse(
   eligibility,
   studentMessage = 'Private learner message',
-  envOverrides = {}
+  envOverrides = {},
+  routerOverrides = {}
 ) {
   let upstreamCalls = 0;
   const router = createTutorRouter({
+    ...routerOverrides,
     fetchImpl: authenticatedFetch(async () => {
       upstreamCalls += 1;
       throw new Error('blocked request must not reach AI upstream');
@@ -123,6 +125,28 @@ test('resolver-provided ZDR approval cannot grant access', async () => {
   assert.equal((await response.json()).reason, 'ZDR_APPROVAL_REQUIRED');
   assert.equal(upstreamCalls, 0);
 });
+
+for (const [state, reason] of [
+  ['restricted', 'ELIGIBILITY_RESTRICTED'],
+  ['unknown', 'ELIGIBILITY_UNAVAILABLE']
+]) {
+  test(`${state} eligibility fails closed when server ZDR is approved`, async () => {
+    const { response, upstreamCalls } = await blockedResponse(
+      { state },
+      'Do not forward this learner text.',
+      { ZDR_APPROVED: 'true' }
+    );
+
+    assert.equal(response.status, 403);
+    assert.deepEqual(await response.json(), {
+      ok: false,
+      code: 'GENERATIVE_AI_BLOCKED',
+      reason,
+      fallback: { mode: 'rules_based', plan: 'PLAN_B_2' }
+    });
+    assert.equal(upstreamCalls, 0);
+  });
+}
 
 test('guardian consent alone does not bypass the ZDR gate', async () => {
   const { response, upstreamCalls } = await blockedResponse({
@@ -205,14 +229,20 @@ test('eligible learner follows the normal tutor route', async () => {
   assert.equal(upstreamCalls, 1);
 });
 
-for (const [label, resolver] of [
-  ['missing policy resolver', undefined],
-  ['invalid policy result', { resolve: async () => ({ policy: 'unknown' }) }]
+for (const [label, resolver, routerOverrides = {}] of [
+  ['missing resolver', undefined],
+  ['null result', { resolve: async () => null }],
+  ['invalid result', { resolve: async () => ({ policy: 'invalid' }) }],
+  ['undefined policy', { resolve: async () => ({}) }],
+  ['resolver throw', { resolve: () => { throw new Error('synthetic resolver error'); } }],
+  ['resolver reject', { resolve: async () => { throw new Error('synthetic rejection'); } }],
+  ['resolver timeout', { resolve: async () => new Promise(() => {}) }, { eligibilityResolverTimeoutMs: 5 }]
 ]) {
-  test(`${label} fails closed before API key, quota, or AI upstream`, async () => {
+  test(`${label} becomes unknown and fails closed before AI upstream`, async () => {
     let quotaCalls = 0;
     let upstreamCalls = 0;
     const router = createTutorRouter({
+      ...routerOverrides,
       fetchImpl: authenticatedFetch(async () => {
         upstreamCalls += 1;
         throw new Error('fail-closed request must not reach AI upstream');
@@ -234,7 +264,12 @@ for (const [label, resolver] of [
     }));
 
     assert.equal(response.status, 403);
-    assert.equal((await response.json()).reason, 'ELIGIBILITY_UNAVAILABLE');
+    assert.deepEqual(await response.json(), {
+      ok: false,
+      code: 'GENERATIVE_AI_BLOCKED',
+      reason: 'ELIGIBILITY_UNAVAILABLE',
+      fallback: { mode: 'rules_based', plan: 'PLAN_B_2' }
+    });
     assert.equal(quotaCalls, 0);
     assert.equal(upstreamCalls, 0);
   });
