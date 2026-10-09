@@ -277,7 +277,7 @@ test('redacts simple phone numbers before model forwarding', async () => {
   assert.ok(!outbound.messages[1].content.includes(phone));
 });
 
-test('rejects unknown lesson families and preserves the legacy API path', async () => {
+test('rejects unknown lesson families and unknown API paths', async () => {
   const router = createTutorRouter({
     fetchImpl: verifiedFetch(async () => { throw new Error('upstream must not be called'); })
   });
@@ -287,12 +287,12 @@ test('rejects unknown lesson families and preserves the legacy API path', async 
   }), env);
   assert.equal(unknown.status, 400);
 
-  const legacy = await router.fetch(new Request(
-    'https://worker.test/api/ai/chat/completions',
+  const unknownPath = await router.fetch(new Request(
+    'https://worker.test/api/ai/unknown',
     { method: 'POST', body: '{}' }
   ), env);
-  assert.equal(legacy.status, 404);
-  assert.equal((await legacy.json()).code, 'NOT_FOUND');
+  assert.equal(unknownPath.status, 404);
+  assert.equal((await unknownPath.json()).code, 'NOT_FOUND');
 });
 
 test('does not expose upstream errors or credentials', async () => {
@@ -421,6 +421,9 @@ test('allows Authorization in CORS preflight without requiring authentication', 
   ), env);
 
   assert.equal(response.status, 204);
-  assert.equal(response.headers.get('Access-Control-Allow-Headers'), 'Authorization, Content-Type');
+  assert.equal(
+    response.headers.get('Access-Control-Allow-Headers'),
+    'Authorization, Content-Type, X-CEC-Lesson-Id'
+  );
   assert.equal(calls, 0);
 });
