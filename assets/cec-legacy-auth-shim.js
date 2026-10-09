@@ -7,7 +7,10 @@
 
   if (window.CECLegacyAuthShim) return;
 
-  var LEGACY_ORIGIN = 'https://cec-robo.cecenglishcamp.workers.dev';
+  var LEGACY_ORIGINS = Object.freeze([
+    'https://cec-robo.cecenglishcamp.workers.dev',
+    'https://api.cecenglishcamp.com'
+  ]);
   var LEGACY_PATH = '/api/ai/chat/completions';
   var SUPABASE_URL = 'https://rzlqlokqplhyntuirsmd.supabase.co';
   var SUPABASE_KEY = 'sb_publishable_A4HJDb41-YeAMIaRnB8KeQ_ssECgA6q';
@@ -28,7 +31,7 @@
     if (!rawUrl) return false;
     try {
       var url = new URL(rawUrl, window.location.href);
-      return url.origin === LEGACY_ORIGIN && url.pathname === LEGACY_PATH;
+      return LEGACY_ORIGINS.indexOf(url.origin) !== -1 && url.pathname === LEGACY_PATH;
     } catch (_error) {
       return false;
     }
@@ -102,7 +105,8 @@
   };
 
   window.CECLegacyAuthShim = Object.freeze({
-    targetOrigin: LEGACY_ORIGIN,
+    targetOrigin: LEGACY_ORIGINS[0],
+    targetOrigins: LEGACY_ORIGINS,
     targetPath: LEGACY_PATH
   });
 })();

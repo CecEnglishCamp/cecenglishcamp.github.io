@@ -10,6 +10,7 @@ const shimSource = readFileSync(
   'utf8'
 );
 const legacyEndpoint = 'https://cec-robo.cecenglishcamp.workers.dev/api/ai/chat/completions';
+const approvedApiEndpoint = 'https://api.cecenglishcamp.com/api/ai/chat/completions';
 const repositoryRoot = fileURLToPath(new URL('../../', import.meta.url));
 
 function htmlFiles(directory) {
@@ -103,6 +104,38 @@ test('protected page session adds bearer only to the legacy AI endpoint', async 
   assert.equal(harness.sessionCalls, 1);
 });
 
+test('both exact approved legacy POST endpoints receive bearer authorization', async () => {
+  for (const endpoint of [legacyEndpoint, approvedApiEndpoint]) {
+    const harness = installShim({
+      protectedSession: { access_token: 'synthetic-approved-host-token' }
+    });
+
+    await harness.window.fetch(endpoint, { method: 'POST' });
+
+    assert.equal(authorization(harness.calls[0]), 'Bearer synthetic-approved-host-token');
+    assert.equal(harness.sessionCalls, 1);
+  }
+});
+
+test('wrong path, GET, and unrelated host remain untouched', async () => {
+  const cases = [
+    ['https://cec-robo.cecenglishcamp.workers.dev/api/ai/not-chat', { method: 'POST' }],
+    [approvedApiEndpoint, { method: 'GET' }],
+    ['https://api.cecenglishcamp.com.evil.example/api/ai/chat/completions', { method: 'POST' }]
+  ];
+
+  for (const [endpoint, init] of cases) {
+    const harness = installShim({
+      protectedSession: { access_token: 'synthetic-unrelated-token' }
+    });
+
+    await harness.window.fetch(endpoint, init);
+
+    assert.equal(authorization(harness.calls[0]), null);
+    assert.equal(harness.sessionCalls, 0);
+  }
+});
+
 test('expired or invalid browser session sends no bearer and preserves server 401', async () => {
   for (const protectedSession of [null, new Error('synthetic expired session')]) {
     const harness = installShim({ protectedSession, responseStatus: 401 });
@@ -186,4 +219,23 @@ test('all current legacy pages are covered without bulk HTML edits', () => {
   assert.equal(legacyPages.length, 1256);
   assert.equal(protectedPages.length, 1177);
   assert.equal(publicPages.length, 79);
+});
+
+test('standalone Grade 3 lesson loads the non-redirect shim and its caller is covered', () => {
+  const page = readFileSync(
+    new URL('../../lessons/grade3/week01.html', import.meta.url),
+    'utf8'
+  );
+  const aiTutor = readFileSync(
+    new URL('../../camp-a/assets/ai-tutor.js', import.meta.url),
+    'utf8'
+  );
+
+  assert.match(page, /<script src="\/assets\/cec-legacy-auth-shim\.js\?v=1"><\/script>/);
+  assert.ok(!page.includes('require-auth.js'));
+  assert.ok(!page.includes('require-auth-v16.js'));
+  assert.ok(page.includes(approvedApiEndpoint));
+  assert.ok(aiTutor.includes(approvedApiEndpoint));
+  assert.ok(!page.includes('synthetic-approved-host-token'));
+  assert.ok(!aiTutor.includes('synthetic-approved-host-token'));
 });
