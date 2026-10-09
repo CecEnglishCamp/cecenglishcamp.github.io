@@ -32,6 +32,10 @@ export const LEGACY_GENERIC_CONTEXT = Object.freeze({
   lesson_text: 'Use only the bounded untrusted page context for additional page-specific details.'
 });
 
+export function legacyAdapterEnabled(env) {
+  return env?.LEGACY_ADAPTER_ENABLED === 'true';
+}
+
 const ALLOWED_FIELDS = new Set(ALLOWED_REQUEST_FIELDS);
 const SIMPLE_EMAIL_PATTERN = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi;
 const SIMPLE_PHONE_CANDIDATE_PATTERN = /\+?\d[\d().\s-]{5,}\d/g;
@@ -223,7 +227,6 @@ function validateLegacyBody(request, body) {
   if (!Array.isArray(body.messages) || body.messages.length > MAX_LEGACY_MESSAGES) return null;
 
   const lessonId = legacyLessonId(request, body);
-  if (!lessonId) return null;
 
   let studentMessage = null;
   const untrustedContext = [];
@@ -239,7 +242,7 @@ function validateLegacyBody(request, body) {
   const trimmedStudentMessage = studentMessage?.trim();
   if (!trimmedStudentMessage || trimmedStudentMessage.length > MAX_STUDENT_MESSAGE_CHARS) return null;
 
-  const registeredContext = lessonContextForLesson(lessonId);
+  const registeredContext = lessonId ? lessonContextForLesson(lessonId) : null;
   const profile = registeredContext ? profileForLesson(lessonId) : LEGACY_GENERIC_PROFILE;
   const lessonContext = registeredContext || LEGACY_GENERIC_CONTEXT;
   const redactedStudentMessage = redactPhoneNumbers(redactEmailAddresses(trimmedStudentMessage));
@@ -300,6 +303,14 @@ export function createTutorRouter({
 
       if (request.method !== 'POST') {
         return json({ ok: false, code: 'METHOD_NOT_ALLOWED' }, 405, originCheck.origin);
+      }
+
+      if (isLegacyRoute && !legacyAdapterEnabled(env)) {
+        return json(
+          { ok: false, code: 'LEGACY_ADAPTER_DISABLED' },
+          503,
+          originCheck.origin
+        );
       }
 
       const authentication = await verifyAuthenticatedUser(request, env, fetchImpl);

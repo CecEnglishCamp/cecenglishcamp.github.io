@@ -13,6 +13,7 @@ import { PROFILES, SAFETY_RULES } from '../src/profiles.js';
 
 const env = {
   OPENAI_API_KEY: 'synthetic-e2e-key',
+  LEGACY_ADAPTER_ENABLED: 'true',
   ALLOWED_ORIGINS: 'https://cecenglishcamp.com',
   ZDR_APPROVED: 'true',
   SUPABASE_URL: 'https://auth.test',
