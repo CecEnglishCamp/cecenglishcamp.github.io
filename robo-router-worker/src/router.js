@@ -24,6 +24,13 @@ export const EMAIL_REDACTION = '[EMAIL REDACTED]';
 export const PHONE_REDACTION = '[PHONE REDACTED]';
 export const MAX_LEGACY_MESSAGES = 32;
 export const MAX_LEGACY_CONTEXT_CHARS = 2000;
+export const LEGACY_GENERIC_PROFILE = 'legacy-generic';
+export const LEGACY_GENERIC_CONTEXT = Object.freeze({
+  program: 'CEC English Camp',
+  course: 'Legacy lesson',
+  topic: 'Current English lesson',
+  lesson_text: 'Use only the bounded untrusted page context for additional page-specific details.'
+});
 
 const ALLOWED_FIELDS = new Set(ALLOWED_REQUEST_FIELDS);
 const SIMPLE_EMAIL_PATTERN = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi;
@@ -60,6 +67,19 @@ function json(body, status, origin, extraHeaders = {}) {
     headers.Vary = 'Origin';
   }
   return new Response(JSON.stringify(body), { status, headers });
+}
+
+function legacySse(reply, origin) {
+  const headers = {
+    'Content-Type': 'text/event-stream; charset=utf-8',
+    'Cache-Control': 'no-store'
+  };
+  if (origin) {
+    headers['Access-Control-Allow-Origin'] = origin;
+    headers.Vary = 'Origin';
+  }
+  const delta = JSON.stringify({ choices: [{ delta: { content: reply } }] });
+  return new Response(`data: ${delta}\n\ndata: [DONE]\n\n`, { status: 200, headers });
 }
 
 function allowedOrigin(request, env) {
@@ -187,7 +207,13 @@ function legacyLessonId(request, body) {
   for (const candidate of candidates) {
     if (typeof candidate !== 'string') continue;
     const lessonId = candidate.trim();
-    if (profileForLesson(lessonId) && lessonContextForLesson(lessonId)) return lessonId;
+    if (
+      lessonId.length <= 512 &&
+      lessonId.endsWith('.html') &&
+      !lessonId.includes('..') &&
+      !/[?#\\\u0000-\u001f]/.test(lessonId) &&
+      profileForLesson(lessonId)
+    ) return lessonId;
   }
   return null;
 }
@@ -213,12 +239,14 @@ function validateLegacyBody(request, body) {
   const trimmedStudentMessage = studentMessage?.trim();
   if (!trimmedStudentMessage || trimmedStudentMessage.length > MAX_STUDENT_MESSAGE_CHARS) return null;
 
-  const profile = profileForLesson(lessonId);
-  const lessonContext = lessonContextForLesson(lessonId);
+  const registeredContext = lessonContextForLesson(lessonId);
+  const profile = registeredContext ? profileForLesson(lessonId) : LEGACY_GENERIC_PROFILE;
+  const lessonContext = registeredContext || LEGACY_GENERIC_CONTEXT;
   const redactedStudentMessage = redactPhoneNumbers(redactEmailAddresses(trimmedStudentMessage));
-  const legacyPageContext = redactPhoneNumbers(redactEmailAddresses(
-    untrustedContext.join('\n').slice(0, MAX_LEGACY_CONTEXT_CHARS)
+  const redactedPageContext = redactPhoneNumbers(redactEmailAddresses(
+    untrustedContext.join('\n')
   ));
+  const legacyPageContext = redactedPageContext.slice(0, MAX_LEGACY_CONTEXT_CHARS);
 
   return {
     lessonId,
@@ -407,7 +435,9 @@ export function createTutorRouter({
         if (typeof reply !== 'string' || !reply.trim()) {
           return json({ ok: false, code: 'AI_INVALID_RESPONSE' }, 502, originCheck.origin);
         }
-        return json({ ok: true, lesson_id: input.lessonId, reply }, 200, originCheck.origin);
+        return isLegacyRoute
+          ? legacySse(reply, originCheck.origin)
+          : json({ ok: true, lesson_id: input.lessonId, reply }, 200, originCheck.origin);
       } catch {
         if (upstreamController.signal.aborted) {
           return json({ ok: false, code: 'AI_UPSTREAM_TIMEOUT' }, 504, originCheck.origin);

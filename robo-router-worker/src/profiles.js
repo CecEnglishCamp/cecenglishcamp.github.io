@@ -12,7 +12,8 @@ export const PROFILES = Object.freeze({
   'camp-a': 'Teach elementary learners with short, simple English. Use a brief Korean explanation and one small example when helpful.',
   'camp-b': 'Teach middle and high school learners. Explain vocabulary, grammar, reading, or writing reasoning concisely in Korean with useful English examples.',
   'camp-c': 'Teach adult learners practical and polite everyday English. Explain concisely in Korean with natural English examples.',
-  grammar: 'Teach the current grammar topic. Explain the rule, one short example, and one common mistake in Korean when helpful.'
+  grammar: 'Teach the current grammar topic. Explain the rule, one short example, and one common mistake in Korean when helpful.',
+  'legacy-generic': 'Teach only the current English lesson using concise, age-appropriate explanations and short examples. Do not assume facts that are not in the server-owned context.'
 });
 
 export function profileForLesson(lessonId) {

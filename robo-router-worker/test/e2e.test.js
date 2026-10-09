@@ -137,11 +137,13 @@ test('browser text cannot override server lesson context or rules', async () => 
   assert.equal(JSON.parse(outbound.messages[1].content).student_message, injection);
 });
 
-test('the standalone router does not claim the old production route', async () => {
-  const router = createTutorRouter({ fetchImpl: async () => { throw new Error('must not call'); } });
+test('the standalone router claims the legacy route without modifying legacy pages', async () => {
+  const router = createTutorRouter({ fetchImpl: verifiedFetch(async () => {
+    throw new Error('invalid legacy input must not reach OpenAI');
+  }) });
   const response = await router.fetch(request({}, '/api/ai/chat/completions'), env);
-  assert.equal(response.status, 404);
-  assert.equal((await response.json()).code, 'NOT_FOUND');
+  assert.equal(response.status, 400);
+  assert.equal((await response.json()).code, 'INVALID_REQUEST');
 
   const unchangedPage = readFileSync(
     new URL('../../camp-a/grade3/week01b.html', import.meta.url),
