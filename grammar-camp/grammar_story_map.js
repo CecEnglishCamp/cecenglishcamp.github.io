@@ -1,3 +1,15 @@
+(function loadLegacyAuthShim() {
+  if (window.CECLegacyAuthShim || !document.createElement) return;
+  var existing = document.querySelector && document.querySelector(
+    'script[data-cec-legacy-auth-shim],script[src^="/assets/cec-legacy-auth-shim.js"]'
+  );
+  if (existing) return;
+  var script = document.createElement('script');
+  script.src = '/assets/cec-legacy-auth-shim.js?v=1';
+  script.setAttribute('data-cec-legacy-auth-shim', 'true');
+  document.head.appendChild(script);
+})();
+
 var GRAMMAR_STORY_MAP = {
   "G01":{"title":"Be동사 현재형","level":"A1","example":"I am a student. She is happy. They are friends.","prompt":"저는 G01 Be동사 현재형을 공부 중이에요. am/is/are 사용법을 예문 3개와 연습문제 2개로 설명해주세요!"},
   "G02":{"title":"관사 a/an/the","level":"A1","example":"I have a cat. She ate an apple. The sun is bright.","prompt":"저는 G02 관사를 공부 중이에요. a/an/the 차이를 예문 3개와 연습문제 2개로 설명해주세요!"},

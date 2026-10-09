@@ -42,6 +42,20 @@
     }
   });
 
+  // Attach the current session only to the legacy CEC AI endpoint.
+  // This transport helper does not change the page's existing access policy.
+  (function loadLegacyAuthShim() {
+    if (window.CECLegacyAuthShim || !document.createElement) return;
+    var existing = document.querySelector && document.querySelector(
+      'script[data-cec-legacy-auth-shim],script[src^="/assets/cec-legacy-auth-shim.js"]'
+    );
+    if (existing) return;
+    var script = document.createElement('script');
+    script.src = '/assets/cec-legacy-auth-shim.js?v=1';
+    script.setAttribute('data-cec-legacy-auth-shim', 'true');
+    document.head.appendChild(script);
+  })();
+
   // 항상 정식 도메인(cecenglishcamp.com)에서 동작 — 로그인 세션이 도메인별로 분리돼 생기는 로그인 루프 방지
   var _H = location.hostname;
   if (_H === 'cecenglishcamp.github.io' || _H === 'www.cecenglishcamp.com') {
