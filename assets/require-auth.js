@@ -17,6 +17,8 @@
  *     2. 미로그인 + 쿠키 없음 → /login.html?next=현재경로
  *     3. 로그인 → households(auth_user_id) 조회:
  *          plan_type 있고 canceled_at 없음 AND payment_failed_at 없음 → 유료 활성 → 전체 통과
+ *            단, /camp-b/m*\/ 는 상품명 "Camp B"+"Middle", /camp-b/g*\/ 는 "Camp B"+"High" 결제자만.
+ *            그 외 결제자(Individual·Scholarship 등)는 Camp B에서 아래 미결제와 같은 제한(week01까지).
  *          payment_failed_at 있음 → 결제 실패 메시지 + /payment/ 리다이렉트
  *          그 외(미결제/해지/households 없음) → 경로별 제한 + 무료체험 메시지:
  *            camp-a/camp-b: week01만 허용 (week02+ → /payment/)
@@ -265,16 +267,25 @@
           var h = r && r.data;
           // 유료 활성 = plan_type 있고 canceled_at 없음 AND payment_failed_at 없음
           var isPaid = h && !!h.plan_type && !h.canceled_at && !h.payment_failed_at;
-          if (isPaid) {
+          var p = location.pathname;
+          // Camp B는 Camp B 상품 결제자만: m1~m3 = "Camp B" + "Middle", g1~g3 = "Camp B" + "High"
+          // (plan_type = Stripe 상품명). 그 외 결제자는 아래 미결제 분기로 내려감.
+          var campBLevel = (p.match(/^\/camp-b\/(m|g)\d+\//) || [])[1];
+          var planName = isPaid ? String(h.plan_type) : '';
+          var hasCampB = /camp\s*b/i.test(planName) &&
+            ((campBLevel === 'm' && /middle/i.test(planName)) ||
+             (campBLevel === 'g' && /high/i.test(planName)));
+          if (isPaid && (!campBLevel || hasCampB)) {
             bootstrapStudentContext(session, location.pathname);
-            return; // 유료 활성 → 전체 통과
+            return; // 유료 활성 → 통과 (Camp B 학습 경로는 해당 Camp B 상품만)
           }
 
-          // 결제 실패 / 미결제·해지 → 경로별 접근 제한 (메시지 분기)
-          var p = location.pathname;
+          // 결제 실패 / 미결제·해지 / Camp B 미결제 → 경로별 접근 제한 (메시지 분기)
           var lockMsg = (h && h.payment_failed_at)
             ? '결제에 문제가 발생했습니다. 구독을 계속하려면 결제 수단을 확인해 주세요.'
-            : '7일 무료체험은 각 학년 1주차까지 제공됩니다. 전체 학습은 구독 후 이용하세요.';
+            : isPaid
+              ? 'Camp B는 별도 구독입니다 (Middle 월 $60 · High School 월 $80). 결제 준비 중 · 문의는 이메일로 cecenglishcamp@gmail.com'
+              : '7일 무료체험은 각 학년 1주차까지 제공됩니다. 전체 학습은 구독 후 이용하세요.';
           function trialBlock() {
             sessionStorage.setItem('cec_lock_msg', lockMsg);
             window.location.replace('/payment/');
