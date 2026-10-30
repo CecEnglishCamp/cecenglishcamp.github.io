@@ -13,17 +13,18 @@
  *     2. 로그인 + (구독자(plan_type 있고 canceled_at 없음) 또는 space_camp_access=true) → 통과
  *     3. 그 외(무료 계정 등) → /space-camp-lock.html 로 이동
  *   [그 외 일반 콘텐츠]
- *     1. 미로그인 + cec_trial 쿠키 → week01/ep01 만 허용, 이후는 /payment/
+ *     1. 미로그인 + cec_trial 쿠키 → week01/ep01 만 허용, 이후는 /payment/ (camp-b 학습 경로는 전부 /payment/)
  *     2. 미로그인 + 쿠키 없음 → /login.html?next=현재경로
  *     3. 로그인 → households(auth_user_id) 조회:
  *          plan_type 있고 canceled_at 없음 AND payment_failed_at 없음 → 유료 활성 → 전체 통과
  *            단, /camp-b/m*\/ 는 상품명 "Camp B"+"Middle", /camp-b/g*\/ 는 "Camp B"+"High" 결제자만.
- *            그 외 결제자(Individual·Scholarship 등)는 Camp B에서 아래 미결제와 같은 제한(week01까지).
+ *            그 외 결제자(Individual·Scholarship 등)는 Camp B에서 아래 미결제와 같은 제한(무료체험 없음).
  *          payment_failed_at 있음 → 결제 실패 메시지 + /payment/ 리다이렉트
  *          그 외(미결제/해지/households 없음) → 경로별 제한 + 무료체험 메시지:
- *            camp-a/camp-b: week01만 허용 (week02+ → /payment/)
+ *            camp-a: week01만 허용 (week02+ → /payment/)
+ *            camp-b 학습 경로(m*, g*): 무료체험 없음 → 전부 /payment/
  *            camp-c/camp-c2/young-days: ep01~03만 허용 (ep04+ → /payment/)
- *            grammar-camp: g01~g10만 허용 (g11+ → /payment/)
+ *          (grammar-camp, library는 무료 공개 — 이 게이트를 로드하지 않음)
  */
 (function () {
   var _resolveAuthSession;
@@ -59,13 +60,12 @@
     window.location.replace('/login.html?next=' + next);
   }
 
+  // /library/ (Camp A Readings 포함)는 모두 공개 — 게이트를 로드하지 않으므로 여기서 다루지 않는다.
   var G3_WEEK1_TRIAL_PATHS = [
     '/camp-a/grade3/week01a.html',
-    '/library/camp-a-readings/grade3/peter-rabbit/w01_r1.html',
     '/lostwords/peter_rabbit_img4.html',
     '/camp-a/speaking/peter_rabbit_img8.html',
     '/camp-a/grade3/week01b.html',
-    '/library/camp-a-readings/grade3/peter-rabbit/w01_r2.html',
     '/camp-a/writing/grade3/peter-rabbit/w01.html',
     '/camp-a/grade3/week01c.html'
   ];
@@ -75,8 +75,7 @@
   }
 
   function isG3PeterRabbitAuxiliaryPath(path) {
-    return path.indexOf('/library/camp-a-readings/grade3/peter-rabbit/') === 0 ||
-      path.indexOf('/lostwords/peter_rabbit_') === 0 ||
+    return path.indexOf('/lostwords/peter_rabbit_') === 0 ||
       path.indexOf('/lostwords-wip/peter_rabbit_') === 0 ||
       path.indexOf('/camp-a/speaking/peter_rabbit_') === 0 ||
       path.indexOf('/camp-a/writing/grade3/peter-rabbit/') === 0;
@@ -246,6 +245,7 @@
         var trialToken = getCookie('cec_trial');
         if (trialToken) {
           var path = location.pathname;
+          if (/^\/camp-b\/[mg]\d+\//.test(path)) { window.location.replace('/payment/'); return; } // Camp B: 무료체험 없음
           var weekMatch = path.match(/week(\d+)/);
           if (weekMatch && parseInt(weekMatch[1], 10) > 1) { window.location.replace('/payment/'); return; }
           var epMatch = path.match(/ep(\d+)/);
@@ -263,7 +263,7 @@
         .eq('auth_user_id', session.user.id)
         .maybeSingle()
         .then(function (r) {
-          if (r && r.error) return; // DB 오류 → 통과(fail-open)
+          if (r && r.error) { if (/^\/camp-b\/[mg]\d+\//.test(location.pathname)) window.location.replace('/payment/'); return; } // DB 오류 → Camp B 학습 경로만 차단, 그 외 통과(fail-open)
           var h = r && r.data;
           // 유료 활성 = plan_type 있고 canceled_at 없음 AND payment_failed_at 없음
           var isPaid = h && !!h.plan_type && !h.canceled_at && !h.payment_failed_at;
@@ -272,7 +272,7 @@
           // (plan_type = Stripe 상품명). 그 외 결제자는 아래 미결제 분기로 내려감.
           var campBLevel = (p.match(/^\/camp-b\/(m|g)\d+\//) || [])[1];
           var planName = isPaid ? String(h.plan_type) : '';
-          var hasCampB = /camp\s*b/i.test(planName) &&
+          var hasCampB = /\bcamp\s*b\b/i.test(planName) &&
             ((campBLevel === 'm' && /middle/i.test(planName)) ||
              (campBLevel === 'g' && /high/i.test(planName)));
           if (isPaid && (!campBLevel || hasCampB)) {
@@ -283,8 +283,8 @@
           // 결제 실패 / 미결제·해지 / Camp B 미결제 → 경로별 접근 제한 (메시지 분기)
           var lockMsg = (h && h.payment_failed_at)
             ? '결제에 문제가 발생했습니다. 구독을 계속하려면 결제 수단을 확인해 주세요.'
-            : isPaid
-              ? 'Camp B는 별도 구독입니다 (Middle 월 $60 · High School 월 $80). 결제 준비 중 · 문의는 이메일로 cecenglishcamp@gmail.com'
+            : campBLevel
+              ? 'Camp B(중·고등)는 무료체험 없이 별도 구독입니다 (Middle 월 $60 · High School 월 $80). 결제 준비 중 · 문의는 이메일로 contact.cecenglishcamp@gmail.com'
               : '7일 무료체험은 각 학년 1주차까지 제공됩니다. 전체 학습은 구독 후 이용하세요.';
           function trialBlock() {
             sessionStorage.setItem('cec_lock_msg', lockMsg);
@@ -306,8 +306,10 @@
             });
             return;
           }
-          // camp-a / camp-b: week01만 허용
-          if (/\/(camp-a|camp-b)\//.test(p)) {
+          // camp-b 학습 경로(중·고등): 무료체험 없음 → 전부 /payment/
+          if (campBLevel) { trialBlock(); return; }
+          // camp-a: week01만 허용
+          if (/\/camp-a\//.test(p)) {
             var wm = p.match(/week(\d+)/);
             if (wm && parseInt(wm[1], 10) > 1) { trialBlock(); return; }
           }
@@ -316,14 +318,10 @@
             var em = p.match(/ep(\d+)/);
             if (em && parseInt(em[1], 10) > 3) { trialBlock(); return; }
           }
-          // grammar-camp: g01~g10만 허용
-          if (/\/grammar-camp\//.test(p)) {
-            var gm = p.match(/\/g(\d+)/i);
-            if (gm && parseInt(gm[1], 10) > 10) { trialBlock(); return; }
-          }
+          // grammar-camp / library는 전체 무료 공개라 게이트를 로드하지 않는다(제한 규칙 없음).
           bootstrapStudentContext(session, p);
         })
-        .catch(function () { /* DB 오류 → 통과 */ });
+        .catch(function () { if (/^\/camp-b\/[mg]\d+\//.test(location.pathname)) window.location.replace('/payment/'); /* DB 오류 → Camp B 학습 경로만 차단, 그 외 통과 */ });
     });
   }
 
