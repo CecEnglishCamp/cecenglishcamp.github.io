@@ -103,13 +103,13 @@
         var data = await res.json();
 
         if (!res.ok || !data.url) {
-          alert(data.error || '결제 관리 페이지를 열 수 없습니다.\n문제가 계속되면 cecenglishcamp@gmail.com으로 문의해 주세요.');
+          alert(data.error || '결제 관리 페이지를 열 수 없습니다.\n문제가 계속되면 contact.cecenglishcamp@gmail.com으로 문의해 주세요.');
           btn.classList.remove('loading'); btn.textContent = '💳 결제 관리'; return;
         }
         location.href = data.url;
 
       } catch (ex) {
-        alert('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.\n문의: cecenglishcamp@gmail.com');
+        alert('오류가 발생했습니다. 잠시 후 다시 시도해 주세요.\n문의: contact.cecenglishcamp@gmail.com');
         btn.classList.remove('loading'); btn.textContent = '💳 결제 관리';
       }
     });
