@@ -618,6 +618,9 @@
   </div>
 </div>
 <script src="../grammar_story_map.js"></script>
+<script src="/assets/require-auth.js?v=14"></script>
+<script>window.CEC_TUTOR_ENDPOINT='https://cec-robo.cecenglishcamp.workers.dev/robo/v1/tutor';</script>
+<script src="/assets/cec-tutor.js?v=1"></script>
 <script>
 (function(){
   var path = window.location.pathname;
@@ -671,19 +674,13 @@
     if(e.key === 'Enter') gbSend();
   };
 
-  // ===== AI API (Gemma4 via ngrok) — Camp A style: single user role =====
-  var GB_API_URL='https://cec-robo.cecenglishcamp.workers.dev/api/ai/chat/completions';
-  var GB_MODEL='gpt-4o-mini';
+  // ===== Server-fixed Tutor Router =====
 
   window.gbFetch=async function(userContent){
     var bubble=window.gbAddAI('생각 중... 🤔');
     var c=document.getElementById('gbChat');
     try{
-      var res=await fetch(GB_API_URL,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({model:GB_MODEL,messages:[{role:'system',content:'마크다운 기호(#, *, **, ##, - 등)를 절대 사용하지 말고 일반 텍스트로만 답해줘. 이모지는 사용 가능.'},{role:'user',content:userContent}],max_tokens:300,stream:true})
-      });
+      var res=await window.CECTutor.request({lesson_id:'/grammar-camp/G01/G01_be_verb_present_tense.html',student_message:userContent});
       if(!res.ok) throw new Error('HTTP '+res.status);
       var reader=res.body.getReader();
       var decoder=new TextDecoder();
