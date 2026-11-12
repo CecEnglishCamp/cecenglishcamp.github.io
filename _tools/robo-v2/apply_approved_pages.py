@@ -53,7 +53,12 @@ def versions():
 def approved_page_cfg(cfg, by, date):
     """승인용 ROBO_PAGE: 초안 표시 제거, teacherApproved true. 고정 답은 설정 파일에 있는 것만(새로 만들지 않음)."""
     out = {k: v for k, v in cfg.items() if k not in ("task", "pageSha256")}
-    out["facts"] = {k.replace(DRAFT, ""): v for k, v in cfg.get("facts", {}).items()}
+    # The page's 🆕 is an editorial marker, not lesson vocabulary. Remove it from
+    # all Robo-facing facts so it can never be shown or prompted to students.
+    out["facts"] = {
+        k.replace(DRAFT, ""): (v.replace("🆕", "").strip() if isinstance(v, str) else v)
+        for k, v in cfg.get("facts", {}).items()
+    }
     out["autoDraft"] = False
     out["teacherApproved"] = True
     out["checked"] = dict(cfg.get("checked") or {}); out["checked"].update({"story": True, "wordCards": True})
@@ -82,7 +87,9 @@ def main():
     want = set(filter(None, a.tasks.split(","))); v = versions(); done = skip = 0
     for fn in sorted(os.listdir(CFGDIR)):
         if not fn.endswith(".json"): continue
-        cfg = json.load(open(os.path.join(CFGDIR, fn), encoding="utf-8")); tid = cfg["task"]
+        cfg_path = os.path.join(CFGDIR, fn)
+        cfg_raw = open(cfg_path, "rb").read()
+        cfg = json.loads(cfg_raw.decode("utf-8")); tid = cfg["task"]
         if want and tid not in want: continue
         rel = "camp-a/grade%d/week%02d%s.html" % (cfg["grade"], cfg["week"], "abc"[cfg["day"] - 1]); p = os.path.join(ROOT, rel)
         raw = open(p, "rb").read(); r = chk.get(tid, {})
@@ -90,6 +97,11 @@ def main():
         if r.get("approve") != "YES": why.append("미승인")
         if [r.get(k) for k in ("teacher_bodyMatchesScreen", "teacher_wordsMatchScreen", "teacher_noQuizAnswerExposed")] != ["Y", "Y", "Y"]: why.append("교사 3칸 미완")
         if not (r.get("teacher_checkedBy") and r.get("teacher_checkedDate")): why.append("확인자·날짜 없음")
+        cfg_path = os.path.join(CFGDIR, fn)
+        cfg_raw = open(cfg_path, "rb").read()
+        cfg_sha = sha(cfg_raw)
+        if not (r.get("configSha256") and r.get("configSha256") == cfg_sha):
+            why.append("설정 파일 해시 불일치 또는 확인표 configSha256 누락(승인 무효)")
         if not (r.get("pageSha256") == cfg.get("pageSha256") == sha(raw)): why.append("페이지 해시 불일치(승인 무효)")
         if why: skip += 1; (want and print("유지(예전 Robo) %s: %s" % (tid, ", ".join(why)))); continue
         out, err = transform(raw.decode("utf-8"), approved_page_cfg(cfg, r["teacher_checkedBy"], r["teacher_checkedDate"]), v)
