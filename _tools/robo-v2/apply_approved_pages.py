@@ -5,8 +5,9 @@
 
 교체 조건(모두 만족해야 함 — 하나라도 아니면 그 페이지는 예전 Robo 그대로):
   1) 확인표 approve=YES, 교사 3칸(이야기·단어·정답 노출 없음)=Y, 확인자·날짜 있음
-  2) 확인표 pageSha256 = 설정 파일 pageSha256 = 지금 페이지 sha256 (승인 뒤 페이지가 바뀌면 무효)
-  3) 페이지에 예전 Robo 블록이 정확히 한 벌 있고, 아직 새 위젯이 없음
+  2) 확인표 configSha256 = 설정 JSON 파일 바이트의 SHA-256 (승인 뒤 설정이 바뀌면 무효)
+  3) 확인표 pageSha256 = 설정 파일 pageSha256 = 지금 페이지 sha256 (페이지가 바뀌면 무효)
+  4) 페이지에 예전 Robo 블록이 정확히 한 벌 있고, 아직 새 위젯이 없음
 교체 내용: 예전 Robo 스타일·채팅 블록 삭제(페이지 고유 스크립트는 남김), /camp-a/assets/ai-tutor.js 참조 삭제,
           </head> 앞에 위젯 CSS, </body> 앞에 v2-env.js + window.ROBO_PAGE + 위젯 JS.
 서버 쪽(APPROVED_TASK_IDS, KV approved:true)은 별도 승인 단계다. 이 도구는 서버를 바꾸지 않는다.
