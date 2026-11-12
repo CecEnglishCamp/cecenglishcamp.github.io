@@ -1,0 +1,89 @@
+/* Robo Helper v2 — G3 single-task pilot candidate
+ * 2026-11-09: 디자인 기준 ui_mockup_20261108/robo_widget_mockup_v2.html (DESIGN_BASELINE.md) 적용.
+ * 이전 스타일 백업: ../widget_backup_20261109/robo_v2_t.css */
+.rb2, .rb2 * { box-sizing: border-box; }
+.rb2 { font-family: sans-serif; color: #2d4a25; }
+.rb2 [hidden] { display: none !important; }
+.rb2 button, .rb2 input { font-family: inherit; }
+.rb2 button:focus-visible, .rb2 input:focus-visible { outline: 3px solid #1B5BD6; outline-offset: 2px; }
+
+/* 아이콘 + 말풍선 안내 (기준: 아래 80px · 오른쪽 24px · 56px) */
+.rb2-dock { position: fixed; bottom: 80px; right: 24px; z-index: 2147483000; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.rb2-hint { background: #4a6741; color: #fff; font-size: 12px; padding: 7px 14px; border-radius: 20px 20px 4px 20px; cursor: pointer; white-space: nowrap; animation: rb2Float 3s ease-in-out infinite; transition: opacity .2s; }
+.rb2-hint span { color: #c8e6a0; }
+@keyframes rb2Float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.rb2-fab { width: 56px; height: 56px; border-radius: 50%; background: #4a6741; border: 2px solid #a8d070; cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; padding: 0; }
+.rb2-fab img { width: 46px; height: 46px; object-fit: contain; border-radius: 50%; }
+
+/* 패널 (기준: 300px · 오른쪽 24px · 아래 92px · 모서리 20px) */
+.rb2-panel { position: fixed; bottom: 92px; right: 24px; width: 300px; max-width: calc(100vw - 16px); max-height: calc(100vh - 110px); display: flex; flex-direction: column; background: #fff; border-radius: 20px; border: 0.5px solid #c8d8b8; box-shadow: 0 4px 24px rgba(74,103,65,0.15); overflow: hidden; z-index: 2147483001; }
+.rb2-head { flex: 0 0 auto; background: #4a6741; padding: 12px 8px 12px 16px; display: flex; align-items: center; gap: 10px; }
+.rb2-head > img { width: 28px; height: 28px; border-radius: 50%; object-fit: contain; flex: 0 0 auto; }
+.rb2-ht { flex: 1 1 auto; min-width: 0; }
+.rb2-name { font-size: 13px; font-weight: 700; color: #fff; }
+.rb2-hs { font-size: 11px; color: #c8e6a0; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.rb2-pill { font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: rgba(255,255,255,.14); color: #e4f2d2; border: 0.5px solid #a8d070; }
+.rb2-pill.off { color: #e0e3dc; border-color: #c0c8b8; }
+.rb2-pill.limit, .rb2-pill.bad { background: #FFF4E0; color: #7A3E06; border-color: #F0C36D; }
+.rb2-close { margin-left: auto; width: 32px; height: 32px; background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+.rb2-close svg { width: 14px; height: 14px; }
+.rb2-close svg path { stroke: #a0c080; }
+
+.rb2-body { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+/* 대화 영역 (기준: 크림색 #f8faf5, 높이 180px) */
+.rb2-chat { flex: 0 0 180px; height: 180px; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; background: #f8faf5; }
+.rb2-row { display: flex; flex-direction: column; gap: 3px; }
+.rb2-row.me { align-items: flex-end; }
+.rb2-row.bot { align-items: flex-start; }
+.rb2-line { display: flex; gap: 8px; align-items: flex-start; }
+.rb2-av { width: 22px; height: 22px; flex: 0 0 22px; }
+.rb2-av img { width: 22px; height: 22px; border-radius: 50%; object-fit: contain; display: block; }
+.rb2-bub { font-size: 12px; line-height: 1.6; padding: 8px 12px; white-space: pre-line; overflow-wrap: anywhere; }
+.rb2-row.bot .rb2-bub { background: #fff; border: 0.5px solid #c8d8b8; border-radius: 0 10px 10px 10px; color: #2d4a25; max-width: 210px; }
+.rb2-row.me .rb2-bub { background: #4a6741; color: #fff; border-radius: 10px 0 10px 10px; max-width: 200px; line-height: 1.5; }
+.rb2-row.bot .rb2-note { padding-left: 30px; }
+.rb2-note { font-size: 10px; color: #6b7d63; padding: 0 2px; max-width: 240px; }
+
+.rb2-ctrl { flex: 0 1 auto; min-height: 0; overflow-y: auto; background: #fff; display: flex; flex-direction: column; }
+.rb2-banner { display: flex; align-items: center; gap: 8px; margin: 8px 12px 0; padding: 6px 10px; border-radius: 10px; font-size: 11px; line-height: 1.4; background: #EEF0EC; color: #2F3640; border: 0.5px solid #C9CDC4; }
+.rb2-banner.warn { background: #FFF4E0; color: #7A3E06; border-color: #F0C36D; }
+.rb2-banner span { flex: 1 1 auto; }
+.rb2-retry { flex: 0 0 auto; padding: 4px 8px; border-radius: 8px; border: 1px solid #7A3E06; background: #fff; color: #7A3E06; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+/* 입력 줄 (기준: 둥근 입력창 + 초록 원형 →) */
+.rb2-bottom { padding: 10px 12px; border-top: 0.5px solid #d0e0c0; background: #fff; }
+.rb2-inrow { display: flex; gap: 8px; }
+.rb2-in { flex: 1 1 auto; min-width: 0; padding: 8px 12px; border-radius: 20px; border: 0.5px solid #c0d0b0; font-size: 12px; outline: none; background: #f8faf5; color: #2d4a25; }
+.rb2-in:disabled { color: #8a9a82; }
+.rb2-send { width: 34px; height: 34px; border-radius: 50%; background: #4a6741; border: none; cursor: pointer; color: #fff; font-size: 14px; flex: 0 0 34px; }
+.rb2-send:disabled { background: #9AA79A; cursor: not-allowed; }
+
+/* 질문 버튼 4개 (2x2) */
+.rb2-btns { padding: 10px 12px 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: #fff; }
+.rb2-btn { padding: 8px 4px; background: #f0f8e8; border: 0.5px solid #a8d070; color: #4a6741; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; line-height: 1.3; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.rb2-btn:hover:not(:disabled) { background: #e0f0d0; }
+.rb2-btn small { font-size: 9px; font-weight: 500; color: #6b7d63; }
+.rb2-btn:disabled { background: #f3f5f0; border-color: #d0d8c8; color: #8a9a82; cursor: not-allowed; }
+
+/* 추가 동작 2개 (점선) */
+.rb2-chips { padding: 0 12px 10px; display: flex; gap: 6px; background: #fff; }
+.rb2-chip { flex: 1 1 0; padding: 6px 4px; background: #fff; border: 0.5px dashed #a8d070; color: #5c7a52; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: pointer; }
+.rb2-chip:hover:not(:disabled) { background: #f6fbf0; }
+.rb2-chip:disabled { color: #a0ab99; border-color: #d0d8c8; cursor: not-allowed; }
+
+.rb2-backbox { padding: 0 12px 10px; font-size: 10px; line-height: 1.4; }
+.rb2-back { color: #5c7a52; text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) { .rb2-hint { animation: none; } }
+@media (max-width: 360px) { .rb2-panel { right: 8px; left: 8px; width: auto; } .rb2-dock { right: 12px; } }
+@media (orientation: landscape) and (max-height: 480px) {
+  .rb2-panel { top: 8px; bottom: 8px; max-height: none; }
+  .rb2-chat { flex: 1 1 auto; height: auto; min-height: 80px; }
+  .rb2.rb2-is-open .rb2-dock { display: none; }
+}
+
+/* 시안 도구 막대 (실제 화면 아님) */
+.rb2-bar { position: fixed; left: 8px; top: 8px; z-index: 2147483002; background: #1F2A37; color: #F4F1EA; font-size: 12px; padding: 5px 8px; border-radius: 8px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; max-width: calc(100vw - 16px); }
+.rb2-bar a { color: #BFE3D6; text-decoration: underline; padding: 2px 3px; }
+.rb2-bar a.on { color: #fff; font-weight: 700; text-decoration: none; background: #4a6741; border-radius: 4px; }
+.rb2-draft { flex: 0 0 auto; font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: #FFF4E0; color: #7A3E06; border: 1px solid #F0C36D; }
