@@ -12,7 +12,8 @@ This branch adds data and tooling only. **No lesson page changes**, so students 
 - `_tools/robo-v2/apply_approved_pages.py`: swaps a page to the v2 widget, the same way the G3 W1D1 pilot was swapped. It runs a check by default and changes pages only with `--apply`. A page qualifies only if all of these hold:
   - the teacher checklist row has `approve=YES` and three `Y` checks (story, words, no quiz answer exposed);
   - a checker name and date are filled in;
-  - the checklist hash, the config hash and the current page hash all match.
+  - the checklist row's `pageSha256` matches the config and current lesson page;
+  - the checklist row's `configSha256` matches the exact config JSON file bytes. The checklist must record this hash when the teacher approves the config.
 
   The tool never touches the Worker, KV or the AI allowlist; those are separate approval steps.
 
