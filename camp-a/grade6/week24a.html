@@ -140,34 +140,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .bnav{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 28px;max-width:680px;margin:0 auto;}
 .bn{padding:10px 20px;background:var(--sage);color:#fff;border-radius:12px;font-size:0.85rem;font-weight:700;text-decoration:none;}
 .bl{font-size:0.82rem;font-weight:700;color:var(--text3);}</style>
-<!-- ===== CEC Robo Helper styles ===== -->
-<style>
-.gb{position:fixed;bottom:80px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
-.gb-hint{background:#4a6741;color:#fff;font-size:12px;padding:7px 14px;border-radius:20px 20px 4px 20px;cursor:pointer;white-space:nowrap;animation:gbFloat 3s ease-in-out infinite;font-family:sans-serif;}
-.gb-hint span{color:#c8e6a0;}
-@keyframes gbFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
-.gb-robo{width:56px;height:56px;border-radius:50%;background:#4a6741;border:2px solid #a8d070;cursor:pointer;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.gb-robo img{width:46px;height:46px;object-fit:cover;border-radius:50%;}
-.gb-panel{display:none;position:fixed;bottom:92px;right:24px;width:300px;background:#fff;border-radius:20px;border:0.5px solid #c8d8b8;box-shadow:0 4px 24px rgba(74,103,65,0.15);overflow:hidden;z-index:9998;}
-.gb-head{background:#4a6741;padding:12px 16px;display:flex;align-items:center;gap:10px;}
-.gb-head img{width:28px;height:28px;border-radius:50%;object-fit:cover;}
-.gb-ht{font-size:13px;font-weight:700;color:#fff;font-family:sans-serif;}
-.gb-hs{font-size:11px;color:#c8e6a0;font-family:sans-serif;}
-.gb-close{margin-left:auto;background:none;border:none;color:#a0c080;font-size:14px;cursor:pointer;}
-.gb-chat{padding:12px 14px;height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;background:#f8faf5;}
-.gb-ai-msg{display:flex;gap:8px;align-items:flex-start;}
-.gb-ai-msg img{width:22px;height:22px;border-radius:50%;object-fit:cover;flex-shrink:0;}
-.gb-ai-bubble{background:#fff;border:0.5px solid #c8d8b8;border-radius:0 10px 10px 10px;padding:8px 12px;font-size:12px;color:#2d4a25;line-height:1.6;max-width:210px;white-space:pre-line;font-family:sans-serif;}
-.gb-user-msg{display:flex;justify-content:flex-end;}
-.gb-user-bubble{background:#4a6741;color:#fff;border-radius:10px 0 10px 10px;padding:8px 12px;font-size:12px;max-width:200px;line-height:1.5;white-space:pre-line;font-family:sans-serif;}
-.gb-input-row{padding:10px 12px;border-top:0.5px solid #d0e0c0;display:flex;gap:8px;background:#fff;}
-.gb-input{flex:1;padding:8px 12px;border-radius:20px;border:0.5px solid #c0d0b0;font-size:12px;font-family:sans-serif;outline:none;background:#f8faf5;}
-.gb-send{width:34px;height:34px;border-radius:50%;background:#4a6741;border:none;cursor:pointer;color:#fff;font-size:14px;flex-shrink:0;}
-.gb-btns{padding:10px 12px 12px;display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#fff;}
-.gb-btn{padding:8px 4px;background:#f0f8e8;border:0.5px solid #a8d070;color:#4a6741;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:sans-serif;text-align:center;line-height:1.3;}
-.gb-btn:hover{background:#e0f0d0;}
-</style>
-<!-- ===== /CEC Robo Helper styles ===== -->
+
   <meta name="description" content="CEC English Camp 초등 6학년 24주차 영어 학습 — 고전문학 기반 단계별 학습">
   <link rel="canonical" href="https://cecenglishcamp.com/camp-a/grade6/week24a.html">
   <meta property="og:title" content="G6 Q3 W24 Day1 - Pinocchio | CEC Camp A">
@@ -194,129 +167,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
   </script>
 
 <script src="/assets/require-auth.js?v=11"></script>
+<link rel="stylesheet" href="/camp-a/assets/robo-v2/robo_v2_t.css?v=9b152959bce0">
 </head>
 <body data-camp="a" data-grade="6" data-week="24" data-quarter="Q3">
-<!-- ===== CEC Robo Helper ===== -->
-<div class="gb">
-  <div class="gb-hint" onclick="gbToggle()" id="gbHint"><span>Robo</span>한테 물어봐!</div>
-  <div class="gb-robo" onclick="gbToggle()"><img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif" alt="Robo"></div>
-</div>
-<div class="gb-panel" id="gbPanel">
-  <div class="gb-head">
-    <img src="https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif" alt="Robo">
-    <div>
-      <div class="gb-ht">Robo 선생님</div>
-      <div class="gb-hs">Camp A</div>
-    </div>
-    <button class="gb-close" onclick="gbToggle()">&#10005;</button>
-  </div>
-  <div class="gb-chat" id="gbChat"></div>
-  <div class="gb-input-row">
-    <input class="gb-input" id="gbInput" type="text" placeholder="질문을 입력하세요..." onkeydown="gbCheckEnter(event)">
-    <button class="gb-send" onclick="gbSend()">→</button>
-  </div>
-  <div class="gb-btns">
-    <button class="gb-btn" onclick="gbAsk('이 이야기가 뭐야?')">📖 이 이야기가 뭐야?</button>
-    <button class="gb-btn" onclick="gbAsk('교훈이 뭐야?')">💭 교훈이 뭐야?</button>
-    <button class="gb-btn" onclick="gbAsk('주인공이 누구야?')">🐰 주인공이 누구야?</button>
-    <button class="gb-btn" onclick="gbAsk('왜 그랬어?')">🤔 왜 그랬어?</button>
-  </div>
-</div>
 <script>
-(function(){
-  if(window.__gbRoboInit)return;window.__gbRoboInit=true;
-  var GB_API_URL='https://cec-robo.cecenglishcamp.workers.dev/api/ai/chat/completions';
-  var GB_MODEL='gpt-4o-mini';
-  var GB_IMG='https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif';
-  var GB_KEY_SENTENCE='';
-  var GB_BOOK='Peter Rabbit';
-  var GB_CONTEXT=function(){return '오늘 배운 책: '+GB_BOOK+(GB_KEY_SENTENCE?'\n핵심 문장: '+GB_KEY_SENTENCE:'');};
-  var gbIsOpen=false;
-  window.gbToggle=function(){
-    gbIsOpen=!gbIsOpen;
-    var panel=document.getElementById('gbPanel');
-    var hint=document.getElementById('gbHint');
-    if(panel)panel.style.display=gbIsOpen?'block':'none';
-    if(hint)hint.style.opacity=gbIsOpen?'0':'1';
-    if(gbIsOpen)setTimeout(function(){var inp=document.getElementById('gbInput');if(inp)inp.focus();},100);
-  };
-  window.gbCheckEnter=function(e){if(e.key==='Enter')window.gbSend();};
-  window.gbAddAI=function(msg){
-    var c=document.getElementById('gbChat');if(!c)return null;
-    var d=document.createElement('div');d.className='gb-ai-msg';
-    d.innerHTML='<img src="'+GB_IMG+'" alt="Robo"><div class="gb-ai-bubble">'+String(msg).replace(/\n/g,'<br>')+'</div>';
-    c.appendChild(d);c.scrollTop=c.scrollHeight;
-    return d.querySelector('.gb-ai-bubble');
-  };
-  window.gbAddUser=function(msg){
-    var c=document.getElementById('gbChat');if(!c)return;
-    var d=document.createElement('div');d.className='gb-user-msg';
-    d.innerHTML='<div class="gb-user-bubble">'+msg+'</div>';
-    c.appendChild(d);c.scrollTop=c.scrollHeight;
-  };
-  window.gbFetch=async function(userContent){
-    var bubble=window.gbAddAI('생각 중... 🤔');
-    var c=document.getElementById('gbChat');
-    try{
-      var res=await fetch(GB_API_URL,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({model:GB_MODEL,messages:[{role:'system',content:'마크다운 기호(#, *, **, ##, - 등)를 절대 사용하지 말고 일반 텍스트로만 답해줘. 이모지는 사용 가능.'},{role:'user',content:userContent}],max_tokens:300,stream:true})
-      });
-      if(!res.ok) throw new Error('HTTP '+res.status);
-      var reader=res.body.getReader();
-      var decoder=new TextDecoder();
-      var buf='', acc='', first=true;
-      while(true){
-        var chunk=await reader.read();
-        if(chunk.done) break;
-        buf+=decoder.decode(chunk.value,{stream:true});
-        var idx;
-        while((idx=buf.indexOf('\n'))>=0){
-          var line=buf.slice(0,idx).trim();
-          buf=buf.slice(idx+1);
-          if(!line.startsWith('data:')) continue;
-          var payload=line.slice(5).trim();
-          if(payload==='[DONE]') continue;
-          try{
-            var d=JSON.parse(payload);
-            var delta=d&&d.choices&&d.choices[0]&&d.choices[0].delta&&d.choices[0].delta.content;
-            if(delta){
-              if(first){ if(bubble)bubble.innerHTML=''; first=false; }
-              acc+=delta;
-              if(bubble)bubble.innerHTML=String(acc).replace(/\n/g,'<br>');
-              if(c)c.scrollTop=c.scrollHeight;
-            }
-          }catch(e){}
-        }
-      }
-      if(!acc && bubble) bubble.textContent='(응답 없음)';
-    }catch(e){
-      if(bubble)bubble.textContent='🤖 지금 Robo 선생님이 잠깐 쉬고 있어요. 잠시 후 같은 질문을 다시 보내 주세요.';
-    }
-  };
-  window.gbSend=function(){
-    var inp=document.getElementById('gbInput');if(!inp)return;
-    var msg=inp.value.trim();if(!msg)return;
-    window.gbAddUser(msg);inp.value='';
-    window.gbFetch(GB_CONTEXT()+'\n학생 질문: '+msg+'\n초등학생 수준으로 한국어로 친절하고 짧게 답해줘.');
-  };
-  window.gbAsk=function(buttonText){
-    if(!gbIsOpen)window.gbToggle();
-    window.gbAddUser(buttonText);
-    window.gbFetch(GB_CONTEXT()+'\n학생 질문: '+buttonText+'\n초등학생 수준으로 한국어로 친절하고 짧게 답해줘.');
-  };
-  function gbInit(){
-    var _ks=document.querySelector('.key-eng');
-    if(_ks&&_ks.textContent)GB_KEY_SENTENCE=_ks.textContent.replace(/["\u201C\u201D]/g,'').trim();
-    var _ts=document.querySelector('.top-sub');
-    if(_ts&&_ts.textContent){var _t=_ts.textContent.trim();var _i=_t.indexOf(' \u00b7 ');GB_BOOK=_i>0?_t.substring(0,_i).trim():_t;}
-    setTimeout(function(){
-      window.gbAddAI('안녕! 나는 Robo야! 🤖\n오늘 배운 책: '+GB_BOOK+(GB_KEY_SENTENCE?'\n핵심 문장: "'+GB_KEY_SENTENCE+'"':'')+'\n궁금한 거 있으면 아래 버튼을 눌러봐!');
-    },500);
-  }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',gbInit);}else{gbInit();}
-})();
 
 const PAGE_DATA={grade:"G6",quarter:"Q3",week:"W24",day:"Day 1",book:"Pinocchio",d1:"He became real through goodness.",d2:"He became truly real through goodness and courage.",d3:"Pinocchio became truly real not through magic but through goodness, courage, and self-sacrifice.",words:["real", "goodness", "courage", "sacrifice", "transform"]};
 function buildPrompt(){return `📚 [${PAGE_DATA.grade} / ${PAGE_DATA.quarter} ${PAGE_DATA.week} ${PAGE_DATA.day}]
@@ -328,7 +182,7 @@ function buildPrompt(){return `📚 [${PAGE_DATA.grade} / ${PAGE_DATA.quarter} $
 function copyPrompt(btn){navigator.clipboard.writeText(buildPrompt()).then(()=>{btn.textContent="✅ 복사됐어요!";setTimeout(()=>{btn.textContent="📋 전달사항 복사"},2000);});}
 function openChatGPT(){navigator.clipboard.writeText(buildPrompt());setTimeout(function(){var w=Math.floor(screen.width*0.5),h=screen.height,l=Math.floor(screen.width*0.5);window.open("https://chatgpt.com/g/g-69b4931ba6d4819194bb864aed20723b","chatgpt","width="+w+",height="+h+",left="+l+",top=0");},300);}
 </script>
-<!-- ===== /CEC Robo Helper ===== -->
+
 
 <header class="topbar">
   <div class="top-left">
@@ -599,6 +453,9 @@ function startG6Scene(){
 </div>
 
 <script src="/assets/security.js"></script>
+<script src="/camp-a/assets/robo-v2/v2-env.js?v=0f87f9a0b7b4"></script>
+<script>window.ROBO_PAGE={"grade":6,"book":"Pinocchio","week":24,"day":1,"keySentence":"He became real through goodness.","facts":{"Page story text 1 (draft, teacher check needed)":"From the beginning Pinocchio had wanted one thing above all. He wanted to be a real boy and not a wooden puppet. The Blue Fairy said this wish could come true someday. Pinocchio thought it would happen by magic with no effort. But the fairy was waiting for something quite different. She was waiting for him to act in a way that proved he was real. The moment he saved his father was the moment she granted his wish. He became real through goodness.","Page story text 2 (draft, teacher check needed)":"From the very beginning Pinocchio had wanted one thing more than anything else in the world. He wanted to be a real boy — not a puppet of wood but a living breathing human child. The Blue Fairy had told him that this wish could come true but had not told him exactly how. He had expected that the transformation would happen like magic — suddenly and without effort. But the fairy was waiting for something specific and it had nothing to do with magic at all. She was waiting for Pinocchio to show through his actions that he deserved to be called real. The moment he sacrificed himself to save his father was the moment she finally granted his wish. He became real through goodness.","Page story text 3 (draft, teacher check needed)":"From the very earliest moment of his conscious existence, Pinocchio had wanted one single thing more than he had ever wanted anything else in the entire world. He wanted to be a real boy — not a cleverly carved puppet made of wood, but a living, breathing, flesh-and-blood human child with all the complications that went with it. The Blue Fairy had told him, early on, that this wish of his could come true someday — but she had very deliberately not told him exactly how it would happen or when. Pinocchio had naturally expected that the transformation would happen in the usual way of fairy tales — suddenly, magically, and without any real effort being required from him at all. But the fairy, as it turned out, was quietly waiting for something much more specific, and what she was waiting for had nothing whatsoever to do with magic in the conventional sense. She was waiting, patiently and without hurry, for Pinocchio to show through his own actions that he actually deserved to be called real by anyone who was looking carefully. The exact moment when he set aside his own safety and sacrificed himself to save the father who loved him was the moment the fairy finally granted his wish without another word. She had been waiting for that kind of proof all along, and when it finally arrived she gave him what he had wanted from the very beginning. He became real through goodness.","Word cards":"real = 진짜의, 진정한 / goodness = 선함, 착함 / transform = 변화하다 / courage = 용기"},"fixed":{},"translations":{},"mock":[],"choice":"real or goodness?","source":"origin/main 4a56212 camp-a/grade6/week24a.html 화면 글에서 자동 추출한 초안. 교사 확인 전. 고정 답·번역 없음.","autoDraft":true,"teacherApproved":false,"checked":{},"endpoint":""};</script>
+<script src="/camp-a/assets/robo-v2/robo_v2_t.js?v=0b296712d521"></script>
 </body>
 </html>
 
