@@ -251,7 +251,7 @@ function roboGuard(raw) {
     }).then(function (resp) {
       if (!resp.ok) { var e1 = new Error('http-' + resp.status); e1.status = resp.status; var hr = resp.headers && resp.headers.get && resp.headers.get('X-Robo-Remaining'); if (hr !== null && hr !== undefined && hr !== '') e1.remaining = parseInt(hr, 10); if (resp.status === 422) { return resp.json().then(function (j) { e1.kind = j && j.kind; throw e1; }, function () { throw e1; }); } if (resp.status === 502) { return resp.json().then(function (j) { if (j && Number.isInteger(j.status)) e1.upstreamStatus = j.status; if (j && typeof j.error === 'string') e1.providerError = j.error; if (j && typeof j.code === 'string' && /^[a-z0-9_]{1,64}$/i.test(j.code)) e1.code = j.code; if (j && typeof j.cause === 'string') e1.cause = j.cause; throw e1; }, function () { throw e1; }); } throw e1; }
       var rem = resp.headers.get('X-Robo-Remaining'), lim = resp.headers.get('X-Robo-Limit');
-      return readSSE(resp).then(function (a) { if (lim && parseInt(lim, 10) > 0) CAP = parseInt(lim, 10); if (rem !== null && rem !== '' && !isNaN(parseInt(rem, 10))) st.remaining = parseInt(rem, 10); st.rid = ''; st.voteKind = resp.headers.get('X-Robo-Aggregate') === '1' ? kind : ''; return a; });
+      return readSSE(resp).then(function (a) { if (resp.headers.get('X-Robo-Unlimited') === '1') st.unlimited = true; if (lim && parseInt(lim, 10) > 0) CAP = parseInt(lim, 10); if (rem !== null && rem !== '' && !isNaN(parseInt(rem, 10))) st.remaining = parseInt(rem, 10); st.rid = ''; st.voteKind = resp.headers.get('X-Robo-Aggregate') === '1' ? kind : ''; return a; });
     }).catch(function (e) { st.lastErr = e; throw e; });
   }
 
@@ -278,6 +278,7 @@ function roboGuard(raw) {
     var m = mode();
     pillEl.className = 'rb2-pill' + (m === 'gate' ? ' bad' : m === 'off' ? ' off' : (m === 'limit' || m === 'bad' ? ' ' + m : (m === 'unapproved' ? ' bad' : '')));
     pillEl.textContent = m === 'gate' ? (G.s === 'check' ? 'v2 \uC5F0\uACB0 \uD655\uC778\uC911' : (G.s === 'login' ? '\uB85C\uADF8\uC778\u0020\uD544\uC694' : (G.s === 'denied' ? '\uAD50\uC0AC\u0020\uAD8C\uD55C\u0020\uC5C6\uC74C' : (G.s === 'error' ? '\uC5F0\uACB0\u0020\uC624\uB958' : '\u0076\u0032\u0020\uC5F0\uACB0\u0020\uC548\u0020\uB428')))) : m === 'off' ? 'AI 꺼짐' : (m === 'bad' ? '설정 오류' : (m === 'unapproved' ? '준비 중' : (st.remaining === null ? '서버 확인 중' : '오늘 남은 ' + st.remaining + '/' + CAP + ' (서버)')));
+    if (st.unlimited && m === 'ai') pillEl.textContent = 'Admin · 무제한';
     var text = '', warn = false;
     if (m === 'bad') { text = T.badBanner; warn = true; }
     else if (m === 'gate') { text = gateText(); warn = true; }
@@ -502,7 +503,7 @@ function roboGuard(raw) {
             if (r.status === 401) { G.s = 'login'; return; }
             if (r.status === 403) { G.s = 'denied'; return; }
             if (!r.ok) { G.s = 'error'; return; }
-            return r.json().then(function (j) { G.s = 'ok'; G.teacher = !!(j && j.teacher); if (j && typeof j.remaining === 'number') st.remaining = j.remaining; if (j && j.limit > 0) CAP = j.limit; LIVE = true; });
+            return r.json().then(function (j) { G.s = 'ok'; G.teacher = !!(j && j.teacher); st.unlimited = !!(j && j.unlimited); if (j && typeof j.remaining === 'number') st.remaining = j.remaining; if (j && j.limit > 0) CAP = j.limit; LIVE = true; });
           });
         });
       });
