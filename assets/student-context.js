@@ -179,6 +179,11 @@
     try { session = await window.CECAuthSession.getSession(); } catch (_error) { return blockLearning(); }
     if (!session || typeof session.access_token !== 'string' || !session.access_token) return blockLearning();
 
+    if (session.user && typeof session.user.email === 'string' &&
+        session.user.email.toLowerCase() === 'cecenglishcamp@gmail.com') {
+      return adminPreview();
+    }
+
     var base = workerBase();
     if (!base) return blockLearning();
     var response;
