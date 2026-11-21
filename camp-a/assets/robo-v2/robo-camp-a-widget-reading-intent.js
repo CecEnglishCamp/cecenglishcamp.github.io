@@ -393,7 +393,7 @@ function roboGuard(raw) {
     if (!/(?:무슨\s*(?:말|뜻)|뜻|의미|뭐\s*(?:야|예요|죠|니|지)|뭔가|뭐니|meaning\b|what(?:\s+is|['’]s)\b|what\s+does\b|\bmean\b|\bdefine\b)/i.test(question)) return null;
     var raw = String(question).toLowerCase();
     var queryWords = (raw.match(/[a-z]+/g) || []).filter(function (word) {
-      return !/^(?:what|does|mean|meaning|define|is|of|the|a|an|to)$/i.test(word);
+      return !/^(?:what|does|mean|meaning|define|is|of|the|a|an|to|example|examples|sentence|usage|use|how)$/i.test(word);
     });
     function wordForms(value) {
       var word = String(value).toLowerCase().replace(/[^a-z]/g, '');
@@ -419,18 +419,66 @@ function roboGuard(raw) {
       var kr = card.querySelector('.v-kr, .vc-kr');
       var aliasAttr = en && en.getAttribute ? (en.getAttribute('onclick') || '') : '';
       var aliasMatch = aliasAttr.match(/speak\s*\(\s*['"]([^'"]+)['"]\s*\)/i);
+      var ex = card.querySelector('.v-ex, .vc-ex');
       return {
         term: en && en.textContent ? en.textContent.trim() : '',
         meaning: kr && kr.textContent ? kr.textContent.trim() : '',
-        alias: aliasMatch ? aliasMatch[1] : ''
+        alias: aliasMatch ? aliasMatch[1] : '',
+        example: ex && ex.textContent ? ex.textContent.trim() : ''
       };
     }).filter(function (card) { return card.term && card.meaning; });
     cards.sort(function (a, b) { return b.term.length - a.term.length; });
+    var wantsUsage = /(?:어떻게\s*(?:쓰|써|사용)|쓰는\s*(?:법|지|방법)|쓰임|사용\s*(?:법|예|예시)|예문|예시|예를\s*들|문장으로|\busage\b|\bexamples?\b|how\s+(?:to|do\s+(?:i|you))\s+use)/i.test(question);
+    function termForms(term) {
+      return String(term).toLowerCase().replace(/[^a-z]+/g, ' ').trim().split(' ').filter(Boolean).map(wordForms);
+    }
+    function hasTerm(sentence, card) {
+      var padded = ' ' + String(sentence).toLowerCase().replace(/[^a-z']+/g, ' ').trim() + ' ';
+      var phrase = card.term.toLowerCase().replace(/[^a-z]+/g, ' ').trim();
+      if (phrase && padded.indexOf(' ' + phrase + ' ') >= 0) return true;
+      var parts = termForms(card.term);
+      if (!parts.length) return false;
+      var tokens = padded.trim().split(' ');
+      return parts.every(function (forms) { return tokens.some(function (t) { return wordForms(t).some(function (f) { return forms.indexOf(f) >= 0; }); }); });
+    }
+    function wordCount(sentence) { return (String(sentence).match(/[A-Za-z']+/g) || []).length; }
+    function goodExample(sentence) {
+      var n = wordCount(sentence);
+      if (n <= 4) {
+        var tokens = sentence.replace(/[^A-Za-z' ]+/g, ' ').trim().split(/\s+/), hasVerb = false;
+        for (var t = 1; t < tokens.length - 1; t += 1) {
+          if (/^(?:is|are|was|were|am|has|have|had|do|does|did|will|can|could|would|should|must|saw|went|came|made|took|ran|flew|gave|got|said|told|met|ate|found|kept|chose|fell|knew|felt|thought|taught|began|became|heard|held|left|lost|put|read|sat|stood)$/i.test(tokens[t]) ||
+            (/^[a-z]{3,}ed$/i.test(tokens[t]) && !/^(?:greed|need|seed|feed|speed|bleed|breed|indeed|weed)$/i.test(tokens[t]))) hasVerb = true;
+        }
+        if (!hasVerb) return false;
+      }
+      return n >= 3 && n <= 20 && /^[A-Z][\x20-\x7E’—–]*[.!?]$/.test(sentence) && !/theme today/i.test(sentence) &&
+        !/^(?:had|asked|giving|using|through|by|even)\b/i.test(sentence) &&
+        /\b(?:is|are|was|were|am|be|been|has|have|had|do|does|did|will|can|could|would|should|must|means?|[a-z]{3,}ed|[a-z]{3,}s|saw|went|came|made|took|ran|flew|gave|got|said|told|met|ate|found|kept|chose|fell|knew|felt|thought|taught|began|became|heard|held|left|lost|put|read|sat|stood)\b/i.test(sentence);
+    }
+    function usageExample(card) {
+      var seen = {}, pool = [];
+      function add(value) {
+        var text = String(value || '').replace(/[“”"]/g, '').replace(/\s+/g, ' ').trim();
+        if (text && !seen[text]) { seen[text] = 1; pool.push(text); }
+      }
+      add(card.example);
+      Array.prototype.forEach.call(document.querySelectorAll('.story-en-text'), function (node) {
+        (String(node.textContent || '').match(/[^.!?]+[.!?]+/g) || []).forEach(add);
+      });
+      add(CFG.keySentence);
+      return pool.filter(function (sentence) { return hasTerm(sentence, card) && goodExample(sentence); })[0] || '';
+    }
     function reply(card) {
-      return {
-        text: '“' + card.term + '”는 “' + card.meaning + '”라는 뜻이에요.',
-        note: '수업 단어 카드에서 바로 찾았어요 · AI 아님 · 도움 횟수에 안 세요.'
-      };
+      var text = '“' + card.term + '”는 “' + card.meaning + '”라는 뜻이에요.';
+      var note = '수업 단어 카드에서 바로 찾았어요 · AI 아님 · 도움 횟수에 안 세요.';
+      if (wantsUsage) {
+        var example = usageExample(card);
+        if (!example) return null;
+        text += '\n이렇게 써요: “' + example + '”';
+        note = '수업 단어 카드와 본문에서 바로 찾았어요 · AI 아님 · 도움 횟수에 안 세요.';
+      }
+      return { text: text, note: note };
     }
     for (var i = 0; i < cards.length; i += 1) {
       var phrase = cards[i].term.toLowerCase().replace(/[^a-z]+/g, ' ').trim();
