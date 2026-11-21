@@ -166,9 +166,25 @@ function roboGuard(raw) {
     return units;
   }
   function wordCount(s) { var m = s.match(/[A-Za-z][A-Za-z'’-]*/g); return m ? m.length : 0; }
+  // 2026-11-21 표시 전 정리: 마크다운(**), 단어 카드의 🆕 표시, 키릴·몽골 문자 같은 무관한 문자, 문장 끝에 붙은 의미 없는 영어 조각(본문에 없는 단어)을 뺀다.
+  function cleanAnswer(text) {
+    var words = pageText().split(/[^a-z'’-]+/);
+    var t = String(text).replace(/\*\*|__|`/g, '').replace(/\uD83C\uDD95\uFE0F?/g, '').replace(/[\u0400-\u052F\u1800-\u18AF]+/g, '');
+    t = t.split('\n').map(function (line) {
+      line = line.replace(/[ \t]+$/, '').replace(/\s{2,}/g, ' ');
+      var m = line.match(/^(.*?[가-힣)\]”’'"])\s+([A-Za-z]{1,12}\??)$/);
+      if (m && words.indexOf(m[2].toLowerCase().replace(/\?$/, '')) < 0) line = m[1];
+      return line;
+    }).filter(function (line) {
+      var w = line.trim().match(/^([A-Za-z]{1,12})\??$/); // 한글 없이 영어 낱말 하나만 있는 줄
+      return !(w && words.indexOf(w[1].toLowerCase()) < 0);
+    }).join('\n');
+    return t.replace(/\s+([.,!?”’)])/g, '$1').trim();
+  }
   function checkAnswer(text) {
     var r = RULES[CFG.grade];
     if (FORBID.test(text)) return { ok: false, text: T.fail, why: 'forbidden' };
+    text = cleanAnswer(text);
     var units = splitUnits(text), keep = [], ko = 0, en = 0;
     for (var i = 0; i < units.length; i++) {
       var u = units[i];
@@ -422,7 +438,7 @@ function roboGuard(raw) {
       var ex = card.querySelector('.v-ex, .vc-ex');
       return {
         term: en && en.textContent ? en.textContent.trim() : '',
-        meaning: kr && kr.textContent ? kr.textContent.trim() : '',
+        meaning: kr && kr.textContent ? kr.textContent.replace(/\uD83C\uDD95\uFE0F?/g, '').trim() : '',
         alias: aliasMatch ? aliasMatch[1] : '',
         example: ex && ex.textContent ? ex.textContent.trim() : ''
       };
