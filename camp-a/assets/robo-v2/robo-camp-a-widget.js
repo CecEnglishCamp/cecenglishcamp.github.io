@@ -314,7 +314,7 @@ function roboGuard(raw) {
       if (LABELS[i] === TRANS_LABEL) { b.el.disabled = freeOff; b.sub.hidden = true; return; } // 문장 해석 = 직접 입력 해석
       if (LABELS[i] === ONE_LINE_LABEL) { b.el.disabled = m !== 'ai' || st.pending || locked(); b.sub.hidden = true; return; }
       // 기본(BTN_FIXED): 네 버튼은 교사 확인 고정 답이라 AI 상태와 무관하게 fixedOpen 기준으로만 열림. (?btn=ai 비교 스위치일 때만 AI 켜짐이면 열림)
-      var aiBtn = m === 'ai' && !locked() && !BTN_FIXED;
+      var aiBtn = canUseAIButtons(m);
       var open = m !== 'bad' && !st.pending && (aiBtn || fixedOpen(LABELS[i])); var gated = (m !== 'bad') && !aiBtn && !fixedOpen(LABELS[i]);
       b.el.disabled = !open; b.sub.hidden = !gated;
     });
@@ -334,12 +334,13 @@ function roboGuard(raw) {
     addBubble('bot', c.ok ? c.text : T.fail, joinNote(stageNote(), c.ok && c.trimmed ? '길어서 문장 단위로 줄였어요.' : '', T.noteFixed));
     st.history.push({ role: 'user', content: label }, { role: 'assistant', content: CFG.fixed[fk(label)] });
   }
+  function canUseAIButtons(m) { return m === 'ai' && !locked() && (!BTN_FIXED || st.unlimited); }
   function onBtn(label) {
     if (st.pending || BAD) return;
     if (label === ONE_LINE_LABEL) { onOneLineStart(); return; }
     var m = mode();
     // 네 버튼 정책: 기본은 고정 답(AI 호출·횟수 없음). ?btn=ai 비교 스위치일 때만 AI. 오류 잠금·꺼짐·한도에서는 항상 고정 답만.
-    if (m !== 'ai' || locked() || BTN_FIXED) { if (fixedOpen(label)) showFixed(label); else addBubble('bot', T.notChecked); return; }
+    if (!canUseAIButtons(m)) { if (fixedOpen(label)) showFixed(label); else addBubble('bot', T.notChecked); return; }
     addBubble('me', label); st.history.push({ role: 'user', content: label }); st.pending = true; render();
     callAI('btn', label, label).then(function (a) { st.pending = false; st.fails = 0; done(a, true); })
       .catch(function () { st.pending = false; if (fixedOpen(label)) { var cc = checkAnswer(CFG.fixed[fk(label)]); addBubble('bot', cc.ok ? cc.text : T.fail, joinNote(stageNote(), '고정 답으로 대신했어요', 'AI 아님')); } else { addBubble('bot', T.notChecked); } render(); });
