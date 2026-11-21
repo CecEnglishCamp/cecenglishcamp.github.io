@@ -335,6 +335,14 @@ function roboGuard(raw) {
     st.history.push({ role: 'user', content: label }, { role: 'assistant', content: CFG.fixed[fk(label)] });
   }
   function canUseAIButtons(m) { return m === 'ai' && !locked() && (!BTN_FIXED || st.unlimited); }
+  // 자유 질문이 "중심 인물/주인공은 누구?"를 묻는 경우에만 true. 이유·방법·시간을 묻는 질문은 제외한다.
+  var MAIN_CHAR_RE = /(중심(?:으로\s*다루는|이\s*되는|적인)?\s*인물|주인공|main\s+character|protagonist|main\s+person)/i;
+  var MAIN_CHAR_WHO_RE = /(누구|누군|who\b|이름|호칭|알려\s*줘|알려\s*주)/i;
+  var MAIN_CHAR_NOT_RE = /(왜|why|어떻게|how|언제|when|어디|where|무엇을|뭐라고|성격|좋아해|싫어해|했어\?|했나요)/i;
+  function isMainCharacterAsk(text) {
+    var t = String(text || '');
+    return MAIN_CHAR_RE.test(t) && MAIN_CHAR_WHO_RE.test(t) && !MAIN_CHAR_NOT_RE.test(t);
+  }
   function lessonButtonAnswer(label) {
     var answers = CFG.lessonButtonAnswers;
     return answers && Object.hasOwn(answers, label) ? answers[label] : '';
@@ -508,7 +516,16 @@ function roboGuard(raw) {
       render();
       return;
     }
+    // 자유 질문 "중심 인물은 누구야?"도 버튼과 같은 수업별 검토 답변(CFG.lessonButtonAnswers)을 쓴다. 자료에 여러 인물이 있으면 그 문구 그대로 보여 준다.
     if (gk === 'answer_request') { clearOneLine(); inp.value = ''; st.lastQ = ''; addBubble('bot', T.answerReq, '도움 횟수에 안 세요.'); return; }
+    var mainCharAnswer = !st.oneLine && !st.transMode && isMainCharacterAsk(text) ? lessonButtonAnswer('주인공은 누구야?') : '';
+    if (mainCharAnswer) {
+      st.history.push({ role: 'user', content: text }, { role: 'assistant', content: mainCharAnswer });
+      inp.value = ''; st.lastQ = '';
+      addBubble('bot', mainCharAnswer, '교재 본문 답변 · 도움 횟수에 안 세요.');
+      render();
+      return;
+    }
     var vocabAnswer = pageVocabAnswer(text);
     if (vocabAnswer) {
       st.history.push({ role: 'user', content: text });
