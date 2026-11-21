@@ -340,6 +340,14 @@ function roboGuard(raw) {
     if (label === ONE_LINE_LABEL) { onOneLineStart(); return; }
     var m = mode();
     // 네 버튼 정책: 기본은 고정 답(AI 호출·횟수 없음). ?btn=ai 비교 스위치일 때만 AI. 오류 잠금·꺼짐·한도에서는 항상 고정 답만.
+    var reviewedButton = st.unlimited && m === 'ai' && CFG.reviewedAdminButtons && CFG.reviewedAdminButtons[label];
+    if (reviewedButton) {
+      addBubble('me', label);
+      st.history.push({ role: 'user', content: label }, { role: 'assistant', content: reviewedButton });
+      addBubble('bot', reviewedButton, '교재 본문 답변 · 도움 횟수에 안 세요.');
+      render();
+      return;
+    }
     if (!canUseAIButtons(m)) { if (fixedOpen(label)) showFixed(label); else addBubble('bot', T.notChecked); return; }
     addBubble('me', label); st.history.push({ role: 'user', content: label }); st.pending = true; render();
     callAI('btn', label, label).then(function (a) { st.pending = false; st.fails = 0; done(a, true); })
@@ -450,6 +458,9 @@ function roboGuard(raw) {
     }
     // Use a lesson-specific answer only for its reviewed question.
     var reviewed = CFG.reviewedReadingAnswer;
+    if (!st.oneLine && !st.transMode && CFG.reviewedPhraseAnswers && Object.hasOwn(CFG.reviewedPhraseAnswers, askedKey)) {
+      reviewed = { question: askedKey, answer: CFG.reviewedPhraseAnswers[askedKey] };
+    }
     if (!st.oneLine && !st.transMode && reviewed && reviewed.question === askedKey) {
       st.history.push({ role: 'user', content: text }, { role: 'assistant', content: reviewed.answer });
       inp.value = ''; st.lastQ = '';
