@@ -6,7 +6,7 @@
  * - v2 오류는 오류로 표시. 기존 Robo 를 자동으로 부르지 않음. 시험자가 링크를 눌러 원래 페이지로 가는 길만 있음.
  * - 키·모델·시스템 프롬프트는 브라우저에 없음(서버가 만듦). */
 /* 2026-11-09 ROBO-WIDGET-V2-STAGING연결: 디자인 기준 ui_mockup_20261108/robo_widget_mockup_v2.html 적용.
- * 일반 robo_wave.gif / 점프 robo_jump.gif (기존 R2). 인증·과제·한도·오류 흐름은 staging 사본(e79be940) 그대로. */
+ * 일반 robo_wave.gif (기존 R2). 인증·과제·한도·오류 흐름은 staging 사본(e79be940) 그대로. */
 (function () {
   'use strict';
   var D = document, Q = new URLSearchParams('');
@@ -106,7 +106,6 @@ function roboGuard(raw) {
   var FIXED_KEY = { '이야기 요약': '이 이야기가 뭐야?', '주인공은 누구야?': '주인공이 누구야?' }; // 교사 고정 답 키(기존 자료 형식 유지)
   function fk(l) { return FIXED_KEY[l] || l; }
   var IMG_WAVE = 'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_wave.gif';
-  var IMG_JUMP = 'https://pub-a418b5aad0bd4c3fb41cf7159403fc12.r2.dev/images/robo/robo_jump.gif';
   // 코드 안에서만 쓰는 금지어/입력 검사 목록 (화면·지침에는 나오지 않음)
   var ALLOW_SEL = '.key-eng, .story-en-text, .story-en, .v-eng, .v-ex';
   var TRANS_PREFIX = 'Explain in easy Korean: "';
@@ -125,7 +124,7 @@ function roboGuard(raw) {
   var STRUGGLE = /어려워|어렵다|모르겠어|잘 모르겠어|i don't know|i don't understand|this is hard|it's hard/i;
   var PERSONAL = /(\d{2,4}[-\s]?\d{3,4}[-\s]?\d{4})|([\w.+-]+@[\w-]+\.[\w.]+)|(우리\s*집|주소|학교는|내\s*이름|이름은)/;
 
-  var root, panel, fab, fabImg, headImg, hintEl, chat, bannerBox, bannerTxt, retryBtn, btnWrap, chipSkip, inp, sendBtn, speechBtn, speechLang, pillEl, btns = [], jumpTimer = null;
+  var root, panel, fab, fabImg, headImg, hintEl, chat, bannerBox, bannerTxt, retryBtn, btnWrap, chipSkip, inp, sendBtn, speechBtn, speechLang, pillEl, btns = [];
   var st = { remaining: null, rid: '', lastErr: null, n: 0, fails: 0, lockTimer: null, lockLeft: 0, pending: false, lastQ: '', sel: '', selBad: '', history: [], open: false, oneLine: false, transMode: false };
 
   function el(tag, cls, text) { var e = D.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -262,11 +261,6 @@ function roboGuard(raw) {
   }
 
   // ---------- 화면 ----------
-  function jump() { // 점프 GIF 1.8초 후 손 흔드는 GIF로
-    if (!fabImg || !headImg) return;
-    fabImg.src = IMG_JUMP; headImg.src = IMG_JUMP; clearTimeout(jumpTimer);
-    jumpTimer = setTimeout(function () { fabImg.src = IMG_WAVE; headImg.src = IMG_WAVE; }, 1800);
-  }
   function addBubble(who, text, note) {
     var row = el('div', 'rb2-row ' + who), line = el('div', 'rb2-line');
     if (who === 'bot') { // 작은 Robo 는 가장 최근 답에만 (여러 GIF 동시 반복 방지)
@@ -276,7 +270,6 @@ function roboGuard(raw) {
     line.appendChild(el('div', 'rb2-bub', text)); row.appendChild(line);
     if (note) row.appendChild(el('div', 'rb2-note', note));
     chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
-    if (who === 'bot' && st.open) jump();
     return row;
   }
   var thinkingRow = null;
@@ -630,7 +623,7 @@ function roboGuard(raw) {
     root.appendChild(panel); root.appendChild(dock);
     D.body.appendChild(root);
 
-    function toggle() { st.open = !st.open; panel.hidden = !st.open; root.classList.toggle('rb2-is-open', st.open); fab.setAttribute('aria-label', st.open ? 'Robo 닫기' : 'Robo 열기'); hintEl.style.opacity = st.open ? '0' : '1'; if (st.open) { if (!chat.children.length) greet(); jump(); } }
+    function toggle() { st.open = !st.open; panel.hidden = !st.open; root.classList.toggle('rb2-is-open', st.open); fab.setAttribute('aria-label', st.open ? 'Robo 닫기' : 'Robo 열기'); hintEl.style.opacity = st.open ? '0' : '1'; if (st.open) { if (!chat.children.length) greet(); } }
     fab.addEventListener('click', function () { toggle(); if (st.open) { close.focus(); } }); hintEl.addEventListener('click', function () { if (!st.open) { toggle(); close.focus(); } }); close.addEventListener('click', function () { toggle(); fab.focus(); }); root.addEventListener('keydown', function (e) { if (e.key === 'Escape' && st.open) { toggle(); fab.focus(); } });
     sendBtn.addEventListener('click', function () { sendFree(inp.value); });
     inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); sendFree(inp.value); } });
