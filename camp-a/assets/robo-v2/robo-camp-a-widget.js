@@ -314,7 +314,7 @@ function roboGuard(raw) {
       if (LABELS[i] === TRANS_LABEL) { b.el.disabled = freeOff; b.sub.hidden = true; return; } // 문장 해석 = 직접 입력 해석
       if (LABELS[i] === ONE_LINE_LABEL) { b.el.disabled = m !== 'ai' || st.pending || locked(); b.sub.hidden = true; return; }
       // 기본(BTN_FIXED): 네 버튼은 교사 확인 고정 답이라 AI 상태와 무관하게 fixedOpen 기준으로만 열림. (?btn=ai 비교 스위치일 때만 AI 켜짐이면 열림)
-      var aiBtn = canUseAIButtons(m);
+      var aiBtn = canUseAIButtons(m) || (m === 'ai' && !!lessonButtonAnswer(LABELS[i]));
       var open = m !== 'bad' && !st.pending && (aiBtn || fixedOpen(LABELS[i])); var gated = (m !== 'bad') && !aiBtn && !fixedOpen(LABELS[i]);
       b.el.disabled = !open; b.sub.hidden = !gated;
     });
@@ -335,12 +335,16 @@ function roboGuard(raw) {
     st.history.push({ role: 'user', content: label }, { role: 'assistant', content: CFG.fixed[fk(label)] });
   }
   function canUseAIButtons(m) { return m === 'ai' && !locked() && (!BTN_FIXED || st.unlimited); }
+  function lessonButtonAnswer(label) {
+    var answers = CFG.lessonButtonAnswers;
+    return answers && Object.hasOwn(answers, label) ? answers[label] : '';
+  }
   function onBtn(label) {
     if (st.pending || BAD) return;
     if (label === ONE_LINE_LABEL) { onOneLineStart(); return; }
     var m = mode();
     // 네 버튼 정책: 기본은 고정 답(AI 호출·횟수 없음). ?btn=ai 비교 스위치일 때만 AI. 오류 잠금·꺼짐·한도에서는 항상 고정 답만.
-    var reviewedButton = st.unlimited && m === 'ai' && CFG.reviewedAdminButtons && CFG.reviewedAdminButtons[label];
+    var reviewedButton = m === 'ai' && lessonButtonAnswer(label);
     if (reviewedButton) {
       addBubble('me', label);
       st.history.push({ role: 'user', content: label }, { role: 'assistant', content: reviewedButton });
