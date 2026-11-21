@@ -166,9 +166,19 @@ function roboGuard(raw) {
     return units;
   }
   function wordCount(s) { var m = s.match(/[A-Za-z][A-Za-z'’-]*/g); return m ? m.length : 0; }
+  // 금지어 검사는 로보 자신의 표현에만 적용한다. 수업 문장 인용(“…”)과 수업 본문에 실제로 있는 영어 단어(예: wrong)는 검사에서 뺀다.
+  function forbidScan(text) {
+    var pt = pageText(), words = pt.split(/[^a-z'’-]+/);
+    // 수업 본문에 wrong/correct/score가 있으면 그 뜻풀이(틀렸다/정답/점수)도 로보의 채점 표현이 아니므로 뺀다.
+    var ko = String(text);
+    if (words.indexOf('wrong') >= 0) ko = ko.replace(/틀(?:렸|린|리|려)\S*/g, ' ');
+    if (words.indexOf('correct') >= 0) ko = ko.replace(/정답|오답/g, ' ');
+    if (words.indexOf('score') >= 0) ko = ko.replace(/점수/g, ' ');
+    return ko.replace(/[“"][^”"]*[”"]/g, ' ').replace(/[A-Za-z][A-Za-z'’-]*/g, function (w) { return words.indexOf(w.toLowerCase()) >= 0 ? ' ' : w; });
+  }
   function checkAnswer(text) {
     var r = RULES[CFG.grade];
-    if (FORBID.test(text)) return { ok: false, text: T.fail, why: 'forbidden' };
+    if (FORBID.test(forbidScan(text))) return { ok: false, text: T.fail, why: 'forbidden' };
     var units = splitUnits(text), keep = [], ko = 0, en = 0;
     for (var i = 0; i < units.length; i++) {
       var u = units[i];
