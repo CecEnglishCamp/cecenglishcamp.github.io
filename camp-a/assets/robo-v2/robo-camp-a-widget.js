@@ -442,6 +442,27 @@ function roboGuard(raw) {
     }
     return null;
   }
+  function reusesLessonPhrase(text, keySentence) {
+    var normalize = function (value) { return String(value || '').toLowerCase().replace(/[.!]+$/, '').replace(/\s+/g, ' ').trim(); };
+    var sentence = normalize(text), key = normalize(keySentence);
+    if (sentence === key || !/^(?:i|we|my|our)\b/.test(sentence) || !/^[a-z][a-z' -]+$/.test(sentence)) return false;
+    var predicate = key.split(' ').slice(1).join(' ');
+    return predicate.includes(' ') && sentence.endsWith(' ' + predicate);
+  }
+  function giveReuseFeedback(text) {
+    if (st.transMode || !reusesLessonPhrase(text, CFG.keySentence)) return false;
+    var feedback = '잘했어요! 오늘 배운 표현을 내 이야기 문장에 잘 썼어요.';
+    if (!st.reuseXP && typeof window.addXP === 'function') {
+      window.addXP(100);
+      st.reuseXP = true;
+      feedback += ' 100 XP를 받았어요!';
+    }
+    st.history.push({ role: 'user', content: text }, { role: 'assistant', content: feedback });
+    inp.value = ''; st.lastQ = ''; clearOneLine();
+    addBubble('bot', feedback, '도움 횟수에 안 세요.');
+    render();
+    return true;
+  }
   function sendFree(text) {
     text = String(text).trim().slice(0, MAXLEN); if (!text || st.pending || mode() !== 'ai' || locked()) return;
     st.fails = 0; st.lastErr = null; st.lastQ = text; addBubble('me', text);
@@ -450,6 +471,7 @@ function roboGuard(raw) {
     if (gk === 'rude') { clearOneLine(); inp.value = ''; st.lastQ = ''; addBubble('bot', T.rude); return; }
     if (gk === 'safety') { clearOneLine(); inp.value = ''; st.lastQ = ''; addBubble('bot', T.sad); return; }
     if (!st.oneLine && STRUGGLE.test(text)) { inp.value = ''; st.lastQ = ''; addBubble('bot', T.struggle, '도움 횟수에 안 세요.'); return; }
+    if (giveReuseFeedback(text)) return;
     var exactKey = String(CFG.keySentence || '').toLowerCase().replace(/[“”"'.,!?]/g, '').replace(/\s+/g, ' ').trim();
     var askedKey = text.toLowerCase().replace(/[“”"'.,!?]/g, '').replace(/\s+/g, ' ').trim();
     if (CFG.keyKo && exactKey && askedKey === exactKey) {
