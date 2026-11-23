@@ -37,7 +37,7 @@ function roboGuard(raw) {
   var WEAKP = /우리\s*집|주소|학교는|이름은/;
   var RUDE = /바보|멍청|꺼져|병신|씨발|시발|씨바|ㅅㅂ|ㅂㅅ|좆|fuck|shit|bitch|stupid|idiot|shut up|(너|니|네|당신)\s*.{0,3}죽어|죽어\s*버려|죽어라/i;
   var STRONG = /자살|자해|죽고\s*싶|죽을래|살기\s*싫|kill myself|want to die|wanna die|suicide|hurt myself|cut myself|end my life/i, STRONGC = /죽고싶|자살|자해|살기싫|killmyself|wanttodie|suicide|hurtmyself/;
-  var SADHARD = /아파(?!트)|때려|맞았|죽고|죽을|도와줘요|괴롭|살려|i'?m (scared|afraid)|hit me|hurt me|bully/i;
+  var SADHARD = /때려|맞았|괴롭|살려|hit me|hurt me|bully/i;
   var HARDLY = /힘들어|힘들다|힘들었|힘드네|지쳐|지쳤/, ACAD = /숙제|시험|공부|점수|성적|학원|영어|단어|수업|문제|과제|부모님|엄마|아빠|homework|exam|test|grade|score/i;
   var PRACTICE = /연습|예시|가짜|가상|지어낸|지어서|practice|example|pretend|fake|made[- ]?up/i;
   var FEAR = /무서워|무섭|무서웠|두려워|겁나|겁이|scared|afraid/i;
@@ -53,9 +53,10 @@ function roboGuard(raw) {
   if (!vocab && !PRACTICE.test(t) && WEAKP.test(t)) return 'personal';
   if (!vocab && RUDE.test(t)) return 'rude';
   if (strong) return 'safety';
-  var story = (ANCHOR.test(t) || STORY_CHARACTER_FEAR.test(t) || /^(?:Alice\s+was|Was\s+Alice)\s+(?:afraid|scared)\s+(?:(?:of\s+the\s+Queen)|(?:when\s+she\s+stood\s+up\s+to\s+the\s+Queen))[?.!]*$/i.test(t)) && !FIRST.test(t) && !SADHARD.test(t);
-  if (!strong && !vocab && !SADHARD.test(t) && HARDLY.test(t)) return ACAD.test(t) ? 'stress' : 'safety';
-  if (!vocab && (SADHARD.test(t) || (FEAR.test(t) && !story))) return 'safety';
+  var NAMEQ = false;
+  try { var PG = (typeof window !== 'undefined') && window.ROBO_PAGE; if (PG) { var psrc = String(PG.book || '') + ' ' + JSON.stringify(PG.facts || {}); var pcnt = {}; (psrc.match(/\b[A-Z][a-z]{2,}\b/g) || []).forEach(function (w) { pcnt[w] = (pcnt[w] || 0) + 1; }); var pstop = /^(The|And|But|One|She|His|Her|They|Then|When|What|Why|How|Who|This|That|There|Day|Mom|Dad|Yes|Because|After|Before|Story|Korean|English|Fact|Literal|Infer)$/; (t.match(/\b[A-Z][a-z]{2,}\b/g) || []).forEach(function (w) { if (!pstop.test(w) && pcnt[w] >= 2) NAMEQ = true; }); } } catch (e) {}
+  var story = (ANCHOR.test(t) || NAMEQ || STORY_CHARACTER_FEAR.test(t) || /^(?:Alice\s+was|Was\s+Alice)\s+(?:afraid|scared)\s+(?:(?:of\s+the\s+Queen)|(?:when\s+she\s+stood\s+up\s+to\s+the\s+Queen))[?.!]*$/i.test(t)) && !FIRST.test(t) && !SADHARD.test(t);
+  if (!strong && !vocab && !SADHARD.test(t) && HARDLY.test(t)) return ACAD.test(t) ? 'stress' : null;
   if (ANSWERREQ.test(t) || ANSWERC.test(c)) return 'answer_request';
   return null;
 }
