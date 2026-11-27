@@ -51,7 +51,10 @@ function roboGuard(raw) {
   if (!vocab && RUDE.test(t)) return 'rude';
   if (strong) return 'safety';
   var story = (ANCHOR.test(t) || STORY_CHARACTER_FEAR.test(t) || /^(?:Alice\s+was|Was\s+Alice)\s+(?:afraid|scared)\s+(?:(?:of\s+the\s+Queen)|(?:when\s+she\s+stood\s+up\s+to\s+the\s+Queen))[?.!]*$/i.test(t)) && !FIRST.test(t) && !SADHARD.test(t);
-  if (!vocab && (SADHARD.test(t) || (FEAR.test(t) && !story))) return 'safety';
+  // 수업 문장 질문 서식(무슨 뜻 / 바로 뒤에 / 꼭 알아야 할 표현)에서 따옴표 안 영어 수업 문장의 무서움 단어(afraid 등)는 FEAR 검사에서 뺀다. 따옴표 밖 말, SADHARD·STRONG은 전체 문장으로 계속 검사.
+  var LESSON_Q = /(?:가|이)\s*이\s*수업에서\s*무슨\s*뜻|바로\s*뒤에\s*어떤\s*일|에서\s*꼭\s*알아야\s*할\s*표현/;
+  var tq = LESSON_Q.test(t) ? t.replace(/[“"][^“”"가-힣]*[A-Za-z][^“”"가-힣]*[”"]/g, ' ') : t;
+  if (!vocab && (SADHARD.test(t) || (FEAR.test(tq) && !story))) return 'safety';
   if (ANSWERREQ.test(t) || ANSWERC.test(c)) return 'answer_request';
   return null;
 }
