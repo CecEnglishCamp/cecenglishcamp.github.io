@@ -4,7 +4,7 @@
  *   - Network First: HTML 페이지 (오프라인 시 캐시 → /offline.html 폴백)
  *   - Cross-origin (R2 CDN, Google Fonts 등) 은 통과 (브라우저 기본 처리)
  */
-const CACHE = 'cec-pwa-v2';
+const CACHE = 'cec-pwa-v3';
 const PRECACHE = [
   '/',
   '/index.html',
