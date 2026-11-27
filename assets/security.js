@@ -85,9 +85,21 @@
     }
   }
 
+  // ── 6) Camp C 수업 화면 'Back to Camp C Home' 버튼 (2026-11-26) ──
+  //    Camp C 수업 페이지(/camp-c/epNN.html)에서만 공통 파일을 불러옴. 다른 페이지는 아무것도 안 함.
+  function loadCampcHomeNav() {
+    if (!/^\/camp-c\/ep\d+\.html$/.test(location.pathname)) return;
+    if (document.querySelector('script[data-cec-campc-home-loader]')) return;
+    var s = document.createElement('script');
+    s.src = '/assets/campc-home-nav.js?v=20261126a';
+    s.setAttribute('data-cec-campc-home-loader', 'true');
+    (document.head || document.documentElement).appendChild(s);
+  }
+
   function init() {
     disableSelect();
     injectChrome();
+    loadCampcHomeNav();
   }
 
   if (document.readyState === 'loading') {
